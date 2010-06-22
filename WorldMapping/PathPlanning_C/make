@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "Hand made make script for PathPlanning library .."
+echo "Should provide libPathPlanning.a"
+echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
+echo "Compiling files.."
+gcc -c PathPlan_core.cpp -o PathPlan_core.o
+gcc -c PathPlan_objectpositions.cpp -o PathPlan_objectpositions.o
+gcc -c PathPlanning.cpp -o PathPlanning.o 
+
+echo "Linking files.."
+ar  rcs libPathPlanning.a PathPlan_core.o PathPlan_objectpositions.o PathPlanning.o 
+
+echo "Cleaning compiled object files.."
+rm PathPlan_core.o PathPlan_objectpositions.o PathPlanning.o  
+
+echo "Done.."
+exit 0

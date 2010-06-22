@@ -1,0 +1,18 @@
+#!/bin/bash
+echo "Hand made make script for PathPlanning library .."
+echo "Should provide libPathPlanning.a"
+echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
+echo "Compiling files.."
+gcc -c AStarCompute.cpp -o AStarCompute.o
+gcc -c LogoHighLevelPath.cpp -o LogoHighLevelPath.o
+gcc -c Map.cpp -o Map.o 
+gcc -c NormalizePath.cpp -o NormalizePath.o 
+
+echo "Linking files.."
+ar  rcs libPathPlanning.a AStarCompute.o LogoHighLevelPath.o Map.o NormalizePath.o 
+
+echo "Cleaning compiled object files.."
+rm  AStarCompute.o LogoHighLevelPath.o Map.o NormalizePath.o 
+
+echo "Done.."
+exit 0
