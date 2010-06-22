@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "Make bash script Not Implemented !" 
+exit 0

@@ -1,0 +1,532 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+<title>MD23 Technical Documentation</title>
+<meta http-equiv="Content-Language" content="en-gb">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta content="Microsoft FrontPage 4.0" name="GENERATOR">
+<meta content="FrontPage.Editor.Document" name="ProgId"></head><body>
+<p align="center"><font size="5"><b><span style="background-color: rgb(255, 255, 0);">&nbsp;MD23 - Dual 12Volt 3Amp H Bridge Motor 
+Drive&nbsp; </span></b></font></p>
+<p><b><u>Overview</u></b><br>The MD23 is a robust I2C dual motor driver, 
+designed for use with our EMG30 motors. Main features 
+are:</p>
+<p>1.&nbsp;&nbsp;&nbsp; Reads motors encoders and provides counts in registers for
+determining distance traveled and direction .<br>2.&nbsp;&nbsp;&nbsp; Drives two motors with independent
+or combined control.&nbsp;<br>
+3.&nbsp;&nbsp;&nbsp; Motor current is readable through
+registers.<br>4.&nbsp;&nbsp;&nbsp; Only 12v
+is required to power the module.<br>
+5.&nbsp;&nbsp;&nbsp; Onboard 5v regulator can supply up to 1A peak, 300mA
+continuously to external
+circuitry<br>6.&nbsp;&nbsp;&nbsp; Steering 
+feature, motors can be commanded to turn by I2C register value.<br>
+7.&nbsp;&nbsp;&nbsp; Variable acceleration and power regulation also included <br></p>
+<p><b>MD23 Connections</b></p>
+<p align="center"><img src="md23tech_files/md23b.jpg" border="0" height="346" width="392"></p>
+<p align="left"><font size="3"><b>Motor Voltage<br>
+</b>The MD23 is designed to work with a 12v battery. In practical terms, this
+means the 9v-14v swing of a flat/charging 12v battery is fine. Much below 9v and
+the under-voltage protection will prevent any drive to the motors. Above 14v and
+the driver chips may be destroyed - their absolute maximum stress voltage is
+18v.<b><br>
+</b><b><br>
+Motor Noise Suppression&nbsp;<br>
+</b>When using our EMG30 encoded motors, you will find that a 10n noise
+suppression
+capacitor has already been fitted. Other motors may require
+suppression. This is easily achieved by the addition of a 10n snubbing
+capacitor across the motors. The capacitor should also be capable of
+handling a voltage of twice the drive voltage to the motor.</font></p>
+<p align="left"><font size="3"><b>Leds</b><br>
+The Red Power Led indicates power is applied to the module.<br>
+A Green Led initially flashes the I2C address and then lights for 500mS to indicate correct I2C activity to the module. The
+internal 500mS timer is restarted each time there is I2C activity, so it will be
+on during continuous access.</font></p>
+<p align="left"><b>Automatic Speed regulation<br>
+</b>By using feedback from the encoders the MD23 is able to dynamically
+increase power as required. If the required speed is not being achieved, the
+MD23 will increase power to the motors until it reaches the desired rate or the
+motors reach there maximum output.&nbsp;Speed regulation can be turned off in
+the <a href="#command%20register">command register</a>.</p>
+<p align="left"><b>Automatic Motor Timeout</b><br>
+The MD23 will automatically stop the motors if there is no I2C communications
+within 2 seconds. This is to prevent your robot running wild if the controller
+fails. The feature can be turned off, if not required. See
+the <a href="#command%20register">command register</a>.</p>
+<p><b>Controlling the MD23<br>
+</b>The MD23 is designed to operate in a standard I2C bus system on addresses
+from 0xB0 to 0xBE (last bit of address is read/write bit, so even numbers only), with its
+default address being 0xB0. This is easily changed by removing the Address
+Jumper or in the software see&nbsp;<a href="#change%20address">Changing the I2C Bus Address</a>.<br>
+&nbsp;<br>I2C mode allows the MD23 to be connected to popular 
+controllers such as the PICAXE, OOPic and BS2p, and a wide range of micro-controllers 
+like PIC's, AVR's, 8051's etc.&nbsp;<br>I2C
+communication protocol with the MD23 module is the same as popular
+EPROM's such as the 24C04. To read one or more of the MD23 registers,
+first send a start bit, the module address (0XB0 for example) with the
+read/write bit low, then the register number you wish to read. This is
+followed by a repeated start and the module address again with the
+read/write bit high (0XB1 in this example). You are now able to read
+one or more registers. The MD23 has 17 registers numbered 0 to 16 as
+follows;</p>
+<center>
+<table bgcolor="#ccffcc" border="1" cellpadding="0" cellspacing="0" width="845">
+  <tbody>
+  <tr>
+    <td bgcolor="#66ffff" width="68" align="center">
+      <p align="center">Register</p></td>
+    <td bgcolor="#66ffff" width="176" align="center">
+      <p align="center">Name</p></td>
+    <td bgcolor="#66ffff" width="119" align="center">Read/Write</td>
+    <td bgcolor="#66ffff" width="472" align="center">
+      <p align="center">Description</p></td></tr>
+  <tr>
+    <td width="68" align="center">
+      <p align="center">0</p></td>
+    <td width="176" align="center">
+      <p align="center"><a href="#speed1">Speed1</a></p></td>
+    <td width="119" align="center">R/W</td>
+    <td width="472" align="center">
+      Motor1 speed (mode 0,1) or speed (mode 
+    2,3)
+    </td></tr>
+  <tr>
+    <td width="68" align="center">
+      <p align="center">1</p></td>
+    <td width="176" align="center">
+      <p align="center"><a href="#speed2">Speed2/Turn</a></p></td>
+    <td width="119" align="center">R/W</td>
+    <td width="472" align="center">
+      <p align="center">Motor2 speed (mode 0,1) or turn (mode 2,3)&nbsp;</p></td></tr>
+  <tr>
+    <td width="68" align="center">
+      <p align="center">2</p></td>
+    <td width="176" align="center">
+      <p align="center">
+      <a href="#encoders">
+      Enc1a</a></p></td>
+    <td width="119" align="center">Read only</td>
+    <td width="472" align="center">
+      Encoder 1 position, 1st byte (highest byte) and capture count when read</td></tr>
+  <tr>
+    <td width="68" align="center">
+      <p align="center">3</p></td>
+    <td width="176" align="center">
+      <a href="#encoders">
+      Enc1b</a></td>
+    <td width="119" align="center">Read only</td>
+    <td width="472" align="center">
+      Encoder 1 position, 2nd byte</td></tr>
+  <tr>
+    <td width="68" align="center">
+      <p align="center">4</p></td>
+    <td width="176" align="center">
+      <a href="#encoders">
+      Enc1c</a></td>
+    <td width="119" align="center">Read only</td>
+    <td width="472" align="center">
+      Encoder 1 position, 3rd byte</td></tr>
+  <tr>
+    <td width="68" align="center">
+      <p align="center">5</p></td>
+    <td width="176" align="center">
+      <a href="#encoders">
+      Enc1d</a></td>
+    <td width="119" align="center">Read only</td>
+    <td width="472" align="center">
+      Encoder 1 position, 4th (lowest byte)</td></tr>
+  <tr>
+    <td width="68" align="center">
+      6</td>
+    <td width="176" align="center">
+      <a href="#encoders">
+      Enc2a</a></td>
+    <td width="119" align="center">Read only</td>
+    <td width="472" align="center">
+      Encoder 2 position, 1st (highest byte) and capture count when read</td></tr>
+  <tr>
+    <td width="68" align="center">
+      <p align="center">7</p></td>
+    <td width="176" align="center">
+      <a href="#encoders">
+      Enc2b</a></td>
+    <td width="119" align="center">Read only</td>
+    <td width="472" align="center">
+      Encoder 2 position, 2nd byte</td>
+  </tr>
+  <tr>
+    <td width="68" align="center">
+      8</td>
+    <td width="176" align="center">
+      <a href="#encoders">
+      Enc2c</a></td>
+    <td width="119" align="center">Read only</td>
+    <td width="472" align="center">
+      Encoder 2 position, 3rd byte</td></tr>
+  <tr>
+    <td width="68" align="center">
+      9</td>
+    <td width="176" align="center">
+      <a href="#encoders">
+      Enc2d</a></td>
+    <td width="119" align="center">Read only</td>
+    <td width="472" align="center">
+      Encoder 2 position, 4th byte (lowest byte)</td></tr>
+  <tr>
+    <td width="68" align="center">
+      10</td>
+    <td width="176" align="center">
+      <a href="#battery%20volts">Battery volts</a></td>
+    <td width="119" align="center">Read only</td>
+    <td width="472" align="center">
+      <p align="center">The supply battery voltage</p></td></tr>
+  <tr>
+    <td width="68" align="center">
+      11</td>
+    <td width="176" align="center">
+      <a href="#mot%20current">Motor 1 current</a></td>
+    <td width="119" align="center">Read only</td>
+    <td width="472" align="center">
+      The current through motor 1</td></tr>
+  <tr>
+    <td width="68" align="center">
+      12</td>
+    <td width="176" align="center">
+      <a href="#mot%20current">Motor 2 current</a></td>
+    <td width="119" align="center">Read only</td>
+    <td width="472" align="center">
+      The current through motor 2</td></tr>
+  <tr>
+    <td width="68" align="center">
+      13</td>
+    <td width="176" align="center">
+      <a href="#software%20rev">Software Revision</a></td>
+    <td width="119" align="center">Read only</td>
+    <td width="472" align="center">
+      Software Revision Number</td></tr>
+  <tr>
+    <td width="68" align="center">
+      14</td>
+    <td width="176" align="center">
+      <a href="#acceleration%20register">
+      Acceleration rate</a></td>
+    <td width="119" align="center">R/W</td>
+    <td width="472" align="center">
+      Optional Acceleration register&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="68" align="center">
+      15</td>
+    <td width="176" align="center">
+      <a href="#mode">Mode</a></td>
+    <td width="119" align="center">R/W</td>
+    <td width="472" align="center">
+      Mode of operation (see below)</td></tr>
+  <tr>
+    <td width="68" align="center">
+      16</td>
+    <td width="176" align="center">
+      <a href="#command%20register">
+      Command</a></td>
+    <td width="119" align="center">R/W</td>
+    <td width="472" align="center">
+      Used for reset of encoder counts and module address changes</td></tr>
+  </tbody></table></center>
+<p>&nbsp;</p>
+<p><b><a name="speed1"></a>Speed1 Register</b><u><br></u>Depending on
+what mode you are in, this register can affect the speed of one motor
+or both motors. If you are in mode 0 or 1 it will set the speed and
+direction of motor 1. The larger the number written to this register,
+the more power is applied to the motor. A mode of 2 or 3 will control
+the speed and direction of both motors (subject to effect of turn
+register).</p>
+<p><b><a name="speed2"></a>Speed2/Turn Register</b><u><br></u>When in mode 0 or 1 this register 
+operates the speed and direction of motor 2. When in mode 2 or 3 Speed2 becomes a Turn register, and any value in this register
+is 
+combined with the contents of Speed1 to steer the device (see below).&nbsp;</p>
+<p><b>Turn mode<br>
+</b>Turn mode looks at the speed register to decide if the direction is forward
+or reverse. Then it applies a subtraction or addition of the turn value on
+either motor.</p>
+<p>so if the direction is forward<br>
+motor speed1 = speed - turn<br>
+motor speed2 = speed + turn<br>
+<br>
+else the direction is reverse so<br>
+motor speed1 = speed + turn<br>
+motor speed2 = speed - turn<br>
+<br>
+If the either motor is not able to achieve the required speed for the turn
+(beyond the maximum output), then the other motor is automatically changed by
+the program to meet the required difference.</p>
+<p><b><a name="encoders"></a>Encoder registers<br>
+</b>Each motor has its encoder count stored in an array of four bytes, together
+the bytes form a signed 32 bit number, the encoder count is captured on a read
+of the highest byte (registers 2, 6) and the subsequent lower bytes will be
+held until another read of the highest byte takes place. The count is stored with the highest byte in the
+lowest numbered register. The registers can be zeroed at any time by writing 32
+(0x20) to
+the <a href="#command%20register"> command register</a>.</p>
+<p><b><a name="battery volts"></a>Battery volts<br>
+</b>A reading of the voltage of the connected battery is available in this
+register. It reads as 10 times the voltage (121 for 12.1v).</p>
+<p><b><a name="mot current"></a>Motor 1 and 2 current<br>
+</b>A guide reading of the average current through the motor is available in this
+register. It reads approx ten times the number of Amps (25 at 2.5A).</p>
+<p><b><a name="software rev"></a>Software Revision number</b><br>This register contains the 
+revision number of the software in the modules PIC16F873 controller - currently
+2 at the time of writing.</p>
+<p><b><a name="acceleration register"></a>Acceleration Rate&nbsp;</b><u><br></u>If you 
+require a controlled acceleration period for the attached motors to reach there 
+ultimate speed, the MD23 has a register to provide this using a stepped change
+every 18ms. It works by using a 
+value into the acceleration register and incrementing the power by that value.
+Changing between the current speed of the 
+motors and the new speed (from speed 1 and 2 registers). So if the 
+motors&nbsp;were traveling at full speed in the forward direction (255) and were 
+instructed to move at full speed in reverse (0), there would be 255 steps with
+an acceleration register value of 1, but 128 for a value of 2. The default
+acceleration value is 5, meaning the speed is changed from full forward to full
+reverse in 0.92 seconds. The register will accept values of 1 up to 10 which
+equates to a period of only 0.47 seconds to travel from full speed in one
+direction to full speed in the opposite direction.<br><br>So to calculate the time (in seconds) for the 
+acceleration to complete :</p>
+<p>if new speed &gt; current speed<br>
+steps = (new speed - current speed) / acceleration register</p>
+<p>if new speed &lt; current speed<br>
+steps = (current speed - new speed) / acceleration register<br>
+<br>time = steps * 18ms&nbsp;<br>
+<br>For example :</p>
+<div align="center">
+<center>
+<table border="1" cellpadding="0" cellspacing="0" width="678">
+  <tbody>
+  <tr>
+    <td bgcolor="#66ffff" height="32" width="130" align="center">Acceleration register</td>
+    <td bgcolor="#66ffff" height="32" width="83" align="center">Time/step</td>
+    <td bgcolor="#66ffff" height="32" width="110" align="center">Current speed</td>
+    <td bgcolor="#66ffff" height="32" width="92" align="center">New speed</td>
+    <td bgcolor="#66ffff" height="32" width="86" align="center">Steps</td>
+    <td bgcolor="#66ffff" height="32" width="163" align="center">Acceleration&nbsp; time</td></tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="24" width="130" align="center">1</td>
+    <td bgcolor="#ccffcc" height="24" width="83" align="center">18ms</td>
+    <td bgcolor="#ccffcc" height="24" width="110" align="center">0</td>
+    <td bgcolor="#ccffcc" height="24" width="92" align="center">255</td>
+    <td bgcolor="#ccffcc" height="24" width="86" align="center">255</td>
+    <td bgcolor="#ccffcc" height="24" width="163" align="center">4.59s</td></tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="23" width="130" align="center">2</td>
+    <td bgcolor="#ccffcc" height="23" width="83" align="center">18ms</td>
+    <td bgcolor="#ccffcc" height="23" width="110" align="center">127</td>
+    <td bgcolor="#ccffcc" height="23" width="92" align="center">255</td>
+    <td bgcolor="#ccffcc" height="23" width="86" align="center">64</td>
+    <td bgcolor="#ccffcc" height="23" width="163" align="center">1.152s</td></tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="23" width="130" align="center">3</td>
+    <td bgcolor="#ccffcc" height="23" width="83" align="center">18ms</td>
+    <td bgcolor="#ccffcc" height="23" width="110" align="center">80</td>
+    <td bgcolor="#ccffcc" height="23" width="92" align="center">0</td>
+    <td bgcolor="#ccffcc" height="23" width="86" align="center">27</td>
+    <td bgcolor="#ccffcc" height="23" width="163" align="center">0.486s</td>
+  </tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="23" width="130" align="center">5 (default)</td>
+    <td bgcolor="#ccffcc" height="23" width="83" align="center">18ms</td>
+    <td bgcolor="#ccffcc" height="23" width="110" align="center">0</td>
+    <td bgcolor="#ccffcc" height="23" width="92" align="center">255</td>
+    <td bgcolor="#ccffcc" height="23" width="86" align="center">51</td>
+    <td bgcolor="#ccffcc" height="23" width="163" align="center">0.918s</td></tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="13" width="130" align="center">10</td>
+    <td bgcolor="#ccffcc" height="13" width="83" align="center">18ms</td>
+    <td bgcolor="#ccffcc" height="13" width="110" align="center">255</td>
+    <td bgcolor="#ccffcc" height="13" width="92" align="center">0</td>
+    <td bgcolor="#ccffcc" height="13" width="86" align="center">26</td>
+    <td bgcolor="#ccffcc" height="13" width="163" align="center">0.468s</td></tr></tbody></table></center></div>
+<p><b><a name="mode"></a>Mode Register</b><br>The mode register selects 
+which mode of operation and I2C data input type the user requires. The options 
+being:<br><font size="3"><b>0</b>,</font>&nbsp;&nbsp;&nbsp; (Default Setting) If a value of 0 is 
+written to the mode register then the meaning of the speed registers is literal 
+speeds in the range of 0 (Full Reverse)&nbsp; 128 (Stop)&nbsp;&nbsp; 255 
+(Full Forward).<br><br><b>1,</b>&nbsp;&nbsp;&nbsp; Mode 1 is similar to Mode 0, 
+except that the speed registers are interpreted as signed values. The meaning of 
+the speed registers is literal speeds in the range of -128 (Full 
+Reverse)&nbsp;&nbsp; 0 (Stop)&nbsp;&nbsp; 127 (Full 
+Forward).<br><br><b>2,</b>&nbsp;&nbsp;&nbsp; Writing a value of&nbsp; 2 to the 
+mode register will make speed1 control both motors speed, and speed2 becomes the 
+turn value.&nbsp;<br>Data is in the range of 0 (Full Reverse)&nbsp; 128 
+(Stop)&nbsp; 255 (Full&nbsp; Forward).<br><br><b>3,&nbsp;</b>&nbsp;&nbsp; Mode 3 
+is similar to Mode 2, except that the speed registers are interpreted as signed 
+values.&nbsp;<br>Data is in the range of -128 &nbsp;(Full Reverse)&nbsp; 0 
+(Stop)&nbsp;&nbsp; 127 (Full Forward)
+</p>
+<p><b><a name="command register"></a>Command register
+</b>
+</p>
+<div align="center">
+  <center>
+<table border="1" cellpadding="0" cellspacing="0" width="809">
+  <tbody><tr>
+    <td colspan="2" bgcolor="#66ffff" height="16" width="107" align="center">Command</td>
+    <td rowspan="2" bgcolor="#66ffff" height="32" width="696" align="center">Action</td>
+  </tr>
+  <tr>
+    <td bgcolor="#66ffff" height="16" width="52" align="center">Dec</td>
+    <td bgcolor="#66ffff" height="16" width="53" align="center">Hex</td>
+  </tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="24" width="52" align="center">32</td>
+    <td bgcolor="#ccffcc" height="24" width="53" align="center">20</td>
+    <td bgcolor="#ccffcc" height="24" width="696" align="center">Resets the encoder
+      registers to zero</td>
+  </tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="23" width="52" align="center">48</td>
+    <td bgcolor="#ccffcc" height="23" width="53" align="center">30</td>
+    <td bgcolor="#ccffcc" height="23" width="696" align="center">Disables automatic
+      speed regulation</td>
+  </tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="23" width="52" align="center">49</td>
+    <td bgcolor="#ccffcc" height="23" width="53" align="center">31</td>
+    <td bgcolor="#ccffcc" height="23" width="696" align="center">Enables automatic
+      speed regulation (default)</td>
+  </tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="13" width="52" align="center">50</td>
+    <td bgcolor="#ccffcc" height="13" width="53" align="center">32</td>
+    <td bgcolor="#ccffcc" height="13" width="696" align="center">Disables 2 second
+      timeout of motors (Version 2 onwards only)</td>
+  </tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="13" width="52" align="center">51</td>
+    <td bgcolor="#ccffcc" height="13" width="53" align="center">33</td>
+    <td bgcolor="#ccffcc" height="13" width="696" align="center">Enables 2 second
+      timeout of motors when no I2C comms (default) (Version 2 onwards only)</td>
+  </tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="13" width="52" align="center">160</td>
+    <td bgcolor="#ccffcc" height="13" width="53" align="center">A0</td>
+    <td bgcolor="#ccffcc" height="13" width="696" align="center">1st in sequence to
+      change I2C address</td>
+  </tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="13" width="52" align="center">170</td>
+    <td bgcolor="#ccffcc" height="13" width="53" align="center">AA</td>
+    <td bgcolor="#ccffcc" height="13" width="696" align="center">2nd in sequence to
+      change I2C address</td>
+  </tr>
+  <tr>
+    <td bgcolor="#ccffcc" height="13" width="52" align="center">165</td>
+    <td bgcolor="#ccffcc" height="13" width="53" align="center">A5</td>
+    <td bgcolor="#ccffcc" height="13" width="696" align="center">3rd in sequence to
+      change I2C address</td>
+  </tr></tbody></table></center>
+</div>
+<p><b><a name="change address"></a>Changing the I2C Bus Address</b><br>
+The I2C address can be changed by writing a new address to the MD23, or by
+fitting/removing the Address Jumper.&nbsp;<br>
+To change the I2C address of the MD23 by writing a new address you must
+have only one
+module on the bus. Write the 3 sequence commands in the correct order
+followed by the address. Example; to change the address of an
+MD23 currently at 0xB0 (the default shipped address) to 0xB4, write the
+following to address
+0xB0; (0xA0, 0xAA, 0xA5, 0xB4 ). These commands must be sent in the
+correct sequence to change the I2C address, additionally,
+no other command may be issued in the middle of the sequence. The
+sequence must be sent to the command register at location
+16, which means 4 separate write transactions on the I2C bus. Because
+of the way
+the MD23 works internally, there
+MUST be a delay of at least 5mS between the writing of each of these 4
+transactions. When done, you should label the MD23 with its address,
+however if you do forget, just power it up without sending any
+commands. The
+MD23 will flash its address out on the green communication LED. One
+long flash followed by a number of shorter flashes indicating its
+address.
+Any command sent to the
+MD23 during this period will still be received and writing new speeds
+or a write
+to the command register will terminate the flashing.</p>
+<div align="center">
+  <center>
+  <table border="1" cellspacing="0" width="256">
+    <tbody><tr>
+      <td colspan="2" bgcolor="#ccffcc" width="120" align="center">Address</td>
+      <td rowspan="2" bgcolor="#ccffcc" width="64" align="center"> 	Long Flash</td>
+      <td rowspan="2" bgcolor="#ccffcc" width="64" align="center">Short Flashes</td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccffcc" width="63" align="center">Decimal</td>
+      <td bgcolor="#ccffcc" width="63" align="center">&nbsp;Hex</td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccffcc" width="63" align="center">176</td>
+      <td bgcolor="#ccffcc" width="63" align="center">B0</td>
+      <td bgcolor="#ccffcc" width="64" align="center">1</td>
+      <td bgcolor="#ccffcc" width="64" align="center">0</td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccffcc" width="63" align="center">178</td>
+      <td bgcolor="#ccffcc" width="63" align="center">B2</td>
+      <td bgcolor="#ccffcc" width="64" align="center">1</td>
+      <td bgcolor="#ccffcc" width="64" align="center">1</td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccffcc" width="63" align="center">180</td>
+      <td bgcolor="#ccffcc" width="63" align="center">B4</td>
+      <td bgcolor="#ccffcc" width="64" align="center">1</td>
+      <td bgcolor="#ccffcc" width="64" align="center">2</td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccffcc" width="63" align="center">182</td>
+      <td bgcolor="#ccffcc" width="63" align="center">B6</td>
+      <td bgcolor="#ccffcc" width="64" align="center">1</td>
+      <td bgcolor="#ccffcc" width="64" align="center">3</td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccffcc" width="63" align="center">184</td>
+      <td bgcolor="#ccffcc" width="63" align="center">B8</td>
+      <td bgcolor="#ccffcc" width="64" align="center">1</td>
+      <td bgcolor="#ccffcc" width="64" align="center">4</td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccffcc" width="63" align="center">186</td>
+      <td bgcolor="#ccffcc" width="63" align="center">BA</td>
+      <td bgcolor="#ccffcc" width="64" align="center">1</td>
+      <td bgcolor="#ccffcc" width="64" align="center">5</td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccffcc" width="63" align="center">188</td>
+      <td bgcolor="#ccffcc" width="63" align="center">BC</td>
+      <td bgcolor="#ccffcc" width="64" align="center">1</td>
+      <td bgcolor="#ccffcc" width="64" align="center">6</td>
+    </tr>
+    <tr>
+      <td bgcolor="#ccffcc" width="63" align="center">190</td>
+      <td bgcolor="#ccffcc" width="63" align="center">BE</td>
+      <td bgcolor="#ccffcc" width="64" align="center">1</td>
+      <td bgcolor="#ccffcc" width="64" align="center">7</td>
+    </tr>
+  </tbody></table>
+  </center>
+</div>
+<p>Take care not to set more than one MD23 to the same address, there will be a bus collision and very unpredictable results.</p>
+<p><b>Address Jumper</b><br>
+<br>
+The I2C address can also be changed by fitting/removing the Address Jumper. With
+the jumper in place (factory default) the address is the same as programmed into
+the module (factory default is 0xB0). Removing the jumper will change the
+address to the next one up. The default address of 0xB0 will change to 0xB2 if
+the jumper is removed. 0xBA would change to 0xBC. The exception is 0xBE, the
+jumper has no effect on this address. After fitting or removing the Address
+Jumper, the MD23's I2C address will not change until the next time the module is
+powered on.&nbsp;&nbsp;</p>
+<p><b>Schematics</b><br>
+The MD23 schematics: <a href="http://www.robot-electronics.co.uk/images/md23s1.jpg">Sheet1</a> <a href="http://www.robot-electronics.co.uk/images/md23s2.jpg">Sheet2</a></p>
+<p><b>Mechanical</b><br>
+<img src="md23tech_files/md23m1.jpg" border="0" height="584" width="671"></p>
+</body></html>
