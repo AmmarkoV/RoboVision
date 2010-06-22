@@ -17,10 +17,6 @@ chmod 777 /home/guarddog/RoboVisionCLI/memfs/public_html
 chmod 777 /home/guarddog/RoboVisionCLI/memfs/public_html/viewers.dat
 chmod 777 /home/guarddog/RoboVisionCLI/memfs/public_html/consoleout.dat
 echo "Clear images !"
-touch /home/guarddog/RoboVisionCLI/memfs/public_html/feed0.jpeg
-touch /home/guarddog/RoboVisionCLI/memfs/public_html/feed1.jpeg
-touch /home/guarddog/RoboVisionCLI/memfs/public_html/feed2.jpeg
-touch /home/guarddog/RoboVisionCLI/memfs/public_html/feed3.jpeg
 cp /home/guarddog/RoboVisionCLI/empty.jpeg /home/guarddog/RoboVisionCLI/memfs/public_html/feed0.jpeg
 cp /home/guarddog/RoboVisionCLI/empty.jpeg /home/guarddog/RoboVisionCLI/memfs/public_html/feed1.jpeg
 cp /home/guarddog/RoboVisionCLI/empty.jpeg /home/guarddog/RoboVisionCLI/memfs/public_html/feed2.jpeg

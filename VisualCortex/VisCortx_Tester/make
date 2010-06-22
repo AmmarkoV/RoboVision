@@ -1,0 +1,3 @@
+#!/bin/bash
+g++ main.c ../libVisualCortex.a -L. -s -O3 -o bin/Release/VisCortx_Tester
+exit 0
