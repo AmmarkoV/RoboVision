@@ -120,6 +120,8 @@ int UnpauseFeed(int feednum);
 
 
 unsigned char * GetFrame(int webcam_id);
+unsigned int NewFrameAvailiable(int webcam_id);
+void SignalFrameProcessed(int webcam_id);
 
 // Playback / Recording
 void Play(char * filename);
