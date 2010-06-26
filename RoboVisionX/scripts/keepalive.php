@@ -1,0 +1,17 @@
+<?php 
+$the_file_path="viewers.dat";
+if (!file_exists ($the_file_path))
+{
+ $file=fopen($the_file_path,"w+");
+ fclose($file);   
+}
+if ( filesize($the_file_path)<20 )   
+ {
+   $file=fopen($the_file_path,"a");
+   fwrite($file,"+"); 
+   fclose($file);
+ }  
+?>
+<html>
+<head><meta http-equiv="refresh" content="3; url=keepalive.php"></head>
+<body></body></html>

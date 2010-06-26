@@ -19,8 +19,7 @@ cp RoboVisionCLI/empty.jpeg RoboVisionRuntime/empty.jpeg
 cp RoboVisionCLI/empty.ppm RoboVisionRuntime/empty.ppm
 cp RoboVisionCLI/guard.ini RoboVisionRuntime/guard.ini
 cp RoboVisionCLI/RoboVisionCLICompat RoboVisionRuntime/RoboVisionCLICompat
-cp RoboVisionCLI/bin/Release/RoboVisionCLI RoboVisionRuntime/bin/Release/RoboVisionCLI
-cp RoboVisionCLI/bin/Release/RoboVisionCLI RoboVisionRuntime/bin/Release/RoboVisionCLI
+cp RoboVisionCLI/bin/Release/RoboVisionCLI RoboVisionRuntime/bin/Release/RoboVisionCLI 
 cp RoboVisionCLI/scripts/* RoboVisionRuntime/scripts/
 cp RoboVisionCLI/Sounds/* RoboVisionRuntime/Sounds/
 

@@ -1,0 +1,32 @@
+<html>
+ <body>
+   <script language="JavaScript">
+    function reloadImage() 
+    {
+       if (document.images) 
+        {
+              document.images.Feed0.src = 'feed0.jpeg?' + (new Date()).getTime();
+              document.images.Feed1.src = 'feed1.jpeg?' + (new Date()).getTime();
+              document.images.Feed2.src = 'feed2.jpeg?' + (new Date()).getTime();
+              document.images.Feed3.src = 'feed3.jpeg?' + (new Date()).getTime();
+        }
+       setTimeout('reloadImage()',5000);
+    }
+    setTimeout('reloadImage()',5000);
+</script>
+
+   
+   <table> 
+    <tbody>
+     <tr>
+       <td><img name="Feed0" src="feed0.jpeg"></td> 
+       <td><img name="Feed1" src="feed1.jpeg"></td>
+     </tr>
+    <tr>
+       <td><img name="Feed2" src="feed2.jpeg"></td> 
+       <td><img name="Feed3" src="feed3.jpeg"></td>
+     </tr>
+    </tbody>
+   </table>
+ </body>
+</html>

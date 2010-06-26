@@ -6,8 +6,12 @@ extern "C" {
 #endif
 
 
-int IssueCommand(unsigned char * cmd,unsigned char * res,unsigned int resmaxsize,unsigned char * from);
+int IssueCommand(char * cmd,char * res,unsigned int resmaxsize,char * from);
+
 unsigned char * GetVideoRegister(unsigned int num);
+unsigned int GetCortexSetting(unsigned int option);
+void SetCortexSetting(unsigned int option,unsigned int value);
+unsigned int GetCortexMetric(unsigned int option);
 
 void StartRoboKernel();
 void StopRoboKernel();

@@ -1,0 +1,8 @@
+#!/bin/bash
+echo "Prepare Apache Log directory , because it has been mounted on memory and it does not exist!"
+mkdir /var/log/apache2
+touch /var/log/apache2/error.log
+mkdir /home/guarddog/RoboVisionX/memfs/public_html
+echo "<html><body><h1>GuardDog Starting up :) ..</h1></body></html>" > /home/guarddog/RoboVisionX/memfs/public_html/index.html;
+/etc/init.d/apache2 start
+

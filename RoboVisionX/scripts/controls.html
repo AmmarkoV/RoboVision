@@ -1,0 +1,47 @@
+<html>
+ <body>
+    <table width = 650> 
+        <tbody>
+         <tr>
+
+         <td> 
+            <form action="execute.php" method="post">
+              Command Line : <input name="commandline" maxlength="30" size="30" type="text"><button type="submit">OK</button> 
+            </form>
+         </td>
+
+         <td> 
+          <form action="execute.php" method="post"> 
+             <input type="hidden" name="direction" value="left">
+             <button type="submit">TURN LEFT</button>
+            </form>  
+         </td>
+         <td align="center"> 
+            <form action="execute.php" method="post"> 
+             <input type="hidden" name="direction" value="forward">
+             <button type="submit">FORWARD</button>
+            </form>  
+             <br>
+            <form action="execute.php" method="post"> 
+             <input type="hidden" name="direction" value="backward">
+             <button type="submit">BACKWARD</button>
+            </form>
+         </td>
+         <td>         
+          <form action="execute.php" method="post">
+            <input type="hidden" name="direction" value="right">
+            <button type="submit">TURN RIGHT</button>
+          </form>
+         </td>
+
+        </tr>  
+     
+        <tr>
+         <td colspan=4>
+           <iframe frameborder=0 src="console_output.php" width="670" > </iframe> 
+         </td>
+        </tr>
+        </tbody>
+      </table>
+ </body>
+</html>
