@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="VideoInput" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="libVideoInput" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option projectCompilerOptionsRelation="0" />
+				<Compiler>
+					<Add option="-march=nocona" />
+					<Add option="-O3" />
+					<Add option="-Wall" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="libVideoInput" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-Wall" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="PixelFormatConversions.cpp" />
+		<Unit filename="PixelFormatConversions.h" />
+		<Unit filename="PixelFormats.cpp" />
+		<Unit filename="PixelFormats.h" />
+		<Unit filename="PrintV4L2.cpp" />
+		<Unit filename="PrintV4L2.h" />
+		<Unit filename="V4L2.cpp" />
+		<Unit filename="V4L2.h" />
+		<Unit filename="VideoInput.h" />
+		<Unit filename="image_storage.cpp" />
+		<Unit filename="image_storage.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

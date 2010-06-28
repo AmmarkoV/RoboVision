@@ -636,6 +636,10 @@ void RoboVisionXFrame::OnOkClick(wxCommandEvent& event)
         IssueCommand((char *)"Say(Command not recognized.)",0,0,(char *)"GUI");
         Status->AppendText( msg );
         Refresh();
+    } else
+    {
+      /* WE HOPE(!) that the new command has Video output on the bottom 2 feeds */
+      GUI_DrawOPFeeds();
     }
 }
 

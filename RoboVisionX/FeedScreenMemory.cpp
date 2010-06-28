@@ -17,6 +17,7 @@ wxBitmap *default_patch;
 struct feed live_feeds[4]={{0},{0},{0},{0}};
 
 
+unsigned int last_viscrtx_pass=0;
 unsigned int resc_width=320,resc_height=240;
 int VideoFeedsNotAccessible = 0;
 
@@ -123,27 +124,6 @@ void CheckMousePosition()
     if ( XYOverFeed(x,y,live_feeds[3]) ) {}
 }
 
-/*
-void PassVideoRegisterToFeedOLD(unsigned int feednum,void * framedata,unsigned int bitsperpixel)
-{
- void *frame=0;
- unsigned int size_of_frame=GetCortexMetric(RESOLUTION_X)*GetCortexMetric(RESOLUTION_Y)*bitsperpixel;
-
- if ( live_feeds[feednum].bmp_allocated ) { delete live_feeds[feednum].bmp; live_feeds[feednum].bmp_allocated = false; }
- frame = framedata;
-
- if ( frame != 0)
- {
-    if ( bitsperpixel == 1 ) { memcpy_1bit_2_3bit ((unsigned char *) live_feeds[feednum].frame,(unsigned char *) frame,size_of_frame); } else
-    if ( bitsperpixel == 3 ) { memcpy (live_feeds[feednum].frame,frame,size_of_frame); } else
-                             { printf("Unable to perform memcpy!"); }
-
-    live_feeds[feednum].img.SetData((unsigned char *)live_feeds[feednum].frame,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),true);
-    if ( resc_width != GetCortexMetric(RESOLUTION_X) ) { live_feeds[feednum].img.Rescale(resc_width,resc_height); }
-    live_feeds[feednum].bmp= new wxBitmap(live_feeds[feednum].img);
-    live_feeds[feednum].bmp_allocated = true;
- }
-}*/
 
 void PassVideoRegisterToFeed(unsigned int feednum,void * framedata,unsigned int bitsperpixel)
 {
@@ -170,6 +150,9 @@ int SnapWebCams()
 {
  if (has_init==0) { fprintf(stderr,"!"); VideoFeedsNotAccessible=1; return 0; }
 
+ if (last_viscrtx_pass==VisCortx_GetTime()) { return 0; }
+ last_viscrtx_pass=VisCortx_GetTime();
+
  VideoFeedsNotAccessible=0;
 
  if ( live_feeds[0].bmp_allocated ) { delete live_feeds[0].bmp; live_feeds[0].bmp_allocated = false; }
@@ -181,6 +164,7 @@ int SnapWebCams()
  // GET INPUT  ( SWAPED OR NOT! )
  frame=GetVideoRegister(LEFT_EYE); frame2=GetVideoRegister(RIGHT_EYE);
  // GET INPUT  ( SWAPED OR NOT! )
+
 
  if ( frame != 0)
  {
@@ -205,6 +189,12 @@ int SnapWebCams()
 inline wxString _U(const char String[] = "")
 {
   return wxString(String, wxConvUTF8);
+}
+
+void GUI_DrawOPFeeds()
+{
+  PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
+  PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_RIGHT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
 }
 
 void GUI_FullDepthMap(unsigned char write_to_file)

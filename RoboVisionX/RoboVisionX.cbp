@@ -53,12 +53,6 @@
 		<Unit filename="RoboVisionXApp.h" />
 		<Unit filename="RoboVisionXMain.cpp" />
 		<Unit filename="RoboVisionXMain.h" />
-		<Unit filename="command_hal.cpp" />
-		<Unit filename="command_hal.h" />
-		<Unit filename="configuration.cpp" />
-		<Unit filename="configuration.h" />
-		<Unit filename="webinterface.cpp" />
-		<Unit filename="webinterface.h" />
 		<Unit filename="wxsmith/CortexSettings.wxs" />
 		<Unit filename="wxsmith/RoboVisionXframe.wxs" />
 		<Extensions>
