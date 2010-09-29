@@ -1,5 +1,8 @@
 const int numOfReadings = 10;                   // number of readings to take/ items in the array
 // setup pins and variables for SRF05 sonar device
+int sampleultrasonic=1;
+int sampleaccelerometer=1;
+
 
 struct ultrasonic
 {
@@ -57,7 +60,7 @@ void setup()
   
  // initialize the serial port, lets you view the
  // distances being pinged if connected to computer
-     Serial.begin(115200);
+     Serial.begin(38400);
  }
 // execute
 
@@ -99,25 +102,30 @@ void loop()
 {
   
   
-
+  if ( sampleultrasonic )
+  {
   //analogWrite(redLEDPin, redLEDValue);          // Write current value to LED pins
   //Serial.println(averageDistance, DEC);         // print out the average distance to the debugger
    int proximity = sampleUltrasonic(&sensor1);
-   Serial.print("Proximity 1 : ");
+   Serial.println("Proximity 1");
    Serial.println(proximity);
   
    proximity = sampleUltrasonic(&sensor2);
-   Serial.print("Proximity 2 : ");
+   Serial.println("Proximity 2");
    Serial.println(proximity);
+  }
+  
+   if ( sampleaccelerometer )
+   {
+    sampleAccelerometer(&accelerometer);
+    Serial.println("Accelerometers");
+    Serial.print(accelerometer.accelerationX);
+    // print a tab character:
+    Serial.print(" ");
+    Serial.print(accelerometer.accelerationY);
+    Serial.println();
+   }
    
-   
-   sampleAccelerometer(&accelerometer);
-   Serial.print("Accelerometers : ");
-   Serial.print(accelerometer.accelerationX);
-   // print a tab character:
-   Serial.print("\t");
-   Serial.print(accelerometer.accelerationY);
-   Serial.println();
    
   delay(100);                                   // wait 100 milli seconds before looping again
 }

@@ -1,49 +1,46 @@
-// The functions contained in this file are pretty dummy
-// and are included only as a placeholder. Nevertheless,
-// they *will* get included in the static library if you
-// don't remove them :)
-//
-// Obviously, you 'll have to write yourself the super-duper
-// functions to include in the resulting library...
-// Also, it's not necessary to write every function in this file.
-// Feel free to add more files in this project. They will be
-// included in the resulting library.
-
-// A function adding two integers and returning the result
+#include "RoboVisionSensorLib.h"
+#include "arduino_serial.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 int ConnectRoboVisionDevice(char * devname)
 {
- fprintf(stderr,"STUB , todo add Device KickStart");
+ fprintf(stderr,"STUB , todo add Arduino Device KickStart");
+ kickstart_arduino_thread(0);
+ return 0;
 }
 
 
 int DisconnectRoboVisionDevice(char * devname)
 {
-
+ fprintf(stderr,"STUB , todo add Arduino Device Stopping");
+ return 0;
 }
 
 
 int GetUltrasonicValue(int dev)
 {
+  fprintf(stderr,"STUB , todo add GetUltrasonicValue");
   return 0;
 }
 
 
-int SampleAddInt(int i1, int i2)
+
+int GetAccelerometerX(int dev)
 {
-    return i1 + i2;
+  fprintf(stderr,"STUB , todo add GetAccelerometerX");
+  return 0;
 }
 
-// A function doing nothing ;)
-void SampleFunction1()
+
+int GetAccelerometerY(int dev)
 {
-    // insert code here
+  fprintf(stderr,"STUB , todo add GetAccelerometerY");
+  return 0;
 }
 
-// A function always returning zero
-int SampleFunction2()
+int SendIRCode(char * ircodes,unsigned int numberofcodes,unsigned int microsecondpause)
 {
-    // insert code here
-
-    return 0;
+  fprintf(stderr,"STUB , todo add SendIRCode");
+  return 0;
 }

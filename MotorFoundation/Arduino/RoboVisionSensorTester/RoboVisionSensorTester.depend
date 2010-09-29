@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1285786986 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/RoboVisionSensorTester/main.c
+	<stdio.h>
+	<stdlib.h>
+	"../RoboVisionSensorLib.h"
+
+1285778431 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/RoboVisionSensorLib.h
+

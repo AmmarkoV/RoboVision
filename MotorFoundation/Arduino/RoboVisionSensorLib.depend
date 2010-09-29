@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1285784981 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/main.c
+	"RoboVisionSensorLib.h"
+	"arduino_serial.h"
+	<stdio.h>
+	<stdlib.h>
+
+1285778431 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/RoboVisionSensorLib.h
+
+1285783878 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/arduino_serial.h
+
+1285784972 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/arduino_serial.c
+	"arduino_serial.h"
+	<termios.h>
+	<stdio.h>
+	<unistd.h>
+	<fcntl.h>
+	<pthread.h>
+	<sys/signal.h>
+	<sys/types.h>
+
