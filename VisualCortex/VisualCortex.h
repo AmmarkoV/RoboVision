@@ -26,8 +26,10 @@ enum VisCortxSettings
 
    PATCH_COMPARISON_START,
    PATCH_COMPARISON_SCORE_MIN,
+   PATCH_COMPARISON_LEVELS,
    PATCH_COMPARISON_EDGES_PERCENT_REQUIRED,
    PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH,
+   PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH,
    PATCH_COMPARISON_END,
    PATCH_HIST_THRESHOLD_R, PATCH_HIST_THRESHOLD_G , PATCH_HIST_THRESHOLD_B,
 
@@ -57,6 +59,10 @@ enum VisCortxMetrics
 
    VERTICAL_BUFFER_LARGE,
    HORIZONTAL_BUFFER_LARGE,
+
+   VERTICAL_BUFFER_EXTRALARGE,
+   HORIZONTAL_BUFFER_EXTRALARGE,
+
    GROUP_MOVEMENT_ARRAY_SIZE,
 
    //STATISTICS
@@ -150,6 +156,7 @@ void  VisCortx_AutoAddTrackPoints(unsigned int cam);
 void  VisCortx_RemoveTimedoutTrackPoints(unsigned int timeout);
 unsigned int  VisCortx_GetTrackPoint(unsigned int dat,unsigned int trackpoint);
 void  VisCortx_TrackPoints();
+void  VisCortx_DrawTrackPoints();
 void  VisCortx_RenewTrackPoint(unsigned int tpoint);
 void  VisCortx_RenewAllTrackPoints();
 

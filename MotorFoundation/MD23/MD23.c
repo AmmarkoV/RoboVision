@@ -163,11 +163,19 @@ struct md23_device * MD23_Init(char * dev_name,unsigned int threading_on)
               pthread_create( &dev->loop_thread, NULL,  MD23_loop ,(void*) dev);
             }
         }
+          else
+        {
+          printf("Could not find MD23 Device on I2C %s \n",dev->i2c_dev.name);
+          MD23_Close(dev);
+          return 0;
+        }
 
     }
   else
     {
       printf("Could not find I2C Device on %s \n",dev->i2c_dev.name);
+      MD23_Close(dev);
+      return 0;
     }
 
  return dev;

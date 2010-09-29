@@ -5,8 +5,14 @@
 int main()
 {
     printf("MD23 !\n");
-    struct md23_device * guard_base=MD23_Init("/dev/ttyUSB1",1);
+    struct md23_device * guard_base=MD23_Init("/dev/ttyUSB0",1);
+
+    if ( guard_base==0 ) { fprintf(stderr,"MD23 Initialization failed\n");
+                           return 0;
+                         }
     fprintf(stderr,"MD23 Inited\n");
+
+
     MD23_ZeroEncoders(guard_base);
 
     fprintf(stderr,"MoveBothMotorsDifferentDegrees\n");

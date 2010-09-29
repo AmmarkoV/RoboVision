@@ -41,7 +41,7 @@
 			<Add library="../RoboKernel/libRoboKernel.a" />
 			<Add library="../VideoInput/libVideoInput.a" />
 			<Add library="../VisualCortex/libVisualCortex.a" />
-			<Add library="../../InputParser/libInputParser_C.a" />
+			<Add library="../InputParser/libInputParser_C.a" />
 			<Add library="../MotorFoundation/libMotorHAL.a" />
 			<Add library="../MotorFoundation/MD23/libMD23.a" />
 		</Linker>
