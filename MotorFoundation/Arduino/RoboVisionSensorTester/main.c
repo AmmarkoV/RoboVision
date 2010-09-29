@@ -9,7 +9,7 @@ int main()
 
       while (1)
        {
-        printf(" %u \n ", GetUltrasonicValue(0) );
+      //  printf(" %u \n ", GetUltrasonicValue(0) );
         usleep(10000);
        }
     DisconnectRoboVisionDevice("/dev/ttyUSB0");

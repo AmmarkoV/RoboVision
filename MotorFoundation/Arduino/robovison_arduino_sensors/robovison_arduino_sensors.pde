@@ -2,7 +2,7 @@ const int numOfReadings = 10;                   // number of readings to take/ i
 // setup pins and variables for SRF05 sonar device
 int sampleultrasonic=1;
 int sampleaccelerometer=1;
-
+unsigned int tickcount=0;
 
 struct ultrasonic
 {
@@ -35,6 +35,10 @@ void setupAccelerometer(struct memsic2125 * accel,int xpin,int ypin)
   pinMode(ypin, INPUT);
   accel->xPin=xpin;
   accel->yPin=ypin;
+  accel->pulseX=0;
+  accel->pulseY=0;
+  accel->accelerationX=0;
+  accel->accelerationY=0;
 }
 
 
@@ -97,37 +101,46 @@ void sampleAccelerometer(struct memsic2125 * accel)
   accel->accelerationX = ((accel->pulseX / 10) - 500) * 8;
   accel->accelerationY = ((accel->pulseY / 10) - 500) * 8;
 }
+ 
+
 
 void loop() 
 {
-  
+  ++tickcount;
   
   if ( sampleultrasonic )
   {
   //analogWrite(redLEDPin, redLEDValue);          // Write current value to LED pins
   //Serial.println(averageDistance, DEC);         // print out the average distance to the debugger
-   int proximity = sampleUltrasonic(&sensor1);
-   Serial.println("Proximity 1");
-   Serial.println(proximity);
-  
-   proximity = sampleUltrasonic(&sensor2);
-   Serial.println("Proximity 2");
-   Serial.println(proximity);
+   int proximity1 = sampleUltrasonic(&sensor1);
+   Serial.print("proximity(1,");
+   Serial.print(proximity1);
+   Serial.println(")");
+   
+   int proximity2 = sampleUltrasonic(&sensor2);
+   Serial.print("proximity(2,");
+   Serial.print(proximity2);
+   Serial.println(")");
   }
   
    if ( sampleaccelerometer )
    {
     sampleAccelerometer(&accelerometer);
-    Serial.println("Accelerometers");
+    Serial.print("accelerometers(");
     Serial.print(accelerometer.accelerationX);
     // print a tab character:
-    Serial.print(" ");
+    Serial.print(",");
     Serial.print(accelerometer.accelerationY);
-    Serial.println();
+    Serial.println(")"); 
    }
    
+   Serial.print("tickcount("); 
+   Serial.print(tickcount); 
+   Serial.println(")"); 
+    
+   Serial.println("#"); /*MARK THE END OF TRANSMISSION*/ 
    
-  delay(100);                                   // wait 100 milli seconds before looping again
+   delay(100);                                   // wait 100 milli seconds before looping again
 }
 
 
