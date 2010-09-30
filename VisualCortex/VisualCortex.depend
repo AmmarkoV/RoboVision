@@ -1,0 +1,79 @@
+# depslib dependency file v1.0
+1268440551 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.c
+	"Precalculations.h"
+	"VisionMemory.h"
+	<limits.h>
+
+1267018954 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.h
+
+1277994044 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
+	"VisionMemory.h"
+	"Precalculations.h"
+	"VisCortexFilters.h"
+
+1276285049 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
+	"VisualCortex.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1278202408 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+
+1278289615 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
+	"VisualCortex.h"
+	"VisionMemory.h"
+	"DisparityDepthMap.h"
+	"MovementRegistration.h"
+	"VisCortexFilters.h"
+	"PatchTracking.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1267021609 /home/ammar/Documents/Programming/RoboVision/VisualCortex/video_filters.h
+	"VisionMemory.h"
+	<math.h>
+
+1278168221 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexFilters.c
+	"VisCortexFilters.h"
+	"Precalculations.h"
+	"PatchTracking.h"
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1272537278 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexFilters.h
+	"VisionMemory.h"
+	<math.h>
+
+1269180282 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
+	"DisparityDepthMap.h"
+	"VisCortexFilters.h"
+	"Precalculations.h"
+	<stdio.h>
+	<string.h>
+
+1269178561 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.h
+	"VisionMemory.h"
+
+1267148868 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/MovementRegistration.c
+	"MovementRegistration.h"
+	"Precalculations.h"
+
+1267105614 /home/ammar/Documents/Programming/RoboVision/VisualCortex/MovementRegistration.h
+	"VisionMemory.h"
+
+1278289372 /home/ammar/Documents/Programming/RoboVision/VisualCortex/PatchTracking.h
+	"VisionMemory.h"
+
+1278294284 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/PatchTracking.c
+	"PatchTracking.h"
+	"Precalculations.h"
+	"MovementRegistration.h"
+	"VisCortexFilters.h"
+
+1267971774 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/PatchShapes.c
+	"PatchShapes.h"
+
+1267971427 /home/ammar/Documents/Programming/RoboVision/VisualCortex/PatchShapes.h
+

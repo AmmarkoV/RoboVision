@@ -5,7 +5,7 @@
 #include <string.h>
 
 void * MD23_loop(void * ptr);
-char * MD23_Lib_Version = "0.03";
+char * MD23_Lib_Version = "0.04";
 // ===============================================
 // ======================================
 // LOW LEVEL MD23 COMMANDS
@@ -380,8 +380,8 @@ int MD23_ZeroEncoders(struct md23_device * dev)
      if ( wait_time > max_time )  break;
    }
 
-  if ( wait_time >= max_time ) fprintf(stderr," timed out.. \n");  else
-                               fprintf(stderr," cleared \n");
+  if ( wait_time >= max_time ) { fprintf(stderr," timed out.. \n"); return 0; } else
+                                 fprintf(stderr," cleared \n");
   return 1;
 }
 

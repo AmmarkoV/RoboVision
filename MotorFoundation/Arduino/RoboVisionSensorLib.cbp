@@ -36,6 +36,7 @@
 		</Build>
 		<Linker>
 			<Add library="pthread" />
+			<Add library="../../InputParser/libInputParser_C.a" />
 		</Linker>
 		<Unit filename="RoboVisionSensorLib.h" />
 		<Unit filename="arduino_serial.c">

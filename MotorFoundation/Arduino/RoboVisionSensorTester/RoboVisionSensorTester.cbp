@@ -34,6 +34,7 @@
 		<Linker>
 			<Add library="../libRoboVisionSensorLib.a" />
 			<Add library="pthread" />
+			<Add library="../../../InputParser/libInputParser_C.a" />
 		</Linker>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />

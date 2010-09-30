@@ -7,7 +7,8 @@ int main()
     printf("MD23 !\n");
     struct md23_device * guard_base=MD23_Init("/dev/ttyUSB0",1);
 
-    if ( guard_base==0 ) { fprintf(stderr,"MD23 Initialization failed\n");
+    if ( guard_base==0 ) {
+                           fprintf(stderr,"MD23 Initialization failed\n");
                            return 0;
                          }
     fprintf(stderr,"MD23 Inited\n");
@@ -18,7 +19,7 @@ int main()
     fprintf(stderr,"MoveBothMotorsDifferentDegrees\n");
 
 //    MD23_MoveMotorsDegrees(guard_base,2,20,100);
-    MD23_MoveBothMotorsDifferentDegrees(guard_base,5,30,5,15);
+    MD23_MoveBothMotorsDifferentDegrees(guard_base,15,30,15,15);
 
    while ( MD23_MovementDone(guard_base)==0 )
     {

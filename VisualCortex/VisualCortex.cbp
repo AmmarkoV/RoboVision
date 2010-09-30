@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="VisualCortex" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="libVisualCortex" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="libVisualCortex" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-march=nocona" />
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-Os" />
+					<Add option="-O3" />
+					<Add option="-Wall" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="DisparityDepthMap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="DisparityDepthMap.h" />
+		<Unit filename="MovementRegistration.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="MovementRegistration.h" />
+		<Unit filename="PatchShapes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PatchShapes.h" />
+		<Unit filename="PatchTracking.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PatchTracking.h" />
+		<Unit filename="Precalculations.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Precalculations.h" />
+		<Unit filename="VisCortexFilters.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="VisCortexFilters.h" />
+		<Unit filename="VisionMemory.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="VisionMemory.h" />
+		<Unit filename="VisualCortex.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="VisualCortex.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

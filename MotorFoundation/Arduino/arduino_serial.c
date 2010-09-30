@@ -21,7 +21,7 @@ int wait_flag=1;  /* TRUE while no signal received */
 char arduinodevice_name[100]={0};
 int arduinothread_id=0;
 
-unsigned int ultrasonic1,ultrasonic2,accelerometerX,accelerometerY,arduino_tickcount;
+unsigned int ultrasonic1=0,ultrasonic2=0,accelerometerX=0,accelerometerY=0,arduino_tickcount=0;
 
 int InternalGetUltrasonicValue(int dev)
 {
@@ -195,7 +195,7 @@ while (STOP==0)     {
                            if ( terminal_symbol_position != 0 ) { starting_point_of_overflow=terminal_symbol_position+1; }
                            for (i=starting_point_of_overflow; i<buf_size; i++) {  overflow_buf[overflow_buf_size++]=buf[i]; }
 
-                          printf("\n%d characters read\n", buf_size);
+                          //printf("\n%d characters read\n", buf_size);
 
 
                           if (buf[0]=='z') STOP=1;
@@ -213,6 +213,7 @@ int kickstart_arduino_thread(char * devname)
  ultrasonic2=0;
  accelerometerX=0;
  accelerometerY=0;
+ arduino_tickcount=0;
  arduinothread_id=0;
  strcpy(arduinodevice_name,devname);
  pthread_create((pthread_t *) &arduinothread_id, NULL,Arduino_Thread,0);
