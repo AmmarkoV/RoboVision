@@ -44,6 +44,7 @@
 			<Add library="../InputParser/libInputParser_C.a" />
 			<Add library="../MotorFoundation/libMotorHAL.a" />
 			<Add library="../MotorFoundation/MD23/libMD23.a" />
+			<Add library="../MotorFoundation/Arduino/libRoboVisionSensorLib.a" />
 		</Linker>
 		<Unit filename="CortexSettings.cpp" />
 		<Unit filename="CortexSettings.h" />
