@@ -1,16 +1,17 @@
 # depslib dependency file v1.0
-1285784981 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/main.c
+1285808792 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/main.c
 	"RoboVisionSensorLib.h"
 	"arduino_serial.h"
 	<stdio.h>
 	<stdlib.h>
 
-1285778431 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/RoboVisionSensorLib.h
+1285808843 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/RoboVisionSensorLib.h
 
-1285783878 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/arduino_serial.h
+1285808694 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/arduino_serial.h
 
-1285804821 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/arduino_serial.c
+1285808645 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/arduino_serial.c
 	"arduino_serial.h"
+	"../../InputParser/InputParser_C.h"
 	<termios.h>
 	<stdio.h>
 	<string.h>
@@ -19,4 +20,10 @@
 	<pthread.h>
 	<sys/signal.h>
 	<sys/types.h>
+
+1282907255 /home/ammar/Documents/Programming/RoboVision/InputParser/InputParser_C.h
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<ctype.h>
 

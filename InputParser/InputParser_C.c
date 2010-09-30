@@ -30,16 +30,17 @@ char * InputParserC_Version()
 inline signed int Str2Int_internal(char * inpt,unsigned int start_from,unsigned int length)
 {
     if ( inpt == 0 ) { fprintf(stderr,"Null string to Str2IntInternal!\n"); return 0;}
-    int intresult=0,multiplier=1,curnum=0;
-    unsigned char error_flag=0;
+    int intresult,multiplier,curnum;
+    intresult=0,multiplier=1,curnum=0;
+    unsigned char error_flag; error_flag=0;
     signed int i;
 
-    //fprintf(stderr,"Converting to int string (%p) begining from %u and ending at %u ",inpt,start_from,start_from+length);
+    /*fprintf(stderr,"Converting to int string (%p) begining from %u and ending at %u ",inpt,start_from,start_from+length);*/
     for (i=start_from+length-1; i>=start_from; i--)
     {
-        if ( i < 0 ) { //fprintf("Gone negative! %u \n",i);
+        if ( i < 0 ) { /*fprintf("Gone negative! %u \n",i);*/
                        break; }
-        //fprintf(stderr,"Translating %u , %c \n",i,inpt[i]);
+        /*fprintf(stderr,"Translating %u , %c \n",i,inpt[i]);*/
         curnum=(char) (inpt[i])-'0';
 
         if ((curnum>=0)&(curnum<=9))
@@ -77,7 +78,7 @@ void InputParser_DefaultDelimeters(struct InputParserC * ipc)
     if ( ipc->delimeters == 0 ) { return; }
 
     int i;
-    //fprintf(stderr,"Default Delimters ( %u ) ",ipc->max_delimeter_count);
+    /*fprintf(stderr,"Default Delimters ( %u ) ",ipc->max_delimeter_count);*/
     for ( i=0; i<ipc->max_delimeter_count; i++)
      {
          switch (i)
@@ -90,11 +91,11 @@ void InputParser_DefaultDelimeters(struct InputParserC * ipc)
            default : ipc->delimeters[i]='\n'; break;
          };
 
-         //fprintf(stderr," %u - %c ",i,ipc->delimeters[i]);
+         /*fprintf(stderr," %u - %c ",i,ipc->delimeters[i]);*/
 
      }
    ipc->cur_delimeter_count = ipc->max_delimeter_count;
-   //fprintf(stderr,"\n");
+   /*fprintf(stderr,"\n");*/
 
    return;
 }
@@ -133,7 +134,7 @@ struct InputParserC * InputParser_Create(unsigned int max_string_count,unsigned 
     ipc->guardbyte3.checksum=66666;
     ipc->guardbyte4.checksum=66666;
 
-    ipc->local_allocation = 0; // No allocation by default! :)
+    ipc->local_allocation = 0; /* No allocation by default! :)*/
     ipc->str_length=0;
     ipc->str=0;
 
@@ -151,11 +152,11 @@ void InputParser_Destroy(struct InputParserC * ipc)
 {
     if ( ipc == 0 ) { return; }
 
-    //fprintf(stderr,"InputParserC freeing delimeters\n");
+    /*fprintf(stderr,"InputParserC freeing delimeters\n");*/
     if ( ipc->delimeters != 0 )
     {
      free(ipc->delimeters);
-     //ipc->delimeters=0;
+     /*ipc->delimeters=0;*/
     }
     ipc->cur_delimeter_count=0;
     ipc->max_delimeter_count=0;
@@ -175,37 +176,37 @@ void InputParser_Destroy(struct InputParserC * ipc)
     ipc->cur_container_count = 0;
     ipc->max_container_count = 0;
 
-    //fprintf(stderr,"InputParserC freeing tokenlist\n");
+    /*fprintf(stderr,"InputParserC freeing tokenlist\n");*/
     if ( ipc->tokenlist != 0 )
      {
       free(ipc->tokenlist);
-      //ipc->tokenlist=0;
+      /*ipc->tokenlist=0;*/
      }
     ipc->tokens_max=0;
     ipc->tokens_count=0;
 
-    //fprintf(stderr,"InputParserC freeing local allocation\n");
+    /*fprintf(stderr,"InputParserC freeing local allocation\n");*/
     if ( ipc->local_allocation == 1 ) { if ( ipc->str!=0 ) free(ipc->str); }
-    //ipc->local_allocation=0;
+    /*ipc->local_allocation=0;*/
     ipc->str_length=0;
 
 
 
-    // RESULT
+    /* RESULT */
     ipc->guardbyte1.checksum = 0;
     ipc->guardbyte2.checksum = 0;
     ipc->guardbyte3.checksum = 0;
     ipc->guardbyte4.checksum = 0;
 
-    //fprintf(stderr,"InputParserC freeing ipc\n");
+    /*fprintf(stderr,"InputParserC freeing ipc\n");*/
     free(ipc);
 
 
 }
 
-// ........................................................
-// Delimeters ........................................................
-// ........................................................
+/* ........................................................
+ Delimeters ........................................................
+ ........................................................*/
 
 /*
    CheckDelimeterNumOk..
@@ -236,9 +237,9 @@ char InputParser_GetDelimeter(struct InputParserC * ipc,int num)
     if (CheckDelimeterNumOk(ipc,num)==0) { return 0;}
     return ipc->delimeters[num];
 }
-// .......................................................................
-// .......................................................................
-// .......................................................................
+/* .......................................................................
+ .......................................................................
+ .......................................................................*/
 
 
 
@@ -401,20 +402,20 @@ int InputParser_SeperateWords(struct InputParserC * ipc,char * inpt,char keepcop
 {
 
   if (CheckIPCOk(ipc)==0) { return 0; }
-  if  ( inpt == 0 ) return 0; // NULL INPUT -> NULL OUTPUT
+  if  ( inpt == 0 ) return 0; /* NULL INPUT -> NULL OUTPUT*/
 
   unsigned int   STRING_END = strlen(inpt) ;
-  int WORDS_SEPERATED = 0 , NEXT_SHOULD_NOT_BE_A_DELIMITER=1 , FOUND_DELIMETER ; // Ignores starting ,,,,,string,etc
+  int WORDS_SEPERATED = 0 , NEXT_SHOULD_NOT_BE_A_DELIMITER=1 , FOUND_DELIMETER ; /* Ignores starting ,,,,,string,etc*/
 
-  if ( STRING_END == 0 ) { return 0; } // NULL INPUT -> NULL OUTPUT pt 2
+  if ( STRING_END == 0 ) { return 0; } /* NULL INPUT -> NULL OUTPUT pt 2*/
 
-  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  // COPY STRING ( OR POINTER ) TO IPC STRUCTURE
-  if ( keepcopy == 1 ) {  // IF WE HAVE ALREADY ALLOCATED A STRING TO ipc->str , we should free it to prevent memory leaks!
+  /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   COPY STRING ( OR POINTER ) TO IPC STRUCTURE*/
+  if ( keepcopy == 1 ) {  /* IF WE HAVE ALREADY ALLOCATED A STRING TO ipc->str , we should free it to prevent memory leaks!*/
                           if (ipc->local_allocation == 1)
                           {
                             if (ipc->str!=0)
-                            { // ipc->str contains a previous value!
+                            { /* ipc->str contains a previous value!*/
                               free(ipc->str);
                               ipc->local_allocation = 0;
                             }
@@ -426,8 +427,8 @@ int InputParser_SeperateWords(struct InputParserC * ipc,char * inpt,char keepcop
                        { ipc->str = inpt; }
 
   ipc->str_length = STRING_END;
-  // COPY STRING ( OR POINTER ) TO IPC STRUCTURE
-  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  /* COPY STRING ( OR POINTER ) TO IPC STRUCTURE
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 
   register int i,z;

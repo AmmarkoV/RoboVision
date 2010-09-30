@@ -3,40 +3,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int ConnectRoboVisionDevice(char * devname)
+int ConnectRoboVisionSensors(char * devname)
 {
- fprintf(stderr,"STUB , todo add Arduino Device KickStart");
- kickstart_arduino_thread(0);
+ kickstart_arduino_thread(devname);
  return 0;
 }
 
-
-int DisconnectRoboVisionDevice(char * devname)
+int DisconnectRoboVisionSensors(char * devname)
 {
- fprintf(stderr,"STUB , todo add Arduino Device Stopping");
+ kill_arduino_thread();
  return 0;
 }
 
+int RoboVisionSensorsOK()
+{
+  return arduino_ok();
+}
 
 int GetUltrasonicValue(int dev)
 {
-  fprintf(stderr,"STUB , todo add GetUltrasonicValue");
-  return 0;
+  return InternalGetUltrasonicValue(dev);
 }
-
-
 
 int GetAccelerometerX(int dev)
-{
-  fprintf(stderr,"STUB , todo add GetAccelerometerX");
-  return 0;
+{ /*Dev parameter is for future use , to use the same cheap dual axis sensor for more axis :P*/
+  return InternalGetAccelerometerX(dev);
 }
-
 
 int GetAccelerometerY(int dev)
 {
-  fprintf(stderr,"STUB , todo add GetAccelerometerY");
-  return 0;
+  /*Dev parameter is for future use , to use the same cheap dual axis sensor for more axis :P*/
+  return InternalGetAccelerometerY(dev);
 }
 
 int SendIRCode(char * ircodes,unsigned int numberofcodes,unsigned int microsecondpause)

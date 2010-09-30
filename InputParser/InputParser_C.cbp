@@ -34,6 +34,9 @@
 				</Linker>
 			</Target>
 		</Build>
+		<Compiler>
+			<Add option="-pedantic" />
+		</Compiler>
 		<Unit filename="InputParser_C.c">
 			<Option compilerVar="CC" />
 		</Unit>

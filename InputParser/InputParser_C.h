@@ -24,11 +24,11 @@ extern "C" {
 
 struct tokens
 {
-  // START MEANS THE FIRST CHARACTER TO READ..!
-  // LENGTH MEANS total characters to be read
-  // i.e.   a _ S _ A _ M _ P _ L _ E
-  //        0   1   2   3   4   5   6
-  // this token starts from 0 and has 7 characters length
+  /* START MEANS THE FIRST CHARACTER TO READ..!
+     LENGTH MEANS total characters to be read
+     i.e.   a _ S _ A _ M _ P _ L _ E
+            0   1   2   3   4   5   6
+     this token starts from 0 and has 7 characters length*/
   unsigned int token_start;
   unsigned int length;
 };
@@ -40,17 +40,17 @@ struct guard_byte
 
 struct InputParserC
 {
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
     struct guard_byte guardbyte1;
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 
     unsigned int str_length;
     unsigned char local_allocation;
-    char * str; // String to process
+    char * str; /* String to process */
 
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
     struct guard_byte guardbyte2;
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
     unsigned short cur_container_count;
     unsigned short max_container_count;
     char *container_start;
@@ -60,18 +60,18 @@ struct InputParserC
     unsigned short max_delimeter_count;
     char *delimeters;
 
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
     struct guard_byte guardbyte3;
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 
-    // RESULT
+    /* RESULT */
     unsigned int tokens_max;
     unsigned int tokens_count;
     struct tokens* tokenlist;
 
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
     struct guard_byte guardbyte4;
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 };
 
 char * InputParserC_Version();
@@ -88,7 +88,7 @@ unsigned char CheckWordNumOk(struct InputParserC * ipc,unsigned int num);
 
 char InputParser_GetWordChar(struct InputParserC * ipc,unsigned int num,unsigned int pos);
 
-// WordCompare and WordCompareNoCase return 1 when strings match , 0 otherwise..
+/* WordCompare and WordCompareNoCase return 1 when strings match , 0 otherwise..*/
 unsigned char InputParser_WordCompareNoCase(struct InputParserC * ipc,unsigned int num,char * word,unsigned int wordsize);
 unsigned char InputParser_WordCompare(struct InputParserC * ipc,unsigned int num,char * word,unsigned int wordsize);
 
