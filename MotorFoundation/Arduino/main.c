@@ -2,14 +2,22 @@
 #include "arduino_serial.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 int ConnectRoboVisionSensors(char * devname)
 {
- kickstart_arduino_thread(devname);
- return 0;
+    kickstart_arduino_thread(devname);
+
+    fprintf(stderr,"Waiting for Arduino to transmit something meaningfull \n");
+    unsigned int tries=0;
+    while ( (!RoboVisionSensorsOK())&&(tries<100) ) { fprintf(stderr,"."); usleep(100000); ++tries; } fprintf(stderr,"\n\n");
+    if ( !RoboVisionSensorsOK() ) { fprintf(stderr,"Could not get any data off arduino check , port / connections \n"); return 0;  }
+
+
+ return 1;
 }
 
-int DisconnectRoboVisionSensors(char * devname)
+int DisconnectRoboVisionSensors()
 {
  kill_arduino_thread();
  return 0;
