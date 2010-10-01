@@ -1,7 +1,12 @@
 #include "PathPlan_core.h"
+#include "PathPlan_printouts.h"
 #include "PathPlan_error_codes.h"
 #include <unistd.h>
 #include <stdio.h>
+
+
+
+
 
 struct NodeData    // Declare NODE struct type
   {
@@ -90,25 +95,25 @@ unsigned short PathPlanningStatus(unsigned short type_of_data)
   unsigned short retres=0;
   switch (type_of_data)
     {
-    case 0: //ERROR CHECK
+    case STATUS_ERROR: //ERROR CHECK
       retres=error_no;
       break;
-    case 1: //WORLD SIZE X
+    case STATUS_WORLDX: //WORLD SIZE X
       retres=matrix_size_x;
       break;
-    case 2: //WORLD SIZE Y
+    case STATUS_WORLDY: //WORLD SIZE Y
       retres=matrix_size_y;
       break;
-    case 3: //WORLD MATRIX SIZE
+    case STATUS_WORLD_MATRIX_SIZE: //WORLD MATRIX SIZE
       retres=world_matrix_size;
       break;
-    case 4: //LAST SOURCE NODE
+    case STATUS_LAST_SOURCE_NODE: //LAST SOURCE NODE
       retres=source_block;
       break;
-    case 5: //LAST TARGET NODE
+    case STATUS_LAST_TARGET_NODE: //LAST TARGET NODE
       retres=target_block;
       break;
-    case 6: //WORLD MEMORY OK  ( RESULT = 1 -> MEMORY ALLOCATED  /  RESULT = 0 -> MEMORY FREE )
+    case STATUS_WORLD_MEMORY_OK: //WORLD MEMORY OK  ( RESULT = 1 -> MEMORY ALLOCATED  /  RESULT = 0 -> MEMORY FREE )
       if (world_matrix!=0)
         {
           retres=1;
@@ -118,7 +123,7 @@ unsigned short PathPlanningStatus(unsigned short type_of_data)
           retres=0;
         }
       break;
-    case 7: //LIST MEMORY OK   ( RESULT = 1 -> MEMORY ALLOCATED  /  RESULT = 0 -> MEMORY FREE )
+    case STATUS_LIST_MEMORY_OK: //LIST MEMORY OK   ( RESULT = 1 -> MEMORY ALLOCATED  /  RESULT = 0 -> MEMORY FREE )
       if (open_list!=0)
         {
           retres=1;
@@ -128,13 +133,13 @@ unsigned short PathPlanningStatus(unsigned short type_of_data)
           retres=0;
         }
       break;
-    case 8: //LIST MEMORY SIZE
+    case STATUS_LIST_MEMORY_SIZE: //LIST MEMORY SIZE
       retres=open_list_current_size;
       break;
-    case 9: //LAST RUN ELAPSED TIME
+    case STATUS_LAST_RUN_ELAPSED_TIME: //LAST RUN ELAPSED TIME
       retres=last_run_time;
       break;
-    case 10: //TARGET NODE PARENT
+    case STATUS_TARGET_NODE_PARENT: //TARGET NODE PARENT
       if ( (target_block>world_matrix_size) || (target_block<1) )
         {
           error_no=TARGET_OUT_OF_BOUNDS;
@@ -144,7 +149,7 @@ unsigned short PathPlanningStatus(unsigned short type_of_data)
           retres=world_matrix[target_block].parent_node;
         }
       break;
-    case 11: //TARGET NODE DISTANCE IF TARGET REACHED!
+    case STATUS_TARGET_NODE_DISTANCE: //TARGET NODE DISTANCE IF TARGET REACHED!
       if ( (source_block>world_matrix_size) || (source_block<1) )
         {
           error_no=SOURCE_OUT_OF_BOUNDS;
@@ -172,25 +177,25 @@ unsigned short PathPlanning_Get_ObjectMem(unsigned short mem_place,unsigned shor
   unsigned short retres=0;
   switch (type)
     {
-    case 0:
+    case TYPE_SCORE:
       retres=world_matrix[mem_place].score;
       break;
-    case 1:
+    case TYPE_PARENTNODE:
       retres=world_matrix[mem_place].parent_node;
       break;
-    case 2:
+    case TYPE_PLACE_X:
       retres=mem_place % matrix_size_x;
       break;
-    case 3:
+    case TYPE_PLACE_Y:
       retres=mem_place / matrix_size_x;
       break;
-    case 4:
+    case TYPE_ARRIVED_DIRECTION:
       retres=world_matrix[mem_place].arrived_direction;
       break;
-    case 5:
+    case TYPE_NODE_PENALTY:
       retres=world_matrix[mem_place].node_penalty;
       break;
-    case 6:
+    case TYPE_UNPASSABLE:
       if (world_matrix[mem_place].unpassable)
         {
           retres=1;

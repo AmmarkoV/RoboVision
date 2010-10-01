@@ -1,6 +1,7 @@
 #define _WIN32_WINNT 0x0400
 #include "PathPlanning.h"
 #include "PathPlan_core.h"
+#include "PathPlan_printouts.h"
 #include "PathPlan_objectpositions.h"
 #include <stdio.h>
 
@@ -10,10 +11,10 @@ int path_end_x,path_end_y;
 
 unsigned short  PathPlan_Version()
 {         // . ( 0001 = 0.001)
-	return 0001; }
+	return 0002; }
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// GET/SET POINTS!
+// GET/SET POINTS!            START
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 void PathPlan_SetStartPoint(unsigned short vpath_start_x,unsigned short vpath_start_y)
 {
@@ -37,8 +38,14 @@ void PathPlan_GetEndPoint(unsigned short &vpath_end_x,unsigned short &vpath_end_
   vpath_end_x=path_end_x,vpath_end_y=path_end_y;
 }
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// GET/SET POINTS!
+// GET/SET POINTS!             END
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+int PathPlan_HTMLOutput(char * filename)
+{
+    return PrintoutHTML(filename);
+}
 
 unsigned short  PathPlan_Status(unsigned short type_of_data)
 {

@@ -39,6 +39,8 @@
 		<Unit filename="PathPlan_error_codes.h" />
 		<Unit filename="PathPlan_objectpositions.cpp" />
 		<Unit filename="PathPlan_objectpositions.h" />
+		<Unit filename="PathPlan_printouts.cpp" />
+		<Unit filename="PathPlan_printouts.h" />
 		<Unit filename="PathPlanning.cpp" />
 		<Unit filename="PathPlanning.h" />
 		<Extensions>

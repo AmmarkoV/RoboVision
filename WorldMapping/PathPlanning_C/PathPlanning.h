@@ -12,6 +12,8 @@ void PathPlan_GetEndPoint(unsigned short &vpath_end_x,unsigned short &vpath_end_
 void  InitPathPlanning(unsigned short x_size,unsigned short y_size);
 void  UnInitPathPlanning();
 
+int PathPlan_HTMLOutput(char * filename);
+
 void  Set_Object_PathPlanning(unsigned short atx,unsigned short aty,unsigned short type,unsigned short passable);
 unsigned short  Get_Object_PathPlanning(unsigned short atx,unsigned short aty,unsigned short type);
 unsigned short  Get_Object_PathPlanningMem(unsigned short mem_place,unsigned short type);

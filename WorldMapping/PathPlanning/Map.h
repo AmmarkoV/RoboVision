@@ -36,6 +36,7 @@ class Map
         unsigned int GetRoutePoint(unsigned char level,unsigned int pt_num,unsigned int &from_x,unsigned int &from_y);
         void Clear();
 
+        unsigned int HTMLOutput(char * filename);
     protected:
     private:
     unsigned char add_neighbors_mode;

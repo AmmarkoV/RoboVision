@@ -67,3 +67,46 @@ unsigned int ConvertPathToLogo(TraceNode * str8nodes,unsigned int &str8nodes_siz
     fclose(p);
     return 0;
 }
+
+
+int PrintoutHTML(char * filename,unsigned int world_x,unsigned int world_y,NodeData * world)
+{
+   FILE * pFile;
+   pFile = fopen ("printout.html","w");
+
+   if ( pFile != 0 )
+   {
+     fprintf (pFile, "<html><head></head><body>");
+     fprintf (pFile, "<table>\n");
+
+      int x,y,ptr=0;
+       for ( y=0; y<world_x; y++ )
+       {
+         fprintf (pFile, "<tr>\n   ");
+        for ( x=0; x<world_y; x++ )
+         {
+
+           if ( world[ptr].unpassable!=0 )
+             {
+               fprintf (pFile, "<td bgcolor=\"#000000\">");
+             } else
+             {
+               fprintf (pFile, "<td >"); /*bgcolor=\"#FFFFFF\"*/
+             }
+             fprintf (pFile, "&nbsp;");
+
+           fprintf (pFile, "</td>");
+           ++ptr;
+         }
+         fprintf (pFile, "</tr>\n");
+       }
+
+
+     fprintf (pFile, "</table>\n");
+     fprintf (pFile, " \n");
+     fprintf (pFile, "</body></html>");
+   }
+
+   fclose (pFile);
+  return 1;
+}

@@ -12,7 +12,7 @@
 
 #include "PathPlanning/Map.h"
 #include <wx/joystick.h>
-#include "../MotorFoundation/RobotHAL/RobotHAL.h"
+#include "../MotorFoundation/MotorHAL.h"
 
 //(*Headers(WorldMappingFrame)
 #include <wx/spinctrl.h>
@@ -41,6 +41,7 @@ class WorldMappingFrame: public wxFrame
         void OnSetStartPointClick(wxCommandEvent& event);
         void OnButtonCalculateClick(wxCommandEvent& event);
         void OnClearButtonClick(wxCommandEvent& event);
+        void OnPrintButtonClick(wxCommandEvent& event);
         //*)
         void OnJoystickEvent(wxJoystickEvent& event);
         void OnPaint(wxPaintEvent& event);
@@ -68,6 +69,7 @@ class WorldMappingFrame: public wxFrame
         static const long ID_TEXTCTRL7;
         static const long ID_STATICTEXT6;
         static const long ID_BUTTON7;
+        static const long ID_BUTTON8;
         static const long idMenuQuit;
         static const long idMenuAbout;
         static const long ID_STATUSBAR1;
@@ -89,6 +91,7 @@ class WorldMappingFrame: public wxFrame
         wxButton* ClearButton;
         wxStaticText* StaticText3;
         wxStaticBox* StaticBox1;
+        wxButton* PrintButton;
         wxStaticText* StaticText4;
         wxStaticText* StaticText5;
         wxStaticText* StaticText2;
@@ -99,7 +102,7 @@ class WorldMappingFrame: public wxFrame
         wxButton* SetEndPoint;
         //*)
         wxMouseState mouse;
-        RobotHAL *guarddog;
+ //       RobotHAL *guarddog;
         wxJoystick *joy_stick;
         Map *floor_plan;
         int set_point_flag;

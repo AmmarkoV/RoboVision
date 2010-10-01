@@ -1,5 +1,6 @@
 #include "Map.h"
 #include <stdio.h>
+#include "LogoHighLevelPath.h"
 // MAP IS SUPPOSED TO BE A LOW LEVEL A* IMPLEMENTATION THAT SOLVES
 // MAZES AND FINDS THE BEST ROUTE
 // written by Ammar Qammaz as part of the GuardDog Project!
@@ -196,3 +197,8 @@ void Map::Clear()
   return;
 }
 
+
+unsigned int Map::HTMLOutput(char * filename)
+{
+    return PrintoutHTML(filename,world_x,world_y,world);
+}
