@@ -1,5 +1,6 @@
 #include "MasterpathPlanning.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 /*      --------------------------------------------
                MAP STATE INITIALIZATION START
@@ -7,7 +8,11 @@
 struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y)
 {
     fprintf(stderr,"Function CreateMap is a stub \n");
-    return 0;
+    struct Map * newmap=0;
+    newmap = (struct Map * ) malloc(sizeof(struct Map));
+    newmap->GUARD_BYTE=GUARD_BYTE_VALUE;
+
+    return newmap;
 }
 
 
@@ -18,29 +23,36 @@ struct Map * LoadMap(char * filename)
 }
 
 
-int SaveMap(struct Map * world)
+int SaveMap(struct Map * themap)
 {
     fprintf(stderr,"Function SaveMap is a stub \n");
     return 0;
 }
 
-int DeleteMap(struct Map * world)
+int DeleteMap(struct Map * themap)
 {
-    fprintf(stderr,"Function DeleteMap is a stub \n");
+    if ( themap == 0 ) { fprintf(stderr,"DeleteMap called for non-existent map\n"); return 0; } else
+    if ( themap->GUARD_BYTE!=GUARD_BYTE_VALUE ) { fprintf(stderr,"DeleteMap called for broken map\n"); return 0; }
+    themap->GUARD_BYTE=0;
+
+       themap->world_total_size=0;
+       free(themap->world); /* <- This function is epic it frees the world :D */
+
+    free(themap);
     return 1;
 }
 
-int SetMapUnit_In_cm(struct Map * world,unsigned int cm_per_unit)
+int SetMapUnit_In_cm(struct Map * themap,unsigned int cm_per_unit)
 {
     return 0;
 }
 
-int ObstacleExists(struct Map * world,unsigned int x,unsigned int y)
+int ObstacleExists(struct Map * themap,unsigned int x,unsigned int y)
 {
    return 1;
 }
 
-int SetObstacle(struct Map * world,unsigned int x,unsigned int y,unsigned int safety_radious)
+int SetObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned int safety_radious)
 {
    return 0;
 }

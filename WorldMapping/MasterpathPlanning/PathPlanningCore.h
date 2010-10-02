@@ -1,6 +1,6 @@
 #ifndef PATHPLANNINGCORE_H_INCLUDED
 #define PATHPLANNINGCORE_H_INCLUDED
 
-
+#include "MasterpathPlanning.h"
 
 #endif // PATHPLANNINGCORE_H_INCLUDED
