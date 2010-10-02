@@ -1,25 +1,66 @@
 #ifndef MASTERPATHPLANNING_H_INCLUDED
 #define MASTERPATHPLANNING_H_INCLUDED
 
+
+#include <stdio.h>
+
+
+struct NodeData    // Declare NODE struct type
+  {
+    unsigned int parent_node;
+    unsigned char arrived_direction;
+    unsigned int score;
+    unsigned char opened;
+    unsigned char unpassable;
+    unsigned short node_penalty;
+  };
+
+
+struct NodeRef
+  {
+    // Declare NODE struct type
+    unsigned int node;
+    unsigned int score;
+  };
+
+struct NodeNeighborsCount
+  {
+    unsigned int total;
+  };
+
+struct TraceNode
+  {
+    // Declare NODE struct type
+    unsigned int nodex,nodey;
+    unsigned int score;
+  };
+
 struct Map
 {
    unsigned int world_size_x,world_size_y,world_unit_in_cm;
 
+   unsigned int world_total_size;
+   struct NodeData  * world;
 
 };
 
+
+struct PathStep
+{
+};
 
 struct Path
 {
-   unsigned int world_size_x,world_size_y,world_unit_in_cm;
-
+   unsigned int path_steps;
+   struct PathStep * step;
 
 };
 
-struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y);
 
-#include "MasterpathPlanning.h"
-#include <stdio.h>
+
+
+
+struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y);
 
 /*      --------------------------------------------
                MAP STATE INITIALIZATION START
