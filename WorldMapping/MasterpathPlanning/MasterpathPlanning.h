@@ -48,6 +48,7 @@ struct NodeData    // Declare NODE struct type
     unsigned int score;
     unsigned char opened;
     unsigned char unpassable;
+    unsigned char unpassable_radious;
     unsigned short node_penalty;
   };
 

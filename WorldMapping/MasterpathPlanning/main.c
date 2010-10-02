@@ -7,10 +7,12 @@
         -------------------------------------------- */
 struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y)
 {
-    fprintf(stderr,"Function CreateMap is a stub \n");
     struct Map * newmap=0;
     newmap = (struct Map * ) malloc(sizeof(struct Map));
     newmap->GUARD_BYTE=GUARD_BYTE_VALUE;
+
+        newmap->world_total_size=world_size_x*world_size_y;
+        newmap->world = (struct NodeData * ) malloc( sizeof(struct NodeData)*newmap->world_total_size );
 
     return newmap;
 }
@@ -29,10 +31,15 @@ int SaveMap(struct Map * themap)
     return 0;
 }
 
-int DeleteMap(struct Map * themap)
+int MapIsOk(struct Map * themap)
 {
     if ( themap == 0 ) { fprintf(stderr,"DeleteMap called for non-existent map\n"); return 0; } else
     if ( themap->GUARD_BYTE!=GUARD_BYTE_VALUE ) { fprintf(stderr,"DeleteMap called for broken map\n"); return 0; }
+  return 1;
+}
+
+int DeleteMap(struct Map * themap)
+{   if (!MapIsOk(themap)) { return 0; }
     themap->GUARD_BYTE=0;
 
        themap->world_total_size=0;
@@ -44,16 +51,31 @@ int DeleteMap(struct Map * themap)
 
 int SetMapUnit_In_cm(struct Map * themap,unsigned int cm_per_unit)
 {
-    return 0;
+    if (!MapIsOk(themap)) { return 0; }
+    themap->world_unit_in_cm=cm_per_unit;
+    return 1;
 }
 
 int ObstacleExists(struct Map * themap,unsigned int x,unsigned int y)
 {
+   /* Tactic is to return 1 when failing that will effectively disable movement , and is less catastrophic */
+   if (!MapIsOk(themap)) { return 1; }
+   unsigned int memory_ptr=x+(y*themap->world_size_x);
+   if (memory_ptr >= themap->world_total_size ) { return 1; /*Overflow protection */ }
+
+   if ( themap->world[memory_ptr].unpassable ) { return 1; } else
+                                               { return 0; }
    return 1;
 }
 
 int SetObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned int safety_radious)
 {
+   if (!MapIsOk(themap)) { return 0; }
+   unsigned int memory_ptr=x+(y*themap->world_size_x);
+   if (memory_ptr >= themap->world_total_size ) { return 0; /*Overflow protection */ }
+
+   themap->world[memory_ptr].unpassable=1;
+   fprintf(stderr,"safety_radious is a stub\n");
    return 0;
 }
 /*      --------------------------------------------
