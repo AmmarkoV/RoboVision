@@ -116,62 +116,62 @@ int SetObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned int s
 /*      --------------------------------------------
                AGENT STATE CHANGING START
         -------------------------------------------- */
-int SetAgentSize(struct Map * world,unsigned int agentnum,unsigned int x_size,unsigned int y_size)
+int SetAgentSize(struct Map * themap,unsigned int agentnum,unsigned int x_size,unsigned int y_size)
 {
    fprintf(stderr,"stub called\n");
   return 0;
 }
 
-int SetAgentHeading(struct Map * world,unsigned int agentnum,unsigned int heading)
+int SetAgentHeading(struct Map * themap,unsigned int agentnum,unsigned int heading)
 {
    fprintf(stderr,"stub called\n");
   return 0;
 }
 
-unsigned int GetAgentHeading(struct Map * world,unsigned int agentnum)
+unsigned int GetAgentHeading(struct Map * themap,unsigned int agentnum)
 {
     fprintf(stderr,"stub called\n");
   return 0;
 }
 
-int SetAgentLocation(struct Map * world,unsigned int agentnum,unsigned int x,unsigned int y)
+int SetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y)
 {
     fprintf(stderr,"stub called\n");
   return 0;
 }
 
-int SetAgentLocationName(struct Map * world,unsigned int agentnum,char * name)
+int SetAgentLocationName(struct Map * themap,unsigned int agentnum,char * name)
 {
     fprintf(stderr,"stub called\n");
   return 0;
 }
 
-int GetAgentLocation(struct Map * world,unsigned int agentnum,unsigned int * x,unsigned int * y)
+int GetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int * x,unsigned int * y)
 {
     fprintf(stderr,"stub called\n");
   return 0;
 }
 
 
-int SetAgentTargetLocation(struct Map * world,unsigned int agentnum,unsigned int x,unsigned int y)
+int SetAgentTargetLocation(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y)
 {
     fprintf(stderr,"stub called\n");
   return 0;
 }
 
-int SetAgentTargetLocationName(struct Map * world,unsigned int agentnum,char * name)
+int SetAgentTargetLocationName(struct Map * themap,unsigned int agentnum,char * name)
 {
     fprintf(stderr,"stub called\n");
   return 0;
 }
 
-int MoveAgentForward(struct Map * world,unsigned int agentnum,int leftwheel_cm,int rightwheel_cm)
+int MoveAgentForward(struct Map * themap,unsigned int agentnum,int leftwheel_cm,int rightwheel_cm)
 {
     fprintf(stderr,"stub called\n");
   return 0;
 }
 
-int SetObstacleSensedbyAgent(struct Map * world,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm)
+int SetObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm)
 {
     fprintf(stderr,"stub called\n");
   return 0;
@@ -185,7 +185,7 @@ int SetObstacleSensedbyAgent(struct Map * world,unsigned int agentnum,int ultras
 /*      --------------------------------------------
                      PATH FINDING START
         -------------------------------------------- */
-int FindPath(struct Map * world,unsigned int agentnum)
+int FindPath(struct Map * themap,unsigned int agentnum)
 {
   /* Finds Path from position to target location for agent
      it must be first set by SetAgentTargetLocation
@@ -193,7 +193,7 @@ int FindPath(struct Map * world,unsigned int agentnum)
   return 0;
 }
 
-int FindPathToPosition(struct Map * world,unsigned int agentnum,unsigned int x,unsigned int y)
+int FindPathToPosition(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y)
 {
   /* Finds Path from position to target location for agent
      it must be first set by SetAgentTargetLocation
@@ -201,12 +201,44 @@ int FindPathToPosition(struct Map * world,unsigned int agentnum,unsigned int x,u
   return 0;
 }
 
-int FindSponteneousPath(struct Map * world,unsigned int agentnum,struct Path * thepath,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
+int FindSponteneousPath(struct Map * themap,unsigned int agentnum,struct Path * thepath,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
 {
   /* Finds Path from position to target location for agent
      it must be first set by SetAgentTargetLocation
   */
+  PathPlanCore_FindPath(struct Map * themap,unsigned int x1,unsigned int y1,unsigned int start_direction,unsigned int oursize,x2,y2,5000);
   return 0;
+}
+
+
+unsigned int FindPathCommandIsSane(struct Map * themap,unsigned int source_x,unsigned int source_y,unsigned int target_x,unsigned int target_y)
+{
+  if (!MapIsOk(themap)) {
+                          fprintf(stderr,"World Matrix Not Initialized\n");
+                          return 0;
+                        }
+
+  if ( (source_x>=themap->world_size_x)|(source_y>=themap->world_size_y)|(target_x>=themap->world_size_x)|(target_y>=themap->world_size_y) )
+    {
+      fprintf(stderr,"Positions out of bounds!\n");
+      return 0;
+    }
+
+  if ( ( world_x==0) | ( world_y==0) )
+    {
+      fprintf(stderr,"World Matrix Size X/Y reported 0 ?\n");
+      return 0;
+    }
+
+
+  if (openlist==0)
+    {
+      fprintf(stderr,"OpenList Not Initialized!\n");
+      return 0;
+    }
+
+
+  return 1;
 }
 
 /*      --------------------------------------------
@@ -219,17 +251,17 @@ int FindSponteneousPath(struct Map * world,unsigned int agentnum,struct Path * t
                      LOCATION MANAGMENT START
         -------------------------------------------- */
 
-int AddLocation(struct Map * world,char * name,unsigned int pos_x,unsigned int pos_y)
+int AddLocation(struct Map * themap,char * name,unsigned int pos_x,unsigned int pos_y)
 {
   return 0;
 }
 
-int DeleteLocation_Number(struct Map * world,unsigned int position_id)
+int DeleteLocation_Number(struct Map * themap,unsigned int position_id)
 {
   return 0;
 }
 
-int DeleteLocation(struct Map * world,char * name)
+int DeleteLocation(struct Map * themap,char * name)
 {
   return 0;
 }
@@ -243,17 +275,17 @@ int DeleteLocation(struct Map * world,char * name)
 /*      --------------------------------------------
                      ROUTE EXTRACTION START
         -------------------------------------------- */
-int ExtractRouteToLogo(struct Map * world,struct Path * thepath,char * filename)
+int ExtractRouteToLogo(struct Map * themap,struct Path * thepath,char * filename)
 {
   return 0;
 }
 
-int GetRoutePoints(struct Map * world,struct Path * thepath)
+int GetRoutePoints(struct Map * themap,struct Path * thepath)
 {
   return 0;
 }
 
-int GetRouteWaypoint(struct Map * world,struct Path * thepath,unsigned int *x,unsigned int *y)
+int GetRouteWaypoint(struct Map * themap,struct Path * thepath,unsigned int *x,unsigned int *y)
 {
   return 0;
 }
