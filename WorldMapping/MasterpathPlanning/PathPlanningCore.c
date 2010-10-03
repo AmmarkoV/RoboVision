@@ -1,30 +1,5 @@
 #include "PathPlanningCore.h"
 
-/* This function cleans up a Map Structure */
-int PathPlanCore_CleanMap(struct Map * themap)
-{
-   if ( !MapIsOk(themap) ) { return 0; }
-   unsigned int x,y,ptr=0;
-
-   for ( y=0; y<themap->world_size_y; y++ )
-    {
-      for ( x=0; x<themap->world_size_x; x++ )
-      {
-         themap->world[ptr].parent_node=0;
-         themap->world[ptr].arrived_direction=0;
-         themap->world[ptr].score=0;
-         themap->world[ptr].opened=0;
-         themap->world[ptr].unpassable=0;
-         themap->world[ptr].in_unpassable_radious=0;
-         themap->world[ptr].node_penalty=0;
-         ++ptr;
-      }
-    }
-   return 1;
-}
-
-
-
 /* This function adds a radious around an obstacle */
 int PathPlanCore_AddObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
 {
@@ -34,12 +9,8 @@ int PathPlanCore_AddObstacleRadious(struct Map * themap,unsigned int x,unsigned 
    if ( start_x>safety_radious )
     { /* Add left radious */
       if ( start_y > safety_radious )
-      {  /* Add up radious */
-         start_y-=safety_radious;
-      } else
-      {
-         start_y=0;
-      }
+      {  /* Add up radious */  start_y-=safety_radious; } else
+      { start_y=0; }
       start_x-=safety_radious;
     } else
     { start_x=0; }
@@ -47,24 +18,18 @@ int PathPlanCore_AddObstacleRadious(struct Map * themap,unsigned int x,unsigned 
    if ( end_x+safety_radious >= themap->world_size_x )
     { /* Add right radious */
       if ( end_y+safety_radious >= themap->world_size_y )
-      {  /* Add down radious */
-         end_y=themap->world_size_y-1;
-      } else
-      {
-         end_y+=safety_radious;
-      }
+      {  /* Add down radious */ end_y=themap->world_size_y-1; } else
+      { end_y+=safety_radious; }
       end_x=themap->world_size_x-1;
     } else
     { end_x+=safety_radious; }
 
-
   unsigned int xi=start_x,yi=start_y,mem_ptr_i=start_x+start_y*themap->world_size_x;
   for ( yi = start_y; yi < end_y; yi++ )
-   {
-    for ( xi = start_x; xi < end_x; xi++ )
-    {
+   { for ( xi = start_x; xi < end_x; xi++ )
+     {
       themap->world[mem_ptr_i].in_unpassable_radious+=1;
-    }
+     }
    }
 
    return 1;
@@ -83,7 +48,6 @@ inline void swap_2_list_references(struct NodeRef * openlist,unsigned int *openl
 
 inline void quickSortNodes(struct NodeRef *arr, int elements)
 {
-
   #define  MAX_LEVELS  300
 
   struct NodeRef piv;
@@ -101,13 +65,9 @@ inline void quickSortNodes(struct NodeRef *arr, int elements)
           while (L<R)
             {
               while ( arr[R].score>=piv.score && L<R ) R--;
-
               if (L<R) arr[L++]=arr[R];
-
               while (arr[L].score<=piv.score && L<R) L++;
-
               if (L<R) arr[R--]=arr[L];
-
             }
           arr[L]=piv;
           beg[i+1]=L+1;
@@ -137,19 +97,12 @@ unsigned int inline ReturnDistanceFromNodeToNode(struct NodeData * world_matrix,
   unsigned int current_node=end_node,distance=0;
   while (!done)
     {
-      if ( world_matrix[current_node].parent_node==0 )
-        {
-          done=1;
-        }
+      if ( world_matrix[current_node].parent_node==0 ) { done=1; }
       else
-        {
-          // Yparxei parent node!
+        { /* Yparxei parent node! */
           ++distance;
           current_node=world_matrix[current_node].parent_node;
-          if ( current_node==start_node )
-            {
-              done=1;
-            }
+          if ( current_node==start_node ) { done=1; }
         }
     }
   return distance;
@@ -196,10 +149,7 @@ unsigned int inline FillResultPath(struct NodeData * world_matrix,unsigned int w
 
 inline unsigned int SamePosition(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
 {
-  if ( ( x1 == x2 ) && ( y1 == y2 ) )
-    {
-      return 1;
-    }
+  if ( ( x1 == x2 ) && ( y1 == y2 ) ) { return 1; }
   return 0;
 }
 

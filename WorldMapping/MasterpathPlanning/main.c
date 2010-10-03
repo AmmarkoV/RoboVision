@@ -13,13 +13,28 @@ struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y,unsig
     newmap->GUARD_BYTE=GUARD_BYTE_VALUE;
 
         newmap->world_total_size=world_size_x*world_size_y;
-        newmap->world = (struct NodeData * ) malloc( sizeof(struct NodeData)*newmap->world_total_size );
         newmap->world_size_x = world_size_x;
         newmap->world_size_y = world_size_y;
 
-        /*We need at least 1 actor*/
-        actors_number+=1;
+        unsigned int i=0;
 
+        newmap->world = (struct NodeData * ) malloc( sizeof(struct NodeData)* ( newmap->world_total_size+1 ) );
+        newmap->world_neighbors = (struct NodeNeighborsCount * ) malloc( sizeof(struct NodeNeighborsCount) * ( newmap->world_total_size+1 ) );
+
+
+        struct NodeData emptynode={0};
+        for ( i=0; i<newmap->world_total_size; i++ ) { newmap->world[i]=emptynode; }
+        struct NodeNeighborsCount emptyneigh={0};
+        for ( i=0; i<newmap->world_total_size; i++ ) { newmap->world_neighbors[i]=emptyneigh; }
+
+        newmap->openlist=0; newmap->openlist_current_size=0;
+        newmap->openlist_size=(unsigned int) newmap->world_total_size / 2; // < - MAX LIST SIZE , IT HAS A BIG EFFECT IN ALGORITHM SUCCESS RATIO!
+        newmap->openlist= (struct NodeRef * ) malloc( sizeof(struct NodeRef) * ( newmap->openlist_size+1 ) );
+
+
+        /*We need at least 1 actor*/
+        newmap->total_actors=actors_number+1;
+        newmap->actors = (struct Actor * ) malloc( sizeof(struct Actor)* ( newmap->total_actors ) );
 
     PathPlanCore_CleanMap(newmap);
 
@@ -52,8 +67,13 @@ int DeleteMap(struct Map * themap)
     themap->GUARD_BYTE=0;
 
        themap->world_total_size=0;
-       free(themap->world); /* <- This function is epic it frees the world :D */
+       if ( themap->world != 0 ) { free(themap->world); } /* <- This function is epic it frees the world :D */
 
+       if ( themap->world_neighbors != 0 ) { free(themap->world_neighbors); }
+
+       if ( themap->openlist != 0 ) { free(themap->openlist); }
+
+       if ( themap->actors != 0 ) { free(themap->actors); }
     free(themap);
     return 1;
 }
@@ -206,7 +226,7 @@ int FindSponteneousPath(struct Map * themap,unsigned int agentnum,struct Path * 
   /* Finds Path from position to target location for agent
      it must be first set by SetAgentTargetLocation
   */
-  PathPlanCore_FindPath(struct Map * themap,unsigned int x1,unsigned int y1,unsigned int start_direction,unsigned int oursize,x2,y2,5000);
+  PathPlanCore_FindPath(themap,x1,y1,themap->actors[agentnum].current_heading,themap->actors[agentnum].size_total,x2,y2,5000);
   return 0;
 }
 
@@ -224,19 +244,19 @@ unsigned int FindPathCommandIsSane(struct Map * themap,unsigned int source_x,uns
       return 0;
     }
 
-  if ( ( world_x==0) | ( world_y==0) )
+  if ( ( themap->world_size_x==0) | ( themap->world_size_y==0) )
     {
       fprintf(stderr,"World Matrix Size X/Y reported 0 ?\n");
       return 0;
     }
 
-
+/*
   if (openlist==0)
     {
       fprintf(stderr,"OpenList Not Initialized!\n");
       return 0;
     }
-
+*/
 
   return 1;
 }

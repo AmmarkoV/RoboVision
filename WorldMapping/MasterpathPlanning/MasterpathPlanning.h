@@ -27,9 +27,10 @@ struct Path
 
 
 
-struct Actors    // Declare NODE struct type
+struct Actor    // Declare NODE struct type
   {
     float abs_x_pos,abs_y_pos;
+    unsigned int size_x,size_y,size_total;
     unsigned int current_x_pos,current_y_pos;
     unsigned int target_x_pos,target_y_pos;
 
@@ -78,6 +79,14 @@ struct Map
 
    unsigned int world_total_size;
    struct NodeData  * world;
+   struct NodeNeighborsCount * world_neighbors;
+
+   unsigned int total_actors;
+   struct Actor * actors;
+
+    struct NodeRef *openlist;
+    unsigned int openlist_size;
+    unsigned int openlist_current_size;
 
    unsigned int GUARD_BYTE;
 };
