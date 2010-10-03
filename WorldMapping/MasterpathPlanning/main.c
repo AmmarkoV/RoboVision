@@ -1,6 +1,7 @@
-#include "MasterpathPlanning.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "MasterpathPlanning.h"
+#include "PathPlanningCore.h"
 
 /*      --------------------------------------------
                MAP STATE INITIALIZATION START
@@ -13,6 +14,8 @@ struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y)
 
         newmap->world_total_size=world_size_x*world_size_y;
         newmap->world = (struct NodeData * ) malloc( sizeof(struct NodeData)*newmap->world_total_size );
+
+    PathPlanCore_CleanMap(newmap);
 
     return newmap;
 }
@@ -75,8 +78,9 @@ int SetObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned int s
    if (memory_ptr >= themap->world_total_size ) { return 0; /*Overflow protection */ }
 
    themap->world[memory_ptr].unpassable=1;
+   if (!PathPlanCore_AddObstacleRadious(themap,x,y,memory_ptr,safety_radious) ) { fprintf(stderr,"Could not add radious\n"); }
    fprintf(stderr,"safety_radious is a stub\n");
-   return 0;
+   return 1;
 }
 /*      --------------------------------------------
                MAP STATE INITIALIZATION END

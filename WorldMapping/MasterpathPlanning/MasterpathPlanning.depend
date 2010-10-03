@@ -1,10 +1,16 @@
 # depslib dependency file v1.0
-1286030214 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/main.c
+1286036792 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/main.c
+	<stdio.h>
+	<stdlib.h>
 	"MasterpathPlanning.h"
+	"PathPlanningCore.h"
+
+1286038126 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
 	<stdio.h>
 
-1286031981 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
-	<stdio.h>
+1286038119 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/PathPlanningCore.c
+	"PathPlanningCore.h"
 
-1286030407 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/PathPlanningCore.c
+1286036731 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/PathPlanningCore.h
+	"MasterpathPlanning.h"
 

@@ -48,7 +48,7 @@ struct NodeData    // Declare NODE struct type
     unsigned int score;
     unsigned char opened;
     unsigned char unpassable;
-    unsigned char unpassable_radious;
+    unsigned char in_unpassable_radious;
     unsigned short node_penalty;
   };
 
@@ -97,6 +97,7 @@ struct Map * LoadMap(char * filename) ;
 int SaveMap(struct Map * world) ;
 int DeleteMap(struct Map * world) ;
 int SetMapUnit_In_cm(struct Map * world,unsigned int cm_per_unit) ;
+int MapIsOk(struct Map * themap);
 int ObstacleExists(struct Map * world,unsigned int x,unsigned int y) ;
 int SetObstacle(struct Map * world,unsigned int x,unsigned int y,unsigned int safety_radious) ;
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
