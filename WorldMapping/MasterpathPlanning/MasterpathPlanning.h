@@ -87,19 +87,20 @@ struct Map
 
 
 
-struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y);
 
 /*      --------------------------------------------
                MAP STATE INITIALIZATION START
         -------------------------------------------- */
-struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y);
+struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y,unsigned int actors_number);
 struct Map * LoadMap(char * filename) ;
 int SaveMap(struct Map * world) ;
 int DeleteMap(struct Map * world) ;
 int SetMapUnit_In_cm(struct Map * world,unsigned int cm_per_unit) ;
 int MapIsOk(struct Map * themap);
 int ObstacleExists(struct Map * world,unsigned int x,unsigned int y) ;
+int ObstacleRadiousExists(struct Map * themap,unsigned int x,unsigned int y);
 int SetObstacle(struct Map * world,unsigned int x,unsigned int y,unsigned int safety_radious) ;
+int ClearMap(struct Map * themap);
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int SetAgentSize(struct Map * world,unsigned int agentnum,unsigned int x_size,unsigned int y_size)  ;
 int SetAgentHeading(struct Map * world,unsigned int agentnum,unsigned int heading) ;

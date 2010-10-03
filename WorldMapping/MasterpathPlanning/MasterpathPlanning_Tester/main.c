@@ -6,10 +6,11 @@
 int main()
 {
     printf("MasterpathPlanning tester commencing!!\n");
-    struct Map * testmap = CreateMap(1000,1000);
+    struct Map * testmap = CreateMap(1000,1000,100);
 
     unsigned int x=0,y=0;
 
+    printf("State Cleaning Test!!\n");
     for ( y=0; y<1000; y++)
      {
        for ( x=0; x<1000; x++)
@@ -19,15 +20,17 @@ int main()
      }
 
 
+    printf("Obstacle Setting Test part 1/2!!\n");
     for ( y=0; y<1000; y++)
      {
        for ( x=0; x<1000; x++)
        {
-           if ( !SetObstacle(testmap,x,y,0) ) { fprintf(stderr,"Bug , could not set obstacle !\n"); }
+           if ( !SetObstacle(testmap,x,y,2) ) { fprintf(stderr,"Bug , could not set obstacle !\n"); }
        }
      }
 
-     for ( y=0; y<1000; y++)
+     printf("Obstacle Setting Test part 2/2!!\n");
+    for ( y=0; y<1000; y++)
      {
        for ( x=0; x<1000; x++)
        {
