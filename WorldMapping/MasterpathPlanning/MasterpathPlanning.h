@@ -17,6 +17,10 @@ struct Path
     struct TraceNode *str8_resultlist;
     unsigned int str8_resultlist_size;
 
+    struct NodeRef *openlist;
+    unsigned int openlist_size;
+    unsigned int openlist_top;
+
     unsigned int cur_x,cur_y,proc_node,last_node,node_direction;
     unsigned int source,source_x,source_y;
     unsigned int target,target_x,target_y,solutions_gathered;
@@ -75,19 +79,19 @@ struct Map
    unsigned int world_total_size;
    struct NodeData  * world;
    struct NodeNeighborsCount * world_neighbors;
+   unsigned int GUARD_BYTE;
 
    unsigned int total_actors;
    struct Actor * actors;
 
-    struct NodeRef *openlist;
-    unsigned int openlist_size;
-    unsigned int openlist_current_size;
+    int error_number;
 
-   unsigned int GUARD_BYTE;
+    unsigned short diagonal_penalty;
+    unsigned short horizontal_penalty;
+    unsigned short turning_penalty;
+    unsigned char add_neighbors_mode;
+    unsigned char block_perfect_diagonal;
 };
-
-
-
 
 
 
@@ -120,6 +124,7 @@ int AddObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,int ultra
 int FindPath(struct Map * themap,unsigned int agentnum,unsigned int timeout_ms) ;
 int FindPathToPosition(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y,unsigned int timeout_ms) ;
 int FindSponteneousPath(struct Map * themap,unsigned int agentnum,struct Path * thepath,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int timeout_ms) ;
+int FindPathCommandIsSane(struct Map * themap,unsigned int source_x,unsigned int source_y,unsigned int target_x,unsigned int target_y);
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int AddLocation(struct Map * themap,char * name,unsigned int pos_x,unsigned int pos_y) ;
 int DeleteLocation_Number(struct Map * themap,unsigned int position_id) ;

@@ -27,15 +27,25 @@ struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y,unsig
         struct NodeNeighborsCount emptyneigh={0};
         for ( i=0; i<newmap->world_total_size; i++ ) { newmap->world_neighbors[i]=emptyneigh; }
 
+/*
         newmap->openlist=0; newmap->openlist_current_size=0;
         newmap->openlist_size=(unsigned int) newmap->world_total_size / 2; // < - MAX LIST SIZE , IT HAS A BIG EFFECT IN ALGORITHM SUCCESS RATIO!
         newmap->openlist= (struct NodeRef * ) malloc( sizeof(struct NodeRef) * ( newmap->openlist_size+1 ) );
+*/
 
-
-        /*We need at least 1 actor*/
-        newmap->total_actors=actors_number+1;
+        newmap->total_actors=actors_number+1; /*We need at least 1 actor*/
         newmap->actors = (struct Actor * ) malloc( sizeof(struct Actor)* ( newmap->total_actors ) );
 
+        struct Actor emptyactor={0};
+        for ( i=0; i<newmap->total_actors; i++ ) { newmap->actors[i]=emptyactor; }
+
+
+    newmap->error_number=0;
+    newmap->add_neighbors_mode = 0; // ADD NEIGHBORS WHILE ADDING!
+    newmap->diagonal_penalty=0;
+    newmap->horizontal_penalty=0;
+    newmap->turning_penalty=1;
+    newmap->block_perfect_diagonal=1;
 
 
     return newmap;
@@ -70,8 +80,6 @@ int DeleteMap(struct Map * themap)
        if ( themap->world != 0 ) { free(themap->world); } /* <- This function is epic it frees the world :D */
 
        if ( themap->world_neighbors != 0 ) { free(themap->world_neighbors); }
-
-       if ( themap->openlist != 0 ) { free(themap->openlist); }
 
        if ( themap->actors != 0 ) { free(themap->actors); }
     free(themap);
@@ -194,6 +202,7 @@ int GetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int * x,
   if (!MapIsOk(themap))  { return 0; }
   if (themap->actors==0) { return 0; }
 
+  fprintf(stderr,"stub , x/y could very well not be returned correctly \n");
   x=themap->actors[agentnum].current_x_pos;
   y=themap->actors[agentnum].current_y_pos;
 
@@ -203,13 +212,18 @@ int GetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int * x,
 
 int SetAgentTargetLocation(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y)
 {
-    fprintf(stderr,"stub called\n");
+  if (!MapIsOk(themap))  { return 0; }
+  if (themap->actors==0) { return 0; }
+
+  themap->actors[agentnum].target_x_pos=x;
+  themap->actors[agentnum].target_y_pos=y;
   return 0;
 }
 
 int SetAgentTargetLocationName(struct Map * themap,unsigned int agentnum,char * name)
 {
-    fprintf(stderr,"stub called\n");
+  fprintf(stderr,"stub called\n");
+
   return 0;
 }
 
@@ -259,7 +273,7 @@ int FindSponteneousPath(struct Map * themap,unsigned int agentnum,struct Path * 
 }
 
 
-unsigned int FindPathCommandIsSane(struct Map * themap,unsigned int source_x,unsigned int source_y,unsigned int target_x,unsigned int target_y)
+int FindPathCommandIsSane(struct Map * themap,unsigned int source_x,unsigned int source_y,unsigned int target_x,unsigned int target_y)
 {
   if (!MapIsOk(themap)) {
                           fprintf(stderr,"World Matrix Not Initialized\n");
