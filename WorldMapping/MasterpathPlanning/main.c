@@ -36,7 +36,7 @@ struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y,unsig
         newmap->total_actors=actors_number+1;
         newmap->actors = (struct Actor * ) malloc( sizeof(struct Actor)* ( newmap->total_actors ) );
 
-    PathPlanCore_CleanMap(newmap);
+
 
     return newmap;
 }
@@ -80,9 +80,15 @@ int DeleteMap(struct Map * themap)
 
 int ClearMap(struct Map * themap)
 {
-     if (!MapIsOk(themap)) { return 0; }
+  if (!MapIsOk(themap)) { return 0; }
 
-  return PathPlanCore_CleanMap(themap);
+  unsigned int i = 0;
+  struct NodeData emptynode={0};
+  for ( i=0; i<themap->world_total_size; i++ ) { themap->world[i]=emptynode; }
+  struct NodeNeighborsCount emptyneigh={0};
+  for ( i=0; i<themap->world_total_size; i++ ) { themap->world_neighbors[i]=emptyneigh; }
+
+  return 1;
 }
 
 int SetMapUnit_In_cm(struct Map * themap,unsigned int cm_per_unit)
@@ -138,26 +144,43 @@ int SetObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned int s
         -------------------------------------------- */
 int SetAgentSize(struct Map * themap,unsigned int agentnum,unsigned int x_size,unsigned int y_size)
 {
-   fprintf(stderr,"stub called\n");
-  return 0;
+  if (!MapIsOk(themap))  { return 0; }
+  if (themap->actors==0) { return 0; }
+
+  themap->actors[agentnum].size_x=x_size;
+  themap->actors[agentnum].size_y=y_size;
+  themap->actors[agentnum].size_total=x_size;
+
+  return 1;
 }
 
-int SetAgentHeading(struct Map * themap,unsigned int agentnum,unsigned int heading)
+int SetAgentHeading(struct Map * themap,unsigned int agentnum,int heading)
 {
-   fprintf(stderr,"stub called\n");
+  if (!MapIsOk(themap))  { return 0; }
+  if (themap->actors==0) { return 0; }
+
+    themap->actors[agentnum].current_heading=heading;
+
   return 0;
 }
 
 unsigned int GetAgentHeading(struct Map * themap,unsigned int agentnum)
 {
-    fprintf(stderr,"stub called\n");
-  return 0;
+  if (!MapIsOk(themap))  { return 0; }
+  if (themap->actors==0) { return 0; }
+
+  return themap->actors[agentnum].current_heading ;
 }
 
 int SetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y)
 {
-    fprintf(stderr,"stub called\n");
-  return 0;
+  if (!MapIsOk(themap))  { return 0; }
+  if (themap->actors==0) { return 0; }
+
+  themap->actors[agentnum].current_x_pos=x;
+  themap->actors[agentnum].current_y_pos=y;
+
+  return 1;
 }
 
 int SetAgentLocationName(struct Map * themap,unsigned int agentnum,char * name)
@@ -168,7 +191,12 @@ int SetAgentLocationName(struct Map * themap,unsigned int agentnum,char * name)
 
 int GetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int * x,unsigned int * y)
 {
-    fprintf(stderr,"stub called\n");
+  if (!MapIsOk(themap))  { return 0; }
+  if (themap->actors==0) { return 0; }
+
+  x=themap->actors[agentnum].current_x_pos;
+  y=themap->actors[agentnum].current_y_pos;
+
   return 0;
 }
 
@@ -191,7 +219,7 @@ int MoveAgentForward(struct Map * themap,unsigned int agentnum,int leftwheel_cm,
   return 0;
 }
 
-int SetObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm)
+int AddObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm)
 {
     fprintf(stderr,"stub called\n");
   return 0;
@@ -205,7 +233,7 @@ int SetObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,int ultra
 /*      --------------------------------------------
                      PATH FINDING START
         -------------------------------------------- */
-int FindPath(struct Map * themap,unsigned int agentnum)
+int FindPath(struct Map * themap,unsigned int agentnum,unsigned int timeout_ms)
 {
   /* Finds Path from position to target location for agent
      it must be first set by SetAgentTargetLocation
@@ -213,7 +241,7 @@ int FindPath(struct Map * themap,unsigned int agentnum)
   return 0;
 }
 
-int FindPathToPosition(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y)
+int FindPathToPosition(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y,unsigned int timeout_ms)
 {
   /* Finds Path from position to target location for agent
      it must be first set by SetAgentTargetLocation
@@ -221,12 +249,12 @@ int FindPathToPosition(struct Map * themap,unsigned int agentnum,unsigned int x,
   return 0;
 }
 
-int FindSponteneousPath(struct Map * themap,unsigned int agentnum,struct Path * thepath,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
+int FindSponteneousPath(struct Map * themap,unsigned int agentnum,struct Path * thepath,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int timeout_ms)
 {
   /* Finds Path from position to target location for agent
      it must be first set by SetAgentTargetLocation
   */
-  PathPlanCore_FindPath(themap,x1,y1,themap->actors[agentnum].current_heading,themap->actors[agentnum].size_total,x2,y2,5000);
+  PathPlanCore_FindPath(themap,x1,y1,themap->actors[agentnum].current_heading,themap->actors[agentnum].size_total,x2,y2,timeout_ms);
   return 0;
 }
 
@@ -270,7 +298,6 @@ unsigned int FindPathCommandIsSane(struct Map * themap,unsigned int source_x,uns
 /*      --------------------------------------------
                      LOCATION MANAGMENT START
         -------------------------------------------- */
-
 int AddLocation(struct Map * themap,char * name,unsigned int pos_x,unsigned int pos_y)
 {
   return 0;
@@ -285,7 +312,6 @@ int DeleteLocation(struct Map * themap,char * name)
 {
   return 0;
 }
-
 /*      --------------------------------------------
                      LOCATION MANAGMENT END
         -------------------------------------------- */

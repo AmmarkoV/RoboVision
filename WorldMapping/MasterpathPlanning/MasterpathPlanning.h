@@ -9,7 +9,6 @@ extern "C" {
 
 #define GUARD_BYTE_VALUE 12345
 
-
 struct Path
 {
     struct TraceNode *resultlist;
@@ -25,12 +24,11 @@ struct Path
     unsigned char done,out_of_bounds;
 };
 
-
-
 struct Actor    // Declare NODE struct type
   {
-    float abs_x_pos,abs_y_pos;
     unsigned int size_x,size_y,size_total;
+
+    float abs_x_pos,abs_y_pos;
     unsigned int current_x_pos,current_y_pos;
     unsigned int target_x_pos,target_y_pos;
 
@@ -39,8 +37,6 @@ struct Actor    // Declare NODE struct type
 
     int current_heading,target_heading;
   };
-
-
 
 struct NodeData    // Declare NODE struct type
   {
@@ -52,7 +48,6 @@ struct NodeData    // Declare NODE struct type
     unsigned char in_unpassable_radious;
     unsigned short node_penalty;
   };
-
 
 struct NodeRef
   {
@@ -112,7 +107,7 @@ int SetObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned int s
 int ClearMap(struct Map * themap);
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int SetAgentSize(struct Map * themap,unsigned int agentnum,unsigned int x_size,unsigned int y_size)  ;
-int SetAgentHeading(struct Map * themap,unsigned int agentnum,unsigned int heading) ;
+int SetAgentHeading(struct Map * themap,unsigned int agentnum,int heading) ;
 unsigned int GetAgentHeading(struct Map * themap,unsigned int agentnum) ;
 int SetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y) ;
 int SetAgentLocationName(struct Map * themap,unsigned int agentnum,char * name) ;
@@ -120,11 +115,11 @@ int GetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int * x,
 int SetAgentTargetLocation(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y) ;
 int SetAgentTargetLocationName(struct Map * themap,unsigned int agentnum,char * name) ;
 int MoveAgentForward(struct Map * themap,unsigned int agentnum,int leftwheel_cm,int rightwheel_cm) ;
-int SetObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm) ;
+int AddObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm) ;
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-int FindPath(struct Map * themap,unsigned int agentnum) ;
-int FindPathToPosition(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y) ;
-int FindSponteneousPath(struct Map * themap,unsigned int agentnum,struct Path * thepath,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2) ;
+int FindPath(struct Map * themap,unsigned int agentnum,unsigned int timeout_ms) ;
+int FindPathToPosition(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y,unsigned int timeout_ms) ;
+int FindSponteneousPath(struct Map * themap,unsigned int agentnum,struct Path * thepath,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int timeout_ms) ;
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int AddLocation(struct Map * themap,char * name,unsigned int pos_x,unsigned int pos_y) ;
 int DeleteLocation_Number(struct Map * themap,unsigned int position_id) ;
