@@ -107,7 +107,8 @@ int SetMapUnit_In_cm(struct Map * themap,unsigned int cm_per_unit) ;
 int MapIsOk(struct Map * themap);
 int ObstacleExists(struct Map * themap,unsigned int x,unsigned int y) ;
 int ObstacleRadiousExists(struct Map * themap,unsigned int x,unsigned int y);
-int SetObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned int safety_radious) ;
+int SetObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned int safety_radious);
+int RemoveObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned int safety_radious);
 int ClearMap(struct Map * themap);
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int SetAgentSize(struct Map * themap,unsigned int agentnum,unsigned int x_size,unsigned int y_size)  ;
@@ -132,7 +133,8 @@ int DeleteLocation(struct Map * themap,char * name) ;
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int ExtractRouteToLogo(struct Map * themap,struct Path * thepath,char * filename) ;
 int GetRoutePoints(struct Map * themap,struct Path * thepath) ;
-int GetRouteWaypoint(struct Map * themap,struct Path * thepath,unsigned int *x,unsigned int *y) ;
+int GetRouteWaypoint(struct Map * themap,unsigned int agentnum,unsigned int count,unsigned int *x,unsigned int *y) ;
+int GetStraightRouteWaypoint(struct Map * themap,unsigned int agentnum,unsigned int count,unsigned int *x,unsigned int *y);
 
 #ifdef __cplusplus
 }

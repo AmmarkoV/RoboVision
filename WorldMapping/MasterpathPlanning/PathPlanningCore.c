@@ -6,10 +6,11 @@
 #include <stdlib.h>
 
 /* This function adds a radious around an obstacle */
-int PathPlanCore_AddObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
+inline int PathPlanCore_ObstacleRadiousCalculations(struct Map * themap,unsigned char add_operation,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int total_safety_radious)
 {
-   if ( safety_radious == 0 ) { themap->world[mem_ptr].in_unpassable_radious+=1; return 1; } /* Radious is a point */
+   if ( total_safety_radious == 0 ) { themap->world[mem_ptr].in_unpassable_radious+=1; return 1; } /* Radious is a point */
 
+   unsigned int safety_radious = (unsigned int) total_safety_radious/2;
    unsigned int start_x=x,start_y=y,end_x=x,end_y=y;
    if ( start_x>safety_radious )
     { /* Add left radious */
@@ -29,14 +30,28 @@ int PathPlanCore_AddObstacleRadious(struct Map * themap,unsigned int x,unsigned 
     } else
     { end_x+=safety_radious; }
 
-  unsigned int xi=start_x,yi=start_y,mem_ptr_i=start_x+start_y*themap->world_size_x;
-  for ( yi = start_y; yi < end_y; yi++ )
-   { for ( xi = start_x; xi < end_x; xi++ )
+  unsigned int xi=start_x,yi=start_y,mem_ptr_i=0;
+  for ( yi = start_y; yi<=end_y; yi++ )
+   {
+     mem_ptr_i=start_x+yi*themap->world_size_x;
+     for ( xi = start_x; xi<=end_x; xi++ )
      {
-      themap->world[mem_ptr_i].in_unpassable_radious+=1;
+       if (add_operation) { ++themap->world[mem_ptr_i].in_unpassable_radious; ++themap->world_neighbors[mem_ptr_i].total; } else
+                          { --themap->world[mem_ptr_i].in_unpassable_radious; --themap->world_neighbors[mem_ptr_i].total; }
+       ++mem_ptr_i;
      }
    }
    return 1;
+}
+
+int PathPlanCore_AddObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
+{
+   return PathPlanCore_ObstacleRadiousCalculations(themap,1,x,y,mem_ptr,safety_radious);
+}
+
+int PathPlanCore_RemoveObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
+{
+   return PathPlanCore_ObstacleRadiousCalculations(themap,0,x,y,mem_ptr,safety_radious);
 }
 
 

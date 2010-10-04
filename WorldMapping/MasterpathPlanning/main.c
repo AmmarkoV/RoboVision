@@ -146,6 +146,19 @@ int SetObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned int s
    if (!PathPlanCore_AddObstacleRadious(themap,x,y,memory_ptr,safety_radious) ) { fprintf(stderr,"Could not add radious\n"); }
    return 1;
 }
+
+int RemoveObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned int safety_radious)
+{
+   if (!MapIsOk(themap)) { return 0; }
+   unsigned int memory_ptr=x+(y*themap->world_size_x);
+   if (memory_ptr >= themap->world_total_size ) { return 0; /*Overflow protection */ }
+
+   themap->world[memory_ptr].unpassable=0;
+
+   if (!PathPlanCore_RemoveObstacleRadious(themap,x,y,memory_ptr,safety_radious) ) { fprintf(stderr,"Could not add radious\n"); }
+   return 1;
+}
+
 /*      --------------------------------------------
                MAP STATE INITIALIZATION END
         -------------------------------------------- */
@@ -352,9 +365,20 @@ int GetRoutePoints(struct Map * themap,struct Path * thepath)
   return 0;
 }
 
-int GetRouteWaypoint(struct Map * themap,struct Path * thepath,unsigned int *x,unsigned int *y)
+int GetRouteWaypoint(struct Map * themap,unsigned int agentnum,unsigned int count,unsigned int *x,unsigned int *y)
 {
-  return 0;
+  if ( count >= themap->actors[agentnum].last_route.resultlist_size ) { return 0; }
+  *x=themap->actors[agentnum].last_route.resultlist[count].nodex;
+  *y=themap->actors[agentnum].last_route.resultlist[count].nodey;
+  return 1;
+}
+
+int GetStraightRouteWaypoint(struct Map * themap,unsigned int agentnum,unsigned int count,unsigned int *x,unsigned int *y)
+{
+  if ( count >= themap->actors[agentnum].last_route.str8_resultlist_size ) { return 0; }
+  *x=themap->actors[agentnum].last_route.str8_resultlist[count].nodex;
+  *y=themap->actors[agentnum].last_route.str8_resultlist[count].nodey;
+  return 1;
 }
 /*      --------------------------------------------
                      ROUTE EXTRACTION END

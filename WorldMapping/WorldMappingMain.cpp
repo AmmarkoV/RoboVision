@@ -166,9 +166,16 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
   draw_area=new wxBitmap(wxT("back.bmp"),wxBITMAP_TYPE_BMP);
 
   SetTitle(wxT("Pathfinding Simulations for GuarDDoG"));
-  floor_plan = new Map(101,101);
-  floor_plan->SetActorPhysicalSize(4);
-  floor_plan->SetActorCurrentPosition(1,1,6);
+
+  floor = CreateMap(101,101,10);
+  SetMapUnit_In_cm(floor,15);
+  SetAgentSize(floor,0,1,1);
+  SetAgentLocation(floor,0,1,1) ;
+  SetAgentHeading(floor,0,1) ;
+  //floor_plan = new Map(101,101);
+  //floor_plan->SetActorPhysicalSize(4);
+  //floor_plan->SetActorCurrentPosition(1,1,6);
+
   ptx1->SetValue(wxT("1")) , pty1->SetValue(wxT("1"));
   ptx2->SetValue(wxT("69")) , pty2->SetValue(wxT("43"));
 
@@ -196,7 +203,8 @@ WorldMappingFrame::~WorldMappingFrame()
   //*)
 //  delete guarddog;
   delete draw_area;
-  delete floor_plan;
+  //delete floor_plan;
+  DeleteMap(floor);
 }
 
 void WorldMappingFrame::OnQuit(wxCommandEvent& event)
@@ -211,15 +219,15 @@ void WorldMappingFrame::OnAbout(wxCommandEvent& event)
 }
 
 
-void DrawSolvePath(wxMemoryDC &mem,Map &floorplancopy)
+void DrawSolvePath(wxMemoryDC &mem,struct Map *floorplancopy)
 {
   unsigned int route_count=0;
-  unsigned int x,y;
+  unsigned int x=0,y=0;
 
   wxBrush yellowback(wxColour(255,255,0),wxSOLID);
   wxPen yellow(wxColour(255,255,0),1,wxSOLID);
 
-  while ( floorplancopy.GetRoutePoint(0,route_count,x,y)==1 )
+  while ( GetRouteWaypoint(floorplancopy,0,route_count,&x,&y) == 1 )
     {
       mem.SetPen(yellow);
       mem.SetBrush(yellowback);
@@ -231,9 +239,9 @@ void DrawSolvePath(wxMemoryDC &mem,Map &floorplancopy)
   //printf("Drawing Level 1 Lines \n");
   wxPen redfat(wxColour(255,0,0),3,wxSOLID);
   unsigned int oldx=0,oldy=0;
-  if ( floorplancopy.GetRoutePoint(1,0,oldx,oldy)==1 ) { mem.DrawCircle(oldx*10+5,oldy*10+5,3); }
+  if ( GetStraightRouteWaypoint(floorplancopy,0,0,&oldx,&oldy)==1 ) { mem.DrawCircle(oldx*10+5,oldy*10+5,3); }
   route_count=1;
-  while ( floorplancopy.GetRoutePoint(1,route_count,x,y)==1 )
+  while ( GetStraightRouteWaypoint(floorplancopy,0,route_count,&x,&y)==1 )
     {
       mem.SetPen(redfat);
       mem.DrawCircle(x*10+5,y*10+5,3);
@@ -284,7 +292,7 @@ void DrawEndPoint(wxMemoryDC &mem,unsigned int endx,unsigned int endy)
 
 
 
-void DrawWorld(wxMemoryDC &mem,Map &floorplancopy,unsigned int startx,unsigned int starty,unsigned int endx,unsigned int endy)
+void DrawWorld(wxMemoryDC &mem,struct Map *floorplancopy,unsigned int startx,unsigned int starty,unsigned int endx,unsigned int endy)
 {
   wxBrush blackback(wxColour(0,0,0),wxSOLID);
   wxBrush whiteback(wxColour(255,255,255),wxSOLID);
@@ -303,14 +311,14 @@ void DrawWorld(wxMemoryDC &mem,Map &floorplancopy,unsigned int startx,unsigned i
     {
       for (int x =0; x<100; x++ )
         {
-          obj = floorplancopy.GetObjectAt(x,y);
+          obj = ObstacleExists(floorplancopy,x,y);
           if ( obj!=0 )
             {
               mem.SetPen(red);
               mem.SetBrush(blackback);
             } else
             {
-              obj = floorplancopy.GetNeighborsAt(x,y);
+              obj = ObstacleRadiousExists(floorplancopy,x,y);
               if ( obj!=0 )
               {
                 mem.SetPen(black);
@@ -398,7 +406,7 @@ void WorldMappingFrame::OnPaint(wxPaintEvent& event)
   ptx2->GetValue().ToLong(&endx);
   pty2->GetValue().ToLong(&endy);
 
-  DrawWorld(mem,*floor_plan,startx,starty,endx,endy);
+  DrawWorld(mem,floor,startx,starty,endx,endy);
 
   dc.DrawBitmap(*draw_area,x,y,true);
 }
@@ -453,7 +461,8 @@ void WorldMappingFrame::OnMotion(wxMouseEvent& event)
               }
             else
               {
-                floor_plan->SetObjectAt(x,y,BLOCKED);
+                //floor_plan->SetObjectAt(x,y,BLOCKED);
+                SetObstacle(floor,x,y,7) ;
                 Refresh();
               }
 
@@ -467,7 +476,8 @@ void WorldMappingFrame::OnMotion(wxMouseEvent& event)
         int y=event.GetY();
         if ( XYOverFeed(x,y)==1 )
           {
-            floor_plan->SetObjectAt(x,y,FREE);
+            //floor_plan->SetObjectAt(x,y,FREE);
+            RemoveObstacle(floor,x,y,7);
             Refresh();
           }
       }
@@ -493,14 +503,17 @@ void WorldMappingFrame::OnButtonCalculateClick(wxCommandEvent& event)
   ptx1->GetValue().ToLong(&startx);
   pty1->GetValue().ToLong(&starty);
 
-  floor_plan->SetActorCurrentPosition(startx,starty,6);
+  //floor_plan->SetActorCurrentPosition(startx,starty,6);
+  SetAgentLocation(floor,0,startx,starty) ;
 
   long endx,endy;
   ptx2->GetValue().ToLong(&endx);
   pty2->GetValue().ToLong(&endy);
 
 
-  signed int res=floor_plan->FindPathTo(endx,endy,TimeMS->GetValue()*10);
+  //signed int res=floor_plan->FindPathTo(endx,endy,TimeMS->GetValue()*10);
+  signed int res=FindSponteneousPath(floor,0,startx,starty,endx,endy,TimeMS->GetValue()*10) ;
+  //floor_plan->FindPathTo(endx,endy,);
   if ( res <1 ) { TTS("Could not establish a route.");  } else
                 { TTS("New route established."); }
   Refresh();
@@ -508,11 +521,12 @@ void WorldMappingFrame::OnButtonCalculateClick(wxCommandEvent& event)
 
 void WorldMappingFrame::OnClearButtonClick(wxCommandEvent& event)
 {
-  floor_plan->Clear();
+  //floor_plan->Clear();
+  ClearMap(floor);
   Refresh();
 }
 
 void WorldMappingFrame::OnPrintButtonClick(wxCommandEvent& event)
 {
-   floor_plan->HTMLOutput("printout.html");
+   //floor_plan->HTMLOutput("printout.html");
 }

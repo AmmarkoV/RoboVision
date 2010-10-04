@@ -10,7 +10,7 @@
 #ifndef WORLDMAPPINGMAIN_H
 #define WORLDMAPPINGMAIN_H
 
-#include "PathPlanning/Map.h"
+#include "MasterpathPlanning/MasterpathPlanning.h"
 #include <wx/joystick.h>
 #include "../MotorFoundation/MotorHAL.h"
 
@@ -104,7 +104,8 @@ class WorldMappingFrame: public wxFrame
         wxMouseState mouse;
  //       RobotHAL *guarddog;
         wxJoystick *joy_stick;
-        Map *floor_plan;
+        //Map *floor_plan;
+        struct Map * floor;
         int set_point_flag;
 
         DECLARE_EVENT_TABLE()
