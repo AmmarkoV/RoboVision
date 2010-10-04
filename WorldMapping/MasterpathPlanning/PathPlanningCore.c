@@ -1,4 +1,5 @@
 #include "PathPlanningCore.h"
+#include "NormalizePath.h"
 #include <sys/time.h>
 #include <unistd.h>
 
@@ -170,23 +171,47 @@ inline unsigned int abs(signed int num)
   return num;
 }
 
+inline void ExpandNodeFromNode(struct NodeData * world_matrix,unsigned int from_node,unsigned int to_node,unsigned char current_heading,unsigned int turning_penalty)
+{
+  unsigned int new_score=world_matrix[from_node].score;
+
+
+  new_score += world_matrix[from_node].node_penalty;
+  if ( current_heading!= world_matrix[from_node].arrived_direction )
+    {
+      // TO PARAKATW DOULEVEI SWSTA
+      new_score += abs(current_heading-world_matrix[from_node].arrived_direction)*turning_penalty;
+    }
+  // Den theloume polles peristrofes giayto k gia kathe mia plironoume penalty
+
+  if ((new_score<world_matrix[to_node].score) ||  (world_matrix[to_node].score==0) )
+    {
+      //Antikathistoume ton parent tou komvou to_node me ton from_node afou yparxei kalytero monopati!..!
+      world_matrix[to_node].parent_node = from_node;
+      world_matrix[to_node].score = new_score;
+      world_matrix[to_node].arrived_direction = current_heading;
+    }
+
+}
+
+
 void inline OpenNode(struct Map * themap,struct Path * route,unsigned int the_node)
 {
-  if ( ( !world[the_node].opened ) && (world[the_node].unpassable==0) && (world_neighbors[the_node].total==0) )
+  if ( ( !themap->world[the_node].opened ) && (themap->world[the_node].unpassable==0) && (themap->world_neighbors[the_node].total==0) )
     {
-      if (openlist_top+1<openlist_size)
+      if (route->openlist_top+1<route->openlist_size)
         {
-          unsigned int cur_x=the_node % world_x; // Ypologizoume tin syntetagmeni x , y
-          unsigned int cur_y=the_node / world_x; // Ypologizoume tin syntetagmeni x , y
+          unsigned int cur_x=the_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
+          unsigned int cur_y=the_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
 
-          world[the_node].opened=true;
+          themap->world[the_node].opened=1;
 
           // ADDING NEW NODE TO PENDING LIST!
-          openlist[openlist_top].node=the_node;
-          openlist[openlist_top].score=ManhattanDistance(cur_x,cur_y,target_x,target_y);
+          route->openlist[route->openlist_top].node=the_node;
+          route->openlist[route->openlist_top].score=ManhattanDistance(route->cur_x,route->cur_y,route->target_x,route->target_y);
 
 
-          ++openlist_top;
+          ++route->openlist_top;
           // WE HEAVE SUCCESSFULLY ADDED THE NEW NODE TO THE TAIL OF THE OPENLIST
 
         }
@@ -196,6 +221,19 @@ void inline OpenNode(struct Map * themap,struct Path * route,unsigned int the_no
           /* Mas teleiwse o xoros.. krima.. as elpisoume oti ta open nodes exoun lysi!! */
         }
     }
+}
+
+inline unsigned int GetNextNode(struct Map * themap,struct Path * route)
+{
+  unsigned int retres=0;
+  if (route->openlist_top>0)
+    {
+      quickSortNodes(route->openlist,route->openlist_top-1);
+      retres=route->openlist[0].node;
+      swap_2_list_references(route->openlist,route->openlist_top,0,route->openlist_top-1);
+      --route->openlist_top;
+    }
+  return retres;
 }
 
 inline int ProcessNode(struct Map * themap,struct Path * route,unsigned int node_to_proc)
@@ -212,7 +250,7 @@ inline int ProcessNode(struct Map * themap,struct Path * route,unsigned int node
         }
       else
         {
-          OpenNode(route->proc_node);
+          OpenNode(themap,route,route->proc_node);
         }
 
     }
@@ -409,7 +447,7 @@ int PathPlanCore_FindPath(struct Map * themap,unsigned int x1,unsigned int y1,un
         {
           if (route.openlist_top>0) //AN EXOUME KOMVO PROS PROSTHIKI
             {
-              route.last_node=GetNextNode(); // to idio einai :P -> open_list[0].node;
+              route.last_node=GetNextNode(themap,&route); // to idio einai :P -> open_list[0].node;
               route.cur_x=route.last_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
               route.cur_y=route.last_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
             }
