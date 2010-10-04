@@ -37,7 +37,7 @@ struct Actor    // Declare NODE struct type
     unsigned int target_x_pos,target_y_pos;
 
     unsigned int reached_target;
-    struct Path * target_path;
+    struct Path last_route;
 
     int current_heading,target_heading;
   };

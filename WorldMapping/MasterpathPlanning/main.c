@@ -37,7 +37,10 @@ struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y,unsig
         newmap->actors = (struct Actor * ) malloc( sizeof(struct Actor)* ( newmap->total_actors ) );
 
         struct Actor emptyactor={0};
-        for ( i=0; i<newmap->total_actors; i++ ) { newmap->actors[i]=emptyactor; }
+        struct Path emptypath={0};
+        for ( i=0; i<newmap->total_actors; i++ ) { newmap->actors[i]=emptyactor;
+                                                   newmap->actors[i].last_route=emptypath;
+                                                 }
 
 
     newmap->error_number=0;
@@ -167,7 +170,9 @@ int SetAgentHeading(struct Map * themap,unsigned int agentnum,int heading)
   if (!MapIsOk(themap))  { return 0; }
   if (themap->actors==0) { return 0; }
 
-    themap->actors[agentnum].current_heading=heading;
+    fprintf(stderr,"Heading is a stub \n");
+     //themap->actors[agentnum].current_heading=heading;
+    themap->actors[agentnum].current_heading=1;
 
   return 0;
 }
@@ -203,8 +208,8 @@ int GetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int * x,
   if (themap->actors==0) { return 0; }
 
   fprintf(stderr,"stub , x/y could very well not be returned correctly \n");
-  x=themap->actors[agentnum].current_x_pos;
-  y=themap->actors[agentnum].current_y_pos;
+  *x=themap->actors[agentnum].current_x_pos;
+  *y=themap->actors[agentnum].current_y_pos;
 
   return 0;
 }
@@ -268,7 +273,7 @@ int FindSponteneousPath(struct Map * themap,unsigned int agentnum,unsigned int x
   /* Finds Path from position to target location for agent
      it must be first set by SetAgentTargetLocation
   */
-  return PathPlanCore_FindPath(themap,x1,y1,themap->actors[agentnum].current_heading,themap->actors[agentnum].size_total,x2,y2,timeout_ms);
+  return PathPlanCore_FindPath(themap,&themap->actors[agentnum].last_route,x1,y1,themap->actors[agentnum].current_heading,themap->actors[agentnum].size_total,x2,y2,timeout_ms);
 
 }
 

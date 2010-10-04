@@ -35,10 +35,18 @@
 			</Target>
 		</Build>
 		<Unit filename="MasterpathPlanning.h" />
+		<Unit filename="NormalizePath.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="NormalizePath.h" />
 		<Unit filename="PathPlanningCore.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="PathPlanningCore.h" />
+		<Unit filename="WorldLocations.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="WorldLocations.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
