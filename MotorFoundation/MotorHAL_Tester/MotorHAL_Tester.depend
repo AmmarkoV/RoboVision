@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1268620472 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL_Tester/main.c
+	"../MotorHAL.h"
+	<stdio.h>
+	<stdlib.h>
+
+1268620130 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
+
