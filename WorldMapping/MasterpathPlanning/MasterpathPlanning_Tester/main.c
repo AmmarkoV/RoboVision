@@ -41,9 +41,11 @@ int main()
     ClearMap(testmap);
 
 
-    if ( !FindSponteneousPath(testmap,0,0,0,999,999,100000) ) { fprintf(stderr,"Bug , could not find empty far diagonal line !\n");  }
-    if ( !FindSponteneousPath(testmap,0,0,0,10,10,100000) ) { fprintf(stderr,"Bug , could not find empty close diagonal line !\n");  }
-    if ( !FindSponteneousPath(testmap,0,0,0,999,999,100000) ) { fprintf(stderr,"Bug , could not find empty far diagonal line !\n");  }
+    if ( !FindSponteneousPath(testmap,0,0,0,10,10,10000) ) { fprintf(stderr,"Bug , could not find empty close diagonal line !\n");  }
+
+    if ( !FindSponteneousPath(testmap,0,0,0,999,999,10000) ) { fprintf(stderr,"Bug , could not find empty far diagonal line !\n");  }
+
+    if ( !FindSponteneousPath(testmap,0,0,0,999,999,10000) ) { fprintf(stderr,"Bug , could not find empty far diagonal line !\n");  }
 
 
 

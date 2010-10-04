@@ -203,8 +203,8 @@ void inline OpenNode(struct Map * themap,struct Path * route,unsigned int the_no
     {
       if (route->openlist_top+1<route->openlist_size)
         {
-          unsigned int cur_x=the_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
-          unsigned int cur_y=the_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
+       //   unsigned int cur_x=the_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
+       //   unsigned int cur_y=the_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
 
           themap->world[the_node].opened=1;
 
@@ -232,7 +232,7 @@ inline unsigned int GetNextNode(struct Map * themap,struct Path * route)
     {
       quickSortNodes(route->openlist,route->openlist_top-1);
       retres=route->openlist[0].node;
-      swap_2_list_references(route->openlist,route->openlist_top,0,route->openlist_top-1);
+      swap_2_list_references(route->openlist,&route->openlist_top,0,route->openlist_top-1);
       --route->openlist_top;
     }
   return retres;
@@ -497,7 +497,7 @@ int PathPlanCore_FindPath(struct Map * themap,unsigned int x1,unsigned int y1,un
       // WE HAVE THE RAW PATH , WE ARE GOING FOR A LINED PATH!
 
       // 1st level line extraction
-      route.str8_resultlist=GetANormalizedLineFromNodes(route.resultlist,route.resultlist_size,route.str8_resultlist_size);
+      route.str8_resultlist=GetANormalizedLineFromNodes(route.resultlist,route.resultlist_size,&route.str8_resultlist_size);
       if ( route.str8_resultlist == 0 )
        {
          fprintf(stderr,"Could not extract a normalized line\n");
@@ -505,7 +505,7 @@ int PathPlanCore_FindPath(struct Map * themap,unsigned int x1,unsigned int y1,un
        {
           // 2nd level line compression/extraction
            unsigned int start_str8_resultlist_size=route.str8_resultlist_size;
-           GetTheShortestNormalizedLineFromNodes(themap->world,themap->world_neighbors,themap->world_size_x,themap->world_total_size,route.str8_resultlist,route.str8_resultlist_size);
+           GetTheShortestNormalizedLineFromNodes(themap->world,themap->world_neighbors,themap->world_size_x,themap->world_total_size,route.str8_resultlist,&route.str8_resultlist_size);
            printf("Compressed route , removed %d checkpoints now has %d total \n",start_str8_resultlist_size-route.str8_resultlist_size,route.str8_resultlist_size);
 
            char * storage;
