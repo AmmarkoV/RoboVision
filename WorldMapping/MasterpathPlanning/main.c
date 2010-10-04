@@ -81,11 +81,12 @@ int DeleteMap(struct Map * themap)
     themap->GUARD_BYTE=0;
 
        themap->world_total_size=0;
-       if ( themap->world != 0 ) { free(themap->world); } /* <- This function is epic it frees the world :D */
+       if ( themap->world != 0 ) { free(themap->world); themap->world=0; } /* <- This function is epic it frees the world :D */
 
-       if ( themap->world_neighbors != 0 ) { free(themap->world_neighbors); }
+       if ( themap->world_neighbors != 0 ) { free(themap->world_neighbors); themap->world_neighbors=0; }
 
-       if ( themap->actors != 0 ) { free(themap->actors); }
+       if ( themap->actors != 0 ) { free(themap->actors); themap->actors=0; }
+
     free(themap);
     return 1;
 }

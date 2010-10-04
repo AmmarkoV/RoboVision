@@ -97,12 +97,13 @@ inline void quickSortNodes(struct NodeRef *arr, int elements)
 
 
 unsigned int inline ReturnDistanceFromNodeToNode(struct NodeData * world_matrix,unsigned int start_node,unsigned int end_node,unsigned int should_not_be_over)
-{
+{ /*This function returns the number of hops from end_node to start_node , if end_node is not connected to start_node it will eventually
+    reach a node with parent 0 */
   unsigned char done=0;
   unsigned int current_node=end_node,distance=0;
   while ( (!done) && ( distance < should_not_be_over)  )
     {
-      if ( world_matrix[current_node].parent_node==0 ) { done=1; }
+      if ( world_matrix[current_node].parent_node==0 ) { done=1; distance=0; /*Dead end*/ }
       else
         { /* Yparxei parent node! */
           ++distance;
@@ -206,8 +207,6 @@ void inline OpenNode(struct Map * themap,struct Path * route,unsigned int the_no
     {
       if (route->openlist_top+1<route->openlist_size)
         {
-       //   unsigned int cur_x=the_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
-       //   unsigned int cur_y=the_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
           themap->world[the_node].opened=1;
 
           // ADDING NEW NODE TO PENDING LIST!
@@ -544,8 +543,7 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
     }
 
 
-  free(route->openlist);
-  route->openlist=0;
+  free(route->openlist); route->openlist=0;
   return hops;
 }
 
