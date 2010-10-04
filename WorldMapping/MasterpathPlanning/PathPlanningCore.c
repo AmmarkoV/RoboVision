@@ -2,6 +2,8 @@
 #include "NormalizePath.h"
 #include <sys/time.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /* This function adds a radious around an obstacle */
 int PathPlanCore_AddObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
@@ -165,7 +167,7 @@ inline unsigned int ManhattanDistance(unsigned int from_x,unsigned int from_y,un
   return totres;
 }
 
-inline unsigned int abs(signed int num)
+inline unsigned int abs_val(signed int num)
 {
   if ( num < 0 ) { return 0-num; }
   return num;
@@ -180,7 +182,7 @@ inline void ExpandNodeFromNode(struct NodeData * world_matrix,unsigned int from_
   if ( current_heading!= world_matrix[from_node].arrived_direction )
     {
       // TO PARAKATW DOULEVEI SWSTA
-      new_score += abs(current_heading-world_matrix[from_node].arrived_direction)*turning_penalty;
+      new_score += abs_val(current_heading-world_matrix[from_node].arrived_direction)*turning_penalty;
     }
   // Den theloume polles peristrofes giayto k gia kathe mia plironoume penalty
 
@@ -264,6 +266,7 @@ int PathPlanCore_FindPath(struct Map * themap,unsigned int x1,unsigned int y1,un
 {
   struct Path route={0};
 
+
   route.source=(y1*themap->world_size_x)+(x1) , route.source_x = x1 , route.source_y = y1;
   route.target=(y2*themap->world_size_x)+(x2) , route.target_x = x2 , route.target_y = y2;
 
@@ -278,24 +281,23 @@ int PathPlanCore_FindPath(struct Map * themap,unsigned int x1,unsigned int y1,un
       printf("FindPath called and Source==Target , skipping calculations\n");
       return 0;
     }
-  if ( FindPathCommandIsSane(themap,route.source_x,route.source_y,route.target_x,route.target_y) != 0 )
+
+
+  if ( route.openlist==0 )
+    {
+        route.openlist_size=(unsigned int) themap->world_total_size / 2; // < - MAX LIST SIZE , IT HAS A BIG EFFECT IN ALGORITHM SUCCESS RATIO!
+        route.openlist= (struct NodeRef * ) malloc ( sizeof(struct NodeRef) * ( route.openlist_size+1 ) );
+    }
+
+
+  if ( !FindPathCommandIsSane(themap,&route,route.source_x,route.source_y,route.target_x,route.target_y) )
     {
       printf("FindPath called with incorrect parameters , not starting find routine..\n");
       return 0;
     }
 
-
-  if ( route.str8_resultlist!=0 )
-    {
-      free(route.str8_resultlist);
-      route.str8_resultlist_size=0;
-    }
-
-  if ( route.resultlist!=0 )
-    {
-      free(route.resultlist);
-      route.resultlist=0;
-    }
+  if ( route.str8_resultlist!=0 ) { free(route.str8_resultlist); route.str8_resultlist_size=0; }
+  if ( route.resultlist!=0 ) { free(route.resultlist); route.resultlist=0; }
 
   route.resultlist_size = 0;
   route.openlist_top = 0;
@@ -520,7 +522,8 @@ int PathPlanCore_FindPath(struct Map * themap,unsigned int x1,unsigned int y1,un
     }
 
 
-
+  free(route.openlist);
+  route.openlist=0;
   return hops;
 }
 

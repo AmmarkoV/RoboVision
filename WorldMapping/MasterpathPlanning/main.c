@@ -263,17 +263,17 @@ int FindPathToPosition(struct Map * themap,unsigned int agentnum,unsigned int x,
   return 0;
 }
 
-int FindSponteneousPath(struct Map * themap,unsigned int agentnum,struct Path * thepath,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int timeout_ms)
+int FindSponteneousPath(struct Map * themap,unsigned int agentnum,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int timeout_ms)
 {
   /* Finds Path from position to target location for agent
      it must be first set by SetAgentTargetLocation
   */
-  PathPlanCore_FindPath(themap,x1,y1,themap->actors[agentnum].current_heading,themap->actors[agentnum].size_total,x2,y2,timeout_ms);
-  return 0;
+  return PathPlanCore_FindPath(themap,x1,y1,themap->actors[agentnum].current_heading,themap->actors[agentnum].size_total,x2,y2,timeout_ms);
+
 }
 
 
-int FindPathCommandIsSane(struct Map * themap,unsigned int source_x,unsigned int source_y,unsigned int target_x,unsigned int target_y)
+int FindPathCommandIsSane(struct Map * themap,struct Path * route,unsigned int source_x,unsigned int source_y,unsigned int target_x,unsigned int target_y)
 {
   if (!MapIsOk(themap)) {
                           fprintf(stderr,"World Matrix Not Initialized\n");
@@ -292,13 +292,13 @@ int FindPathCommandIsSane(struct Map * themap,unsigned int source_x,unsigned int
       return 0;
     }
 
-/*
-  if (openlist==0)
+
+  if (route->openlist==0)
     {
       fprintf(stderr,"OpenList Not Initialized!\n");
       return 0;
     }
-*/
+
 
   return 1;
 }

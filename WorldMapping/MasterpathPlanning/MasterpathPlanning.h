@@ -123,8 +123,8 @@ int AddObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,int ultra
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int FindPath(struct Map * themap,unsigned int agentnum,unsigned int timeout_ms) ;
 int FindPathToPosition(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y,unsigned int timeout_ms) ;
-int FindSponteneousPath(struct Map * themap,unsigned int agentnum,struct Path * thepath,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int timeout_ms) ;
-int FindPathCommandIsSane(struct Map * themap,unsigned int source_x,unsigned int source_y,unsigned int target_x,unsigned int target_y);
+int FindSponteneousPath(struct Map * themap,unsigned int agentnum,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2,unsigned int timeout_ms) ;
+int FindPathCommandIsSane(struct Map * themap,struct Path * route,unsigned int source_x,unsigned int source_y,unsigned int target_x,unsigned int target_y);
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int AddLocation(struct Map * themap,char * name,unsigned int pos_x,unsigned int pos_y) ;
 int DeleteLocation_Number(struct Map * themap,unsigned int position_id) ;

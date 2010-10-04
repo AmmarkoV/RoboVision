@@ -1,17 +1,20 @@
 # depslib dependency file v1.0
-1286148556 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/main.c
+1286155288 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/main.c
 	<stdio.h>
 	<stdlib.h>
 	"MasterpathPlanning.h"
 	"PathPlanningCore.h"
 
-1286148557 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
+1286155300 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
 	<stdio.h>
 
-1286149826 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/PathPlanningCore.c
+1286155215 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/PathPlanningCore.c
 	"PathPlanningCore.h"
+	"NormalizePath.h"
 	<sys/time.h>
 	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
 
 1286123841 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/PathPlanningCore.h
 	"MasterpathPlanning.h"
@@ -20,4 +23,11 @@
 	"WorldLocations.h"
 
 1286129089 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/WorldLocations.h
+
+1286150641 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/NormalizePath.c
+	"NormalizePath.h"
+	<stdio.h>
+
+1286150290 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/NormalizePath.h
+	"MasterpathPlanning.h"
 
