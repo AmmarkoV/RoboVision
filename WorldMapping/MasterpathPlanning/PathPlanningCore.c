@@ -115,32 +115,26 @@ unsigned int inline ReturnDistanceFromNodeToNode(struct NodeData * world_matrix,
 
 unsigned int FillResultPath(struct NodeData * world_matrix,unsigned int world_x,struct TraceNode * resultlist,unsigned int result_size,unsigned int start_node,unsigned int end_node)
 {
-
+  if (result_size==0) { return 0; } /*We dont have a path , none of the following makes sense*/
   fprintf(stderr,"FillResultPath result_size is %u \n",result_size);
   unsigned char done=0,loop_counter=0;
   unsigned int current_node=end_node,distance=0;
   unsigned int cur_x=0,cur_y=0;
 
-  if (result_size==0) { fprintf(stderr,"FillResultPath called with empty result_size \n"); return 0; }
   --result_size;
-  fprintf(stderr,"FillResultPath result_size-1 is %u \n",result_size);
 
   while (!done)
     {
       ++loop_counter;
       cur_x=current_node % world_x; // Ypologizoume tin syntetagmeni x , y
       cur_y=current_node / world_x; // Ypologizoume tin syntetagmeni x , y
-      fprintf(stderr,"loop %u : curx=%u cury=%u ",loop_counter,cur_x,cur_y);
 
       if ( result_size >= 0 )
         {
           resultlist[result_size].nodex = cur_x;
           resultlist[result_size].nodey = cur_y;
-          if ( result_size != 0 ) { --result_size; fprintf(stderr," result_size is now %u ",result_size); } else
-                                  { fprintf(stderr," saved result_size underflow ( %u ) ",result_size); }
+          if ( result_size != 0 ) { --result_size; }
         }
-
-      // printf("Node %d,%d\n",cur_x,cur_y);
 
       if ( world_matrix[current_node].parent_node==0 )
         {
@@ -148,7 +142,7 @@ unsigned int FillResultPath(struct NodeData * world_matrix,unsigned int world_x,
         }
       else
         {
-          // Yparxei parent node!
+          /* Parent node exists ! */
           ++distance;
           current_node=world_matrix[current_node].parent_node;
           if ( current_node==start_node )
@@ -266,7 +260,22 @@ inline int ProcessNode(struct Map * themap,struct Path * route,unsigned int node
   return 0;
 }
 
+int clear_open_nodes(struct Map * themap)
+{
+    unsigned int x,y,ptr=0;
+    for (y=0; y<themap->world_size_y; y++)
+     {
+      for (x=0; x<themap->world_size_x; x++)
+      {
+         themap->world[ptr].opened=0;
+         themap->world[ptr].score=0;
+         themap->world[ptr].parent_node=0;
 
+         ++ptr;
+      }
+     }
+    return 1;
+}
 
 int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned int x1,unsigned int y1,unsigned int start_direction,unsigned int oursize,unsigned int x2,unsigned int y2,unsigned int timelimit_ms)
 {
@@ -301,8 +310,10 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
       return 0;
     }
 
-  if ( route->str8_resultlist!=0 ) { free(route->str8_resultlist); route->str8_resultlist_size=0; }
-  if ( route->resultlist!=0 ) { free(route->resultlist); route->resultlist=0; }
+  clear_open_nodes(themap);
+
+  if ( route->str8_resultlist!=0 ) { free(route->str8_resultlist); route->str8_resultlist_size=0; route->str8_resultlist=0; }
+  if ( route->resultlist!=0 ) { free(route->resultlist); route->resultlist=0; route->resultlist=0; }
 
   route->resultlist_size = 0;
   route->openlist_top = 0;
@@ -506,9 +517,8 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
       // WE HAVE THE RAW PATH , WE ARE GOING FOR A LINED PATH!
 
       // 1st level line extraction
-      if ( route->str8_resultlist != 0 ) { free(route->str8_resultlist); }
-      //route->str8_resultlist=GetANormalizedLineFromNodes(route->resultlist,route->resultlist_size,&route->str8_resultlist_size);
-      route->str8_resultlist=0;
+      route->str8_resultlist=GetANormalizedLineFromNodes(route->resultlist,route->resultlist_size,&route->str8_resultlist_size);
+
 
       if ( route->str8_resultlist == 0 )
        {

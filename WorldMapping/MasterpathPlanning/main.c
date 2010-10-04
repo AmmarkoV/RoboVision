@@ -40,6 +40,7 @@ struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y,unsig
         struct Path emptypath={0};
         for ( i=0; i<newmap->total_actors; i++ ) { newmap->actors[i]=emptyactor;
                                                    newmap->actors[i].last_route=emptypath;
+                                                   newmap->actors[i].last_route.str8_resultlist=0;
                                                  }
 
 
