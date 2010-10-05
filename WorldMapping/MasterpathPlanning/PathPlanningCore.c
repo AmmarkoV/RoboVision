@@ -66,7 +66,7 @@ inline void swap_2_list_references(struct NodeRef * openlist,unsigned int ref1,u
 
 inline void quickSortNodes(struct NodeRef *arr, int elements)
 {
-  #define  MAX_LEVELS  300
+  #define  MAX_LEVELS  400
 
   struct NodeRef piv;
   int  beg[MAX_LEVELS], end[MAX_LEVELS], i=0, L, R, swap ;
