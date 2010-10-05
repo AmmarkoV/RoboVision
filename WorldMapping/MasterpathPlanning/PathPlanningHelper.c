@@ -140,31 +140,32 @@ int VerifySorting(struct NodeRef *arr, int elements)
 
 unsigned int GetCompressedHeadingFromRealHeading(float heading)
 {
-     heading= heading % 360;
+     unsigned int new_heading = (unsigned int) heading % 360;
 
      /*
-        The idea is that 0 degrees is left 90 degrees is up 180 degrees right and 270 degrees down
+        The idea is that 0 degrees is right 90 degrees is up 180 degrees left and 270 degrees down
         it can be seen at Trigonometry.gif
-        45->-45 = LEFT
-        45->135 = UP
-        45->135 = UP
-
      */
-
-
-     if (heading>405)  { /*+infinite - 405 OUT OF BOUNDS */} else
-     if (heading>315)  { /*360 to 315*/ } else
-     if (heading>225)  { /*315 to 225*/ } else
-     if (heading>135)  { /*225 to 135*/ } else
-     if (heading>45)   { /*135 to 45*/ } else
-     if (heading>0)    { /*45 to 0 */ } else
-     if (heading>-45)  { /*0 to -45*/ } else
-     if (heading>-135) { /*-45 to -135*/ } else
-     if (heading>-225) { /*-135 to -225*/ } else
-     if (heading>-315) { /*-225 to -315*/ } else
-     if (heading>-405) { /*-315 to -405*/ } else
+     if (heading>360)  { /*infinite to 360*/ fprintf(stderr," Erroneous heading "); } else
+     if (heading>315)  { /*360 to 315*/ new_heading=RIGHT; } else
+     if (heading>270)  { /*315 to 270*/ new_heading=DOWN; } else
+     if (heading>225)  { /*270 to 225*/ new_heading=DOWN;  } else
+     if (heading>180)  { /*225 to 180*/ new_heading=LEFT;  } else
+     if (heading>135)  { /*180 to 135*/ new_heading=LEFT;  } else
+     if (heading>90)  { /*135 to 90*/ new_heading=UP;  } else
+     if (heading>45)   { /*90 to 45*/ new_heading=UP;  } else
+     if (heading>0)    { /*45 to 0 */ new_heading=RIGHT;  } else
+     if (heading>-45)  { /*0 to -45*/ new_heading=RIGHT;  } else
+     if (heading>-90)  { /*-45 to -90*/ new_heading=DOWN;  } else
+     if (heading>-135) { /*-90 to -135*/ new_heading=DOWN;  } else
+     if (heading>-180) { /*-135 to -180*/ new_heading=LEFT;  } else
+     if (heading>-225) { /*-180 to -225*/ new_heading=LEFT;  } else
+     if (heading>-270) { /*-225 to -270*/ new_heading=UP;  } else
+     if (heading>-315) { /*-270 to -315*/ new_heading=UP;  } else
+     if (heading>-360) { /*-315 to -360*/ new_heading=RIGHT;  } else
      { fprintf(stderr," Erroneous heading ");}
 
+     return new_heading;
 }
 
 

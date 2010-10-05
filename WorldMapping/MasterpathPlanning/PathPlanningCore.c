@@ -7,22 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-unsigned char DEBUGING=1;
-
-enum Directions
-{
-  UP_LEFT=1,
-  UP,
-  UP_RIGHT,
-  LEFT,
-  MIDDLE,
-  RIGHT,
-  DOWN_LEFT,
-  DOWN,
-  DOWN_RIGHT,
-  /*--------------*/
-  TOTAL_DIRECTIONS
-};
+unsigned char DEBUGING=0;
 
 unsigned int turning_overheads[TOTAL_DIRECTIONS][TOTAL_DIRECTIONS]={{0}};
 
@@ -60,6 +45,12 @@ void FillInTurningOverheads()
   turning_overheads[UP_RIGHT][DOWN_LEFT]=4; turning_overheads[DOWN_LEFT][UP_RIGHT]=4;
   turning_overheads[RIGHT][LEFT]=4; turning_overheads[LEFT][RIGHT]=4;
 
+}
+
+unsigned int AddSensorDataToMap(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm)
+{
+  fprintf(stderr,"AddSensorDataToMap stub %u %u \n",ultrasonic_left_cm,ultrasonic_right_cm);
+  return 0;
 }
 
 unsigned int inline ReturnDistanceFromNodeToNode(struct NodeData * world_matrix,unsigned int start_node,unsigned int end_node,unsigned int should_not_be_over)
@@ -503,9 +494,9 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
            GetTheShortestNormalizedLineFromNodes(themap->world,themap->world_size_x,themap->world_total_size,route->str8_resultlist,&route->str8_resultlist_size);
            printf("Compressed route , removed %d checkpoints now has %d total \n",start_str8_resultlist_size-route->str8_resultlist_size,route->str8_resultlist_size);
 
-           char * storage;
+           char * storage=0;
            unsigned int storagelen=0;
-           unsigned int commands= ConvertPathToLogo(route->str8_resultlist,&route->str8_resultlist_size,storage,storagelen);
+           ConvertPathToLogo(route->str8_resultlist,&route->str8_resultlist_size,storage,storagelen);
        }
 
       printf("Total Distance is %d \n",hops);

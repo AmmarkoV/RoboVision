@@ -41,6 +41,7 @@ struct Actor    // Declare NODE struct type
     unsigned int reached_target;
     struct Path last_route;
 
+    float real_heading;
     int current_heading,target_heading;
   };
 
@@ -111,8 +112,8 @@ int RemoveObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned in
 int ClearMap(struct Map * themap);
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int SetAgentSize(struct Map * themap,unsigned int agentnum,unsigned int x_size,unsigned int y_size)  ;
-int SetAgentHeading(struct Map * themap,unsigned int agentnum,int heading) ;
-unsigned int GetAgentHeading(struct Map * themap,unsigned int agentnum) ;
+int SetAgentHeading(struct Map * themap,unsigned int agentnum,float heading) ;
+float GetAgentHeading(struct Map * themap,unsigned int agentnum) ;
 int SetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y) ;
 int SetAgentLocationName(struct Map * themap,unsigned int agentnum,char * name) ;
 int GetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int * x,unsigned int * y) ;

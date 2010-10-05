@@ -183,24 +183,23 @@ int SetAgentSize(struct Map * themap,unsigned int agentnum,unsigned int x_size,u
   return 1;
 }
 
-int SetAgentHeading(struct Map * themap,unsigned int agentnum,int heading)
+int SetAgentHeading(struct Map * themap,unsigned int agentnum,float heading)
 {
   if (!MapIsOk(themap))  { return 0; }
   if (themap->actors==0) { return 0; }
 
     fprintf(stderr,"Heading is a stub \n");
-     //themap->actors[agentnum].current_heading=heading;
-    themap->actors[agentnum].current_heading=1;
-
+    themap->actors[agentnum].current_heading=GetCompressedHeadingFromRealHeading(heading);
+    themap->actors[agentnum].real_heading=heading;
   return 0;
 }
 
-unsigned int GetAgentHeading(struct Map * themap,unsigned int agentnum)
+float GetAgentHeading(struct Map * themap,unsigned int agentnum)
 {
   if (!MapIsOk(themap))  { return 0; }
   if (themap->actors==0) { return 0; }
 
-  return themap->actors[agentnum].current_heading ;
+  return themap->actors[agentnum].real_heading;
 }
 
 int SetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y)
@@ -258,7 +257,7 @@ int MoveAgentForward(struct Map * themap,unsigned int agentnum,int leftwheel_cm,
 
 int AddObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm)
 {
-  fprintf(stderr,"AddObstacleSensedbyAgent %u %u \n",ultrasonic_left_cm,ultrasonic_right_cm);
+  AddSensorDataToMap(themap,agentnum,ultrasonic_left_cm,ultrasonic_right_cm);
   return 0;
 }
 /*      --------------------------------------------

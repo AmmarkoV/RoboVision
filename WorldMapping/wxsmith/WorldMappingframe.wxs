@@ -33,7 +33,7 @@
 		</object>
 		<object class="wxButton" name="ID_BUTTON1" variable="ButtonCalculate" member="yes">
 			<label>Calculate</label>
-			<pos>16,168</pos>
+			<pos>16,208</pos>
 			<size>88,29</size>
 			<handler function="OnButtonCalculateClick" entry="EVT_BUTTON" />
 		</object>
@@ -64,6 +64,7 @@
 		<object class="wxButton" name="ID_BUTTON3" variable="Button2" member="yes">
 			<label>Remove</label>
 			<pos>16,424</pos>
+			<handler function="OnButton2Click" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxButton" name="ID_BUTTON4" variable="SetEndPoint" member="yes">
 			<label>S</label>
@@ -86,12 +87,12 @@
 			<value>30</value>
 			<min>0</min>
 			<max>200</max>
-			<pos>16,136</pos>
+			<pos>16,176</pos>
 			<size>88,27</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT4" variable="StaticText4" member="yes">
 			<label>Time Limit</label>
-			<pos>16,120</pos>
+			<pos>16,160</pos>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT5" variable="StaticText5" member="yes">
 			<label>1 block equals</label>
@@ -108,18 +109,31 @@
 		</object>
 		<object class="wxButton" name="ID_BUTTON7" variable="ButtonExecute" member="yes">
 			<label>Execute</label>
-			<pos>16,200</pos>
+			<pos>16,240</pos>
 			<size>88,29</size>
 		</object>
 		<object class="wxButton" name="ID_BUTTON8" variable="PrintButton" member="yes">
 			<label>Print</label>
-			<pos>16,240</pos>
+			<pos>16,272</pos>
 			<handler function="OnPrintButtonClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxButton" name="ID_BUTTON9" variable="ButtonSimulateUltrasonic" member="yes">
 			<label>Simulate U</label>
 			<pos>16,360</pos>
 			<handler function="OnButtonSimulateUltrasonicClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxSpinCtrl" name="ID_SPINCTRL2" variable="Rotation" member="yes">
+			<value>0</value>
+			<min>0</min>
+			<max>360</max>
+			<pos>16,122</pos>
+			<size>64,27</size>
+		</object>
+		<object class="wxButton" name="ID_BUTTON10" variable="ButtonSetRotation" member="yes">
+			<label>S</label>
+			<pos>80,120</pos>
+			<size>24,29</size>
+			<handler function="OnButtonSetRotationClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxMenuBar" variable="MenuBar1" member="no">
 			<object class="wxMenu" variable="Menu1" member="no">

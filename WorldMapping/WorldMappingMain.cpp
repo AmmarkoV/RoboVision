@@ -75,6 +75,8 @@ const long WorldMappingFrame::ID_STATICTEXT6 = wxNewId();
 const long WorldMappingFrame::ID_BUTTON7 = wxNewId();
 const long WorldMappingFrame::ID_BUTTON8 = wxNewId();
 const long WorldMappingFrame::ID_BUTTON9 = wxNewId();
+const long WorldMappingFrame::ID_SPINCTRL2 = wxNewId();
+const long WorldMappingFrame::ID_BUTTON10 = wxNewId();
 const long WorldMappingFrame::idMenuQuit = wxNewId();
 const long WorldMappingFrame::idMenuAbout = wxNewId();
 const long WorldMappingFrame::ID_STATUSBAR1 = wxNewId();
@@ -121,7 +123,7 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
   StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("End Point"), wxPoint(16,72), wxDefaultSize, 0, _T("ID_STATICTEXT2"));
   ptx2 = new wxTextCtrl(this, ID_TEXTCTRL3, _("0"), wxPoint(16,88), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
   pty2 = new wxTextCtrl(this, ID_TEXTCTRL4, _("0"), wxPoint(48,88), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
-  ButtonCalculate = new wxButton(this, ID_BUTTON1, _("Calculate"), wxPoint(16,168), wxSize(88,29), 0, wxDefaultValidator, _T("ID_BUTTON1"));
+  ButtonCalculate = new wxButton(this, ID_BUTTON1, _("Calculate"), wxPoint(16,208), wxSize(88,29), 0, wxDefaultValidator, _T("ID_BUTTON1"));
   StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Obstacle"), wxPoint(16,304), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
   obsx = new wxTextCtrl(this, ID_TEXTCTRL5, _("0"), wxPoint(16,328), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL5"));
   obsy = new wxTextCtrl(this, ID_TEXTCTRL6, _("0"), wxPoint(64,328), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL6"));
@@ -131,15 +133,18 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
   SetEndPoint = new wxButton(this, ID_BUTTON4, _("S"), wxPoint(80,86), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON4"));
   SetStartPoint = new wxButton(this, ID_BUTTON5, _("S"), wxPoint(80,38), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON5"));
   ClearButton = new wxButton(this, ID_BUTTON6, _("Clear All"), wxPoint(16,456), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON6"));
-  TimeMS = new wxSpinCtrl(this, ID_SPINCTRL1, _T("30"), wxPoint(16,136), wxSize(88,27), 0, 0, 200, 30, _T("ID_SPINCTRL1"));
+  TimeMS = new wxSpinCtrl(this, ID_SPINCTRL1, _T("30"), wxPoint(16,176), wxSize(88,27), 0, 0, 200, 30, _T("ID_SPINCTRL1"));
   TimeMS->SetValue(_T("30"));
-  StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("Time Limit"), wxPoint(16,120), wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+  StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("Time Limit"), wxPoint(16,160), wxDefaultSize, 0, _T("ID_STATICTEXT4"));
   StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _("1 block equals"), wxPoint(8,496), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
   scale_cm = new wxTextCtrl(this, ID_TEXTCTRL7, _("15"), wxPoint(16,512), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
   StaticText6 = new wxStaticText(this, ID_STATICTEXT6, _("cm"), wxPoint(64,520), wxDefaultSize, 0, _T("ID_STATICTEXT6"));
-  ButtonExecute = new wxButton(this, ID_BUTTON7, _("Execute"), wxPoint(16,200), wxSize(88,29), 0, wxDefaultValidator, _T("ID_BUTTON7"));
-  PrintButton = new wxButton(this, ID_BUTTON8, _("Print"), wxPoint(16,240), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON8"));
+  ButtonExecute = new wxButton(this, ID_BUTTON7, _("Execute"), wxPoint(16,240), wxSize(88,29), 0, wxDefaultValidator, _T("ID_BUTTON7"));
+  PrintButton = new wxButton(this, ID_BUTTON8, _("Print"), wxPoint(16,272), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON8"));
   ButtonSimulateUltrasonic = new wxButton(this, ID_BUTTON9, _("Simulate U"), wxPoint(16,360), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON9"));
+  Rotation = new wxSpinCtrl(this, ID_SPINCTRL2, _T("0"), wxPoint(16,122), wxSize(64,27), 0, 0, 360, 0, _T("ID_SPINCTRL2"));
+  Rotation->SetValue(_T("0"));
+  ButtonSetRotation = new wxButton(this, ID_BUTTON10, _("S"), wxPoint(80,120), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON10"));
   MenuBar1 = new wxMenuBar();
   Menu1 = new wxMenu();
   MenuItem1 = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
@@ -159,11 +164,13 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
 
   Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnButtonCalculateClick);
   Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnButton1Click);
+  Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnButton2Click);
   Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnSetEndPointClick);
   Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnSetStartPointClick);
   Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnClearButtonClick);
   Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnPrintButtonClick);
   Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnButtonSimulateUltrasonicClick);
+  Connect(ID_BUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnButtonSetRotationClick);
   Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&WorldMappingFrame::OnQuit);
   Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&WorldMappingFrame::OnAbout);
   //*)
@@ -508,12 +515,13 @@ void WorldMappingFrame::OnButtonCalculateClick(wxCommandEvent& event)
   pty1->GetValue().ToLong(&starty);
 
   //floor_plan->SetActorCurrentPosition(startx,starty,6);
-  SetAgentLocation(floor,OURROBOT,startx,starty) ;
+  SetAgentLocation(floor,OURROBOT,startx,starty);
 
   long endx,endy;
   ptx2->GetValue().ToLong(&endx);
   pty2->GetValue().ToLong(&endy);
 
+  SetAgentHeading(floor,OURROBOT,Rotation->GetValue()) ;
 
   //signed int res=floor_plan->FindPathTo(endx,endy,TimeMS->GetValue()*10);
   signed int res=FindSponteneousPath(floor,OURROBOT,startx,starty,endx,endy,TimeMS->GetValue()*10) ;
@@ -541,6 +549,16 @@ void WorldMappingFrame::OnButtonSimulateUltrasonicClick(wxCommandEvent& event)
   obsx->GetValue().ToLong(&ultrasonic_x);
   obsy->GetValue().ToLong(&ultrasonic_y);
   AddObstacleSensedbyAgent(floor,0,ultrasonic_x,ultrasonic_y) ;
+}
+
+
+void WorldMappingFrame::OnButtonSetRotationClick(wxCommandEvent& event)
+{
+}
+
+
+void WorldMappingFrame::OnButton2Click(wxCommandEvent& event)
+{
 }
 
 void WorldMappingFrame::OnButton1Click(wxCommandEvent& event)
