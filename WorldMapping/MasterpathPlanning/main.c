@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "MasterpathPlanning.h"
 #include "PathPlanningCore.h"
+#include "PathPlanningHelper.h"
 
 /*      --------------------------------------------
                MAP STATE INITIALIZATION START

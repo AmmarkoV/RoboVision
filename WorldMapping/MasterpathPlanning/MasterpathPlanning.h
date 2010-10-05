@@ -11,6 +11,13 @@ extern "C" {
 
 struct Path
 {
+    unsigned int cur_x,cur_y,node_direction;
+    unsigned int source,source_x,source_y;
+    unsigned int target,target_x,target_y;
+    unsigned int solutions_gathered;
+
+    unsigned char done,out_of_bounds;
+
     struct TraceNode *resultlist;
     unsigned int resultlist_size;
 
@@ -21,11 +28,6 @@ struct Path
     unsigned int openlist_size;
     unsigned int openlist_top;
 
-    unsigned int cur_x,cur_y,proc_node,last_node,node_direction;
-    unsigned int source,source_x,source_y;
-    unsigned int target,target_x,target_y,solutions_gathered;
-
-    unsigned char done,out_of_bounds;
 };
 
 struct Actor    // Declare NODE struct type

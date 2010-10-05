@@ -24,54 +24,23 @@ enum Directions
 };
 
 
-/* This function adds a radious around an obstacle */
-inline int PathPlanCore_ObstacleRadiousCalculations(struct Map * themap,unsigned char add_operation,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int total_safety_radious)
-{
-   if ( total_safety_radious == 0 ) { themap->world[mem_ptr].in_unpassable_radious+=1; return 1; } /* Radious is a point */
 
-   unsigned int safety_radious = (unsigned int) total_safety_radious/2;
-   if ( safety_radious == 0 ) { safety_radious=1; } /* :P rounded */
-   unsigned int start_x=x,start_y=y,end_x=x,end_y=y;
-
-
-   /* Add left radious */
-  if ( start_x>safety_radious ) {  start_x-=safety_radious; } else
-                                { start_x=0; }
-
-  if ( start_y > safety_radious ) { start_y-=safety_radious; /* Add up radious */  } else
-                                  { start_y=0; }
-
-  if ( end_x+safety_radious >= themap->world_size_x ) { end_x=themap->world_size_x-1; /* Add right radious */ } else
-                                                      { end_x+=safety_radious; }
-
-  if ( end_y+safety_radious < themap->world_size_y )  { end_y+=safety_radious;  /* Add down radious */   } else
-                                                      { end_y=themap->world_size_y-1; }
-
-
-  unsigned int xi=start_x,yi=start_y,mem_ptr_i=0;
-  for ( yi = start_y; yi<=end_y; yi++ )
-   {
-     mem_ptr_i=start_x+(yi*themap->world_size_x);
-     for ( xi = start_x; xi<=end_x; xi++ )
-     {
-       if (add_operation) { if (themap->world_neighbors[mem_ptr_i].total<255)
-                             { ++themap->world[mem_ptr_i].in_unpassable_radious; ++themap->world_neighbors[mem_ptr_i].total; } } else
-                          { if (themap->world_neighbors[mem_ptr_i].total>0)
-                             { --themap->world[mem_ptr_i].in_unpassable_radious; --themap->world_neighbors[mem_ptr_i].total; } }
-       ++mem_ptr_i;
-     }
-   }
-   return 1;
-}
-
-int PathPlanCore_AddObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
-{
-   return PathPlanCore_ObstacleRadiousCalculations(themap,1,x,y,mem_ptr,safety_radious);
-}
-
-int PathPlanCore_RemoveObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
-{
-   return PathPlanCore_ObstacleRadiousCalculations(themap,0,x,y,mem_ptr,safety_radious);
+unsigned int inline ReturnDistanceFromNodeToNode(struct NodeData * world_matrix,unsigned int start_node,unsigned int end_node,unsigned int should_not_be_over)
+{ /*This function returns the number of hops from end_node to start_node , if end_node is not connected to start_node it will eventually
+    reach a node with parent 0 */
+  unsigned char done=0;
+  unsigned int current_node=end_node,distance=0;
+  while ( (!done) && ( distance < should_not_be_over)  )
+    {
+      if ( world_matrix[current_node].parent_node==0 ) { done=1; distance=0; /*Dead end*/ }
+      else
+        { /* Yparxei parent node! */
+          ++distance;
+          current_node=world_matrix[current_node].parent_node;
+          if ( current_node==start_node ) { done=1; }
+        }
+    }
+  return distance;
 }
 
 
@@ -83,6 +52,23 @@ inline void swap_2_list_references(struct NodeRef * openlist,unsigned int ref1,u
   openlist[ref1]=openlist[ref2];
   openlist[ref2]=tmpref;
   return;
+}
+
+
+
+inline unsigned int SamePosition(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
+{
+  if ( ( x1 == x2 ) && ( y1 == y2 ) ) { return 1; }
+  return 0;
+}
+
+inline unsigned int ManhattanDistance(unsigned int from_x,unsigned int from_y,unsigned int to_x,unsigned int to_y)
+{
+  unsigned int totres=0;
+  if (to_y>from_y) { totres+=to_y-from_y; } else { totres+=from_y-to_y; }
+  if (to_x>from_x) { totres+=to_x-from_x; } else { totres+=from_x-to_x; }
+  //fprintf(stderr,"ManhattanDistance(%u,%u,%u,%u) == %u\n",from_x,from_y,to_x,to_y,totres);
+  return totres;
 }
 
 //  quickSort
@@ -109,9 +95,9 @@ inline void quickSortNodes(struct NodeRef *arr, int elements)
           piv=arr[L];
           while (L<R)
             {
-              while ( arr[R].score>=piv.score && L<R ) R--;
+              while ( (arr[R].score>=piv.score) && (L<R) ) R--;
               if (L<R) arr[L++]=arr[R];
-              while (arr[L].score<=piv.score && L<R) L++;
+              while ( (arr[L].score<=piv.score) && (L<R) ) L++;
               if (L<R) arr[R--]=arr[L];
             }
           arr[L]=piv;
@@ -136,82 +122,38 @@ inline void quickSortNodes(struct NodeRef *arr, int elements)
   return;
 }
 
-int VerifySorting(struct NodeRef *arr, int elements)
+
+
+
+inline void ExpandNodeFromNode(struct Map * themap,struct Path * route,unsigned int from_node,unsigned int to_node,unsigned char current_heading,unsigned int turning_penalty)
 {
-  if ( elements<=1 ) { return 1; } /*For obvious reasons*/
-  unsigned int i=0;
-  for (i=0; i<elements-1; i++)
-   {
-        if (arr[i].score>arr[i+1].score) { return 0; }
-   }
-   return 1;
-}
-
-unsigned int inline ReturnDistanceFromNodeToNode(struct NodeData * world_matrix,unsigned int start_node,unsigned int end_node,unsigned int should_not_be_over)
-{ /*This function returns the number of hops from end_node to start_node , if end_node is not connected to start_node it will eventually
-    reach a node with parent 0 */
-  unsigned char done=0;
-  unsigned int current_node=end_node,distance=0;
-  while ( (!done) && ( distance < should_not_be_over)  )
-    {
-      if ( world_matrix[current_node].parent_node==0 ) { done=1; distance=0; /*Dead end*/ }
-      else
-        { /* Yparxei parent node! */
-          ++distance;
-          current_node=world_matrix[current_node].parent_node;
-          if ( current_node==start_node ) { done=1; }
-        }
-    }
-  return distance;
-}
-
-
-
-inline unsigned int SamePosition(unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
-{
-  if ( ( x1 == x2 ) && ( y1 == y2 ) ) { return 1; }
-  return 0;
-}
-
-inline unsigned int ManhattanDistance(unsigned int from_x,unsigned int from_y,unsigned int to_x,unsigned int to_y)
-{
-  unsigned int totres=0;
-  if (to_y>from_y) { totres+=to_y-from_y; } else { totres+=from_y-to_y; }
-  if (to_x>from_x) { totres+=to_x-from_x; } else { totres+=from_x-to_x; }
-  //fprintf(stderr,"ManhattanDistance(%u,%u,%u,%u) == %u\n",from_x,from_y,to_x,to_y,totres);
-  return totres;
-}
-
-
-inline void ExpandNodeFromNode(struct NodeData * world_matrix,unsigned int from_node,unsigned int to_node,unsigned char current_heading,unsigned int turning_penalty)
-{
-  unsigned int new_score=world_matrix[from_node].score;
+  unsigned int new_score=themap->world[from_node].score;
 
   fprintf(stderr,"Score was %u ",new_score);
-  new_score += world_matrix[from_node].node_penalty;
-  if ( current_heading!= world_matrix[from_node].arrived_direction )
+  //new_score += world_matrix[from_node].node_penalty;
+  if ( current_heading!= themap->world[from_node].arrived_direction )
     {
       // TO PARAKATW DOULEVEI SWSTA
       unsigned int score_additive=0;
-      if (current_heading>world_matrix[from_node].arrived_direction) { score_additive = (current_heading-world_matrix[from_node].arrived_direction) * turning_penalty; } else
-                                                                     { score_additive = (world_matrix[from_node].arrived_direction-current_heading) * turning_penalty; }
+      if (current_heading>themap->world[from_node].arrived_direction) { score_additive = (current_heading-themap->world[from_node].arrived_direction) * turning_penalty; } else
+                                                                      { score_additive = (themap->world[from_node].arrived_direction-current_heading) * turning_penalty; }
       new_score = new_score + score_additive;
     }
   fprintf(stderr,"with heading is %u\n",new_score);
 
   // Den theloume polles peristrofes giayto k gia kathe mia plironoume penalty
-  if ((new_score<world_matrix[to_node].score) ||  (world_matrix[to_node].score==0) )
+  if ((new_score<themap->world[to_node].score) ||  (themap->world[to_node].score==0) )
     {
       //Antikathistoume ton parent tou komvou to_node me ton from_node afou yparxei kalytero monopati!..!
-      world_matrix[to_node].parent_node = from_node;
-      world_matrix[to_node].score = new_score;
-      world_matrix[to_node].arrived_direction = current_heading;
+      themap->world[to_node].parent_node = from_node;
+      themap->world[to_node].score = new_score;
+      themap->world[to_node].arrived_direction = current_heading;
     }
 
 }
 
 
-void inline OpenNode(struct Map * themap,struct Path * route,unsigned int the_node)
+void inline OpenNode(struct Map * themap,struct Path * route,unsigned int parent_node,unsigned int the_node)
 {
   if ( ( !themap->world[the_node].opened ) && (themap->world[the_node].unpassable==0) && (themap->world_neighbors[the_node].total==0) )
     {
@@ -220,8 +162,10 @@ void inline OpenNode(struct Map * themap,struct Path * route,unsigned int the_no
           themap->world[the_node].opened=1;
 
           // ADDING NEW NODE TO PENDING LIST!
-          route->openlist[route->openlist_top].node=the_node;
-          route->openlist[route->openlist_top].score=ManhattanDistance(route->cur_x,route->cur_y,route->target_x,route->target_y);
+          route->openlist[route->openlist_top].node = the_node;
+          unsigned int x=parent_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
+          unsigned int y=parent_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
+          route->openlist[route->openlist_top].score = ManhattanDistance(x,y,route->target_x,route->target_y);
 
           ++route->openlist_top;
           // WE HEAVE SUCCESSFULLY ADDED THE NEW NODE TO THE TAIL OF THE OPENLIST
@@ -233,6 +177,33 @@ void inline OpenNode(struct Map * themap,struct Path * route,unsigned int the_no
         }
     }
 }
+
+inline int ProcessNode(struct Map * themap,struct Path * route,unsigned int parent_node,unsigned int node_to_proc)
+{
+  /*
+     Each time process node is called we want to check "node_to_proc" and the parent_node is the previous node
+
+  */
+
+  if ( (route->done==0) && ( node_to_proc < themap->world_total_size) ) // IF NOT DONE AND INSIDE WORLD!
+    {
+
+      ExpandNodeFromNode( themap,route , parent_node , node_to_proc , route->node_direction , themap->turning_penalty);
+      if (node_to_proc == route->target)
+        {
+          printf("Target Just Reached :D\n"); // We found the target! :D
+          themap->world[route->target].opened=1;
+          ++route->solutions_gathered;
+        }
+      else
+        {
+          OpenNode(themap,route,parent_node,node_to_proc);
+        }
+    }
+  return 0;
+}
+
+
 
 inline unsigned int GetNextNode(struct Map * themap,struct Path * route)
 {
@@ -248,82 +219,54 @@ inline unsigned int GetNextNode(struct Map * themap,struct Path * route)
   return retres;
 }
 
-inline int ProcessNode(struct Map * themap,struct Path * route,unsigned int node_to_proc)
-{
-  route->proc_node = node_to_proc;
-  if ( (route->done==0) && ( route->proc_node < themap->world_total_size) ) // IF NOT DONE AND INSIDE WORLD!
-    {
-
-      ExpandNodeFromNode( themap->world , route->last_node , route->proc_node, route->node_direction , themap->turning_penalty);
-      if (route->proc_node == route->target)
-        {
-          //printf("Target Just Reached :D\n"); // Vrikame to target! :D
-          // WAS ++themap->world[route->target].opened;
-          themap->world[route->target].opened=1;
-          ++route->solutions_gathered;
-        }
-      else
-        {
-          OpenNode(themap,route,route->proc_node);
-        }
-    }
-  return 0;
-}
-
 
 int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned int x1,unsigned int y1,unsigned int start_direction,unsigned int oursize,unsigned int x2,unsigned int y2,unsigned int timelimit_ms)
 {
+  if ( SamePosition(x1,y1,x2,y2) == 1 ) { printf("FindPath called and Source==Target , skipping calculations\n"); return 0; }
+
   struct Path * route=theroute;
+  ClearFindPathState(themap,route);
 
-  route->source=(y1*themap->world_size_x)+(x1) , route->source_x = x1 , route->source_y = y1;
-  route->target=(y2*themap->world_size_x)+(x2) , route->target_x = x2 , route->target_y = y2;
-
-  route->done=0;
-  route->out_of_bounds=0;
-
-  route->cur_x = 0 ,route->cur_y = 0, route->proc_node = 0, route->last_node = 0 , route->node_direction = 0;
-
-
-  if ( SamePosition(x1,y1,x2,y2) == 1 )
-    {
-      printf("FindPath called and Source==Target , skipping calculations\n");
-      return 0;
-    }
-
+  route->source=(y1*themap->world_size_x)+(x1);   route->source_x = x1; route->source_y = y1;
+  route->target=(y2*themap->world_size_x)+(x2);   route->target_x = x2; route->target_y = y2;
+  fprintf(stderr,"Findpath %u/%u -> %u/%u ",x1,y1,x2,y2);
+  fprintf(stderr,"Source node is  %u ",route->source);
 
   if ( route->openlist==0 )
     {
         route->openlist_size=(unsigned int) themap->world_total_size / 2; // < - MAX LIST SIZE , IT HAS A BIG EFFECT IN ALGORITHM SUCCESS RATIO!
         route->openlist = (struct NodeRef * ) malloc ( sizeof(struct NodeRef) * ( route->openlist_size+1 ) );
     }
-
-
-  if ( !FindPathCommandIsSane(themap,route,route->source_x,route->source_y,route->target_x,route->target_y) )
-    {
-      printf("FindPath called with incorrect parameters , not starting find routine..\n");
-      return 0;
-    }
-
-  clear_open_nodes(themap);
-
-  if ( route->str8_resultlist!=0 ) { free(route->str8_resultlist); route->str8_resultlist_size=0; route->str8_resultlist=0; }
-  if ( route->resultlist!=0 ) { free(route->resultlist); route->resultlist=0; route->resultlist=0; }
-
-  route->resultlist_size = 0;
   route->openlist_top = 0;
 
-  route->last_node=route->source;
+  if ( route->str8_resultlist!=0 ) { free(route->str8_resultlist); route->str8_resultlist_size=0; route->str8_resultlist=0; }
+  if ( route->resultlist!=0 ) { free(route->resultlist); route->resultlist=0; route->resultlist_size=0; }
+
+
+
+  unsigned int last_node=route->source; /* The source node is the parent node */
   route->solutions_gathered = 0;
   // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   // START FINDING THE PATH!
-  printf (" Starting Path Finding..! \n");
+
+  if ( !FindPathCommandIsSane(themap,route,route->source_x,route->source_y,route->target_x,route->target_y) )
+    {
+      printf("FindPath called with incorrect parameters , not starting find routine..\n");
+      return 0;
+    } else
+    {
+     printf (" Starting Path Finding..! \n");
+    }
+
 
   unsigned int loops=0;
   struct timeval start, end;
   long mtime=0, seconds, useconds;
+
+  unsigned int memory_ptr=0;
 
   gettimeofday(&start, NULL);
   while ( route->done == 0 )
@@ -343,41 +286,45 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
 
       // WE WILL SCAN THE NODES WITH THE FOLLOWING SERIES
       // (5) -> 4 1 2 3 6 9 8 7
-      route->cur_x=route->last_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
-      route->cur_y=route->last_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
+      route->cur_x=last_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
+      route->cur_y=last_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
       //fprintf(stderr,"%u/%u ",route->cur_x,route->cur_y);
+
+      fprintf(stderr,"I have the point %u/%u ",route->cur_x,route->cur_y);
 
       if ( ( route->cur_x > 0 ) && ( route->cur_x < themap->world_size_x ) && ( route->cur_y > 0 ) && ( route->cur_y < themap->world_size_y ) )
         {
+          fprintf(stderr," the point is deep inside \n");
           /* OUR CUR_X,CUR_Y location is DEEP INSIDE the array so WE CAN SKIP boundary CHECKS */
-          route->node_direction=LEFT; route->proc_node = route->last_node - 1;
-          ProcessNode(themap,route,route->proc_node);
+          route->node_direction=LEFT; memory_ptr = last_node - 1;
+          ProcessNode(themap,route,last_node,memory_ptr);
 
-          route->node_direction=UP_LEFT; route->proc_node = route->proc_node - themap->world_size_x;
-          ProcessNode(themap,route,route->proc_node);
+          route->node_direction=UP_LEFT; memory_ptr = memory_ptr - themap->world_size_x;
+          ProcessNode(themap,route,last_node,memory_ptr);
 
-          route->node_direction=UP; ++route->proc_node;
-          ProcessNode(themap,route,route->proc_node);
+          route->node_direction=UP; ++memory_ptr;
+          ProcessNode(themap,route,last_node,memory_ptr);
 
-          route->node_direction=UP_RIGHT; ++route->proc_node;
-          ProcessNode(themap,route,route->proc_node);
+          route->node_direction=UP_RIGHT; ++memory_ptr;
+          ProcessNode(themap,route,last_node,memory_ptr);
 
-          route->node_direction=RIGHT; route->proc_node = route->proc_node + themap->world_size_x;
-          ProcessNode(themap,route,route->proc_node);
+          route->node_direction=RIGHT; memory_ptr = memory_ptr + themap->world_size_x;
+          ProcessNode(themap,route,last_node,memory_ptr);
 
-          route->node_direction=DOWN_RIGHT; route->proc_node = route->proc_node + themap->world_size_x;
-          ProcessNode(themap,route,route->proc_node);
+          route->node_direction=DOWN_RIGHT; memory_ptr = memory_ptr + themap->world_size_x;
+          ProcessNode(themap,route,last_node,memory_ptr);
 
-          route->node_direction=DOWN; --route->proc_node;
-          ProcessNode(themap,route,route->proc_node);
+          route->node_direction=DOWN; --memory_ptr;
+          ProcessNode(themap,route,last_node,memory_ptr);
 
-          route->node_direction=DOWN_LEFT; --route->proc_node;
-          ProcessNode(themap,route,route->proc_node);
+          route->node_direction=DOWN_LEFT; --memory_ptr;
+          ProcessNode(themap,route,last_node,memory_ptr);
           // ---------------------
           // ---------------------
         }
       else
         {
+          fprintf(stderr," the point is on border inside \n");
           /*            UP
                        X X X
                     X  1 2 3  X
@@ -391,54 +338,45 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
 
           if (route->cur_x>0 )
             {
-              route->proc_node = route->last_node - 1;
-              route->node_direction=LEFT; ProcessNode(themap,route,route->proc_node);
+              route->node_direction=LEFT; ProcessNode(themap,route,last_node,last_node - 1);
             }
 
           if ( (route->cur_x>0) && (route->cur_y>0) )
             {
-              route->proc_node = route->last_node - themap->world_size_x -1;
-              route->node_direction=UP_LEFT; ProcessNode(themap,route,route->proc_node);
+              route->node_direction=UP_LEFT; ProcessNode(themap,route,last_node,last_node - themap->world_size_x -1);
             }
 
 
           if (route->cur_x>0 )
             {
-              route->proc_node = route->last_node - themap->world_size_x;
-              route->node_direction=UP; ProcessNode(themap,route,route->proc_node);
+              route->node_direction=UP; ProcessNode(themap,route,last_node,last_node - themap->world_size_x);
             }
 
 
           if ( (route->cur_x>0) && (route->cur_y<themap->world_size_y) )
             {
-              route->proc_node = route->last_node - themap->world_size_x +1;
-              route->node_direction=UP_RIGHT; ProcessNode(themap,route,route->proc_node);
+              route->node_direction=UP_RIGHT; ProcessNode(themap,route,last_node,last_node - themap->world_size_x +1);
             }
 
 
           if (route->cur_x<themap->world_size_x )
             {
-              route->proc_node = route->last_node + 1;
-              route->node_direction=RIGHT; ProcessNode(themap,route,route->proc_node);
+              route->node_direction=RIGHT; ProcessNode(themap,route,last_node,last_node + 1);
             }
 
           if ( (route->cur_x<themap->world_size_x) && (route->cur_y<themap->world_size_y) )
             {
-              route->node_direction=DOWN_RIGHT;
-              route->proc_node = route->last_node + themap->world_size_x + 1;
-              ProcessNode(themap,route,route->proc_node);
+              route->node_direction=DOWN_RIGHT; ProcessNode(themap,route,last_node,last_node + themap->world_size_x + 1);
             }
 
           if (route->cur_y<themap->world_size_y )
             {
-              route->proc_node = route->last_node + themap->world_size_x;
-              route->node_direction=DOWN; ProcessNode(themap,route,route->proc_node);
+              route->node_direction=DOWN; ProcessNode(themap,route,last_node,last_node + themap->world_size_x);
             }
 
           if ( (route->cur_x>0) && (route->cur_y<themap->world_size_y) )
             {
-              route->proc_node = route->last_node + themap->world_size_x-1;
-              route->node_direction=DOWN_LEFT; ProcessNode(themap,route,route->proc_node);
+              route->node_direction=DOWN_LEFT; ProcessNode(themap,route,last_node,last_node + themap->world_size_x-1);
             }
 
           // ----------------------------------
@@ -450,14 +388,15 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
         {
           if (route->openlist_top>0) //AN EXOUME KOMVO PROS PROSTHIKI
             {
-              route->last_node = GetNextNode(themap,route); // to idio einai :P -> open_list[0].node;
-              route->cur_x = route->last_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
-              route->cur_y = route->last_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
-              if ( route->last_node == 0 )
+              last_node = GetNextNode(themap,route); // to idio einai :P -> open_list[0].node;
+              route->cur_x = last_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
+              route->cur_y = last_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
+              if ( last_node == 0 )
                 { fprintf(stderr,"WTF ? NO NEXT NODE ? \n");}
             }
           else
             {
+              fprintf(stderr,"Could not find another new node after %u loops \n",loops);
               route->done=1;  // AN DEN YPARXEI ALLOS KOMVOS PROS PROSTHIKI TELEIWSAME!
             }
         }
