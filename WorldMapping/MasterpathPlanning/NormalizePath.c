@@ -16,7 +16,7 @@ inline unsigned int _abs(signed int num)
 //---------------------------------------
 //Bresenham general algorithm !
 //---------------------------------------
-unsigned char ClearLinePath(struct NodeData * world,struct NodeNeighborsCount *world_neighbors,unsigned int world_x,unsigned int world_size,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
+unsigned char ClearLinePath(struct NodeData * world,unsigned int world_x,unsigned int world_size,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
 {
   unsigned int the_node;
   if ( debug_normalize_path ==1 ) printf("Running bresenham algorithm from %d,%d to %d,%d ... ",x1,y1,x2,y2);
@@ -45,7 +45,7 @@ unsigned char ClearLinePath(struct NodeData * world,struct NodeNeighborsCount *w
     {
       // draw_pixel(x,y)
       the_node = (y*world_x)+(x);
-      if (  (world[the_node].unpassable==1) || (world_neighbors[the_node].total>=1) )
+      if (  (world[the_node].unpassable==1) || (world[the_node].in_unpassable_radious>=1) )
         {
           if ( debug_normalize_path ==1 ) printf (" not clear\n");
           return 0; // This means not clear
@@ -68,7 +68,7 @@ unsigned char ClearLinePath(struct NodeData * world,struct NodeNeighborsCount *w
 
           // draw_pixel(x,y)
           the_node = (y*world_x)+(x);
-          if (  (world[the_node].unpassable==1) || (world_neighbors[the_node].total>=1) )
+          if (  (world[the_node].unpassable==1) || (world[the_node].in_unpassable_radious>=1) )
             {
               if ( debug_normalize_path ==1 ) printf (" not clear\n");
               return 0; // This means not clear
@@ -80,7 +80,7 @@ unsigned char ClearLinePath(struct NodeData * world,struct NodeNeighborsCount *w
     {
       // draw_pixel(x,y)
       the_node = (y*world_x)+(x);
-      if (  (world[the_node].unpassable==1) || (world_neighbors[the_node].total>=1) )
+      if (  (world[the_node].unpassable==1) || (world[the_node].in_unpassable_radious>=1) )
         {
           if ( debug_normalize_path ==1 ) printf (" not clear\n");
           return 0; // This means not clear
@@ -102,7 +102,7 @@ unsigned char ClearLinePath(struct NodeData * world,struct NodeNeighborsCount *w
 
           // draw_pixel(x,y)
           the_node = (y*world_x)+(x);
-          if (  (world[the_node].unpassable==1) || (world_neighbors[the_node].total>=1) )
+          if (  (world[the_node].unpassable==1) || (world[the_node].in_unpassable_radious>=1) )
             {
               if ( debug_normalize_path ==1 ) printf (" not clear\n");
               return 0; // This means not clear
@@ -166,7 +166,7 @@ struct TraceNode * GetANormalizedLineFromNodes(struct TraceNode * rawnodes,unsig
 
 }
 
-void GetTheShortestNormalizedLineFromNodes(struct NodeData * world,struct NodeNeighborsCount *world_neighbors,unsigned int world_x,unsigned int world_size,struct TraceNode * str8nodes,unsigned int *str8nodes_size)
+void GetTheShortestNormalizedLineFromNodes(struct NodeData * world,unsigned int world_x,unsigned int world_size,struct TraceNode * str8nodes,unsigned int *str8nodes_size)
 {
   unsigned int str8nodes_size_start;
   str8nodes_size_start = *str8nodes_size;
@@ -190,7 +190,7 @@ void GetTheShortestNormalizedLineFromNodes(struct NodeData * world,struct NodeNe
         if ( debug_normalize_path ==1 ) printf (" ... range up to %d ! \n",i-skip_steps);
         x1=str8nodes[i-skip_steps].nodex , y1=str8nodes[i-skip_steps].nodey; // <- Test Start State
         if (
-               ClearLinePath(world,world_neighbors,world_x,world_size,x1,y1,x2,y2) == 0
+               ClearLinePath(world,world_x,world_size,x1,y1,x2,y2) == 0
            )
            {  } else
            { move_steps=skip_steps;

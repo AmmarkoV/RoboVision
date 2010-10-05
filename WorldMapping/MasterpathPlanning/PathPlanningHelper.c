@@ -31,16 +31,25 @@ inline int PathPlanCore_ObstacleRadiousCalculations(struct Map * themap,unsigned
      mem_ptr_i=start_x+(yi*themap->world_size_x);
      for ( xi = start_x; xi<=end_x; xi++ )
      {
-       if (add_operation) { if (themap->world_neighbors[mem_ptr_i].total<255)
-                             { ++themap->world[mem_ptr_i].in_unpassable_radious; ++themap->world_neighbors[mem_ptr_i].total; } } else
-                          { if (themap->world_neighbors[mem_ptr_i].total>0)
-                             { --themap->world[mem_ptr_i].in_unpassable_radious; --themap->world_neighbors[mem_ptr_i].total; } }
+       if (add_operation) { if (themap->world[mem_ptr_i].in_unpassable_radious<255)
+                             { ++themap->world[mem_ptr_i].in_unpassable_radious; } } else
+                          { if (themap->world[mem_ptr_i].in_unpassable_radious>0)
+                             { --themap->world[mem_ptr_i].in_unpassable_radious; } }
        ++mem_ptr_i;
      }
    }
    return 1;
 }
 
+int PathPlanCore_AddObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
+{
+   return PathPlanCore_ObstacleRadiousCalculations(themap,1,x,y,mem_ptr,safety_radious);
+}
+
+int PathPlanCore_RemoveObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
+{
+   return PathPlanCore_ObstacleRadiousCalculations(themap,0,x,y,mem_ptr,safety_radious);
+}
 
 unsigned int FillResultPath(struct NodeData * world_matrix,unsigned int world_x,struct TraceNode * resultlist,unsigned int result_size,unsigned int start_node,unsigned int end_node)
 {
@@ -86,15 +95,6 @@ unsigned int FillResultPath(struct NodeData * world_matrix,unsigned int world_x,
 }
 
 
-int PathPlanCore_AddObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
-{
-   return PathPlanCore_ObstacleRadiousCalculations(themap,1,x,y,mem_ptr,safety_radious);
-}
-
-int PathPlanCore_RemoveObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
-{
-   return PathPlanCore_ObstacleRadiousCalculations(themap,0,x,y,mem_ptr,safety_radious);
-}
 
 
 int ClearFindPathState(struct Map * themap,struct Path * route)
@@ -116,12 +116,8 @@ int ClearFindPathState(struct Map * themap,struct Path * route)
     route->cur_x=0;
     route->cur_y=0;
     route->node_direction=0;
-    route->source=0;
-    route->source_x=0;
-    route->source_y=0;
-    route->target=0;
-    route->target_x=0;
-    route->target_y=0;
+    route->source=0; route->source_x=0; route->source_y=0;
+    route->target=0; route->target_x=0; route->target_y=0;
     route->solutions_gathered=0;
 
     route->done=0;

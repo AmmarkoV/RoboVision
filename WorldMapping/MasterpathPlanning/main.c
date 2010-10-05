@@ -20,13 +20,13 @@ struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y,unsig
         unsigned int i=0;
 
         newmap->world = (struct NodeData * ) malloc( sizeof(struct NodeData)* ( newmap->world_total_size+1 ) );
-        newmap->world_neighbors = (struct NodeNeighborsCount * ) malloc( sizeof(struct NodeNeighborsCount) * ( newmap->world_total_size+1 ) );
+       // newmap->world_neighbors = (struct NodeNeighborsCount * ) malloc( sizeof(struct NodeNeighborsCount) * ( newmap->world_total_size+1 ) );
 
 
         struct NodeData emptynode={0};
         for ( i=0; i<newmap->world_total_size; i++ ) { newmap->world[i]=emptynode; }
-        struct NodeNeighborsCount emptyneigh={0};
-        for ( i=0; i<newmap->world_total_size; i++ ) { newmap->world_neighbors[i]=emptyneigh; }
+      //  struct NodeNeighborsCount emptyneigh={0};
+      //  for ( i=0; i<newmap->world_total_size; i++ ) { newmap->world_neighbors[i]=emptyneigh; }
 
 /*
         newmap->openlist=0; newmap->openlist_current_size=0;
@@ -84,7 +84,7 @@ int DeleteMap(struct Map * themap)
        themap->world_total_size=0;
        if ( themap->world != 0 ) { free(themap->world); themap->world=0; } /* <- This function is epic it frees the world :D */
 
-       if ( themap->world_neighbors != 0 ) { free(themap->world_neighbors); themap->world_neighbors=0; }
+   //    if ( themap->world_neighbors != 0 ) { free(themap->world_neighbors); themap->world_neighbors=0; }
 
        if ( themap->actors != 0 ) { free(themap->actors); themap->actors=0; }
 
@@ -99,8 +99,8 @@ int ClearMap(struct Map * themap)
   unsigned int i = 0;
   struct NodeData emptynode={0};
   for ( i=0; i<themap->world_total_size; i++ ) { themap->world[i]=emptynode; }
-  struct NodeNeighborsCount emptyneigh={0};
-  for ( i=0; i<themap->world_total_size; i++ ) { themap->world_neighbors[i]=emptyneigh; }
+ // struct NodeNeighborsCount emptyneigh={0};
+//  for ( i=0; i<themap->world_total_size; i++ ) { themap->world_neighbors[i]=emptyneigh; }
 
   return 1;
 }

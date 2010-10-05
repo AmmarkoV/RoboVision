@@ -155,7 +155,7 @@ inline void ExpandNodeFromNode(struct Map * themap,struct Path * route,unsigned 
 
 void inline OpenNode(struct Map * themap,struct Path * route,unsigned int parent_node,unsigned int the_node)
 {
-  if ( ( !themap->world[the_node].opened ) && (themap->world[the_node].unpassable==0) && (themap->world_neighbors[the_node].total==0) )
+  if ( ( !themap->world[the_node].opened ) && (themap->world[the_node].unpassable==0) && (themap->world[the_node].in_unpassable_radious==0) )
     {
       if (route->openlist_top+1<route->openlist_size)
         {
@@ -450,7 +450,7 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
        {
           // 2nd level line compression/extraction
            unsigned int start_str8_resultlist_size=route->str8_resultlist_size;
-           GetTheShortestNormalizedLineFromNodes(themap->world,themap->world_neighbors,themap->world_size_x,themap->world_total_size,route->str8_resultlist,&route->str8_resultlist_size);
+           GetTheShortestNormalizedLineFromNodes(themap->world,themap->world_size_x,themap->world_total_size,route->str8_resultlist,&route->str8_resultlist_size);
            printf("Compressed route , removed %d checkpoints now has %d total \n",start_str8_resultlist_size-route->str8_resultlist_size,route->str8_resultlist_size);
 
            /*char * storage;

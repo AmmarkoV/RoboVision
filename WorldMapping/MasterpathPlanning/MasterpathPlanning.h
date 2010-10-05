@@ -62,11 +62,6 @@ struct NodeRef
     unsigned int score;
   };
 
-struct NodeNeighborsCount
-  {
-    unsigned int total;
-  };
-
 struct TraceNode
   {
     // Declare NODE struct type
@@ -80,7 +75,6 @@ struct Map
 
    unsigned int world_total_size;
    struct NodeData  * world;
-   struct NodeNeighborsCount * world_neighbors;
    unsigned int GUARD_BYTE;
 
    unsigned int total_actors;
