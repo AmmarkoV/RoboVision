@@ -505,7 +505,7 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
 
            char * storage;
            unsigned int storagelen=0;
-           unsigned int commands= ConvertPathToLogo(route->str8_resultlist,route->str8_resultlist_size,storage,storagelen);
+           unsigned int commands= ConvertPathToLogo(route->str8_resultlist,&route->str8_resultlist_size,storage,storagelen);
        }
 
       printf("Total Distance is %d \n",hops);
