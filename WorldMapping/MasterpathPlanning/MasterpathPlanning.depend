@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1286239018 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/main.c
+1286281141 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/main.c
 	<stdio.h>
 	<stdlib.h>
 	"MasterpathPlanning.h"
@@ -30,5 +30,11 @@
 	<stdlib.h>
 
 1286150290 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/NormalizePath.h
+	"MasterpathPlanning.h"
+
+1286284240 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/PathPlanningHelper.c
+	"PathPlanningHelper.h"
+
+1286284250 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/PathPlanningHelper.h
 	"MasterpathPlanning.h"
 

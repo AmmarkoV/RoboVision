@@ -1,0 +1,4 @@
+reset
+direction 0.000000
+turnright 31.464144
+forward 78.549348

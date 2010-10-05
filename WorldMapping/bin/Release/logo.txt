@@ -1,0 +1,6 @@
+reset
+direction 0.000000
+turnright 46.735705
+forward 23.345235
+turnleft 21.534581
+forward 56.364883

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd PathPlanning
+./make
+cd ..
+
+cd PathPlanning_C
+./make
+cd ..
+
+g++ WorldMappingApp.cpp PathPlanning/libPathPlanning.a ../MotorFoundation/RobotHAL/libRobotHAL.a ../MotorFoundation/MD23/libMD23.a -L. -o bin/Release/WorldMapping
+exit 0

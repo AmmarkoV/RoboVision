@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="WorldMappingApp.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="682" topLine="0" />
+	</File>
+	<File name="WorldMappingApp.h" open="1" top="0" tabpos="4">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="WorldMappingMain.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="8574" topLine="311" />
+	</File>
+	<File name="WorldMappingMain.h" open="1" top="0" tabpos="2">
+		<Cursor position="3500" topLine="76" />
+	</File>
+</CodeBlocks_layout_file>

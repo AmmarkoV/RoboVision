@@ -462,7 +462,7 @@ void WorldMappingFrame::OnMotion(wxMouseEvent& event)
             else
               {
                 //floor_plan->SetObjectAt(x,y,BLOCKED);
-                SetObstacle(floor,x,y,7) ;
+                SetObstacle(floor,x,y,5) ;
                 Refresh();
               }
 
@@ -477,7 +477,7 @@ void WorldMappingFrame::OnMotion(wxMouseEvent& event)
         if ( XYOverFeed(x,y)==1 )
           {
             //floor_plan->SetObjectAt(x,y,FREE);
-            RemoveObstacle(floor,x,y,7);
+            RemoveObstacle(floor,x,y,5);
             Refresh();
           }
       }

@@ -155,7 +155,7 @@ int RemoveObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned in
 
    themap->world[memory_ptr].unpassable=0;
 
-   if (!PathPlanCore_RemoveObstacleRadious(themap,x,y,memory_ptr,safety_radious) ) { fprintf(stderr,"Could not add radious\n"); }
+   if (!PathPlanCore_RemoveObstacleRadious(themap,x,y,memory_ptr,safety_radious) ) { fprintf(stderr,"Could not remove radious\n"); }
    return 1;
 }
 
