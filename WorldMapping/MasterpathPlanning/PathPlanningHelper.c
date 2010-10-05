@@ -106,7 +106,8 @@ int ClearFindPathState(struct Map * themap,struct Path * route)
       {
          themap->world[ptr].opened=0;
          themap->world[ptr].score=0;
-         themap->world[ptr].node_penalty=0;
+         themap->world[ptr].heuristic=0;
+         themap->world[ptr].movement_cost=0;
          themap->world[ptr].parent_node=0;
          themap->world[ptr].arrived_direction =0;
          ++ptr;

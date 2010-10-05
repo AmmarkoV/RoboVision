@@ -128,6 +128,7 @@ inline void quickSortNodes(struct NodeRef *arr, int elements)
 inline void ExpandNodeFromNode(struct Map * themap,struct Path * route,unsigned int from_node,unsigned int to_node,unsigned char current_heading,unsigned int turning_penalty)
 {
   unsigned int new_score=themap->world[from_node].score;
+  themap->world[to_node].movement_cost=themap->world[from_node].movement_cost+1;
 
   fprintf(stderr,"Score was %u ",new_score);
   //new_score += world_matrix[from_node].node_penalty;
@@ -165,7 +166,7 @@ void inline OpenNode(struct Map * themap,struct Path * route,unsigned int parent
           route->openlist[route->openlist_top].node = the_node;
           unsigned int x=parent_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
           unsigned int y=parent_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
-          route->openlist[route->openlist_top].score = ManhattanDistance(x,y,route->target_x,route->target_y);
+          route->openlist[route->openlist_top].score = themap->world[the_node].movement_cost+ManhattanDistance(x,y,route->target_x,route->target_y);
 
           ++route->openlist_top;
           // WE HEAVE SUCCESSFULLY ADDED THE NEW NODE TO THE TAIL OF THE OPENLIST
@@ -182,7 +183,6 @@ inline int ProcessNode(struct Map * themap,struct Path * route,unsigned int pare
 {
   /*
      Each time process node is called we want to check "node_to_proc" and the parent_node is the previous node
-
   */
 
   if ( (route->done==0) && ( node_to_proc < themap->world_total_size) ) // IF NOT DONE AND INSIDE WORLD!
@@ -402,7 +402,7 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
         }
 
       ++loops;
-      if ( loops % 1000 == 0 )
+      if ( loops % 500 == 0 )
         {
           gettimeofday(&end, NULL);
           seconds  = end.tv_sec  - start.tv_sec;
@@ -424,7 +424,7 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
   // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  printf("Total %d loops , and found total %d solutions \n",loops,route->solutions_gathered);
+  printf("Total %u loops , and found total %u solutions \n",loops,route->solutions_gathered);
 
   unsigned int hops=0;
 

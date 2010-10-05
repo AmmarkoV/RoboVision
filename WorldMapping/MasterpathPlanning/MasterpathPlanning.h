@@ -44,15 +44,11 @@ struct Actor    // Declare NODE struct type
     int current_heading,target_heading;
   };
 
-struct NodeData    // Declare NODE struct type
+struct TraceNode
   {
-    unsigned int parent_node;
-    unsigned char arrived_direction;
+    // Declare NODE struct type
+    unsigned int nodex,nodey;
     unsigned int score;
-    unsigned char opened;
-    unsigned char unpassable;
-    unsigned char in_unpassable_radious;
-    unsigned int node_penalty;
   };
 
 struct NodeRef
@@ -62,11 +58,18 @@ struct NodeRef
     unsigned int score;
   };
 
-struct TraceNode
+struct NodeData    // Declare NODE struct type
   {
-    // Declare NODE struct type
-    unsigned int nodex,nodey;
     unsigned int score;
+    unsigned int heuristic;
+    unsigned int movement_cost;
+
+
+    unsigned int parent_node;
+    unsigned char arrived_direction;
+    unsigned char opened;
+    unsigned char unpassable;
+    unsigned char in_unpassable_radious;
   };
 
 struct Map
