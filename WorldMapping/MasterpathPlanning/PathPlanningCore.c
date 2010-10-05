@@ -5,6 +5,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+enum Directions
+{
+  UP_LEFT=1,
+  UP,
+  UP_RIGHT,
+  LEFT,
+  MIDDLE,
+  RIGHT,
+  DOWN_LEFT,
+  DOWN,
+  DOWN_RIGHT,
+  /*--------------*/
+  TOTAL_DIRECTIONS
+};
+
+
 /* This function adds a radious around an obstacle */
 inline int PathPlanCore_ObstacleRadiousCalculations(struct Map * themap,unsigned char add_operation,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int total_safety_radious)
 {
@@ -182,6 +198,7 @@ inline unsigned int ManhattanDistance(unsigned int from_x,unsigned int from_y,un
   unsigned int totres=0;
   if (to_y>from_y) { totres+=to_y-from_y; } else { totres+=from_y-to_y; }
   if (to_x>from_x) { totres+=to_x-from_x; } else { totres+=from_x-to_x; }
+  //fprintf(stderr,"ManhattanDistance(%u,%u,%u,%u) == %u\n",from_x,from_y,to_x,to_y,totres);
   return totres;
 }
 
@@ -226,10 +243,8 @@ void inline OpenNode(struct Map * themap,struct Path * route,unsigned int the_no
           route->openlist[route->openlist_top].node=the_node;
           route->openlist[route->openlist_top].score=ManhattanDistance(route->cur_x,route->cur_y,route->target_x,route->target_y);
 
-
           ++route->openlist_top;
           // WE HEAVE SUCCESSFULLY ADDED THE NEW NODE TO THE TAIL OF THE OPENLIST
-
         }
       else
         {
@@ -258,7 +273,7 @@ inline int ProcessNode(struct Map * themap,struct Path * route,unsigned int node
   if ( (route->done==0) && (route->proc_node>=0) && ( route->proc_node < themap->world_total_size) ) // IF NOT DONE AND INSIDE WORLD!
     {
       ExpandNodeFromNode( themap->world , route->last_node , route->proc_node, route->node_direction , 1); // False ennooume oti einai diagwnia kinisi!
-      if (route->proc_node==route->target)
+      if (route->proc_node == route->target)
         {
           //printf("Target Just Reached :D\n"); // Vrikame to target! :D
           ++themap->world[route->target].opened;
@@ -367,38 +382,29 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
 
       if ( ( route->cur_x > 0 ) && ( route->cur_x < themap->world_size_x ) && ( route->cur_y > 0 ) && ( route->cur_y < themap->world_size_y ) )
         {
-          // BEEING DEEP INSIDE
-          // WE CAN SKIP CHECKS
-          route->proc_node = route->last_node - 1;
-          route->node_direction=4;
+          /* OUR CUR_X,CUR_Y location is DEEP INSIDE the array so WE CAN SKIP boundary CHECKS */
+          route->node_direction=LEFT; route->proc_node = route->last_node - 1;
           ProcessNode(themap,route,route->proc_node);
 
-          route->proc_node = route->proc_node - themap->world_size_x;
-          route->node_direction=1;
+          route->node_direction=UP_LEFT; route->proc_node = route->proc_node - themap->world_size_x;
           ProcessNode(themap,route,route->proc_node);
 
-          route->node_direction=2;
-          ++route->proc_node;
+          route->node_direction=UP; ++route->proc_node;
           ProcessNode(themap,route,route->proc_node);
 
-          route->node_direction=3;
-          ++route->proc_node;
+          route->node_direction=UP_RIGHT; ++route->proc_node;
           ProcessNode(themap,route,route->proc_node);
 
-          route->node_direction=6;
-          route->proc_node = route->proc_node + themap->world_size_x;
+          route->node_direction=RIGHT; route->proc_node = route->proc_node + themap->world_size_x;
           ProcessNode(themap,route,route->proc_node);
 
-          route->node_direction=9;
-          route->proc_node = route->proc_node + themap->world_size_x;
+          route->node_direction=DOWN_RIGHT; route->proc_node = route->proc_node + themap->world_size_x;
           ProcessNode(themap,route,route->proc_node);
 
-          route->node_direction=8;
-          --route->proc_node;
+          route->node_direction=DOWN; --route->proc_node;
           ProcessNode(themap,route,route->proc_node);
 
-          route->node_direction=7;
-          --route->proc_node;
+          route->node_direction=DOWN_LEFT; --route->proc_node;
           ProcessNode(themap,route,route->proc_node);
           // ---------------------
           // ---------------------
@@ -418,41 +424,36 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
           route->proc_node = route->last_node - 1;
           if (route->cur_x>0 )
             {
-              route->node_direction=4;
-              ProcessNode(themap,route,route->proc_node);
+              route->node_direction=LEFT; ProcessNode(themap,route,route->proc_node);
             }
 
           route->proc_node = route->proc_node - themap->world_size_x;
           if ( (route->cur_x>0) && (route->cur_y>0) )
             {
-              route->node_direction=1;
-              ProcessNode(themap,route,route->proc_node);
+              route->node_direction=UP_LEFT; ProcessNode(themap,route,route->proc_node);
             }
 
           ++route->proc_node;
           if (route->cur_x>0 )
             {
-              route->node_direction=2;
-              ProcessNode(themap,route,route->proc_node);
+              route->node_direction=UP; ProcessNode(themap,route,route->proc_node);
             }
 
           ++route->proc_node;
           if ( (route->cur_x>0) && (route->cur_y<themap->world_size_y) )
             {
-              route->node_direction=3;
-              ProcessNode(themap,route,route->proc_node);
+              route->node_direction=UP_RIGHT; ProcessNode(themap,route,route->proc_node);
             }
 
           route->proc_node = route->proc_node + themap->world_size_x;
           if (route->cur_x<themap->world_size_x )
             {
-              route->node_direction=6;
-              ProcessNode(themap,route,route->proc_node);
+              route->node_direction=RIGHT; ProcessNode(themap,route,route->proc_node);
             }
 
           if ( (route->cur_x<themap->world_size_x) && (route->cur_y<themap->world_size_y) )
             {
-              route->node_direction=9;
+              route->node_direction=DOWN_RIGHT;
               route->proc_node = route->proc_node + themap->world_size_x;
               ProcessNode(themap,route,route->proc_node);
             }
@@ -460,15 +461,13 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
           --route->proc_node;
           if (route->cur_y<themap->world_size_y )
             {
-              route->node_direction=8;
-              ProcessNode(themap,route,route->proc_node);
+              route->node_direction=DOWN; ProcessNode(themap,route,route->proc_node);
             }
 
           --route->proc_node;
           if ( (route->cur_x>0) && (route->cur_y<themap->world_size_y) )
             {
-              route->node_direction=7;
-              ProcessNode(themap,route,route->proc_node);
+              route->node_direction=DOWN_LEFT; ProcessNode(themap,route,route->proc_node);
             }
           // ----------------------------------
           // ----------------------------------
@@ -546,7 +545,6 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
            unsigned int storagelen=0;
            unsigned int commands= ConvertPathToLogo(route->str8_resultlist,route->str8_resultlist_size,storage,storagelen);*/
        }
-      //
 
       printf("Total Distance is %d \n",hops);
     }
@@ -556,7 +554,7 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
     }
 
 
-  free(route->openlist); route->openlist=0;
+  free(route->openlist); route->openlist=0; route->openlist_size=0; route->openlist_top=0;
   return hops;
 }
 

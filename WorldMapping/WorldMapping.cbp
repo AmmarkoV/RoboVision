@@ -36,11 +36,10 @@
 		</Compiler>
 		<Linker>
 			<Add option="`wx-config --libs`" />
-			<Add library="PathPlanning/libPathPlanning.a" />
-			<Add library="../MotorFoundation/MD23/libMD23.a" />
 			<Add library="../MotorFoundation/libMotorHAL.a" />
 			<Add library="../MotorFoundation/MD23/libMD23.a" />
 			<Add library="../MotorFoundation/Arduino/libRoboVisionSensorLib.a" />
+			<Add library="MasterpathPlanning/libMasterpathPlanning.a" />
 			<Add library="../InputParser/libInputParser_C.a" />
 		</Linker>
 		<Unit filename="WorldMappingApp.cpp" />

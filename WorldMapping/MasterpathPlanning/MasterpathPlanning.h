@@ -50,7 +50,7 @@ struct NodeData    // Declare NODE struct type
     unsigned char opened;
     unsigned char unpassable;
     unsigned char in_unpassable_radious;
-    unsigned short node_penalty;
+    unsigned int node_penalty;
   };
 
 struct NodeRef
@@ -86,9 +86,9 @@ struct Map
 
     int error_number;
 
-    unsigned short diagonal_penalty;
-    unsigned short horizontal_penalty;
-    unsigned short turning_penalty;
+    unsigned int diagonal_penalty;
+    unsigned int horizontal_penalty;
+    unsigned int turning_penalty;
     unsigned char add_neighbors_mode;
     unsigned char block_perfect_diagonal;
 };
