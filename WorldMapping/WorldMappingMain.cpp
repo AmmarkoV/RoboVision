@@ -15,7 +15,7 @@
 #include <wx/colour.h>
 #include <wx/utils.h>
 
-
+#define OURROBOT 0
 
 //(*InternalHeaders(WorldMappingFrame)
 #include <wx/string.h>
@@ -169,9 +169,9 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
 
   floor = CreateMap(101,101,10);
   SetMapUnit_In_cm(floor,15);
-  SetAgentSize(floor,0,1,1);
-  SetAgentLocation(floor,0,1,1) ;
-  SetAgentHeading(floor,0,1) ;
+  SetAgentSize(floor,OURROBOT,1,1);
+  SetAgentLocation(floor,OURROBOT,1,1) ;
+  SetAgentHeading(floor,OURROBOT,1) ;
   //floor_plan = new Map(101,101);
   //floor_plan->SetActorPhysicalSize(4);
   //floor_plan->SetActorCurrentPosition(1,1,6);
@@ -239,9 +239,9 @@ void DrawSolvePath(wxMemoryDC &mem,struct Map *floorplancopy)
   //printf("Drawing Level 1 Lines \n");
   wxPen redfat(wxColour(255,0,0),3,wxSOLID);
   unsigned int oldx=0,oldy=0;
-  if ( GetStraightRouteWaypoint(floorplancopy,0,0,&oldx,&oldy)==1 ) { mem.DrawCircle(oldx*10+5,oldy*10+5,3); }
+  if ( GetStraightRouteWaypoint(floorplancopy,OURROBOT,0,&oldx,&oldy)==1 ) { mem.DrawCircle(oldx*10+5,oldy*10+5,3); }
   route_count=1;
-  while ( GetStraightRouteWaypoint(floorplancopy,0,route_count,&x,&y)==1 )
+  while ( GetStraightRouteWaypoint(floorplancopy,OURROBOT,route_count,&x,&y)==1 )
     {
       mem.SetPen(redfat);
       mem.DrawCircle(x*10+5,y*10+5,3);
@@ -504,7 +504,7 @@ void WorldMappingFrame::OnButtonCalculateClick(wxCommandEvent& event)
   pty1->GetValue().ToLong(&starty);
 
   //floor_plan->SetActorCurrentPosition(startx,starty,6);
-  SetAgentLocation(floor,0,startx,starty) ;
+  SetAgentLocation(floor,OURROBOT,startx,starty) ;
 
   long endx,endy;
   ptx2->GetValue().ToLong(&endx);
@@ -512,7 +512,7 @@ void WorldMappingFrame::OnButtonCalculateClick(wxCommandEvent& event)
 
 
   //signed int res=floor_plan->FindPathTo(endx,endy,TimeMS->GetValue()*10);
-  signed int res=FindSponteneousPath(floor,0,startx,starty,endx,endy,TimeMS->GetValue()*10) ;
+  signed int res=FindSponteneousPath(floor,OURROBOT,startx,starty,endx,endy,TimeMS->GetValue()*10) ;
   //floor_plan->FindPathTo(endx,endy,);
   if ( res <1 ) { TTS("Could not establish a route.");  } else
                 { TTS("New route established."); }

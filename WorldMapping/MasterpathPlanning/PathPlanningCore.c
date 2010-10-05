@@ -11,29 +11,28 @@ inline int PathPlanCore_ObstacleRadiousCalculations(struct Map * themap,unsigned
    if ( total_safety_radious == 0 ) { themap->world[mem_ptr].in_unpassable_radious+=1; return 1; } /* Radious is a point */
 
    unsigned int safety_radious = (unsigned int) total_safety_radious/2;
+   if ( safety_radious == 0 ) { safety_radious=1; } /* :P rounded */
    unsigned int start_x=x,start_y=y,end_x=x,end_y=y;
-   if ( start_x>safety_radious )
-    { /* Add left radious */
-      if ( start_y > safety_radious )
-      {  /* Add up radious */  start_y-=safety_radious; } else
-      { start_y=0; }
-      start_x-=safety_radious;
-    } else
-    { start_x=0; }
 
-   if ( end_x+safety_radious >= themap->world_size_x )
-    { /* Add right radious */
-      if ( end_y+safety_radious >= themap->world_size_y )
-      {  /* Add down radious */ end_y=themap->world_size_y-1; } else
-      { end_y+=safety_radious; }
-      end_x=themap->world_size_x-1;
-    } else
-    { end_x+=safety_radious; }
+
+   /* Add left radious */
+  if ( start_x>safety_radious ) {  start_x-=safety_radious; } else
+                                { start_x=0; }
+
+  if ( start_y > safety_radious ) { start_y-=safety_radious; /* Add up radious */  } else
+                                  { start_y=0; }
+
+  if ( end_x+safety_radious >= themap->world_size_x ) { end_x=themap->world_size_x-1; /* Add right radious */ } else
+                                                      { end_x+=safety_radious; }
+
+  if ( end_y+safety_radious < themap->world_size_y )  { end_y+=safety_radious;  /* Add down radious */   } else
+                                                      { end_y=themap->world_size_y-1; }
+
 
   unsigned int xi=start_x,yi=start_y,mem_ptr_i=0;
   for ( yi = start_y; yi<=end_y; yi++ )
    {
-     mem_ptr_i=start_x+yi*themap->world_size_x;
+     mem_ptr_i=start_x+(yi*themap->world_size_x);
      for ( xi = start_x; xi<=end_x; xi++ )
      {
        if (add_operation) { ++themap->world[mem_ptr_i].in_unpassable_radious; ++themap->world_neighbors[mem_ptr_i].total; } else
@@ -55,7 +54,7 @@ int PathPlanCore_RemoveObstacleRadious(struct Map * themap,unsigned int x,unsign
 }
 
 
-inline void swap_2_list_references(struct NodeRef * openlist,unsigned int *openlist_top,unsigned int ref1,unsigned int ref2)
+inline void swap_2_list_references(struct NodeRef * openlist,unsigned int ref1,unsigned int ref2)
 {
   // ACTUAL SWAPING
   struct NodeRef tmpref;
@@ -180,16 +179,15 @@ inline unsigned int SamePosition(unsigned int x1,unsigned int y1,unsigned int x2
 
 inline unsigned int ManhattanDistance(unsigned int from_x,unsigned int from_y,unsigned int to_x,unsigned int to_y)
 {
-  signed int retres=to_y-from_y,totres=to_x-from_x;
-  if (totres<0) totres=-totres;
-  if (retres<0) retres=-retres;
-  totres+=retres;
+  unsigned int totres=0;
+  if (to_y>from_y) { totres+=to_y-from_y; } else { totres+=from_y-to_y; }
+  if (to_x>from_x) { totres+=to_x-from_x; } else { totres+=from_x-to_x; }
   return totres;
 }
 
 inline unsigned int abs_val(signed int num)
 {
-  if ( num < 0 ) { return 0-num; }
+  if ( num < 0 ) { return (0-num); }
   return num;
 }
 
@@ -248,7 +246,7 @@ inline unsigned int GetNextNode(struct Map * themap,struct Path * route)
     {
       quickSortNodes(route->openlist,route->openlist_top-1);
       retres=route->openlist[0].node;
-      swap_2_list_references(route->openlist,&route->openlist_top,0,route->openlist_top-1);
+      swap_2_list_references(route->openlist,0,route->openlist_top-1);
       --route->openlist_top;
     }
   return retres;
