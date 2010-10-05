@@ -2,7 +2,8 @@
 #define LOGOHIGHLEVELPATH_H_INCLUDED
 
 #include "NormalizePath.h"
-unsigned int ConvertPathToLogo(TraceNode * str8nodes,unsigned int &str8nodes_size,char * storage,unsigned int storagelen);
-int PrintoutHTML(char * filename,unsigned int world_x,unsigned int world_y,NodeData * world);
+
+unsigned int ConvertPathToLogo(struct TraceNode * str8nodes,unsigned int *str8nodes_size,char * storage,unsigned int storagelen);
+int PrintoutHTML(char * filename,unsigned int world_x,unsigned int world_y,struct NodeData * world);
 
 #endif // LOGOHIGHLEVELPATH_H_INCLUDED

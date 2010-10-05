@@ -1,6 +1,7 @@
 #include "PathPlanningCore.h"
 #include "PathPlanningHelper.h"
 #include "NormalizePath.h"
+#include "LogoHighLevelPath.h"
 #include <sys/time.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -502,9 +503,9 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
            GetTheShortestNormalizedLineFromNodes(themap->world,themap->world_size_x,themap->world_total_size,route->str8_resultlist,&route->str8_resultlist_size);
            printf("Compressed route , removed %d checkpoints now has %d total \n",start_str8_resultlist_size-route->str8_resultlist_size,route->str8_resultlist_size);
 
-           /*char * storage;
+           char * storage;
            unsigned int storagelen=0;
-           unsigned int commands= ConvertPathToLogo(route->str8_resultlist,route->str8_resultlist_size,storage,storagelen);*/
+           unsigned int commands= ConvertPathToLogo(route->str8_resultlist,route->str8_resultlist_size,storage,storagelen);
        }
 
       printf("Total Distance is %d \n",hops);

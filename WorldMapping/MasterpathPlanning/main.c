@@ -258,7 +258,7 @@ int MoveAgentForward(struct Map * themap,unsigned int agentnum,int leftwheel_cm,
 
 int AddObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm)
 {
-    fprintf(stderr,"stub called\n");
+  fprintf(stderr,"AddObstacleSensedbyAgent %u %u \n",ultrasonic_left_cm,ultrasonic_right_cm);
   return 0;
 }
 /*      --------------------------------------------

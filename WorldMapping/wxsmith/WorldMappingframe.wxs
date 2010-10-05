@@ -39,16 +39,16 @@
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
 			<label>Obstacle</label>
-			<pos>16,264</pos>
+			<pos>16,304</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL5" variable="obsx" member="yes">
 			<value>0</value>
-			<pos>16,288</pos>
+			<pos>16,328</pos>
 			<size>40,27</size>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL6" variable="obsy" member="yes">
 			<value>0</value>
-			<pos>64,288</pos>
+			<pos>64,328</pos>
 			<size>40,27</size>
 		</object>
 		<object class="wxStaticBox" name="ID_STATICBOX1" variable="StaticBox1" member="yes">
@@ -58,11 +58,12 @@
 		</object>
 		<object class="wxButton" name="ID_BUTTON2" variable="Button1" member="yes">
 			<label>Add</label>
-			<pos>16,376</pos>
+			<pos>16,392</pos>
+			<handler function="OnButton1Click" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxButton" name="ID_BUTTON3" variable="Button2" member="yes">
 			<label>Remove</label>
-			<pos>16,416</pos>
+			<pos>16,424</pos>
 		</object>
 		<object class="wxButton" name="ID_BUTTON4" variable="SetEndPoint" member="yes">
 			<label>S</label>
@@ -107,13 +108,18 @@
 		</object>
 		<object class="wxButton" name="ID_BUTTON7" variable="ButtonExecute" member="yes">
 			<label>Execute</label>
-			<pos>16,208</pos>
+			<pos>16,200</pos>
 			<size>88,29</size>
 		</object>
 		<object class="wxButton" name="ID_BUTTON8" variable="PrintButton" member="yes">
 			<label>Print</label>
-			<pos>16,328</pos>
+			<pos>16,240</pos>
 			<handler function="OnPrintButtonClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxButton" name="ID_BUTTON9" variable="ButtonSimulateUltrasonic" member="yes">
+			<label>Simulate U</label>
+			<pos>16,360</pos>
+			<handler function="OnButtonSimulateUltrasonicClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxMenuBar" variable="MenuBar1" member="no">
 			<object class="wxMenu" variable="Menu1" member="no">

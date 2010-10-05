@@ -42,6 +42,8 @@ class WorldMappingFrame: public wxFrame
         void OnButtonCalculateClick(wxCommandEvent& event);
         void OnClearButtonClick(wxCommandEvent& event);
         void OnPrintButtonClick(wxCommandEvent& event);
+        void OnButtonSimulateUltrasonicClick(wxCommandEvent& event);
+        void OnButton1Click(wxCommandEvent& event);
         //*)
         void OnJoystickEvent(wxJoystickEvent& event);
         void OnPaint(wxPaintEvent& event);
@@ -70,6 +72,7 @@ class WorldMappingFrame: public wxFrame
         static const long ID_STATICTEXT6;
         static const long ID_BUTTON7;
         static const long ID_BUTTON8;
+        static const long ID_BUTTON9;
         static const long idMenuQuit;
         static const long idMenuAbout;
         static const long ID_STATUSBAR1;
@@ -80,6 +83,7 @@ class WorldMappingFrame: public wxFrame
         wxButton* ButtonExecute;
         wxTextCtrl* ptx1;
         wxStatusBar* StatusBar1;
+        wxButton* ButtonSimulateUltrasonic;
         wxTextCtrl* ptx2;
         wxSpinCtrl* TimeMS;
         wxTextCtrl* pty2;
