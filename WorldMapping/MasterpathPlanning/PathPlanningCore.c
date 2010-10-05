@@ -161,8 +161,23 @@ inline void quickSortNodes(struct NodeRef *arr, int elements)
 inline unsigned int GetHeadingChangeOverhead(unsigned int start_heading,unsigned int end_heading)
 {
   if ( ( start_heading >= TOTAL_DIRECTIONS ) || ( end_heading >= TOTAL_DIRECTIONS ) ) { fprintf(stderr,"Erroneous heading \n"); return 1; }
+  if ( start_heading == end_heading ) { return 0; }
+
   return turning_overheads[start_heading][end_heading];
 }
+
+inline unsigned int GetHeadingMovementOverhead(unsigned int heading)
+{
+  switch (heading)
+   {
+      case UP_LEFT : return 3; break;
+      case UP_RIGHT : return 3; break;
+      case DOWN_LEFT : return 3; break;
+      case DOWN_RIGHT : return 3; break;
+   };
+  return 2;
+}
+
 
 
 inline void ExpandNodeFromNode(struct Map * themap,struct Path * route,unsigned int from_node,unsigned int to_node,unsigned char current_heading,unsigned int turning_penalty)
@@ -174,16 +189,9 @@ inline void ExpandNodeFromNode(struct Map * themap,struct Path * route,unsigned 
   unsigned int new_movement_cost=ManhattanDistance(x,y,route->target_x,route->target_y);
   unsigned int new_score=themap->world[to_node].movement_cost+themap->world[to_node].heuristic;//=themap->world[from_node].score;
 
-  unsigned int turning_movement_overhead=0;
-  if ( current_heading!= themap->world[from_node].arrived_direction )
-    {
-      /*ADDING DIRECTION TURNING OVERHEAD */
-      if (current_heading>themap->world[from_node].arrived_direction) { turning_movement_overhead = (current_heading-themap->world[from_node].arrived_direction) * turning_penalty; } else
-                                                                      { turning_movement_overhead = (themap->world[from_node].arrived_direction-current_heading) * turning_penalty; }
-    }
+  unsigned int turning_movement_overhead=GetHeadingChangeOverhead(current_heading,themap->world[from_node].arrived_direction);
 
-
-  new_movement_cost=themap->world[from_node].movement_cost + turning_movement_overhead + 1/* 1 is the cost of moving +1 block further*/;
+  new_movement_cost=themap->world[from_node].movement_cost + turning_movement_overhead + GetHeadingMovementOverhead(current_heading);
   new_score = new_movement_cost + new_heuristic;
 
   if ((new_score<themap->world[to_node].score) ||  (themap->world[to_node].score==0) )
@@ -236,7 +244,7 @@ inline int ProcessNode(struct Map * themap,struct Path * route,unsigned int pare
       ExpandNodeFromNode( themap,route , parent_node , node_to_proc , route->node_direction , themap->turning_penalty);
       if (node_to_proc == route->target)
         {
-          printf("Target Just Reached :D\n"); // We found the target! :D
+          //printf("Target Just Reached :D\n"); // We found the target! :D
           themap->world[route->target].opened=1;
           ++route->solutions_gathered;
         }
@@ -335,11 +343,8 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
       route->cur_y=last_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
       //fprintf(stderr,"%u/%u ",route->cur_x,route->cur_y);
 
-      fprintf(stderr,"I have the point %u/%u ",route->cur_x,route->cur_y);
-
       if ( ( route->cur_x > 0 ) && ( route->cur_x < themap->world_size_x ) && ( route->cur_y > 0 ) && ( route->cur_y < themap->world_size_y ) )
         {
-          fprintf(stderr," the point is deep inside \n");
           /* OUR CUR_X,CUR_Y location is DEEP INSIDE the array so WE CAN SKIP boundary CHECKS */
           route->node_direction=LEFT; memory_ptr = last_node - 1;
           ProcessNode(themap,route,last_node,memory_ptr);
@@ -369,7 +374,6 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
         }
       else
         {
-          fprintf(stderr," the point is on border inside \n");
           /*            UP
                        X X X
                     X  1 2 3  X
@@ -437,7 +441,7 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
               route->cur_x = last_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
               route->cur_y = last_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
               if ( last_node == 0 )
-                { fprintf(stderr,"WTF ? NO NEXT NODE ? \n");}
+                { fprintf(stderr,"? NO NEXT NODE ?\n");}
             }
           else
             {
