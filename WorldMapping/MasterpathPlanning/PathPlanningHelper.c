@@ -137,3 +137,34 @@ int VerifySorting(struct NodeRef *arr, int elements)
    }
    return 1;
 }
+
+unsigned int GetCompressedHeadingFromRealHeading(float heading)
+{
+     heading= heading % 360;
+
+     /*
+        The idea is that 0 degrees is left 90 degrees is up 180 degrees right and 270 degrees down
+        it can be seen at Trigonometry.gif
+        45->-45 = LEFT
+        45->135 = UP
+        45->135 = UP
+
+     */
+
+
+     if (heading>405)  { /*+infinite - 405 OUT OF BOUNDS */} else
+     if (heading>315)  { /*360 to 315*/ } else
+     if (heading>225)  { /*315 to 225*/ } else
+     if (heading>135)  { /*225 to 135*/ } else
+     if (heading>45)   { /*135 to 45*/ } else
+     if (heading>0)    { /*45 to 0 */ } else
+     if (heading>-45)  { /*0 to -45*/ } else
+     if (heading>-135) { /*-45 to -135*/ } else
+     if (heading>-225) { /*-135 to -225*/ } else
+     if (heading>-315) { /*-225 to -315*/ } else
+     if (heading>-405) { /*-315 to -405*/ } else
+     { fprintf(stderr," Erroneous heading ");}
+
+}
+
+
