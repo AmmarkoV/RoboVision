@@ -9,6 +9,8 @@
         -------------------------------------------- */
 struct Map * CreateMap(unsigned int world_size_x,unsigned int world_size_y,unsigned int actors_number)
 {
+    FillInTurningOverheads();
+
     struct Map * newmap=0;
     newmap = (struct Map * ) malloc(sizeof(struct Map));
     newmap->GUARD_BYTE=GUARD_BYTE_VALUE;

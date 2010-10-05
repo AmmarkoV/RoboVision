@@ -23,7 +23,43 @@ enum Directions
   TOTAL_DIRECTIONS
 };
 
+unsigned int turning_overheads[TOTAL_DIRECTIONS][TOTAL_DIRECTIONS]={{0}};
 
+void FillInTurningOverheads()
+{
+  turning_overheads[UP_LEFT][UP]=1; turning_overheads[UP][UP_LEFT]=1;
+  turning_overheads[UP][UP_RIGHT]=1; turning_overheads[UP_RIGHT][UP]=1;
+  turning_overheads[UP_RIGHT][RIGHT]=1; turning_overheads[RIGHT][UP_RIGHT]=1;
+  turning_overheads[RIGHT][DOWN_RIGHT]=1; turning_overheads[DOWN_RIGHT][RIGHT]=1;
+  turning_overheads[DOWN_RIGHT][DOWN]=1; turning_overheads[DOWN][DOWN_RIGHT]=1;
+  turning_overheads[DOWN][DOWN_LEFT]=1; turning_overheads[DOWN_LEFT][DOWN]=1;
+  turning_overheads[DOWN_LEFT][LEFT]=1; turning_overheads[LEFT][DOWN_LEFT]=1;
+  turning_overheads[LEFT][UP_LEFT]=1; turning_overheads[UP_LEFT][LEFT]=1;
+
+  turning_overheads[UP_LEFT][UP_RIGHT]=2; turning_overheads[UP_RIGHT][UP_LEFT]=2;
+  turning_overheads[UP][RIGHT]=2; turning_overheads[RIGHT][UP]=2;
+  turning_overheads[UP_RIGHT][DOWN_RIGHT]=2; turning_overheads[DOWN_RIGHT][UP_RIGHT]=2;
+  turning_overheads[RIGHT][DOWN]=2; turning_overheads[DOWN][RIGHT]=2;
+  turning_overheads[DOWN_RIGHT][DOWN_LEFT]=2; turning_overheads[DOWN_LEFT][DOWN_RIGHT]=2;
+  turning_overheads[DOWN][LEFT]=2; turning_overheads[LEFT][DOWN]=2;
+  turning_overheads[DOWN_LEFT][UP_LEFT]=2; turning_overheads[UP_LEFT][DOWN_LEFT]=2;
+  turning_overheads[LEFT][UP]=2; turning_overheads[UP][LEFT]=2;
+
+  turning_overheads[UP_LEFT][RIGHT]=3; turning_overheads[RIGHT][UP_LEFT]=3;
+  turning_overheads[UP][DOWN_RIGHT]=3; turning_overheads[DOWN_RIGHT][UP]=3;
+  turning_overheads[UP_RIGHT][DOWN]=3; turning_overheads[DOWN][UP_RIGHT]=3;
+  turning_overheads[RIGHT][DOWN_LEFT]=3; turning_overheads[DOWN_LEFT][RIGHT]=3;
+  turning_overheads[DOWN_RIGHT][LEFT]=3; turning_overheads[LEFT][DOWN_RIGHT]=3;
+  turning_overheads[DOWN][UP_LEFT]=3; turning_overheads[UP_LEFT][DOWN]=3;
+  turning_overheads[DOWN_LEFT][UP]=3; turning_overheads[UP][DOWN_LEFT]=3;
+  turning_overheads[LEFT][UP_RIGHT]=3; turning_overheads[UP_RIGHT][LEFT]=3;
+
+  turning_overheads[UP_LEFT][DOWN_RIGHT]=4; turning_overheads[DOWN_RIGHT][UP_LEFT]=4;
+  turning_overheads[UP][DOWN]=4; turning_overheads[DOWN][UP]=4;
+  turning_overheads[UP_RIGHT][DOWN_LEFT]=4; turning_overheads[DOWN_LEFT][UP_RIGHT]=4;
+  turning_overheads[RIGHT][LEFT]=4; turning_overheads[LEFT][RIGHT]=4;
+
+}
 
 unsigned int inline ReturnDistanceFromNodeToNode(struct NodeData * world_matrix,unsigned int start_node,unsigned int end_node,unsigned int should_not_be_over)
 { /*This function returns the number of hops from end_node to start_node , if end_node is not connected to start_node it will eventually
@@ -122,32 +158,41 @@ inline void quickSortNodes(struct NodeRef *arr, int elements)
   return;
 }
 
-
+inline unsigned int GetHeadingChangeOverhead(unsigned int start_heading,unsigned int end_heading)
+{
+  if ( ( start_heading >= TOTAL_DIRECTIONS ) || ( end_heading >= TOTAL_DIRECTIONS ) ) { fprintf(stderr,"Erroneous heading \n"); return 1; }
+  return turning_overheads[start_heading][end_heading];
+}
 
 
 inline void ExpandNodeFromNode(struct Map * themap,struct Path * route,unsigned int from_node,unsigned int to_node,unsigned char current_heading,unsigned int turning_penalty)
 {
-  unsigned int new_score=themap->world[from_node].score;
-  themap->world[to_node].movement_cost=themap->world[from_node].movement_cost+1;
+  unsigned int x=from_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
+  unsigned int y=from_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
 
-  fprintf(stderr,"Score was %u ",new_score);
-  //new_score += world_matrix[from_node].node_penalty;
+  unsigned int new_heuristic=ManhattanDistance(x,y,route->target_x,route->target_y);
+  unsigned int new_movement_cost=ManhattanDistance(x,y,route->target_x,route->target_y);
+  unsigned int new_score=themap->world[to_node].movement_cost+themap->world[to_node].heuristic;//=themap->world[from_node].score;
+
+  unsigned int turning_movement_overhead=0;
   if ( current_heading!= themap->world[from_node].arrived_direction )
     {
-      // TO PARAKATW DOULEVEI SWSTA
-      unsigned int score_additive=0;
-      if (current_heading>themap->world[from_node].arrived_direction) { score_additive = (current_heading-themap->world[from_node].arrived_direction) * turning_penalty; } else
-                                                                      { score_additive = (themap->world[from_node].arrived_direction-current_heading) * turning_penalty; }
-      new_score = new_score + score_additive;
+      /*ADDING DIRECTION TURNING OVERHEAD */
+      if (current_heading>themap->world[from_node].arrived_direction) { turning_movement_overhead = (current_heading-themap->world[from_node].arrived_direction) * turning_penalty; } else
+                                                                      { turning_movement_overhead = (themap->world[from_node].arrived_direction-current_heading) * turning_penalty; }
     }
-  fprintf(stderr,"with heading is %u\n",new_score);
 
-  // Den theloume polles peristrofes giayto k gia kathe mia plironoume penalty
+
+  new_movement_cost=themap->world[from_node].movement_cost + turning_movement_overhead + 1/* 1 is the cost of moving +1 block further*/;
+  new_score = new_movement_cost + new_heuristic;
+
   if ((new_score<themap->world[to_node].score) ||  (themap->world[to_node].score==0) )
     {
       //Antikathistoume ton parent tou komvou to_node me ton from_node afou yparxei kalytero monopati!..!
       themap->world[to_node].parent_node = from_node;
       themap->world[to_node].score = new_score;
+      themap->world[to_node].movement_cost=new_movement_cost;
+      themap->world[to_node].heuristic=new_heuristic;
       themap->world[to_node].arrived_direction = current_heading;
     }
 
