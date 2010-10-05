@@ -80,6 +80,15 @@ inline void swap_2_list_references(struct NodeRef * openlist,unsigned int ref1,u
   return;
 }
 
+//  quickSort
+//
+//  This public-domain C implementation by Darel Rex Finley.
+//
+//  * This function assumes it is called with valid parameters.
+//
+//  * Example calls:
+//    quickSort(&myArray[0],5); // sorts elements 0, 1, 2, 3, and 4
+//    quickSort(&myArray[3],5); // sorts elements 3, 4, 5, 6, and 7
 inline void quickSortNodes(struct NodeRef *arr, int elements)
 {
   #define  MAX_LEVELS  400
@@ -202,24 +211,23 @@ inline unsigned int ManhattanDistance(unsigned int from_x,unsigned int from_y,un
   return totres;
 }
 
-inline unsigned int abs_val(signed int num)
-{
-  if ( num < 0 ) { return (0-num); }
-  return num;
-}
 
 inline void ExpandNodeFromNode(struct NodeData * world_matrix,unsigned int from_node,unsigned int to_node,unsigned char current_heading,unsigned int turning_penalty)
 {
   unsigned int new_score=world_matrix[from_node].score;
-
+  fprintf(stderr,"Score was %u ",new_score);
   new_score += world_matrix[from_node].node_penalty;
   if ( current_heading!= world_matrix[from_node].arrived_direction )
     {
       // TO PARAKATW DOULEVEI SWSTA
-      new_score += abs_val(current_heading-world_matrix[from_node].arrived_direction)*turning_penalty;
+      unsigned int score_additive;
+      if (current_heading>world_matrix[from_node].arrived_direction) { score_additive = (current_heading-world_matrix[from_node].arrived_direction) * turning_penalty; } else
+                                                                     { score_additive = (world_matrix[from_node].arrived_direction-current_heading) * turning_penalty; }
+      new_score += score_additive;
     }
-  // Den theloume polles peristrofes giayto k gia kathe mia plironoume penalty
+  fprintf(stderr,"with heading is %u\n",new_score);
 
+  // Den theloume polles peristrofes giayto k gia kathe mia plironoume penalty
   if ((new_score<world_matrix[to_node].score) ||  (world_matrix[to_node].score==0) )
     {
       //Antikathistoume ton parent tou komvou to_node me ton from_node afou yparxei kalytero monopati!..!
@@ -297,7 +305,7 @@ int clear_open_nodes(struct Map * themap)
          themap->world[ptr].opened=0;
          themap->world[ptr].score=0;
          themap->world[ptr].parent_node=0;
-
+         themap->world[ptr].arrived_direction =0;
          ++ptr;
       }
      }
@@ -421,54 +429,59 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
           */
           // BORDER
           // FULL CHECKS
-          route->proc_node = route->last_node - 1;
+
           if (route->cur_x>0 )
             {
+              route->proc_node = route->last_node - 1;
               route->node_direction=LEFT; ProcessNode(themap,route,route->proc_node);
             }
 
-          route->proc_node = route->proc_node - themap->world_size_x;
           if ( (route->cur_x>0) && (route->cur_y>0) )
             {
+              route->proc_node = route->last_node - themap->world_size_x -1;
               route->node_direction=UP_LEFT; ProcessNode(themap,route,route->proc_node);
             }
 
-          ++route->proc_node;
+
           if (route->cur_x>0 )
             {
+              route->proc_node = route->last_node - themap->world_size_x;
               route->node_direction=UP; ProcessNode(themap,route,route->proc_node);
             }
 
-          ++route->proc_node;
+
           if ( (route->cur_x>0) && (route->cur_y<themap->world_size_y) )
             {
+              route->proc_node = route->last_node - themap->world_size_x +1;
               route->node_direction=UP_RIGHT; ProcessNode(themap,route,route->proc_node);
             }
 
-          route->proc_node = route->proc_node + themap->world_size_x;
+
           if (route->cur_x<themap->world_size_x )
             {
+              route->proc_node = route->last_node + 1;
               route->node_direction=RIGHT; ProcessNode(themap,route,route->proc_node);
             }
 
           if ( (route->cur_x<themap->world_size_x) && (route->cur_y<themap->world_size_y) )
             {
               route->node_direction=DOWN_RIGHT;
-              route->proc_node = route->proc_node + themap->world_size_x;
+              route->proc_node = route->last_node + themap->world_size_x + 1;
               ProcessNode(themap,route,route->proc_node);
             }
 
-          --route->proc_node;
           if (route->cur_y<themap->world_size_y )
             {
+              route->proc_node = route->last_node + themap->world_size_x;
               route->node_direction=DOWN; ProcessNode(themap,route,route->proc_node);
             }
 
-          --route->proc_node;
           if ( (route->cur_x>0) && (route->cur_y<themap->world_size_y) )
             {
+              route->proc_node = route->last_node + themap->world_size_x-1;
               route->node_direction=DOWN_LEFT; ProcessNode(themap,route,route->proc_node);
             }
+
           // ----------------------------------
           // ----------------------------------
         }
@@ -478,9 +491,9 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
         {
           if (route->openlist_top>0) //AN EXOUME KOMVO PROS PROSTHIKI
             {
-              route->last_node=GetNextNode(themap,route); // to idio einai :P -> open_list[0].node;
-              route->cur_x=route->last_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
-              route->cur_y=route->last_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
+              route->last_node = GetNextNode(themap,route); // to idio einai :P -> open_list[0].node;
+              route->cur_x = route->last_node % themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
+              route->cur_y = route->last_node / themap->world_size_x; // Ypologizoume tin syntetagmeni x , y
             }
           else
             {
@@ -503,7 +516,6 @@ int PathPlanCore_FindPath(struct Map * themap,struct Path * theroute,unsigned in
           printf("Performance Shutdown ( %ld ms passed )  :) Hope solution is good enough \n",mtime);
           route->done=1;
         }
-
 
     } // MAIN A* LOOP END
 
