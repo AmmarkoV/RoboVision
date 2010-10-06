@@ -34,6 +34,10 @@
 				</Linker>
 			</Target>
 		</Build>
+		<Unit filename="LogoHighLevelPath.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="LogoHighLevelPath.h" />
 		<Unit filename="MasterpathPlanning.h" />
 		<Unit filename="NormalizePath.c">
 			<Option compilerVar="CC" />
@@ -43,6 +47,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="PathPlanningCore.h" />
+		<Unit filename="PathPlanningHelper.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PathPlanningHelper.h" />
 		<Unit filename="WorldLocations.c">
 			<Option compilerVar="CC" />
 		</Unit>
