@@ -1,12 +1,8 @@
 #!/bin/bash
 
-cd PathPlanning
+cd MasterpathPlanning
 ./make
 cd ..
 
-cd PathPlanning_C
-./make
-cd ..
-
-g++ WorldMappingApp.cpp WorldMappingMain.cpp PathPlanning/libPathPlanning.a ../MotorFoundation/RobotHAL/libRobotHAL.a ../MotorFoundation/MD23/libMD23.a -L. -o bin/Release/WorldMapping
+g++ WorldMappingApp.cpp WorldMappingMain.cpp PathPlanning/libPathPlanning.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/MD23/libMD23.a `wx-config --libs` `wx-config --cxxflags` -L. -o bin/Release/WorldMapping
 exit 0

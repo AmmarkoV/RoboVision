@@ -1,0 +1,25 @@
+#!/bin/bash
+echo "Hand made make script for MasterPathPlanning lib -  and Tester .."
+echo "Should provide libVisualCortex.a and VisCortx_Tester/bin/Release/VisCortx_Tester"
+echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
+echo "Compiling files.."
+gcc -c main.c -o main.o
+gcc -c PathPlanningCore.c -o PathPlanningCore.o
+gcc -c PathPlanningHelper.c -o PathPlanningHelper.o
+gcc -c NormalizePath.c -o NormalizePath.o
+gcc -c LogoHighLevelPath.c -o LogoHighLevelPath.o 
+gcc -c WorldLocations.c -o WorldLocations.o 
+
+echo "Linking files.."
+ar  rcs libMasterpathPlanning.a main.o PathPlanningCore.o PathPlanningHelper.o NormalizePath.o LogoHighLevelPath.o WorldLocations.o 
+
+echo "Cleaning compiled object files.."
+rm main.o PathPlanningCore.o PathPlanningHelper.o NormalizePath.o LogoHighLevelPath.o WorldLocations.o
+
+echo "Compiling Tester.."
+cd MasterpathPlanning_Tester
+./make
+cd ..
+
+echo "Done.."
+exit 0

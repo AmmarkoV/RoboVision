@@ -1,0 +1,3 @@
+#!/bin/bash
+cc main.c ../libMasterpathPlanning.a -L. -lm -s -O3 -o bin/Release/MasterpathPlanning_Tester
+exit 0
