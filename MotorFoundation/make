@@ -2,15 +2,7 @@
 echo "Hand made make script for MotorFoundation - and testers .."
 echo "Should provide libMotorHAL.a and subdir libs"
 echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
-echo "Compiling files.."
-gcc -c MotorHAL.c -o MotorHAL.o 
 
-
-echo "Linking files.."
-ar  rcs libMotorHAL.a MotorHAL.o  
-
-echo "Cleaning compiled object files.."
-rm MotorHAL.o 
 
 echo "Compiling Mindstorm Libs.."
 cd Mindstorm
@@ -26,6 +18,17 @@ echo "Compiling Arduino Libs.."
 cd Arduino
 ./make
 cd ..
+
+echo "Compiling files.."
+gcc -c MotorHAL.c -o MotorHAL.o 
+
+
+echo "Linking files.."
+ar  rcs libMotorHAL.a MotorHAL.o  
+
+echo "Cleaning compiled object files.."
+rm MotorHAL.o 
+
 
 echo "Done.."
 exit 0

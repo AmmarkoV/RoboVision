@@ -9,7 +9,7 @@ gcc -c usb_2_i2c.c -o usb_2_i2c.o
 
 
 echo "Linking files.."
-ar  rcs libRoboVisionSensorLib.a MD23.o MD23_commands.o usb_2_i2c.o  
+ar  rcs libMD23.a MD23.o MD23_commands.o usb_2_i2c.o  
 
 echo "Cleaning compiled object files.."
 rm MD23.o MD23_commands.o usb_2_i2c.o
