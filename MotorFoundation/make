@@ -1,3 +1,31 @@
 #!/bin/bash
-echo "Make bash script Not Implemented !" 
+echo "Hand made make script for MotorFoundation - and testers .."
+echo "Should provide libMotorHAL.a and subdir libs"
+echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
+echo "Compiling files.."
+gcc -c MotorHAL.c -o MotorHAL.o 
+
+
+echo "Linking files.."
+ar  rcs libMotorHAL.a MotorHAL.o  
+
+echo "Cleaning compiled object files.."
+rm MotorHAL.o 
+
+echo "Compiling Mindstorm Libs.."
+cd Mindstorm
+./make
+cd ..
+
+echo "Compiling MD23-MD25 Libs.."
+cd MD23
+./make
+cd ..
+
+echo "Compiling Arduino Libs.."
+cd Arduino
+./make
+cd ..
+
+echo "Done.."
 exit 0

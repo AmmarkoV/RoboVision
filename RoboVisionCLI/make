@@ -1,3 +1,10 @@
 #!/bin/bash
-echo "Make bash script Not Implemented !" 
+echo "Hand made make script for RoboVisionCLI binary .."
+echo "Should provide bin/Release/RoboVisionCLI "
+echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
+echo "Compiling files.."
+g++ main.cpp ../RoboKernel/libRoboKernel.a ../VideoInput/libVideoInput.a ../VisualCortex/libVisualCortex.a ../InputParser/libInputParser_C.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/MD23/libMD23.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a -L. -pthread -lrt -o bin/Release/RoboVisionCLI
+
+
+echo "Done.."
 exit 0

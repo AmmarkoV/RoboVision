@@ -1,0 +1,19 @@
+#!/bin/bash
+echo "Hand made make script for ArduinoLibrary - and testers .."
+echo "Should provide libRoboVisionSensorLib.a and subdir libs"
+echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
+echo "Compiling files.."
+gcc -c MD23.c -o MD23.o 
+gcc -c MD23_commands.c -o MD23_commands.o 
+gcc -c usb_2_i2c.c -o usb_2_i2c.o 
+
+
+echo "Linking files.."
+ar  rcs libRoboVisionSensorLib.a MD23.o MD23_commands.o usb_2_i2c.o  
+
+echo "Cleaning compiled object files.."
+rm MD23.o MD23_commands.o usb_2_i2c.o
+
+cd MD23_Tester
+./make
+cd ..

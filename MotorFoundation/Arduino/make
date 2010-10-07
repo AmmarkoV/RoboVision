@@ -1,0 +1,19 @@
+#!/bin/bash
+echo "Hand made make script for ArduinoLibrary - and testers .."
+echo "Should provide libRoboVisionSensorLib.a and subdir libs"
+echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
+echo "Compiling files.."
+gcc -c main.c -o main.o 
+gcc -c arduino_serial.c -o arduino_serial.o 
+
+
+echo "Linking files.."
+ar  rcs libRoboVisionSensorLib.a main.o arduino_serial.o  
+
+echo "Cleaning compiled object files.."
+rm main.o arduino_serial.o 
+
+
+cd RoboVisionSensorTester
+./make
+cd ..

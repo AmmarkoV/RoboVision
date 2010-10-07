@@ -11,12 +11,15 @@ cd VisualCortex
 ./make
 cd ..
 
+echo "Compiling InputParser.."
+cd InputParser
+./make
+cd ..
 
 echo "Compiling MotorFoundation.."
 cd MotorFoundation
 ./make
 cd ..
-
 
 echo "Compiling WorldMapping.."
 cd WorldMapping
@@ -39,6 +42,12 @@ cd RoboKernel
 cd ..
 
 #COMPILE INTERFACES
+echo "Compiling ThreeDimensionMaps.."
+cd ThreeDimensionMaps
+./make
+cd ..
+cp ThreeDimensionMaps/bin/Release/ThreeDimensional RoboVisionX/ThreeDimensional
+
 
 echo "Compiling RoboVision Console Front-end.."
 cd RoboVisionCLI

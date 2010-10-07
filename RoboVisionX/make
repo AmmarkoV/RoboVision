@@ -1,3 +1,10 @@
 #!/bin/bash
-echo "Not Implemented make for RoboVisionX"
+echo "Hand made make script for RoboVisionX binary .."
+echo "Should provide bin/Release/RoboVisionX "
+echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
+echo "Compiling files.."
+g++ RoboVisionXApp.cpp RoboVisionXApp.h RoboVisionXMain.cpp RoboVisionXMain.h  FeedScreenMemory.cpp FeedScreenMemory.h CortexSettings.cpp CortexSettings.h ../RoboKernel/libRoboKernel.a ../VideoInput/libVideoInput.a ../VisualCortex/libVisualCortex.a ../InputParser/libInputParser_C.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/MD23/libMD23.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a `wx-config --libs` `wx-config --cxxflags` -L. -pthread -o bin/Release/RoboVisionX
+
+
+echo "Done.."
 exit 0

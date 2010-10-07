@@ -1,0 +1,4 @@
+#!/bin/bash
+g++ main.cpp world_map_adapter.cpp  world_map_adapter.h -lglut -lGL -lGLU -lXxf86vm -lopenal -lalut -L. -o bin/Release/ThreeDimensional
+echo "Done"
+exit 0

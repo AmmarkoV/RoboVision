@@ -33,7 +33,7 @@
 		</Compiler>
 		<Linker>
 			<Add option="-pthread" />
-			<Add library="../MD23/libMD23.a" />
+			<Add library="../libMD23.a" />
 		</Linker>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />

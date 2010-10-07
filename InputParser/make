@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Hand made make script for InputParser - InputParser_C_Tester .."
-echo "Should provide libInputParser.a and InputParser_C_Tester/bin/Release/InputParserC_Tester"
+echo "Should provide libInputParser.a  "
 echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
 echo "Compiling files.."  
 gcc -c InputParser_C.c -o InputParser_C.o 

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../MD23/MD23.h"
+#include "../MD23.h"
 
 int main()
 {
