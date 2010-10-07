@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="RoboKernel" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="libRoboKernel" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="libRoboKernel" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Linker>
+			<Add option="-pthreads" />
+			<Add option="-lrt" />
+			<Add library="../VideoInput/libVideoInput.a" />
+			<Add library="../VisualCortex/libVisualCortex.a" />
+			<Add library="../InputParser/libInputParser_C.a" />
+			<Add library="../MotorFoundation/libMotorHAL.a" />
+			<Add library="../MotorFoundation/MD23/libMD23.a" />
+		</Linker>
+		<Unit filename="RoboKernel.h" />
+		<Unit filename="command_hal.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="command_hal.h" />
+		<Unit filename="command_implementation.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="command_implementation.h" />
+		<Unit filename="configuration.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="configuration.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="motor_system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="motor_system.h" />
+		<Unit filename="visual_system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="visual_system.h" />
+		<Unit filename="webinterface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="webinterface.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

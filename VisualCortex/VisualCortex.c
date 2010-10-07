@@ -202,6 +202,8 @@ unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int
 
    return video_register[reg_num].pixels;
 }
+
+
 /*
  ----------------- VIDEO INPUT/OUTPUT ----------------------
 */

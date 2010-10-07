@@ -1,0 +1,314 @@
+# depslib dependency file v1.0
+1272696168 source:/home/ammar/Documents/Programming/RoboVision/ThreeDimensionMaps/main.cpp
+	<stdlib.h>
+	<stdio.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<stdlib.h>
+
+1227098116 /usr/include/GL/glut.h
+	"freeglut_std.h"
+
+1227098116 /usr/include/GL/freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1255472075 /usr/include/GL/gl.h
+	"gl_mangle.h"
+	<stdlib.h>
+	<windows.h>
+	<GL/mesa_wgl.h>
+	<GL/glext.h>
+
+1255472075 /usr/include/GL/gl_mangle.h
+
+1262519843 /usr/include/stdlib.h
+	<features.h>
+	<stddef.h>
+	<bits/waitflags.h>
+	<bits/waitstatus.h>
+	<xlocale.h>
+	<sys/types.h>
+	<alloca.h>
+	<bits/stdlib.h>
+	<bits/stdlib-ldbl.h>
+
+1262519810 /usr/include/features.h
+	<bits/predefs.h>
+	<sys/cdefs.h>
+	<gnu/stubs.h>
+
+1262519810 /usr/include/bits/predefs.h
+
+1262519860 /usr/include/sys/cdefs.h
+	<features.h>
+	<bits/wordsize.h>
+
+1262519843 /usr/include/bits/wordsize.h
+
+1262519810 /usr/include/gnu/stubs.h
+	<bits/wordsize.h>
+	<gnu/stubs-32.h>
+	<gnu/stubs-64.h>
+
+1262520141 /usr/include/gnu/stubs-32.h
+
+1262519901 /usr/include/gnu/stubs-64.h
+
+1262519856 /usr/include/bits/waitflags.h
+
+1262519856 /usr/include/bits/waitstatus.h
+	<endian.h>
+
+1262519849 /usr/include/endian.h
+	<features.h>
+	<bits/endian.h>
+	<bits/byteswap.h>
+
+1262519849 /usr/include/bits/endian.h
+
+1262519849 /usr/include/bits/byteswap.h
+	<bits/wordsize.h>
+
+1262519812 /usr/include/xlocale.h
+
+1262519856 /usr/include/sys/types.h
+	<features.h>
+	<bits/types.h>
+	<time.h>
+	<stddef.h>
+	<endian.h>
+	<sys/select.h>
+	<sys/sysmacros.h>
+	<bits/pthreadtypes.h>
+
+1262519856 /usr/include/bits/types.h
+	<features.h>
+	<bits/wordsize.h>
+	<bits/typesizes.h>
+
+1262519856 /usr/include/bits/typesizes.h
+
+1262519853 /usr/include/time.h
+	<features.h>
+	<stddef.h>
+	<bits/time.h>
+	<bits/types.h>
+	<bits/types.h>
+	<bits/types.h>
+	<bits/types.h>
+	<bits/types.h>
+	<xlocale.h>
+
+1262519853 /usr/include/bits/time.h
+	<bits/types.h>
+	<bits/types.h>
+
+1262519860 /usr/include/sys/select.h
+	<features.h>
+	<bits/types.h>
+	<bits/select.h>
+	<bits/sigset.h>
+	<time.h>
+	<bits/time.h>
+
+1262519860 /usr/include/bits/select.h
+	<bits/wordsize.h>
+
+1262519842 /usr/include/bits/sigset.h
+
+1262519856 /usr/include/sys/sysmacros.h
+	<features.h>
+
+1262519856 /usr/include/bits/pthreadtypes.h
+	<bits/wordsize.h>
+
+1262519843 /usr/include/alloca.h
+	<features.h>
+	<stddef.h>
+
+1262519843 /usr/include/bits/stdlib.h
+
+1262519843 /usr/include/bits/stdlib-ldbl.h
+
+1255472075 /usr/include/GL/glext.h
+	<windows.h>
+	<stddef.h>
+	<inttypes.h>
+	<inttypes.h>
+	<inttypes.h>
+	<stdint.h>
+	<stdint.h>
+	<inttypes.h>
+
+1262519843 /usr/include/inttypes.h
+	<features.h>
+	<stdint.h>
+	<stddef.h>
+
+1262519843 /usr/include/stdint.h
+	<features.h>
+	<bits/wchar.h>
+	<bits/wordsize.h>
+
+1262519850 /usr/include/bits/wchar.h
+
+1255472075 /usr/include/GL/glu.h
+	"glu_mangle.h"
+	<GL/gl.h>
+
+1255472075 /usr/include/GL/glu_mangle.h
+
+1262519846 /usr/include/stdio.h
+	<features.h>
+	<stddef.h>
+	<bits/types.h>
+	<libio.h>
+	<stdarg.h>
+	<bits/stdio_lim.h>
+	<bits/sys_errlist.h>
+	<getopt.h>
+	<bits/stdio.h>
+	<bits/stdio2.h>
+	<bits/stdio-ldbl.h>
+
+1262519846 /usr/include/libio.h
+	<_G_config.h>
+	<stdarg.h>
+	<sys/cdefs.h>
+	<bits/stdio-lock.h>
+	<shlib-compat.h>
+	<bits/libio-ldbl.h>
+
+1262519846 /usr/include/_G_config.h
+	<bits/types.h>
+	<stddef.h>
+	<wchar.h>
+	<gconv.h>
+
+1262519850 /usr/include/wchar.h
+	<features.h>
+	<stdio.h>
+	<stdarg.h>
+	<bits/wchar.h>
+	<stddef.h>
+	<wctype.h>
+	<xlocale.h>
+	<xlocale.h>
+	<xlocale.h>
+	<wctype.h>
+	<bits/wchar2.h>
+	<bits/wchar-ldbl.h>
+
+1262519863 /usr/include/wctype.h
+	<features.h>
+	<bits/types.h>
+	<stddef.h>
+	<endian.h>
+	<xlocale.h>
+
+1262519850 /usr/include/bits/wchar2.h
+
+1262519850 /usr/include/bits/wchar-ldbl.h
+
+1262519812 /usr/include/gconv.h
+	<features.h>
+	<wchar.h>
+	<stddef.h>
+
+1262519846 /usr/include/bits/stdio-lock.h
+	<bits/libc-lock.h>
+	<lowlevellock.h>
+
+1262519810 /usr/include/bits/libc-lock.h
+	<pthread.h>
+	<stddef.h>
+	<lowlevellock.h>
+	<tls.h>
+	<pthread-functions.h>
+	<bp-sym.h>
+
+1262519872 /usr/include/pthread.h
+	<features.h>
+	<endian.h>
+	<sched.h>
+	<time.h>
+	<signal.h>
+	<bits/pthreadtypes.h>
+	<bits/setjmp.h>
+	<bits/wordsize.h>
+
+1262519856 /usr/include/sched.h
+	<features.h>
+	<bits/types.h>
+	<stddef.h>
+	<time.h>
+	<bits/sched.h>
+
+1262519856 /usr/include/bits/sched.h
+
+1262519842 /usr/include/signal.h
+	<features.h>
+	<bits/sigset.h>
+	<bits/types.h>
+	<bits/signum.h>
+	<time.h>
+	<bits/siginfo.h>
+	<bits/sigaction.h>
+	<bits/sigcontext.h>
+	<stddef.h>
+	<bits/sigstack.h>
+	<sys/ucontext.h>
+	<bits/pthreadtypes.h>
+	<bits/sigthread.h>
+
+1262519842 /usr/include/bits/signum.h
+
+1262519842 /usr/include/bits/siginfo.h
+	<bits/wordsize.h>
+
+1262519842 /usr/include/bits/sigaction.h
+
+1262519842 /usr/include/bits/sigcontext.h
+	<bits/wordsize.h>
+
+1262519842 /usr/include/bits/sigstack.h
+
+1262519843 /usr/include/sys/ucontext.h
+	<features.h>
+	<signal.h>
+	<bits/wordsize.h>
+	<bits/sigcontext.h>
+
+1262519842 /usr/include/bits/sigthread.h
+
+1262519841 /usr/include/bits/setjmp.h
+	<bits/wordsize.h>
+
+1262519846 /usr/include/bits/libio-ldbl.h
+
+1262519844 /usr/include/bits/stdio_lim.h
+
+1262519846 /usr/include/bits/sys_errlist.h
+
+1262519856 /usr/include/getopt.h
+	<ctype.h>
+
+1262519835 /usr/include/ctype.h
+	<features.h>
+	<bits/types.h>
+	<endian.h>
+	<xlocale.h>
+
+1262519846 /usr/include/bits/stdio.h
+
+1262519846 /usr/include/bits/stdio2.h
+
+1262519846 /usr/include/bits/stdio-ldbl.h
+
+1269130709 source:/home/ammar/Documents/Programming/RoboVision/ThreeDimensionMaps/world_map_adapter.cpp
+	"world_map_adapter.h"
+
+1269130701 /home/ammar/Documents/Programming/RoboVision/ThreeDimensionMaps/world_map_adapter.h
+

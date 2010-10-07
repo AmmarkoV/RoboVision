@@ -1,0 +1,20 @@
+
+
+
+void SnapWebCamsFilebased()
+{
+ if (has_init==0) { fprintf(stderr,"!");
+                    return; }
+
+ wxExecute(wxT("fswebcam --skip 10 -r 320x240 --device /dev/video0 output0.jpeg"));
+ wxExecute(wxT("fswebcam --skip 10 -r 320x240 --device /dev/video1 output1.jpeg"));
+
+ if ( live_feeds[0].bmp_allocated ) { delete live_feeds[0].bmp; }
+ live_feeds[0].bmp= new wxBitmap(wxT("output0.jpeg"),wxBITMAP_TYPE_JPEG);
+ live_feeds[0].bmp_allocated = true;
+
+ if ( live_feeds[1].bmp_allocated ) { delete live_feeds[1].bmp; }
+ live_feeds[1].bmp= new wxBitmap(wxT("output1.jpeg"),wxBITMAP_TYPE_JPEG);
+ live_feeds[1].bmp_allocated = true;
+}
+

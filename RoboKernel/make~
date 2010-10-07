@@ -1,0 +1,22 @@
+#!/bin/bash
+echo "Hand made make script for RoboKernel Lib .."
+echo "Should provide libRoboKernel.a "
+echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
+echo "Compiling files.."
+gcc -c main.c -o main.o
+gcc -c configuration.c -o configuration.o
+gcc -c webinterface.cpp -o webinterface.o
+gcc -c visual_system.cpp -o visual_system.o
+gcc -c motor_system.cpp -o motor_system.o 
+gcc -c command_hal.c -o command_hal.o 
+gcc -c command_implementation.c -o command_implementation.o 
+
+echo "Linking files.."
+ar  rcs libRoboKernel.a main.o configuration.o webinterface.o visual_system.o motor_system.o command_hal.o command_implementation.o
+
+echo "Cleaning compiled object files.."
+rm main.o configuration.o webinterface.o visual_system.o motor_system.o  command_hal.o command_implementation.o 
+
+
+echo "Done.."
+exit 0

@@ -1,0 +1,3 @@
+#!/bin/sh
+top
+exit 0 

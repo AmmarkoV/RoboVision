@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="Code::Blocks Exporter plugin" />
+<style type="text/css">
+<!--
+body { color: #000000; background-color: #FFFFFF; }
+.style1 { color: #A0A0A0; }
+.style2 { color: #A0A0A0; }
+.style3 { color: #8080FF; font-weight: bold; }
+.style15 { color: #8080FF; font-weight: bold; }
+.style17 { color: #008080; }
+.style18 { color: #800000; }
+.style4 { color: #F000F0; }
+.style5 { color: #0000A0; font-weight: bold; }
+.style16 { color: #00A000; font-weight: bold; }
+.style6 { color: #0000FF; }
+.style12 { color: #0000FF; }
+.style7 { color: #E0A000; }
+.style8 { color: #000000; }
+.style9 { color: #00A000; }
+.style10 { color: #FF0000; }
+.style34 { color: #000000; background-color: #80FFFF; font-weight: bold; }
+.style35 { color: #FFFFFF; background-color: #FF0000; font-weight: bold; }
+--></style></head>
+<body>
+<pre>
+<code><span style="font: 10pt Monospace;"><span class="style9">#include &lt;pthread.h&gt;
+
+#include "RoboKernel.h"
+#include "command_hal.h"
+#include "visual_system.h"
+#include "motor_system.h"
+
+
+</span><span class="style5">struct </span><span class="style11">ThreadPassParam
+</span><span class="style10">{
+    </span><span class="style5">int </span><span class="style11">feednum</span><span class="style10">;
+};
+</span><span class="style5">int </span><span class="style11">go_to_sleep</span><span class="style10">=</span><span class="style4">0</span><span class="style10">;
+</span><span class="style11">pthread_t kernel_loop_id</span><span class="style10">;
+</span><span class="style5">void </span><span class="style10">* </span><span class="style11">KernelLoop</span><span class="style10">(</span><span class="style5">void </span><span class="style10">*</span><span class="style11">ptr </span><span class="style10">);
+
+</span><span class="style5">int </span><span class="style11">IssueCommand</span><span class="style10">(</span><span class="style5">unsigned char </span><span class="style10">* </span><span class="style11">cmd</span><span class="style10">)
+{
+ </span><span class="style5">return </span><span class="style11">IssueCommandInternal</span><span class="style10">((</span><span class="style5">char </span><span class="style10">*) </span><span class="style11">cmd</span><span class="style10">);
+}
+
+</span><span class="style5">unsigned char </span><span class="style10">* </span><span class="style11">GetVideoRegister</span><span class="style10">(</span><span class="style5">unsigned int </span><span class="style11">num</span><span class="style10">)
+{
+    </span><span class="style5">return </span><span class="style4">0</span><span class="style10">;
+}
+
+
+</span><span class="style5">unsigned int </span><span class="style11">GetVideoData</span><span class="style10">(</span><span class="style5">unsigned int </span><span class="style11">num</span><span class="style10">)
+{
+    </span><span class="style5">return </span><span class="style4">0</span><span class="style10">;
+}
+
+</span><span class="style5">void </span><span class="style11">InitSenses</span><span class="style10">()
+{
+   </span><span class="style11">InitVisualSystem</span><span class="style10">();
+   </span><span class="style11">InitMotorSystem</span><span class="style10">();
+}
+
+
+
+</span><span class="style5">void </span><span class="style11">CloseSenses</span><span class="style10">()
+{
+   </span><span class="style11">CloseVisualSystem</span><span class="style10">();
+   </span><span class="style11">CloseMotorSystem</span><span class="style10">();
+}
+
+
+</span><span class="style5">void </span><span class="style11">find_something_to_do</span><span class="style10">()
+{
+
+}
+
+</span><span class="style5">void </span><span class="style11">do_something</span><span class="style10">()
+{
+
+}
+
+
+</span><span class="style5">void </span><span class="style11">StartRoboKernel</span><span class="style10">()
+{
+    </span><span class="style5">struct </span><span class="style11">ThreadPassParam param</span><span class="style10">={</span><span class="style4">0</span><span class="style10">};
+    </span><span class="style11">param</span><span class="style10">.</span><span class="style11">feednum</span><span class="style10">=</span><span class="style4">0</span><span class="style10">;
+    </span><span class="style11">pthread_create</span><span class="style10">( &amp;</span><span class="style11">kernel_loop_id </span><span class="style10">, </span><span class="style11">NULL</span><span class="style10">,  </span><span class="style11">KernelLoop </span><span class="style10">,(</span><span class="style5">void</span><span class="style10">*) &amp;</span><span class="style11">param</span><span class="style10">);
+}
+
+</span><span class="style5">void </span><span class="style10">* </span><span class="style11">KernelLoop</span><span class="style10">(</span><span class="style5">void </span><span class="style10">*</span><span class="style11">ptr </span><span class="style10">)
+{
+   </span><span class="style11">InitSenses</span><span class="style10">();
+
+   </span><span class="style5">while </span><span class="style10">( </span><span class="style11">go_to_sleep </span><span class="style10">== </span><span class="style4">0 </span><span class="style10">)
+    {
+
+        </span><span class="style11">find_something_to_do</span><span class="style10">();
+        </span><span class="style11">do_something</span><span class="style10">();
+    }
+
+  </span><span class="style11">CloseSenses</span><span class="style10">();
+}
+
+</span><span class="style5">void </span><span class="style11">StopRoboKernel</span><span class="style10">()
+{
+  </span><span class="style11">go_to_sleep</span><span class="style10">=</span><span class="style4">1</span><span class="style10">;
+}</span></span>
+</code></pre>
+</body>
+</html>

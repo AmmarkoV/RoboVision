@@ -15,6 +15,7 @@
 #include <wx/colour.h>
 #include <wx/utils.h>
 
+#define OBSTACLE_UNCERTAINTY 1
 #define OURROBOT 0
 
 //(*InternalHeaders(WorldMappingFrame)
@@ -473,7 +474,7 @@ void WorldMappingFrame::OnMotion(wxMouseEvent& event)
             else
               {
                 //floor_plan->SetObjectAt(x,y,BLOCKED);
-                SetObstacle(floor,x,y,5) ;
+                SetObstacle(floor,x,y,OBSTACLE_UNCERTAINTY) ;
                 Refresh();
               }
 
@@ -488,7 +489,7 @@ void WorldMappingFrame::OnMotion(wxMouseEvent& event)
         if ( XYOverFeed(x,y)==1 )
           {
             //floor_plan->SetObjectAt(x,y,FREE);
-            RemoveObstacle(floor,x,y,5);
+            RemoveObstacle(floor,x,y,OBSTACLE_UNCERTAINTY);
             Refresh();
           }
       }
