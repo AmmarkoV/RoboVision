@@ -1,0 +1,4 @@
+#!/bin/bash
+cd RoboVisionX
+./RoboVisionXCompat
+exit 0

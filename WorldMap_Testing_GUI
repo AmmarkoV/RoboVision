@@ -1,0 +1,4 @@
+#!/bin/bash
+cd WorldMapping
+./RunWorldMapping
+exit 0

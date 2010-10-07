@@ -11,6 +11,8 @@
 #define WORLDMAPPINGMAIN_H
 
 #include "MasterpathPlanning/MasterpathPlanning.h"
+#include "../InputParser/InputParser_C.h"
+
 #include <wx/joystick.h>
 #include "../MotorFoundation/MotorHAL.h"
 
