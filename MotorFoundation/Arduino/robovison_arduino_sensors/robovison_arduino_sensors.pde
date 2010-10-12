@@ -3,6 +3,8 @@ const int numOfReadings = 10;                   // number of readings to take/ i
 int sampleultrasonic=1;
 int sampleaccelerometer=1;
 unsigned int tickcount=0;
+int headlights = 11;                 // LED connected to digital pin 13
+ 
 
 struct ultrasonic
 {
@@ -61,7 +63,8 @@ void setup()
   setupUltrasonic(&sensor1,2,3);
   setupUltrasonic(&sensor2,4,5);
   setupAccelerometer(&accelerometer,7,6);
-  
+  pinMode(headlights, OUTPUT);      // sets the digital pin as output
+
  // initialize the serial port, lets you view the
  // distances being pinged if connected to computer
      Serial.begin(38400);
@@ -106,6 +109,8 @@ void sampleAccelerometer(struct memsic2125 * accel)
 
 void loop() 
 {
+   digitalWrite(headlights, HIGH);   // sets the LED on
+
   ++tickcount;
   
   if ( sampleultrasonic )

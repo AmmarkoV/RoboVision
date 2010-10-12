@@ -99,6 +99,13 @@ class RoboVisionXFrame: public wxFrame
         static const long ID_SLIDER1;
         static const long ID_SLIDER2;
         static const long ID_CHECKBOX3;
+        static const long ID_GAUGE2;
+        static const long ID_GAUGE3;
+        static const long ID_STATICTEXT11;
+        static const long ID_STATICTEXT12;
+        static const long ID_STATICTEXT13;
+        static const long ID_STATICTEXT14;
+        static const long ID_STATICTEXT15;
         static const long idMenuQuit;
         static const long idMenuAbout;
         static const long ID_STATUSBAR1;
@@ -112,6 +119,7 @@ class RoboVisionXFrame: public wxFrame
         wxStatusBar* StatusBar1;
         wxButton* LiveButton;
         wxButton* Ok;
+        wxStaticText* MeterComment;
         wxButton* AddTrackPoint;
         wxCheckBox* DrawFeeds;
         wxChoice* Choice2;
@@ -125,11 +133,15 @@ class RoboVisionXFrame: public wxFrame
         wxStaticBox* StaticBox2;
         wxTextCtrl* CommandBox;
         wxStaticText* StaticText3;
+        wxGauge* Ultrasonic1;
         wxStaticText* FrameRate;
         wxChoice* Choice1;
+        wxStaticText* RightUltrasonicLabel;
+        wxGauge* Ultrasonic2;
         wxStaticText* UptimeLabel;
         wxButton* RecordButton;
         wxStaticBox* StaticBox1;
+        wxStaticText* StaticText7;
         wxStaticText* Flow;
         wxButton* DownButton;
         wxStaticText* StaticText4;
@@ -143,7 +155,9 @@ class RoboVisionXFrame: public wxFrame
         wxSlider* MovementVertical;
         wxStaticText* Uptime;
         wxButton* RightButton;
+        wxStaticText* LeftUltrasonicLabel;
         wxCheckBox* Autonomous;
+        wxStaticText* DistanceTraveled;
         //*)
 
         wxStopWatch *uptimer;

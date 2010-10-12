@@ -7,9 +7,9 @@
  * License:
  **************************************************************/
 
-char * ROBOGUI_VERSION=(char *) "0.34";
+char * ROBOGUI_VERSION=(char *) "0.36";
 
-
+int position = 0;
 
 #include "RoboVisionXMain.h"
 #include "FeedScreenMemory.h"
@@ -91,6 +91,13 @@ const long RoboVisionXFrame::ID_CHECKBOX2 = wxNewId();
 const long RoboVisionXFrame::ID_SLIDER1 = wxNewId();
 const long RoboVisionXFrame::ID_SLIDER2 = wxNewId();
 const long RoboVisionXFrame::ID_CHECKBOX3 = wxNewId();
+const long RoboVisionXFrame::ID_GAUGE2 = wxNewId();
+const long RoboVisionXFrame::ID_GAUGE3 = wxNewId();
+const long RoboVisionXFrame::ID_STATICTEXT11 = wxNewId();
+const long RoboVisionXFrame::ID_STATICTEXT12 = wxNewId();
+const long RoboVisionXFrame::ID_STATICTEXT13 = wxNewId();
+const long RoboVisionXFrame::ID_STATICTEXT14 = wxNewId();
+const long RoboVisionXFrame::ID_STATICTEXT15 = wxNewId();
 const long RoboVisionXFrame::idMenuQuit = wxNewId();
 const long RoboVisionXFrame::idMenuAbout = wxNewId();
 const long RoboVisionXFrame::ID_STATUSBAR1 = wxNewId();
@@ -206,6 +213,15 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     MovementVertical = new wxSlider(this, ID_SLIDER2, 10, 0, 20, wxPoint(816,56), wxSize(24,80), wxSL_VERTICAL, wxDefaultValidator, _T("ID_SLIDER2"));
     lowcpuusage = new wxCheckBox(this, ID_CHECKBOX3, _("Low CPU"), wxPoint(840,440), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX3"));
     lowcpuusage->SetValue(false);
+    Ultrasonic1 = new wxGauge(this, ID_GAUGE2, 255, wxPoint(696,120), wxSize(100,16), 0, wxDefaultValidator, _T("ID_GAUGE2"));
+    Ultrasonic2 = new wxGauge(this, ID_GAUGE3, 255, wxPoint(696,136), wxSize(100,16), 0, wxDefaultValidator, _T("ID_GAUGE3"));
+    StaticText7 = new wxStaticText(this, ID_STATICTEXT11, _("Ultrasonic"), wxPoint(688,104), wxDefaultSize, 0, _T("ID_STATICTEXT11"));
+    DistanceTraveled = new wxStaticText(this, ID_STATICTEXT12, _("0"), wxPoint(704,78), wxDefaultSize, 0, _T("ID_STATICTEXT12"));
+    wxFont DistanceTraveledFont(13,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Sans"),wxFONTENCODING_DEFAULT);
+    DistanceTraveled->SetFont(DistanceTraveledFont);
+    MeterComment = new wxStaticText(this, ID_STATICTEXT13, _("Meters"), wxPoint(760,80), wxDefaultSize, 0, _T("ID_STATICTEXT13"));
+    LeftUltrasonicLabel = new wxStaticText(this, ID_STATICTEXT14, _("L"), wxPoint(684,120), wxDefaultSize, 0, _T("ID_STATICTEXT14"));
+    RightUltrasonicLabel = new wxStaticText(this, ID_STATICTEXT15, _("R"), wxPoint(684,136), wxDefaultSize, 0, _T("ID_STATICTEXT15"));
     MenuBar1 = new wxMenuBar();
     Menu1 = new wxMenu();
     MenuItem1 = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
@@ -413,7 +429,13 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
 
 
 
-     if ( uptimer->Time() - last_draw < 1500 ) { return; }
+     if ( uptimer->Time() - last_draw < 4500 ) { return; }
+
+    unsigned int ultrasonic_value;
+    ultrasonic_value = RobotGetUltrasonic(1);
+    if ( ultrasonic_value <255 ) { Ultrasonic1->SetValue(ultrasonic_value); }
+    ultrasonic_value = RobotGetUltrasonic(0);
+    if ( ultrasonic_value <255 ) { Ultrasonic2->SetValue(ultrasonic_value); }
 
      wxString msg;
      msg.Printf( wxT("%u | %u ") , VisCortx_GetMetric(CHANGES_LEFT) , VisCortx_GetMetric(CHANGES_RIGHT) );
@@ -458,30 +480,44 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
 
 
     ++tick_count;
-    if ( tick_count%10 == 0 )
+    if ( tick_count%20 == 0 )
     {
       if ( Autonomous->IsChecked() )
-       {/*
-        if ( Flow_Sufficient_For_Movement(VisCortx_GetMetric(CHANGES_LEFT) , VisCortx_GetMetric(CHANGES_RIGHT)) == 1 )
+       {
+        if ( ( VisCortx_GetMetric(CHANGES_LEFT) >3000 ) || ( VisCortx_GetMetric(CHANGES_RIGHT)>3000 ) )
         {
 
          wxStopWatch sw;
-          unsigned char write_to_file=1;
-          if (lowcpuusage->IsChecked()) { write_to_file = 0; }
-          FullDepthMap(write_to_file);
+          GUI_FullDepthMap(0);
          sw.Pause();
 
          wxString msg;
          msg.Printf( wxT("Full DepthMap ( %u ms )\n") , sw.Time() );
          Status->AppendText( msg );
-         Refresh();
-        }*/
+
+         IssueCommand((char *) "DEPTH MAP TO FILE",0,0,(char *)"GUI");
+
+         if (!lowcpuusage->IsChecked()) {
+
+         IssueCommand((char *) "PLAYSOUND(alarm)",0,0,(char *)"GUI");
+         /* DEMO MOVEMENT*/
+         ++position;
+         if ( position <= 2 ) { IssueCommand((char *) "LEFT",0,0,(char *)"GUI"); } else
+         if ( position <= 4 ) { IssueCommand((char *) "RIGHT",0,0,(char *)"GUI"); } else
+                              {position=0;}
+
+         }
+
+
+        Refresh();
+        }
        }
     }
 
   if ( uptimer->Time() < 5000 ) { return ; }
 
   if ( !DrawFeeds->IsChecked() ) { return ; }
+
   RedrawWindow();
 }
 

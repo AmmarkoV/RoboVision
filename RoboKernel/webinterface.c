@@ -3,6 +3,7 @@
 #include "visual_system.h"
 #include "configuration.h"
 #include "../InputParser/InputParser_C.h"
+#include "../MotorFoundation/MotorHAL.h"
 #include <unistd.h>
 
 int last_snapshot=0;
@@ -101,6 +102,22 @@ int WebIntHasNewCommand()
  return 0;
 }
 
+int UpdateSensorsOnNetworkInterface()
+{
+  FILE * pFile=0;
+  pFile = fopen ("memfs/public_html/sensors.dat","w");
+  if (pFile!=NULL )
+  {
+    fprintf(pFile,"%u\n",RobotGetUltrasonic(0));
+    fprintf(pFile,"%u\n",RobotGetUltrasonic(1));
+    fprintf(pFile,"%d\n",RobotGetAccelerometerX(0));
+    fprintf(pFile,"%d\n",RobotGetAccelerometerY(0));
+    fprintf(pFile,"#\n"); /*Signal the end of the transmission*/
+    fclose(pFile);
+    return 1;
+  }
+  return 0;
+}
 
 
 int UpdateNetworkInterface(char * pica,char * picb,char * picc,char * picd,unsigned int xsize,unsigned int ysize)
@@ -115,6 +132,8 @@ int UpdateNetworkInterface(char * pica,char * picb,char * picc,char * picd,unsig
     if ( VisCortX_SaveVideoRegisterToFile(RIGHT_EYE,(char *) "memfs/public_html/feed1.ppm")== 0 ) fprintf(stderr,"Could not save feed 1 to .ppm");
     if ( VisCortX_SaveVideoRegisterToFile(LAST_LEFT_OPERATION,(char *) "memfs/public_html/feed2.ppm")== 0 ) fprintf(stderr,"Could not save feed 2 to .ppm");
     if ( VisCortX_SaveVideoRegisterToFile(LAST_RIGHT_OPERATION,(char *) "memfs/public_html/feed3.ppm")== 0 ) fprintf(stderr,"Could not save feed 3 to .ppm");
+
+    UpdateSensorsOnNetworkInterface();
 
     /* system */
     i=system((const char *)"scripts/webinterface_convert.sh");

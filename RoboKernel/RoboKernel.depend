@@ -45,7 +45,7 @@
 	"webinterface.h"
 	"command_hal.h"
 
-1285831642 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_hal.c
+1286411279 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_hal.c
 	"command_hal.h"
 	"command_implementation.h"
 	"../InputParser/InputParser_C.h"
@@ -61,12 +61,13 @@
 	"../InputParser/InputParser_C.h"
 	"../VisualCortex/VisualCortex.h"
 
-1277985082 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/webinterface.c
+1286912374 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/webinterface.c
 	"webinterface.h"
 	"command_hal.h"
 	"visual_system.h"
 	"configuration.h"
 	"../InputParser/InputParser_C.h"
+	"../MotorFoundation/MotorHAL.h"
 	<unistd.h>
 
 1277725035 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/visual_system.c
@@ -92,7 +93,7 @@
 
 1277561336 /home/ammar/Documents/Programming/RoboVision/RoboKernel/RoboKernel.h
 
-1278202430 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_implementation.c
+1286410848 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_implementation.c
 	<stdio.h>
 	<stdlib.h>
 	"command_hal.h"
