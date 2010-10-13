@@ -1,4 +1,5 @@
 #include "NormalizePath.h"
+#include "PathPlanningHelper.h"
 #include <stdio.h>
 #include <stdlib.h>
 int debug_normalize_path = 0;
@@ -16,7 +17,8 @@ inline unsigned int _abs(signed int num)
 //---------------------------------------
 //Bresenham general algorithm !
 //---------------------------------------
-unsigned char ClearLinePath(struct NodeData * world,unsigned int world_x,unsigned int world_size,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
+// For x1,y1 -> x2,y2 if path is clear returns 1 , else 0
+unsigned char CheckThatLinePathIsClear(struct NodeData * world,unsigned int world_x,unsigned int world_size,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
 {
   unsigned int the_node;
   if ( debug_normalize_path ==1 ) printf("Running bresenham algorithm from %d,%d to %d,%d ... ",x1,y1,x2,y2);
@@ -114,6 +116,117 @@ unsigned char ClearLinePath(struct NodeData * world,unsigned int world_x,unsigne
   return 1; // This means clear
 }
 
+
+
+// For x1,y1 -> x2,y2 clears path
+unsigned char ClearLinePath(struct Map * themap,unsigned int radious,unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2)
+{
+  unsigned int the_node;
+  if ( debug_normalize_path ==1 ) printf("Running bresenham algorithm from %d,%d to %d,%d ... ",x1,y1,x2,y2);
+  if ( ((y1*themap->world_size_x)+(x1)>=themap->world_total_size) || ((y2*themap->world_size_x)+(x2)>=themap->world_total_size) )
+    {
+      return 0; // This means not clear
+    }
+
+  int dx, dy, i, e;
+  int incx, incy, inc1, inc2 , x , y;
+
+  dx = x2 - x1 , dy = y2 - y1;
+
+  if (dx < 0) dx = -dx;
+  if (dy < 0) dy = -dy;
+
+  incx = 1;
+  if (x2 < x1) incx = -1;
+
+  incy = 1;
+  if (y2 < y1) incy = -1;
+
+  x=x1 , y=y1;
+
+  if (dx > dy)
+    {
+      // draw_pixel(x,y)
+      the_node = (y*themap->world_size_x)+(x);
+      if (  (themap->world[the_node].unpassable==1) || (themap->world[the_node].in_unpassable_radious>=1) )
+        {
+          fprintf(stderr,"Remove Obstacle At %u/%u , %u radious \n",x,y,radious);
+          themap->world[the_node].unpassable=0;
+          PathPlanCore_RemoveObstacleAndRadious(themap,x,y,the_node,radious);
+        }
+      // draw_pixel(x,y)
+
+      e = 2*dy - dx;
+      inc1 = 2*( dy -dx);
+      inc2 = 2*dy;
+      for (i = 0; i < dx; i++)
+        {
+          if (e >= 0)
+            {
+              y += incy;
+              e += inc1;
+            }
+          else e += inc2;
+          x += incx;
+
+
+          // draw_pixel(x,y)
+          the_node = (y*themap->world_size_x)+(x);
+          if (  (themap->world[the_node].unpassable==1) || (themap->world[the_node].in_unpassable_radious>=1) )
+            {
+              fprintf(stderr,"Remove Obstacle At %u/%u , %u radious \n",x,y,radious);
+              themap->world[the_node].unpassable=0;
+              PathPlanCore_RemoveObstacleAndRadious(themap,x,y,the_node,radious);
+            }
+          // draw_pixel(x,y)
+        }
+    }
+  else
+    {
+      // draw_pixel(x,y)
+      the_node = (y*themap->world_size_x)+(x);
+      if (  (themap->world[the_node].unpassable==1) || (themap->world[the_node].in_unpassable_radious>=1) )
+        {
+          fprintf(stderr,"Remove Obstacle At %u/%u , %u radious \n",x,y,radious);
+          themap->world[the_node].unpassable=0;
+          PathPlanCore_RemoveObstacleAndRadious(themap,x,y,the_node,radious);
+        }
+      // draw_pixel(x,y)
+
+      e = 2*dx - dy;
+      inc1 = 2*( dx - dy);
+      inc2 = 2*dx;
+      for (i = 0; i < dy; i++)
+        {
+          if (e >= 0)
+            {
+              x += incx;
+              e += inc1;
+            }
+          else e += inc2;
+          y += incy;
+
+          // draw_pixel(x,y)
+          the_node = (y*themap->world_size_x)+(x);
+          if (  (themap->world[the_node].unpassable==1) || (themap->world[the_node].in_unpassable_radious>=1) )
+            {
+                 fprintf(stderr,"Remove Obstacle At %u/%u , %u radious \n",x,y,radious);
+                 themap->world[the_node].unpassable=0;
+                 PathPlanCore_RemoveObstacleAndRadious(themap,x,y,the_node,radious);
+            }
+          // draw_pixel(x,y)
+        }
+    }
+  if ( debug_normalize_path ==1 ) printf (" clear\n");
+  return 1; // This means clear
+}
+
+
+
+
+
+
+
 struct TraceNode * GetANormalizedLineFromNodes(struct TraceNode * rawnodes,unsigned int rawnodes_size,unsigned int *str8nodes_size)
 {
   if ( rawnodes_size  <= 1 ) { return 0; }
@@ -190,7 +303,7 @@ void GetTheShortestNormalizedLineFromNodes(struct NodeData * world,unsigned int 
         if ( debug_normalize_path ==1 ) printf (" ... range up to %d ! \n",i-skip_steps);
         x1=str8nodes[i-skip_steps].nodex , y1=str8nodes[i-skip_steps].nodey; // <- Test Start State
         if (
-               ClearLinePath(world,world_x,world_size,x1,y1,x2,y2) == 0
+               CheckThatLinePathIsClear(world,world_x,world_size,x1,y1,x2,y2) == 0
            )
            {  } else
            { move_steps=skip_steps;

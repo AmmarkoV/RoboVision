@@ -49,7 +49,7 @@ void FillInTurningOverheads()
 
 }
 
-unsigned int AddSensorDataToMap(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm)
+unsigned int AddSensorDataToMap(struct Map * themap,unsigned int agentnum,unsigned int safety_radious,int ultrasonic_left_cm,int ultrasonic_right_cm)
 {
   fprintf(stderr,"AddSensorDataToMap stub %u %u \n",ultrasonic_left_cm,ultrasonic_right_cm);
     float cos_degrees=0.0,sin_degrees=0.0;
@@ -73,6 +73,8 @@ unsigned int AddSensorDataToMap(struct Map * themap,unsigned int agentnum,int ul
         return 0;
       }
 
+    ClearLinePath(themap,safety_radious,(unsigned int) themap->actors[agentnum].abs_x_pos,(unsigned int) themap->actors[agentnum].abs_y_pos,
+                                        (unsigned int) new_ultrasonic_left_x,(unsigned int) new_ultrasonic_left_y);
     SetObstacle(themap,new_ultrasonic_left_x,new_ultrasonic_left_y,2);
 
   return 1;

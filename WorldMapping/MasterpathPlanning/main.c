@@ -144,9 +144,11 @@ int SetObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned int s
    unsigned int memory_ptr=x+(y*themap->world_size_x);
    if (memory_ptr >= themap->world_total_size ) { return 0; /*Overflow protection */ }
 
+   /*This adds the obstacle*/
    themap->world[memory_ptr].unpassable=1;
 
-   if (!PathPlanCore_AddObstacleRadious(themap,x,y,memory_ptr,safety_radious) ) { fprintf(stderr,"Could not add radious\n"); }
+   /*This adds the obstacle radious*/
+   if (!PathPlanCore_AddObstacleAndRadious(themap,x,y,memory_ptr,safety_radious) ) { fprintf(stderr,"Could not add radious\n"); }
    return 1;
 }
 
@@ -156,9 +158,11 @@ int RemoveObstacle(struct Map * themap,unsigned int x,unsigned int y,unsigned in
    unsigned int memory_ptr=x+(y*themap->world_size_x);
    if (memory_ptr >= themap->world_total_size ) { return 0; /*Overflow protection */ }
 
+   /*This removes the obstacle*/
    themap->world[memory_ptr].unpassable=0;
 
-   if (!PathPlanCore_RemoveObstacleRadious(themap,x,y,memory_ptr,safety_radious) ) { fprintf(stderr,"Could not remove radious\n"); }
+   /*This removes the obstacle radious*/
+   if (!PathPlanCore_RemoveObstacleAndRadious(themap,x,y,memory_ptr,safety_radious) ) { fprintf(stderr,"Could not remove radious\n"); }
    return 1;
 }
 
@@ -265,9 +269,9 @@ int MoveAgentForward(struct Map * themap,unsigned int agentnum,int leftwheel_cm,
   return MoveAgentCore(themap,agentnum,leftwheel_cm,rightwheel_cm);
 }
 
-int AddObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm)
+int AddObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,unsigned int safety_radious,int ultrasonic_left_cm,int ultrasonic_right_cm)
 {
-  AddSensorDataToMap(themap,agentnum,ultrasonic_left_cm,ultrasonic_right_cm);
+  AddSensorDataToMap(themap,agentnum,safety_radious,ultrasonic_left_cm,ultrasonic_right_cm);
   return 0;
 }
 /*      --------------------------------------------

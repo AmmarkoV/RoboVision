@@ -124,7 +124,7 @@ int SetAgentTargetLocation(struct Map * themap,unsigned int agentnum,unsigned in
 int SetAgentTargetLocationName(struct Map * themap,unsigned int agentnum,char * name) ;
 int GetAgentTargetLocation(struct Map * themap,unsigned int agentnum,unsigned int * x,unsigned int * y);
 int MoveAgentForward(struct Map * themap,unsigned int agentnum,int leftwheel_cm,int rightwheel_cm) ;
-int AddObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm) ;
+int AddObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,unsigned int safety_radious,int ultrasonic_left_cm,int ultrasonic_right_cm) ;
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int FindPath(struct Map * themap,unsigned int agentnum,unsigned int timeout_ms) ;
 int FindPathToPosition(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y,unsigned int timeout_ms) ;

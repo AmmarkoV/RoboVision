@@ -189,8 +189,8 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
   //floor_plan->SetActorPhysicalSize(4);
   //floor_plan->SetActorCurrentPosition(1,1,6);
 
-  ptx1->SetValue(wxT("1")) , pty1->SetValue(wxT("1"));
-  SetAgentLocation(floor,OURROBOT,1,1);
+  ptx1->SetValue(wxT("30")) , pty1->SetValue(wxT("30"));
+  SetAgentLocation(floor,OURROBOT,30,30);
 
   ptx2->SetValue(wxT("69")) , pty2->SetValue(wxT("43"));
   SetAgentTargetLocation(floor,OURROBOT,69,43);
@@ -219,7 +219,9 @@ WorldMappingFrame::~WorldMappingFrame()
 //  delete guarddog;
   delete draw_area;
   //delete floor_plan;
+    RobotClose();
   DeleteMap(floor);
+
 }
 
 void WorldMappingFrame::OnQuit(wxCommandEvent& event)
@@ -562,7 +564,7 @@ void WorldMappingFrame::OnButtonSimulateUltrasonicClick(wxCommandEvent& event)
   long ultrasonic_x,ultrasonic_y;
   obsx->GetValue().ToLong(&ultrasonic_x);
   obsy->GetValue().ToLong(&ultrasonic_y);
-  AddObstacleSensedbyAgent(floor,OURROBOT,ultrasonic_x,ultrasonic_y) ;
+  AddObstacleSensedbyAgent(floor,OURROBOT,OBSTACLE_UNCERTAINTY,ultrasonic_x,ultrasonic_y) ;
 
     wxCommandEvent nullevent;
   OnButtonCalculateClick(nullevent);
@@ -629,7 +631,7 @@ void WorldMappingFrame::OnUltrasonicButtonClick(wxCommandEvent& event)
   int_to_str.Clear(); int_to_str<<ultrasonic_y;
   obsy->SetValue(int_to_str);
 
-  AddObstacleSensedbyAgent(floor,OURROBOT,ultrasonic_x,ultrasonic_y) ;
+  AddObstacleSensedbyAgent(floor,OURROBOT,OBSTACLE_UNCERTAINTY,ultrasonic_x,ultrasonic_y) ;
 
     wxCommandEvent nullevent;
   OnButtonCalculateClick(nullevent);

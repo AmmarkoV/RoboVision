@@ -2,7 +2,7 @@
 
 
 /* This function adds a radious around an obstacle */
-inline int PathPlanCore_ObstacleRadiousCalculations(struct Map * themap,unsigned char add_operation,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int total_safety_radious)
+inline int PathPlanCore_ObstacleAndRadiousCalculations(struct Map * themap,unsigned char add_operation,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int total_safety_radious)
 {
    if ( total_safety_radious == 0 ) { themap->world[mem_ptr].in_unpassable_radious+=1; return 1; } /* Radious is a point */
 
@@ -25,30 +25,41 @@ inline int PathPlanCore_ObstacleRadiousCalculations(struct Map * themap,unsigned
                                                       { end_y=themap->world_size_y-1; }
 
 
+
   unsigned int xi=start_x,yi=start_y,mem_ptr_i=0;
+
+  if (add_operation)  { themap->world[mem_ptr].unpassable=1; }
+
   for ( yi = start_y; yi<=end_y; yi++ )
    {
      mem_ptr_i=start_x+(yi*themap->world_size_x);
      for ( xi = start_x; xi<=end_x; xi++ )
      {
        if (add_operation) { if (themap->world[mem_ptr_i].in_unpassable_radious<255)
-                             { ++themap->world[mem_ptr_i].in_unpassable_radious; } } else
+                            { ++themap->world[mem_ptr_i].in_unpassable_radious; } } else
                           { if (themap->world[mem_ptr_i].in_unpassable_radious>0)
-                             { --themap->world[mem_ptr_i].in_unpassable_radious; } }
+                            {
+                                /*Either of these could be used :P */
+                                /*--themap->world[mem_ptr_i].in_unpassable_radious;*/
+                               themap->world[mem_ptr_i].in_unpassable_radious=0;
+                            }
+
+                            if (themap->world[mem_ptr_i].unpassable==1) { themap->world[mem_ptr_i].unpassable=0; }
+                          }
        ++mem_ptr_i;
      }
    }
    return 1;
 }
 
-int PathPlanCore_AddObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
+int PathPlanCore_AddObstacleAndRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
 {
-   return PathPlanCore_ObstacleRadiousCalculations(themap,1,x,y,mem_ptr,safety_radious);
+   return PathPlanCore_ObstacleAndRadiousCalculations(themap,1,x,y,mem_ptr,safety_radious);
 }
 
-int PathPlanCore_RemoveObstacleRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
+int PathPlanCore_RemoveObstacleAndRadious(struct Map * themap,unsigned int x,unsigned int y,unsigned int mem_ptr,unsigned int safety_radious)
 {
-   return PathPlanCore_ObstacleRadiousCalculations(themap,0,x,y,mem_ptr,safety_radious);
+   return PathPlanCore_ObstacleAndRadiousCalculations(themap,0,x,y,mem_ptr,safety_radious);
 }
 
 unsigned int FillResultPath(struct NodeData * world_matrix,unsigned int world_x,struct TraceNode * resultlist,unsigned int result_size,unsigned int start_node,unsigned int end_node)
