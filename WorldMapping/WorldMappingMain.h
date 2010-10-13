@@ -48,6 +48,7 @@ class WorldMappingFrame: public wxFrame
         void OnButtonSetRotationClick(wxCommandEvent& event);
         void OnButton2Click(wxCommandEvent& event);
         void OnButton1Click(wxCommandEvent& event);
+        void OnMoveButtonClick(wxCommandEvent& event);
         //*)
         void OnJoystickEvent(wxJoystickEvent& event);
         void OnPaint(wxPaintEvent& event);
@@ -79,6 +80,7 @@ class WorldMappingFrame: public wxFrame
         static const long ID_BUTTON9;
         static const long ID_SPINCTRL2;
         static const long ID_BUTTON10;
+        static const long ID_BUTTON11;
         static const long idMenuQuit;
         static const long idMenuAbout;
         static const long ID_STATUSBAR1;
@@ -103,6 +105,7 @@ class WorldMappingFrame: public wxFrame
         wxStaticBox* StaticBox1;
         wxButton* PrintButton;
         wxStaticText* StaticText4;
+        wxButton* MoveButton;
         wxStaticText* StaticText5;
         wxStaticText* StaticText2;
         wxButton* SetStartPoint;

@@ -346,7 +346,7 @@
 
 1282051481 /usr/include/wx-2.8/wx/gtk/app.h
 
-1286454402 /home/ammar/Documents/Programming/RoboVision/WorldMapping/WorldMappingMain.h
+1286914405 /home/ammar/Documents/Programming/RoboVision/WorldMapping/WorldMappingMain.h
 	"MasterpathPlanning/MasterpathPlanning.h"
 	"../InputParser/InputParser_C.h"
 	<wx/joystick.h>
@@ -360,13 +360,55 @@
 	<wx/stattext.h>
 	<wx/textctrl.h>
 
-1250033287 /usr/include/wx-2.8/wx/datectrl.h
+1286929993 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
+	<stdio.h>
+
+1282907255 /home/ammar/Documents/Programming/RoboVision/InputParser/InputParser_C.h
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<ctype.h>
+
+1282051481 /usr/include/wx-2.8/wx/joystick.h
+	"wx/defs.h"
+	"wx/msw/joystick.h"
+	"wx/unix/joystick.h"
+	"wx/unix/joystick.h"
+	"wx/unix/joystick.h"
+	"wx/mac/corefoundation/joystick.h"
+	"wx/mac/joystick.h"
+	"wx/os2/joystick.h"
+
+1282051481 /usr/include/wx-2.8/wx/unix/joystick.h
+	"wx/event.h"
+	"wx/thread.h"
+
+1285810165 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
+
+1282051481 /usr/include/wx-2.8/wx/spinctrl.h
+	"wx/defs.h"
+	"wx/spinbutt.h"
+	"wx/generic/spinctlg.h"
+	"wx/msw/spinctrl.h"
+	"wx/os2/spinctrl.h"
+	"wx/gtk/spinctrl.h"
+	"wx/gtk1/spinctrl.h"
+	"wx/generic/spinctlg.h"
+	"wx/mac/spinctrl.h"
+	"wx/generic/spinctlg.h"
+
+1282051481 /usr/include/wx-2.8/wx/spinbutt.h
 	"wx/defs.h"
 	"wx/control.h"
-	"wx/datetime.h"
-	"wx/palmos/datectrl.h"
-	"wx/msw/datectrl.h"
-	"wx/generic/datectrl.h"
+	"wx/event.h"
+	"wx/univ/spinbutt.h"
+	"wx/msw/spinbutt.h"
+	"wx/motif/spinbutt.h"
+	"wx/gtk/spinbutt.h"
+	"wx/gtk1/spinbutt.h"
+	"wx/mac/spinbutt.h"
+	"wx/cocoa/spinbutt.h"
+	"wx/os2/spinbutt.h"
 
 1282051480 /usr/include/wx-2.8/wx/control.h
 	"wx/defs.h"
@@ -553,7 +595,51 @@
 
 1282051481 /usr/include/wx-2.8/wx/gtk/control.h
 
-1250033287 /usr/include/wx-2.8/wx/generic/datectrl.h
+1282051481 /usr/include/wx-2.8/wx/gtk/spinbutt.h
+
+1282051480 /usr/include/wx-2.8/wx/generic/spinctlg.h
+	"wx/textctrl.h"
+
+1282051480 /usr/include/wx-2.8/wx/textctrl.h
+	"wx/defs.h"
+	"wx/control.h"
+	"wx/dynarray.h"
+	"wx/gdicmn.h"
+	"wx/ioswrap.h"
+	"wx/x11/textctrl.h"
+	"wx/univ/textctrl.h"
+	"wx/msw/wince/textctrlce.h"
+	"wx/msw/textctrl.h"
+	"wx/motif/textctrl.h"
+	"wx/gtk/textctrl.h"
+	"wx/gtk1/textctrl.h"
+	"wx/mac/textctrl.h"
+	"wx/cocoa/textctrl.h"
+	"wx/os2/textctrl.h"
+
+1282051479 /usr/include/wx-2.8/wx/ioswrap.h
+	<iostream.h>
+	<iostream>
+	"wx/msw/winundef.h"
+
+1282051481 /usr/include/wx-2.8/wx/gtk/textctrl.h
+
+1282051481 /usr/include/wx-2.8/wx/gtk/spinctrl.h
+
+1282051480 /usr/include/wx-2.8/wx/button.h
+	"wx/defs.h"
+	"wx/control.h"
+	"wx/univ/button.h"
+	"wx/msw/button.h"
+	"wx/motif/button.h"
+	"wx/gtk/button.h"
+	"wx/gtk1/button.h"
+	"wx/mac/button.h"
+	"wx/cocoa/button.h"
+	"wx/os2/button.h"
+	"wx/palmos/button.h"
+
+1282051481 /usr/include/wx-2.8/wx/gtk/button.h
 
 1282051480 /usr/include/wx-2.8/wx/menu.h
 	"wx/defs.h"
@@ -608,11 +694,6 @@
 
 1282051481 /usr/include/wx-2.8/wx/gtk/menu.h
 
-1250033287 /usr/include/wx-2.8/wx/dateevt.h
-	"wx/event.h"
-	"wx/datetime.h"
-	"wx/window.h"
-
 1282051480 /usr/include/wx-2.8/wx/statusbr.h
 	"wx/defs.h"
 	"wx/window.h"
@@ -646,6 +727,20 @@
 1282051481 /usr/include/wx-2.8/wx/gtk/pen.h
 	"wx/gdiobj.h"
 	"wx/gdicmn.h"
+
+1282051480 /usr/include/wx-2.8/wx/statbox.h
+	"wx/defs.h"
+	"wx/control.h"
+	"wx/univ/statbox.h"
+	"wx/msw/statbox.h"
+	"wx/motif/statbox.h"
+	"wx/gtk/statbox.h"
+	"wx/gtk1/statbox.h"
+	"wx/mac/statbox.h"
+	"wx/cocoa/statbox.h"
+	"wx/os2/statbox.h"
+
+1282051481 /usr/include/wx-2.8/wx/gtk/statbox.h
 
 1282051480 /usr/include/wx-2.8/wx/frame.h
 	"wx/toplevel.h"
@@ -757,75 +852,7 @@
 1282051480 /usr/include/wx-2.8/wx/imagiff.h
 	"wx/image.h"
 
-1250033286 /usr/include/wx-2.8/wx/radiobut.h
-	"wx/defs.h"
-	"wx/control.h"
-	"wx/univ/radiobut.h"
-	"wx/msw/radiobut.h"
-	"wx/motif/radiobut.h"
-	"wx/gtk/radiobut.h"
-	"wx/gtk1/radiobut.h"
-	"wx/mac/radiobut.h"
-	"wx/cocoa/radiobut.h"
-	"wx/os2/radiobut.h"
-	"wx/palmos/radiobut.h"
-
-1250033287 /usr/include/wx-2.8/wx/gtk/radiobut.h
-
-1282051480 /usr/include/wx-2.8/wx/button.h
-	"wx/defs.h"
-	"wx/control.h"
-	"wx/univ/button.h"
-	"wx/msw/button.h"
-	"wx/motif/button.h"
-	"wx/gtk/button.h"
-	"wx/gtk1/button.h"
-	"wx/mac/button.h"
-	"wx/cocoa/button.h"
-	"wx/os2/button.h"
-	"wx/palmos/button.h"
-
-1282051481 /usr/include/wx-2.8/wx/gtk/button.h
-
-1282051480 /usr/include/wx-2.8/wx/statbox.h
-	"wx/defs.h"
-	"wx/control.h"
-	"wx/univ/statbox.h"
-	"wx/msw/statbox.h"
-	"wx/motif/statbox.h"
-	"wx/gtk/statbox.h"
-	"wx/gtk1/statbox.h"
-	"wx/mac/statbox.h"
-	"wx/cocoa/statbox.h"
-	"wx/os2/statbox.h"
-
-1282051481 /usr/include/wx-2.8/wx/gtk/statbox.h
-
-1282051480 /usr/include/wx-2.8/wx/textctrl.h
-	"wx/defs.h"
-	"wx/control.h"
-	"wx/dynarray.h"
-	"wx/gdicmn.h"
-	"wx/ioswrap.h"
-	"wx/x11/textctrl.h"
-	"wx/univ/textctrl.h"
-	"wx/msw/wince/textctrlce.h"
-	"wx/msw/textctrl.h"
-	"wx/motif/textctrl.h"
-	"wx/gtk/textctrl.h"
-	"wx/gtk1/textctrl.h"
-	"wx/mac/textctrl.h"
-	"wx/cocoa/textctrl.h"
-	"wx/os2/textctrl.h"
-
-1282051479 /usr/include/wx-2.8/wx/ioswrap.h
-	<iostream.h>
-	<iostream>
-	"wx/msw/winundef.h"
-
-1282051481 /usr/include/wx-2.8/wx/gtk/textctrl.h
-
-1286399310 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/WorldMappingMain.cpp
+1286929899 source:/home/ammar/Documents/Programming/RoboVision/WorldMapping/WorldMappingMain.cpp
 	"WorldMappingMain.h"
 	<wx/msgdlg.h>
 	<wx/dc.h>
@@ -972,104 +999,4 @@
 
 1282051481 /usr/include/wx-2.8/wx/gtk/dcmemory.h
 	"wx/dcclient.h"
-
-1259507520 /home/ammar/Documents/Programming/RoboVision/WorldMapping/PathPlanning/PathPlanning.h
-
-1250033285 /usr/include/wx-2.8/wx/timer.h
-	"wx/defs.h"
-	"wx/object.h"
-	"wx/longlong.h"
-	"wx/event.h"
-	"wx/stopwatch.h"
-	"wx/window.h"
-	"wx/msw/timer.h"
-	"wx/motif/timer.h"
-	"wx/gtk/timer.h"
-	"wx/gtk1/timer.h"
-	"wx/generic/timer.h"
-	"wx/cocoa/timer.h"
-	"wx/mac/timer.h"
-	"wx/os2/timer.h"
-
-1250033285 /usr/include/wx-2.8/wx/stopwatch.h
-	"wx/defs.h"
-	"wx/longlong.h"
-
-1250033287 /usr/include/wx-2.8/wx/gtk/timer.h
-
-1250033286 /usr/include/wx-2.8/wx/generic/timer.h
-
-1285946484 /home/ammar/Documents/Programming/RoboVision/WorldMapping/PathPlanning/Map.h
-	"AStarCompute.h"
-
-1260288516 /home/ammar/Documents/Programming/RoboVision/WorldMapping/PathPlanning/AStarCompute.h
-	<sys/time.h>
-	<unistd.h>
-
-1282051481 /usr/include/wx-2.8/wx/spinctrl.h
-	"wx/defs.h"
-	"wx/spinbutt.h"
-	"wx/generic/spinctlg.h"
-	"wx/msw/spinctrl.h"
-	"wx/os2/spinctrl.h"
-	"wx/gtk/spinctrl.h"
-	"wx/gtk1/spinctrl.h"
-	"wx/generic/spinctlg.h"
-	"wx/mac/spinctrl.h"
-	"wx/generic/spinctlg.h"
-
-1282051481 /usr/include/wx-2.8/wx/spinbutt.h
-	"wx/defs.h"
-	"wx/control.h"
-	"wx/event.h"
-	"wx/univ/spinbutt.h"
-	"wx/msw/spinbutt.h"
-	"wx/motif/spinbutt.h"
-	"wx/gtk/spinbutt.h"
-	"wx/gtk1/spinbutt.h"
-	"wx/mac/spinbutt.h"
-	"wx/cocoa/spinbutt.h"
-	"wx/os2/spinbutt.h"
-
-1282051481 /usr/include/wx-2.8/wx/gtk/spinbutt.h
-
-1282051480 /usr/include/wx-2.8/wx/generic/spinctlg.h
-	"wx/textctrl.h"
-
-1282051481 /usr/include/wx-2.8/wx/gtk/spinctrl.h
-
-1282051481 /usr/include/wx-2.8/wx/joystick.h
-	"wx/defs.h"
-	"wx/msw/joystick.h"
-	"wx/unix/joystick.h"
-	"wx/unix/joystick.h"
-	"wx/unix/joystick.h"
-	"wx/mac/corefoundation/joystick.h"
-	"wx/mac/joystick.h"
-	"wx/os2/joystick.h"
-
-1282051481 /usr/include/wx-2.8/wx/unix/joystick.h
-	"wx/event.h"
-	"wx/thread.h"
-
-1261013819 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/RobotHAL/RobotHAL.h
-	"../MD23/MD23.h"
-
-1261014995 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MD23/MD23.h
-	"usb_2_i2c.h"
-	<pthread.h>
-
-1264303421 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MD23/usb_2_i2c.h
-	<termios.h>
-
-1285810165 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
-
-1286319503 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
-	<stdio.h>
-
-1282907255 /home/ammar/Documents/Programming/RoboVision/InputParser/InputParser_C.h
-	<stdlib.h>
-	<stdio.h>
-	<string.h>
-	<ctype.h>
 

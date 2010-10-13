@@ -78,6 +78,7 @@ const long WorldMappingFrame::ID_BUTTON8 = wxNewId();
 const long WorldMappingFrame::ID_BUTTON9 = wxNewId();
 const long WorldMappingFrame::ID_SPINCTRL2 = wxNewId();
 const long WorldMappingFrame::ID_BUTTON10 = wxNewId();
+const long WorldMappingFrame::ID_BUTTON11 = wxNewId();
 const long WorldMappingFrame::idMenuQuit = wxNewId();
 const long WorldMappingFrame::idMenuAbout = wxNewId();
 const long WorldMappingFrame::ID_STATUSBAR1 = wxNewId();
@@ -117,7 +118,7 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
   wxMenu* Menu2;
 
   Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
-  SetClientSize(wxSize(930,576));
+  SetClientSize(wxSize(969,614));
   StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Start Point"), wxPoint(16,24), wxDefaultSize, 0, _T("ID_STATICTEXT1"));
   ptx1 = new wxTextCtrl(this, ID_TEXTCTRL1, _("0"), wxPoint(16,40), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
   pty1 = new wxTextCtrl(this, ID_TEXTCTRL2, _("0"), wxPoint(48,40), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
@@ -125,27 +126,28 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
   ptx2 = new wxTextCtrl(this, ID_TEXTCTRL3, _("0"), wxPoint(16,88), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
   pty2 = new wxTextCtrl(this, ID_TEXTCTRL4, _("0"), wxPoint(48,88), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
   ButtonCalculate = new wxButton(this, ID_BUTTON1, _("Calculate"), wxPoint(16,208), wxSize(88,29), 0, wxDefaultValidator, _T("ID_BUTTON1"));
-  StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Obstacle"), wxPoint(16,304), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+  StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Obstacle/Move"), wxPoint(16,304), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
   obsx = new wxTextCtrl(this, ID_TEXTCTRL5, _("0"), wxPoint(16,328), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL5"));
   obsy = new wxTextCtrl(this, ID_TEXTCTRL6, _("0"), wxPoint(64,328), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL6"));
   StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, _("World"), wxPoint(120,8), wxSize(800,536), 0, _T("ID_STATICBOX1"));
-  Button1 = new wxButton(this, ID_BUTTON2, _("Add"), wxPoint(16,392), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
-  Button2 = new wxButton(this, ID_BUTTON3, _("Remove"), wxPoint(16,424), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
+  Button1 = new wxButton(this, ID_BUTTON2, _("Add"), wxPoint(16,424), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
+  Button2 = new wxButton(this, ID_BUTTON3, _("Remove"), wxPoint(16,456), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
   SetEndPoint = new wxButton(this, ID_BUTTON4, _("S"), wxPoint(80,86), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON4"));
   SetStartPoint = new wxButton(this, ID_BUTTON5, _("S"), wxPoint(80,38), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON5"));
-  ClearButton = new wxButton(this, ID_BUTTON6, _("Clear All"), wxPoint(16,456), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON6"));
+  ClearButton = new wxButton(this, ID_BUTTON6, _("Clear All"), wxPoint(16,488), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON6"));
   TimeMS = new wxSpinCtrl(this, ID_SPINCTRL1, _T("30"), wxPoint(16,176), wxSize(88,27), 0, 0, 200, 30, _T("ID_SPINCTRL1"));
   TimeMS->SetValue(_T("30"));
   StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("Time Limit"), wxPoint(16,160), wxDefaultSize, 0, _T("ID_STATICTEXT4"));
-  StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _("1 block equals"), wxPoint(8,496), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
-  scale_cm = new wxTextCtrl(this, ID_TEXTCTRL7, _("15"), wxPoint(16,512), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
-  StaticText6 = new wxStaticText(this, ID_STATICTEXT6, _("cm"), wxPoint(64,520), wxDefaultSize, 0, _T("ID_STATICTEXT6"));
+  StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _("1 block equals"), wxPoint(8,544), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+  scale_cm = new wxTextCtrl(this, ID_TEXTCTRL7, _("15"), wxPoint(16,568), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
+  StaticText6 = new wxStaticText(this, ID_STATICTEXT6, _("cm"), wxPoint(64,576), wxDefaultSize, 0, _T("ID_STATICTEXT6"));
   ButtonExecute = new wxButton(this, ID_BUTTON7, _("Execute"), wxPoint(16,240), wxSize(88,29), 0, wxDefaultValidator, _T("ID_BUTTON7"));
   PrintButton = new wxButton(this, ID_BUTTON8, _("Print"), wxPoint(16,272), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON8"));
   ButtonSimulateUltrasonic = new wxButton(this, ID_BUTTON9, _("Simulate U"), wxPoint(16,360), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON9"));
   Rotation = new wxSpinCtrl(this, ID_SPINCTRL2, _T("0"), wxPoint(16,122), wxSize(64,27), 0, 0, 360, 0, _T("ID_SPINCTRL2"));
   Rotation->SetValue(_T("0"));
   ButtonSetRotation = new wxButton(this, ID_BUTTON10, _("S"), wxPoint(80,120), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON10"));
+  MoveButton = new wxButton(this, ID_BUTTON11, _("Move"), wxPoint(16,392), wxSize(-1,-1), 0, wxDefaultValidator, _T("ID_BUTTON11"));
   MenuBar1 = new wxMenuBar();
   Menu1 = new wxMenu();
   MenuItem1 = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
@@ -172,6 +174,7 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
   Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnPrintButtonClick);
   Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnButtonSimulateUltrasonicClick);
   Connect(ID_BUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnButtonSetRotationClick);
+  Connect(ID_BUTTON11,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnMoveButtonClick);
   Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&WorldMappingFrame::OnQuit);
   Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&WorldMappingFrame::OnAbout);
   //*)
@@ -181,7 +184,7 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
 
   floor = CreateMap(101,101,10);
   SetMapUnit_In_cm(floor,15);
-  SetAgentSize(floor,OURROBOT,1,1);
+  SetAgentSize(floor,OURROBOT,1,1,37);
   SetAgentLocation(floor,OURROBOT,1,1) ;
   SetAgentHeading(floor,OURROBOT,1) ;
   //floor_plan = new Map(101,101);
@@ -189,10 +192,12 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
   //floor_plan->SetActorCurrentPosition(1,1,6);
 
   ptx1->SetValue(wxT("1")) , pty1->SetValue(wxT("1"));
+  SetAgentLocation(floor,OURROBOT,1,1);
+
   ptx2->SetValue(wxT("69")) , pty2->SetValue(wxT("43"));
+  SetAgentTargetLocation(floor,OURROBOT,69,43);
 
-
-  TTS("World mapping started.");
+  TTS((char *)"World mapping started.");
 
 /*
   RobotInit("/dev/ttyUSB0","/dev/ttyUSB1");
@@ -410,14 +415,19 @@ void WorldMappingFrame::OnPaint(wxPaintEvent& event)
   int y=30;
   mem.SelectObject(*draw_area);
 
-
+/*
   long startx,starty;
   ptx1->GetValue().ToLong(&startx);
   pty1->GetValue().ToLong(&starty);
   long endx,endy;
   ptx2->GetValue().ToLong(&endx);
   pty2->GetValue().ToLong(&endy);
+*/
+  unsigned int startx,starty;
+  GetAgentLocation(floor,OURROBOT,&startx,&starty);
 
+  unsigned int endx,endy;
+  GetAgentTargetLocation(floor,OURROBOT,&endx,&endy);
   DrawWorld(mem,floor,startx,starty,endx,endy);
 
   dc.DrawBitmap(*draw_area,x,y,true);
@@ -457,6 +467,8 @@ void WorldMappingFrame::OnMotion(wxMouseEvent& event)
               tmp.clear() , tmp<<y , pty1->SetValue(tmp);
               StatusBar1->SetStatusText(wxT("Set Start point"));
 
+                 SetAgentLocation(floor,OURROBOT,x,y);
+
               wxCommandEvent nullevent;
               OnButtonCalculateClick(nullevent);
             }
@@ -467,6 +479,8 @@ void WorldMappingFrame::OnMotion(wxMouseEvent& event)
                 tmp.clear() , tmp<<x , ptx2->SetValue(tmp);
                 tmp.clear() , tmp<<y , pty2->SetValue(tmp);
                 StatusBar1->SetStatusText(wxT("Set End point"));
+
+                 SetAgentTargetLocation(floor,OURROBOT,x,y);
 
                 wxCommandEvent nullevent;
                 OnButtonCalculateClick(nullevent);
@@ -511,24 +525,25 @@ void WorldMappingFrame::OnSetStartPointClick(wxCommandEvent& event)
 
 void WorldMappingFrame::OnButtonCalculateClick(wxCommandEvent& event)
 {
-  long startx,starty;
-  ptx1->GetValue().ToLong(&startx);
-  pty1->GetValue().ToLong(&starty);
+ // long startx,starty;
+ // ptx1->GetValue().ToLong(&startx);
+ // pty1->GetValue().ToLong(&starty);
 
   //floor_plan->SetActorCurrentPosition(startx,starty,6);
-  SetAgentLocation(floor,OURROBOT,startx,starty);
+ // SetAgentLocation(floor,OURROBOT,startx,starty);
 
-  long endx,endy;
-  ptx2->GetValue().ToLong(&endx);
-  pty2->GetValue().ToLong(&endy);
+ // long endx,endy;
+ // ptx2->GetValue().ToLong(&endx);
+ // pty2->GetValue().ToLong(&endy);
 
-  SetAgentHeading(floor,OURROBOT,Rotation->GetValue()) ;
+ // SetAgentHeading(floor,OURROBOT,Rotation->GetValue()) ;
 
   //signed int res=floor_plan->FindPathTo(endx,endy,TimeMS->GetValue()*10);
-  signed int res=FindSponteneousPath(floor,OURROBOT,startx,starty,endx,endy,TimeMS->GetValue()*10) ;
+ // signed int res=FindSponteneousPath(floor,OURROBOT,startx,starty,endx,endy,TimeMS->GetValue()*10) ;
+   signed int res=FindPath(floor,OURROBOT,TimeMS->GetValue()*10);
   //floor_plan->FindPathTo(endx,endy,);
-  if ( res <1 ) { TTS("Could not establish a route.");  } else
-                { TTS("New route established."); }
+  if ( res <1 ) { TTS((char *)"Could not establish a route.");  } else
+                { TTS((char *)"New route established."); }
   Refresh();
 }
 
@@ -564,4 +579,15 @@ void WorldMappingFrame::OnButton2Click(wxCommandEvent& event)
 
 void WorldMappingFrame::OnButton1Click(wxCommandEvent& event)
 {
+}
+
+void WorldMappingFrame::OnMoveButtonClick(wxCommandEvent& event)
+{
+  long move_x,move_y;
+  obsx->GetValue().ToLong(&move_x);
+  obsy->GetValue().ToLong(&move_y);
+  MoveAgentForward(floor,OURROBOT,move_x,move_y);
+  wxCommandEvent nullevent;
+  OnButtonCalculateClick(nullevent);
+
 }

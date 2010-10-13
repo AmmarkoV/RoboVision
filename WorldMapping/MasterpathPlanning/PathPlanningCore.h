@@ -4,6 +4,7 @@
 #include "MasterpathPlanning.h"
 
 unsigned int AddSensorDataToMap(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm);
+unsigned int MoveAgentCore(struct Map * themap,unsigned int agentnum,int move_left_cm,int move_right_cm);
 
 int PathPlanCore_CleanMap(struct Map * themap);
 void FillInTurningOverheads();

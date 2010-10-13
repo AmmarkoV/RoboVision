@@ -4,9 +4,11 @@
 #include "LogoHighLevelPath.h"
 #include <sys/time.h>
 #include <unistd.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#define PI 3.14159265
 unsigned char DEBUGING=0;
 
 unsigned int turning_overheads[TOTAL_DIRECTIONS][TOTAL_DIRECTIONS]={{0}};
@@ -50,10 +52,37 @@ void FillInTurningOverheads()
 unsigned int AddSensorDataToMap(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm)
 {
   fprintf(stderr,"AddSensorDataToMap stub %u %u \n",ultrasonic_left_cm,ultrasonic_right_cm);
-
-
   return 0;
 }
+
+unsigned int MoveAgentCore(struct Map * themap,unsigned int agentnum,int move_left_cm,int move_right_cm)
+{
+    fprintf(stderr,"  MoveAgentCore stub %u %u \nTODO: add real differential change tracking\n",move_left_cm,move_right_cm);
+
+
+    float cos_degrees=0.0,sin_degrees=0.0;
+    float new_x_left_axel= themap->actors[agentnum].abs_x_pos;  float new_y_left_axel=themap->actors[agentnum].abs_y_pos;
+    float new_x_right_axel=themap->actors[agentnum].abs_x_pos; float new_y_right_axel=themap->actors[agentnum].abs_y_pos;
+
+    cos_degrees=cos(themap->actors[agentnum].real_heading*PI/180);
+    sin_degrees=sin(themap->actors[agentnum].real_heading*PI/180);
+
+    new_x_left_axel+= move_left_cm * cos_degrees;
+    new_y_left_axel+= move_left_cm * sin_degrees;
+
+    new_x_right_axel+= move_right_cm * cos_degrees;
+    new_y_right_axel+= move_right_cm * sin_degrees;
+
+    fprintf(stderr,"  Moving From %u/%u ",themap->actors[agentnum].current_x_pos,themap->actors[agentnum].current_y_pos);
+
+    themap->actors[agentnum].current_x_pos=(unsigned int)new_x_left_axel;
+    themap->actors[agentnum].current_y_pos=(unsigned int)new_y_left_axel;
+
+    fprintf(stderr," to %u/%u \n",themap->actors[agentnum].current_x_pos,themap->actors[agentnum].current_y_pos);
+
+  return 1;
+}
+
 
 unsigned int inline ReturnDistanceFromNodeToNode(struct NodeData * world_matrix,unsigned int start_node,unsigned int end_node,unsigned int should_not_be_over)
 { /*This function returns the number of hops from end_node to start_node , if end_node is not connected to start_node it will eventually
