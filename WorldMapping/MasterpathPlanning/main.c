@@ -188,7 +188,6 @@ int SetAgentHeading(struct Map * themap,unsigned int agentnum,float heading)
   if (!MapIsOk(themap))  { return 0; }
   if (themap->actors==0) { return 0; }
 
-    fprintf(stderr,"Heading is a stub \n");
     themap->actors[agentnum].current_heading=GetCompressedHeadingFromRealHeading(heading);
     themap->actors[agentnum].real_heading=heading;
 

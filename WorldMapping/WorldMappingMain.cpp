@@ -77,7 +77,6 @@ const long WorldMappingFrame::ID_BUTTON7 = wxNewId();
 const long WorldMappingFrame::ID_BUTTON8 = wxNewId();
 const long WorldMappingFrame::ID_BUTTON9 = wxNewId();
 const long WorldMappingFrame::ID_SPINCTRL2 = wxNewId();
-const long WorldMappingFrame::ID_BUTTON10 = wxNewId();
 const long WorldMappingFrame::ID_BUTTON11 = wxNewId();
 const long WorldMappingFrame::idMenuQuit = wxNewId();
 const long WorldMappingFrame::idMenuAbout = wxNewId();
@@ -144,9 +143,8 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
   ButtonExecute = new wxButton(this, ID_BUTTON7, _("Execute"), wxPoint(16,240), wxSize(88,29), 0, wxDefaultValidator, _T("ID_BUTTON7"));
   PrintButton = new wxButton(this, ID_BUTTON8, _("Print"), wxPoint(16,272), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON8"));
   ButtonSimulateUltrasonic = new wxButton(this, ID_BUTTON9, _("Simulate U"), wxPoint(16,360), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON9"));
-  Rotation = new wxSpinCtrl(this, ID_SPINCTRL2, _T("0"), wxPoint(16,122), wxSize(64,27), 0, 0, 360, 0, _T("ID_SPINCTRL2"));
+  Rotation = new wxSpinCtrl(this, ID_SPINCTRL2, _T("0"), wxPoint(16,122), wxSize(88,27), 0, 0, 360, 0, _T("ID_SPINCTRL2"));
   Rotation->SetValue(_T("0"));
-  ButtonSetRotation = new wxButton(this, ID_BUTTON10, _("S"), wxPoint(80,120), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON10"));
   MoveButton = new wxButton(this, ID_BUTTON11, _("Move"), wxPoint(16,392), wxSize(-1,-1), 0, wxDefaultValidator, _T("ID_BUTTON11"));
   MenuBar1 = new wxMenuBar();
   Menu1 = new wxMenu();
@@ -173,7 +171,7 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
   Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnClearButtonClick);
   Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnPrintButtonClick);
   Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnButtonSimulateUltrasonicClick);
-  Connect(ID_BUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnButtonSetRotationClick);
+  Connect(ID_SPINCTRL2,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&WorldMappingFrame::OnRotationChange);
   Connect(ID_BUTTON11,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&WorldMappingFrame::OnMoveButtonClick);
   Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&WorldMappingFrame::OnQuit);
   Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&WorldMappingFrame::OnAbout);
@@ -564,14 +562,22 @@ void WorldMappingFrame::OnButtonSimulateUltrasonicClick(wxCommandEvent& event)
   long ultrasonic_x,ultrasonic_y;
   obsx->GetValue().ToLong(&ultrasonic_x);
   obsy->GetValue().ToLong(&ultrasonic_y);
-  AddObstacleSensedbyAgent(floor,0,ultrasonic_x,ultrasonic_y) ;
+  AddObstacleSensedbyAgent(floor,OURROBOT,ultrasonic_x,ultrasonic_y) ;
 }
 
 
 void WorldMappingFrame::OnButtonSetRotationClick(wxCommandEvent& event)
 {
+  long rotation_value=Rotation->GetValue();
+  SetAgentHeading(floor,OURROBOT,(float) rotation_value) ;
 }
 
+
+void WorldMappingFrame::OnRotationChange(wxSpinEvent& event)
+{
+  long rotation_value=Rotation->GetValue();
+  SetAgentHeading(floor,OURROBOT,(float) rotation_value) ;
+}
 
 void WorldMappingFrame::OnButton2Click(wxCommandEvent& event)
 {
@@ -591,3 +597,4 @@ void WorldMappingFrame::OnMoveButtonClick(wxCommandEvent& event)
   OnButtonCalculateClick(nullevent);
 
 }
+

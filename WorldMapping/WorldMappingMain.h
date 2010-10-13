@@ -49,6 +49,7 @@ class WorldMappingFrame: public wxFrame
         void OnButton2Click(wxCommandEvent& event);
         void OnButton1Click(wxCommandEvent& event);
         void OnMoveButtonClick(wxCommandEvent& event);
+        void OnRotationChange(wxSpinEvent& event);
         //*)
         void OnJoystickEvent(wxJoystickEvent& event);
         void OnPaint(wxPaintEvent& event);
@@ -79,7 +80,6 @@ class WorldMappingFrame: public wxFrame
         static const long ID_BUTTON8;
         static const long ID_BUTTON9;
         static const long ID_SPINCTRL2;
-        static const long ID_BUTTON10;
         static const long ID_BUTTON11;
         static const long idMenuQuit;
         static const long idMenuAbout;
@@ -114,7 +114,6 @@ class WorldMappingFrame: public wxFrame
         wxTextCtrl* pty1;
         wxButton* ButtonCalculate;
         wxButton* SetEndPoint;
-        wxButton* ButtonSetRotation;
         //*)
         wxMouseState mouse;
  //       RobotHAL *guarddog;

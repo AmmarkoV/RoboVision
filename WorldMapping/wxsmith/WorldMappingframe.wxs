@@ -125,13 +125,8 @@
 			<value>0</value>
 			<max>360</max>
 			<pos>16,122</pos>
-			<size>64,27</size>
-		</object>
-		<object class="wxButton" name="ID_BUTTON10" variable="ButtonSetRotation" member="yes">
-			<label>S</label>
-			<pos>80,120</pos>
-			<size>24,29</size>
-			<handler function="OnButtonSetRotationClick" entry="EVT_BUTTON" />
+			<size>88,27</size>
+			<handler function="OnRotationChange" entry="EVT_SPINCTRL" />
 		</object>
 		<object class="wxButton" name="ID_BUTTON11" variable="MoveButton" member="yes">
 			<label>Move</label>

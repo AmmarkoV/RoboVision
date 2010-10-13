@@ -64,6 +64,8 @@ unsigned int MoveAgentCore(struct Map * themap,unsigned int agentnum,int move_le
     float new_x_left_axel= themap->actors[agentnum].abs_x_pos;  float new_y_left_axel=themap->actors[agentnum].abs_y_pos;
     float new_x_right_axel=themap->actors[agentnum].abs_x_pos; float new_y_right_axel=themap->actors[agentnum].abs_y_pos;
 
+    fprintf(stderr,"  Real position was %u/%u ",(unsigned int) themap->actors[agentnum].abs_x_pos,(unsigned int) themap->actors[agentnum].abs_y_pos);
+
     cos_degrees=cos(themap->actors[agentnum].real_heading*PI/180);
     sin_degrees=sin(themap->actors[agentnum].real_heading*PI/180);
 
@@ -75,6 +77,14 @@ unsigned int MoveAgentCore(struct Map * themap,unsigned int agentnum,int move_le
 
     fprintf(stderr,"  Moving From %u/%u ",themap->actors[agentnum].current_x_pos,themap->actors[agentnum].current_y_pos);
 
+    if  ( ( new_x_left_axel< 0 ) || ( new_y_left_axel< 0 ) )
+      {
+        fprintf(stderr,"Error while Moving agent , agent out of memory bounds");
+        return 0;
+      }
+
+    themap->actors[agentnum].abs_x_pos=new_x_left_axel;
+    themap->actors[agentnum].abs_y_pos=new_y_left_axel;
     themap->actors[agentnum].current_x_pos=(unsigned int)new_x_left_axel;
     themap->actors[agentnum].current_y_pos=(unsigned int)new_y_left_axel;
 
