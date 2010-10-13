@@ -52,7 +52,8 @@ unsigned int RobotRotate(unsigned char power,signed int degrees)
 
 unsigned int RobotMove(unsigned char power,signed int distance)
 {
-return  MD23_MoveMotorsDegrees(guard_base,2,power,(signed int) DistanceToWheelDegreesTurn(distance));
+   fprintf(stderr,"RobotMove %u %d ( in degrees %d ) \n",power,distance,DistanceToWheelDegreesTurn(distance));
+   return  MD23_MoveMotorsDegrees(guard_base,2,power,(signed int) DistanceToWheelDegreesTurn(distance));
 }
 
 unsigned int RobotStartMoving(unsigned char power,signed int direction)

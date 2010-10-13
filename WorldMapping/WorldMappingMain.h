@@ -50,6 +50,8 @@ class WorldMappingFrame: public wxFrame
         void OnButton1Click(wxCommandEvent& event);
         void OnMoveButtonClick(wxCommandEvent& event);
         void OnRotationChange(wxSpinEvent& event);
+        void OnRealMoveButtonClick(wxCommandEvent& event);
+        void OnUltrasonicButtonClick(wxCommandEvent& event);
         //*)
         void OnJoystickEvent(wxJoystickEvent& event);
         void OnPaint(wxPaintEvent& event);
@@ -66,8 +68,6 @@ class WorldMappingFrame: public wxFrame
         static const long ID_TEXTCTRL5;
         static const long ID_TEXTCTRL6;
         static const long ID_STATICBOX1;
-        static const long ID_BUTTON2;
-        static const long ID_BUTTON3;
         static const long ID_BUTTON4;
         static const long ID_BUTTON5;
         static const long ID_BUTTON6;
@@ -81,6 +81,8 @@ class WorldMappingFrame: public wxFrame
         static const long ID_BUTTON9;
         static const long ID_SPINCTRL2;
         static const long ID_BUTTON11;
+        static const long ID_BUTTON2;
+        static const long ID_BUTTON3;
         static const long idMenuQuit;
         static const long idMenuAbout;
         static const long ID_STATUSBAR1;
@@ -95,14 +97,14 @@ class WorldMappingFrame: public wxFrame
         wxTextCtrl* ptx2;
         wxSpinCtrl* TimeMS;
         wxTextCtrl* pty2;
-        wxButton* Button1;
-        wxButton* Button2;
         wxTextCtrl* scale_cm;
         wxStaticText* StaticText1;
         wxTextCtrl* obsy;
         wxButton* ClearButton;
         wxStaticText* StaticText3;
+        wxButton* UltrasonicButton;
         wxStaticBox* StaticBox1;
+        wxButton* RealMoveButton;
         wxButton* PrintButton;
         wxStaticText* StaticText4;
         wxButton* MoveButton;

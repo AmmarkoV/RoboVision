@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxFrame" name="WorldMappingFrame">
-		<size>969,614</size>
+		<size>969,655</size>
 		<id_arg>0</id_arg>
 		<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
 			<label>Start Point</label>
@@ -56,16 +56,6 @@
 			<pos>120,8</pos>
 			<size>800,536</size>
 		</object>
-		<object class="wxButton" name="ID_BUTTON2" variable="Button1" member="yes">
-			<label>Add</label>
-			<pos>16,424</pos>
-			<handler function="OnButton1Click" entry="EVT_BUTTON" />
-		</object>
-		<object class="wxButton" name="ID_BUTTON3" variable="Button2" member="yes">
-			<label>Remove</label>
-			<pos>16,456</pos>
-			<handler function="OnButton2Click" entry="EVT_BUTTON" />
-		</object>
 		<object class="wxButton" name="ID_BUTTON4" variable="SetEndPoint" member="yes">
 			<label>S</label>
 			<pos>80,86</pos>
@@ -80,7 +70,7 @@
 		</object>
 		<object class="wxButton" name="ID_BUTTON6" variable="ClearButton" member="yes">
 			<label>Clear All</label>
-			<pos>16,488</pos>
+			<pos>16,504</pos>
 			<handler function="OnClearButtonClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxSpinCtrl" name="ID_SPINCTRL1" variable="TimeMS" member="yes">
@@ -117,7 +107,7 @@
 			<handler function="OnPrintButtonClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxButton" name="ID_BUTTON9" variable="ButtonSimulateUltrasonic" member="yes">
-			<label>Simulate U</label>
+			<label>Ultras. Sim</label>
 			<pos>16,360</pos>
 			<handler function="OnButtonSimulateUltrasonicClick" entry="EVT_BUTTON" />
 		</object>
@@ -129,10 +119,20 @@
 			<handler function="OnRotationChange" entry="EVT_SPINCTRL" />
 		</object>
 		<object class="wxButton" name="ID_BUTTON11" variable="MoveButton" member="yes">
-			<label>Move</label>
-			<pos>16,392</pos>
+			<label>Move Sim</label>
+			<pos>16,424</pos>
 			<size>-1,-1</size>
 			<handler function="OnMoveButtonClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxButton" name="ID_BUTTON2" variable="RealMoveButton" member="yes">
+			<label>Move</label>
+			<pos>16,456</pos>
+			<handler function="OnRealMoveButtonClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxButton" name="ID_BUTTON3" variable="UltrasonicButton" member="yes">
+			<label>Ultrasonic</label>
+			<pos>16,392</pos>
+			<handler function="OnUltrasonicButtonClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxMenuBar" variable="MenuBar1" member="no">
 			<object class="wxMenu" variable="Menu1" member="no">

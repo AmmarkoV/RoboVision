@@ -1,18 +1,1 @@
 # depslib dependency file v1.0
-1268876640 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.c
-	"MotorHAL.h"
-	"MD23/MD23.h"
-	<stdio.h>
-	<stdlib.h>
-	<unistd.h>
-
-1268864900 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
-
-1268750504 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MD23/MD23.h
-	"usb_2_i2c.h"
-	<pthread.h>
-	<unistd.h>
-
-1268752229 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MD23/usb_2_i2c.h
-	<termios.h>
-

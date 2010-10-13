@@ -52,7 +52,30 @@ void FillInTurningOverheads()
 unsigned int AddSensorDataToMap(struct Map * themap,unsigned int agentnum,int ultrasonic_left_cm,int ultrasonic_right_cm)
 {
   fprintf(stderr,"AddSensorDataToMap stub %u %u \n",ultrasonic_left_cm,ultrasonic_right_cm);
-  return 0;
+    float cos_degrees=0.0,sin_degrees=0.0;
+    float new_ultrasonic_left_x= themap->actors[agentnum].abs_x_pos;  float new_ultrasonic_left_y=themap->actors[agentnum].abs_y_pos;
+    float new_ultrasonic_right_x=themap->actors[agentnum].abs_x_pos; float new_ultrasonic_right_y=themap->actors[agentnum].abs_y_pos;
+
+    fprintf(stderr,"  Real position was %u/%u ",(unsigned int) themap->actors[agentnum].abs_x_pos,(unsigned int) themap->actors[agentnum].abs_y_pos);
+
+    cos_degrees=cos(themap->actors[agentnum].real_heading*PI/180) / themap->world_unit_in_cm;
+    sin_degrees=sin(themap->actors[agentnum].real_heading*PI/180) / themap->world_unit_in_cm;
+
+    new_ultrasonic_left_x+=(ultrasonic_left_cm * cos_degrees );
+    new_ultrasonic_left_y+=(ultrasonic_left_cm * sin_degrees );
+
+    new_ultrasonic_right_x+=(ultrasonic_right_cm * cos_degrees );
+    new_ultrasonic_right_y+=(ultrasonic_right_cm * sin_degrees );
+
+    if  ( ( new_ultrasonic_left_x< 0 ) || ( new_ultrasonic_left_y< 0 ) )
+      {
+        fprintf(stderr,"Error while Sensing with agent , out of memory bounds");
+        return 0;
+      }
+
+    SetObstacle(themap,new_ultrasonic_left_x,new_ultrasonic_left_y,2);
+
+  return 1;
 }
 
 unsigned int MoveAgentCore(struct Map * themap,unsigned int agentnum,int move_left_cm,int move_right_cm)
@@ -66,14 +89,14 @@ unsigned int MoveAgentCore(struct Map * themap,unsigned int agentnum,int move_le
 
     fprintf(stderr,"  Real position was %u/%u ",(unsigned int) themap->actors[agentnum].abs_x_pos,(unsigned int) themap->actors[agentnum].abs_y_pos);
 
-    cos_degrees=cos(themap->actors[agentnum].real_heading*PI/180);
-    sin_degrees=sin(themap->actors[agentnum].real_heading*PI/180);
+    cos_degrees=cos(themap->actors[agentnum].real_heading*PI/180) / themap->world_unit_in_cm;
+    sin_degrees=sin(themap->actors[agentnum].real_heading*PI/180) / themap->world_unit_in_cm;
 
-    new_x_left_axel+= move_left_cm * cos_degrees;
-    new_y_left_axel+= move_left_cm * sin_degrees;
+    new_x_left_axel+= ( move_left_cm * cos_degrees );
+    new_y_left_axel+= ( move_left_cm * sin_degrees );
 
-    new_x_right_axel+= move_right_cm * cos_degrees;
-    new_y_right_axel+= move_right_cm * sin_degrees;
+    new_x_right_axel+= ( move_right_cm * cos_degrees );
+    new_y_right_axel+= ( move_right_cm * sin_degrees );
 
     fprintf(stderr,"  Moving From %u/%u ",themap->actors[agentnum].current_x_pos,themap->actors[agentnum].current_y_pos);
 

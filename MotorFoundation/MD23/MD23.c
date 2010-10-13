@@ -205,6 +205,7 @@ inline void flip_power_direction(unsigned char *ret_power,signed char *ret_direc
 // Kanonika sto power 000 - 128 Simainei kinisi pros ta pisw
 // Kanonika sto power 128 - 255 Simainei kinisi pros ta empros
 // Tha prepei loipon na metatrepsoume tin kinisi pros ta empros se 129 - 255 kai tin kinisi pros ta pisw se 0 - 127
+  fprintf(stderr,"flip_power_direction %u %d -> ",*ret_power,*ret_direction);
   unsigned char power=*ret_power;
   signed char direction=*ret_direction;
 
@@ -216,6 +217,7 @@ inline void flip_power_direction(unsigned char *ret_power,signed char *ret_direc
     {
       power=128;  // An dn exoume valei direction tote den tha metakinithoume
     } else
+
   {
 
   if ( direction > 0 )
@@ -244,6 +246,7 @@ inline void flip_power_direction(unsigned char *ret_power,signed char *ret_direc
 
   *ret_power=power;
   *ret_direction=direction;
+  fprintf(stderr," %u %d \n ",*ret_power,*ret_direction);
   return;
 }
 
@@ -282,6 +285,7 @@ int MD23_MoveMotorsDegrees(struct md23_device * dev,int motornum,unsigned char p
 {
   if ( MD23_ok(dev) == 0 ) return 0;
 
+    fprintf(stderr,"MD23_MoveMotorsDegrees motor : %u power : %u  direction : %d \n ",motornum,power,degrees);
 
   signed char power_direction=0;
   if ( degrees == 0 ) power_direction=0; else

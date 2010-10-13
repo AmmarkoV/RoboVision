@@ -255,7 +255,6 @@ int GetAgentTargetLocation(struct Map * themap,unsigned int agentnum,unsigned in
   if (!MapIsOk(themap))  { return 0; }
   if (themap->actors==0) { return 0; }
 
-
   *x=themap->actors[agentnum].target_x_pos;
   *y=themap->actors[agentnum].target_y_pos;
   return 1;
