@@ -30,6 +30,25 @@ unsigned int RobotInit(char * md23_device_id,char * arduino_device_id)
 return 0;
 }
 
+
+unsigned int RobotClose()
+{
+    fprintf(stderr,"Close MD23\n");
+    MD23_Close(guard_base);
+    DisconnectRoboVisionSensors();
+    return 0;
+}
+
+
+void RobotWait(unsigned int msecs)
+{
+  usleep(msecs);
+  return;
+}
+
+/*    -------------------------------------------------
+    ~~~~~~~~~~~~~~~~~~MOVEMENT CONTROL ~~~~~~~~~~~~~~~~~~
+      -------------------------------------------------*/
 unsigned int RobotStartRotating(unsigned char power,signed int direction)
 {
  signed int direct=0;
@@ -69,22 +88,31 @@ unsigned int RobotManoeuvresPending()
   return  man_flag;
 }
 
-unsigned int RobotPrintPosition()
-{
-fprintf(stderr,"Robot Encoders :  %f deg , %f deg\n",MD23_GetEncoder(guard_base,0),MD23_GetEncoder(guard_base,1));
-return 0;
-}
-
 void RobotStopMovement()
 {
  MD23_MoveMotors(guard_base,2,0,0);
 }
 
+int RobotCanRotate(unsigned char power,signed int degrees)
+{
+  fprintf(stderr,"Stub called CanRobotRotate not implemented yet\n");
+  return 1;
+}
+
+int RobotCanMove(unsigned char power,signed int distance)
+{
+  fprintf(stderr,"Stub called CanRobotMove not implemented yet\n");
+  return 1;
+}
+
+
+/*    -------------------------------------------------
+    ~~~~~~~~~~~~~~~~~~SENSOR CONTROL ~~~~~~~~~~~~~~~~~~
+      -------------------------------------------------*/
 int RobotGetUltrasonic(unsigned int dev)
 {
   return GetUltrasonicValue(dev);
 }
-
 
 int RobotGetAccelerometerX(unsigned int dev)
 {
@@ -96,16 +124,34 @@ int RobotGetAccelerometerY(unsigned int dev)
   return GetAccelerometerY(dev);
 }
 
-void RobotWait(unsigned int msecs)
+int RobotSetHeadlightsState(unsigned int scale_1_on,unsigned int scale_2_on,unsigned int scale_3_on)
 {
-  usleep(msecs);
-  return;
+  if ((scale_1_on)||(scale_2_on)||(scale_3_on))
+    {
+       fprintf(stderr,"Stub called SetHeadLights not implemented yet\n");
+    }
+  return 0;
 }
 
-unsigned int RobotClose()
+int RobotIRTransmit(char * code,unsigned int code_size)
 {
-    fprintf(stderr,"Close MD23\n");
-    MD23_Close(guard_base);
-    DisconnectRoboVisionSensors();
-    return 0;
+  if ((code==0)||(code_size==0)) { return 0; }
+  fprintf(stderr,"Stub called SetHeadLights not implemented yet\n");
+
+  return 0;
+}
+
+
+/*    -------------------------------------------------
+     ~~~~~~~~~~~~~~~~~~STATUS CONTROL ~~~~~~~~~~~~~~~~~~
+      -------------------------------------------------*/
+unsigned int RobotPrintPosition()
+{
+fprintf(stderr,"Robot Encoders :  %f deg , %f deg\n",MD23_GetEncoder(guard_base,0),MD23_GetEncoder(guard_base,1));
+return 0;
+}
+
+int UpdateMapFromMotorHAL()
+{
+  return 1;
 }

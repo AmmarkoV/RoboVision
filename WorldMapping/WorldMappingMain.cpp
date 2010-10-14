@@ -78,6 +78,12 @@ const long WorldMappingFrame::ID_SPINCTRL2 = wxNewId();
 const long WorldMappingFrame::ID_BUTTON11 = wxNewId();
 const long WorldMappingFrame::ID_BUTTON2 = wxNewId();
 const long WorldMappingFrame::ID_BUTTON3 = wxNewId();
+const long WorldMappingFrame::ID_STATICBOX2 = wxNewId();
+const long WorldMappingFrame::ID_BUTTON10 = wxNewId();
+const long WorldMappingFrame::ID_BUTTON12 = wxNewId();
+const long WorldMappingFrame::ID_BUTTON13 = wxNewId();
+const long WorldMappingFrame::ID_BUTTON14 = wxNewId();
+const long WorldMappingFrame::ID_BUTTON15 = wxNewId();
 const long WorldMappingFrame::idMenuQuit = wxNewId();
 const long WorldMappingFrame::idMenuAbout = wxNewId();
 const long WorldMappingFrame::ID_STATUSBAR1 = wxNewId();
@@ -117,7 +123,7 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
   wxMenu* Menu2;
 
   Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
-  SetClientSize(wxSize(969,655));
+  SetClientSize(wxSize(1080,655));
   StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Start Point"), wxPoint(16,24), wxDefaultSize, 0, _T("ID_STATICTEXT1"));
   ptx1 = new wxTextCtrl(this, ID_TEXTCTRL1, _("0"), wxPoint(16,40), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
   pty1 = new wxTextCtrl(this, ID_TEXTCTRL2, _("0"), wxPoint(48,40), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
@@ -146,6 +152,12 @@ WorldMappingFrame::WorldMappingFrame(wxWindow* parent,wxWindowID id)
   MoveButton = new wxButton(this, ID_BUTTON11, _("Move Sim"), wxPoint(16,424), wxSize(-1,-1), 0, wxDefaultValidator, _T("ID_BUTTON11"));
   RealMoveButton = new wxButton(this, ID_BUTTON2, _("Move"), wxPoint(16,456), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
   UltrasonicButton = new wxButton(this, ID_BUTTON3, _("Ultrasonic"), wxPoint(16,392), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
+  StaticBox2 = new wxStaticBox(this, ID_STATICBOX2, _("Robot Control"), wxPoint(928,8), wxSize(144,232), 0, _T("ID_STATICBOX2"));
+  RobotLeftButton = new wxButton(this, ID_BUTTON10, _("<"), wxPoint(944,64), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON10"));
+  RobotForwardButton = new wxButton(this, ID_BUTTON12, _("/\\"), wxPoint(968,32), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON12"));
+  RobotRightButton = new wxButton(this, ID_BUTTON13, _(">"), wxPoint(992,64), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON13"));
+  RobotBackButton = new wxButton(this, ID_BUTTON14, _("\\/"), wxPoint(968,96), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON14"));
+  RobotStopButton = new wxButton(this, ID_BUTTON15, _("o"), wxPoint(968,66), wxSize(24,24), 0, wxDefaultValidator, _T("ID_BUTTON15"));
   MenuBar1 = new wxMenuBar();
   Menu1 = new wxMenu();
   MenuItem1 = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);

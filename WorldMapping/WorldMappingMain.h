@@ -83,6 +83,12 @@ class WorldMappingFrame: public wxFrame
         static const long ID_BUTTON11;
         static const long ID_BUTTON2;
         static const long ID_BUTTON3;
+        static const long ID_STATICBOX2;
+        static const long ID_BUTTON10;
+        static const long ID_BUTTON12;
+        static const long ID_BUTTON13;
+        static const long ID_BUTTON14;
+        static const long ID_BUTTON15;
         static const long idMenuQuit;
         static const long idMenuAbout;
         static const long ID_STATUSBAR1;
@@ -99,6 +105,8 @@ class WorldMappingFrame: public wxFrame
         wxTextCtrl* pty2;
         wxTextCtrl* scale_cm;
         wxStaticText* StaticText1;
+        wxButton* RobotStopButton;
+        wxStaticBox* StaticBox2;
         wxTextCtrl* obsy;
         wxButton* ClearButton;
         wxStaticText* StaticText3;
@@ -106,6 +114,8 @@ class WorldMappingFrame: public wxFrame
         wxStaticBox* StaticBox1;
         wxButton* RealMoveButton;
         wxButton* PrintButton;
+        wxButton* RobotBackButton;
+        wxButton* RobotRightButton;
         wxStaticText* StaticText4;
         wxButton* MoveButton;
         wxStaticText* StaticText5;
@@ -113,9 +123,11 @@ class WorldMappingFrame: public wxFrame
         wxButton* SetStartPoint;
         wxSpinCtrl* Rotation;
         wxStaticText* StaticText6;
+        wxButton* RobotLeftButton;
         wxTextCtrl* pty1;
         wxButton* ButtonCalculate;
         wxButton* SetEndPoint;
+        wxButton* RobotForwardButton;
         //*)
         wxMouseState mouse;
  //       RobotHAL *guarddog;

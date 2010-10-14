@@ -22,10 +22,10 @@
 	<File name="PathPlanningCore.h" open="1" top="0" tabpos="4">
 		<Cursor position="258" topLine="0" />
 	</File>
-	<File name="PathPlanningHelper.c" open="1" top="1" tabpos="5">
+	<File name="PathPlanningHelper.c" open="1" top="0" tabpos="5">
 		<Cursor position="1394" topLine="15" />
 	</File>
-	<File name="PathPlanningHelper.h" open="1" top="0" tabpos="16">
+	<File name="PathPlanningHelper.h" open="1" top="0" tabpos="11">
 		<Cursor position="144" topLine="0" />
 	</File>
 	<File name="WorldLocations.h" open="1" top="0" tabpos="6">

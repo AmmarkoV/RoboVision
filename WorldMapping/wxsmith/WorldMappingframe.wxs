@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxFrame" name="WorldMappingFrame">
-		<size>969,655</size>
+		<size>1080,655</size>
 		<id_arg>0</id_arg>
 		<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
 			<label>Start Point</label>
@@ -133,6 +133,36 @@
 			<label>Ultrasonic</label>
 			<pos>16,392</pos>
 			<handler function="OnUltrasonicButtonClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxStaticBox" name="ID_STATICBOX2" variable="StaticBox2" member="yes">
+			<label>Robot Control</label>
+			<pos>928,8</pos>
+			<size>144,232</size>
+		</object>
+		<object class="wxButton" name="ID_BUTTON10" variable="RobotLeftButton" member="yes">
+			<label>&lt;</label>
+			<pos>944,64</pos>
+			<size>24,29</size>
+		</object>
+		<object class="wxButton" name="ID_BUTTON12" variable="RobotForwardButton" member="yes">
+			<label>/\\</label>
+			<pos>968,32</pos>
+			<size>24,29</size>
+		</object>
+		<object class="wxButton" name="ID_BUTTON13" variable="RobotRightButton" member="yes">
+			<label>&gt;</label>
+			<pos>992,64</pos>
+			<size>24,29</size>
+		</object>
+		<object class="wxButton" name="ID_BUTTON14" variable="RobotBackButton" member="yes">
+			<label>\\/</label>
+			<pos>968,96</pos>
+			<size>24,29</size>
+		</object>
+		<object class="wxButton" name="ID_BUTTON15" variable="RobotStopButton" member="yes">
+			<label>o</label>
+			<pos>968,66</pos>
+			<size>24,24</size>
 		</object>
 		<object class="wxMenuBar" variable="MenuBar1" member="no">
 			<object class="wxMenu" variable="Menu1" member="no">
