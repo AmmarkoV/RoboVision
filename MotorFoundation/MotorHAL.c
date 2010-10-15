@@ -7,15 +7,24 @@
 
 struct md23_device * guard_base=0;
 
+pthread_t monitor_thread_id;
+unsigned int StopMonitorThread=0;
+
+unsigned int robot_height = 50*1000; // mm
+unsigned int robot_length = 45*1000; // mm
+unsigned int robot_width = 40*1000; // mm
 unsigned int motors_distance = 35*1000; // mm
 unsigned int wheel_diameter = 10*1000; // mm
 float pi = 3.14159;
+
+void * HAL_Monitor(void * ptr);
 
 signed int DistanceToWheelDegreesTurn(signed int dist)
 {
    signed int res=( (180*dist) / (wheel_diameter * pi) );
    return res;
 }
+
 
 unsigned int RobotInit(char * md23_device_id,char * arduino_device_id)
 {
@@ -27,6 +36,9 @@ unsigned int RobotInit(char * md23_device_id,char * arduino_device_id)
 
     printf("RoboVisionSensors ( arduino ) beeing initialized \n");
     ConnectRoboVisionSensors(arduino_device_id);
+
+    pthread_create(&monitor_thread_id, NULL,  HAL_Monitor ,0);
+
 return 0;
 }
 
@@ -36,6 +48,7 @@ unsigned int RobotClose()
     fprintf(stderr,"Close MD23\n");
     MD23_Close(guard_base);
     DisconnectRoboVisionSensors();
+    StopMonitorThread=1;
     return 0;
 }
 
@@ -79,6 +92,13 @@ unsigned int RobotStartMoving(unsigned char power,signed int direction)
 {
 fprintf(stderr,"MD23_MoveMotors %u %d \n",power,direction);
 return MD23_MoveMotors(guard_base,2,power,direction);
+}
+
+unsigned int RobotGetEncoders(signed int * left_encoder,signed int * right_encoder)
+{
+  *left_encoder =(signed int ) guard_base->motors[0].encoder;
+  *right_encoder =(signed int ) guard_base->motors[1].encoder;
+  return 1;
 }
 
 unsigned int RobotManoeuvresPending()
@@ -151,7 +171,61 @@ fprintf(stderr,"Robot Encoders :  %f deg , %f deg\n",MD23_GetEncoder(guard_base,
 return 0;
 }
 
-int UpdateMapFromMotorHAL()
+void * HAL_Monitor(void * ptr)
 {
-  return 1;
+  signed int last_left_encoder=0,last_right_encoder=0;
+  unsigned int last_left_ultrasonic=0,last_right_ultrasonic=0;
+  signed int last_x_accelerometer=0,last_y_accelerometer=0;
+
+  signed int new_left_encoder=0,new_right_encoder=0;
+  unsigned int new_left_ultrasonic=0,new_right_ultrasonic=0;
+  signed int new_x_accelerometer=0,new_y_accelerometer=0;
+
+  signed int change_left_encoder=0,change_right_encoder=0,change_left_ultrasonic=0,change_right_ultrasonic=0;
+  signed int change_x_accelerometer=0,change_y_accelerometer=0;
+
+
+  while (!StopMonitorThread)
+   {
+     usleep(100000);
+     RobotGetEncoders(&new_left_encoder,&new_right_encoder);
+     new_left_ultrasonic=RobotGetUltrasonic(0);
+     new_right_ultrasonic=RobotGetUltrasonic(1);
+     new_x_accelerometer=RobotGetAccelerometerX(0);
+     new_y_accelerometer=RobotGetAccelerometerY(0);
+
+
+     change_x_accelerometer=new_x_accelerometer-last_x_accelerometer;
+     change_y_accelerometer=new_y_accelerometer-last_y_accelerometer;
+     change_left_encoder=new_left_encoder-last_left_encoder;
+     change_right_encoder=new_right_encoder-last_right_encoder;
+     change_left_ultrasonic=new_left_ultrasonic-last_left_ultrasonic;
+     change_right_ultrasonic=new_right_ultrasonic-last_right_ultrasonic;
+
+     last_left_encoder=new_left_encoder;
+     last_right_encoder=new_left_encoder;
+     last_left_ultrasonic=new_left_ultrasonic;
+     last_right_ultrasonic=new_right_ultrasonic;
+     last_x_accelerometer=new_x_accelerometer;
+     last_y_accelerometer=new_y_accelerometer;
+
+     if ( (change_x_accelerometer!=0) || (change_y_accelerometer!=0)  )
+       {
+          fprintf(stderr,"Change in Accelerometers %d/%d",change_x_accelerometer,change_y_accelerometer);
+       }
+
+     if ( (change_left_encoder!=0) || (change_right_encoder!=0) )
+       {
+          fprintf(stderr,"Change in Encoders %d/%d",change_left_encoder,change_right_encoder);
+       }
+
+     if ( (change_left_ultrasonic!=0) || (change_right_ultrasonic!=0)  )
+       {
+         fprintf(stderr,"Change in Ultrasonics %d/%d",change_left_ultrasonic,change_right_ultrasonic);
+       }
+
+
+   }
+   fprintf(stderr,"HAL_Monitor thread stopping \n");
+  return 0;
 }

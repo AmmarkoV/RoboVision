@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="CortexSettings.cpp" open="1" top="0" tabpos="7">
+	<File name="CortexSettings.cpp" open="1" top="0" tabpos="29">
 		<Cursor position="16916" topLine="0" />
 	</File>
-	<File name="CortexSettings.h" open="1" top="0" tabpos="8">
+	<File name="CortexSettings.h" open="1" top="1" tabpos="30">
 		<Cursor position="490" topLine="0" />
 	</File>
-	<File name="FeedScreenMemory.cpp" open="1" top="0" tabpos="5">
+	<File name="FeedScreenMemory.cpp" open="1" top="0" tabpos="27">
 		<Cursor position="6909" topLine="0" />
 	</File>
-	<File name="FeedScreenMemory.h" open="1" top="0" tabpos="6">
+	<File name="FeedScreenMemory.h" open="1" top="0" tabpos="28">
 		<Cursor position="781" topLine="0" />
 	</File>
-	<File name="RoboVisionXApp.cpp" open="1" top="0" tabpos="3">
+	<File name="RoboVisionXApp.cpp" open="1" top="0" tabpos="25">
 		<Cursor position="454" topLine="0" />
 	</File>
-	<File name="RoboVisionXApp.h" open="1" top="0" tabpos="4">
+	<File name="RoboVisionXApp.h" open="1" top="0" tabpos="26">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="RoboVisionXMain.cpp" open="1" top="0" tabpos="1">
+	<File name="RoboVisionXMain.cpp" open="1" top="0" tabpos="23">
 		<Cursor position="21282" topLine="418" />
 	</File>
-	<File name="RoboVisionXMain.h" open="1" top="0" tabpos="2">
+	<File name="RoboVisionXMain.h" open="1" top="0" tabpos="24">
 		<Cursor position="6181" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
