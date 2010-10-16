@@ -17,6 +17,8 @@ unsigned int motors_distance = 35*1000; // mm
 unsigned int wheel_diameter = 10*1000; // mm
 float pi = 3.14159;
 
+signed int change_left_encoder=0,change_right_encoder=0,change_left_ultrasonic=0,change_right_ultrasonic=0,change_x_accelerometer=0,change_y_accelerometer=0;
+
 void * HAL_Monitor(void * ptr);
 
 signed int DistanceToWheelDegreesTurn(signed int dist)
@@ -171,6 +173,14 @@ fprintf(stderr,"Robot Encoders :  %f deg , %f deg\n",MD23_GetEncoder(guard_base,
 return 0;
 }
 
+inline int AbsDifferenceHigherThan(signed int difference,unsigned int low)
+{
+  if ( difference < 0 ) { difference=-1*difference; }
+  if ( difference > low ) { return 1; }
+  return 0;
+}
+
+
 void * HAL_Monitor(void * ptr)
 {
   signed int last_left_encoder=0,last_right_encoder=0;
@@ -181,12 +191,21 @@ void * HAL_Monitor(void * ptr)
   unsigned int new_left_ultrasonic=0,new_right_ultrasonic=0;
   signed int new_x_accelerometer=0,new_y_accelerometer=0;
 
-  signed int change_left_encoder=0,change_right_encoder=0,change_left_ultrasonic=0,change_right_ultrasonic=0;
-  signed int change_x_accelerometer=0,change_y_accelerometer=0;
+  struct timespec clock_count_ts;
+  unsigned int clock_count=0;
+  unsigned long nano_convert=1000000,clock_countbig=0;
 
 
   while (!StopMonitorThread)
    {
+        /* CONVERT TIME TO MILLISECONDS WILL WRAP AROUND AT SOME POINT!*/
+        clock_gettime(CLOCK_REALTIME,&clock_count_ts);
+        clock_countbig = (unsigned long) clock_count_ts.tv_nsec/nano_convert;
+        clock_count = (unsigned int) clock_countbig;
+        clock_count += clock_count_ts.tv_sec * 1000;
+        /* CONVERT TIME TO MILLISECONDS */
+
+
      usleep(100000);
      RobotGetEncoders(&new_left_encoder,&new_right_encoder);
      new_left_ultrasonic=RobotGetUltrasonic(0);
@@ -203,25 +222,25 @@ void * HAL_Monitor(void * ptr)
      change_right_ultrasonic=new_right_ultrasonic-last_right_ultrasonic;
 
      last_left_encoder=new_left_encoder;
-     last_right_encoder=new_left_encoder;
+     last_right_encoder=new_right_encoder;
      last_left_ultrasonic=new_left_ultrasonic;
      last_right_ultrasonic=new_right_ultrasonic;
      last_x_accelerometer=new_x_accelerometer;
      last_y_accelerometer=new_y_accelerometer;
 
-     if ( (change_x_accelerometer!=0) || (change_y_accelerometer!=0)  )
+     if ( (AbsDifferenceHigherThan(change_x_accelerometer,8)!=0) || (AbsDifferenceHigherThan(change_y_accelerometer,8)!=0)  )
        {
-          fprintf(stderr,"Change in Accelerometers %d/%d",change_x_accelerometer,change_y_accelerometer);
+          fprintf(stderr,"%u ms : Change in Accelerometers %d/%d\n",clock_count,change_x_accelerometer,change_y_accelerometer);
        }
 
-     if ( (change_left_encoder!=0) || (change_right_encoder!=0) )
+     if ( (AbsDifferenceHigherThan(change_left_encoder,3)!=0) || (AbsDifferenceHigherThan(change_right_encoder,3)!=0) )
        {
-          fprintf(stderr,"Change in Encoders %d/%d",change_left_encoder,change_right_encoder);
+          fprintf(stderr,"%u ms : Change in Encoders %d/%d\n",clock_count,change_left_encoder,change_right_encoder);
        }
 
-     if ( (change_left_ultrasonic!=0) || (change_right_ultrasonic!=0)  )
+     if ( (AbsDifferenceHigherThan(change_left_ultrasonic,3)!=0) || (AbsDifferenceHigherThan(change_right_ultrasonic,3)!=0)  )
        {
-         fprintf(stderr,"Change in Ultrasonics %d/%d",change_left_ultrasonic,change_right_ultrasonic);
+         fprintf(stderr,"%u ms : Change in Ultrasonics %d/%d\n",clock_count,change_left_ultrasonic,change_right_ultrasonic);
        }
 
 
