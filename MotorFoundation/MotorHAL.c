@@ -192,8 +192,15 @@ void * HAL_Monitor(void * ptr)
   signed int new_x_accelerometer=0,new_y_accelerometer=0;
 
   struct timespec clock_count_ts;
-  unsigned int clock_count=0;
+  unsigned int clock_count=0,start_clock_count=0;
   unsigned long nano_convert=1000000,clock_countbig=0;
+
+        /* CONVERT TIME TO MILLISECONDS WILL WRAP AROUND AT SOME POINT!*/
+        clock_gettime(CLOCK_REALTIME,&clock_count_ts);
+        clock_countbig = (unsigned long) clock_count_ts.tv_nsec/nano_convert;
+        start_clock_count = (unsigned int) clock_countbig;
+        start_clock_count += clock_count_ts.tv_sec * 1000;
+        /* CONVERT TIME TO MILLISECONDS */
 
 
   while (!StopMonitorThread)
@@ -203,6 +210,7 @@ void * HAL_Monitor(void * ptr)
         clock_countbig = (unsigned long) clock_count_ts.tv_nsec/nano_convert;
         clock_count = (unsigned int) clock_countbig;
         clock_count += clock_count_ts.tv_sec * 1000;
+        clock_count = clock_count - start_clock_count;
         /* CONVERT TIME TO MILLISECONDS */
 
 
