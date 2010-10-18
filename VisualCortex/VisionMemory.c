@@ -125,6 +125,7 @@ void DefaultSettings()
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=2;
     settings[DEPTHMAP_COMPARISON_THRESHOLD]=17000; //16000;
     settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT]=1;
+    settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]=1;
     settings[DEPTHMAP_CLOSEST_DEPTH]=100; // Praktika dedomena deixnoun oti synithws apotelesmata panw apo 100 einai thoryvos!
     settings[DEPTHMAP_GUESSES]=0;
     settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM]=1;

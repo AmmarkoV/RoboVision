@@ -103,16 +103,16 @@
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT9" variable="StaticText9" member="yes">
 			<label>Comparison EdgesPerCent Required</label>
-			<pos>152,176</pos>
+			<pos>152,192</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL10" variable="PatchesEdgesPerCent" member="yes">
 			<value>15</value>
-			<pos>392,168</pos>
+			<pos>392,184</pos>
 			<size>40,27</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT10" variable="StaticText10" member="yes">
 			<label>%</label>
-			<pos>448,176</pos>
+			<pos>440,186</pos>
 		</object>
 		<object class="wxCheckBox" name="ID_CHECKBOX1" variable="FillHoles" member="yes">
 			<label>Fill Holes</label>
@@ -217,7 +217,6 @@
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL19" variable="PatchMinG" member="yes">
 			<value>18</value>
-			<maxlength>0</maxlength>
 			<pos>568,224</pos>
 			<size>32,27</size>
 		</object>
@@ -227,7 +226,6 @@
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL20" variable="PatchMinB" member="yes">
 			<value>18</value>
-			<maxlength>0</maxlength>
 			<pos>632,224</pos>
 			<size>32,27</size>
 		</object>
@@ -235,6 +233,10 @@
 			<label>Depth Map Improve Using Histogram</label>
 			<checked>1</checked>
 			<pos>32,248</pos>
+		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX5" variable="DoNotProcessFar" member="yes">
+			<label>Do not process further than this</label>
+			<pos>32,160</pos>
 		</object>
 	</object>
 </wxsmith>

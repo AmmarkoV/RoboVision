@@ -58,6 +58,7 @@ const long CortexSettings::ID_TEXTCTRL19 = wxNewId();
 const long CortexSettings::ID_STATICTEXT22 = wxNewId();
 const long CortexSettings::ID_TEXTCTRL20 = wxNewId();
 const long CortexSettings::ID_CHECKBOX4 = wxNewId();
+const long CortexSettings::ID_CHECKBOX5 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CortexSettings,wxDialog)
@@ -93,9 +94,9 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	ComparisonMinScore = new wxTextCtrl(this, ID_TEXTCTRL8, _("30000"), wxPoint(392,136), wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
 	StaticText8 = new wxStaticText(this, ID_STATICTEXT8, _("Closest Depth Plane"), wxPoint(32,144), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
 	ClosestDepth = new wxTextCtrl(this, ID_TEXTCTRL9, _("90"), wxPoint(168,136), wxSize(56,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
-	StaticText9 = new wxStaticText(this, ID_STATICTEXT9, _("Comparison EdgesPerCent Required"), wxPoint(152,176), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
-	PatchesEdgesPerCent = new wxTextCtrl(this, ID_TEXTCTRL10, _("15"), wxPoint(392,168), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL10"));
-	StaticText10 = new wxStaticText(this, ID_STATICTEXT10, _("%"), wxPoint(448,176), wxDefaultSize, 0, _T("ID_STATICTEXT10"));
+	StaticText9 = new wxStaticText(this, ID_STATICTEXT9, _("Comparison EdgesPerCent Required"), wxPoint(152,192), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
+	PatchesEdgesPerCent = new wxTextCtrl(this, ID_TEXTCTRL10, _("15"), wxPoint(392,184), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL10"));
+	StaticText10 = new wxStaticText(this, ID_STATICTEXT10, _("%"), wxPoint(440,186), wxDefaultSize, 0, _T("ID_STATICTEXT10"));
 	FillHoles = new wxCheckBox(this, ID_CHECKBOX1, _("Fill Holes"), wxPoint(208,224), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
 	FillHoles->SetValue(false);
 	ImproveEdges = new wxCheckBox(this, ID_CHECKBOX2, _("Improve Using Edges"), wxPoint(304,224), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX2"));
@@ -127,6 +128,8 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	PatchMinB = new wxTextCtrl(this, ID_TEXTCTRL20, _("18"), wxPoint(632,224), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL20"));
 	ImproveUsingHistogram = new wxCheckBox(this, ID_CHECKBOX4, _("Depth Map Improve Using Histogram"), wxPoint(32,248), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
 	ImproveUsingHistogram->SetValue(true);
+	DoNotProcessFar = new wxCheckBox(this, ID_CHECKBOX5, _("Do not process further than this"), wxPoint(32,160), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX5"));
+	DoNotProcessFar->SetValue(false);
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnSaveButtonClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnCancelButtonClick);
@@ -170,6 +173,9 @@ void CortexSettings::PullSettingsFromCortex()
 
   val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_CLOSEST_DEPTH);
   ClosestDepth->SetValue(val);
+
+  if (VisCortx_GetSetting(DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH)==1) { DoNotProcessFar->SetValue(1); } else
+                                                                                             { DoNotProcessFar->SetValue(0); }
 
  if (VisCortx_GetSetting(DEPTHMAP_GUESSES)==1) { DepthMapGuesses->SetValue(1); } else
                                                { DepthMapGuesses->SetValue(0); }
@@ -252,6 +258,9 @@ void CortexSettings::PushSettingsToCortex()
   if(ComparisonThreshold->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD,(unsigned int) value); }
 
   if(ClosestDepth->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_CLOSEST_DEPTH,(unsigned int) value); }
+
+  if ( DoNotProcessFar->IsChecked() ) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH,1); } else
+                                      { VisCortx_SetSetting(DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH,0); }
 
   if ( DepthMapGuesses->IsChecked() ) { VisCortx_SetSetting(DEPTHMAP_GUESSES,1); } else
                                       { VisCortx_SetSetting(DEPTHMAP_GUESSES,0); }

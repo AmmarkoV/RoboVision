@@ -44,6 +44,7 @@ class CortexSettings: public wxDialog
 		wxStaticText* StaticText10;
 		wxStaticText* StaticText16;
 		wxTextCtrl* EdgeStrictness;
+		wxCheckBox* DoNotProcessFar;
 		wxStaticBox* StaticBox2;
 		wxTextCtrl* PatchesEdgesPerCent;
 		wxTextCtrl* MinR;
@@ -127,6 +128,7 @@ class CortexSettings: public wxDialog
 		static const long ID_STATICTEXT22;
 		static const long ID_TEXTCTRL20;
 		static const long ID_CHECKBOX4;
+		static const long ID_CHECKBOX5;
 		//*)
 
 	private:

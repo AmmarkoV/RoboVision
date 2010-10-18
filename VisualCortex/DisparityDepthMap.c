@@ -300,13 +300,20 @@ void DepthMapFull  ( unsigned char *left_view,
 				         best_result[6]=counted_edges; //APOTHIKEVOUME TA EDGES!
 
 			             // ARXIZEI H SYGKRISI!
+                          unsigned int x_start_right=0;
+                          unsigned int x_end_right=x;
+
+                          if ( (x > settings[DEPTHMAP_CLOSEST_DEPTH] ) && (settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]) )
+                            {
+                              /* If the x point is very right , we should only process the patches , near at least
+                              settings[DEPTHMAP_CLOSEST_DEPTH] pixels to the patch on the right*/
+                              x_start_right = x-settings[DEPTHMAP_CLOSEST_DEPTH];
+                            }
 
 						 // ESWTERIKO LOOP I DEKSIA EIKONA
-						 xblock=0;  //THELOUME NA KSEKINISOUME APO TIN ARXI TIS DEKSIAS EIKONAS
+						 xblock=x_start_right;  //THELOUME NA KSEKINISOUME APO TIN ARXI TIS DEKSIAS EIKONAS
                          yblock=y-settings[DEPTHMAP_VERT_OFFSET_UP]; //THELOUME NA KSEKINISOUME STIN IDIA SCAN LINE ME ENA PITHANO OFFSET LOGW KAKOU CALIBRATION
-						 unsigned int x_end_right=x;
-                        // THE FOLLOWING LINE IS ERRONEOUS! :(
-                        // if ( x_end_right>metrics[HORIZONTAL_BUFFER] ) x_end_right-=metrics[HORIZONTAL_BUFFER];
+
 
 						 struct ImageRegion source_rgn,target_rgn;
                          source_rgn.x1=x; source_rgn.y1=y; // To source ( tou aristerou matiou einai x,y )
