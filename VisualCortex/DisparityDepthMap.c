@@ -33,10 +33,18 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
                                    unsigned int patch_x,
                                    unsigned int patch_y,
                                    unsigned int image_x,
-                                   unsigned int image_y
+                                   unsigned int image_y,
+                                   unsigned int best_result_yet
                                   )
 {
     unsigned int score_threshold = settings[DEPTHMAP_COMPARISON_THRESHOLD];
+
+    if (settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT])
+       { /*In case we dont care for a full count of the total Comparison the threshold is the best result yet :)
+           (The reason we would like a full count is for improving this filter)*/
+           if ( best_result_yet > 0 ) score_threshold = best_result_yet;
+       }
+
 
   if (  settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM] ==1 )
   {
@@ -108,8 +116,8 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 		if ( sobel_diffr > 15 ) { sobel_mismatch=1; }
 	    if ( (sobel_diffr<40) && (*sobel_px1>30) && (*sobel_px2>30) ) { sobeled=1; }
         sobel_px1+=3; sobel_px2+=3;
-	    sobeled=1;
-	    sobel_mismatch=0;
+	    //sobeled=1;
+	    //sobel_mismatch=0;
 
 	    r1=image_px1++;
 		g1=image_px1++;
@@ -126,7 +134,7 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 
         pre_prox+= sobel_diffr;
 
-		if ( sobel_mismatch == 1 ) { pre_prox = (pre_prox+sobel_diffr) << 3; } // *8
+		if ( sobel_mismatch == 1 ) { pre_prox = (pre_prox+sobel_diffr) << 2; } // *8
 
 		if ( sobeled == 1)
 		               {
@@ -312,7 +320,7 @@ void DepthMapFull  ( unsigned char *left_view,
                                 target_rgn.x1=xblock; target_rgn.y1=yblock;
                                 target_rgn.x2=xblock+metrics[HORIZONTAL_BUFFER]; target_rgn.y2=yblock+metrics[VERTICAL_BUFFER];
 
-								prox=ComparePatches(source_rgn,target_rgn,left_view,right_view,video_register[EDGES_LEFT].pixels,video_register[EDGES_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],image_x,image_y);
+								prox=ComparePatches(source_rgn,target_rgn,left_view,right_view,video_register[EDGES_LEFT].pixels,video_register[EDGES_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],image_x,image_y,best_result[1]);
 
 								// TEST/DOKIMASTIKO DEPTH GIA TEST CULLING
 								// H IDEA EINAI OTI ANTIKEIMENA POU EINAI PAAAAAAARA POLY KONTA EINIA MALLON ERRORS

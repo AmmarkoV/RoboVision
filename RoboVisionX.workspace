@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="VisualCortex/VisualCortex.cbp" active="1" />
+		<Project filename="RoboKernel/RoboKernel.cbp" />
+		<Project filename="RoboVisionX/RoboVisionX.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

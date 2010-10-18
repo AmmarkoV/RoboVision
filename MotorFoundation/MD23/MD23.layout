@@ -2,10 +2,10 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="MD23.c" open="1" top="0" tabpos="1">
-		<Cursor position="8466" topLine="214" />
+		<Cursor position="587" topLine="0" />
 	</File>
 	<File name="MD23.h" open="1" top="0" tabpos="2">
-		<Cursor position="1353" topLine="24" />
+		<Cursor position="398" topLine="6" />
 	</File>
 	<File name="MD23_commands.c" open="1" top="0" tabpos="3">
 		<Cursor position="4407" topLine="0" />
