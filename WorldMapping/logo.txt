@@ -1,5 +1,7 @@
-#Starting path with a total of 2 nodes
+#Starting path with a total of 3 nodes
 reset
 direction 0.000000
-turnright 17.969140
-forward 38.897301
+turnright 45.000000
+forward 4.242641
+turnleft 30.579227
+forward 36.138622
