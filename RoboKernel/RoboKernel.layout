@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="RoboKernel.h" open="1" top="0" tabpos="10">
+	<File name="RoboKernel.h" open="1" top="0" tabpos="2">
 		<Cursor position="495" topLine="0" />
 	</File>
-	<File name="command_hal.c" open="1" top="0" tabpos="11">
+	<File name="command_hal.c" open="1" top="0" tabpos="3">
 		<Cursor position="4189" topLine="13" />
 	</File>
-	<File name="command_hal.h" open="1" top="0" tabpos="12">
+	<File name="command_hal.h" open="1" top="0" tabpos="4">
 		<Cursor position="156" topLine="0" />
 	</File>
-	<File name="command_implementation.c" open="1" top="0" tabpos="19">
+	<File name="command_implementation.c" open="1" top="0" tabpos="11">
 		<Cursor position="2146" topLine="70" />
 	</File>
-	<File name="command_implementation.h" open="1" top="0" tabpos="20">
+	<File name="command_implementation.h" open="1" top="0" tabpos="12">
 		<Cursor position="371" topLine="0" />
 	</File>
-	<File name="configuration.c" open="1" top="0" tabpos="17">
+	<File name="configuration.c" open="1" top="0" tabpos="9">
 		<Cursor position="2084" topLine="84" />
 	</File>
-	<File name="configuration.h" open="1" top="0" tabpos="18">
+	<File name="configuration.h" open="1" top="0" tabpos="10">
 		<Cursor position="234" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="9">
+	<File name="main.c" open="1" top="1" tabpos="1">
 		<Cursor position="2737" topLine="0" />
 	</File>
-	<File name="motor_system.c" open="1" top="1" tabpos="21">
+	<File name="motor_system.c" open="1" top="0" tabpos="13">
 		<Cursor position="196" topLine="0" />
 	</File>
 	<File name="motor_system.h" open="0" top="0" tabpos="0">
 		<Cursor position="108" topLine="0" />
 	</File>
-	<File name="visual_system.c" open="1" top="0" tabpos="13">
+	<File name="visual_system.c" open="1" top="0" tabpos="5">
 		<Cursor position="1806" topLine="0" />
 	</File>
-	<File name="visual_system.h" open="1" top="0" tabpos="14">
+	<File name="visual_system.h" open="1" top="0" tabpos="6">
 		<Cursor position="174" topLine="0" />
 	</File>
-	<File name="webinterface.c" open="1" top="0" tabpos="15">
+	<File name="webinterface.c" open="1" top="0" tabpos="7">
 		<Cursor position="3028" topLine="54" />
 	</File>
-	<File name="webinterface.h" open="1" top="0" tabpos="16">
+	<File name="webinterface.h" open="1" top="0" tabpos="8">
 		<Cursor position="433" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

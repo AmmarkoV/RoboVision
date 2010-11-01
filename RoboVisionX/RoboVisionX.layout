@@ -2,10 +2,10 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="CortexSettings.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="16916" topLine="0" />
+		<Cursor position="16292" topLine="260" />
 	</File>
-	<File name="CortexSettings.h" open="1" top="1" tabpos="8">
-		<Cursor position="968" topLine="0" />
+	<File name="CortexSettings.h" open="1" top="0" tabpos="8">
+		<Cursor position="549" topLine="0" />
 	</File>
 	<File name="FeedScreenMemory.cpp" open="1" top="0" tabpos="5">
 		<Cursor position="6909" topLine="0" />
@@ -19,8 +19,8 @@
 	<File name="RoboVisionXApp.h" open="1" top="0" tabpos="4">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="RoboVisionXMain.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="21282" topLine="418" />
+	<File name="RoboVisionXMain.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="4213" topLine="102" />
 	</File>
 	<File name="RoboVisionXMain.h" open="1" top="0" tabpos="2">
 		<Cursor position="6181" topLine="0" />

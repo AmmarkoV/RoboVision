@@ -38,10 +38,9 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
                                   )
 {
     unsigned int score_threshold = settings[DEPTHMAP_COMPARISON_THRESHOLD];
-
     if (settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT])
        { /*In case we dont care for a full count of the total Comparison the threshold is the best result yet :)
-           (The reason we would like a full count is for improving this filter)*/
+           (The only reason we would like a full count is for improving this filter via statistics)*/
            if ( best_result_yet > 0 ) score_threshold = best_result_yet;
        }
 
@@ -68,7 +67,7 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
     // NEW HISTOGRAM TESTING :) --SPEED ++ACCURACY
   }
 
-    unsigned int prox=0,pre_prox=0;
+    unsigned long prox=0,pre_prox=0;
 	unsigned int sobel_diffr=0;
 	//unsigned char ro,go,bo,rl,gl,bl;
 	register unsigned int y=0,control;
@@ -152,6 +151,8 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 	  ++y;
 	}
 
+ unsigned int prox_casting=(unsigned int) prox;
+ if ( prox != prox_casting ) { fprintf(stderr,"Proximity integers overflowing!\n"); }
  return prox;
 }
 
@@ -262,7 +263,7 @@ void DepthMapFull  ( unsigned char *left_view,
 */
     metrics[HISTOGRAM_DENIES]=0;
     metrics[COMPAREPATCH_ALGORITHM_DENIES]=0;
-	unsigned short best_result[7]={0};
+	unsigned int best_result[7]={0};
 
 
     unsigned int xlim=image_x-metrics[HORIZONTAL_BUFFER];
@@ -278,7 +279,7 @@ void DepthMapFull  ( unsigned char *left_view,
 
 	unsigned int xblock=0 , yblock=0 ;
     unsigned int  prox=0;
-    unsigned int  max_prox_score = settings[DEPTHMAP_COMPARISON_THRESHOLD];
+    unsigned int  max_prox_score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED];
 
     while (y<ylim)
 	   {
@@ -360,7 +361,7 @@ void DepthMapFull  ( unsigned char *left_view,
 
 									FillDepthMemWithData(left_depth,depth_data_array,tempdd,image_x,image_y);
 
-                            /*
+
 							  if (settings[DEPTHMAP_GUESSES]==1)
 							    { // CODE TO GUESS NEXT BLOCK!
 									 source_rgn.x1=best_result[2]+metrics[HORIZONTAL_BUFFER]; source_rgn.x2=source_rgn.x1+metrics[HORIZONTAL_BUFFER];
@@ -369,17 +370,17 @@ void DepthMapFull  ( unsigned char *left_view,
 									 {    } // OUT OF MEMORY SPACE NOT GUESSING
 								     else
 								     {
-									  prox=ComparePatches(source_rgn,target_rgn,left_view,right_view,video_register[EDGES_LEFT].pixels,video_register[EDGES_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],image_x,image_y);
+									  prox=ComparePatches(source_rgn,target_rgn,left_view,right_view,video_register[EDGES_LEFT].pixels,video_register[EDGES_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],image_x,image_y,best_result[1]);
 									  // HEURISTIC GIA NA PETAME KAKES PROVLEPSEIS
 
-									  if ( (tempdd.edge_count>edges_required_to_process) && (prox<settings[PATCH_COMPARISON_SCORE_MIN]) && (tempdd.score>=prox) )
+									  if ( (tempdd.edge_count>edges_required_to_process) /*&& (prox<settings[PATCH_COMPARISON_SCORE_MIN])*/ && (tempdd.score>=prox) )
                                       // HEURISTIC GIA NA PETAME KAKES PROVLEPSEIS
 									   {
 									     PassGuessNextDepthMem(prox,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],left_depth,depth_data_array,tempdd,image_x,image_y);
 									   }
 									 }
 								  }	 // CODE TO GUESS NEXT BLOCK!
-                                   */
+
 								}
 
                                // ORIZONTIA METATWPISI TOU BUFFER DEKSIAS EIKONAS

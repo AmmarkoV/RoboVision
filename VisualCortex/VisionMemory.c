@@ -123,9 +123,13 @@ void DefaultSettings()
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_OFFSET_UP]=2;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=2;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD]=17000; //16000;
-    settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT]=1;
-    settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]=1;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD]=30000;//18000; //16000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=settings[DEPTHMAP_COMPARISON_THRESHOLD]; // ;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]=settings[DEPTHMAP_COMPARISON_THRESHOLD]; // ;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
+
+    settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT]=1; /* <- This actually should always be 1 :P */
+    settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]=1; /* <- This actually should always be 1 :P */
     settings[DEPTHMAP_CLOSEST_DEPTH]=100; // Praktika dedomena deixnoun oti synithws apotelesmata panw apo 100 einai thoryvos!
     settings[DEPTHMAP_GUESSES]=0;
     settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM]=1;

@@ -46,6 +46,10 @@ unsigned int VisCortx_Start(unsigned int res_x,unsigned int res_y)
    fprintf(stderr,"Fix Feature tracking!\n");
    fprintf(stderr,"\n");
    fprintf(stderr,"---------------------------------------\n");
+
+   //unsigned int MAX_INT=-1;
+   //fprintf(stderr,"MAX_Integer is %u",MAX_INT);
+
        //e(mach) calculation
     float e1=1.0;
     while (1+e1 >1)
@@ -215,7 +219,14 @@ unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int
 void  VisCortx_FullDepthMap()
 {
   unsigned int edgepercent=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED],patch_x=metrics[HORIZONTAL_BUFFER],patch_y=metrics[VERTICAL_BUFFER];
+  unsigned int threshold=settings[DEPTHMAP_COMPARISON_THRESHOLD];
+  unsigned int threshold_added=settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED];
 
+  if ( threshold != 0 )
+   {
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=  (unsigned int) ( (threshold * metrics[VERTICAL_BUFFER_LARGE] * metrics[HORIZONTAL_BUFFER_LARGE] ) / (metrics[HORIZONTAL_BUFFER]*metrics[VERTICAL_BUFFER]) ); //16000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]=  (unsigned int) ( (threshold * metrics[VERTICAL_BUFFER_EXTRALARGE] * metrics[HORIZONTAL_BUFFER_EXTRALARGE] ) / (metrics[HORIZONTAL_BUFFER]*metrics[VERTICAL_BUFFER]) ); //16000;
+   }
   /*
      WE COMPARE PATCHES ON 3 DIFFERENT LEVELS , EXTRA LARGE PATCHES , LARGE PATCHES , NORMAL PATCHES
    */
@@ -224,6 +235,7 @@ void  VisCortx_FullDepthMap()
     CALCULATION OF EXTRA LARGE PATCHES FOLLOWS
    */
 
+  settings[DEPTHMAP_COMPARISON_THRESHOLD]=settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH];
   settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH];
   metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_EXTRALARGE];
   metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_EXTRALARGE];
@@ -244,6 +256,7 @@ void  VisCortx_FullDepthMap()
 
 if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
 {
+  settings[DEPTHMAP_COMPARISON_THRESHOLD]=settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH];
   settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH];
   metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_LARGE];
   metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_LARGE];
@@ -265,6 +278,8 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
   /*
     CALCULATION OF NORMAL PATCHES FOLLOWS
    */
+   settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=threshold_added;
+   settings[DEPTHMAP_COMPARISON_THRESHOLD]=threshold;
    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=edgepercent;
    metrics[VERTICAL_BUFFER]=patch_y;
    metrics[HORIZONTAL_BUFFER]=patch_x;
