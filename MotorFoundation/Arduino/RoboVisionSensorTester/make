@@ -1,3 +1,3 @@
 #!/bin/bash
-cc main.c ../libRoboVisionSensorLib.a -L. -lm -s -O3 -o bin/Debug/RoboVisionSensorTester
+cc main.c ../libRoboVisionSensorLib.a ../../../InputParser/libInputParser_C.a -L. -pthread -lm -s -O3 -o bin/Debug/RoboVisionSensorTester
 exit 0
