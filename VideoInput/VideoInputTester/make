@@ -1,0 +1,3 @@
+#!/bin/bash
+g++ main.c ../libVideoInput.a -L. -pthread -lrt -o bin/Release/VideoInputTester
+exit 0

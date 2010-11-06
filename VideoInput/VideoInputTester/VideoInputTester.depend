@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1276734473 source:/home/ammar/Documents/Programming/RoboVision/VideoInput/VideoInputTester/main.c
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<time.h>
+	"../VideoInput.h"
+
+1276730627 /home/ammar/Documents/Programming/RoboVision/VideoInput/VideoInput.h
+

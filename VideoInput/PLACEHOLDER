@@ -1,7 +1,0 @@
-This Directory should contain libVideoInput.a and VideoInput.h
-
-You can download and make them from
-
-http://github.com/AmmarkoV/VideoInput/
-
-I guess I will physically add them after a while or make a script to auto download them but for now beeing a different project means different repository even though RoboVision Uses them 

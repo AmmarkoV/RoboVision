@@ -1,0 +1,11 @@
+
+http://github.com/AmmarkoV/VideoInput/
+
+This is a V4L2 C/C++ library! 
+It also has a Tester app in the VideoInputTester dir
+You can easily compile the project using Code::Blocks and openning the .cbp 
+
+The binaries libVideoInput.a and VideoInputTester/bin/Debug/VideoInputTester are compiled for x64 architecture ( you can check it using "file libVideoInput.a" from your terminal )
+Will add more to the readme file and the main lib to fix compatibility with V4L ( not only V4L2 devices )
+
+Ammar Qammaz - 2010
