@@ -1,0 +1,14 @@
+#!/bin/bash
+echo "This script is supposed to download all dependencies , for building RoboVision ( guarddog ) "
+echo "This script supposes a Debian/Ubuntu distro with apt-get as a package manager!"
+echo "If you dont like that press Ctrl+C in the next 30seconds :P !"
+
+sleep +30s
+echo "Starting downloads "
+
+
+sudo apt-get install build-essential libv4l-dev lib32v4l-dev festival wx-common g++ libwxgtk2.8-0 libwxgtk2.8-dev  
+
+
+
+exit 0
