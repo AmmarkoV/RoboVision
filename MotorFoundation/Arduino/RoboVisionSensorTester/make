@@ -1,0 +1,3 @@
+#!/bin/bash
+cc main.c ../libRoboVisionSensorLib.a -L. -lm -s -O3 -o bin/Debug/RoboVisionSensorTester
+exit 0
