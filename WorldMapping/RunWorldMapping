@@ -1,0 +1,3 @@
+#!/bin/bash
+bin/Release/WorldMapping
+exit 0
