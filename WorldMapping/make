@@ -4,5 +4,5 @@ cd MasterpathPlanning
 ./make
 cd ..
 
-g++ WorldMappingApp.cpp WorldMappingMain.cpp MasterpathPlanning/libMasterpathPlanning.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a ../InputParser/libInputParser_C.a  ../MotorFoundation/MD23/libMD23.a `wx-config --libs` `wx-config --cxxflags` -L. -o bin/Release/WorldMapping
+g++ WorldMappingApp.cpp WorldMappingMain.cpp MasterpathPlanning/libMasterpathPlanning.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a ../InputParser/libInputParser_C.a  ../MotorFoundation/MD23/libMD23.a  ../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a  `wx-config --libs` `wx-config --cxxflags` -L. -o bin/Release/WorldMapping
 exit 0

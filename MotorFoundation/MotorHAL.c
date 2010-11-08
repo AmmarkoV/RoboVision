@@ -1,14 +1,21 @@
 #include "MotorHAL.h"
 #include "MD23/MD23.h"
 #include "Arduino/RoboVisionSensorLib.h"
+#include "../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
+
+
 struct md23_device * guard_base=0;
 
 pthread_t monitor_thread_id;
+
+unsigned int AutoMapping=0;
 unsigned int StopMonitorThread=0;
+
+struct Map * worldmap=0;
 
 unsigned int robot_height = 50*1000; // mm
 unsigned int robot_length = 45*1000; // mm
@@ -39,6 +46,13 @@ unsigned int RobotInit(char * md23_device_id,char * arduino_device_id)
     printf("RoboVisionSensors ( arduino ) beeing initialized \n");
     ConnectRoboVisionSensors(arduino_device_id);
 
+    if (AutoMapping)
+     {
+       worldmap=CreateMap(3000,3000,3);
+       SetMapUnit_In_cm(worldmap,15);
+       SetAgentLocation(worldmap,0,1500,1500);
+     }
+
     pthread_create(&monitor_thread_id, NULL,  HAL_Monitor ,0);
 
 return 0;
@@ -51,6 +65,13 @@ unsigned int RobotClose()
     MD23_Close(guard_base);
     DisconnectRoboVisionSensors();
     StopMonitorThread=1;
+
+if (AutoMapping)
+     {
+      DeleteMap(worldmap);
+      worldmap=0;
+     }
+
     return 0;
 }
 
@@ -169,8 +190,9 @@ int RobotIRTransmit(char * code,unsigned int code_size)
       -------------------------------------------------*/
 unsigned int RobotPrintPosition()
 {
-fprintf(stderr,"Robot Encoders :  %f deg , %f deg\n",MD23_GetEncoder(guard_base,0),MD23_GetEncoder(guard_base,1));
-return 0;
+ fprintf(stderr,"Robot Encoders :  %f deg , %f deg\n",MD23_GetEncoder(guard_base,0),MD23_GetEncoder(guard_base,1));
+ if (AutoMapping) { ExtractMaptoHTML(worldmap,"map.html"); }
+ return 0;
 }
 
 inline int AbsDifferenceHigherThan(signed int difference,unsigned int low)
@@ -248,11 +270,19 @@ void * HAL_Monitor(void * ptr)
      if ( (AbsDifferenceHigherThan(change_left_encoder,3)!=0) || (AbsDifferenceHigherThan(change_right_encoder,3)!=0) )
        {
           fprintf(stderr,"%u ms : Change in Encoders %d/%d\n",clock_count,change_left_encoder,change_right_encoder);
+          if (AutoMapping)
+          {
+              //MoveAgentForward(struct Map * themap,unsigned int agentnum,int leftwheel_cm,int rightwheel_cm) ;
+          }
        }
 
      if ( (AbsDifferenceHigherThan(change_left_ultrasonic,3)!=0) || (AbsDifferenceHigherThan(change_right_ultrasonic,3)!=0)  )
        {
          fprintf(stderr,"%u ms : Change in Ultrasonics %d/%d\n",clock_count,change_left_ultrasonic,change_right_ultrasonic);
+         if (AutoMapping)
+         {
+          AddObstacleSensedbyAgent(worldmap,0,1,new_left_ultrasonic,new_right_ultrasonic);
+         }
        }
 
 

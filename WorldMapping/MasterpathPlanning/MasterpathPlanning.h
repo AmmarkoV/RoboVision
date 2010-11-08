@@ -123,7 +123,7 @@ int GetAgentLocation(struct Map * themap,unsigned int agentnum,unsigned int * x,
 int SetAgentTargetLocation(struct Map * themap,unsigned int agentnum,unsigned int x,unsigned int y) ;
 int SetAgentTargetLocationName(struct Map * themap,unsigned int agentnum,char * name) ;
 int GetAgentTargetLocation(struct Map * themap,unsigned int agentnum,unsigned int * x,unsigned int * y);
-int MoveAgentForward(struct Map * themap,unsigned int agentnum,int leftwheel_cm,int rightwheel_cm) ;
+int MoveAgentForward(struct Map * themap,unsigned int agentnum,float leftwheel_cm,float rightwheel_cm) ;
 int AddObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,unsigned int safety_radious,int ultrasonic_left_cm,int ultrasonic_right_cm) ;
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int FindPath(struct Map * themap,unsigned int agentnum,unsigned int timeout_ms) ;
@@ -136,6 +136,7 @@ int DeleteLocation_Number(struct Map * themap,unsigned int position_id) ;
 int DeleteLocation(struct Map * themap,char * name) ;
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int ExtractRouteToLogo(struct Map * themap,struct Path * thepath,char * filename) ;
+int ExtractMaptoHTML(struct Map * themap,char * filename);
 int GetRoutePoints(struct Map * themap,struct Path * thepath) ;
 int GetRouteWaypoint(struct Map * themap,unsigned int agentnum,unsigned int count,unsigned int *x,unsigned int *y) ;
 int GetStraightRouteWaypoint(struct Map * themap,unsigned int agentnum,unsigned int count,unsigned int *x,unsigned int *y);

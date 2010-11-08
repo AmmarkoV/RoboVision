@@ -80,9 +80,9 @@ unsigned int AddSensorDataToMap(struct Map * themap,unsigned int agentnum,unsign
   return 1;
 }
 
-unsigned int MoveAgentCore(struct Map * themap,unsigned int agentnum,int move_left_cm,int move_right_cm)
+unsigned int MoveAgentCore(struct Map * themap,unsigned int agentnum,float move_left_cm,float move_right_cm)
 {
-    fprintf(stderr,"  MoveAgentCore stub %u %u \nTODO: add real differential change tracking\n",move_left_cm,move_right_cm);
+    fprintf(stderr,"  MoveAgentCore stub %f %f \nTODO: add real differential change tracking\n",move_left_cm,move_right_cm);
 
 
     float cos_degrees=0.0,sin_degrees=0.0;

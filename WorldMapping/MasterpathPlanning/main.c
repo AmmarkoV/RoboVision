@@ -3,7 +3,7 @@
 #include "MasterpathPlanning.h"
 #include "PathPlanningCore.h"
 #include "PathPlanningHelper.h"
-
+#include "LogoHighLevelPath.h"
 /*      --------------------------------------------
                MAP STATE INITIALIZATION START
         -------------------------------------------- */
@@ -264,7 +264,7 @@ int GetAgentTargetLocation(struct Map * themap,unsigned int agentnum,unsigned in
   return 1;
 }
 
-int MoveAgentForward(struct Map * themap,unsigned int agentnum,int leftwheel_cm,int rightwheel_cm)
+int MoveAgentForward(struct Map * themap,unsigned int agentnum,float leftwheel_cm,float rightwheel_cm)
 {
   return MoveAgentCore(themap,agentnum,leftwheel_cm,rightwheel_cm);
 }
@@ -377,6 +377,12 @@ int DeleteLocation(struct Map * themap,char * name)
         -------------------------------------------- */
 int ExtractRouteToLogo(struct Map * themap,struct Path * thepath,char * filename)
 {
+  return 0;
+}
+
+int ExtractMaptoHTML(struct Map * themap,char * filename)
+{
+  PrintoutHTML(filename,themap->world_size_x,themap->world_size_y,themap->world);
   return 0;
 }
 
