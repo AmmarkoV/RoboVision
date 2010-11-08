@@ -22,11 +22,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "MovementRegistration.h"
 #include "VisCortexFilters.h"
 #include "PatchTracking.h"
+#include "FaceDetection.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-char * VISCORTEX_VER = "0.471";
+char * VISCORTEX_VER = "0.475";
 
 
 char *  VisCortx_Version()
@@ -65,12 +66,13 @@ unsigned int VisCortx_Start(unsigned int res_x,unsigned int res_y)
 
     fprintf(stderr,"Machine numerical error , single : %e , double : %e \n",e1,e2);
 
-
+   InitFaceRecognition(res_x,res_y);
    return InitVisionMemory(res_x,res_y);
 }
 
 unsigned int VisCortx_Stop()
 {
+   CloseFaceRecognition();
    return  CloseVisionMemory();
 }
 
@@ -483,3 +485,17 @@ void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,
     KillDifferentPixels(video_register[GENERAL_1].pixels ,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],R,G,B,howclose);
 }
 
+/*
+ ----------------- FACE DETECTION ----------------------
+*/
+unsigned int VisCortx_RecognizeFaces(unsigned int cam)
+{
+   if ( cam == 0 ) { return RecognizeFaces(video_register[LEFT_EYE].pixels); } else
+   if ( cam == 1 ) { return RecognizeFaces(video_register[RIGHT_EYE].pixels); }
+   return 0;
+}
+
+void VisCortx_GetFaceNumber(char num,unsigned int *pos_x,unsigned int *pos_y,unsigned int *total_size)
+{
+    GetFaceNumber(num,pos_x,pos_y,total_size);
+}

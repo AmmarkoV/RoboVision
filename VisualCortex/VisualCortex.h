@@ -166,6 +166,10 @@ void  VisCortx_RenewTrackPoint(unsigned int tpoint);
 void  VisCortx_RenewAllTrackPoints();
 
 void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,unsigned char howclose);
+
+unsigned int VisCortx_RecognizeFaces(unsigned int cam);
+void VisCortx_GetFaceNumber(char num,unsigned int *pos_x,unsigned int *pos_y,unsigned int *total_size);
+
 #ifdef __cplusplus
 }
 #endif

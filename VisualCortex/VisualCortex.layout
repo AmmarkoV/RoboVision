@@ -2,10 +2,16 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="16716" topLine="0" />
+		<Cursor position="16716" topLine="96" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="442" topLine="0" />
+	</File>
+	<File name="FaceDetection.c" open="1" top="1" tabpos="36">
+		<Cursor position="611" topLine="0" />
+	</File>
+	<File name="FaceDetection.h" open="1" top="0" tabpos="37">
+		<Cursor position="345" topLine="0" />
 	</File>
 	<File name="MovementRegistration.c" open="1" top="0" tabpos="9">
 		<Cursor position="720" topLine="48" />
@@ -41,9 +47,9 @@
 		<Cursor position="606" topLine="0" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="1537" topLine="32" />
+		<Cursor position="16421" topLine="464" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="131" topLine="36" />
+		<Cursor position="4707" topLine="139" />
 	</File>
 </CodeBlocks_layout_file>

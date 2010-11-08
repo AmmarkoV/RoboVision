@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="LogoHighLevelPath.c" open="1" top="0" tabpos="9">
+	<File name="LogoHighLevelPath.c" open="1" top="0" tabpos="55">
 		<Cursor position="899" topLine="56" />
 	</File>
-	<File name="LogoHighLevelPath.h" open="1" top="0" tabpos="10">
-		<Cursor position="319" topLine="0" />
+	<File name="LogoHighLevelPath.h" open="1" top="0" tabpos="56">
+		<Cursor position="253" topLine="0" />
 	</File>
-	<File name="MasterpathPlanning.h" open="1" top="0" tabpos="2">
-		<Cursor position="3728" topLine="105" />
+	<File name="MasterpathPlanning.h" open="1" top="0" tabpos="48">
+		<Cursor position="4980" topLine="105" />
 	</File>
-	<File name="NormalizePath.c" open="1" top="0" tabpos="7">
+	<File name="NormalizePath.c" open="1" top="0" tabpos="53">
 		<Cursor position="5699" topLine="181" />
 	</File>
-	<File name="NormalizePath.h" open="1" top="0" tabpos="8">
+	<File name="NormalizePath.h" open="1" top="0" tabpos="54">
 		<Cursor position="275" topLine="0" />
 	</File>
-	<File name="PathPlanningCore.c" open="1" top="0" tabpos="3">
-		<Cursor position="3996" topLine="150" />
+	<File name="PathPlanningCore.c" open="1" top="0" tabpos="49">
+		<Cursor position="4374" topLine="216" />
 	</File>
-	<File name="PathPlanningCore.h" open="1" top="0" tabpos="4">
-		<Cursor position="258" topLine="0" />
+	<File name="PathPlanningCore.h" open="1" top="0" tabpos="50">
+		<Cursor position="703" topLine="0" />
 	</File>
-	<File name="PathPlanningHelper.c" open="1" top="0" tabpos="5">
-		<Cursor position="1394" topLine="15" />
+	<File name="PathPlanningHelper.c" open="1" top="0" tabpos="51">
+		<Cursor position="1394" topLine="145" />
 	</File>
-	<File name="PathPlanningHelper.h" open="1" top="0" tabpos="11">
+	<File name="PathPlanningHelper.h" open="1" top="0" tabpos="57">
 		<Cursor position="144" topLine="0" />
 	</File>
-	<File name="WorldLocations.h" open="1" top="0" tabpos="6">
+	<File name="WorldLocations.c" open="1" top="0" tabpos="58">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="5811" topLine="146" />
+	<File name="WorldLocations.h" open="1" top="0" tabpos="52">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="main.c" open="1" top="0" tabpos="47">
+		<Cursor position="160" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

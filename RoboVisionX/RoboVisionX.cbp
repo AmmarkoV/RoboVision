@@ -23,6 +23,7 @@
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
+					<Add option="-march=nocona" />
 					<Add option="-O2" />
 				</Compiler>
 				<Linker>
@@ -45,6 +46,7 @@
 			<Add library="../MotorFoundation/libMotorHAL.a" />
 			<Add library="../MotorFoundation/MD23/libMD23.a" />
 			<Add library="../MotorFoundation/Arduino/libRoboVisionSensorLib.a" />
+			<Add library="../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a" />
 		</Linker>
 		<Unit filename="CortexSettings.cpp" />
 		<Unit filename="CortexSettings.h" />

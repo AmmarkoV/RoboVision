@@ -41,6 +41,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="DisparityDepthMap.h" />
+		<Unit filename="FaceDetection.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FaceDetection.h" />
 		<Unit filename="MovementRegistration.c">
 			<Option compilerVar="CC" />
 		</Unit>
