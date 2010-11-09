@@ -1,7 +1,6 @@
 #include "MotorHAL.h"
 #include "MD23/MD23.h"
 #include "Arduino/RoboVisionSensorLib.h"
-#include "../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -289,4 +288,16 @@ void * HAL_Monitor(void * ptr)
    }
    fprintf(stderr,"HAL_Monitor thread stopping \n");
   return 0;
+}
+
+
+
+/*    -------------------------------------------------
+     ~~~~~~~~~~~~~~~~~~ FOR EXTERNAL MAPPING FUNCTIONS ~~~~~~~~~~~~~~~~~~
+      -------------------------------------------------*/
+
+
+struct Map * RobotGetMapPointer()
+{
+  return worldmap;
 }

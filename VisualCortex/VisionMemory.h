@@ -72,6 +72,7 @@ extern unsigned int metrics[METRICS_COUNT];
 extern struct VideoRegister video_register[REGISTERS_COUNT];
 extern struct LargeVideoRegister l_video_register[LARGE_REGISTERS_COUNT];
 extern struct DepthData * depth_data_array;
+extern float camera_distance;
 
 // INIT / DEINIT
 int VideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth);

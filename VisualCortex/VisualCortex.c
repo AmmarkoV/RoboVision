@@ -38,6 +38,16 @@ char *  VisCortx_Version()
 /*
  ----------------- INITIALIZATION ----------------------
 */
+
+unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras)
+{
+  /* Cameras should be parallel.. */
+  camera_distance = distance_between_cameras;
+  return 1;
+}
+
+
+
 unsigned int VisCortx_Start(unsigned int res_x,unsigned int res_y)
 {
 
@@ -498,4 +508,30 @@ unsigned int VisCortx_RecognizeFaces(unsigned int cam)
 void VisCortx_GetFaceNumber(char num,unsigned int *pos_x,unsigned int *pos_y,unsigned int *total_size)
 {
     GetFaceNumber(num,pos_x,pos_y,total_size);
+}
+
+/*
+ ----------------- LIDAR DEPTH DATA EMULATION ----------------------
+*/
+
+unsigned short VisCortx_GetDepth(char num,float horizontal_angle,float vertical_angle)
+{
+ /* horizontal_angle ( left is less , right is more )
+    vertical angle ( down is less , up is more ) */
+
+  return 0;
+}
+
+unsigned short VisCortx_SetDepthScale(unsigned short depth_units,float centimeters)
+{
+  if ( depth_units<255 )
+     {
+       depth_units_in_cm[depth_units]=centimeters;
+     }
+  return 0;
+}
+
+float VisCortx_DepthUnitsToCM(unsigned short depth_units)
+{
+  return 0.0;
 }

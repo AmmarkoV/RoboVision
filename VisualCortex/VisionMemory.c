@@ -30,6 +30,8 @@ struct VideoRegister video_register[REGISTERS_COUNT]={{0},{0},{0},{0},{0},{0}};
 struct LargeVideoRegister l_video_register[LARGE_REGISTERS_COUNT]={{0},{0},{0},{0},{0},{0}};
 struct DepthData * depth_data_array=0;
 
+float camera_distance=0;
+float depth_units_in_cm[256]={0};
 
 int VideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth)
 {

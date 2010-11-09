@@ -1,6 +1,9 @@
 #ifndef MOTORHAL_H_INCLUDED
 #define MOTORHAL_H_INCLUDED
 
+
+#include "../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -24,6 +27,8 @@ int RobotIRTransmit(char * code,unsigned int code_size);
 
 
 unsigned int RobotPrintPosition();
+
+struct Map * RobotGetMapPointer();
 
 #ifdef __cplusplus
 }

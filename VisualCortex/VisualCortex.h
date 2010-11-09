@@ -134,6 +134,7 @@ unsigned int VisCortx_GetTime();
 
 unsigned int VisCortx_Start(unsigned int res_x,unsigned int res_y);
 unsigned int VisCortx_Stop();
+unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras);
 unsigned int VisCortx_SelfCheck();
 void VisCortx_SetSetting(unsigned int set_num,unsigned int set_val);
 void VisCortx_SetDefaultSettings();
@@ -169,6 +170,11 @@ void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,
 
 unsigned int VisCortx_RecognizeFaces(unsigned int cam);
 void VisCortx_GetFaceNumber(char num,unsigned int *pos_x,unsigned int *pos_y,unsigned int *total_size);
+
+
+unsigned short VisCortx_GetDepth(char num,float horizontal_angle,float vertical_angle);
+unsigned short VisCortx_SetDepthScale(unsigned short depth_units,float centimeters);
+float VisCortx_DepthUnitsToCM(unsigned short depth_units);
 
 #ifdef __cplusplus
 }
