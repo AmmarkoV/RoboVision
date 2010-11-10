@@ -19,6 +19,7 @@ enum command_id_consts
   CMD_SAVE_REGISTER,
   CMD_SWAP_FEEDS,
   CMD_WEB_INTERFACE,
+  CMD_REFRESH_MAP_AT_WEB_INTERFACE,
   CMD_DRAW_MOVEMENT,
   CMD_DRAW_FEATURES,
   CMD_FIND_FEATURES,
@@ -150,6 +151,14 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  VisCortX_SaveVideoRegisterToFile(LEFT_EYE,"COLOR0");
      break;
 
+
+     case CMD_REFRESH_MAP_AT_WEB_INTERFACE :
+                 sprintf(outptstr,"From %s : Refreshing HTML map! \n",from);
+                 RobotPrintPosition();
+     break;
+
+
+
      default :
        return 0;
      break;
@@ -192,6 +201,7 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"PLAYBACK LIVE",13)==1) { chosen_command=CMD_PLAYBACK_LIVE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SENSORS",7)==1) { chosen_command=CMD_SENSORS; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP TO FILE",17)==1) { chosen_command=CMD_DEPTHMAP_TO_FILE; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"REFRESH MAP",11)==1) { chosen_command=CMD_REFRESH_MAP_AT_WEB_INTERFACE; } else
 
 
         /*

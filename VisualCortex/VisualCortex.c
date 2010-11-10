@@ -39,10 +39,11 @@ char *  VisCortx_Version()
  ----------------- INITIALIZATION ----------------------
 */
 
-unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras)
+unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras,float field_of_view)
 {
   /* Cameras should be parallel.. */
   camera_distance = distance_between_cameras;
+  camera_field_of_view = field_of_view;
   return 1;
 }
 
@@ -517,9 +518,35 @@ void VisCortx_GetFaceNumber(char num,unsigned int *pos_x,unsigned int *pos_y,uns
 unsigned short VisCortx_GetDepth(char num,float horizontal_angle,float vertical_angle)
 {
  /* horizontal_angle ( left is less , right is more )
-    vertical angle ( down is less , up is more ) */
+    vertical angle ( down is less , up is more )
 
-  return 0;
+     When X is 0 horizontal -> angle -field_of_view
+     When X is RES_X/2 -> horizontal angle 0
+     When X is RES_X -> horizontal angle +field_of_view
+  */
+  float degree_step = 0;
+  if (camera_field_of_view!=0) { degree_step = metrics[RESOLUTION_X] / camera_field_of_view; } else
+                               { fprintf(stderr,"Camera field of view NOT set .. , this will probably keep popping up , until you call VisCortx_SetCamerasGeometry\n"); return 0; }
+
+  if ( degree_step==0 ) { fprintf(stderr,"Camera resolution probably not set , cannot continue to get depth \n"); return 0; }
+
+  unsigned int uint_pixel_x=metrics[RESOLUTION_X] / 2 , uint_pixel_y=metrics[RESOLUTION_Y] / 2 , ptr = 0;
+  float abs_horizontal_angle = horizontal_angle;
+  if ( abs_horizontal_angle < 0 ) { abs_horizontal_angle = abs_horizontal_angle  * (-1); }
+
+  float pixel_x = abs_horizontal_angle / degree_step  , pixel_y = 0.0;
+  if ( horizontal_angle < 0 ) { pixel_x  = metrics[RESOLUTION_X] / 2 - abs_horizontal_angle; }
+
+  if ( ( pixel_x >= 0.0 ) && (pixel_x < metrics[RESOLUTION_X] ) )
+   {
+     uint_pixel_x = (unsigned int) pixel_x;
+   }
+
+  unsigned int Camera_Selected = DEPTH_LEFT;
+  if ( num == 1 ) { Camera_Selected = DEPTH_RIGHT; }
+
+  ptr = uint_pixel_y * metrics[RESOLUTION_X] + uint_pixel_x;
+  return l_video_register[Camera_Selected].pixels[ptr];
 }
 
 unsigned short VisCortx_SetDepthScale(unsigned short depth_units,float centimeters)
@@ -533,5 +560,9 @@ unsigned short VisCortx_SetDepthScale(unsigned short depth_units,float centimete
 
 float VisCortx_DepthUnitsToCM(unsigned short depth_units)
 {
+  if (depth_units<255)
+   {
+       return depth_units_in_cm[depth_units];
+   }
   return 0.0;
 }

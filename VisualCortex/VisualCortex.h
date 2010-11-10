@@ -134,7 +134,7 @@ unsigned int VisCortx_GetTime();
 
 unsigned int VisCortx_Start(unsigned int res_x,unsigned int res_y);
 unsigned int VisCortx_Stop();
-unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras);
+unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras,float field_of_view);
 unsigned int VisCortx_SelfCheck();
 void VisCortx_SetSetting(unsigned int set_num,unsigned int set_val);
 void VisCortx_SetDefaultSettings();
