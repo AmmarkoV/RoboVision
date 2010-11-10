@@ -515,6 +515,23 @@ void VisCortx_GetFaceNumber(char num,unsigned int *pos_x,unsigned int *pos_y,uns
  ----------------- LIDAR DEPTH DATA EMULATION ----------------------
 */
 
+float VisCortx_MinCameraHorizontalAngle()
+{
+  return -camera_field_of_view/2;
+}
+
+float VisCortx_MaxCameraHorizontalAngle()
+{
+  return camera_field_of_view/2;
+}
+
+float VisCortx_CameraAngleStep()
+{
+  if ( camera_field_of_view == 0 ) { return 0; }
+  return  metrics[RESOLUTION_X] / camera_field_of_view;
+}
+
+
 unsigned short VisCortx_GetDepth(char num,float horizontal_angle,float vertical_angle)
 {
  /* horizontal_angle ( left is less , right is more )

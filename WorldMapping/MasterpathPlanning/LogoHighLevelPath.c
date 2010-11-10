@@ -67,6 +67,8 @@ unsigned int ConvertPathToLogo(struct TraceNode * str8nodes,unsigned int *str8no
 
 int PrintoutHTML(char * filename,unsigned int world_x,unsigned int world_y,struct NodeData * world)
 {
+
+   fprintf(stderr,"Printing out HTML map of world\n");
    FILE * pFile;
    pFile = fopen ("printout.html","w");
 

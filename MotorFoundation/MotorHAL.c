@@ -11,7 +11,7 @@ struct md23_device * guard_base=0;
 
 pthread_t monitor_thread_id;
 
-unsigned int AutoMapping=0;
+unsigned int AutoMapping=1;
 unsigned int StopMonitorThread=0;
 
 struct Map * worldmap=0;
@@ -190,7 +190,10 @@ int RobotIRTransmit(char * code,unsigned int code_size)
 unsigned int RobotPrintPosition()
 {
  fprintf(stderr,"Robot Encoders :  %f deg , %f deg\n",MD23_GetEncoder(guard_base,0),MD23_GetEncoder(guard_base,1));
- if (AutoMapping) { ExtractMaptoHTML(worldmap,"map.html"); }
+ if (AutoMapping) { ExtractMaptoHTML(worldmap,"map.html"); } else
+                  {
+                    fprintf(stderr,"AutoMapping is switched off , no map.html output possible.. \n");
+                  }
  return 0;
 }
 

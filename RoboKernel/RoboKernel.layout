@@ -5,13 +5,13 @@
 		<Cursor position="495" topLine="0" />
 	</File>
 	<File name="command_hal.c" open="1" top="0" tabpos="3">
-		<Cursor position="4189" topLine="13" />
+		<Cursor position="8658" topLine="124" />
 	</File>
 	<File name="command_hal.h" open="1" top="0" tabpos="4">
 		<Cursor position="156" topLine="0" />
 	</File>
 	<File name="command_implementation.c" open="1" top="0" tabpos="11">
-		<Cursor position="2146" topLine="70" />
+		<Cursor position="2146" topLine="0" />
 	</File>
 	<File name="command_implementation.h" open="1" top="0" tabpos="12">
 		<Cursor position="371" topLine="0" />
@@ -22,8 +22,8 @@
 	<File name="configuration.h" open="1" top="0" tabpos="10">
 		<Cursor position="234" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="2737" topLine="0" />
+	<File name="main.c" open="1" top="1" tabpos="1">
+		<Cursor position="2758" topLine="72" />
 	</File>
 	<File name="motor_system.c" open="1" top="0" tabpos="13">
 		<Cursor position="196" topLine="0" />
@@ -32,7 +32,7 @@
 		<Cursor position="108" topLine="0" />
 	</File>
 	<File name="visual_system.c" open="1" top="0" tabpos="5">
-		<Cursor position="1806" topLine="0" />
+		<Cursor position="1175" topLine="25" />
 	</File>
 	<File name="visual_system.h" open="1" top="0" tabpos="6">
 		<Cursor position="174" topLine="0" />
