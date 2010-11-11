@@ -380,9 +380,9 @@ int ExtractRouteToLogo(struct Map * themap,struct Path * thepath,char * filename
   return 0;
 }
 
-int ExtractMaptoHTML(struct Map * themap,char * filename)
+int ExtractMaptoHTML(struct Map * themap,char * filename,unsigned int map_size)
 {
-  PrintoutHTML(filename,themap->world_size_x,themap->world_size_y,themap->world);
+  PrintoutHTML(filename,themap->actors[0].current_x_pos,themap->actors[0].current_y_pos,themap->world_size_x,themap->world_size_y,map_size,themap->world);
   return 0;
 }
 

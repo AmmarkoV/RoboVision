@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="LogoHighLevelPath.c" open="1" top="1" tabpos="9">
-		<Cursor position="1901" topLine="56" />
+	<File name="LogoHighLevelPath.c" open="1" top="0" tabpos="9">
+		<Cursor position="2423" topLine="62" />
 	</File>
 	<File name="LogoHighLevelPath.h" open="1" top="0" tabpos="10">
-		<Cursor position="253" topLine="0" />
+		<Cursor position="405" topLine="0" />
 	</File>
 	<File name="MasterpathPlanning.h" open="1" top="0" tabpos="2">
-		<Cursor position="4980" topLine="105" />
+		<Cursor position="5058" topLine="111" />
 	</File>
 	<File name="NormalizePath.c" open="1" top="0" tabpos="7">
 		<Cursor position="5699" topLine="181" />
@@ -35,6 +35,6 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="160" topLine="363" />
+		<Cursor position="13479" topLine="364" />
 	</File>
 </CodeBlocks_layout_file>

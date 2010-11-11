@@ -189,11 +189,21 @@ int RobotIRTransmit(char * code,unsigned int code_size)
       -------------------------------------------------*/
 unsigned int RobotPrintPosition()
 {
- fprintf(stderr,"Robot Encoders :  %f deg , %f deg\n",MD23_GetEncoder(guard_base,0),MD23_GetEncoder(guard_base,1));
- if (AutoMapping) { ExtractMaptoHTML(worldmap,"map.html"); } else
+ if (AutoMapping) {
+                     if (worldmap!=0)
+                     {
+                       ExtractMaptoHTML(worldmap,"map.html",100);
+                     } else
+                     {
+                        fprintf(stderr,"Map not initialized :( , rescuing segfault \n");
+                     }
+                  } else
                   {
                     fprintf(stderr,"AutoMapping is switched off , no map.html output possible.. \n");
                   }
+ if ( guard_base == 0 ) { return 0; }
+ fprintf(stderr,"Robot Encoders :  %f deg , %f deg\n",MD23_GetEncoder(guard_base,0),MD23_GetEncoder(guard_base,1));
+
  return 0;
 }
 

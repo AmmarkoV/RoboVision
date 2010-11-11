@@ -65,12 +65,21 @@ unsigned int ConvertPathToLogo(struct TraceNode * str8nodes,unsigned int *str8no
 }
 
 
-int PrintoutHTML(char * filename,unsigned int world_x,unsigned int world_y,struct NodeData * world)
+int PrintoutHTML(char * filename,unsigned int actor_x,unsigned int actor_y,unsigned int world_x,unsigned int world_y,unsigned int visible_area,struct NodeData * world)
 {
 
-   fprintf(stderr,"Printing out HTML map of world\n");
+   fprintf(stderr,"Printing out HTML map of world , code is sloppy , check border cases\n");
    FILE * pFile;
-   pFile = fopen ("printout.html","w");
+   pFile = fopen (filename,"w");
+
+   unsigned int startx=0,starty=0,endx=world_x,endy=world_y;
+   if (actor_x-visible_area>=0) { startx=actor_x-visible_area; }
+   if (actor_y-visible_area>=0) { starty=actor_y-visible_area; }
+
+   if ( startx+visible_area<world_x) { endx = startx+visible_area; }
+   if ( starty+visible_area<world_y) { endy = starty+visible_area; }
+
+   fprintf(stderr,"HTML Viewable Map size %u,%u - %u,%u \n",startx,starty,endx,endy);
 
    if ( pFile != 0 )
    {
@@ -78,10 +87,11 @@ int PrintoutHTML(char * filename,unsigned int world_x,unsigned int world_y,struc
      fprintf (pFile, "<table>\n");
 
       int x,y,ptr=0;
-       for ( y=0; y<world_x; y++ )
+       for ( y=starty; y<endy; y++ )
        {
-         fprintf (pFile, "<tr>\n   ");
-        for ( x=0; x<world_y; x++ )
+        ptr = world_x * y + x ;
+        fprintf (pFile, "<tr>\n   ");
+        for ( x=startx; x<endx; x++ )
          {
 
            if ( world[ptr].unpassable!=0 )

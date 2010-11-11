@@ -136,7 +136,7 @@ int DeleteLocation_Number(struct Map * themap,unsigned int position_id) ;
 int DeleteLocation(struct Map * themap,char * name) ;
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 int ExtractRouteToLogo(struct Map * themap,struct Path * thepath,char * filename) ;
-int ExtractMaptoHTML(struct Map * themap,char * filename);
+int ExtractMaptoHTML(struct Map * themap,char * filename,unsigned int map_size);
 int GetRoutePoints(struct Map * themap,struct Path * thepath) ;
 int GetRouteWaypoint(struct Map * themap,unsigned int agentnum,unsigned int count,unsigned int *x,unsigned int *y) ;
 int GetStraightRouteWaypoint(struct Map * themap,unsigned int agentnum,unsigned int count,unsigned int *x,unsigned int *y);
