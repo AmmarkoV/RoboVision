@@ -2,6 +2,7 @@
 #include "RoboKernel.h"
 #include "command_hal.h"
 #include "visual_system.h"
+#include "mapping_system.h"
 #include "motor_system.h"
 #include "webinterface.h"
 #include <time.h>

@@ -39,11 +39,21 @@ char *  VisCortx_Version()
  ----------------- INITIALIZATION ----------------------
 */
 
-unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras,float field_of_view)
+unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras,float diagonal_field_of_view,float horizontal_field_of_view,float vertical_field_of_view)
 {
   /* Cameras should be parallel.. */
   camera_distance = distance_between_cameras;
-  camera_field_of_view = field_of_view;
+  camera_diagonal_field_of_view = diagonal_field_of_view;
+  camera_horizontal_field_of_view = horizontal_field_of_view;
+  camera_vertical_field_of_view = vertical_field_of_view;
+  if ( (camera_diagonal_field_of_view!=0) && (camera_horizontal_field_of_view==0) && (camera_vertical_field_of_view==0) )
+    {
+      fprintf(stderr,"We need to calculate horizontal and vertical field of view from diagonal , this ( as someone could expect ) is not very precise \n");
+      unsigned int diagonal_resolution = sqrt (metrics[RESOLUTION_X]*metrics[RESOLUTION_X] + metrics[RESOLUTION_Y]*metrics[RESOLUTION_Y]);
+      camera_horizontal_field_of_view = ( metrics[RESOLUTION_X] / diagonal_resolution ) * diagonal_field_of_view;
+      camera_vertical_field_of_view = ( metrics[RESOLUTION_Y] / diagonal_resolution ) * diagonal_field_of_view;
+    }
+
   return 1;
 }
 
@@ -517,18 +527,18 @@ void VisCortx_GetFaceNumber(char num,unsigned int *pos_x,unsigned int *pos_y,uns
 
 float VisCortx_MinCameraHorizontalAngle()
 {
-  return -camera_field_of_view/2;
+  return -camera_horizontal_field_of_view/2;
 }
 
 float VisCortx_MaxCameraHorizontalAngle()
 {
-  return camera_field_of_view/2;
+  return camera_horizontal_field_of_view/2;
 }
 
-float VisCortx_CameraAngleStep()
+float VisCortx_CameraHorizontalAngleStep()
 {
-  if ( camera_field_of_view == 0 ) { return 0; }
-  return  metrics[RESOLUTION_X] / camera_field_of_view;
+  if ( camera_horizontal_field_of_view == 0 ) { return 0; }
+  return  metrics[RESOLUTION_X] / camera_horizontal_field_of_view;
 }
 
 
@@ -541,28 +551,35 @@ unsigned short VisCortx_GetDepth(char num,float horizontal_angle,float vertical_
      When X is RES_X/2 -> horizontal angle 0
      When X is RES_X -> horizontal angle +field_of_view
   */
-  float degree_step = 0;
-  if (camera_field_of_view!=0) { degree_step = metrics[RESOLUTION_X] / camera_field_of_view; } else
-                               { fprintf(stderr,"Camera field of view NOT set .. , this will probably keep popping up , until you call VisCortx_SetCamerasGeometry\n"); return 0; }
+  float degree_step_x = 0 , degree_step_y = 0;
+  if (camera_horizontal_field_of_view !=0) { degree_step_x = metrics[RESOLUTION_X] / camera_horizontal_field_of_view; } else
+                                           { fprintf(stderr,"Camera horizontal field of view NOT set .. , this will probably keep popping up , until you call VisCortx_SetCamerasGeometry\n"); return 0; }
+  if ( degree_step_x == 0 ) { fprintf(stderr,"Camera resolution probably not set , cannot continue to get depth \n"); return 0; }
 
-  if ( degree_step==0 ) { fprintf(stderr,"Camera resolution probably not set , cannot continue to get depth \n"); return 0; }
+
+  if (camera_vertical_field_of_view !=0) { degree_step_y = metrics[RESOLUTION_Y] / camera_vertical_field_of_view; } else
+                                         { fprintf(stderr,"Camera vertical field of view NOT set .. , this will probably keep popping up , until you call VisCortx_SetCamerasGeometry\n"); return 0; }
+  if ( degree_step_y == 0 ) { fprintf(stderr,"Camera resolution probably not set , cannot continue to get depth \n"); return 0; }
 
   unsigned int uint_pixel_x=metrics[RESOLUTION_X] / 2 , uint_pixel_y=metrics[RESOLUTION_Y] / 2 , ptr = 0;
-  float abs_horizontal_angle = horizontal_angle;
-  if ( abs_horizontal_angle < 0 ) { abs_horizontal_angle = abs_horizontal_angle  * (-1); }
 
-  float pixel_x = abs_horizontal_angle / degree_step  , pixel_y = 0.0;
+  float abs_horizontal_angle = horizontal_angle; if ( abs_horizontal_angle < 0 ) { abs_horizontal_angle = abs_horizontal_angle  * (-1); }
+  float abs_vertical_angle = vertical_angle;     if ( abs_vertical_angle < 0 ) { abs_vertical_angle = abs_vertical_angle  * (-1); }
+
+  float pixel_x = abs_horizontal_angle / degree_step_x  , pixel_y =abs_vertical_angle / degree_step_y;
   if ( horizontal_angle < 0 ) { pixel_x  = metrics[RESOLUTION_X] / 2 - abs_horizontal_angle; }
+  if ( vertical_angle < 0 ) { pixel_y  = metrics[RESOLUTION_Y] / 2 - abs_vertical_angle; }
 
-  if ( ( pixel_x >= 0.0 ) && (pixel_x < metrics[RESOLUTION_X] ) )
-   {
-     uint_pixel_x = (unsigned int) pixel_x;
-   }
+  if ( ( pixel_x >= 0.0 ) && (pixel_x < metrics[RESOLUTION_X] ) ) { uint_pixel_x = (unsigned int) pixel_x; }
+  if ( ( pixel_y >= 0.0 ) && (pixel_y < metrics[RESOLUTION_Y] ) ) { uint_pixel_y = (unsigned int) pixel_y; }
 
   unsigned int Camera_Selected = DEPTH_LEFT;
   if ( num == 1 ) { Camera_Selected = DEPTH_RIGHT; }
 
   ptr = uint_pixel_y * metrics[RESOLUTION_X] + uint_pixel_x;
+
+  if ( metrics[RESOLUTION_MEMORY_LIMIT_1BYTE] <= ptr ) { return 0; }
+
   return l_video_register[Camera_Selected].pixels[ptr];
 }
 

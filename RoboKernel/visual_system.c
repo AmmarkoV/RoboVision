@@ -43,7 +43,7 @@ int InitVisualSystem()
       }
 
 
-    VisCortx_SetCamerasGeometry(6.0,72.0);
+    VisCortx_SetCamerasGeometry(6.0,72.0,0.0,0.0);
     VisCortx_Start(width,height);
 
     OpenWebInterface();

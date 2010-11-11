@@ -59,6 +59,10 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="mapping_system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mapping_system.h" />
 		<Unit filename="motor_system.c">
 			<Option compilerVar="CC" />
 		</Unit>

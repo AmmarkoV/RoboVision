@@ -5,6 +5,7 @@
 
 #include "visual_system.h"
 #include "motor_system.h"
+#include "mapping_system.h"
 #include "configuration.h"
 #include "webinterface.h"
 
@@ -35,6 +36,7 @@ enum command_id_consts
   CMD_PLAYBACK_LIVE,
   CMD_SENSORS,
   CMD_DEPTHMAP_TO_FILE,
+  CMD_DEPTHMAP_IMPORT_TO_MAP,
 
  /* ------------------ */
   CMD_TOTAL_CONSTS
@@ -157,6 +159,10 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  RobotPrintPosition();
      break;
 
+     case CMD_DEPTHMAP_IMPORT_TO_MAP :
+                 sprintf(outptstr,"From %s : Scanning depth to map! \n",from);
+                 PassDepthToMap();
+     break;
 
 
      default :
@@ -191,7 +197,7 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FIND FEATURES",13)==1) { chosen_command=CMD_FIND_FEATURES; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"PLAYSOUND",9)==1) { chosen_command=CMD_PLAYSOUND; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SAY",3)==1) { chosen_command=CMD_SAY;} else
-      if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTHMAP",8)==1) { chosen_command=CMD_DEPTHMAP; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP",9)==1) { chosen_command=CMD_DEPTHMAP; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FORWARD",7)==1) { chosen_command=CMD_FORWARD; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"BACKWARD",8)==1) { chosen_command=CMD_BACKWARD; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"LEFT",4)==1) { chosen_command=CMD_LEFT; } else
@@ -202,6 +208,7 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SENSORS",7)==1) { chosen_command=CMD_SENSORS; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP TO FILE",17)==1) { chosen_command=CMD_DEPTHMAP_TO_FILE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"REFRESH MAP",11)==1) { chosen_command=CMD_REFRESH_MAP_AT_WEB_INTERFACE; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP IMPORT TO MAP",23)==1) { chosen_command=CMD_DEPTHMAP_IMPORT_TO_MAP; } else
 
 
         /*

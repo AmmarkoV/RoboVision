@@ -1,0 +1,6 @@
+#ifndef MAPPING_SYSTEM_H_INCLUDED
+#define MAPPING_SYSTEM_H_INCLUDED
+
+int PassDepthToMap();
+
+#endif // MAPPING_SYSTEM_H_INCLUDED

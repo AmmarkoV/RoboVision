@@ -73,7 +73,7 @@ extern struct VideoRegister video_register[REGISTERS_COUNT];
 extern struct LargeVideoRegister l_video_register[LARGE_REGISTERS_COUNT];
 extern struct DepthData * depth_data_array;
 extern float camera_distance;
-extern float camera_field_of_view;
+extern float camera_diagonal_field_of_view,camera_horizontal_field_of_view,camera_vertical_field_of_view;
 
 extern float depth_units_in_cm[256];
 

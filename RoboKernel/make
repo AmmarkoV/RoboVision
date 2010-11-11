@@ -8,14 +8,15 @@ gcc -c configuration.c -o configuration.o
 gcc -c webinterface.c -o webinterface.o
 gcc -c visual_system.c -o visual_system.o
 gcc -c motor_system.c -o motor_system.o 
+gcc -c mapping_system.c -o mapping_system.o 
 gcc -c command_hal.c -o command_hal.o 
 gcc -c command_implementation.c -o command_implementation.o 
 
 echo "Linking files.."
-ar  rcs libRoboKernel.a main.o configuration.o webinterface.o visual_system.o motor_system.o command_hal.o command_implementation.o
+ar  rcs libRoboKernel.a main.o configuration.o webinterface.o visual_system.o motor_system.o mapping_system.o command_hal.o command_implementation.o
 
 echo "Cleaning compiled object files.."
-rm main.o configuration.o webinterface.o visual_system.o motor_system.o  command_hal.o command_implementation.o 
+rm main.o configuration.o webinterface.o visual_system.o motor_system.o mapping_system.o command_hal.o command_implementation.o 
 
 
 echo "Done.."

@@ -86,21 +86,17 @@ int PrintoutHTML(char * filename,unsigned int actor_x,unsigned int actor_y,unsig
      fprintf (pFile, "<html><head></head><body>");
      fprintf (pFile, "<table>\n");
 
-      int x,y,ptr=0;
+      int x=startx,y=starty,ptr=0;
        for ( y=starty; y<endy; y++ )
        {
         ptr = world_x * y + x ;
         fprintf (pFile, "<tr>\n   ");
         for ( x=startx; x<endx; x++ )
          {
+           if ( ( actor_x == x ) && ( actor_y == y ) ) { fprintf (pFile, "<td bgcolor=\"#FF0000\">"); } else
+           if ( world[ptr].unpassable!=0 ) { fprintf (pFile, "<td bgcolor=\"#000000\">"); } else
+                                           { fprintf (pFile, "<td >"); /*bgcolor=\"#FFFFFF\"*/ }
 
-           if ( world[ptr].unpassable!=0 )
-             {
-               fprintf (pFile, "<td bgcolor=\"#000000\">");
-             } else
-             {
-               fprintf (pFile, "<td >"); /*bgcolor=\"#FFFFFF\"*/
-             }
              fprintf (pFile, "&nbsp;");
 
            fprintf (pFile, "</td>");
