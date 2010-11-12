@@ -41,15 +41,15 @@
 		<Cursor position="1080" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="885" topLine="265" />
+		<Cursor position="1347" topLine="200" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="1530" topLine="55" />
+		<Cursor position="1774" topLine="55" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
-		<Cursor position="18344" topLine="535" />
+	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
+		<Cursor position="20551" topLine="559" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="5012" topLine="147" />
+		<Cursor position="1502" topLine="45" />
 	</File>
 </CodeBlocks_layout_file>

@@ -41,18 +41,28 @@ char *  VisCortx_Version()
 
 unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras,float diagonal_field_of_view,float horizontal_field_of_view,float vertical_field_of_view)
 {
+  if ( ( metrics[RESOLUTION_X]==0 ) || ( metrics[RESOLUTION_Y]==0 ) ) { fprintf(stderr,"Resolution not set.. VisCortx_Start needs to be called before VisCortx_SetCamerasGeometry\n");
+                                                                        return 0;
+                                                                      }
+
   /* Cameras should be parallel.. */
   camera_distance = distance_between_cameras;
   camera_diagonal_field_of_view = diagonal_field_of_view;
   camera_horizontal_field_of_view = horizontal_field_of_view;
   camera_vertical_field_of_view = vertical_field_of_view;
-  if ( (camera_diagonal_field_of_view!=0) && (camera_horizontal_field_of_view==0) && (camera_vertical_field_of_view==0) )
+  if ( (camera_diagonal_field_of_view!=0.0) && (camera_horizontal_field_of_view==0.0) && (camera_vertical_field_of_view==0.0) )
     {
       fprintf(stderr,"We need to calculate horizontal and vertical field of view from diagonal , this ( as someone could expect ) is not very precise \n");
-      unsigned int diagonal_resolution = sqrt (metrics[RESOLUTION_X]*metrics[RESOLUTION_X] + metrics[RESOLUTION_Y]*metrics[RESOLUTION_Y]);
-      camera_horizontal_field_of_view = ( metrics[RESOLUTION_X] / diagonal_resolution ) * diagonal_field_of_view;
-      camera_vertical_field_of_view = ( metrics[RESOLUTION_Y] / diagonal_resolution ) * diagonal_field_of_view;
+      float abs_diagonal_resolution = sqrt (metrics[RESOLUTION_X]*metrics[RESOLUTION_X] + metrics[RESOLUTION_Y]*metrics[RESOLUTION_Y]);
+      if ( abs_diagonal_resolution == 0 ) { fprintf(stderr,"Could not find horizontal/vertical field of view..\nVisCortx_SetCamerasGeometry will have to be run again\n"); }
+      camera_horizontal_field_of_view = ( metrics[RESOLUTION_X] / abs_diagonal_resolution ) * diagonal_field_of_view;
+      camera_vertical_field_of_view = ( metrics[RESOLUTION_Y] / abs_diagonal_resolution ) * diagonal_field_of_view;
     }
+
+
+  fprintf(stderr,"Camera Geometry set to : \n");
+  fprintf(stderr,"Distance between cameras : %f \n",camera_distance);
+  fprintf(stderr,"Field of view ( diagonal : %f , horizontal : %f , vertical : %f)\n",camera_diagonal_field_of_view,camera_horizontal_field_of_view,camera_vertical_field_of_view);
 
   return 1;
 }
@@ -567,8 +577,8 @@ unsigned short VisCortx_GetDepth(char num,float horizontal_angle,float vertical_
   float abs_vertical_angle = vertical_angle;     if ( abs_vertical_angle < 0 ) { abs_vertical_angle = abs_vertical_angle  * (-1); }
 
   float pixel_x = abs_horizontal_angle / degree_step_x  , pixel_y =abs_vertical_angle / degree_step_y;
-  if ( horizontal_angle < 0 ) { pixel_x  = metrics[RESOLUTION_X] / 2 - abs_horizontal_angle; }
-  if ( vertical_angle < 0 ) { pixel_y  = metrics[RESOLUTION_Y] / 2 - abs_vertical_angle; }
+  if ( horizontal_angle < 0 ) { pixel_x  = (metrics[RESOLUTION_X] / 2) - abs_horizontal_angle; }
+  if ( vertical_angle < 0   ) { pixel_y  = (metrics[RESOLUTION_Y] / 2) - abs_vertical_angle;   }
 
   if ( ( pixel_x >= 0.0 ) && (pixel_x < metrics[RESOLUTION_X] ) ) { uint_pixel_x = (unsigned int) pixel_x; }
   if ( ( pixel_y >= 0.0 ) && (pixel_y < metrics[RESOLUTION_Y] ) ) { uint_pixel_y = (unsigned int) pixel_y; }

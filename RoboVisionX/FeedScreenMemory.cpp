@@ -199,7 +199,7 @@ void GUI_DrawOPFeeds()
 
 void GUI_FullDepthMap(unsigned char write_to_file)
 {
-  IssueCommand((char *)"DEPTHMAP",0,0,(char *)"GUI");
+  IssueCommand((char *)"DEPTH MAP",0,0,(char *)"GUI");
   PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
   PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_RIGHT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
 }
