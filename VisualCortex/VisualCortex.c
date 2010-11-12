@@ -552,7 +552,7 @@ float VisCortx_CameraHorizontalAngleStep()
 }
 
 
-unsigned short VisCortx_GetDepth(char num,float horizontal_angle,float vertical_angle)
+unsigned short VisCortx_GetDepth_From_Angle(char num,float horizontal_angle,float vertical_angle)
 {
  /* horizontal_angle ( left is less , right is more )
     vertical angle ( down is less , up is more )

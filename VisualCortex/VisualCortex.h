@@ -175,7 +175,8 @@ void VisCortx_GetFaceNumber(char num,unsigned int *pos_x,unsigned int *pos_y,uns
 float VisCortx_MinCameraHorizontalAngle();
 float VisCortx_MaxCameraHorizontalAngle();
 float VisCortx_CameraHorizontalAngleStep();
-unsigned short VisCortx_GetDepth(char num,float horizontal_angle,float vertical_angle);
+
+unsigned short VisCortx_GetDepth_From_Angle(char num,float horizontal_angle,float vertical_angle);
 unsigned short VisCortx_SetDepthScale(unsigned short depth_units,float centimeters);
 float VisCortx_DepthUnitsToCM(unsigned short depth_units);
 

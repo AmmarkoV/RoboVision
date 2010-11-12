@@ -274,6 +274,13 @@ int AddObstacleSensedbyAgent(struct Map * themap,unsigned int agentnum,unsigned 
   AddSensorDataToMap(themap,agentnum,safety_radious,ultrasonic_left_cm,ultrasonic_right_cm);
   return 0;
 }
+
+int AddObstacleViewedbyAgent(struct Map * themap,unsigned int agentnum,float horizontal_angle,float vertical_angle,float distance_in_cm)
+{
+  fprintf(stderr,"AddObstacleViewedbyAgent (stub)  %f , %f  = %f \n",horizontal_angle,vertical_angle,distance_in_cm);
+  return 0;
+}
+
 /*      --------------------------------------------
                AGENT STATE CHANGING END
         -------------------------------------------- */
