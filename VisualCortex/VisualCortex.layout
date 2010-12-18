@@ -46,10 +46,10 @@
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="1774" topLine="55" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="20551" topLine="559" />
+	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+		<Cursor position="1011" topLine="0" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="1502" topLine="45" />
+		<Cursor position="5092" topLine="149" />
 	</File>
 </CodeBlocks_layout_file>

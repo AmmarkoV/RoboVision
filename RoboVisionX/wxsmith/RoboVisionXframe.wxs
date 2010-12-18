@@ -227,7 +227,6 @@
 		</object>
 		<object class="wxSlider" name="ID_SLIDER1" variable="MovementHorizontal" member="yes">
 			<value>10</value>
-			<min>0</min>
 			<max>20</max>
 			<pos>840,136</pos>
 			<size>72,25</size>
@@ -237,7 +236,6 @@
 		</object>
 		<object class="wxSlider" name="ID_SLIDER2" variable="MovementVertical" member="yes">
 			<value>10</value>
-			<min>0</min>
 			<max>20</max>
 			<pos>816,56</pos>
 			<size>24,80</size>
@@ -252,13 +250,11 @@
 		</object>
 		<object class="wxGauge" name="ID_GAUGE2" variable="Ultrasonic1" member="yes">
 			<range>255</range>
-			<bezel>0</bezel>
 			<pos>696,120</pos>
 			<size>100,16</size>
 		</object>
 		<object class="wxGauge" name="ID_GAUGE3" variable="Ultrasonic2" member="yes">
 			<range>255</range>
-			<bezel>0</bezel>
 			<pos>696,136</pos>
 			<size>100,16</size>
 		</object>
@@ -289,6 +285,10 @@
 		<object class="wxStaticText" name="ID_STATICTEXT15" variable="RightUltrasonicLabel" member="yes">
 			<label>R</label>
 			<pos>684,136</pos>
+		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX4" variable="SaveSnapshots" member="yes">
+			<label>Save Snapshots</label>
+			<pos>680,464</pos>
 		</object>
 		<object class="wxMenuBar" variable="MenuBar1" member="no">
 			<object class="wxMenu" variable="Menu1" member="no">

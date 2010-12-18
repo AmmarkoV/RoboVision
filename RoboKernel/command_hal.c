@@ -9,6 +9,11 @@
 #include "configuration.h"
 #include "webinterface.h"
 
+int keep_snapshots=0;
+int last_snapshot_activation=0;
+int snapshot_activation_interval=5000;
+
+
 enum command_id_consts
 {
   CMD_UNKNOWN=0,
@@ -31,6 +36,7 @@ enum command_id_consts
   CMD_BACKWARD,
   CMD_LEFT,
   CMD_RIGHT,
+  CMD_TOGGLE_AUTO_RECORD_SNAPSHOTS,
   CMD_RECORD_SNAPSHOT,
   CMD_PLAYBACK_SNAPSHOT,
   CMD_PLAYBACK_LIVE,
@@ -129,14 +135,24 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  sprintf(outptstr,"From %s : Command Parser , Going RIGHT \n",from);
                  RobotRotate(20,(-1)*10);
      break;
+     case CMD_TOGGLE_AUTO_RECORD_SNAPSHOTS :
+
+                  if ( keep_snapshots == 0 )
+                    { sprintf(outptstr,"From %s : Toggle auto timestamped snapshots is enabled ( %u milliseconds ) \n",from,cmdi_1);
+                      keep_snapshots = 1;
+                      if ( cmdi_1 > 1000 ) { snapshot_activation_interval=cmdi_1; }
+                    } else
+                    { sprintf(outptstr,"From %s : Toggle auto timestamped snapshots is disabled \n",from); keep_snapshots = 0; }
+     break;
 
      case CMD_RECORD_SNAPSHOT :
                  sprintf(outptstr,"From %s : Capturing VideoInput Snapshot \n",from);
-                 RecordOne((char *)"snapshot");
+                // RecordOne((char *)"snapshot");
+                 SnapshotWithTimeStamp();
      break;
      case CMD_PLAYBACK_SNAPSHOT :
                  sprintf(outptstr,"From %s : PlayingBack VideoInput Snapshot \n",from);
-                 Play((char *)"snapshot");
+                 Play((char *)"memfs/snapshot");
      break;
      case CMD_PLAYBACK_LIVE :
                  sprintf(outptstr,"From %s : PlayingBack VideoInput Cam Input \n",from);
@@ -202,6 +218,7 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"BACKWARD",8)==1) { chosen_command=CMD_BACKWARD; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"LEFT",4)==1) { chosen_command=CMD_LEFT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"RIGHT",5)==1) { chosen_command=CMD_RIGHT; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"TOGGLE AUTO RECORD SNAPSHOTS",28)==1) { chosen_command=CMD_TOGGLE_AUTO_RECORD_SNAPSHOTS; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"RECORD SNAPSHOT",15)==1) { chosen_command=CMD_RECORD_SNAPSHOT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"PLAYBACK SNAPSHOT",17)==1) { chosen_command=CMD_PLAYBACK_SNAPSHOT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"PLAYBACK LIVE",13)==1) { chosen_command=CMD_PLAYBACK_LIVE; } else

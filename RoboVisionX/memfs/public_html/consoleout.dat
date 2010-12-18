@@ -1,16 +1,14 @@
-From GUI : Command Parser , Performing DepthMap 
+From GUI : Toggle auto timestamped snapshots is enabled ( 0 milliseconds ) 
 
-From GUI : Scanning depth to map! 
+From system : Capturing VideoInput Snapshot 
 
-From GUI : Command Parser , Performing DepthMap 
+From system : Capturing VideoInput Snapshot 
 
-From GUI : Command Parser , Performing DepthMap 
+From GUI : Toggle auto timestamped snapshots is disabled 
 
-From GUI : Command Parser , Performing DepthMap 
+From GUI : Toggle auto timestamped snapshots is enabled ( 10000 milliseconds ) 
 
-From GUI : Command Parser , Performing DepthMap 
+From system : Capturing VideoInput Snapshot 
 
-From GUI : Scanning depth to map! 
-
-From GUI : Scanning depth to map! 
+From system : Capturing VideoInput Snapshot 
 

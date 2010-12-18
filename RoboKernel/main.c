@@ -57,14 +57,24 @@ void CloseSenses()
 }
 
 
-void find_something_to_do()
+void find_something_to_do(unsigned int clock_time)
 {
   /* THIS FUNCTION WILL CREATE A SCRIPT OF FUNCTIONS TO BE PASSED TO DO_SOMETHING */
 }
 
-void do_something()
+void do_something(unsigned int clock_time)
 {
   /* THIS FUNCTION WILL EXECUTE SCRIPT OF FUNCTIONS CREATED BY FIND_SOMETHING_TO_DO */
+  if ( keep_snapshots == 1 )
+    {
+        if (clock_time<last_snapshot_activation ) { last_snapshot_activation = 0; } /* SLOPPY TRUNCATION :P */ else
+        if (clock_time-last_snapshot_activation> snapshot_activation_interval )
+         {
+              IssueCommandInternal("RECORD SNAPSHOT","system");
+              last_snapshot_activation = clock_time;
+         }
+    }
+
 }
 
 void StartRoboKernel()
@@ -97,8 +107,8 @@ void * KernelLoop(void *ptr )
         TakeCareOfNetworkInterface(clock_count);
       //  if ( motion_lock_on == 1 ) { CheckAlarm(VisCortx_GetMetric(CHANGES_LEFT) , VisCortx_GetMetric(CHANGES_RIGHT)); }
 
-        find_something_to_do();
-        do_something();
+        find_something_to_do(clock_count);
+        do_something(clock_count);
 
         //fprintf(stderr,"%u ms ( %u )\n",clock_count,clock_countbig);
         ++loopcount;

@@ -1,5 +1,7 @@
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "command_hal.h"
 #include "command_implementation.h"
 #include "visual_system.h"
@@ -138,3 +140,16 @@ void DepthMapToFile(int snap)
    fclose(fp);*/
 }
 
+void SnapshotWithTimeStamp()
+{
+                 char outstr[256]={0};
+                 strcpy(outstr,"memfs/snapshot");
+                 time_t t;
+                 struct tm *tmp;
+                 t = time(NULL);
+                 tmp = localtime(&t);
+                 if (tmp == NULL) { }
+                 if (strftime(outstr, sizeof(outstr), "memfs/snapshot_%F_%T" , tmp) == 0) {  }
+                 //fprintf(stderr,"Timestamped filename is \"\n", outstr);
+                 RecordOne((char *)outstr);
+}

@@ -27,7 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 
-char * VISCORTEX_VER = "0.475";
+char * VISCORTEX_VER = "0.477";
 
 
 char *  VisCortx_Version()

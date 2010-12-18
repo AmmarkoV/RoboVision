@@ -11,6 +11,7 @@ void CheckAlarm(unsigned int flow1,unsigned int flow2);
 void FindFeatures();
 void DrawFeatures();
 void Panoramic();
+void SnapshotWithTimeStamp();
 /*
 int SaveRegisterToFile(char * filename , unsigned int reg_num);
 void RecordWebCamSnap();

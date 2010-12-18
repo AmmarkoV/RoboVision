@@ -98,6 +98,7 @@ const long RoboVisionXFrame::ID_STATICTEXT12 = wxNewId();
 const long RoboVisionXFrame::ID_STATICTEXT13 = wxNewId();
 const long RoboVisionXFrame::ID_STATICTEXT14 = wxNewId();
 const long RoboVisionXFrame::ID_STATICTEXT15 = wxNewId();
+const long RoboVisionXFrame::ID_CHECKBOX4 = wxNewId();
 const long RoboVisionXFrame::idMenuQuit = wxNewId();
 const long RoboVisionXFrame::idMenuAbout = wxNewId();
 const long RoboVisionXFrame::ID_STATUSBAR1 = wxNewId();
@@ -222,6 +223,8 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     MeterComment = new wxStaticText(this, ID_STATICTEXT13, _("Meters"), wxPoint(760,80), wxDefaultSize, 0, _T("ID_STATICTEXT13"));
     LeftUltrasonicLabel = new wxStaticText(this, ID_STATICTEXT14, _("L"), wxPoint(684,120), wxDefaultSize, 0, _T("ID_STATICTEXT14"));
     RightUltrasonicLabel = new wxStaticText(this, ID_STATICTEXT15, _("R"), wxPoint(684,136), wxDefaultSize, 0, _T("ID_STATICTEXT15"));
+    SaveSnapshots = new wxCheckBox(this, ID_CHECKBOX4, _("Save Snapshots"), wxPoint(680,464), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
+    SaveSnapshots->SetValue(false);
     MenuBar1 = new wxMenuBar();
     Menu1 = new wxMenu();
     MenuItem1 = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
