@@ -289,6 +289,7 @@
 		<object class="wxCheckBox" name="ID_CHECKBOX4" variable="SaveSnapshots" member="yes">
 			<label>Save Snapshots</label>
 			<pos>680,464</pos>
+			<handler function="OnSaveSnapshotsClick" entry="EVT_CHECKBOX" />
 		</object>
 		<object class="wxMenuBar" variable="MenuBar1" member="no">
 			<object class="wxMenu" variable="Menu1" member="no">

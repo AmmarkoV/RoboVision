@@ -569,6 +569,11 @@ void Play(char * filename)
 
 }
 
+void CompressRecordWithImageMagick(int state)
+{
+  compress_files=state;
+}
+
 void Record(char * filename)
 {
     if (!VideoInputsOk()) return;

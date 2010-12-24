@@ -6,7 +6,7 @@
 		<Project filename="MotorFoundation/MD23/MD23.cbp" />
 		<Project filename="MotorFoundation/MotorHAL.cbp" />
 		<Project filename="VisualCortex/VisualCortex.cbp" />
-		<Project filename="RoboKernel/RoboKernel.cbp" active="1" />
-		<Project filename="RoboVisionX/RoboVisionX.cbp" />
+		<Project filename="RoboKernel/RoboKernel.cbp" />
+		<Project filename="RoboVisionX/RoboVisionX.cbp" active="1" />
 	</Workspace>
 </CodeBlocks_workspace_file>

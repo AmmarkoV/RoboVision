@@ -59,6 +59,7 @@ class RoboVisionXFrame: public wxFrame
         void OnRightButtonClick(wxCommandEvent& event);
         void OnMovementVerticalCmdScroll(wxScrollEvent& event);
         void OnMovementHorizontalCmdScroll(wxScrollEvent& event);
+        void OnSaveSnapshotsClick(wxCommandEvent& event);
         //*)
         void OnMotion(wxMouseEvent& event);
 

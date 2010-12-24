@@ -34,6 +34,7 @@ struct Image
   unsigned int image_size;
 };
 
+extern int compress_files;
 
 int ReadPPM(char * filename,struct Image * pic);
 int WritePPM(char * filename,struct Image * pic);

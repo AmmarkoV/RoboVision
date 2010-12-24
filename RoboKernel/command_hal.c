@@ -37,7 +37,9 @@ enum command_id_consts
   CMD_LEFT,
   CMD_RIGHT,
   CMD_TOGGLE_AUTO_RECORD_SNAPSHOTS,
+  CMD_TOGGLE_AUTO_PLAYBACK_SNAPSHOTS,
   CMD_RECORD_SNAPSHOT,
+  CMD_RECORD_COMPRESSED,
   CMD_PLAYBACK_SNAPSHOT,
   CMD_PLAYBACK_LIVE,
   CMD_SENSORS,
@@ -137,12 +139,26 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      break;
      case CMD_TOGGLE_AUTO_RECORD_SNAPSHOTS :
 
+                  if ( ( cmdi_1 == 0 ) && ( keep_snapshots != 0 ) )
+                   {
+                      sprintf(outptstr,"From %s : Switching off snapshots due to 0 command \n",from);
+                      keep_snapshots=0;
+                   }
+                      else
                   if ( keep_snapshots == 0 )
                     { sprintf(outptstr,"From %s : Toggle auto timestamped snapshots is enabled ( %u milliseconds ) \n",from,cmdi_1);
                       keep_snapshots = 1;
-                      if ( cmdi_1 > 1000 ) { snapshot_activation_interval=cmdi_1; }
+                      if ( cmdi_1 >= 500 ) { snapshot_activation_interval=cmdi_1; }
                     } else
                     { sprintf(outptstr,"From %s : Toggle auto timestamped snapshots is disabled \n",from); keep_snapshots = 0; }
+     break;
+     case CMD_TOGGLE_AUTO_PLAYBACK_SNAPSHOTS :
+         sprintf(outptstr,"From %s : Auto Playback not implemented yet \n",from);
+     break;
+
+     case CMD_RECORD_COMPRESSED :
+                 sprintf(outptstr,"From %s : Changing Recording Compression setting to %u \n",from,cmdi_1);
+                 CompressRecordWithImageMagick(cmdi_1);
      break;
 
      case CMD_RECORD_SNAPSHOT :
@@ -219,7 +235,9 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"LEFT",4)==1) { chosen_command=CMD_LEFT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"RIGHT",5)==1) { chosen_command=CMD_RIGHT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"TOGGLE AUTO RECORD SNAPSHOTS",28)==1) { chosen_command=CMD_TOGGLE_AUTO_RECORD_SNAPSHOTS; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"TOGGLE AUTO PLAYBACK SNAPSHOTS",30)==1) { chosen_command=CMD_TOGGLE_AUTO_PLAYBACK_SNAPSHOTS; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"RECORD SNAPSHOT",15)==1) { chosen_command=CMD_RECORD_SNAPSHOT; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"RECORD COMPRESSED",17)==1) { chosen_command=CMD_RECORD_COMPRESSED; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"PLAYBACK SNAPSHOT",17)==1) { chosen_command=CMD_PLAYBACK_SNAPSHOT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"PLAYBACK LIVE",13)==1) { chosen_command=CMD_PLAYBACK_LIVE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SENSORS",7)==1) { chosen_command=CMD_SENSORS; } else

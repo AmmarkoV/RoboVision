@@ -37,6 +37,9 @@
 				</Linker>
 			</Target>
 		</Build>
+		<Linker>
+			<Add option="-pthread" />
+		</Linker>
 		<Unit filename="PixelFormatConversions.cpp" />
 		<Unit filename="PixelFormatConversions.h" />
 		<Unit filename="PixelFormats.cpp" />

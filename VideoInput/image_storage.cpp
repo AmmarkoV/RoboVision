@@ -25,6 +25,30 @@
 
 #define PPMREADBUFLEN 256
 
+int compress_files=1;
+
+
+
+int ConvertImageFormats(char * filenamein,char * filenameout)
+{ //Needs imagemagick package :)
+ char execstr[256]={0};
+ sprintf(execstr,"convert %s %s",filenamein,filenameout);
+ int i = system(execstr);
+ return i;
+}
+
+int ConvertSnapshotsToVideo(int framerate,int bitrate,char * filenameout)
+{
+ // ffmpeg -r 10 -b 1800 -i %03d.jpg test1800.mp4
+ char execstr[256]={0};
+ sprintf(execstr,"ffmpeg -r %u -b %u -i %%05d.jpg %s.mp4",framerate,bitrate,filenameout);
+ int i = system(execstr);
+ return i;
+}
+
+
+
+
 int ReadPPM(char * filename,struct Image * pic)
 {
     FILE *pf=0;
@@ -96,6 +120,13 @@ int WritePPM(char * filename,struct Image * pic)
      return 1;
 	}
 
+  if ( compress_files )
+    { /*Convert to jpg*/
+         char filenameout[512]={0};
+         strcpy(filenameout,filename);
+         strcat(filenameout,"_.jpg");
+         ConvertImageFormats(filename,filenameout);
+    }
 
   return 0;
 }
@@ -105,23 +136,4 @@ int ClearImage(struct Image * pic )
 {
     return 0;
 }
-
-
-int ConvertImageFormats(char * filenamein,char * filenameout)
-{ //Needs imagemagick package :)
- char execstr[256]={0};
- sprintf(execstr,"convert %s %s",filenamein,filenameout);
- int i = system(execstr);
- return i;
-}
-
-int ConvertSnapshotsToVideo(int framerate,int bitrate,char * filenameout)
-{
- // ffmpeg -r 10 -b 1800 -i %03d.jpg test1800.mp4
- char execstr[256]={0};
- sprintf(execstr,"ffmpeg -r %u -b %u -i %%05d.jpg %s.mp4",framerate,bitrate,filenameout);
- int i = system(execstr);
- return i;
-}
-
 

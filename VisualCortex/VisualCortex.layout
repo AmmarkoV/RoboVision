@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="16716" topLine="728" />
+		<Cursor position="16716" topLine="726" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="442" topLine="0" />
@@ -44,12 +44,12 @@
 		<Cursor position="1347" topLine="200" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="1774" topLine="55" />
+		<Cursor position="1774" topLine="53" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
 		<Cursor position="1011" topLine="0" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="5092" topLine="149" />
+		<Cursor position="5092" topLine="148" />
 	</File>
 </CodeBlocks_layout_file>

@@ -8,7 +8,7 @@ echo "Starting downloads "
 echo "What is basically needed is GCC and libs , WxWidgets , LibV4L development headers , OpenAL , OpenGL/GLUT , Festival (TTS) , OpenCV "
 
 
-sudo apt-get install build-essential libv4l-dev lib32v4l-dev festival wx-common g++ libwxgtk2.8-0 libwxgtk2.8-dev libalut0 libalut-dev freeglut3 freeglut3-dev glutg3 glutg3-dev libxxf86vm-dev sensors libcv-dev libcvaux-dev libhighgui-dev opencv-doc
+sudo apt-get install build-essential libv4l-dev lib32v4l-dev festival wx-common g++ libwxgtk2.8-0 libwxgtk2.8-dev libalut0 libalut-dev freeglut3 freeglut3-dev glutg3 glutg3-dev libxxf86vm-dev sensors libcv-dev libcvaux-dev libhighgui-dev opencv-doc imagemagick
 
 
 

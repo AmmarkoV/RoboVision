@@ -37,7 +37,7 @@
 			<Add option="`wx-config --cflags`" />
 		</Compiler>
 		<Linker>
-			<Add option="-pthreads" />
+			<Add option="-pthread" />
 			<Add option="`wx-config --libs`" />
 			<Add library="../RoboKernel/libRoboKernel.a" />
 			<Add library="../VideoInput/libVideoInput.a" />

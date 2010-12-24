@@ -149,7 +149,7 @@ void SnapshotWithTimeStamp()
                  t = time(NULL);
                  tmp = localtime(&t);
                  if (tmp == NULL) { }
-                 if (strftime(outstr, sizeof(outstr), "memfs/snapshot_%F_%T" , tmp) == 0) {  }
+                 if (strftime(outstr, sizeof(outstr), "memfs/snapshot_%F_%T_" , tmp) == 0) {  }
                  //fprintf(stderr,"Timestamped filename is \"\n", outstr);
                  RecordOne((char *)outstr);
 }
