@@ -142,14 +142,15 @@ void DepthMapToFile(int snap)
 
 void SnapshotWithTimeStamp()
 {
+               //  fprintf(stderr,"SnapshotWithTimeStamp()");
                  char outstr[256]={0};
                  strcpy(outstr,"memfs/snapshot");
                  time_t t;
                  struct tm *tmp;
                  t = time(NULL);
                  tmp = localtime(&t);
-                 if (tmp == NULL) { }
-                 if (strftime(outstr, sizeof(outstr), "memfs/snapshot_%F_%T_" , tmp) == 0) {  }
+                 if (tmp == NULL)  { fprintf(stderr,"Local Time is null , cannot make a timestamp\n"); }
+                 if (strftime(outstr, sizeof(outstr), "memfs/snapshot_%F_%T_" , tmp) == 0) { fprintf(stderr,"Time formatting failed\n"); }
                  //fprintf(stderr,"Timestamped filename is \"\n", outstr);
                  RecordOne((char *)outstr);
 }

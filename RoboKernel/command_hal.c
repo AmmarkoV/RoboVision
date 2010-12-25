@@ -138,7 +138,10 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  RobotRotate(20,(-1)*10);
      break;
      case CMD_TOGGLE_AUTO_RECORD_SNAPSHOTS :
-
+                  if ( ( cmdi_1 == 0 ) && ( keep_snapshots == 0 ) )
+                   {
+                     sprintf(outptstr,"From %s : Snapshots stream already disabled \n",from);
+                   } else
                   if ( ( cmdi_1 == 0 ) && ( keep_snapshots != 0 ) )
                    {
                       sprintf(outptstr,"From %s : Switching off snapshots due to 0 command \n",from);
@@ -146,7 +149,7 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                    }
                       else
                   if ( keep_snapshots == 0 )
-                    { sprintf(outptstr,"From %s : Toggle auto timestamped snapshots is enabled ( %u milliseconds ) \n",from,cmdi_1);
+                    { sprintf(outptstr,"From %s : Toggle auto timestamped snapshots is enabled ( %u milliseconds ) \nSHOULD BE IMPLEMENTED ON VIDEO INPUT AND NOT ROBOKERNEL\n",from,cmdi_1);
                       keep_snapshots = 1;
                       if ( cmdi_1 >= 500 ) { snapshot_activation_interval=cmdi_1; }
                     } else
@@ -162,15 +165,25 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      break;
 
      case CMD_RECORD_SNAPSHOT :
-                 sprintf(outptstr,"From %s : Capturing VideoInput Snapshot \n",from);
-                // RecordOne((char *)"snapshot");
-                 SnapshotWithTimeStamp();
+                 if ( cmdi_1 == 0 )
+                 {
+                   sprintf(outptstr,"From %s : Capturing VideoInput Snapshot without a timestamp in the filename (snapshot.ppm) \n",from);
+                   RecordOne((char *)"snapshot");
+                 } else
+                 {
+                   sprintf(outptstr,"From %s : Capturing VideoInput Snapshot (param , %u)\n",from,cmdi_1);
+                   SnapshotWithTimeStamp();
+                 }
      break;
      case CMD_PLAYBACK_SNAPSHOT :
+                 IssueCommandInternal((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",from); /*Internal message to stop recording of Streams*/
+
                  sprintf(outptstr,"From %s : PlayingBack VideoInput Snapshot \n",from);
                  Play((char *)"memfs/snapshot");
      break;
      case CMD_PLAYBACK_LIVE :
+                 IssueCommandInternal((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",from); /*Internal message to stop recording of Streams*/
+
                  sprintf(outptstr,"From %s : PlayingBack VideoInput Cam Input \n",from);
                  Stop();
      break;

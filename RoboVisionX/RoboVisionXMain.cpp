@@ -223,8 +223,8 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     MeterComment = new wxStaticText(this, ID_STATICTEXT13, _("Meters"), wxPoint(760,80), wxDefaultSize, 0, _T("ID_STATICTEXT13"));
     LeftUltrasonicLabel = new wxStaticText(this, ID_STATICTEXT14, _("L"), wxPoint(684,120), wxDefaultSize, 0, _T("ID_STATICTEXT14"));
     RightUltrasonicLabel = new wxStaticText(this, ID_STATICTEXT15, _("R"), wxPoint(684,136), wxDefaultSize, 0, _T("ID_STATICTEXT15"));
-    SaveSnapshots = new wxCheckBox(this, ID_CHECKBOX4, _("Save Snapshots"), wxPoint(680,464), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
-    SaveSnapshots->SetValue(false);
+    SaveLoadStreamOfSnapshots = new wxCheckBox(this, ID_CHECKBOX4, _("Rec/Play Stream of Snapshots"), wxPoint(680,464), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
+    SaveLoadStreamOfSnapshots->SetValue(false);
     MenuBar1 = new wxMenuBar();
     Menu1 = new wxMenu();
     MenuItem1 = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
@@ -622,12 +622,29 @@ void RoboVisionXFrame::OnSwapFeedsClick(wxCommandEvent& event)
 
 void RoboVisionXFrame::OnRecordButtonClick(wxCommandEvent& event)
 {
-    IssueCommand((char *) "RECORD SNAPSHOT",0,0,(char *)"GUI");
+    if (SaveLoadStreamOfSnapshots->IsChecked())
+    {
+      IssueCommand((char *) "TOGGLE AUTO RECORD SNAPSHOTS(500)",0,0,(char *)"GUI"); fprintf(stderr,"Toggle switch assumes 500ms stream record\n");
+      IssueCommand((char *) "RECORD SNAPSHOT(1)",0,0,(char *)"GUI"); fprintf(stderr,"Recording filenames intended with timestap\n");
+    } else
+    if (!SaveLoadStreamOfSnapshots->IsChecked())
+    {
+      IssueCommand((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",0,0,(char *)"GUI");
+      IssueCommand((char *) "RECORD SNAPSHOT",0,0,(char *)"GUI");
+    }
 }
 
 void RoboVisionXFrame::OnPlayButtonClick(wxCommandEvent& event)
 {
-    IssueCommand((char *) "PLAYBACK SNAPSHOT",0,0,(char *)"GUI");
+    if (SaveLoadStreamOfSnapshots->IsChecked())
+    {
+      IssueCommand((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",0,0,(char *)"GUI");
+      IssueCommand((char *) "PLAYBACK OF SNAPSHOT STREAM NOT IMPLEMENTED!",0,0,(char *)"GUI");
+    } else
+    if (!SaveLoadStreamOfSnapshots->IsChecked())
+    {
+      IssueCommand((char *) "PLAYBACK SNAPSHOT",0,0,(char *)"GUI");
+    }
 }
 
 void RoboVisionXFrame::OnLiveButtonClick(wxCommandEvent& event)
@@ -763,13 +780,14 @@ void RoboVisionXFrame::OnMovementHorizontalCmdScroll(wxScrollEvent& event)
 
 void RoboVisionXFrame::OnSaveSnapshotsClick(wxCommandEvent& event)
 {
-   if (SaveSnapshots->IsChecked())
+    /*
+   if (SaveLoadStreamOfSnapshots->IsChecked())
     {
        IssueCommand((char *) "TOGGLE AUTO RECORD SNAPSHOTS(500)",0,0,(char *)"GUI");
     } else
-   if (!SaveSnapshots->IsChecked())
+   if (!SaveLoadStreamOfSnapshots->IsChecked())
     {
        IssueCommand((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",0,0,(char *)"GUI");
     }
-
+*/
 }

@@ -286,8 +286,8 @@
 			<label>R</label>
 			<pos>684,136</pos>
 		</object>
-		<object class="wxCheckBox" name="ID_CHECKBOX4" variable="SaveSnapshots" member="yes">
-			<label>Save Snapshots</label>
+		<object class="wxCheckBox" name="ID_CHECKBOX4" variable="SaveLoadStreamOfSnapshots" member="yes">
+			<label>Rec/Play Stream of Snapshots</label>
 			<pos>680,464</pos>
 			<handler function="OnSaveSnapshotsClick" entry="EVT_CHECKBOX" />
 		</object>

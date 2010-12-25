@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="CortexSettings.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="16292" topLine="260" />
+	<File name="CortexSettings.cpp" open="1" top="1" tabpos="7">
+		<Cursor position="16292" topLine="266" />
 	</File>
 	<File name="CortexSettings.h" open="1" top="0" tabpos="8">
 		<Cursor position="549" topLine="0" />
@@ -19,8 +19,8 @@
 	<File name="RoboVisionXApp.h" open="1" top="0" tabpos="4">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="RoboVisionXMain.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="29654" topLine="736" />
+	<File name="RoboVisionXMain.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="26322" topLine="736" />
 	</File>
 	<File name="RoboVisionXMain.h" open="1" top="0" tabpos="2">
 		<Cursor position="6317" topLine="23" />

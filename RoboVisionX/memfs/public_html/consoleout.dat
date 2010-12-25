@@ -1,66 +1,35 @@
 From GUI : Command Parser , Performing DepthMap 
 
 From GUI : Toggle auto timestamped snapshots is enabled ( 500 milliseconds ) 
+SHOULD BE IMPLEMENTED ON VIDEO INPUT AND NOT ROBOKERNEL
 
-From system : Capturing VideoInput Snapshot 
+From GUI : Capturing VideoInput Snapshot (param , 1)
 
-From system : Capturing VideoInput Snapshot 
+From system : Capturing VideoInput Snapshot (param , 1)
 
-From system : Capturing VideoInput Snapshot 
+From system : Capturing VideoInput Snapshot (param , 1)
 
-From system : Capturing VideoInput Snapshot 
+From system : Capturing VideoInput Snapshot (param , 1)
 
-From system : Capturing VideoInput Snapshot 
+From system : Capturing VideoInput Snapshot (param , 1)
 
-From system : Capturing VideoInput Snapshot 
+From system : Capturing VideoInput Snapshot (param , 1)
 
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
-
-From system : Capturing VideoInput Snapshot 
+From system : Capturing VideoInput Snapshot (param , 1)
 
 From GUI : Switching off snapshots due to 0 command 
+
+From GUI : PlayingBack VideoInput Cam Input 
+
+From GUI : Snapshots stream already disabled 
+
+From GUI : Capturing VideoInput Snapshot without a timestamp in the filename (snapshot.ppm) 
+
+From GUI : Snapshots stream already disabled 
+
+From GUI : PlayingBack VideoInput Snapshot 
+
+From GUI : Snapshots stream already disabled 
+
+From GUI : PlayingBack VideoInput Cam Input 
 

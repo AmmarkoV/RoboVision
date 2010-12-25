@@ -70,7 +70,7 @@ void do_something(unsigned int clock_time)
         if (clock_time<last_snapshot_activation ) { last_snapshot_activation = 0; } /* SLOPPY TRUNCATION :P */ else
         if (clock_time-last_snapshot_activation> snapshot_activation_interval )
          {
-              IssueCommandInternal("RECORD SNAPSHOT","system");
+              IssueCommandInternal("RECORD SNAPSHOT(1)","system");
               last_snapshot_activation = clock_time;
          }
     }

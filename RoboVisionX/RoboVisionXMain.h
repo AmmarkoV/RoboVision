@@ -141,8 +141,8 @@ class RoboVisionXFrame: public wxFrame
         wxStaticText* RightUltrasonicLabel;
         wxGauge* Ultrasonic2;
         wxStaticText* UptimeLabel;
-        wxCheckBox* SaveSnapshots;
         wxButton* RecordButton;
+        wxCheckBox* SaveLoadStreamOfSnapshots;
         wxStaticBox* StaticBox1;
         wxStaticText* StaticText7;
         wxStaticText* Flow;
