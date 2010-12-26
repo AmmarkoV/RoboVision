@@ -22,7 +22,8 @@
 #define IMAGE_STORAGE_H_INCLUDED
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 struct Image

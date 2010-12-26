@@ -22,6 +22,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
 
 #define PPMREADBUFLEN 256
 
@@ -41,7 +43,7 @@ int ConvertSnapshotsToVideo(int framerate,int bitrate,char * filenameout)
 {
  // ffmpeg -r 10 -b 1800 -i %03d.jpg test1800.mp4
  char execstr[256]={0};
- sprintf(execstr,"ffmpeg -r %u -b %u -i %%05d.jpg %s.mp4",framerate,bitrate,filenameout);
+ sprintf(execstr,"ffmpeg -r %u -b %uk -s 320x240 -i %%05d.jpg %s.mp4",framerate,bitrate,filenameout);
  int i = system(execstr);
  return i;
 }

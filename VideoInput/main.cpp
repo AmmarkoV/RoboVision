@@ -39,7 +39,7 @@
 
 #define THREAD_SLEEP_TIME_NANOSECONDS 15000
 
-char * VIDEOINPT_VERSION=(char *) "0.242 RGB24/YUYV compatible";
+char * VIDEOINPT_VERSION=(char *) "0.243 RGB24/YUYV compatible";
 int increase_priority=0;
 
 struct Video
@@ -65,6 +65,7 @@ struct Video
   /*VIDEO SIMULATION DATA*/
   struct Image rec_video;
   int video_simulation;
+  int keep_timestamp;
 
   /* THREADING DATA */
   int thread_alive_flag;
@@ -461,15 +462,28 @@ void RecordInLoop(int feed_num)
     camera_feeds[feed_num].snap_lock=0;
 
 
-    char store_path[256]={0};
+
+
+
+    char store_path[512]={0};
+    strcpy(store_path,video_simulation_path);
+
+    if ( camera_feeds[feed_num].keep_timestamp )
+    {
+     char timestamp[256]={0};
+     time_t t; struct tm *tmp;
+     t = time(0); tmp = localtime(&t);
+     if (tmp == 0) { fprintf(stderr,"Could not get time ( localtime() ) \n"); }
+     if (strftime(timestamp, sizeof(timestamp),"_%F_%T_",tmp) == 0) { fprintf(stderr, "strftime returned 0");  }
+     strcat(store_path,timestamp);
+    }
+
     char last_part[7]="0.ppm";
     last_part[0]='0'+feed_num;
-
-    strcpy(store_path,video_simulation_path);
     strcat(store_path,last_part);
 
-
     WritePPM(store_path,&camera_feeds[feed_num].rec_video);
+
     if ( mode_started == RECORDING_ONE_ON) { camera_feeds[feed_num].video_simulation = LIVE_ON; }
 
     fprintf(stderr,"Writing Snapshot ( %s ) \n",store_path);
@@ -574,7 +588,7 @@ void CompressRecordWithImageMagick(int state)
   compress_files=state;
 }
 
-void Record(char * filename)
+void Record(char * filename,int timestamp_filename)
 {
     if (!VideoInputsOk()) return;
     if ( strlen( filename ) > 250 ) return;
@@ -584,13 +598,14 @@ void Record(char * filename)
      {
          PauseFeed(i);
            camera_feeds[i].video_simulation = RECORDING_ON;
+           camera_feeds[i].keep_timestamp = timestamp_filename;
          UnpauseFeed(i);
      }
 
     strcpy(video_simulation_path,filename);
 }
 
-void RecordOne(char * filename)
+void RecordOne(char * filename,int timestamp_filename)
 {
   if (!VideoInputsOk()) return;
 
@@ -601,6 +616,7 @@ void RecordOne(char * filename)
       {
         PauseFeed(i);
           camera_feeds[i].video_simulation = RECORDING_ONE_ON;
+          camera_feeds[i].keep_timestamp = timestamp_filename;
         UnpauseFeed(i);
       }
     strcpy(video_simulation_path,filename);

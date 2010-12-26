@@ -168,11 +168,12 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  if ( cmdi_1 == 0 )
                  {
                    sprintf(outptstr,"From %s : Capturing VideoInput Snapshot without a timestamp in the filename (snapshot.ppm) \n",from);
-                   RecordOne((char *)"snapshot");
+                   RecordOne((char *)"memfs/snapshot",0);
                  } else
                  {
                    sprintf(outptstr,"From %s : Capturing VideoInput Snapshot (param , %u)\n",from,cmdi_1);
-                   SnapshotWithTimeStamp();
+                   RecordOne((char *)"memfs/snapshot",1);
+                   //SnapshotWithTimeStamp();
                  }
      break;
      case CMD_PLAYBACK_SNAPSHOT :
