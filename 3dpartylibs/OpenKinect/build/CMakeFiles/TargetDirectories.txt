@@ -1,0 +1,9 @@
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/examples/CMakeFiles/cppview.dir
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/fakenect/CMakeFiles/fakenect.dir
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/src/CMakeFiles/freenect.dir
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/wrappers/c_sync/CMakeFiles/freenect_sync.dir
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/src/CMakeFiles/freenectstatic.dir
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/examples/CMakeFiles/glpclview.dir
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/examples/CMakeFiles/glview.dir
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/fakenect/CMakeFiles/record.dir
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/uninstall.dir

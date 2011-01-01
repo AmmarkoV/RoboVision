@@ -126,6 +126,7 @@ void SignalFrameProcessed(int webcam_id);
 // Playback / Recording
 void CompressRecordWithImageMagick(int state);
 void Play(char * filename);
+void PlayOne(char * filename);
 void Record(char * filename,int timestamp_filename);
 void RecordOne(char * filename,int timestamp_filename);
 void Stop();

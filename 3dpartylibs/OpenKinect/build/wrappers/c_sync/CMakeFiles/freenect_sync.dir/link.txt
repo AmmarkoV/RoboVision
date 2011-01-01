@@ -1,0 +1,1 @@
+/usr/bin/gcc  -fPIC -O2  -shared -Wl,-soname,libfreenect_sync.so.0.0 -o ../../lib/libfreenect_sync.so.0.0.1 CMakeFiles/freenect_sync.dir/libfreenect_sync.c.o ../../lib/libfreenect.so.0.0.1 -lusb-1.0 -Wl,-rpath,/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/lib: 

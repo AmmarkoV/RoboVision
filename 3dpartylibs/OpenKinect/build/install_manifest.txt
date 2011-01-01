@@ -1,0 +1,17 @@
+/usr/local/lib64/libfreenect.so.0.0.1
+/usr/local/lib64/libfreenect.so.0.0
+/usr/local/lib64/libfreenect.so
+/usr/local/lib64/libfreenect.a
+/usr/local/include/libfreenect/libfreenect.h
+/usr/local/include/libfreenect/libfreenect.hpp
+/usr/local/lib64/pkgconfig/libfreenect.pc
+/usr/local/bin/glview
+/usr/local/bin/glpclview
+/usr/local/bin/cppview
+/usr/local/lib64/fakenect/libfreenect.so.0.0.1
+/usr/local/lib64/fakenect/libfreenect.so.0.0
+/usr/local/lib64/fakenect/libfreenect.so
+/usr/local/lib64/libfreenect_sync.so.0.0.1
+/usr/local/lib64/libfreenect_sync.so.0.0
+/usr/local/lib64/libfreenect_sync.so
+/usr/local/include/libfreenect/libfreenect_sync.h

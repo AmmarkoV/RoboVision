@@ -1,0 +1,1 @@
+/usr/bin/gcc  -fPIC -O2  -shared -Wl,-soname,libfreenect.so.0.0 -o ../lib/fakenect/libfreenect.so.0.0.1 CMakeFiles/fakenect.dir/fakenect.c.o 

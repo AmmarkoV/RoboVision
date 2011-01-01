@@ -571,6 +571,12 @@ void * SnapLoop( void * ptr)
   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 void Play(char * filename)
 {
+   /*Needs an implementation*/
+   PlayOne(filename);
+}
+
+void PlayOne(char * filename)
+{
     if (!VideoInputsOk()) return;
     if ( strlen( filename ) > 250 ) return;
 
@@ -582,6 +588,7 @@ void Play(char * filename)
     for (i=0; i<total_cameras; i++)  camera_feeds[i].video_simulation = PLAYBACK_ON;
 
 }
+
 
 void CompressRecordWithImageMagick(int state)
 {

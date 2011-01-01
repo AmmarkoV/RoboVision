@@ -1,0 +1,1 @@
+/usr/bin/gcc  -O2   CMakeFiles/record.dir/record.c.o  -o ../utils/record -rdynamic ../lib/libfreenect.so.0.0.1 -lm -lusb-1.0 -Wl,-rpath,/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/lib 

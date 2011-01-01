@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../examples/../wrappers/c_sync/libfreenect_sync.h
+libfreenect.h
+-
+stdint.h
+-
+
+../include/libfreenect.h
+stdint.h
+-
+libusb-1.0/libusb.h
+-
+
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/examples/glpclview.c
+libfreenect.h
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/examples/libfreenect.h
+libfreenect_sync.h
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/examples/libfreenect_sync.h
+stdio.h
+-
+GLUT/glut.h
+-
+OpenGL/gl.h
+-
+OpenGL/glu.h
+-
+GL/glut.h
+-
+GL/gl.h
+-
+GL/glu.h
+-
+stdlib.h
+-
+math.h
+-
+

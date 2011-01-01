@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/libfreenect.h
+stdint.h
+-
+libusb-1.0/libusb.h
+-
+
+/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/fakenect/fakenect.c
+libfreenect.h
+-
+stdio.h
+-
+string.h
+-
+stdlib.h
+-
+math.h
+-
+unistd.h
+-
+time.h
+-
+assert.h
+-
+
