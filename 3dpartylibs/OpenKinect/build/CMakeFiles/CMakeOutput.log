@@ -1,4 +1,4 @@
-The system is: Linux - 2.6.32-27-generic - x86_64
+The system is: Linux - 2.6.32-30-generic - x86_64
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
 Compiler: /usr/bin/gcc 
 Build flags: 
@@ -313,10 +313,10 @@ Run Build Command:/usr/bin/make "cmTryCompileExec/fast"
 make[1]: Entering directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp/CMakeFiles 1
 Building C object CMakeFiles/cmTryCompileExec.dir/CheckIncludeFiles.c.o
-/usr/bin/gcc   -O2     -o CMakeFiles/cmTryCompileExec.dir/CheckIncludeFiles.c.o   -c /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+/usr/bin/gcc   -Wall     -o CMakeFiles/cmTryCompileExec.dir/CheckIncludeFiles.c.o   -c /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
 Linking C executable cmTryCompileExec
 /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
-/usr/bin/gcc   -O2     CMakeFiles/cmTryCompileExec.dir/CheckIncludeFiles.c.o  -o cmTryCompileExec -rdynamic 
+/usr/bin/gcc   -Wall     CMakeFiles/cmTryCompileExec.dir/CheckIncludeFiles.c.o  -o cmTryCompileExec -rdynamic 
 make[1]: Leaving directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 
 
@@ -328,10 +328,10 @@ Run Build Command:/usr/bin/make "cmTryCompileExec/fast"
 make[1]: Entering directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp/CMakeFiles 1
 Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
 Linking C executable cmTryCompileExec
 /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=pthread_create   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic -lpthread 
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=pthread_create   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic -lpthread 
 make[1]: Leaving directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 
 
@@ -343,10 +343,10 @@ Run Build Command:/usr/bin/make "cmTryCompileExec/fast"
 make[1]: Entering directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp/CMakeFiles 1
 Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=XOpenDisplay   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=XOpenDisplay   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
 Linking C executable cmTryCompileExec
 /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=XOpenDisplay   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic -lX11 -lXext 
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=XOpenDisplay   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic -lX11 -lXext 
 make[1]: Leaving directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 
 
@@ -358,10 +358,10 @@ Run Build Command:/usr/bin/make "cmTryCompileExec/fast"
 make[1]: Entering directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp/CMakeFiles 1
 Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=gethostbyname   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=gethostbyname   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
 Linking C executable cmTryCompileExec
 /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=gethostbyname   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic 
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=gethostbyname   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic 
 make[1]: Leaving directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 
 
@@ -373,10 +373,10 @@ Run Build Command:/usr/bin/make "cmTryCompileExec/fast"
 make[1]: Entering directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp/CMakeFiles 1
 Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=connect   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=connect   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
 Linking C executable cmTryCompileExec
 /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=connect   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic 
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=connect   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic 
 make[1]: Leaving directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 
 
@@ -388,10 +388,10 @@ Run Build Command:/usr/bin/make "cmTryCompileExec/fast"
 make[1]: Entering directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp/CMakeFiles 1
 Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=remove   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=remove   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
 Linking C executable cmTryCompileExec
 /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=remove   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic 
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=remove   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic 
 make[1]: Leaving directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 
 
@@ -403,10 +403,10 @@ Run Build Command:/usr/bin/make "cmTryCompileExec/fast"
 make[1]: Entering directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp/CMakeFiles 1
 Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=shmat   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=shmat   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
 Linking C executable cmTryCompileExec
 /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=shmat   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic 
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=shmat   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic 
 make[1]: Leaving directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 
 
@@ -418,10 +418,10 @@ Run Build Command:/usr/bin/make "cmTryCompileExec/fast"
 make[1]: Entering directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp/CMakeFiles 1
 Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=IceConnectionNumber   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=IceConnectionNumber   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
 Linking C executable cmTryCompileExec
 /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
-/usr/bin/gcc   -O2  -DCHECK_FUNCTION_EXISTS=IceConnectionNumber   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic -lICE 
+/usr/bin/gcc   -Wall  -DCHECK_FUNCTION_EXISTS=IceConnectionNumber   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec -rdynamic -lICE 
 make[1]: Leaving directory `/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles/CMakeTmp'
 
 

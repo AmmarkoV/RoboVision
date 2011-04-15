@@ -45,6 +45,10 @@ libfreenect.h
 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/src/libfreenect.h
 usb_libusb10.h
 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/src/usb_libusb10.h
+stdarg.h
+-
+stdio.h
+-
 
 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/src/tilt.c
 stdio.h

@@ -38,6 +38,7 @@ IF(NOT CMAKE_INSTALL_LOCAL_ONLY)
   INCLUDE("/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/examples/cmake_install.cmake")
   INCLUDE("/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/fakenect/cmake_install.cmake")
   INCLUDE("/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/wrappers/c_sync/cmake_install.cmake")
+  INCLUDE("/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/wrappers/cpp/cmake_install.cmake")
 
 ENDIF(NOT CMAKE_INSTALL_LOCAL_ONLY)
 

@@ -6,9 +6,15 @@
 
 #IncludeRegexTransform: 
 
-../examples/../wrappers/c_sync/libfreenect_sync.h
-libfreenect.h
+../examples/../wrappers/c_sync/../../include/libfreenect.h
+stdint.h
 -
+libusb-1.0/libusb.h
+-
+
+../examples/../wrappers/c_sync/libfreenect_sync.h
+../../include/libfreenect.h
+../examples/../wrappers/c_sync/../../include/libfreenect.h
 stdint.h
 -
 
@@ -24,6 +30,8 @@ libfreenect.h
 libfreenect_sync.h
 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/examples/libfreenect_sync.h
 stdio.h
+-
+stdlib.h
 -
 GLUT/glut.h
 -

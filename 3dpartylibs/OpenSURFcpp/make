@@ -1,0 +1,5 @@
+#!/bin/bash
+echo "OpenSurf compile script missing.." 
+
+echo "Done"
+exit 0

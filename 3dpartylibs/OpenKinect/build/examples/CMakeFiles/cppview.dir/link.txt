@@ -1,1 +1,0 @@
-/usr/bin/c++      CMakeFiles/cppview.dir/cppview.cpp.o  -o ../bin/cppview -rdynamic ../lib/libfreenect.so.0.0.1 -lGLU -lGL -lSM -lICE -lX11 -lXext -lglut -lXmu -lXi -lpthread -lm -lusb-1.0 -Wl,-rpath,/home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/lib: 

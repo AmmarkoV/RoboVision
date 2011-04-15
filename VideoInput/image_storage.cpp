@@ -48,6 +48,8 @@ int ConvertSnapshotsToVideo(int framerate,int bitrate,char * filenameout)
  return i;
 }
 
+//ls -l | egrep -v '^d'
+
 
 
 

@@ -176,19 +176,6 @@ freenectstatic/fast:
 .PHONY : freenectstatic/fast
 
 #=============================================================================
-# Target rules for targets named cppview
-
-# Build rule for target.
-cppview: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 cppview
-.PHONY : cppview
-
-# fast build rule for target.
-cppview/fast:
-	$(MAKE) -f examples/CMakeFiles/cppview.dir/build.make examples/CMakeFiles/cppview.dir/build
-.PHONY : cppview/fast
-
-#=============================================================================
 # Target rules for targets named glpclview
 
 # Build rule for target.
@@ -213,6 +200,19 @@ glview: cmake_check_build_system
 glview/fast:
 	$(MAKE) -f examples/CMakeFiles/glview.dir/build.make examples/CMakeFiles/glview.dir/build
 .PHONY : glview/fast
+
+#=============================================================================
+# Target rules for targets named tiltdemo
+
+# Build rule for target.
+tiltdemo: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tiltdemo
+.PHONY : tiltdemo
+
+# fast build rule for target.
+tiltdemo/fast:
+	$(MAKE) -f examples/CMakeFiles/tiltdemo.dir/build.make examples/CMakeFiles/tiltdemo.dir/build
+.PHONY : tiltdemo/fast
 
 #=============================================================================
 # Target rules for targets named fakenect
@@ -253,6 +253,32 @@ freenect_sync/fast:
 	$(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync.dir/build
 .PHONY : freenect_sync/fast
 
+#=============================================================================
+# Target rules for targets named freenect_sync_static
+
+# Build rule for target.
+freenect_sync_static: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 freenect_sync_static
+.PHONY : freenect_sync_static
+
+# fast build rule for target.
+freenect_sync_static/fast:
+	$(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/build
+.PHONY : freenect_sync_static/fast
+
+#=============================================================================
+# Target rules for targets named cppview
+
+# Build rule for target.
+cppview: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cppview
+.PHONY : cppview
+
+# fast build rule for target.
+cppview/fast:
+	$(MAKE) -f wrappers/cpp/CMakeFiles/cppview.dir/build.make wrappers/cpp/CMakeFiles/cppview.dir/build
+.PHONY : cppview/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -268,12 +294,14 @@ help:
 	@echo "... uninstall"
 	@echo "... freenect"
 	@echo "... freenectstatic"
-	@echo "... cppview"
 	@echo "... glpclview"
 	@echo "... glview"
+	@echo "... tiltdemo"
 	@echo "... fakenect"
 	@echo "... record"
 	@echo "... freenect_sync"
+	@echo "... freenect_sync_static"
+	@echo "... cppview"
 .PHONY : help
 
 

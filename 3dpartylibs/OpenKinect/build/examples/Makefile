@@ -137,20 +137,6 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-examples/CMakeFiles/cppview.dir/rule:
-	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f CMakeFiles/Makefile2 examples/CMakeFiles/cppview.dir/rule
-.PHONY : examples/CMakeFiles/cppview.dir/rule
-
-# Convenience name for target.
-cppview: examples/CMakeFiles/cppview.dir/rule
-.PHONY : cppview
-
-# fast build rule for target.
-cppview/fast:
-	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f examples/CMakeFiles/cppview.dir/build.make examples/CMakeFiles/cppview.dir/build
-.PHONY : cppview/fast
-
-# Convenience name for target.
 examples/CMakeFiles/glpclview.dir/rule:
 	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f CMakeFiles/Makefile2 examples/CMakeFiles/glpclview.dir/rule
 .PHONY : examples/CMakeFiles/glpclview.dir/rule
@@ -178,29 +164,19 @@ glview/fast:
 	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f examples/CMakeFiles/glview.dir/build.make examples/CMakeFiles/glview.dir/build
 .PHONY : glview/fast
 
-cppview.o: cppview.cpp.o
-.PHONY : cppview.o
+# Convenience name for target.
+examples/CMakeFiles/tiltdemo.dir/rule:
+	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f CMakeFiles/Makefile2 examples/CMakeFiles/tiltdemo.dir/rule
+.PHONY : examples/CMakeFiles/tiltdemo.dir/rule
 
-# target to build an object file
-cppview.cpp.o:
-	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f examples/CMakeFiles/cppview.dir/build.make examples/CMakeFiles/cppview.dir/cppview.cpp.o
-.PHONY : cppview.cpp.o
+# Convenience name for target.
+tiltdemo: examples/CMakeFiles/tiltdemo.dir/rule
+.PHONY : tiltdemo
 
-cppview.i: cppview.cpp.i
-.PHONY : cppview.i
-
-# target to preprocess a source file
-cppview.cpp.i:
-	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f examples/CMakeFiles/cppview.dir/build.make examples/CMakeFiles/cppview.dir/cppview.cpp.i
-.PHONY : cppview.cpp.i
-
-cppview.s: cppview.cpp.s
-.PHONY : cppview.s
-
-# target to generate assembly for a file
-cppview.cpp.s:
-	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f examples/CMakeFiles/cppview.dir/build.make examples/CMakeFiles/cppview.dir/cppview.cpp.s
-.PHONY : cppview.cpp.s
+# fast build rule for target.
+tiltdemo/fast:
+	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f examples/CMakeFiles/tiltdemo.dir/build.make examples/CMakeFiles/tiltdemo.dir/build
+.PHONY : tiltdemo/fast
 
 glpclview.o: glpclview.c.o
 .PHONY : glpclview.o
@@ -250,13 +226,36 @@ glview.c.s:
 	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f examples/CMakeFiles/glview.dir/build.make examples/CMakeFiles/glview.dir/glview.c.s
 .PHONY : glview.c.s
 
+tiltdemo.o: tiltdemo.c.o
+.PHONY : tiltdemo.o
+
+# target to build an object file
+tiltdemo.c.o:
+	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f examples/CMakeFiles/tiltdemo.dir/build.make examples/CMakeFiles/tiltdemo.dir/tiltdemo.c.o
+.PHONY : tiltdemo.c.o
+
+tiltdemo.i: tiltdemo.c.i
+.PHONY : tiltdemo.i
+
+# target to preprocess a source file
+tiltdemo.c.i:
+	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f examples/CMakeFiles/tiltdemo.dir/build.make examples/CMakeFiles/tiltdemo.dir/tiltdemo.c.i
+.PHONY : tiltdemo.c.i
+
+tiltdemo.s: tiltdemo.c.s
+.PHONY : tiltdemo.s
+
+# target to generate assembly for a file
+tiltdemo.c.s:
+	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f examples/CMakeFiles/tiltdemo.dir/build.make examples/CMakeFiles/tiltdemo.dir/tiltdemo.c.s
+.PHONY : tiltdemo.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... cppview"
 	@echo "... edit_cache"
 	@echo "... glpclview"
 	@echo "... glview"
@@ -265,15 +264,16 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... cppview.o"
-	@echo "... cppview.i"
-	@echo "... cppview.s"
+	@echo "... tiltdemo"
 	@echo "... glpclview.o"
 	@echo "... glpclview.i"
 	@echo "... glpclview.s"
 	@echo "... glview.o"
 	@echo "... glview.i"
 	@echo "... glview.s"
+	@echo "... tiltdemo.o"
+	@echo "... tiltdemo.i"
+	@echo "... tiltdemo.s"
 .PHONY : help
 
 

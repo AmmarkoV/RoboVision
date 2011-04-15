@@ -12,6 +12,7 @@ SET(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/CMakeCXXCompiler.cmake"
   "CMakeFiles/CMakeSystem.cmake"
   "../cmake_modules/FindOS.cmake"
+  "../cmake_modules/FindThreads.cmake"
   "../cmake_modules/Findlibusb-1.0.cmake"
   "../cmake_modules/SetupDirectories.cmake"
   "../cmake_modules/UninstallTarget.cmake.in"
@@ -20,6 +21,7 @@ SET(CMAKE_MAKEFILE_DEPENDS
   "../src/CMakeLists.txt"
   "../src/libfreenect.pc.in"
   "../wrappers/c_sync/CMakeLists.txt"
+  "../wrappers/cpp/CMakeLists.txt"
   "/usr/share/cmake-2.8/Modules/CMakeCCompiler.cmake.in"
   "/usr/share/cmake-2.8/Modules/CMakeCCompilerABI.c"
   "/usr/share/cmake-2.8/Modules/CMakeCInformation.cmake"
@@ -55,7 +57,6 @@ SET(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-2.8/Modules/FindOpenGL.cmake"
   "/usr/share/cmake-2.8/Modules/FindPackageHandleStandardArgs.cmake"
   "/usr/share/cmake-2.8/Modules/FindPackageMessage.cmake"
-  "/usr/share/cmake-2.8/Modules/FindThreads.cmake"
   "/usr/share/cmake-2.8/Modules/FindX11.cmake"
   "/usr/share/cmake-2.8/Modules/Platform/Linux.cmake"
   "/usr/share/cmake-2.8/Modules/Platform/UnixPaths.cmake"
@@ -77,6 +78,7 @@ SET(CMAKE_MAKEFILE_PRODUCTS
   "examples/CMakeFiles/CMakeDirectoryInformation.cmake"
   "fakenect/CMakeFiles/CMakeDirectoryInformation.cmake"
   "wrappers/c_sync/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "wrappers/cpp/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -84,10 +86,12 @@ SET(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/uninstall.dir/DependInfo.cmake"
   "src/CMakeFiles/freenect.dir/DependInfo.cmake"
   "src/CMakeFiles/freenectstatic.dir/DependInfo.cmake"
-  "examples/CMakeFiles/cppview.dir/DependInfo.cmake"
   "examples/CMakeFiles/glpclview.dir/DependInfo.cmake"
   "examples/CMakeFiles/glview.dir/DependInfo.cmake"
+  "examples/CMakeFiles/tiltdemo.dir/DependInfo.cmake"
   "fakenect/CMakeFiles/fakenect.dir/DependInfo.cmake"
   "fakenect/CMakeFiles/record.dir/DependInfo.cmake"
   "wrappers/c_sync/CMakeFiles/freenect_sync.dir/DependInfo.cmake"
+  "wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/DependInfo.cmake"
+  "wrappers/cpp/CMakeFiles/cppview.dir/DependInfo.cmake"
   )

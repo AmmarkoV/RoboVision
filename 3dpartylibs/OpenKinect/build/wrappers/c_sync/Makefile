@@ -150,12 +150,27 @@ freenect_sync/fast:
 	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync.dir/build
 .PHONY : freenect_sync/fast
 
+# Convenience name for target.
+wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/rule:
+	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f CMakeFiles/Makefile2 wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/rule
+.PHONY : wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/rule
+
+# Convenience name for target.
+freenect_sync_static: wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/rule
+.PHONY : freenect_sync_static
+
+# fast build rule for target.
+freenect_sync_static/fast:
+	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/build
+.PHONY : freenect_sync_static/fast
+
 libfreenect_sync.o: libfreenect_sync.c.o
 .PHONY : libfreenect_sync.o
 
 # target to build an object file
 libfreenect_sync.c.o:
 	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync.dir/libfreenect_sync.c.o
+	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/libfreenect_sync.c.o
 .PHONY : libfreenect_sync.c.o
 
 libfreenect_sync.i: libfreenect_sync.c.i
@@ -164,6 +179,7 @@ libfreenect_sync.i: libfreenect_sync.c.i
 # target to preprocess a source file
 libfreenect_sync.c.i:
 	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync.dir/libfreenect_sync.c.i
+	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/libfreenect_sync.c.i
 .PHONY : libfreenect_sync.c.i
 
 libfreenect_sync.s: libfreenect_sync.c.s
@@ -172,6 +188,7 @@ libfreenect_sync.s: libfreenect_sync.c.s
 # target to generate assembly for a file
 libfreenect_sync.c.s:
 	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync.dir/libfreenect_sync.c.s
+	cd /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build && $(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/libfreenect_sync.c.s
 .PHONY : libfreenect_sync.c.s
 
 # Help Target
@@ -182,6 +199,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... freenect_sync"
+	@echo "... freenect_sync_static"
 	@echo "... install"
 	@echo "... install/local"
 	@echo "... install/strip"

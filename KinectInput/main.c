@@ -1,5 +1,5 @@
 // Be sure to link with -lfreenect_sync
-#include <libfreenect/libfreenect_sync.h>
+#include "../3dpartylibs/OpenKinect/wrappers/c_sync/libfreenect_sync.h"
 
 freenect_context *f_ctx;
 freenect_device *f_dev;
@@ -14,7 +14,7 @@ int Kinect_Init()
 
 int Kinect_Close()
 {
-    if ( data != 0 ) { free(data); }
+   // if ( data != 0 ) { free(data); }
     freenect_sync_stop();
     return 1;
 }

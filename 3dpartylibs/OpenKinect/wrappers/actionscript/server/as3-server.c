@@ -26,44 +26,53 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include "libfreenect.h"
-#include <pthread.h>
-#include <arpa/inet.h>
-#include <signal.h>
+#ifndef _WIN32
+	#include <unistd.h>
+	#include <arpa/inet.h>
+#else
+	#include <winsock2.h>
+	#include <ws2tcpip.h>
+	#pragma comment(lib, "Ws2_32.lib")
+	#include <stdint.h>
+	#include <windows.h>
+	unsigned sleep(unsigned seconds)
+	{
+	  Sleep(seconds*1000);  // The Windows Sleep operates on milliseconds
+	  return(0);
+	}
+#endif
 
+#include <string.h>
+#include "libfreenect_sync.h"
+#include <pthread.h>
+#include <signal.h>
 #include <math.h>
 
 int g_argc;
 char **g_argv;
 
-freenect_context *f_ctx;
-freenect_device *f_dev;
+char *_current_version = "v9.0b";
 
-int got_frames = 0;
+#define AS3_BITMAPDATA_LEN FREENECT_FRAME_PIX * 4
 
-#define AS3_BITMAPDATA_LEN 640 * 480 * 4
+pthread_t wait_for_client_thread, connection_thread;
 
-struct sockaddr_in si_depth, si_rgb, si_data;
-pthread_t freenect_thread, depth_thread, rgb_thread, data_thread, data_in_thread, data_out_thread;
-pthread_mutex_t depth_mutex	= PTHREAD_MUTEX_INITIALIZER,
-rgb_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t depth_cond = PTHREAD_COND_INITIALIZER,
-rgb_cond = PTHREAD_COND_INITIALIZER;
-
-int freenect_angle = 0;
-
-char *conf_ip		= "127.0.0.1";
-int s_depth			= -1,
-s_rgb			= -1,
-s_data			= -1,
-conf_port_depth	= 6001,
-conf_port_rgb	= 6002,
-conf_port_data	= 6003;
+#ifdef WIN32
+	struct addrinfo si_data;
+	PCSTR conf_port_data	= "6001";
+	SOCKET data_socket = INVALID_SOCKET,
+		data_client_socket = INVALID_SOCKET;
+#else
+	struct sockaddr_in si_data;
+	char *conf_ip		= "127.0.0.1";
+	int s_data			= -1,
+		conf_port_data	= 6001;
+#endif
 
 uint8_t buf_depth[AS3_BITMAPDATA_LEN];
 uint8_t	buf_rgb[AS3_BITMAPDATA_LEN];
+void *buf_depth_temp;
+void *buf_rgb_temp;
 
 int die = 0;
 
@@ -74,433 +83,421 @@ int rgb_child;
 int rgb_connected = 0;
 
 int data_child;
-int data_connected = 0;
-
+int client_connected = 0;
 
 int psent = 0;
 
-void send_policy_file(int child){
-	if(psent == 0){
-		int n;
-		char * str = "<?xml version='1.0'?><!DOCTYPE cross-domain-policy SYSTEM '/xml/dtds/cross-domain-policy.dtd'><cross-domain-policy><site-control permitted-cross-domain-policies='all'/><allow-access-from domain='*' to-ports='*'/></cross-domain-policy>\n";
-		//n = write(child,str , 237);
-		if ( n < 0 || n != 237)
-		{
-			fprintf(stderr, "Error on write() for depth (%d instead of %d)\n",n, 237);
-			//break;
-		}
-		psent = 1;
-	}
-}
+int _video_mirrored = 0,
+	_depth_mirrored = 0,
+	_min_depth = 600,
+	_max_depth = 800;
 
-void *network_depth(void *arg)
-{
-	int childlen;
-	struct sockaddr_in childaddr;
-	
-	childlen = sizeof(childaddr);
-	while ( !die )
-	{
-		printf("### Wait depth client\n");
-		depth_child = accept(s_depth, (struct sockaddr *)&childaddr, (unsigned int *)&childlen);
-		if ( network_depth < 0 )
-		{
-			fprintf(stderr, "Error on accept() for depth, exit depth thread.\n");
-			break;
-		}
-		
-		printf("### Got depth client\n");
-		send_policy_file(depth_child);
-		depth_connected = 1;
-		freenect_start_depth(f_dev);
-	}
-	
-	return NULL;
-}
+#ifdef WIN32
+int initServer(addrinfo si_type, PCSTR conf_port, SOCKET *the_socket){
+	ZeroMemory(&si_type, sizeof (si_type));
 
-void *network_rgb(void *arg)
-{
-	int childlen;
-	struct sockaddr_in childaddr;
+	si_type.ai_family = AF_INET;
+	si_type.ai_socktype = SOCK_STREAM;
+	si_type.ai_protocol = IPPROTO_TCP;
+	si_type.ai_flags = AI_PASSIVE;
 	
-	childlen = sizeof(childaddr);
-	while ( !die )
-	{
-		printf("### Wait rgb client\n");
-		rgb_child = accept(s_rgb, (struct sockaddr *)&childaddr, (unsigned int *)&childlen);
-		if ( rgb_child < 0 )
-		{
-			fprintf(stderr, "Error on accept() for rgb, exit rgb thread.\n");
-			break;
-		}
-		
-		printf("### Got rgb client\n");
-		send_policy_file(rgb_child);
-		rgb_connected = 1;
-		freenect_start_video(f_dev);
-	}
-	
-	return NULL;
-}
+   // Resolve the local address and port to be used by the server
+	struct addrinfo *result = NULL;	
 
-void *network_data(void *arg)
-{
-	int childlen;
-	struct sockaddr_in childaddr;
-	
-	childlen = sizeof(childaddr);
-	while ( !die )
-	{
-		printf("### Wait data client\n");
-		data_child = accept(s_data, (struct sockaddr *)&childaddr, (unsigned int *)&childlen);
-		if ( data_child < 0 )
-		{
-			fprintf(stderr, "Error on accept() for data, exit data thread.\n");
-			break;
-		}
-		
-		printf("### Got data client\n");
-		
-		data_connected = 1;
+	int iResult = getaddrinfo(NULL, conf_port, &si_type, &result);
+	if (iResult != 0) {
+		printf("Socket: getaddrinfo failed: %d\n", iResult);
+		WSACleanup();
+		return 1;
 	}
-	
-	return NULL;
-}
 
-void *data_in(void *arg) {
-	int n;
-	while(!die && freenect_process_events(f_ctx) >= 0 )
-	{
-		if(data_connected == 1){
-			char buffer[6];
-			n = read(data_child, buffer, 1024);
-			//printf("n: %d\n", n);
-			if(n == 6){
-				if (buffer[0] == 1) { //MOTOR
-					if (buffer[1] == 1) { //MOVE
-						int angle;
-						memcpy(&angle, &buffer[2], sizeof(int));
-						freenect_set_tilt_degs(f_dev,ntohl(angle));
-					}
-				}
-			}
-		}
-	}
-	return NULL;
-}
+	*the_socket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 
-void *data_out(void *arg) {
-	int n;
-	int16_t ax,ay,az;
-	double dx,dy,dz;
-	while(!die && freenect_process_events(f_ctx) >= 0 )
-	{
-		if(data_connected == 1){
-			usleep(1000000 / 30); // EMULATE 30 FPS
-			freenect_raw_tilt_state* state;
-			freenect_update_tilt_state(f_dev);
-			state = freenect_get_tilt_state(f_dev);
-			freenect_get_mks_accel(state, &dx, &dy, &dz);
-			char buffer_send[3*2+3*8];
-			memcpy(&buffer_send,&state->accelerometer_x, sizeof(int16_t));
-			memcpy(&buffer_send[2],&state->accelerometer_y, sizeof(int16_t));
-			memcpy(&buffer_send[4],&state->accelerometer_z, sizeof(int16_t));
-			memcpy(&buffer_send[6],&dx, sizeof(double));
-			memcpy(&buffer_send[14],&dy, sizeof(double));
-			memcpy(&buffer_send[22],&dz, sizeof(double));
-			n = write(data_child, buffer_send, 3*2+3*8);
-		}
+	if (*the_socket == INVALID_SOCKET) {
+		printf("Socket: socket failed [%ld]\n", WSAGetLastError());
+		freeaddrinfo(result);
+		WSACleanup();
+		return 1;
 	}
-	
-	return NULL;
+
+	iResult = bind(*the_socket, result->ai_addr, (int)result->ai_addrlen);
+	if (iResult == SOCKET_ERROR) {
+		printf("Socket: bind failed: %d\n", WSAGetLastError());
+		freeaddrinfo(result);
+		closesocket(*the_socket);
+		WSACleanup();
+		return 1;
+	}
+
+	freeaddrinfo(result);
+
+	if ( listen(*the_socket, SOMAXCONN ) == SOCKET_ERROR ) {
+		printf( "Socket: listen failed [%ld]\n", WSAGetLastError() );
+		closesocket(*the_socket);
+		WSACleanup();
+		return 1;
+	}
+
+	return 0;
 }
-int network_init()
-{
+#else 
+int initServer(struct sockaddr_in si_type, int conf_port, int *the_socket) {
 	int optval = 1;
-	
-	signal(SIGPIPE, SIG_IGN);
-	
-	if ( (s_depth = socket(AF_INET, SOCK_STREAM, 0)) == -1 )
+	if ( (*the_socket = socket(AF_INET, SOCK_STREAM, 0)) == -1 )
 	{
 		fprintf(stderr, "Unable to create depth socket\n");
 		return -1;
 	}
-	
-	if ( (s_rgb = socket(AF_INET, SOCK_STREAM, 0)) == -1 )
-	{
-		fprintf(stderr, "Unable to create rgb socket\n");
-		return -1;
-	}
-	
-	if ( (s_data = socket(AF_INET, SOCK_STREAM, 0)) == -1 )
-	{
-		fprintf(stderr, "Unable to create data socket\n");
-		return -1;
-	}
-	
-	setsockopt(s_depth, SOL_SOCKET, SO_REUSEADDR, (const void *)&optval, sizeof(optval));
-	setsockopt(s_rgb, SOL_SOCKET, SO_REUSEADDR, (const void *)&optval, sizeof(optval));
-	setsockopt(s_data, SOL_SOCKET, SO_REUSEADDR, (const void *)&optval, sizeof(optval));
-	
-	memset((char *) &si_depth, 0, sizeof(si_depth));
-	memset((char *) &si_rgb, 0, sizeof(si_rgb));
-	memset((char *) &si_data, 0, sizeof(si_data));
-	
-	si_depth.sin_family			= AF_INET;
-	si_depth.sin_port			= htons(conf_port_depth);
-	si_depth.sin_addr.s_addr	= inet_addr(conf_ip);
-	
-	si_rgb.sin_family			= AF_INET;
-	si_rgb.sin_port				= htons(conf_port_rgb);
-	si_rgb.sin_addr.s_addr		= inet_addr(conf_ip);
-	
-	si_data.sin_family			= AF_INET;
-	si_data.sin_port			= htons(conf_port_data);
-	si_data.sin_addr.s_addr		= inet_addr(conf_ip);
-	
-	if ( bind(s_depth, (struct sockaddr *)&si_depth,
-			  sizeof(si_depth)) < 0 )
+
+	setsockopt(*the_socket, SOL_SOCKET, SO_REUSEADDR, (const void *)&optval, sizeof(optval));
+
+	memset((char *) &si_type, 0, sizeof(si_type));
+
+	si_type.sin_family			= AF_INET;
+	si_type.sin_port			= htons(conf_port);
+	si_type.sin_addr.s_addr		= inet_addr(conf_ip);
+
+	if ( bind(*the_socket, (struct sockaddr *)&si_type,
+			  sizeof(si_type)) < 0 )
 	{
 		fprintf(stderr, "Error at bind() for depth\n");
 		return -1;
 	}
-	
-	if ( bind(s_rgb, (struct sockaddr *)&si_rgb,
-			  sizeof(si_rgb)) < 0 )
-	{
-		fprintf(stderr, "Error at bind() for rgb\n");
-		return -1;
-	}
-	
-	if ( bind(s_data, (struct sockaddr *)&si_data,
-			  sizeof(si_data)) < 0 )
-	{
-		fprintf(stderr, "Error at bind() for data\n");
-		return -1;
-	}
-	
-	if ( listen(s_depth, 1) < 0 )
+	if ( listen(*the_socket, 1) < 0 )
 	{
 		fprintf(stderr, "Error on listen() for depth\n");
 		return -1;
 	}
-	
-	if ( listen(s_rgb, 1) < 0 )
-	{
-		fprintf(stderr, "Error on listen() for rgb\n");
-		return -1;
+
+	return 0;
+}
+#endif
+
+int sendMessage(int first, int second, unsigned char *data, int len) {
+	int m_len = 1 + 1 + sizeof(int);
+	unsigned char *msg = (unsigned char*) malloc(m_len + len);
+	memcpy(msg, &first, 1);
+	memcpy(msg + 1, &second, 1);
+	memcpy(msg + 2, &len, sizeof(int));
+	memcpy(msg + m_len, data, len);
+	#ifdef WIN32
+	int n = send(data_client_socket, (char*)msg, m_len + len, 0);
+	#else
+	int n = write(data_child, msg, m_len + len);
+	#endif
+	free((void*)msg);
+	return n;
+}
+
+void send_policy_file(int child){
+	if(psent == 0){
+		char * str = "<?xml version='1.0'?><!DOCTYPE cross-domain-policy SYSTEM '/xml/dtds/cross-domain-policy.dtd'><cross-domain-policy><site-control permitted-cross-domain-policies='all'/><allow-access-from domain='*' to-ports='*'/></cross-domain-policy>\n";
+		#ifdef WIN32
+		int n = send(data_client_socket, (char*)str, 235, 0);
+		#else
+		int n = write(child,str , 235);
+		#endif
+		
+		if ( n < 0 || n != 235)
+		{
+			fprintf(stderr, "Error on write() for policy (%d instead of %d)\n",n, 235);
+		}
+		//psent = 1;
+	}
+}
+
+//send depth ARGB to client
+void sendDepth(){
+	uint32_t ts, x, y, i, j;
+	freenect_sync_get_depth(&buf_depth_temp, &ts, 0, FREENECT_DEPTH_11BIT);
+	uint16_t *depth = (uint16_t*) buf_depth_temp;
+	uint16_t *tmp_depth = (uint16_t*) malloc(FREENECT_DEPTH_11BIT_SIZE);
+	if(_depth_mirrored){	//MIRROR DEPTH DATA
+		for(x = 0; x < FREENECT_FRAME_W; x++){
+			for(y = 0; y < FREENECT_FRAME_H; y++){
+				i = x + (y  * FREENECT_FRAME_W);
+				j = (FREENECT_FRAME_W - x - 1) + (y  * FREENECT_FRAME_W);
+				tmp_depth[i] = depth[j];
+			}
+		}
+		depth = tmp_depth;
 	}
 	
-	if ( listen(s_data, 1) < 0 )
+	for (i=0; i<FREENECT_FRAME_PIX; i++) {
+		buf_depth[4 * i + 0] = 0x00;
+		buf_depth[4 * i + 1] = 0x00;
+		buf_depth[4 * i + 2] = 0x00;
+		buf_depth[4 * i + 3] = 0xFF;
+		if(depth[i] < _max_depth && depth[i] > _min_depth){
+			unsigned char l =  0xFF - ((depth[i] - _min_depth) & 0xFF);
+			buf_depth[4 * i + 0] = l;
+			buf_depth[4 * i + 1] = l;
+			buf_depth[4 * i + 2] = l;
+			buf_depth[4 * i + 3] = 0xFF;
+		}
+	}
+	int n = sendMessage(0, 0, buf_depth, AS3_BITMAPDATA_LEN);
+	if (n < 0)
 	{
-		fprintf(stderr, "Error on listen() for data\n");
-		return -1;
+		printf("Error sending depth\n");
+		client_connected = 0;
+	}
+	free(tmp_depth);
+}
+
+//send video ARGB to client
+void sendVideo(){
+	uint32_t ts,x, y, i, j;
+	freenect_sync_get_video(&buf_rgb_temp, &ts, 0, FREENECT_VIDEO_RGB);
+	uint8_t *rgb = (uint8_t*)buf_rgb_temp;
+
+	//MIRROR RGB DATA AND ADD ALPHA
+	for(x = 0; x < FREENECT_FRAME_W; x++){
+		for(y = 0; y < FREENECT_FRAME_H; y++){
+			i = x + (y  * FREENECT_FRAME_W);
+			if(!_video_mirrored)
+				j = i;
+			else
+				j = (FREENECT_FRAME_W - x - 1) + (y  * FREENECT_FRAME_W);
+			buf_rgb[4 * i + 0] = rgb[3 * j + 2];
+			buf_rgb[4 * i + 1] = rgb[3 * j + 1];
+			buf_rgb[4 * i + 2] = rgb[3 * j + 0];
+			buf_rgb[4 * i + 3] = 0x00;
+		}
+	}
+	int n = sendMessage(0, 1, buf_rgb, AS3_BITMAPDATA_LEN);
+	if ( n < 0)
+	{
+		printf("Error sending Video\n");
+		client_connected = 0;
+	}
+}
+
+//send accelerometer data to client
+void sendAccelerometers() {
+	int16_t ax,ay,az;
+	double dx,dy,dz;
+	unsigned char buffer_send[3*2+3*8];
+	freenect_raw_tilt_state *state;
+	freenect_sync_get_tilt_state(&state, 0);
+	ax = state->accelerometer_x;
+	ay = state->accelerometer_y;
+	az = state->accelerometer_z;
+	freenect_get_mks_accel(state, &dx, &dy, &dz);
+	memcpy(&buffer_send,&ax, sizeof(int16_t));
+	memcpy(&buffer_send[2],&ay, sizeof(int16_t));
+	memcpy(&buffer_send[4],&az, sizeof(int16_t));
+	memcpy(&buffer_send[6],&dx, sizeof(double));
+	memcpy(&buffer_send[14],&dy, sizeof(double));
+	memcpy(&buffer_send[22],&dz, sizeof(double));
+	int n = sendMessage(1, 2, buffer_send, 3*2+3*8);
+	if ( n < 0)
+	{
+		printf("Error sending Accelerometers\n");
+		client_connected = 0;
+	}
+}
+
+//Connection protocol handler
+void *connection_handler(void *arg) {
+	int n, value;
+	//send_policy_file(data_child);
+	while(client_connected) {
+		char buff[8*10]; //Command buffer
+		#ifdef WIN32 //Listen for data (Winsock)
+			n = recv(data_client_socket, (char*)buff, sizeof(buff), 0);
+		#else //Listen for data (UNIX)
+			n = read(data_child, buff, sizeof(buff));
+		#endif
+		//If command length is multiple of 6
+		if(n > 0 && n % 6 == 0){
+			//Get the number of commands received
+			int max = n / 6;
+			int i;
+			//For each command received
+			for(i = 0; i < max; i++){
+				memcpy(&value, &buff[2 + (i*6)], sizeof(int));
+				value = ntohl(value);
+				//The BIG switch (Communication protocol)
+				switch(buff[0 + (i*6)]){
+					case 0: //CAMERA
+						switch(buff[1 + (i*6)]){
+							case 0: //GET DEPTH
+								sendDepth();
+							break;
+							case 1: //GET RGB
+								sendVideo();
+							break;
+							case 2: //Mirror depth
+								_depth_mirrored = value;
+							break;
+							case 3: //Mirror video
+								_video_mirrored = value;
+							break;
+							case 4: //Min depth
+								_min_depth = value;
+							break;
+							case 5: //Max depth
+								_max_depth = value;
+							break;
+						}
+					break;
+					case 1: //MOTOR
+						switch(buff[1 + (i*6)]){
+							case 0: //MOVE
+								freenect_sync_set_tilt_degs(value, 0);
+							break;
+							case 1: //LED COLOR
+								freenect_sync_set_led((freenect_led_options) value, 0);
+							break;
+							case 2: //Accelerometer
+								sendAccelerometers();
+							break;
+						}
+					break;
+				}
+			}
+		} else { //Command was not multiple of 6 (we received an invalid command)
+			printf("got bad command (%d)\n", n);
+			client_connected = 0;
+		}
+	}
+	printf("Disconecting client...\n");
+	//waiting for client led status
+	freenect_sync_set_led((freenect_led_options) 4, 0);
+	return NULL;
+}
+
+//Waiting for a client to connect
+void *waiting_for_client(void *arg)
+{
+	int childlen;
+	struct sockaddr_in childaddr;
+	
+	childlen = sizeof(childaddr);
+	while (!die)
+	{
+		printf("### Wait client\n");
+		#ifdef _WIN32 //Wait for connection (Winsock)
+			data_client_socket = accept(data_socket, NULL, NULL);
+			if (data_client_socket == INVALID_SOCKET) {
+				if(!die) printf("Error on accept() for data, exit data thread. %d\n", WSAGetLastError());
+				closesocket(data_socket);
+				WSACleanup();
+				break;
+			}
+		#else //Wait for connection (UNIX)
+			data_child = accept(s_data, (struct sockaddr *)&childaddr, (unsigned int *)&childlen);
+			if ( data_child < 0 )
+			{
+				if(!die) fprintf(stderr, "Error on accept() for data, exit data thread.\n");
+				break;
+			}
+		#endif
+		//Handle client connection and create connection thread to communicate with client
+		printf("###### Got client\n");
+		//got client led status
+		freenect_sync_set_led((freenect_led_options) 1, 0);
+		client_connected = 1;
+		if (pthread_create(&connection_thread, NULL, &connection_handler, NULL)) {
+			fprintf(stderr, "Error on pthread_create() for SERVER\n");
+		}
+		//Then we start listening again to allow re-connection to server
 	}
 	
-	/* launch 3 threads, 2 for each images and 1 for control
-	 */
+	return NULL;
+}
+
+//Init network socket
+int network_init()
+{
+	#ifndef _WIN32 //Init server UNIX
+		signal(SIGPIPE, SIG_IGN);
+		initServer(si_data, conf_port_data, &s_data); 
+	#else //Init server Winsock (Windows)
+		WORD wVersionRequested;
+    	WSADATA wsaData;
+    	int err;
+
+		/* Use the MAKEWORD(lowbyte, highbyte) macro declared in Windef.h */
+    	wVersionRequested = MAKEWORD(2, 2);
+
+    	err = WSAStartup(wVersionRequested, &wsaData);
+    	if (err != 0) {
+        	/* Tell the user that we could not find a usable */
+        	/* Winsock DLL.                                  */
+        	printf("WSAStartup failed with error: %d\n", err);
+        	return 1;
+    	}
+		initServer(si_data, conf_port_data, &data_socket);
+	#endif
 	
-	if ( pthread_create(&depth_thread, NULL, network_depth, NULL) )
-	{
-		fprintf(stderr, "Error on pthread_create() for depth\n");
-		return -1;
-	}
-	
-	if ( pthread_create(&rgb_thread, NULL, network_rgb, NULL) )
-	{
-		fprintf(stderr, "Error on pthread_create() for rgb\n");
-		return -1;
-	}
-	
-	if ( pthread_create(&data_thread, NULL, network_data, NULL) )
+	//Create thread to wait for connection
+	if ( pthread_create(&wait_for_client_thread, NULL, waiting_for_client, NULL) )
 	{
 		fprintf(stderr, "Error on pthread_create() for data\n");
 		return -1;
 	}
-	
-	
+
 	return 0;
 }
 
+//Close network socket
 void network_close()
 {
 	die = 1;
-	if ( s_depth != -1 )
-		close(s_depth), s_depth = -1;
-	if ( s_rgb != -1 )
-		close(s_rgb), s_rgb = -1;
+#ifdef _WIN32
+	if ( data_socket != INVALID_SOCKET )
+		closesocket(data_socket);
+#else
+	if ( s_data != -1 )
+		close(s_data), s_data = -1;
+#endif
 }
 
-uint16_t t_gamma[2048];
-
-void depth_cb(freenect_device *dev, void *v_depth, uint32_t timestamp)
-{
-	int i, n;
-	uint16_t *depth = v_depth;
-	
-	pthread_mutex_lock(&depth_mutex);
-	for (i=0; i<FREENECT_FRAME_PIX; i++) {
-		int pval = t_gamma[depth[i]];
-		int lb = pval & 0xff;
-		switch (pval>>8) {
-			case 0:
-				buf_depth[4 *  i + 2] = 255;
-				buf_depth[4 *  i + 1] = 255-lb;
-				buf_depth[4 *  i + 0] = 255-lb;
-				break;
-			case 1:
-				buf_depth[4 *  i + 2] = 255;
-				buf_depth[4 *  i + 1] = lb;
-				buf_depth[4 *  i + 0] = 0;
-				break;
-			case 2:
-				buf_depth[4 *  i + 2] = 255-lb;
-				buf_depth[4 *  i + 1] = 255;
-				buf_depth[4 *  i + 0] = 0;
-				break;
-			case 3:
-				buf_depth[4 *  i + 2] = 0;
-				buf_depth[4 *  i + 1] = 255;
-				buf_depth[4 *  i + 0] = lb;
-				break;
-			case 4:
-				buf_depth[4 *  i + 2] = 0;
-				buf_depth[4 *  i + 1] = 255-lb;
-				buf_depth[4 *  i + 0] = 255;
-				break;
-			case 5:
-				buf_depth[4 *  i + 2] = 0;
-				buf_depth[4 *  i + 1] = 0;
-				buf_depth[4 *  i + 0] = 255-lb;
-				break;
-			default:
-				buf_depth[4 *  i + 2] = 0;
-				buf_depth[4 *  i + 1] = 0;
-				buf_depth[4 *  i + 0] = 0;
-				break;
-		}
-		buf_depth[4 *  i + 3] = 0x00;
-	}
-	got_frames++;
-	 
-	if ( depth_connected == 1 )
-	{	
-		n = write(depth_child, buf_depth, AS3_BITMAPDATA_LEN);
-		if ( n < 0 || n != AS3_BITMAPDATA_LEN)
-		{
-			fprintf(stderr, "Error on write() for depth (%d instead of %d)\n",n, AS3_BITMAPDATA_LEN);
-		}
-	}
-	pthread_cond_signal(&depth_cond);
-	pthread_mutex_unlock(&depth_mutex);
+//Called when C-c or C-z is pressed
+#ifdef _WIN32
+void clean_exit(int){
+	die = 1;
 }
-
-void rgb_cb(freenect_device *dev, void *rgb, uint32_t timestamp)
-{
-	int n;
-	pthread_mutex_lock(&depth_mutex);
-	got_frames++;
-	//memcpy(buf_rgb, rgb, FREENECT_RGB_SIZE);
-	//unsigned char * tmp_depth;
-	//int compressed_size = SaveJPGToBuffer(tmp_depth, 75, 640, 480, rgb, 640*480);
-	//printf("size: %d", compressed_size);
-	int x;
-	for (x=0; x<640 * 480; x++) {
-		buf_rgb[4 * x + 0] = ((uint8_t*)rgb)[3 * x + 2];
-		buf_rgb[4 * x + 1] = ((uint8_t*)rgb)[3 * x + 1];
-		buf_rgb[4 * x + 2] = ((uint8_t*)rgb)[3 * x + 0];
-		buf_rgb[4 * x + 3] = 0x00;
-	}
-	printf("rgb received\n ");
-	if ( rgb_connected == 1 )
-	{
-		n = write(rgb_child, buf_rgb, AS3_BITMAPDATA_LEN);
-		if ( n < 0 || n != AS3_BITMAPDATA_LEN)
-		{
-			fprintf(stderr, "Error on write() for rgb (%d instead of %d)\n",n, AS3_BITMAPDATA_LEN);
-			//break;
-		}
-	}
-	pthread_cond_signal(&depth_cond);
-	pthread_mutex_unlock(&depth_mutex);
+#else
+void clean_exit(){
+	die = 1;
 }
-
-void *freenect_threadfunc(void *arg)
-{
-	freenect_set_tilt_degs(f_dev,freenect_angle);
-	freenect_set_led(f_dev,LED_RED);
-	freenect_set_depth_callback(f_dev, depth_cb);
-	freenect_set_video_callback(f_dev, rgb_cb);
-	freenect_set_video_format(f_dev, FREENECT_VIDEO_RGB);
-	freenect_set_depth_format(f_dev, FREENECT_DEPTH_11BIT);
-	
-	printf("'w'-tilt up, 's'-level, 'x'-tilt down, '0'-'6'-select LED mode\n");
-	if ( pthread_create(&data_in_thread, NULL, data_in, NULL) )
-	{
-		fprintf(stderr, "Error on pthread_create() for data_in\n");
-	}
-	
-	if ( pthread_create(&data_out_thread, NULL, data_out, NULL) )
-	{
-		fprintf(stderr, "Error on pthread_create() for data_out\n");
-	}
-	
-	while(!die && freenect_process_events(f_ctx) >= 0 );
-
-	printf("\nshutting down streams...\n");
-
-	freenect_stop_depth(f_dev);
-	freenect_stop_video(f_dev);
-	network_close();
-	
-	printf("-- done!\n");
-	return NULL;
-}
-
+#endif
+//Main: we start here
 int main(int argc, char **argv)
 {
-	int i, res;
-	for (i=0; i<2048; i++) {
-		float v = i/2048.0;
-		v = powf(v, 3)* 6;
-		t_gamma[i] = v*6*256;
-	}
+	printf("as3kinect server %s\n", _current_version);
+	//waiting for client led status
+	freenect_sync_set_led((freenect_led_options) 4, 0);
+	//Listening to C-c
+  	if (signal (SIGINT, clean_exit) == SIG_IGN)
+    	signal (SIGINT, SIG_IGN);
+	//Listening to C-z
+	#ifndef _WIN32
+  	if (signal (SIGTSTP, clean_exit) == SIG_IGN)
+    	signal (SIGTSTP, SIG_IGN);
+	#endif
+	//Alloc memory for video and depth frames
+	buf_depth_temp = malloc(FREENECT_DEPTH_11BIT);
+	buf_rgb_temp = malloc(FREENECT_VIDEO_RGB);
 	
-	g_argc = argc;
-	g_argv = argv;
-	
-	if (freenect_init(&f_ctx, NULL) < 0) {
-		printf("freenect_init() failed\n");
-		return 1;
-	}
-	
-	freenect_set_log_level(f_ctx, FREENECT_LOG_DEBUG);
-	
-	int nr_devices = freenect_num_devices (f_ctx);
-	printf ("Number of devices found: %d\n", nr_devices);
-	
-	int user_device_number = 0;
-	if (argc > 1)
-		user_device_number = atoi(argv[1]);
-	
-	if (nr_devices < 1)
-		return 1;
-	
-	if (freenect_open_device(f_ctx, &f_dev, user_device_number) < 0) {
-		printf("Could not open device\n");
-		return 1;
-	}
-	
+	//Initialize network socket
 	if ( network_init() < 0 )
-		return -1;
+		die = 1;
 	
-	res = pthread_create(&freenect_thread, NULL, freenect_threadfunc, NULL);
-	if (res) {
-		printf("pthread_create failed\n");
-		return 1;
-	}
+	//Sleep main process until exit
+	while(!die)
+		sleep(2);
 
-	while(!die && freenect_process_events(f_ctx) >= 0 );
-	
+	//making a clean exit
+	free(buf_depth_temp);
+	free(buf_rgb_temp);
+	network_close();
+	//device off led status
+	freenect_sync_set_led((freenect_led_options) 0, 0);
+	freenect_sync_stop();
+	printf("\n[as3-server] cleanup done!\n");
 	return 0;
 }

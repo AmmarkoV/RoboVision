@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "Compiling 3d party libraries"
+
+cd OpenKinect 
+./make
+cd ..
+
+cd OpenSURFcpp
+./make
+cd ..
+
+
+echo "Done"
+
+
+
+exit 0

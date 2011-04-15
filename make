@@ -1,8 +1,20 @@
 #!/bin/bash
 echo "Compiling The whole RoboVision Project :D"
 
+
+echo "Compiling 3d Party Libraries.."
+cd 3dpartylibs
+./make
+cd ..
+
+
 echo "Compiling VideoInput.."
 cd VideoInput
+./make
+cd ..
+
+echo "Compiling KinectInput.."
+cd KinectInput
 ./make
 cd ..
 

@@ -17,6 +17,9 @@
 //Build the Actionscript 3 Server Example
 BUILD_AS3_SERVER:BOOL=OFF
 
+//Build C++ Library (currently header only)
+BUILD_CPP:BOOL=ON
+
 //Build OpenCV wrapper
 BUILD_CV:BOOL=OFF
 
@@ -28,6 +31,9 @@ BUILD_EXAMPLES:BOOL=ON
 
 //Build fakenect mock library
 BUILD_FAKENECT:BOOL=ON
+
+//Build Python extension
+BUILD_PYTHON:BOOL=OFF
 
 //Path to a program.
 CMAKE_AR:FILEPATH=/usr/bin/ar
@@ -356,6 +362,9 @@ freenect_LIB_DEPENDS:STATIC=general;/usr/lib/libusb-1.0.so;
 freenect_sync_LIB_DEPENDS:STATIC=general;freenect;
 
 //Dependencies for the target
+freenect_sync_static_LIB_DEPENDS:STATIC=general;freenect;
+
+//Dependencies for the target
 freenectstatic_LIB_DEPENDS:STATIC=general;/usr/lib/libusb-1.0.so;
 
 //Value Computed by CMake
@@ -475,7 +484,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_LOCAL_GENERATORS:INTERNAL=5
+CMAKE_NUMBER_OF_LOCAL_GENERATORS:INTERNAL=6
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

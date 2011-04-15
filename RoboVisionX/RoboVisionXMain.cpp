@@ -99,6 +99,7 @@ const long RoboVisionXFrame::ID_STATICTEXT13 = wxNewId();
 const long RoboVisionXFrame::ID_STATICTEXT14 = wxNewId();
 const long RoboVisionXFrame::ID_STATICTEXT15 = wxNewId();
 const long RoboVisionXFrame::ID_CHECKBOX4 = wxNewId();
+const long RoboVisionXFrame::idMenuOpenSnapshots = wxNewId();
 const long RoboVisionXFrame::idMenuQuit = wxNewId();
 const long RoboVisionXFrame::idMenuAbout = wxNewId();
 const long RoboVisionXFrame::ID_STATUSBAR1 = wxNewId();
@@ -126,6 +127,7 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     wxMenuItem* MenuItem2;
     wxMenuItem* MenuItem1;
     wxMenu* Menu1;
+    wxMenuItem* MenuItem3;
     wxMenuBar* MenuBar1;
     wxMenu* Menu2;
 
@@ -227,6 +229,8 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     SaveLoadStreamOfSnapshots->SetValue(false);
     MenuBar1 = new wxMenuBar();
     Menu1 = new wxMenu();
+    MenuItem3 = new wxMenuItem(Menu1, idMenuOpenSnapshots, _("Open Snapshot\tF2"), _("Opens a recorded snapshot"), wxITEM_NORMAL);
+    Menu1->Append(MenuItem3);
     MenuItem1 = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
     Menu1->Append(MenuItem1);
     MenuBar1->Append(Menu1, _("&File"));

@@ -139,7 +139,7 @@ clean: src/CMakeFiles/freenect.dir/clean
 src/CMakeFiles/freenectstatic.dir/all:
 	$(MAKE) -f src/CMakeFiles/freenectstatic.dir/build.make src/CMakeFiles/freenectstatic.dir/depend
 	$(MAKE) -f src/CMakeFiles/freenectstatic.dir/build.make src/CMakeFiles/freenectstatic.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles  8 9 10 11
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles  9 10 11 12
 	@echo "Built target freenectstatic"
 .PHONY : src/CMakeFiles/freenectstatic.dir/all
 
@@ -171,55 +171,20 @@ clean: src/CMakeFiles/freenectstatic.dir/clean
 # Directory level rules for directory examples
 
 # Convenience name for "all" pass in the directory.
-examples/all: examples/CMakeFiles/cppview.dir/all
 examples/all: examples/CMakeFiles/glpclview.dir/all
 examples/all: examples/CMakeFiles/glview.dir/all
+examples/all: examples/CMakeFiles/tiltdemo.dir/all
 .PHONY : examples/all
 
 # Convenience name for "clean" pass in the directory.
-examples/clean: examples/CMakeFiles/cppview.dir/clean
 examples/clean: examples/CMakeFiles/glpclview.dir/clean
 examples/clean: examples/CMakeFiles/glview.dir/clean
+examples/clean: examples/CMakeFiles/tiltdemo.dir/clean
 .PHONY : examples/clean
 
 # Convenience name for "preinstall" pass in the directory.
 examples/preinstall:
 .PHONY : examples/preinstall
-
-#=============================================================================
-# Target rules for target examples/CMakeFiles/cppview.dir
-
-# All Build rule for target.
-examples/CMakeFiles/cppview.dir/all: src/CMakeFiles/freenect.dir/all
-	$(MAKE) -f examples/CMakeFiles/cppview.dir/build.make examples/CMakeFiles/cppview.dir/depend
-	$(MAKE) -f examples/CMakeFiles/cppview.dir/build.make examples/CMakeFiles/cppview.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles  1
-	@echo "Built target cppview"
-.PHONY : examples/CMakeFiles/cppview.dir/all
-
-# Include target in all.
-all: examples/CMakeFiles/cppview.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-examples/CMakeFiles/cppview.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles 5
-	$(MAKE) -f CMakeFiles/Makefile2 examples/CMakeFiles/cppview.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles 0
-.PHONY : examples/CMakeFiles/cppview.dir/rule
-
-# Convenience name for target.
-cppview: examples/CMakeFiles/cppview.dir/rule
-.PHONY : cppview
-
-# clean rule for target.
-examples/CMakeFiles/cppview.dir/clean:
-	$(MAKE) -f examples/CMakeFiles/cppview.dir/build.make examples/CMakeFiles/cppview.dir/clean
-.PHONY : examples/CMakeFiles/cppview.dir/clean
-
-# clean rule for target.
-clean: examples/CMakeFiles/cppview.dir/clean
-.PHONY : clean
 
 #=============================================================================
 # Target rules for target examples/CMakeFiles/glpclview.dir
@@ -228,7 +193,7 @@ clean: examples/CMakeFiles/cppview.dir/clean
 examples/CMakeFiles/glpclview.dir/all: wrappers/c_sync/CMakeFiles/freenect_sync.dir/all
 	$(MAKE) -f examples/CMakeFiles/glpclview.dir/build.make examples/CMakeFiles/glpclview.dir/depend
 	$(MAKE) -f examples/CMakeFiles/glpclview.dir/build.make examples/CMakeFiles/glpclview.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles  12
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles  13
 	@echo "Built target glpclview"
 .PHONY : examples/CMakeFiles/glpclview.dir/all
 
@@ -263,7 +228,7 @@ clean: examples/CMakeFiles/glpclview.dir/clean
 examples/CMakeFiles/glview.dir/all: src/CMakeFiles/freenect.dir/all
 	$(MAKE) -f examples/CMakeFiles/glview.dir/build.make examples/CMakeFiles/glview.dir/depend
 	$(MAKE) -f examples/CMakeFiles/glview.dir/build.make examples/CMakeFiles/glview.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles  13
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles  14
 	@echo "Built target glview"
 .PHONY : examples/CMakeFiles/glview.dir/all
 
@@ -289,6 +254,41 @@ examples/CMakeFiles/glview.dir/clean:
 
 # clean rule for target.
 clean: examples/CMakeFiles/glview.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target examples/CMakeFiles/tiltdemo.dir
+
+# All Build rule for target.
+examples/CMakeFiles/tiltdemo.dir/all: wrappers/c_sync/CMakeFiles/freenect_sync.dir/all
+	$(MAKE) -f examples/CMakeFiles/tiltdemo.dir/build.make examples/CMakeFiles/tiltdemo.dir/depend
+	$(MAKE) -f examples/CMakeFiles/tiltdemo.dir/build.make examples/CMakeFiles/tiltdemo.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles  16
+	@echo "Built target tiltdemo"
+.PHONY : examples/CMakeFiles/tiltdemo.dir/all
+
+# Include target in all.
+all: examples/CMakeFiles/tiltdemo.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+examples/CMakeFiles/tiltdemo.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles 6
+	$(MAKE) -f CMakeFiles/Makefile2 examples/CMakeFiles/tiltdemo.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles 0
+.PHONY : examples/CMakeFiles/tiltdemo.dir/rule
+
+# Convenience name for target.
+tiltdemo: examples/CMakeFiles/tiltdemo.dir/rule
+.PHONY : tiltdemo
+
+# clean rule for target.
+examples/CMakeFiles/tiltdemo.dir/clean:
+	$(MAKE) -f examples/CMakeFiles/tiltdemo.dir/build.make examples/CMakeFiles/tiltdemo.dir/clean
+.PHONY : examples/CMakeFiles/tiltdemo.dir/clean
+
+# clean rule for target.
+clean: examples/CMakeFiles/tiltdemo.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -350,7 +350,7 @@ clean: fakenect/CMakeFiles/fakenect.dir/clean
 fakenect/CMakeFiles/record.dir/all: src/CMakeFiles/freenect.dir/all
 	$(MAKE) -f fakenect/CMakeFiles/record.dir/build.make fakenect/CMakeFiles/record.dir/depend
 	$(MAKE) -f fakenect/CMakeFiles/record.dir/build.make fakenect/CMakeFiles/record.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles  14
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles  15
 	@echo "Built target record"
 .PHONY : fakenect/CMakeFiles/record.dir/all
 
@@ -383,10 +383,12 @@ clean: fakenect/CMakeFiles/record.dir/clean
 
 # Convenience name for "all" pass in the directory.
 wrappers/c_sync/all: wrappers/c_sync/CMakeFiles/freenect_sync.dir/all
+wrappers/c_sync/all: wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/all
 .PHONY : wrappers/c_sync/all
 
 # Convenience name for "clean" pass in the directory.
 wrappers/c_sync/clean: wrappers/c_sync/CMakeFiles/freenect_sync.dir/clean
+wrappers/c_sync/clean: wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/clean
 .PHONY : wrappers/c_sync/clean
 
 # Convenience name for "preinstall" pass in the directory.
@@ -426,6 +428,91 @@ wrappers/c_sync/CMakeFiles/freenect_sync.dir/clean:
 
 # clean rule for target.
 clean: wrappers/c_sync/CMakeFiles/freenect_sync.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target wrappers/c_sync/CMakeFiles/freenect_sync_static.dir
+
+# All Build rule for target.
+wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/all: src/CMakeFiles/freenect.dir/all
+	$(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/depend
+	$(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles  8
+	@echo "Built target freenect_sync_static"
+.PHONY : wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/all
+
+# Include target in all.
+all: wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles 5
+	$(MAKE) -f CMakeFiles/Makefile2 wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles 0
+.PHONY : wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/rule
+
+# Convenience name for target.
+freenect_sync_static: wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/rule
+.PHONY : freenect_sync_static
+
+# clean rule for target.
+wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/clean:
+	$(MAKE) -f wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/build.make wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/clean
+.PHONY : wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/clean
+
+# clean rule for target.
+clean: wrappers/c_sync/CMakeFiles/freenect_sync_static.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory wrappers/cpp
+
+# Convenience name for "all" pass in the directory.
+wrappers/cpp/all: wrappers/cpp/CMakeFiles/cppview.dir/all
+.PHONY : wrappers/cpp/all
+
+# Convenience name for "clean" pass in the directory.
+wrappers/cpp/clean: wrappers/cpp/CMakeFiles/cppview.dir/clean
+.PHONY : wrappers/cpp/clean
+
+# Convenience name for "preinstall" pass in the directory.
+wrappers/cpp/preinstall:
+.PHONY : wrappers/cpp/preinstall
+
+#=============================================================================
+# Target rules for target wrappers/cpp/CMakeFiles/cppview.dir
+
+# All Build rule for target.
+wrappers/cpp/CMakeFiles/cppview.dir/all: src/CMakeFiles/freenect.dir/all
+	$(MAKE) -f wrappers/cpp/CMakeFiles/cppview.dir/build.make wrappers/cpp/CMakeFiles/cppview.dir/depend
+	$(MAKE) -f wrappers/cpp/CMakeFiles/cppview.dir/build.make wrappers/cpp/CMakeFiles/cppview.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles  1
+	@echo "Built target cppview"
+.PHONY : wrappers/cpp/CMakeFiles/cppview.dir/all
+
+# Include target in all.
+all: wrappers/cpp/CMakeFiles/cppview.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+wrappers/cpp/CMakeFiles/cppview.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles 5
+	$(MAKE) -f CMakeFiles/Makefile2 wrappers/cpp/CMakeFiles/cppview.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ammar/Documents/Programming/RoboVision/3dpartylibs/OpenKinect/build/CMakeFiles 0
+.PHONY : wrappers/cpp/CMakeFiles/cppview.dir/rule
+
+# Convenience name for target.
+cppview: wrappers/cpp/CMakeFiles/cppview.dir/rule
+.PHONY : cppview
+
+# clean rule for target.
+wrappers/cpp/CMakeFiles/cppview.dir/clean:
+	$(MAKE) -f wrappers/cpp/CMakeFiles/cppview.dir/build.make wrappers/cpp/CMakeFiles/cppview.dir/clean
+.PHONY : wrappers/cpp/CMakeFiles/cppview.dir/clean
+
+# clean rule for target.
+clean: wrappers/cpp/CMakeFiles/cppview.dir/clean
 .PHONY : clean
 
 #=============================================================================
