@@ -1,5 +1,5 @@
 // Be sure to link with -lfreenect_sync
-#include "../3dpartylibs/OpenKinect/wrappers/c_sync/libfreenect_sync.h"
+#include "libfreenect_sync.h"
 
 freenect_context *f_ctx;
 freenect_device *f_dev;
