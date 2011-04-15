@@ -12,6 +12,7 @@ unsigned int CompressedHistogramPatch(unsigned short * img,struct Histogram * hi
 
 BOOLEAN Sobel(unsigned char * image,int image_x,int image_y);
 BOOLEAN SobelFromSource(unsigned char * source,unsigned char * target,int image_x,int image_y);
+BOOLEAN SobelNDegreeDerivative(int n,unsigned char * source,unsigned char * target,int image_x,int image_y);
 void ReducePalette(unsigned char * image,int image_x,int image_y,int new_palette);
 void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned char R,unsigned char G,unsigned char B,unsigned char threshold);
 void KillPixelsBelow(unsigned char * image,int image_x,int image_y,int threshold);
@@ -22,7 +23,7 @@ BOOLEAN GaussianBlur(unsigned char * image,int image_x,int image_y,BOOLEAN monoc
 BOOLEAN GaussianBlurFromSource(unsigned char * source,unsigned char * target,int image_x,int image_y,BOOLEAN monochrome);
 void PrepareCleanSobeledGaussian(unsigned char * rgb_image,unsigned char * target_image,unsigned int kill_lower_edges_threshold);
 
-BOOLEAN FindGoodTrackingPoints(unsigned char * edge_source,unsigned char * target,int image_x,int image_y,BOOLEAN monochrome);
+//BOOLEAN FindGoodTrackingPoints(unsigned char * edge_source,unsigned char * target,int image_x,int image_y,BOOLEAN monochrome);
 BOOLEAN PixelIsBright(unsigned char * rgb_image,unsigned int memplace_3_byte);
 BOOLEAN PixelBelongsWithSurroundingPixels(unsigned char * rgb_image,unsigned int x,unsigned int y,unsigned int memplace);
 //unsigned int FloodPixel(unsigned char * picture_array,unsigned int point_y,unsigned int point_y,unsigned int size_x,unsigned int size_y);

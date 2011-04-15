@@ -1,4 +1,6 @@
 // Be sure to link with -lfreenect_sync
+#include "KinectInput.h"
+#include "../VisualCortex/VisualCortex.h"
 #include "libfreenect_sync.h"
 
 freenect_context *f_ctx;

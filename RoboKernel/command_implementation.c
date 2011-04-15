@@ -47,6 +47,14 @@ void DrawNewPalette(char R,char G,char B,char threshold)
  VisCortX_CopyFromVideoToVideoRegister(GENERAL_2,LAST_RIGHT_OPERATION);
 }
 
+void SobelNDerivative_in(int n)
+{
+ SobelNDerivative(n);
+// VisCortX_CopyFromVideoToVideoRegister(GENERAL_1,LAST_LEFT_OPERATION);
+// VisCortX_CopyFromVideoToVideoRegister(GENERAL_2,LAST_RIGHT_OPERATION);
+}
+
+
 void FindFeatures()
 {
   VisCortx_RemoveTimedoutTrackPoints(1);

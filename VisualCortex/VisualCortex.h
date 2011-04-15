@@ -166,6 +166,7 @@ void  VisCortx_DrawTrackPoints();
 void  VisCortx_RenewTrackPoint(unsigned int tpoint);
 void  VisCortx_RenewAllTrackPoints();
 
+int SobelNDerivative();
 void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,unsigned char howclose);
 
 unsigned int VisCortx_RecognizeFaces(unsigned int cam);

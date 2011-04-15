@@ -36,6 +36,8 @@ enum command_id_consts
   CMD_BACKWARD,
   CMD_LEFT,
   CMD_RIGHT,
+  CMD_SOBEL_SECOND_DERIVATIVE,
+  CMD_SOBEL_N_DERIVATIVE,
   CMD_TOGGLE_AUTO_RECORD_SNAPSHOTS,
   CMD_TOGGLE_AUTO_PLAYBACK_SNAPSHOTS,
   CMD_RECORD_SNAPSHOT,
@@ -209,7 +211,14 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  sprintf(outptstr,"From %s : Scanning depth to map! \n",from);
                  PassDepthToMap();
      break;
-
+     case CMD_SOBEL_SECOND_DERIVATIVE :
+                 sprintf(outptstr,"From %s : Second Derivative Sobel! \n",from);
+                 SobelNDerivative_in(2);
+     break;
+     case CMD_SOBEL_N_DERIVATIVE :
+                 sprintf(outptstr,"From %s : Second Derivative Sobel! \n",from);
+                 SobelNDerivative_in(cmdi_1);
+     break;
 
      default :
        return 0;
@@ -258,7 +267,9 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP TO FILE",17)==1) { chosen_command=CMD_DEPTHMAP_TO_FILE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"REFRESH MAP",11)==1) { chosen_command=CMD_REFRESH_MAP_AT_WEB_INTERFACE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP IMPORT TO MAP",23)==1) { chosen_command=CMD_DEPTHMAP_IMPORT_TO_MAP; } else
-
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP IMPORT TO MAP",23)==1) { chosen_command=CMD_DEPTHMAP_IMPORT_TO_MAP; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"SOBEL SECOND DERIVATIVE",23)==1) { chosen_command=CMD_SOBEL_SECOND_DERIVATIVE; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"SOBEL DERIVATIVE",16)==1) { chosen_command=CMD_SOBEL_N_DERIVATIVE; } else
 
         /*
          * >>>>>>>>>>>>>>>>>>>>>>>>>>!!!WRONG COMMAND!!!<<<<<<<<<<<<<<<<<<<<<<<<

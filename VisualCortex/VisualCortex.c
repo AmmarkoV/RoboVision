@@ -21,6 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "DisparityDepthMap.h"
 #include "MovementRegistration.h"
 #include "VisCortexFilters.h"
+#include "FeatureExtraction.h"
 #include "PatchTracking.h"
 #include "FaceDetection.h"
 #include <stdio.h>
@@ -427,7 +428,7 @@ void  VisCortx_AutoAddTrackPoints(unsigned int cam)
   {
       PrepareCleanSobeledGaussian(video_register[LEFT_EYE].pixels,video_register[EDGES_LEFT].pixels,settings[DEPTHMAP_EDGE_STRICTNESS]);
       ClearVideoRegister(GENERAL_1);
-      FindGoodTrackingPoints(video_register[EDGES_LEFT].pixels,video_register[GENERAL_1].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],0);
+      ExtractFeatures(video_register[EDGES_LEFT].pixels,video_register[GENERAL_1].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],0);
   }
   //fprintf(stderr,"VisCortx_AutoAddingTrackPoint %u %u,%u : %u\n",cam,x,y,group);
  //
@@ -514,6 +515,11 @@ void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,
  //   VisCortX_BitBltVideoRegister(LEFT_EYE,GENERAL_1,0,0,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
     memcpy(video_register[GENERAL_1].pixels,video_register[LEFT_EYE].pixels,metrics[RESOLUTION_X]*metrics[RESOLUTION_Y]*3*sizeof(BYTE));
     KillDifferentPixels(video_register[GENERAL_1].pixels ,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],R,G,B,howclose);
+}
+
+int SobelNDerivative(int n)
+{
+    return SobelNDegreeDerivative(n,video_register[LEFT_EYE].pixels,video_register[LAST_LEFT_OPERATION].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
 }
 
 /*

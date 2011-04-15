@@ -700,7 +700,17 @@ return (1);
 
 
 
-
+BOOLEAN SobelNDegreeDerivative(int n,unsigned char * source,unsigned char * target,int image_x,int image_y)
+{
+    SobelFromSource(source,target,image_x,image_y);
+    int i=1;
+    while ( i < n )
+     {
+         Sobel(target,image_x,image_y);
+         ++i;
+     }
+    return 1;
+}
 
 
 
@@ -837,7 +847,7 @@ unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_arr
 }
 
 
-
+/*
 BOOLEAN FindGoodTrackingPoints(unsigned char * edge_source,unsigned char * target,int image_x,int image_y,BOOLEAN monochrome)
 {
   if ( (edge_source==0) || ( target == 0 ) ) { return 0; }
@@ -904,7 +914,7 @@ BOOLEAN FindGoodTrackingPoints(unsigned char * edge_source,unsigned char * targe
   fprintf(stderr,"FindGoodTrackingPoints , survived , total of %u points ..\n",GetPointTrackList());
   return 1;
 }
-
+*/
 
 void PrepareCleanSobeledGaussian(unsigned char * rgb_image,unsigned char * target_image,unsigned int kill_lower_edges_threshold)
 {

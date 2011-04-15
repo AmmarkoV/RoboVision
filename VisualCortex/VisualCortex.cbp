@@ -45,6 +45,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="FaceDetection.h" />
+		<Unit filename="FeatureExtraction.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FeatureExtraction.h" />
 		<Unit filename="MovementRegistration.c">
 			<Option compilerVar="CC" />
 		</Unit>
