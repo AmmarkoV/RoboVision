@@ -16,20 +16,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
-#include "PatchShapes.h"
+#include "PatternRecognition.h"
 
 
 
 unsigned char LineType[30*30]={0};
 
-void PreparePatchShapes(unsigned int width,unsigned int height)
-{
 
-
-}
-
-
-unsigned int PatchShapeType(unsigned char * patch,unsigned int x,unsigned int y , unsigned int patch_x,unsigned int patch_y)
+unsigned int GetPatchSignature(unsigned char * patch,unsigned int x,unsigned int y , unsigned int patch_x,unsigned int patch_y , struct PatchSignature * result)
 {
 
 

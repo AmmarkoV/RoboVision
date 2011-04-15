@@ -5,7 +5,8 @@ echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
 echo "Compiling files.."
 gcc -c DisparityDepthMap.c -o DisparityDepthMap.o
 gcc -c MovementRegistration.c -o MovementRegistration.o
-gcc -c PatchShapes.c -o PatchShapes.o
+gcc -c FeatureExtraction.c -o FeatureExtraction.o 
+gcc -c PatternRecognition.c -o PatternRecognition.o
 gcc -c PatchTracking.c -o PatchTracking.o
 gcc -c Precalculations.c -o Precalculations.o 
 gcc -c VisCortexFilters.c -o VisCortexFilters.o
@@ -14,10 +15,10 @@ gcc -c VisualCortex.c -o VisualCortex.o
 
 
 echo "Linking files.."
-ar  rcs libVisualCortex.a DisparityDepthMap.o MovementRegistration.o PatchShapes.o PatchTracking.o Precalculations.o VisCortexFilters.o VisionMemory.o VisualCortex.o
+ar  rcs libVisualCortex.a DisparityDepthMap.o MovementRegistration.o FeatureExtraction.o PatternRecognition.o PatchTracking.o Precalculations.o VisCortexFilters.o VisionMemory.o VisualCortex.o
 
 echo "Cleaning compiled object files.."
-rm DisparityDepthMap.o MovementRegistration.o PatchShapes.o PatchTracking.o Precalculations.o VisCortexFilters.o VisionMemory.o VisualCortex.o
+rm DisparityDepthMap.o MovementRegistration.o FeatureExtraction.o PatternRecognition.o PatchTracking.o Precalculations.o VisCortexFilters.o VisionMemory.o VisualCortex.o
 
 echo "Compiling Tester.."
 cd VisCortx_Tester

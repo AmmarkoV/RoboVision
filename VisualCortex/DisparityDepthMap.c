@@ -131,10 +131,10 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
         pre_prox+= ( precalc_sub[*g1] [*g2] /*<< 2*/ ); //*4
         pre_prox+= ( precalc_sub[*b1] [*b2] /*<< 2*/ ); //*4
 
-        pre_prox+= sobel_diffr;
 
-		if ( sobel_mismatch == 1 ) { pre_prox = (pre_prox+sobel_diffr) << 2; } // *8
 
+		if ( sobel_mismatch == 1 ) { pre_prox = (pre_prox+sobel_diffr) << 2; } else // *8
+                                   { pre_prox+= sobel_diffr; }
 		if ( sobeled == 1)
 		               {
                          control=pre_prox; //Overflow control

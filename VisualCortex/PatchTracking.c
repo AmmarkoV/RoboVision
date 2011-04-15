@@ -6,7 +6,7 @@
 // MEMORY
 unsigned int total_track_points=0;
 struct TrackPoint track_mem[MAX_TRACK_MEM]={{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0}};
-unsigned int PATCH_DISPLACEMENT=PATCH_SIZE/2; // PATCH_SIZE div 2 ( gia PATCH_SIZE=9 -> 4 )
+unsigned int PATCH_DISPLACEMENT=PATCH_SIZE/3; // PATCH_SIZE div 2 ( gia PATCH_SIZE=9 -> 4 )
 unsigned int PATCH_SIZE_MULT_3=PATCH_SIZE*3;
 // MEMORY
 
@@ -97,6 +97,8 @@ void ApplyTrackPositionAsOriginal(unsigned int tpoint)
 	 //SETAROUME TO ORIGINAL_X/y SAN TO SIMEIO STO OPOIO EIMASTE TWRA!
 }
 
+
+
 unsigned int GetTrackData(unsigned int tpoint,unsigned int dat)
 {
  switch (dat)
@@ -183,6 +185,12 @@ void RemoveTrackPointIfTimedOut(unsigned int timeout)
     }
 }
 
+
+
+void ClearTrackPoints()
+{
+   total_track_points=0;
+}
 
 unsigned int GetTrackPoint(unsigned int point_num,char choice,char *pt_cam,unsigned int *pt_x,unsigned int *pt_y)
 {

@@ -28,6 +28,7 @@ struct TrackPoint
 
 unsigned int AddPointToTrackList(char cam,unsigned int pt_x,unsigned int pt_y,unsigned int group_belong);
 void RemoveTrackPointIfTimedOut(unsigned int timeout);
+void ClearTrackPoints();
 unsigned int GetTrackPoint(unsigned int point_num,char choice,char *pt_cam,unsigned int *pt_x,unsigned int *pt_y);
 unsigned int GetTrackData(unsigned int tpoint,unsigned int dat);
 void BitBltTrackPointMemToRegister(unsigned int tpoint,unsigned int videoregister,unsigned int x , unsigned int y);

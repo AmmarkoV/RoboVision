@@ -5,8 +5,10 @@
 #include <stdio.h>
 #include <string.h>
 
-int ExtractFeatures_MyAlgorithm(unsigned char * edge_source,unsigned char * target,int image_x,int image_y,int monochrome)
+int ExtractFeatures_MyAlgorithm(int max_features,unsigned char * edge_source,unsigned char * target,int image_x,int image_y,int monochrome)
 {
+  int total_features_added=0;
+
   if ( (edge_source==0) || ( target == 0 ) ) { return 0; }
   fprintf(stderr,"ExtractFeatures_MyAlgorithm , beta function hope it doesn`t crash..\n");
 
@@ -30,7 +32,7 @@ int ExtractFeatures_MyAlgorithm(unsigned char * edge_source,unsigned char * targ
  memset(target,0,image_x*image_y*3); // CLEAR TARGET
 
  unsigned int line_width = image_x*3;
- unsigned int skip_step_abs = 20;
+ unsigned int skip_step_abs = 40;
  unsigned int skip_step = 3 * skip_step_abs;
  unsigned int x=0,y=1;
 
@@ -57,6 +59,8 @@ int ExtractFeatures_MyAlgorithm(unsigned char * edge_source,unsigned char * targ
            }
 
          AddPointToTrackList(0,x,y,0);
+         ++total_features_added;
+         if ( total_features_added >= max_features ) { /*Cannot add more features .. :) */ return 1; }
 	   }
 
      if ( x >= image_x )
@@ -73,7 +77,7 @@ int ExtractFeatures_MyAlgorithm(unsigned char * edge_source,unsigned char * targ
 }
 
 
-int ExtractFeatures(unsigned char * edge_source,unsigned char * target,int image_x,int image_y,int monochrome)
+int ExtractFeatures(int max_features,unsigned char * edge_source,unsigned char * target,int image_x,int image_y,int monochrome)
 {
-     return ExtractFeatures_MyAlgorithm(edge_source,target,image_x,image_y,monochrome);
+     return ExtractFeatures_MyAlgorithm(max_features,edge_source,target,image_x,image_y,monochrome);
 }
