@@ -416,6 +416,13 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
        msg<<DepthMap ( 3 , dpth_x , dpth_y );
        msg<<wxT("/");
        msg<<sizex*sizey;
+       msg<<wxT("\nSignature : ");
+       struct PatchSignature sig;
+       VisCortx_GetPatchDescriptor(LEFT_EYE,dpth_x,dpth_y,sizex,sizey,&sig);
+       msg<<sig.segment[0]; msg<<wxT(" , ");
+       msg<<sig.segment[1]; msg<<wxT(" , ");
+       msg<<sig.segment[2]; msg<<wxT(" , ");
+       msg<<sig.segment[3]; msg<<wxT(" ");
 
        dc.SetTextForeground(wxColour(255,0,0));
        dc.DrawText(msg,12,17);

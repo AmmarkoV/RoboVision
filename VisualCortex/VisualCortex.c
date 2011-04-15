@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "MovementRegistration.h"
 #include "VisCortexFilters.h"
 #include "FeatureExtraction.h"
+#include "PatternRecognition.h"
 #include "PatchTracking.h"
 #include "FaceDetection.h"
 #include <stdio.h>
@@ -365,6 +366,12 @@ unsigned int  VisCortx_Get_DepthMapData(unsigned int typeofdata,unsigned int px,
      };
   return retval;
 }
+
+unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int x,unsigned int y,unsigned int patch_x,unsigned int patch_y,struct PatchSignature * result)
+{
+    return GetPatchSignature(video_register[vid_register].pixels,video_register[vid_register].size_x,video_register[vid_register].size_y,x,y,patch_x,patch_y,result);
+}
+
 /*
  ----------------- DEPTH MAPPING FUNCTIONS ----------------------
 */
