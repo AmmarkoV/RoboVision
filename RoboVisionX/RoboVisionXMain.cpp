@@ -612,10 +612,16 @@ void RoboVisionXFrame::OnMotion(wxMouseEvent& event)
 
       if ( XYOverRect(x,y,fd_rx1,fd_ry1,fd_rx2,fd_ry2)==1 )
        {
-           fprintf(stderr,"Opening store segment dialog\n");
+           fprintf(stderr,"Opening Remember Image segment dialog\n");
              RememberImage* RIFrame = new RememberImage(0);
+             RIFrame->camera = LEFT_EYE;
+             RIFrame->patch_x =  DepthMap ( 4 , dpth_x , dpth_y );;
+             RIFrame->patch_y =  DepthMap ( 5 , dpth_x , dpth_y );;
+             RIFrame->patch_width = DepthMap ( 8 , dpth_x , dpth_y );
+             RIFrame->patch_height = DepthMap ( 9 , dpth_x , dpth_y );
+             VisCortx_GetPatchDescriptor(RIFrame->camera,RIFrame->patch_x,RIFrame->patch_y,RIFrame->patch_width,RIFrame->patch_height,&RIFrame->sig);
+             RIFrame->ready = 1;
     	     RIFrame->ShowModal();
-
     	    delete RIFrame;
        }
 

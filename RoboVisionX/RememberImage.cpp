@@ -1,5 +1,6 @@
 #include "RememberImage.h"
 
+
 //(*InternalHeaders(RememberImage)
 #include <wx/string.h>
 #include <wx/intl.h>
@@ -22,7 +23,7 @@ END_EVENT_TABLE()
 RememberImage::RememberImage(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSize& size)
 {
 	//(*Initialize(RememberImage)
-	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
+	Create(parent, id, _("Add Patch to Image Memory"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxSize(445,324));
 	Move(wxDefaultPosition);
 	ButtonAddToDatabase = new wxButton(this, ID_BUTTON1, _("Add To Database"), wxPoint(56,224), wxSize(328,45), 0, wxDefaultValidator, _T("ID_BUTTON1"));
@@ -35,6 +36,8 @@ RememberImage::RememberImage(wxWindow* parent,wxWindowID id,const wxPoint& pos,c
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RememberImage::OnButtonAddToDatabaseClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RememberImage::OnButtonBackClick);
 	//*)
+
+	ready=0;
 }
 
 RememberImage::~RememberImage()
@@ -51,5 +54,11 @@ void RememberImage::OnButtonBackClick(wxCommandEvent& event)
 
 void RememberImage::OnButtonAddToDatabaseClick(wxCommandEvent& event)
 {
+     char keywords[1024]={0};
+     fprintf(stderr,"TODO: Get keywords from textbox\n");
+
+     char command[1024]={0};
+     sprintf(command,"REMEMBER IMAGE(%u,%u,%u,%u,%u,\"%s\")",camera,patch_x,patch_y,patch_width,patch_height,keywords);
+     IssueCommand((char *) command,0,0,(char *)"GUI"); fprintf(stderr,"Requesting Image segment to be stored!\n");
      Close();
 }

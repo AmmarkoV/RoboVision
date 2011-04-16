@@ -1,6 +1,10 @@
 #ifndef REMEMBERIMAGE_H
 #define REMEMBERIMAGE_H
 
+#include "../RoboKernel/RoboKernel.h"
+#include "../VisualCortex/VisualCortex.h"
+
+
 //(*Headers(RememberImage)
 #include <wx/dialog.h>
 #include <wx/button.h>
@@ -11,6 +15,9 @@
 class RememberImage: public wxDialog
 {
 	public:
+
+        struct PatchSignature sig;
+        int camera,patch_x,patch_y,patch_width,patch_height,ready;
 
 		RememberImage(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
 		virtual ~RememberImage();

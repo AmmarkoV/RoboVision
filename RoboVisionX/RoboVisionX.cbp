@@ -52,11 +52,14 @@
 		<Unit filename="CortexSettings.h" />
 		<Unit filename="FeedScreenMemory.cpp" />
 		<Unit filename="FeedScreenMemory.h" />
+		<Unit filename="RememberImage.cpp" />
+		<Unit filename="RememberImage.h" />
 		<Unit filename="RoboVisionXApp.cpp" />
 		<Unit filename="RoboVisionXApp.h" />
 		<Unit filename="RoboVisionXMain.cpp" />
 		<Unit filename="RoboVisionXMain.h" />
 		<Unit filename="wxsmith/CortexSettings.wxs" />
+		<Unit filename="wxsmith/RememberImage.wxs" />
 		<Unit filename="wxsmith/RoboVisionXframe.wxs" />
 		<Extensions>
 			<code_completion />
@@ -68,6 +71,7 @@
 				<resources>
 					<wxFrame wxs="wxsmith/RoboVisionXframe.wxs" src="RoboVisionXMain.cpp" hdr="RoboVisionXMain.h" name="RoboVisionXFrame" language="CPP" />
 					<wxDialog wxs="wxsmith/CortexSettings.wxs" src="CortexSettings.cpp" hdr="CortexSettings.h" name="CortexSettings" language="CPP" />
+					<wxDialog wxs="wxsmith/RememberImage.wxs" src="RememberImage.cpp" hdr="RememberImage.h" name="RememberImage" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

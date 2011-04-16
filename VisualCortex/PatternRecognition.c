@@ -210,12 +210,12 @@ unsigned int GetPatchSignature(unsigned char * patch, unsigned int image_x, unsi
     unsigned char * monochrome_patch = (unsigned char * ) malloc( (patch_x+1)*(patch_y+1)*sizeof(unsigned char) );
     if ( monochrome_patch == 0 ) { fprintf(stderr,"Could not allocate monochrome patch \n"); return 0; }
     unsigned char * ptr=monochrome_patch;
-    unsigned char * monochrome_patch_end =monochrome_patch + ( patch_x * patch_y ) ;
+    //unsigned char * monochrome_patch_end =monochrome_patch + ( patch_x * patch_y ) ;
 
     unsigned char * r , * g , * b;
     unsigned char * real_patch_start = patch + ( image_x * y * 3 ) + 3 * x ;
     unsigned char * real_patch_tmp   = patch + ( image_x * y * 3 ) + 3 * x ;
-    unsigned int real_patch_incrementation = (image_x-patch_x) * 3  ;
+    //unsigned int real_patch_incrementation = (image_x-patch_x) * 3  ;
     int col_med;
 
 
