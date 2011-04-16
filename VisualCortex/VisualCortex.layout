@@ -1,61 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="9">
-		<Cursor position="16716" topLine="726" />
+	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
+		<Cursor position="4674" topLine="108" />
 	</File>
-	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="10">
+	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="442" topLine="0" />
 	</File>
-	<File name="FaceDetection.c" open="1" top="0" tabpos="17">
+	<File name="FaceDetection.c" open="1" top="0" tabpos="14">
 		<Cursor position="611" topLine="0" />
 	</File>
-	<File name="FaceDetection.h" open="1" top="0" tabpos="18">
+	<File name="FaceDetection.h" open="1" top="0" tabpos="15">
 		<Cursor position="345" topLine="0" />
 	</File>
-	<File name="FeatureExtraction.c" open="1" top="0" tabpos="43">
-		<Cursor position="837" topLine="1" />
+	<File name="FeatureExtraction.c" open="1" top="0" tabpos="16">
+		<Cursor position="1594" topLine="44" />
 	</File>
-	<File name="FeatureExtraction.h" open="1" top="0" tabpos="44">
-		<Cursor position="222" topLine="0" />
+	<File name="FeatureExtraction.h" open="1" top="0" tabpos="17">
+		<Cursor position="76" topLine="0" />
 	</File>
-	<File name="MovementRegistration.c" open="1" top="0" tabpos="11">
-		<Cursor position="720" topLine="0" />
+	<File name="MovementRegistration.c" open="1" top="0" tabpos="9">
+		<Cursor position="720" topLine="94" />
 	</File>
-	<File name="MovementRegistration.h" open="1" top="0" tabpos="12">
+	<File name="MovementRegistration.h" open="1" top="0" tabpos="10">
 		<Cursor position="418" topLine="0" />
 	</File>
-	<File name="PatchShapes.c" open="1" top="0" tabpos="16">
-		<Cursor position="720" topLine="0" />
+	<File name="PatchTracking.c" open="1" top="0" tabpos="11">
+		<Cursor position="654" topLine="192" />
 	</File>
-	<File name="PatchTracking.c" open="1" top="0" tabpos="13">
-		<Cursor position="10236" topLine="41" />
+	<File name="PatchTracking.h" open="1" top="0" tabpos="12">
+		<Cursor position="995" topLine="1" />
 	</File>
-	<File name="PatchTracking.h" open="1" top="0" tabpos="14">
-		<Cursor position="740" topLine="0" />
+	<File name="PatternRecognition.c" open="1" top="1" tabpos="42">
+		<Cursor position="5469" topLine="182" />
 	</File>
-	<File name="Precalculations.c" open="1" top="0" tabpos="15">
+	<File name="PatternRecognition.h" open="1" top="0" tabpos="43">
+		<Cursor position="299" topLine="0" />
+	</File>
+	<File name="Precalculations.c" open="1" top="0" tabpos="13">
 		<Cursor position="721" topLine="0" />
 	</File>
 	<File name="Precalculations.h" open="0" top="0" tabpos="8">
 		<Cursor position="268" topLine="0" />
 	</File>
-	<File name="VisCortexFilters.c" open="1" top="1" tabpos="5">
-		<Cursor position="20082" topLine="690" />
+	<File name="VisCortexFilters.c" open="1" top="0" tabpos="3">
+		<Cursor position="11896" topLine="312" />
 	</File>
-	<File name="VisCortexFilters.h" open="1" top="0" tabpos="6">
+	<File name="VisCortexFilters.h" open="1" top="0" tabpos="4">
 		<Cursor position="976" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="0" tabpos="7">
-		<Cursor position="6539" topLine="129" />
+	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
+		<Cursor position="6539" topLine="69" />
 	</File>
-	<File name="VisionMemory.h" open="1" top="0" tabpos="8">
-		<Cursor position="1774" topLine="53" />
+	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
+		<Cursor position="1774" topLine="3" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="0" tabpos="3">
-		<Cursor position="18104" topLine="507" />
+	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
+		<Cursor position="12888" topLine="340" />
 	</File>
-	<File name="VisualCortex.h" open="1" top="0" tabpos="4">
-		<Cursor position="4714" topLine="148" />
+	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
+		<Cursor position="246" topLine="124" />
 	</File>
 </CodeBlocks_layout_file>

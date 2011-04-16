@@ -53,14 +53,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="MovementRegistration.h" />
-		<Unit filename="PatchShapes.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="PatchShapes.h" />
 		<Unit filename="PatchTracking.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="PatchTracking.h" />
+		<Unit filename="PatternRecognition.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PatternRecognition.h" />
 		<Unit filename="Precalculations.c">
 			<Option compilerVar="CC" />
 		</Unit>

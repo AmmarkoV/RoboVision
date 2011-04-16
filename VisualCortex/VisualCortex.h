@@ -5,11 +5,11 @@
 extern "C" {
 #endif
 
-
+#define MAX_SEGMENTS_SIGNATURE 20
 struct PatchSignature
 {
    unsigned int total_segments;
-   unsigned short segment[20];
+   unsigned short segment[MAX_SEGMENTS_SIGNATURE];
 };
 
 enum VisCortxSettings

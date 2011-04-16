@@ -418,7 +418,7 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
        msg<<sizex*sizey;
        msg<<wxT("\nSignature : ");
        struct PatchSignature sig;
-       VisCortx_GetPatchDescriptor(LEFT_EYE,dpth_x,dpth_y,sizex,sizey,&sig);
+       VisCortx_GetPatchDescriptor(LEFT_EYE,x1,y1,sizex,sizey,&sig);
        msg<<sig.segment[0]; msg<<wxT(" , ");
        msg<<sig.segment[1]; msg<<wxT(" , ");
        msg<<sig.segment[2]; msg<<wxT(" , ");
