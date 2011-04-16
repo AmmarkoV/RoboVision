@@ -333,7 +333,7 @@ void Monochrome(unsigned char * input_frame,int image_x,int image_y)
  for (x=x1; x<x2; x++)
  { for (y=y1; y<y2; y++)
 	 {
-	   px=0;
+	   //px=0;
 	   px = (BYTE *)  input_frame + precalc_memplace_3byte[x][y];
        // px = ((BYTE *)  input_frame + (image_x * y *3 ) + (3*x) );
 	   r = px++;

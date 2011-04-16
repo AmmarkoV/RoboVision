@@ -14,6 +14,7 @@ int position = 0;
 #include "RoboVisionXMain.h"
 #include "FeedScreenMemory.h"
 #include "CortexSettings.h"
+#include "RememberImage.h"
 
 #include "../MotorFoundation/MotorHAL.h"
 #include "../RoboKernel/RoboKernel.h"
@@ -603,24 +604,42 @@ void RoboVisionXFrame::OnMotion(wxMouseEvent& event)
 
 
 
- if (add_new_track_point==1)
- {
+
    if ( event.LeftIsDown()==1 )
    {
+
+
+
+      if ( XYOverRect(x,y,fd_rx1,fd_ry1,fd_rx2,fd_ry2)==1 )
+       {
+           fprintf(stderr,"Opening store segment dialog\n");
+             RememberImage* RIFrame = new RememberImage(0);
+    	     RIFrame->ShowModal();
+
+    	    delete RIFrame;
+       }
+
+
+
      int fd_rx1,fd_rx2,fd_ry1,fd_ry2;
      fd_rx1=10 , fd_rx2=fd_rx1 + default_feed->GetWidth();
      fd_ry1=15 , fd_ry2=fd_ry1 + default_feed->GetHeight();
+    if (add_new_track_point==1)
+    {
      if ( XYOverRect(x,y,fd_rx1,fd_ry1,fd_rx2,fd_ry2)==1 )
        {
-           wxString msg;
-           msg.Printf( wxT("Adding Track Point ( %u , %u )\n") ,x-fd_rx1,y-fd_ry1 );
-           Status->AppendText( msg );
-           Refresh();
-           VisCortx_AddTrackPoint(0,x-fd_rx1,y-fd_ry1,1);
-           add_new_track_point=0;
-       }
-   }
- }
+
+            wxString msg;
+            msg.Printf( wxT("Adding Track Point ( %u , %u )\n") ,x-fd_rx1,y-fd_ry1 );
+            Status->AppendText( msg );
+            Refresh();
+            VisCortx_AddTrackPoint(0,x-fd_rx1,y-fd_ry1,1);
+            add_new_track_point=0;
+      }
+    }
+
+
+    }
 }
 
 void RoboVisionXFrame::OnMotionAlarmButtonClick(wxCommandEvent& event)

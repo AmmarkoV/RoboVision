@@ -21,12 +21,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <string.h>
 
-unsigned short CompareToHAARWavelet(int wavelet_id,unsigned char * patch,unsigned int patch_x,unsigned int patch_y)
+unsigned int CompareToHAARWavelet(int wavelet_id,unsigned char * patch,unsigned int patch_x,unsigned int patch_y)
 {
     unsigned int cur_x=0,cur_y=0;
     unsigned int x_mid=0,y_mid=0;
     unsigned char * ptr=patch;
-    unsigned short retres=0;
+    unsigned int retres=0;
 
     switch (wavelet_id)
      {
@@ -140,8 +140,7 @@ unsigned short CompareToHAARWavelet(int wavelet_id,unsigned char * patch,unsigne
             PATCH_Y
            */
            while ( cur_y < patch_y )
-            {
-              cur_x = 0;
+            { cur_x = 0;
               while ( cur_x < patch_x )
               {
                   if ( cur_x <= cur_y ) { if ( *ptr < 128 ) { retres+=128-*ptr; } } else
@@ -166,8 +165,7 @@ unsigned short CompareToHAARWavelet(int wavelet_id,unsigned char * patch,unsigne
             PATCH_Y
            */
            while ( cur_y < patch_y )
-            {
-              cur_x = 0;
+            { cur_x = 0;
               while ( cur_x < patch_x )
               {
                   if ( cur_x > cur_y ) { if ( *ptr < 128 ) { retres+=128-*ptr; } } else
@@ -186,19 +184,21 @@ unsigned short CompareToHAARWavelet(int wavelet_id,unsigned char * patch,unsigne
 }
 
 
-
+int ClearPatchSignature(struct PatchSignature * result)
+{
+    if ( result == 0 ) { fprintf(stderr,"ClearSegments called without result structure..\n"); return 0; }
+    result->total_segments=0;
+    int i; for ( i=0; i<MAX_SEGMENTS_SIGNATURE; i++) { result->segment[i]=0; }
+    return 1;
+}
 
 unsigned int GetPatchSignature(unsigned char * patch, unsigned int image_x, unsigned int image_y ,  unsigned int x,unsigned int y , unsigned int patch_x,unsigned int patch_y , struct PatchSignature * result)
 {
 
-    fprintf(stderr,"Todo : Fix GetPatchSignature , it segfaults , the problem is in the monochrome pointer arithmetic \n");
-    return 0;
-
-    fprintf(stderr,"GetPatchSignature(patch,%u,%u,%u,%u,%u,%u,result)\n",image_x,image_y,x,y,patch_x,patch_y );
+    //fprintf(stderr,"GetPatchSignature(patch,%u,%u,%u,%u,%u,%u,result)\n",image_x,image_y,x,y,patch_x,patch_y );
 
     if ( result == 0 ) { fprintf(stderr,"GetPatchSignature called without result structure..\n"); return 0; }
-    int i;
-    for ( i=0; i<MAX_SEGMENTS_SIGNATURE; i++) { result->segment[i]=0; }
+    ClearPatchSignature(result);
 
 
     if ( image_x <= x ) { fprintf(stderr,"Patch out of bounds X \n"); return 0; }
@@ -208,29 +208,52 @@ unsigned int GetPatchSignature(unsigned char * patch, unsigned int image_x, unsi
     if ( ( patch_x == 0 ) || ( patch_y == 0 ) ) { return 0; }
 
     unsigned char * monochrome_patch = (unsigned char * ) malloc( (patch_x+1)*(patch_y+1)*sizeof(unsigned char) );
+    if ( monochrome_patch == 0 ) { fprintf(stderr,"Could not allocate monochrome patch \n"); return 0; }
     unsigned char * ptr=monochrome_patch;
     unsigned char * monochrome_patch_end =monochrome_patch + ( patch_x * patch_y ) ;
-    if ( monochrome_patch == 0 ) { fprintf(stderr,"Could not allocate monochrome patch \n"); return 0; }
-
-
 
     unsigned char * r , * g , * b;
-    unsigned int real_patch_incrementation= (image_x-patch_x) *3  ;
-    unsigned char * real_patch_tmp=patch + ( image_x * y *3 ) + 3*x ;
+    unsigned char * real_patch_start = patch + ( image_x * y * 3 ) + 3 * x ;
+    unsigned char * real_patch_tmp   = patch + ( image_x * y * 3 ) + 3 * x ;
+    unsigned int real_patch_incrementation = (image_x-patch_x) * 3  ;
+    int col_med;
 
 
+   // fprintf(stderr,"Each patch begins at (%u,%u) and has a size of (%u,%u)\n",x,y,patch_x,patch_y);
+   // fprintf(stderr,"Patch incrementation is %u that means that after %u we go to %u\n",real_patch_incrementation,real_patch_tmp,real_patch_tmp+real_patch_incrementation);
 
-    //unsigned int counter=0,counter_end=patch_x*patch_y;
+    /* THIS SHOULD RUN FASTER , BUT IT SEGFAULTS ( FOR NOW :P )
+    ptr=monochrome_patch;
     while ( ptr < monochrome_patch_end )
      {
          r = real_patch_tmp++;
          g = real_patch_tmp++;
          b = real_patch_tmp++;
-         *ptr = (unsigned char * ) ((*r+*g+*b)/3) ;
+         col_med = (unsigned char) ((*r+*g+*b)/3) ;
 
-         ++ptr;
+         *ptr = (unsigned char ) col_med;
+         ptr+=1;
          real_patch_tmp += real_patch_incrementation;
-     }
+     }*/
+
+
+   int xi,yi;
+   for (xi=x; xi<x+patch_x; xi++)
+   { for (yi=y; yi<patch_y; yi++)
+	 {
+
+	   real_patch_tmp = (unsigned char *)  real_patch_start + ( image_x * yi * 3 ) + 3 * xi ;
+
+	   r = real_patch_tmp++;
+       g = real_patch_tmp++;
+       b = real_patch_tmp;
+       //Get Pixel Color
+	   col_med=  ( *r + *g + *b )/3;
+	   *ptr= (unsigned char )col_med ;
+	   ++ptr;
+    }
+  } //MONOCHROME DONE
+
 
 
     ptr=monochrome_patch;

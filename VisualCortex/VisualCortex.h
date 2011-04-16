@@ -9,7 +9,7 @@ extern "C" {
 struct PatchSignature
 {
    unsigned int total_segments;
-   unsigned short segment[MAX_SEGMENTS_SIGNATURE];
+   unsigned int segment[MAX_SEGMENTS_SIGNATURE];
 };
 
 enum VisCortxSettings
