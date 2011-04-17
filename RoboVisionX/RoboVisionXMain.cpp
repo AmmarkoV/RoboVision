@@ -620,6 +620,7 @@ void RoboVisionXFrame::OnMotion(wxMouseEvent& event)
              RIFrame->patch_width = DepthMap ( 8 , dpth_x , dpth_y );
              RIFrame->patch_height = DepthMap ( 9 , dpth_x , dpth_y );
              VisCortx_GetPatchDescriptor(RIFrame->camera,RIFrame->patch_x,RIFrame->patch_y,RIFrame->patch_width,RIFrame->patch_height,&RIFrame->sig);
+             RIFrame->PrepareMenu();
              RIFrame->ready = 1;
     	     RIFrame->ShowModal();
     	    delete RIFrame;

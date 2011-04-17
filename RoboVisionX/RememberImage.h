@@ -22,11 +22,14 @@ class RememberImage: public wxDialog
 		RememberImage(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
 		virtual ~RememberImage();
 
+		void PrepareMenu();
+
 		//(*Declarations(RememberImage)
 		wxButton* ButtonBack;
 		wxTextCtrl* SignatureText;
 		wxButton* ButtonAddToDatabase;
 		wxStaticText* StaticText1;
+		wxButton* ButtonIdentifyFromDatabase;
 		wxStaticText* StaticText2;
 		wxTextCtrl* KeywordsText;
 		//*)
@@ -40,6 +43,7 @@ class RememberImage: public wxDialog
 		static const long ID_STATICTEXT1;
 		static const long ID_STATICTEXT2;
 		static const long ID_TEXTCTRL2;
+		static const long ID_BUTTON3;
 		//*)
 
 	private:
@@ -47,6 +51,7 @@ class RememberImage: public wxDialog
 		//(*Handlers(RememberImage)
 		void OnButtonBackClick(wxCommandEvent& event);
 		void OnButtonAddToDatabaseClick(wxCommandEvent& event);
+		void OnButtonIdentifyFromDatabaseClick(wxCommandEvent& event);
 		//*)
 
 		DECLARE_EVENT_TABLE()

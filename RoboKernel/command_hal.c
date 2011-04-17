@@ -40,6 +40,8 @@ enum command_id_consts
   CMD_SOBEL_N_DERIVATIVE,
   CMD_TOGGLE_AUTO_RECORD_SNAPSHOTS,
   CMD_TOGGLE_AUTO_PLAYBACK_SNAPSHOTS,
+  CMD_REMEMBER_IMAGE,
+  CMD_IDENTIFY_IMAGE,
   CMD_RECORD_SNAPSHOT,
   CMD_RECORD_COMPRESSED,
   CMD_PLAYBACK_SNAPSHOT,
@@ -59,13 +61,14 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
   if ( ( opcode == CMD_UNKNOWN ) || (opcode >= CMD_TOTAL_CONSTS) ) { return 0;}
 
   char outptstr[512]={0};
-  char cmds_1[512]={0},cmds_2[512]={0},cmds_3[512]={0},cmds_4[512]={0};
-  unsigned int cmdi_1=0,cmdi_2=0,cmdi_3=0,cmdi_4=0;
+  char cmds_1[512]={0},cmds_2[512]={0},cmds_3[512]={0},cmds_4[512]={0},cmds_5[512]={0};
+  unsigned int cmdi_1=0,cmdi_2=0,cmdi_3=0,cmdi_4=0,cmdi_5=0;
 
   InputParser_GetWord(ipc,1,cmds_1,512); cmdi_1=InputParser_GetWordInt(ipc,1);
   if ( words_count > 1 ) InputParser_GetWord(ipc,2,cmds_2,512); cmdi_2=InputParser_GetWordInt(ipc,2);
   if ( words_count > 2 ) InputParser_GetWord(ipc,3,cmds_3,512); cmdi_3=InputParser_GetWordInt(ipc,3);
   if ( words_count > 3 ) InputParser_GetWord(ipc,4,cmds_4,512); cmdi_4=InputParser_GetWordInt(ipc,4);
+  if ( words_count > 4 ) InputParser_GetWord(ipc,5,cmds_5,512); cmdi_5=InputParser_GetWordInt(ipc,5);
 
 
   switch (opcode)
@@ -219,6 +222,16 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  sprintf(outptstr,"From %s : Second Derivative Sobel! \n",from);
                  SobelNDerivative_in(cmdi_1);
      break;
+     case CMD_REMEMBER_IMAGE :
+                 sprintf(outptstr,"From %s : Remember Image - Camera %u , Start (%u,%u) , Size (%u,%u) .. ( NOT IMPLEMENTED )! \n",from,cmdi_1,cmdi_2,cmdi_3,cmdi_4,cmdi_5);
+
+     break;
+     case CMD_IDENTIFY_IMAGE :
+                 sprintf(outptstr,"From %s : Identify Image - Camera %u , Start (%u,%u) , Size (%u,%u) .. ( NOT IMPLEMENTED )! \n",from,cmdi_1,cmdi_2,cmdi_3,cmdi_4,cmdi_5);
+
+     break;
+
+
 
      default :
        return 0;
@@ -270,6 +283,9 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP IMPORT TO MAP",23)==1) { chosen_command=CMD_DEPTHMAP_IMPORT_TO_MAP; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SOBEL SECOND DERIVATIVE",23)==1) { chosen_command=CMD_SOBEL_SECOND_DERIVATIVE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SOBEL DERIVATIVE",16)==1) { chosen_command=CMD_SOBEL_N_DERIVATIVE; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"REMEMBER IMAGE",14)==1) { chosen_command=CMD_REMEMBER_IMAGE; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"IDENTIFY IMAGE",14)==1) { chosen_command=CMD_IDENTIFY_IMAGE; } else
+
 
         /*
          * >>>>>>>>>>>>>>>>>>>>>>>>>>!!!WRONG COMMAND!!!<<<<<<<<<<<<<<<<<<<<<<<<
