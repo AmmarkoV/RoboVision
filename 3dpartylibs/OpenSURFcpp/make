@@ -1,5 +1,6 @@
 #!/bin/bash
-echo "OpenSurf compile script missing.." 
-make
+echo "Executing OpenSurf make script.." 
+make clean
+make all
 echo "Done"
 exit 0

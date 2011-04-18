@@ -64,7 +64,7 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
             return score_threshold+1;
           } /*If histograms greatly different fail the test immediately*/
 
-    // NEW HISTOGRAM TESTING :) --SPEED ++ACCURACY
+    // NEW HISTOGRAM TESTING :) ++SPEED ++ACCURACY
   }
 
     unsigned long prox=0,pre_prox=0;
@@ -555,6 +555,8 @@ inline unsigned short FindNeighborDepth(
                                                unsigned int x,unsigned int y,unsigned int depth
                                        )
 {
+  // Heuristic , finds neighborhood depth..
+
   unsigned int SHIFT_3_BYTE = metrics[RESOLUTION_X_3_BYTE];
   unsigned int SHIFT_1_BYTE = metrics[RESOLUTION_X];
 
@@ -603,6 +605,8 @@ inline unsigned short FindNeighborDepth(
 
 void EnhanceDepthMapWithEdges(unsigned char * rgb_image,unsigned short *full_depth_map,unsigned char * edges_map,unsigned int image_x,unsigned int image_y)
 {
+  // Heuristic , fills depth map holes with neighborhood edge depth..
+
   fprintf(stderr,"Todo : FindNeighborDepth is not complete , fix it ! \n");
   memcpy(l_video_register[GENERAL_LARGE_1].pixels,full_depth_map,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
   unsigned int SHIFT_1_BYTE = metrics[RESOLUTION_X];
@@ -707,8 +711,9 @@ void EnhanceDepthMapWithEdges(unsigned char * rgb_image,unsigned short *full_dep
 
 unsigned int EnhanceDepthMapFillHoles(unsigned char * rgb_image,unsigned short *full_depth_map,unsigned int image_x,unsigned int image_y)
 {
-  fprintf(stderr,"Todo : EnhanceDepthMapFillHoles is not complete , fix it ! \n");
+  // Heuristic , fills depth map holes with neighborhood depth..
 
+  fprintf(stderr,"Todo : EnhanceDepthMapFillHoles is not complete , fix it ! \n");
   memcpy(l_video_register[GENERAL_LARGE_1].pixels,full_depth_map,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
  // unsigned int SHIFT_1_BYTE = metrics[RESOLUTION_X];
 
@@ -739,6 +744,7 @@ unsigned int EnhanceDepthMapFillHoles(unsigned char * rgb_image,unsigned short *
 
 void DepthMapToVideo(unsigned short *full_depth_map,unsigned char *vid_depth_map,unsigned int image_x,unsigned int image_y)
 {
+  // Convert from the 1byte per pixel storage to 3bytes ( r,g,b ) per pixel needed for Video Windows
   register BYTE *px;
   register BYTE *r;
   register BYTE *g;

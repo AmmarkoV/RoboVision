@@ -56,7 +56,7 @@ int mainImage(void)
 int mainVideo(void)
 {
   // Initialise capture device
-  CvCapture* capture = cvCaptureFromCAM( CV_CAP_ANY );
+  CvCapture* capture = cvCaptureFromCAM(2); /*CV_CAP_ANY*/
   if(!capture) error("No Capture");
 
   // Initialise video writer

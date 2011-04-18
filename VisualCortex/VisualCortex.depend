@@ -1,1 +1,112 @@
 # depslib dependency file v1.0
+1303124782 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
+	"DisparityDepthMap.h"
+	"VisCortexFilters.h"
+	"Precalculations.h"
+	<stdio.h>
+	<string.h>
+
+1269178561 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.h
+	"VisionMemory.h"
+
+1289501348 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
+	"VisualCortex.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1303125719 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+
+1302869985 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexFilters.h
+	"VisionMemory.h"
+	<math.h>
+
+1267018954 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.h
+
+1289258612 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.c
+	"FaceDetection.h"
+	<stdio.h>
+	<stdlib.h>
+	"../3dpartylibs/fdlib_linux/fdlib.h"
+
+1289255158 /home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.h
+
+1153312560 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/fdlib_linux/fdlib.h
+
+1302881562 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureExtraction.c
+	"FeatureExtraction.h"
+	"VisCortexFilters.h"
+	"PatchTracking.h"
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1302880553 /home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureExtraction.h
+
+1302880671 /home/ammar/Documents/Programming/RoboVision/VisualCortex/PatchTracking.h
+	"VisionMemory.h"
+
+1285835230 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/MovementRegistration.c
+	"MovementRegistration.h"
+	"Precalculations.h"
+
+1267105614 /home/ammar/Documents/Programming/RoboVision/VisualCortex/MovementRegistration.h
+	"VisionMemory.h"
+
+1302880904 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/PatchTracking.c
+	"PatchTracking.h"
+	"Precalculations.h"
+	"MovementRegistration.h"
+	"VisCortexFilters.h"
+
+1302970633 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/PatternRecognition.c
+	"PatternRecognition.h"
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1302903855 /home/ammar/Documents/Programming/RoboVision/VisualCortex/PatternRecognition.h
+	"VisualCortex.h"
+
+1285835221 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.c
+	"Precalculations.h"
+	"VisionMemory.h"
+	<limits.h>
+
+1303125851 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.c
+	"StateSetting.h"
+	"VisionMemory.h"
+	"FaceDetection.h"
+	<math.h>
+
+1303125677 /home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.h
+	"StateSetting.h"
+
+1303085368 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexFilters.c
+	"VisCortexFilters.h"
+	"Precalculations.h"
+	"PatchTracking.h"
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1303085538 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
+	"VisionMemory.h"
+	"Precalculations.h"
+	"VisCortexFilters.h"
+
+1303125500 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
+	"VisualCortex.h"
+	"VisionMemory.h"
+	"DisparityDepthMap.h"
+	"MovementRegistration.h"
+	"VisCortexFilters.h"
+	"FeatureExtraction.h"
+	"PatternRecognition.h"
+	"PatchTracking.h"
+	"FaceDetection.h"
+	"StateSetting.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
