@@ -13,5 +13,7 @@ void SetDefaultSettings();
 unsigned int GetSetting(unsigned int get_num);
 unsigned int GetMetric(unsigned int get_num);
 unsigned int GetVideoRegisterStats(unsigned int metric_num);
+void SetTime(unsigned int thetime);
+unsigned int GetTime();
 
 #endif // STATESETTING_H_INCLUDED

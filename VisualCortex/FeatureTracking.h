@@ -1,5 +1,5 @@
-#ifndef PATCH_TRACKING_H
-#define PATCH_TRACKING_H
+#ifndef FEATURE_TRACKING_H
+#define FEATURE_TRACKING_H
 
 #include "VisionMemory.h"
 

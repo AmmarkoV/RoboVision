@@ -1,6 +1,6 @@
 #include "FeatureExtraction.h"
 #include "VisCortexFilters.h"
-#include "PatchTracking.h"
+#include "FeatureTracking.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -75,6 +75,13 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned char * edge_source,uns
   fprintf(stderr,"FindGoodTrackingPoints , survived , total of %u points ..\n",GetPointTrackList());
   return 1;
 }
+
+int ExtractFeaturesOpenSURF()
+{
+    fprintf(stderr,"Not linked yet..\n");
+    return 0;
+}
+
 
 
 int ExtractFeatures(int max_features,unsigned char * edge_source,unsigned char * target,int image_x,int image_y,int monochrome)

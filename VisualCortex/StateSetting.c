@@ -79,9 +79,9 @@ unsigned int SelfCheckEverything()
     fprintf(stderr,"GenerateCompressHistogramOfImage Beeing called!\n");
   // GenerateCompressHistogramOfImage(video_register[LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,30,30);
     fprintf(stderr,"GenerateCompressHistogramOfImage is done!\n");
-    int x=0,y=0;
+/*    int x=0,y=0;
 
-/*
+
     for (y=0; y<210; y++)
     {
      for (x=0; x<290; x++)
@@ -140,6 +140,18 @@ unsigned int GetVideoRegisterStats(unsigned int metric_num)
    return metrics[metric_num];
 
 }
+
+void SetTime(unsigned int thetime)
+{
+    if ( thetime<TIME_INC) { fprintf(stderr,"VisCortex Clock truncated"); }
+TIME_INC=thetime;
+}
+
+unsigned int GetTime()
+{
+    return TIME_INC;
+}
 /*
  ----------------- INITIALIZATION ----------------------
 */
+

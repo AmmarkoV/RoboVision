@@ -23,7 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "VisCortexFilters.h"
 #include "FeatureExtraction.h"
 #include "PatternRecognition.h"
-#include "PatchTracking.h"
+#include "FeatureTracking.h"
 #include "FaceDetection.h"
 #include "StateSetting.h"
 #include <stdio.h>
@@ -39,7 +39,10 @@ char *  VisCortx_Version()
 }
 
 /*
- ----------------- INITIALIZATION ----------------------
+ -----------------
+                     INITIALIZATION
+                     StateSetting.c/h
+                                      ----------------------
 */
 unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras,float diagonal_field_of_view,float horizontal_field_of_view,float vertical_field_of_view)
 {
@@ -95,8 +98,23 @@ unsigned int VisCortx_GetVideoRegisterStats(unsigned int metric_num)
 {
    return GetVideoRegisterStats(metric_num);
 }
+
+
+void VisCortx_SetTime(unsigned int thetime)
+{
+     SetTime(thetime);
+}
+
+unsigned int VisCortx_GetTime()
+{
+    return VisCortx_GetTime();
+}
+
 /*
- ----------------- INITIALIZATION ----------------------
+ -----------------
+                     INITIALIZATION
+                     StateSetting.c/h
+                                      ----------------------
 */
 
 
@@ -355,17 +373,6 @@ int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam)
  ----------------- MOVEMENT REGISTRATION ----------------------
 */
 
-void VisCortx_SetTime(unsigned int thetime)
-{
-    if ( thetime<TIME_INC) { fprintf(stderr,"VisCortex Clock truncated"); }
-	TIME_INC=thetime;
-}
-
-unsigned int VisCortx_GetTime()
-{
-    return TIME_INC;
-}
-
 /*
  ----------------- FEATURE TRACKING ----------------------
 */
@@ -516,6 +523,23 @@ float VisCortx_CameraHorizontalAngleStep()
   return  metrics[RESOLUTION_X] / camera_horizontal_field_of_view;
 }
 
+unsigned short VisCortx_SetDepthScale(unsigned short depth_units,float centimeters)
+{
+  if ( depth_units<255 )
+     {
+       depth_units_in_cm[depth_units]=centimeters;
+     }
+  return 0;
+}
+
+float VisCortx_DepthUnitsToCM(unsigned short depth_units)
+{
+  if (depth_units<255)
+   {
+       return depth_units_in_cm[depth_units];
+   }
+  return 0.0;
+}
 
 unsigned short VisCortx_GetDepth_From_Angle(char num,float horizontal_angle,float vertical_angle)
 {
@@ -558,20 +582,3 @@ unsigned short VisCortx_GetDepth_From_Angle(char num,float horizontal_angle,floa
   return l_video_register[Camera_Selected].pixels[ptr];
 }
 
-unsigned short VisCortx_SetDepthScale(unsigned short depth_units,float centimeters)
-{
-  if ( depth_units<255 )
-     {
-       depth_units_in_cm[depth_units]=centimeters;
-     }
-  return 0;
-}
-
-float VisCortx_DepthUnitsToCM(unsigned short depth_units)
-{
-  if (depth_units<255)
-   {
-       return depth_units_in_cm[depth_units];
-   }
-  return 0.0;
-}
