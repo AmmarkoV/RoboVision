@@ -29,7 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 
-char * VISCORTEX_VER = "0.477";
+char * VISCORTEX_VER = "0.50";
 
 
 char *  VisCortx_Version()
@@ -186,16 +186,43 @@ unsigned int VisCortx_GetVideoRegisterStats(unsigned int metric_num)
 */
 
 
-void VisCortX_CopyFromVideoToVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum)
+unsigned int VisCortX_CopyFromVideoToVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum)
 {
   unsigned long syst_mem_end=metrics[RESOLUTION_X]*metrics[RESOLUTION_Y]*3;
-  memcpy(video_register[output_img_regnum].pixels,video_register[input_img_regnum].pixels,syst_mem_end);
-  return;
+  if ( video_register[output_img_regnum].depth != video_register[input_img_regnum].depth )
+    {
+        if ( ( video_register[input_img_regnum].depth == 1 ) && ( video_register[output_img_regnum].depth == 3) )
+          {
+            //fprintf(stderr,"Kind of unsafe conversion from 1bit to 3bit ;P \n");
+            unsigned char * src=video_register[input_img_regnum].pixels;
+            unsigned char  * target=video_register[output_img_regnum].pixels;
+            int i=0;
+            while ( i < syst_mem_end )
+             {
+                *target = *src; target++;
+                *target = *src; target++;
+                *target = *src; target++;
+                src++;
+
+                i++;
+             }
+          } else
+          {
+              fprintf(stderr,"VisCortX_CopyFromVideoToVideoRegister from %u bit to %u bit not implemented\n",video_register[input_img_regnum].depth,video_register[output_img_regnum].depth);
+              return 0;
+          }
+    }  else
+    {
+      memcpy(video_register[output_img_regnum].pixels,video_register[input_img_regnum].pixels,syst_mem_end);
+    }
+
+  return 1;
 }
 
-void VisCortX_BitBltVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y)
+unsigned int VisCortX_BitBltVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y)
 {
- CopyPartOfImageToImage(video_register[input_img_regnum].pixels,video_register[output_img_regnum].pixels,px,py,tx,ty,size_x,size_y);
+  CopyPartOfImageToImage(video_register[input_img_regnum].pixels,video_register[output_img_regnum].pixels,px,py,tx,ty,size_x,size_y);
+  return 1;
 }
 
 unsigned int VisCortX_LoadVideoRegisterFromFile(unsigned int reg_num,char * filename)
@@ -382,7 +409,7 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
 */
 int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam)
 {
-   if ( left_cam == 1 )  metrics[CHANGES_LEFT]=RegisterMovements(1,
+   if ( left_cam == 1 ) { metrics[CHANGES_LEFT]=RegisterMovements(1,
                                                                  video_register[LAST_LEFT_EYE].pixels,
                                                                  video_register[LEFT_EYE].pixels,
                                                                  video_register[BACKGROUND_LEFT].pixels,
@@ -390,14 +417,18 @@ int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam)
                                                                  video_register[MOVEMENT_LEFT].pixels
                                                                 );
 
+                          video_register[MOVEMENT_LEFT].depth=1;
+                        }
 
-   if (right_cam == 1 ) metrics[CHANGES_RIGHT]=RegisterMovements(0,
+   if (right_cam == 1 ) { metrics[CHANGES_RIGHT]=RegisterMovements(0,
                                                                  video_register[LAST_RIGHT_EYE].pixels,
                                                                  video_register[RIGHT_EYE].pixels,
                                                                  video_register[BACKGROUND_RIGHT].pixels,
                                                                  video_register[DIFFERENCE_RIGHT].pixels,
                                                                  video_register[MOVEMENT_RIGHT].pixels
                                                                 );
+                          video_register[MOVEMENT_RIGHT].depth=1;
+                        }
   return 0;
 }
 /*

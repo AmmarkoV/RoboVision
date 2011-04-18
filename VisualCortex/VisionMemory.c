@@ -232,6 +232,14 @@ int CloseVisionMemory()
 }
 
 
+
+/*
+    ---------------------------------------
+                FILE OPERATIONS
+    ---------------------------------------
+*/
+
+
 int SaveRegisterToFile(char * filename,unsigned int reg_num)
 {
     FILE *fd=0;
