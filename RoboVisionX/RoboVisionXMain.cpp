@@ -302,8 +302,10 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     add_new_track_point=0;
     tick_count=0; // INTERNAL TIMER
 
-    Timer1.Start(120, false);  //No fps limit
     DrawFeeds->SetValue(false); fprintf(stderr,"Switching off Video Drawing\n");
+    Timer1.Start(120, false);  //No fps limit
+
+
     // CONFIGURATION HAS BEEN READ SO , APPLY IT!
 /*    if ( fps == 0 ) Timer1.Start(120, false); else //No fps limit
     if ( fps == 1 ) Timer1.Start(3000, false); else // 1 = Very low fps 0.3 fps
@@ -484,7 +486,7 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
    if ( !RoboKernelAlive() ) { fprintf(stderr,"Robo Kernel died\n"); return; }
    // DEN XREIAZETAI GIATI XEIRIZETAI TO SNAPWEBCAMS TO EVENT! -> TO AFINW SAN REMINDR OTI DEN XREIAZETAI if ( VideoFeedsNotAccessible== 1 ) { return; }
 
-   wxStopWatch sw;
+   wxStopWatch sw1;
    if ( SnapWebCams() == 1 )
     {
       VisCortx_Movement_Detection(1,1);
@@ -492,10 +494,10 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
       VisCortx_TrackPoints();
       VisCortx_RenewAllTrackPoints();
     }
-   sw.Pause();
+   sw1.Pause();
 
-   if ( sw.Time() == 0 ) { frame_rate = 1000; } else
-                         { frame_rate = 1000 / sw.Time(); }
+   if ( sw1.Time() == 0 ) { frame_rate = 1000; } else
+                         { frame_rate = 1000 / sw1.Time(); }
 
 
     ++tick_count;
@@ -506,12 +508,12 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
         if ( ( VisCortx_GetMetric(CHANGES_LEFT) >3000 ) || ( VisCortx_GetMetric(CHANGES_RIGHT)>3000 ) )
         {
 
-         wxStopWatch sw;
+         wxStopWatch sw2;
           GUI_FullDepthMap(0);
-         sw.Pause();
+         sw2.Pause();
 
          wxString msg;
-         msg.Printf( wxT("Full DepthMap ( %u ms )\n") , sw.Time() );
+         msg.Printf( wxT("Full DepthMap ( %u ms )\n") , sw2.Time() );
          Status->AppendText( msg );
 
          IssueCommand((char *) "DEPTH MAP TO FILE",0,0,(char *)"GUI");

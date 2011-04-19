@@ -108,7 +108,7 @@ void VisCortx_SetTime(unsigned int thetime)
 
 unsigned int VisCortx_GetTime()
 {
-    return VisCortx_GetTime();
+    return GetTime();
 }
 
 /*

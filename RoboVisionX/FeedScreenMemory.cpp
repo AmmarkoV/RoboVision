@@ -148,7 +148,9 @@ int SaveRegisterToFile(char * filename , unsigned int reg_num)
 
 int SnapWebCams()
 {
+
  if (has_init==0) { fprintf(stderr,"!"); VideoFeedsNotAccessible=1; return 0; }
+
 
  if (last_viscrtx_pass==VisCortx_GetTime()) { return 0; }
  last_viscrtx_pass=VisCortx_GetTime();
@@ -157,7 +159,6 @@ int SnapWebCams()
 
  if ( live_feeds[0].bmp_allocated ) { delete live_feeds[0].bmp; live_feeds[0].bmp_allocated = false; }
  if ( live_feeds[1].bmp_allocated ) { delete live_feeds[1].bmp; live_feeds[1].bmp_allocated = false; }
-
 
  void *frame=0 ,*frame2 = 0;
 
