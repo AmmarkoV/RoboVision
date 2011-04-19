@@ -12,15 +12,16 @@ gcc -c Precalculations.c -o Precalculations.o
 gcc -c StateSetting.c -o StateSetting.o
 gcc -c VisCortexFilters.c -o VisCortexFilters.o
 gcc -c VisCortexHeuristics.c -o VisCortexHeuristics.o 
-gcc -c VisionMemory.c -o VisionMemory.o 
+gcc -c VisionMemory.c -o VisionMemory.o
+gcc -c LinearAlgebra.c -o LinearAlgebra.o  
 gcc -c VisualCortex.c -o VisualCortex.o
 
 
 echo "Linking files.."
-ar  rcs libVisualCortex.a DisparityDepthMap.o MovementRegistration.o FeatureExtraction.o PatternRecognition.o FeatureTracking.o Precalculations.o StateSetting.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VisualCortex.o
+ar  rcs libVisualCortex.a DisparityDepthMap.o MovementRegistration.o FeatureExtraction.o PatternRecognition.o FeatureTracking.o Precalculations.o StateSetting.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o LinearAlgebra.o VisualCortex.o
 
 echo "Cleaning compiled object files.."
-rm DisparityDepthMap.o MovementRegistration.o FeatureExtraction.o PatternRecognition.o FeatureTracking.o Precalculations.o StateSetting.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VisualCortex.o
+rm DisparityDepthMap.o MovementRegistration.o FeatureExtraction.o PatternRecognition.o FeatureTracking.o Precalculations.o StateSetting.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o LinearAlgebra.o VisualCortex.o
 
 echo "Compiling Tester.."
 cd VisCortx_Tester

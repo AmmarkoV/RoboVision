@@ -23,61 +23,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <string.h>
 
-void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y)
-{
-  register unsigned char *input_pointer,*input_pointer_startline,*input_pointer_endline,*input_pointer_stop;
-  register unsigned char *output_pointer,*output_pointer_startline,*output_pointer_stop;
-
-  if (px>=metrics[RESOLUTION_X]) { fprintf(stderr,"CopyPartOfImageToImage : Source X out of bounds\n"); return; }
-  if (px+size_x>=metrics[RESOLUTION_X]) { fprintf(stderr,"CopyPartOfImageToImage : Source X Size out of bounds\n");
-                                          size_x=metrics[RESOLUTION_X]-px;}
-
-  if (py>=metrics[RESOLUTION_Y]) { fprintf(stderr,"CopyPartOfImageToImage : Source Y out of bounds\n"); return; }
-  if (py+size_y>=metrics[RESOLUTION_Y]) { fprintf(stderr,"CopyPartOfImageToImage : Source Y Size out of bounds\n");
-                                          size_y=metrics[RESOLUTION_Y]-py;}
-
-  if (tx>=metrics[RESOLUTION_X]) { fprintf(stderr,"CopyPartOfImageToImage : Target X out of bounds\n"); return; }
-  if (tx+size_x>=metrics[RESOLUTION_X]) { fprintf(stderr,"CopyPartOfImageToImage : Target X Size out of bounds\n");
-                                          size_x=metrics[RESOLUTION_X]-tx;}
-
-  if (ty>=metrics[RESOLUTION_Y]) { fprintf(stderr,"CopyPartOfImageToImage : Target Y out of bounds\n"); return; }
-  if (ty+size_y>=metrics[RESOLUTION_Y]) { fprintf(stderr,"CopyPartOfImageToImage : Target Y Size out of bounds\n");
-                                          size_y=metrics[RESOLUTION_Y]-ty;}
-
-  unsigned int line_size =size_x * 3;
-
-  input_pointer=(BYTE *) input_img+precalc_memplace_3byte[px][py];
-  input_pointer_startline=input_pointer;
-  input_pointer_endline=input_pointer_startline+line_size;
-  input_pointer_stop=(BYTE *) input_img+precalc_memplace_3byte[px+size_x][py+size_y];
-
-  output_pointer=(BYTE *) output_img+precalc_memplace_3byte[tx][ty];
-  output_pointer_startline=output_pointer;
-  output_pointer_stop=(BYTE *) output_img+precalc_memplace_3byte[tx+size_x][ty+size_y];
-
-  register unsigned char *r,*g,*b;
-  while ( (input_pointer<input_pointer_stop) && (input_pointer<input_pointer_stop)  && (output_pointer<output_pointer_stop) )
-  {
-    while (input_pointer<input_pointer_endline)
-    {
-       r=(unsigned char*) input_pointer++; *output_pointer = *r; ++output_pointer;
-       g=(unsigned char*) input_pointer++; *output_pointer = *g; ++output_pointer;
-       b=(unsigned char*) input_pointer++; *output_pointer = *b; ++output_pointer;
-    }
-
-    input_pointer_startline+=metrics[RESOLUTION_X_3_BYTE];
-    input_pointer_endline=input_pointer_startline+line_size;
-    input_pointer=input_pointer_startline;
-
-    output_pointer_startline+=metrics[RESOLUTION_X_3_BYTE];
-    output_pointer=output_pointer_startline;
-
-  }
-}
 
 
 unsigned int HistogramPatch(struct Histogram *hist_data,unsigned char *img,unsigned int px,unsigned int py,unsigned int patch_x,unsigned int patch_y)
 {
+    /*
+      THERE ALSO EXISTS A COMPRESSED HISTOGRAM PATCH ( MUCH FASTER , SEE IntegralImageConversion.c
+                                THIS FUNCTION IS DEPRECIATED
+    */
     register BYTE *image_px,*image_stopx;
     register BYTE *r,*g,*b;
 

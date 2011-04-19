@@ -49,14 +49,18 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="FeatureExtraction.h" />
+		<Unit filename="FeatureTracking.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FeatureTracking.h" />
+		<Unit filename="IntegralImageConversion.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="IntegralImageConversion.h" />
 		<Unit filename="MovementRegistration.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="MovementRegistration.h" />
-		<Unit filename="PatchTracking.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="PatchTracking.h" />
 		<Unit filename="PatternRecognition.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -65,10 +69,18 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Precalculations.h" />
+		<Unit filename="StateSetting.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="StateSetting.h" />
 		<Unit filename="VisCortexFilters.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="VisCortexFilters.h" />
+		<Unit filename="VisCortexHeuristics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="VisCortexHeuristics.h" />
 		<Unit filename="VisionMemory.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -86,6 +86,9 @@ void ClearVideoRegister(unsigned int reg_num );
 int InitVisionMemory(unsigned int res_x,unsigned int res_y);
 int CloseVisionMemory();
 
+void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y);
+
+
 int SaveRegisterToFile(char * filename,unsigned int reg_num);
 int LoadRegisterFromFile(char * filename,unsigned int reg_num);
 

@@ -11,7 +11,7 @@
 		<Cursor position="4137" topLine="108" />
 	</File>
 	<File name="NormalizePath.c" open="1" top="0" tabpos="7">
-		<Cursor position="5699" topLine="181" />
+		<Cursor position="8509" topLine="275" />
 	</File>
 	<File name="NormalizePath.h" open="1" top="0" tabpos="8">
 		<Cursor position="275" topLine="0" />
@@ -23,7 +23,7 @@
 		<Cursor position="703" topLine="0" />
 	</File>
 	<File name="PathPlanningHelper.c" open="1" top="0" tabpos="5">
-		<Cursor position="1394" topLine="143" />
+		<Cursor position="5389" topLine="132" />
 	</File>
 	<File name="PathPlanningHelper.h" open="1" top="0" tabpos="11">
 		<Cursor position="144" topLine="0" />
@@ -35,6 +35,6 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="9638" topLine="248" />
+		<Cursor position="7075" topLine="175" />
 	</File>
 </CodeBlocks_layout_file>

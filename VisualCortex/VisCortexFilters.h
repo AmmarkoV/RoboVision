@@ -4,8 +4,6 @@
 #include "VisionMemory.h"
 #include <math.h>
 
-void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y);
-
 void GenerateCompressHistogramOfImage(unsigned char * input_img,unsigned short * output_img,unsigned int block_x,unsigned int block_y);
 unsigned int HistogramPatch(struct Histogram *hist_data,unsigned char *img,unsigned int px,unsigned int py,unsigned int patch_x,unsigned int patch_y);
 unsigned int CompressedHistogramPatch(unsigned short * img,struct Histogram * hist , unsigned int x,unsigned int y);
