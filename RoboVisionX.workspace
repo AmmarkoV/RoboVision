@@ -4,10 +4,10 @@
 		<Project filename="WorldMapping/MasterpathPlanning/MasterpathPlanning.cbp" />
 		<Project filename="MotorFoundation/Arduino/RoboVisionSensorLib.cbp" />
 		<Project filename="MotorFoundation/MD23/MD23.cbp" />
-		<Project filename="VideoInput/VideoInput.cbp" active="1" />
+		<Project filename="VideoInput/VideoInput.cbp" />
 		<Project filename="VisualCortex/VisualCortex.cbp" />
 		<Project filename="MotorFoundation/MotorHAL.cbp" />
 		<Project filename="RoboKernel/RoboKernel.cbp" />
-		<Project filename="RoboVisionX/RoboVisionX.cbp" />
+		<Project filename="RoboVisionX/RoboVisionX.cbp" active="1" />
 	</Workspace>
 </CodeBlocks_workspace_file>

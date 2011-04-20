@@ -61,6 +61,22 @@ int InitRegister( unsigned int reg_num, unsigned int res_x,unsigned int res_y,un
   return 0;
 }
 
+int ClearVideoRegister(unsigned int reg_num)
+{
+    if (video_register[reg_num].depth==3)
+     {
+        memset(video_register[reg_num].pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(unsigned char));
+     } else
+     {
+       memset(video_register[reg_num].pixels,0,video_register[reg_num].size_x*video_register[reg_num].size_y*video_register[reg_num].depth*sizeof(unsigned char));
+     }
+    video_register[reg_num].time = 0;
+    video_register[reg_num].used = 0;
+    return 1;
+
+}
+
+
 int CloseRegister( unsigned int reg_num )
 {
     if ( video_register[reg_num].pixels == 0 ) { fprintf(stderr,"While Deallocating Register : video register %u already deallocated !\n",reg_num);
@@ -96,6 +112,21 @@ int InitLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned int res
   return 0;
 }
 
+int ClearLargeVideoRegister(unsigned int reg_num)
+{
+    if (l_video_register[reg_num].depth==3)
+     {
+        memset(l_video_register[reg_num].pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(unsigned short));
+     } else
+     {
+       memset(l_video_register[reg_num].pixels,0,l_video_register[reg_num].size_x*l_video_register[reg_num].size_y*l_video_register[reg_num].depth*sizeof(unsigned short));
+     }
+    l_video_register[reg_num].time = 0;
+    l_video_register[reg_num].used = 0;
+    return 1;
+
+}
+
 int CloseLargeRegister( unsigned int reg_num )
 {
     if ( l_video_register[reg_num].pixels == 0 ) { fprintf(stderr,"While Deallocating Large Register : video register %u already deallocated !\n",reg_num);
@@ -111,11 +142,6 @@ int CloseLargeRegister( unsigned int reg_num )
     return 0;
 }
 
-void ClearVideoRegister(unsigned int reg_num )
-{
-    memset(video_register[reg_num].pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(BYTE));
-    // CLEAR DEPTH MAP FROM ARTIFACTS
-}
 
 
 void DefaultSettings()
@@ -139,6 +165,8 @@ void DefaultSettings()
     settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM]=1;
     settings[DEPTHMAP_IMPROVE_FILLING_HOLES]=0;
     settings[DEPTHMAP_IMPROVE_USING_EDGES]=0;
+    settings[DEPTHMAP_IMPROVE_USING_MOVEMENT]=1;
+
 
     settings[PATCH_COMPARISON_LEVELS]=3; /* It will use 3 different size block levels for comparison */
     settings[PATCH_COMPARISON_SCORE_MIN]=30000;

@@ -23,7 +23,23 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <string.h>
 
+unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned int x , unsigned int y,unsigned int size_x , unsigned int size_y,unsigned char * edge_array)
+{
+   unsigned int counted_edges=0;
+   unsigned int x_c=x ,  y_c=y;
+   register BYTE *px;
+   register BYTE *stopx;
 
+	     while (y_c<=y+size_y)
+				{
+                  px= (BYTE *) edge_array+precalc_memplace_3byte[x_c][y_c];
+				  stopx=px+size_x;
+				  while (px<stopx) { if ( *px!=0 ) { ++counted_edges; }  px+=3;  }
+				  if ( edges_required_to_process < counted_edges ) { return counted_edges; } // ++PERFORMANCE --RESULT
+				  ++y_c;
+			 	}
+  return counted_edges;
+}
 
 unsigned int HistogramPatch(struct Histogram *hist_data,unsigned char *img,unsigned int px,unsigned int py,unsigned int patch_x,unsigned int patch_y)
 {

@@ -81,7 +81,9 @@ extern float depth_units_in_cm[256];
 // INIT / DEINIT
 int VideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth);
 void DefaultSettings();
-void ClearVideoRegister(unsigned int reg_num );
+
+int ClearVideoRegister(unsigned int reg_num);
+int ClearLargeVideoRegister(unsigned int reg_num);
 
 int InitVisionMemory(unsigned int res_x,unsigned int res_y);
 int CloseVisionMemory();

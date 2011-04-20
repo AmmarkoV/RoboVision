@@ -143,6 +143,11 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 						 if (control<pre_prox) { pre_prox=0; fprintf(stderr,"PatchComparison Overflow :S\n"); }
 		               }
 
+        if ( settings[DEPTHMAP_IMPROVE_USING_MOVEMENT] )
+                        {
+                           /*TODO ADD HERE MOVEMENT SCORE*/
+                        }
+
 		prox+=pre_prox;
         if ( score_threshold<prox ) {
                                       ++metrics[COMPAREPATCH_ALGORITHM_DENIES];
@@ -205,33 +210,23 @@ void PassGuessNextDepthMem(unsigned int prox,unsigned int patch_x,unsigned int p
         FillDepthMemWithData(depth_data_raw,depth_data_full,depth_data,image_x,image_y);
 }
 
-unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned int x , unsigned int y,unsigned int size_x , unsigned int size_y,unsigned char * left_temporary_feed)
-{
-   unsigned int counted_edges=0;
-   unsigned int x_c=x ,  y_c=y;
-   register BYTE *px;
-   register BYTE *stopx;
 
-	     while (y_c<=y+size_y)
-				{
-                  px= (BYTE *) left_temporary_feed+precalc_memplace_3byte[x_c][y_c];
-				  stopx=px+size_x;
-				  while (px<stopx) { if ( *px!=0 ) { ++counted_edges; }  px+=3;  }
-				  if ( edges_required_to_process < counted_edges ) { return counted_edges; } // ++PERFORMANCE --RESULT
-				  ++y_c;
-			 	}
-  return counted_edges;
-}
 
-void DepthMapFull  ( unsigned char *left_view,
-                     unsigned char *right_view,
-                     unsigned short *left_depth,
-                     unsigned short *right_depth,
+void DepthMapFull  ( unsigned int left_view_reg,
+                     unsigned int right_view_reg,
+                     unsigned int left_depth_reg,
+                     unsigned int right_depth_reg,
                      unsigned int image_x,
                      unsigned int image_y,
-                     unsigned char clear_depth_arrays
+                     unsigned char clear_depth_arrays /*Cleaning the depth arrays takes a little longer :) */
                     )
 {
+
+    unsigned char *left_view=video_register[left_view_reg].pixels;
+    unsigned char *right_view=video_register[right_view_reg].pixels;
+    unsigned short *left_depth=video_register[left_depth_reg].pixels;
+    unsigned short *right_depth=video_register[right_depth_reg].pixels;
+
 	if ( (left_view==0)||(right_view==0)||(left_depth==0)||(right_depth==0)) { fprintf(stderr,"DepthMap Video `registers` not ready..!"); return; }
 
 
@@ -239,29 +234,21 @@ void DepthMapFull  ( unsigned char *left_view,
 
     if ( clear_depth_arrays == 1 )
     {
-     memset(left_depth,0,image_x*image_y*3*sizeof(BYTE)); // CLEAR DEPTH MAP FROM ARTIFACTS
-     memset(right_depth,0,image_x*image_y*3*sizeof(BYTE));// CLEAR DEPTH MAP FROM ARTIFACTS
+     ClearLargeVideoRegister(left_depth_reg);
+     ClearLargeVideoRegister(right_depth_reg);
+
      memset(depth_data_array,0,sizeof(struct DepthData) * image_x*image_y );// CLEAR DEPTH MAP FROM ARTIFACTS
     }
 
    if (  settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM] == 1 )
    {
-    GenerateCompressHistogramOfImage(video_register[LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
-    GenerateCompressHistogramOfImage(video_register[RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+       GenerateCompressHistogramOfImage(video_register[LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+       GenerateCompressHistogramOfImage(video_register[RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
    }
 
     PrepareCleanSobeledGaussian(video_register[LEFT_EYE].pixels,video_register[EDGES_LEFT].pixels,settings[DEPTHMAP_EDGE_STRICTNESS]);
     PrepareCleanSobeledGaussian(video_register[RIGHT_EYE].pixels,video_register[EDGES_RIGHT].pixels,settings[DEPTHMAP_EDGE_STRICTNESS]);
-/*
-    GaussianBlurFromSource(video_register[LEFT_EYE].pixels,video_register[GENERAL_1].pixels,image_x,image_y,1);
-	Sobel(video_register[GENERAL_1].pixels,image_x,image_y);
-	Kill3PixelsBelow(video_register[GENERAL_1].pixels,image_x,image_y,settings[DEPTHMAP_EDGE_STRICTNESS]);
 
-
-    GaussianBlurFromSource(video_register[RIGHT_EYE].pixels,video_register[GENERAL_2].pixels,image_x,image_y,1);
-	Sobel(video_register[GENERAL_2].pixels,image_x,image_y);
-	Kill3PixelsBelow(video_register[GENERAL_2].pixels,image_x,image_y,settings[DEPTHMAP_EDGE_STRICTNESS]);
-*/
     metrics[HISTOGRAM_DENIES]=0;
     metrics[COMPAREPATCH_ALGORITHM_DENIES]=0;
 	unsigned int best_result[7]={0};

@@ -6,7 +6,7 @@
 
 void GenerateCompressHistogramOfImage(unsigned char * input_img,unsigned short * output_img,unsigned int block_x,unsigned int block_y);
 unsigned int HistogramPatch(struct Histogram *hist_data,unsigned char *img,unsigned int px,unsigned int py,unsigned int patch_x,unsigned int patch_y);
-unsigned int CompressedHistogramPatch(unsigned short * img,struct Histogram * hist , unsigned int x,unsigned int y);
+unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned int x , unsigned int y,unsigned int size_x , unsigned int size_y,unsigned char * edge_array);
 
 BOOLEAN Sobel(unsigned char * image,int image_x,int image_y);
 BOOLEAN SobelFromSource(unsigned char * source,unsigned char * target,int image_x,int image_y);
