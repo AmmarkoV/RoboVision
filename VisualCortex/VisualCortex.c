@@ -241,14 +241,13 @@ void  VisCortx_FullDepthMap()
   metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_EXTRALARGE];
   metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_EXTRALARGE];
 
-  DepthMapFull(
-                video_register[LEFT_EYE].pixels ,
-                video_register[RIGHT_EYE].pixels ,
-                l_video_register[DEPTH_LEFT].pixels ,
-                l_video_register[DEPTH_RIGHT].pixels ,
+  DepthMapFull( LEFT_EYE,
+                RIGHT_EYE,
+                DEPTH_LEFT,
+                DEPTH_RIGHT,
                 metrics[RESOLUTION_X],
                 metrics[RESOLUTION_Y],
-                1
+                0
              );
 
   /*
@@ -262,11 +261,10 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
   metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_LARGE];
   metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_LARGE];
 
-  DepthMapFull(
-                video_register[LEFT_EYE].pixels ,
-                video_register[RIGHT_EYE].pixels ,
-                l_video_register[DEPTH_LEFT].pixels ,
-                l_video_register[DEPTH_RIGHT].pixels ,
+  DepthMapFull( LEFT_EYE,
+                RIGHT_EYE,
+                DEPTH_LEFT,
+                DEPTH_RIGHT,
                 metrics[RESOLUTION_X],
                 metrics[RESOLUTION_Y],
                 0
@@ -287,11 +285,10 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
    /* THESE 3 LINES ARE DELIBERATELY OUT OF THE IF CONTROL BECAUSE THESE VALUES ARE DEFAULT*/
 if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
 {
-  DepthMapFull(
-                video_register[LEFT_EYE].pixels ,
-                video_register[RIGHT_EYE].pixels ,
-                l_video_register[DEPTH_LEFT].pixels ,
-                l_video_register[DEPTH_RIGHT].pixels ,
+  DepthMapFull( LEFT_EYE,
+                RIGHT_EYE,
+                DEPTH_LEFT,
+                DEPTH_RIGHT,
                 metrics[RESOLUTION_X],
                 metrics[RESOLUTION_Y],
                 0
@@ -300,12 +297,7 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
   /*
     CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
    */
-  DepthMapToVideo(
-                  l_video_register[DEPTH_LEFT].pixels ,
-                  video_register[DEPTH_LEFT_VIDEO].pixels ,
-                  video_register[DEPTH_LEFT_VIDEO].size_x ,
-                  video_register[DEPTH_LEFT_VIDEO].size_y
-                 );
+  DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO);
 
 }
 
