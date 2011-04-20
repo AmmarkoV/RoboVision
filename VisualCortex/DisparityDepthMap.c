@@ -79,7 +79,6 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 	//Kovoume ta source ektos eikonas
 	if (source_block.x1+patch_x>image_x) { patch_x=image_x-source_block.x1; }
     if (source_block.y1+patch_y>image_y) { patch_y=image_y-source_block.y1; }
-    //Kovoume ta target ektos eikonas
 	if (target_block.x1+patch_x>image_x) { patch_x=image_x-target_block.x1; }
     if (target_block.y1+patch_y>image_y) { patch_y=image_y-target_block.y1; }
 
@@ -90,12 +89,18 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
     register BYTE *r1,*g1,*b1,*r2,*g2,*b2;
 
     unsigned int source_start_memory_point;
-    unsigned int target_start_memory_point;
+	unsigned int target_start_memory_point;
+//	unsigned int incrementation_source = 3 * ( image_x-source_block.x1 );
+//    unsigned int incrementation_target = 3 * ( image_x-target_block.x1 );
+
+
 
 	while (y<patch_y)
 	{
-	  source_start_memory_point=(unsigned int) precalc_memplace_3byte[source_block.x1][y+source_block.y1];
-	  target_start_memory_point=(unsigned int) precalc_memplace_3byte[target_block.x1][y+target_block.y1];
+	 // source_start_memory_point+=incrementation_source;
+     // target_start_memory_point+=incrementation_target;
+     source_start_memory_point=(unsigned int) precalc_memplace_3byte[source_block.x1][y+source_block.y1];
+     target_start_memory_point=(unsigned int) precalc_memplace_3byte[target_block.x1][y+target_block.y1];
 
 	  image_px1= (BYTE *) left_view+source_start_memory_point;
 	  stopx1=image_px1+patch_x;
@@ -334,9 +339,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
 									  && (depth_act<settings[DEPTHMAP_CLOSEST_DEPTH])  // TEST -> Praktika dedomena deixnoun oti synithws apotelesmata panw apo 100 einai thoryvos!
 								    )
 								{
-
+                                    /* THIS IS THE BEST PATCH SO FAR! */
 								    best_match.score=prox;
-                                    // COORDS
                                     best_match.x1_patch=x;   // SYNTETAGMENES ARXIS PATCH X STIN EIKONA #1
                                     best_match.y1_patch=y;   // SYNTETAGMENES ARXIS PATCH Y STIN EIKONA #1
                                     best_match.x2_patch=xblock; // SYNTETAGMENES ARXIS PATCH X STIN EIKONA #2
