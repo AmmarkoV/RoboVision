@@ -340,27 +340,13 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
 */
 int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam)
 {
-   if ( left_cam == 1 ) { metrics[CHANGES_LEFT]=RegisterMovements(1,
-                                                                 video_register[LAST_LEFT_EYE].pixels,
-                                                                 video_register[LEFT_EYE].pixels,
-                                                                 video_register[BACKGROUND_LEFT].pixels,
-                                                                 video_register[DIFFERENCE_LEFT].pixels,
-                                                                 video_register[MOVEMENT_LEFT].pixels
-                                                                );
-
-                          video_register[MOVEMENT_LEFT].depth=1;
+   if ( left_cam == 1 ) {
+                          metrics[CHANGES_LEFT]=RegisterMovements(1,LAST_LEFT_EYE,LEFT_EYE,BACKGROUND_LEFT,DIFFERENCE_LEFT,MOVEMENT_LEFT);
                         }
-
-   if (right_cam == 1 ) { metrics[CHANGES_RIGHT]=RegisterMovements(0,
-                                                                 video_register[LAST_RIGHT_EYE].pixels,
-                                                                 video_register[RIGHT_EYE].pixels,
-                                                                 video_register[BACKGROUND_RIGHT].pixels,
-                                                                 video_register[DIFFERENCE_RIGHT].pixels,
-                                                                 video_register[MOVEMENT_RIGHT].pixels
-                                                                );
-                          video_register[MOVEMENT_RIGHT].depth=1;
+   if (right_cam == 1 ) {
+                          metrics[CHANGES_RIGHT]=RegisterMovements(0,LAST_RIGHT_EYE,RIGHT_EYE,BACKGROUND_RIGHT,DIFFERENCE_RIGHT,MOVEMENT_RIGHT);
                         }
-  return 0;
+  return 1;
 }
 /*
  ----------------- MOVEMENT REGISTRATION ----------------------

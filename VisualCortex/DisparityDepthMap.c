@@ -88,19 +88,17 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 	register BYTE *stopx1,*stopx2;
     register BYTE *r1,*g1,*b1,*r2,*g2,*b2;
 
-    unsigned int source_start_memory_point;
-	unsigned int target_start_memory_point;
-//	unsigned int incrementation_source = 3 * ( image_x-source_block.x1 );
-//    unsigned int incrementation_target = 3 * ( image_x-target_block.x1 );
+    unsigned int source_start_memory_point=(unsigned int) precalc_memplace_3byte[source_block.x1][y+source_block.y1];
+	unsigned int target_start_memory_point=(unsigned int) precalc_memplace_3byte[target_block.x1][y+target_block.y1];
+	unsigned int incrementation_source = 3 * ( image_x );
+    unsigned int incrementation_target = 3 * ( image_x );
 
 
 
 	while (y<patch_y)
 	{
-	 // source_start_memory_point+=incrementation_source;
-     // target_start_memory_point+=incrementation_target;
-     source_start_memory_point=(unsigned int) precalc_memplace_3byte[source_block.x1][y+source_block.y1];
-     target_start_memory_point=(unsigned int) precalc_memplace_3byte[target_block.x1][y+target_block.y1];
+	  source_start_memory_point+=incrementation_source;
+      target_start_memory_point+=incrementation_target;
 
 	  image_px1= (BYTE *) left_view+source_start_memory_point;
 	  stopx1=image_px1+patch_x;
@@ -109,7 +107,6 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
       stopx2=image_px2+patch_y;
 
   	  sobel_px1= (BYTE *) left_sobel+source_start_memory_point;
-
       sobel_px2= (BYTE *) right_sobel+target_start_memory_point;
 
 	  sobeled=0;
@@ -397,112 +394,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
 
 unsigned char InstantMovementDisparity(unsigned short *left_depth,unsigned short *right_depth)
-{/*
-  unsigned int max_practical_movement_to_justify_use=3*metrics[RESOLUTION_X]*metrics[RESOLUTION_Y]/4;
+{
 
-  if ( (metrics[CHANGES_LEFT]<6)&& (metrics[CHANGES_RIGHT]<6) ) { return 2; } else
-  if ( (metrics[CHANGES_LEFT]>max_practical_movement_to_justify_use) || (metrics[CHANGES_RIGHT]>max_practical_movement_to_justify_use) ) { return 0; }
-  //AN EXOUME KINISI SE PANW APO TO 1/3 TIS EIKONAS THA GINETAI KANOUME KANONIKO DISPARITY MAP!
-  unsigned int patch_changes=TotalPatchesMoving(video_register[GROUP_MOVEMENT_LEFT].pixels);
-  if ( patch_changes==0 ) { return 2; } else
-  if ( patch_changes>group_movement_array_size/3 ) { return 0; }
-
-
-  unsigned int x_vima=horizontal_buf,y_vima=vertical_buf;
-
-  if ( settings[DEPTHMAP_INSTANT_DETAIL] <= 0 ) { settings[DEPTHMAP_INSTANT_DETAIL]=1; } // :D , swstos programmatismos!
-  x_vima= (unsigned int) (horizontal_buf / settings[DEPTHMAP_INSTANT_DETAIL]);
-  y_vima= (unsigned int) (vertical_buf / settings[DEPTHMAP_INSTANT_DETAIL]);
-
-  ImageRegion left_patch;
-  left_patch.x1=0; left_patch.y1=0;
-  left_patch.x2=0; left_patch.y2=0;
-  left_patch.full_x=max_res_x; left_patch.full_y=max_res_y;
-
-  ImageRegion right_patch;
-  right_patch.x1=0; right_patch.y1=0;
-  right_patch.x2=0; right_patch.y2=0;
-  right_patch.full_x=max_res_x; right_patch.full_y=max_res_y;
-
-
-  unsigned long score=0;
-  unsigned long edges_counted=0,best_score=2147483640;
-  DepthData tempdd={0};
-
-  // METAVLITES
-  unsigned int xa=0,ya=0,xb=0,yb=0; //a simainei aristeri cam , b deksia
-
-
-  ya=0;
-  while ( (ya+vertical_buf<max_res_y) ) //(ya<max_res_y-vertical_buf) &&
-   { //ARISTERO MATI Y AKSONAS
-     left_patch.y1=ya; left_patch.y2=ya+vertical_buf;
-	 xa=0;
-
-	 while ( (xa+horizontal_buf<max_res_x) ) //(xa<max_res_x-horizontal_buf) &&
-	 { //ARISTERO MATI X AKSONAS
-
-         left_patch.x1=xa; left_patch.x2=xa+horizontal_buf;
-		 if (! PatchHasMovement(left_patch,movement_left,group_movement_left) ) { xa+=horizontal_buf-1; }   else
-		 { //EXOUME ENTOPISEI KINISI STO ARISTERO MATI - TWRA THA PREPEI NA VROUME ANTISTOIXI KINISI STO DEKSI MATI KAI NA KANOUME SYGKRISEIS!
-
-		   best_score=2147483640; // KANOUME RESET TO BEST SCORE GIA AYTI TIN PERIOXI TOU MATIOU!
-		   //THELOUME NA SARWSOUME TO DEKSI MATI TWRA GIA KINISI KAI TIN DIAFORA TOU APO TO ARISTERO ETSI WSTE NA VGALOUME ENA SCORE!
-		   //EPISIS EXOUME ENA VERTICAL OFFSET GIA NA DIORTHWTHOUN PROVLIMATA CALIBRATION!
-		   yb=ya-settings[DEPTHMAP_VERT_OFFSET_UP];
-		   if (ya-settings[DEPTHMAP_VERT_OFFSET_UP]<0) { yb=0; }
-
-		   while ( (yb<=ya+settings[DEPTHMAP_VERT_OFFSET_DOWN]) && (yb+vertical_buf<max_res_y) )
-		    {
-			 right_patch.y1=yb; right_patch.y2=yb+vertical_buf;
-	         xb=0;
-			 while ( (xb<xa+max_res_x) && (xb+horizontal_buf<max_res_x) )
-		            {
-					  // ESWTERIKO LOOP GIA TO DEKSI PATCH!
-
-                      right_patch.x1=xb; right_patch.x2=xb+horizontal_buf;
-
-					  if (! PatchHasMovement(right_patch,movement_right,group_movement_right) ) { xb+=horizontal_buf-1; }     else
-					   { //EXOUME MOVEMENT STO ARISTERO KAI STO DEKSI "MATI"  OPOTE KANOUME MIA SYGKRISI SE SXESI ME  TO KALYTERO APOTELESMA
-					     //MEXRI TWRA!
-
-
-					    score=PatchDistanceCompare_RGB(left_patch,right_patch,left_eye,right_eye,50000,edges_counted);
-						//if (edges_counted<=70) {  } else // an den exei polla edges i perioxi einai eykolo na ginoun lathi!
-						if (score>=50000) {  } else
-						if (score<best_score)
-						   {
-							            best_score=score;
-
-									    tempdd.score=score;//best_result[1];
-										tempdd.edge_count=edges_counted;//best_result[6];  // EDGES!
-										tempdd.patch_size_x=horizontal_buf;
-										tempdd.patch_size_y=vertical_buf;
-										tempdd.x1_patch=xa;//best_result[2]; // SYNTETAGMENES ARXIS PATCH X STIN EIKONA #1
-                                        tempdd.y1_patch=ya;//best_result[3]; // SYNTETAGMENES ARXIS PATCH Y STIN EIKONA #1
-                                        tempdd.x2_patch=xb;//best_result[4]; // SYNTETAGMENES ARXIS PATCH X STIN EIKONA #2
-                                        tempdd.y2_patch=yb;//best_result[5];  // SYNTETAGMENES ARXIS PATCH Y STIN EIKONA #2
-										FillDepthMemWithData(left_depth,depth_data_array,tempdd,max_res_x,max_res_y);
-						   }
-
-					   }
-
-
-                     // ESWTERIKO LOOP GIA TO DEKSI PATCH!
-			         ++xb;
-			        }
-			  ++yb;
-			}
-
-
-		 } // TELOS TOU EXOUME ENTOPISEI KINISI STO ARISTERO MATI!
-
-
-		 xa+=x_vima;
-	 }  //ARISTERO MATI X AKSONAS
-	 ya+=y_vima;
-   } //ARISTERO MATI Y AKSONAS
-   */
  return 1;
 }
 

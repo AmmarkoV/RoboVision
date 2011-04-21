@@ -131,8 +131,14 @@ void inline FillCompressedMovementArrayBlock(BOOLEAN lefteye,unsigned int ptr_x)
 
 }
 
-unsigned int RegisterMovements(BOOLEAN lefteye,unsigned char *last_source_block,unsigned char *source_block,unsigned char *background_block,unsigned char* target_difference,unsigned char *mobility_array)
+unsigned int RegisterMovements(BOOLEAN lefteye,unsigned int last_source_block_reg,unsigned int source_block_reg,unsigned int background_block_reg,unsigned int target_difference_reg,unsigned int mobility_array_reg)
 {
+ unsigned char *last_source_block=video_register[last_source_block_reg].pixels;
+ unsigned char *source_block=     video_register[source_block_reg].pixels;
+ unsigned char *background_block= video_register[background_block_reg].pixels;
+ unsigned char* target_difference=video_register[target_difference_reg].pixels;
+ unsigned char *mobility_array=   video_register[mobility_array_reg].pixels;
+
  ClearGroupMovementArray(lefteye); //AYTO GIA NA FTIAKSOUME ENA COMPRESSED ANTIGRAFO TOU MOVEMENT_LEFT
  if ( (last_source_block==0)||(source_block==0)||(background_block==0)||(target_difference==0)||(mobility_array==0)) { return 0; }
 
@@ -153,24 +159,22 @@ unsigned int RegisterMovements(BOOLEAN lefteye,unsigned char *last_source_block,
 	str_ptr_x=ptr_x; cola=source_block[ptr_x]; colb=last_source_block[ptr_x];
 	diff1=precalc_sub[cola] [colb];
 	last_source_block[ptr_x]=precalc_med[cola] [colb]; // Metavaloume to last_source
+    ptr_x++;
 
 	//Pame se ena G pixel
-	ptr_x++; cola=source_block[ptr_x]; colb=last_source_block[ptr_x];
+    cola=source_block[ptr_x]; colb=last_source_block[ptr_x];
 	diff2=precalc_sub[ cola ] [ colb ];
     last_source_block[ptr_x]=precalc_med[ cola ] [ colb ]; // Metavaloume to last_source
+    ptr_x++;
 
 	//Kai telos ena B pixel
-	ptr_x++; cola=source_block[ptr_x]; colb=last_source_block[ptr_x];
+	cola=source_block[ptr_x]; colb=last_source_block[ptr_x];
 	diff3=precalc_sub[ cola ] [ colb ];
     last_source_block[ptr_x]=precalc_med[ cola ] [ colb ]; // Metavaloume to last_source
-
-
 	ptr_x++; //Epomeno Pixel R
 
 	if (diff1>settings[MOVEMENT_R_THRESHOLD]) { changes+=2; }  else if (diff1>settings[MOVEMENT_MIN_R_THRESHOLD]) { changes++; }
-
 	if (diff2>settings[MOVEMENT_G_THRESHOLD]) { changes+=2; }  else if (diff2>settings[MOVEMENT_MIN_G_THRESHOLD]) { changes++; }
-
 	if (diff3>settings[MOVEMENT_B_THRESHOLD]) { changes+=2; }  else if (diff3>settings[MOVEMENT_MIN_B_THRESHOLD]) { changes++; }
 
 	target_difference[ptr_single_byte]=changes-last_changes; // To pixel exei status oso einai to changes - last_changes
@@ -185,7 +189,7 @@ unsigned int RegisterMovements(BOOLEAN lefteye,unsigned char *last_source_block,
 													 }
 		      if (mobility_array[ptr_single_byte]>0) { --mobility_array[ptr_single_byte]; }
 		      break;
-	  case 1 :  /* THORYVOS */   break;
+	  case 1 :  /* CAMERA NOISE */   break;
 	  case 2 :  /* */ { ++mobility_array[ptr_single_byte]; FillCompressedMovementArrayBlock(lefteye,ptr_single_byte); }  break;
 	  case 3 :  /* */ { ++mobility_array[ptr_single_byte]; FillCompressedMovementArrayBlock(lefteye,ptr_single_byte); } break;
 	};
@@ -195,6 +199,9 @@ unsigned int RegisterMovements(BOOLEAN lefteye,unsigned char *last_source_block,
 	++ptr_single_byte;
 
   }
+
+  video_register[target_difference_reg].depth=1; // Set BitDepth of output array as 1
+  video_register[mobility_array_reg].depth=1; // Set BitDepth of output array as 1
 
   return changes;
 }
