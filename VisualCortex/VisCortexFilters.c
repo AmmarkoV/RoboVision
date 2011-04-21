@@ -35,7 +35,7 @@ unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned
                   px= (BYTE *) edge_array+precalc_memplace_3byte[x_c][y_c];
 				  stopx=px+size_x;
 				  while (px<stopx) { if ( *px!=0 ) { ++counted_edges; }  px+=3;  }
-				  if ( edges_required_to_process < counted_edges ) { return counted_edges; } // ++PERFORMANCE --RESULT
+				  if ( edges_required_to_process < counted_edges ) { return counted_edges+1; } // ++PERFORMANCE --RESULT
 				  ++y_c;
 			 	}
   return counted_edges;

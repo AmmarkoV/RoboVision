@@ -24,6 +24,31 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <string.h>
 
+inline int ComparePatchesUsingHistogram(int hist_reg_left,int hist_reg_right,unsigned int *source_x1,unsigned int *source_y1,unsigned int *target_x1,unsigned int *target_y1)
+{
+  if (  settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM] ==0 ) { return 0; }
+
+    // NEW HISTOGRAM TESTING :) ++SPEED ++ACCURACY
+    struct Histogram hist1;
+    struct Histogram hist2;
+
+    CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,&hist1,*source_x1,*source_y1);
+    CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,&hist2,*target_x1,*target_y1);
+
+    if (
+        (precalc_sub[hist1.median_r][hist2.median_r]>settings[PATCH_HIST_THRESHOLD_R])||
+        (precalc_sub[hist1.median_g][hist2.median_g]>settings[PATCH_HIST_THRESHOLD_G])||
+        (precalc_sub[hist1.median_b][hist2.median_b]>settings[PATCH_HIST_THRESHOLD_B])
+       )
+          {
+            ++metrics[HISTOGRAM_DENIES];
+            return 1;
+          } /*If histograms greatly different fail the test immediately*/
+
+    // NEW HISTOGRAM TESTING :) ++SPEED ++ACCURACY
+    return 0;
+}
+
 
 
 unsigned int inline ComparePatches(struct ImageRegion source_block,
@@ -47,31 +72,15 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
        }
 
 
-  if (  settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM] ==1 )
-  {
-    // NEW HISTOGRAM TESTING :) ++SPEED ++ACCURACY
-    struct Histogram hist1;
-    struct Histogram hist2;
-
-    CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,&hist1,source_block.x1,source_block.y1);
-    CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,&hist2,target_block.x1,target_block.y1);
-
-    if (
-        (precalc_sub[hist1.median_r][hist2.median_r]>settings[PATCH_HIST_THRESHOLD_R])||
-        (precalc_sub[hist1.median_g][hist2.median_g]>settings[PATCH_HIST_THRESHOLD_G])||
-        (precalc_sub[hist1.median_b][hist2.median_b]>settings[PATCH_HIST_THRESHOLD_B])
-       )
+    if (ComparePatchesUsingHistogram(HISTOGRAM_COMPRESSED_LEFT,HISTOGRAM_COMPRESSED_RIGHT,&source_block.x1,&source_block.y1,&target_block.x1,&target_block.y1))
           {
             ++metrics[HISTOGRAM_DENIES];
             return score_threshold+1;
-          } /*If histograms greatly different fail the test immediately*/
+          } //If histograms greatly different fail the test immediately ++SPEED ++ACCURACY
 
-    // NEW HISTOGRAM TESTING :) ++SPEED ++ACCURACY
-  }
 
-    unsigned long prox=0,pre_prox=0;
+    unsigned long total_score=0,pixel_score=0;
 	unsigned int sobel_diffr=0;
-	//unsigned char ro,go,bo,rl,gl,bl;
 	register unsigned int y=0,control;
 	char sobeled=0,sobel_mismatch=0;
 
@@ -97,6 +106,7 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 
 	while (y<patch_y)
 	{
+      //Prepare the pointers of the left/right patch image and the left/right patch sobel
 	  source_start_memory_point+=incrementation_source;
       target_start_memory_point+=incrementation_target;
 
@@ -108,61 +118,63 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 
   	  sobel_px1= (BYTE *) left_sobel+source_start_memory_point;
       sobel_px2= (BYTE *) right_sobel+target_start_memory_point;
+      //Pointers are ready ..!
 
 	  sobeled=0;
 	  sobel_mismatch=0;
       while (image_px1<stopx1)
 	  {
 
-		pre_prox=0;
-		sobel_diffr=precalc_sub[*sobel_px1][*sobel_px2];
-		if ( sobel_diffr > 15 ) { sobel_mismatch=1; }
-	    if ( (sobel_diffr<40) && (*sobel_px1>30) && (*sobel_px2>30) ) { sobeled=1; }
+		pixel_score=0; // This pixel initially has no score..
+		sobel_diffr=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the sobel difference value
+        pixel_score=sobel_diffr;
+
+		if ( sobel_diffr > 20 ) { sobel_mismatch=1; }
+
+	    if ( (sobel_diffr < 40) &&
+             (*sobel_px1>30) &&
+             (*sobel_px2>30)
+           ) { sobeled=1; }
+
         sobel_px1+=3; sobel_px2+=3;
-	    //sobeled=1;
-	    //sobel_mismatch=0;
 
-	    r1=image_px1++;
-		g1=image_px1++;
-		b1=image_px1++;
 
-		r2=image_px2++;
-		g2=image_px2++;
-		b2=image_px2++;
+	    r1=image_px1++; g1=image_px1++; b1=image_px1++;
+		r2=image_px2++; g2=image_px2++; b2=image_px2++;
 
 		// OSO PIO MEGALO TO SCORE TOSO PIO ANOMOIA TA PATCHES!
-		pre_prox+= ( precalc_sub[*r1] [*r2] /*<< 2*/ ); //*4
-        pre_prox+= ( precalc_sub[*g1] [*g2] /*<< 2*/ ); //*4
-        pre_prox+= ( precalc_sub[*b1] [*b2] /*<< 2*/ ); //*4
+		pixel_score+= ( precalc_sub[*r1] [*r2]  ); pixel_score+= ( precalc_sub[*g1] [*g2]  ); pixel_score+= ( precalc_sub[*b1] [*b2]  );
 
 
+		if ( sobel_mismatch == 1 )
+            { pixel_score = (pixel_score+sobel_diffr) << 2; } // *8 Multiply score ( because the sobel edges are mismatched
+		   else
+            { pixel_score+= sobel_diffr; }
 
-		if ( sobel_mismatch == 1 ) { pre_prox = (pre_prox+sobel_diffr) << 2; } else // *8
-                                   { pre_prox+= sobel_diffr; }
 		if ( sobeled == 1)
 		               {
-                         control=pre_prox; //Overflow control
-			             pre_prox=pre_prox >> 1; // dia 2
-						 if (control<pre_prox) { pre_prox=0; fprintf(stderr,"PatchComparison Overflow :S\n"); }
+                         control=pixel_score; //Overflow control
+			             pixel_score=pixel_score >> 1; // dia 2
+						 if (control<pixel_score) { pixel_score=0; fprintf(stderr,"PatchComparison Overflow :S\n"); }
 		               }
 
         if ( settings[DEPTHMAP_IMPROVE_USING_MOVEMENT] )
                         {
-                           /*TODO ADD HERE MOVEMENT SCORE*/
+                           //TODO ADD HERE MOVEMENT SCORE
                         }
 
-		prox+=pre_prox;
-        if ( score_threshold<prox ) {
-                                      ++metrics[COMPAREPATCH_ALGORITHM_DENIES];
-                                      return prox; // SPEED CUT :) ++PERFOMANCE  --DEBUGGING :P
-                                    }
+		total_score+=pixel_score;
+        if ( score_threshold<total_score )
+          {
+             ++metrics[COMPAREPATCH_ALGORITHM_DENIES];
+             return total_score; // SPEED CUT :) ++PERFOMANCE  --DEBUGGING :P
+          }
+
 	  }
 	  ++y;
 	}
 
- unsigned int prox_casting=(unsigned int) prox;
- if ( prox != prox_casting ) { fprintf(stderr,"Proximity integers overflowing!\n"); }
- return prox;
+ return total_score;
 }
 
 void inline FillDepthMemWithData(unsigned short * depth_data_raw,struct DepthData * depth_data_full,struct DepthData *depth_data,unsigned int image_x,unsigned int image_y)
