@@ -262,6 +262,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
     PrepareCleanSobeledGaussian(video_register[LEFT_EYE].pixels,video_register[EDGES_LEFT].pixels,settings[DEPTHMAP_EDGE_STRICTNESS]);
     PrepareCleanSobeledGaussian(video_register[RIGHT_EYE].pixels,video_register[EDGES_RIGHT].pixels,settings[DEPTHMAP_EDGE_STRICTNESS]);
+    CompressRegister1Bit(EDGES_LEFT,EDGES_COMPRESSED_LEFT);
+
 
     metrics[HISTOGRAM_DENIES]=0;
     metrics[COMPAREPATCH_ALGORITHM_DENIES]=0;
