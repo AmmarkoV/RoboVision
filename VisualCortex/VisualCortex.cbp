@@ -26,7 +26,7 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-march=nocona" />
+					<Add option="-march=core2" />
 					<Add option="-fexpensive-optimizations" />
 					<Add option="-Os" />
 					<Add option="-O3" />

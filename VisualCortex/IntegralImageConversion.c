@@ -239,9 +239,9 @@ int CompressRegister1Byte(int input,int output)
 	    ++y;
 	}
 
-  *out_ptr=out_ptr_start+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
+  out_ptr=out_ptr_start+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
 
-  unsigned int x=0,y=0;
+  x=0; y=0;
   unsigned int last_val=0;
   while (x<metrics[RESOLUTION_X])
 	{

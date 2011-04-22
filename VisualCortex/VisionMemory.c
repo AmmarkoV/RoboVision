@@ -323,6 +323,30 @@ void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img
 
 
 
+void ConvertRegisterTo1ByteKeepingRChannel(unsigned char * input_frame,int image_x,int image_y)
+{/*
+  if (input_frame==0) {return;}
+  int col_med;
+  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+
+ register BYTE *px = (BYTE *) input_frame;
+ register BYTE *r;
+ register BYTE *g;
+ register BYTE *b;
+
+ while ( px < px+image_size)
+ {
+       r = px++; g = px++; b = px++;
+
+       col_med=  ( *r + *g + *b )/3;
+	   *r= (BYTE)col_med ;
+       *g=*r;
+	   *b=*r;
+ }
+ MONOCHROME CODE FOR NOW!
+*/
+ return;
+}
 
 
 

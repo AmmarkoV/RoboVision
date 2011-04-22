@@ -62,7 +62,7 @@ void RememberImage::PrepareMenu()
    description<< wxT(")\n");
 
    description<< wxT("Features(");
-   int i=0;
+   unsigned int i=0;
    for (i=0; i<sig.total_segments; i++ )
      {
        description<<sig.segment[i];

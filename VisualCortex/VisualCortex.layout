@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="DisparityDepthMap.c" open="1" top="1" tabpos="7">
+	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
 		<Cursor position="10838" topLine="249" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
@@ -22,8 +22,8 @@
 	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
 		<Cursor position="594" topLine="217" />
 	</File>
-	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
-		<Cursor position="8412" topLine="192" />
+	<File name="IntegralImageConversion.c" open="1" top="1" tabpos="21">
+		<Cursor position="6965" topLine="242" />
 	</File>
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
 		<Cursor position="757" topLine="0" />

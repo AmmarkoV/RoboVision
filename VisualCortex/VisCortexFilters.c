@@ -94,32 +94,23 @@ unsigned int HistogramPatch(struct Histogram *hist_data,unsigned char *img,unsig
 void Monochrome(unsigned char * input_frame,int image_x,int image_y)
 {
   if (input_frame==0) {return;}
-  int x,y,col_med;
-  int x1=0,y1=0,x2=image_x,y2=image_y;
+  int col_med;
+  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
 
- fprintf(stderr,"Stupid code for monochrome .. can be improved needs fix..\n");
-
-
- register BYTE *px;
+ register BYTE *px = (BYTE *) input_frame;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
- for (x=x1; x<x2; x++)
- { for (y=y1; y<y2; y++)
-	 {
-	   //px=0;
-	   px = (BYTE *)  input_frame + precalc_memplace_3byte[x][y];
-       // px = ((BYTE *)  input_frame + (image_x * y *3 ) + (3*x) );
-	   r = px++;
-       g = px++;
-       b = px;
-       //Get Pixel Color
-	   col_med=  ( *r + *g + *b )/3;
+
+ while ( px < px+image_size)
+ {
+       r = px++; g = px++; b = px++;
+
+       col_med=  ( *r + *g + *b )/3;
 	   *r= (BYTE)col_med ;
        *g=*r;
 	   *b=*r;
-   }
- } //MONOCHROME DONE
+ }
 
  return;
 }
@@ -127,32 +118,23 @@ void Monochrome(unsigned char * input_frame,int image_x,int image_y)
 void MonochromeL(unsigned char * input_frame,int image_x,int image_y)
 {
   if (input_frame==0) {return;}
-  int x,y,col_med;
-  int x1=0,y1=0,x2=image_x,y2=image_y;
+  int col_med;
 
-  fprintf(stderr,"Stupid code for weighted monochrome .. can be improved needs fix..\n");
-
-
- register BYTE *px;
+ unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+ register BYTE *px = (BYTE *) input_frame;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
- for (x=x1; x<x2; x++)
- { for (y=y1; y<y2; y++)
-	 {
-	   px=0;
-	    px = (BYTE *)  input_frame + precalc_memplace_3byte[x][y];
-        //px = ((BYTE *)  input_frame + (image_x * y *3 ) + (3*x) );
-	   r = px++;
-       g = px++;
-       b = px;
-       //Get Pixel Color
+
+  while ( px < px+image_size)
+ {
+       r = px++; g = px++; b = px++;
+
 	   col_med= ( *r * 0.299 + *g * 0.587 + *b * 0.114 );
 	   *r= (BYTE)col_med ;
        *g=*r;
 	   *b=*r;
-   }
- } //MONOCHROME DONE
+ }
 
  return;
 }
@@ -160,28 +142,17 @@ void MonochromeL(unsigned char * input_frame,int image_x,int image_y)
 
 void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned char R,unsigned char G,unsigned char B,unsigned char threshold)
 { if (image==0) {return;}
-  int x,y;
-  int x1=0,y1=0,x2=image_x,y2=image_y;
 
- fprintf(stderr,"KillDifferentPixels .. RGB (%u,%u,%u) , threshold %u ..\n",R,G,B,threshold);
- fprintf(stderr,"Stupid code for killing pixels .. can be improved needs fix..\n");
-
-
- register BYTE *px;
+ unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+ register BYTE *px = (BYTE *) image;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
  char mismatch=0;
- for (x=x1; x<x2; x++)
- { for (y=y1; y<y2; y++)
-	 {
-	   px=0;
-	   //px = ((BYTE *)  image + (image_x * y *3 ) + (3*x) );
-	    px = (BYTE *)  image + precalc_memplace_3byte[x][y];
-       r = px++;
-       g = px++;
-       b = px;
-       //Get Pixel Color
+
+  while ( px < px+image_size)
+ {
+       r = px++; g = px++; b = px++;
 
 	   mismatch=0;
 	   if (R > *r) { if (R-*r > threshold) { ++mismatch; }  } else
@@ -194,10 +165,7 @@ void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned 
                    { if (*b-B > threshold) { ++mismatch; }  }
 
        if (mismatch>0) { *r=0;   *g=0;  *b=0; }
-
-   }
- } //KILLING IS DONE
-
+ }
  return;
 
 }
@@ -205,36 +173,26 @@ void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned 
 
 void KillPixelsBelow(unsigned char * image,int image_x,int image_y,int threshold)
 { if (image==0) {return;}
-  int x,y;
-  int x1=0,y1=0,x2=image_x,y2=image_y;
 
- fprintf(stderr,"Stupid code for killing pixels .. can be improved needs fix..\n");
-
-
- register BYTE *px;
+ register BYTE *px = (BYTE *) image;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
- for (x=x1; x<x2; x++)
- { for (y=y1; y<y2; y++)
-	 {
-	   px=0;
-	   //px = ((BYTE *)  image + (image_x * y *3 ) + (3*x) );
-	    px = (BYTE *)  image + precalc_memplace_3byte[x][y];
+ unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+
+ while ( px < px + image_size )
+  {
        r = px++;
        g = px++;
-       b = px;
-       //Get Pixel Color
+       b = px++;
 
-	   if (*r<threshold) { *r=0; }
+       // The kill Pixels function kills selected channels to help stabilize output
+       if (*r<threshold) { *r=0; }
        if (*g<threshold) { *g=0; }
        if (*b<threshold) { *b=0; }
-
-   }
- } //MONOCHROME DONE
+  }
 
  return;
-
 }
 
 
@@ -264,34 +222,26 @@ void Kill3PixelsBelow(unsigned char * image,int image_x,int image_y,int threshol
 
 void ReducePalette(unsigned char * image,int image_x,int image_y,int new_palette)
 { if (image==0) {return;}
-  int x,y;
-  int x1=0,y1=0,x2=image_x,y2=image_y;
 
- fprintf(stderr,"Stupid code for reducing palette.. can be improved needs fix..\n");
- register BYTE *px;
+ unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+ register BYTE *px = ( BYTE * ) image;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
- for (x=x1; x<x2; x++)
- { for (y=y1; y<y2; y++)
-	 {
-	   px=0;
-	   px = (BYTE *)  image + precalc_memplace_3byte[x][y];
-       //px = ((BYTE *)  image + (image_x * y *3 ) + (3*x) );
-	   r = px++;
-       g = px++;
-       b = px;
-       //Get Pixel Color
 
+  while ( px < px + image_size )
+  {
+       r = px++;
+       g = px++;
+       b = px++;
+
+       // The kill Pixels function kills selected channels to help stabilize output
 	   *r=  (BYTE) ( (*r) * new_palette ) / 255;
        *g=  (BYTE) ( (*g) * new_palette ) / 255;
        *b=  (BYTE) ( (*b) * new_palette ) / 255;
-
-   }
- } //REPALETTING IS DONE
+  }
 
  return;
-
 }
 
 
