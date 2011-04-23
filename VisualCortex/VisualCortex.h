@@ -137,6 +137,12 @@ enum VisCortxLargeRegisters
     LARGE_REGISTERS_COUNT
 };
 
+enum VisCortxExtraLargeRegisters
+{
+    GENERAL_XLARGE_1 = 0,
+    GENERAL_XLARGE_2,
+    EXTRA_LARGE_REGISTERS_COUNT
+};
 
 char *  VisCortx_Version();
 void VisCortx_SetTime(unsigned int thetime);

@@ -28,6 +28,7 @@ unsigned int settings[SETTINGS_COUNT]={0};
 unsigned int metrics[METRICS_COUNT]={0};
 struct VideoRegister video_register[REGISTERS_COUNT]={{0},{0},{0},{0},{0},{0}};
 struct LargeVideoRegister l_video_register[LARGE_REGISTERS_COUNT]={{0},{0},{0},{0},{0},{0}};
+struct ExtraLargeVideoRegister xl_video_register[EXTRA_LARGE_REGISTERS_COUNT]={{0},{0},{0},{0},{0},{0}};
 struct DepthData * depth_data_array=0;
 
 float camera_distance=0;
@@ -37,9 +38,9 @@ float depth_units_in_cm[256]={0};
 
 int VideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth)
 {
-    if (reg_num>=REGISTERS_COUNT) { fprintf(stderr,"Register does not exist! \n "); return 1; }
-    if (video_register[reg_num].pixels == 0 ) { fprintf(stderr,"Register is dead! \n "); return 1; }
-    return 0;
+    if (reg_num>=REGISTERS_COUNT) { fprintf(stderr,"Register does not exist! \n "); return 0; }
+    if (video_register[reg_num].pixels == 0 ) { fprintf(stderr,"Register is dead! \n "); return 0; }
+    return 1;
 }
 
 int InitRegister( unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth )
@@ -59,37 +60,6 @@ int InitRegister( unsigned int reg_num, unsigned int res_x,unsigned int res_y,un
                                                return 1; }
 
   return 0;
-}
-
-int ClearVideoRegister(unsigned int reg_num)
-{
-    if (video_register[reg_num].depth==3)
-     {
-        memset(video_register[reg_num].pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(unsigned char));
-     } else
-     {
-       memset(video_register[reg_num].pixels,0,video_register[reg_num].size_x*video_register[reg_num].size_y*video_register[reg_num].depth*sizeof(unsigned char));
-     }
-    video_register[reg_num].time = 0;
-    video_register[reg_num].used = 0;
-    return 1;
-
-}
-
-
-int CloseRegister( unsigned int reg_num )
-{
-    if ( video_register[reg_num].pixels == 0 ) { fprintf(stderr,"While Deallocating Register : video register %u already deallocated !\n",reg_num);
-                                                 return 1; }
-
-    free( video_register[reg_num].pixels );
-    video_register[reg_num].size_x = 0;
-    video_register[reg_num].size_y = 0;
-    video_register[reg_num].depth = 0;
-    video_register[reg_num].time = 0;
-    video_register[reg_num].used = 0;
-
-    return 0;
 }
 
 
@@ -112,6 +82,42 @@ int InitLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned int res
   return 0;
 }
 
+int InitExtraLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth )
+{
+  if (xl_video_register[reg_num].pixels!=0) { fprintf(stderr,"While Allocating Extra Large Register : Video register %u is not empty !\n",reg_num);
+                                             free( (void *) xl_video_register[reg_num].pixels);
+                                             xl_video_register[reg_num].pixels=0; }
+
+  xl_video_register[reg_num].pixels = (unsigned int * ) malloc( res_x * res_y * depth * sizeof(unsigned int) );
+  xl_video_register[reg_num].size_x = res_x;
+  xl_video_register[reg_num].size_y = res_y;
+  xl_video_register[reg_num].depth = depth;
+  xl_video_register[reg_num].time = 0;
+  xl_video_register[reg_num].used = 0;
+
+  if ( xl_video_register[reg_num].pixels == 0 ) { fprintf(stderr,"While Allocating Extra Large Register : Unable to allocate video register %u memory !\n",reg_num);
+                                                 return 1; }
+
+  return 0;
+}
+
+
+
+int ClearVideoRegister(unsigned int reg_num)
+{
+    if (video_register[reg_num].depth==3)
+     {
+        memset(video_register[reg_num].pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(unsigned char));
+     } else
+     {
+       memset(video_register[reg_num].pixels,0,video_register[reg_num].size_x*video_register[reg_num].size_y*video_register[reg_num].depth*sizeof(unsigned char));
+     }
+    video_register[reg_num].time = 0;
+    video_register[reg_num].used = 0;
+    return 1;
+
+}
+
 int ClearLargeVideoRegister(unsigned int reg_num)
 {
     if (l_video_register[reg_num].depth==3)
@@ -126,6 +132,39 @@ int ClearLargeVideoRegister(unsigned int reg_num)
     return 1;
 
 }
+
+int ClearExtraLargeVideoRegister(unsigned int reg_num)
+{
+    if (xl_video_register[reg_num].depth==3)
+     {
+        memset(xl_video_register[reg_num].pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(unsigned int));
+     } else
+     {
+       memset(xl_video_register[reg_num].pixels,0,l_video_register[reg_num].size_x*l_video_register[reg_num].size_y*l_video_register[reg_num].depth*sizeof(unsigned int));
+     }
+    xl_video_register[reg_num].time = 0;
+    xl_video_register[reg_num].used = 0;
+    return 1;
+
+}
+
+int CloseRegister( unsigned int reg_num )
+{
+    if ( video_register[reg_num].pixels == 0 ) { fprintf(stderr,"While Deallocating Register : video register %u already deallocated !\n",reg_num);
+                                                 return 1; }
+
+    free( video_register[reg_num].pixels );
+    video_register[reg_num].size_x = 0;
+    video_register[reg_num].size_y = 0;
+    video_register[reg_num].depth = 0;
+    video_register[reg_num].time = 0;
+    video_register[reg_num].used = 0;
+
+    return 0;
+}
+
+
+
 
 int CloseLargeRegister( unsigned int reg_num )
 {
@@ -142,6 +181,21 @@ int CloseLargeRegister( unsigned int reg_num )
     return 0;
 }
 
+
+int CloseExtraLargeRegister( unsigned int reg_num )
+{
+    if ( xl_video_register[reg_num].pixels == 0 ) { fprintf(stderr,"While Deallocating Extra Large Register : video register %u already deallocated !\n",reg_num);
+                                                   return 1; }
+
+    free( xl_video_register[reg_num].pixels );
+    xl_video_register[reg_num].size_x = 0;
+    xl_video_register[reg_num].size_y = 0;
+    xl_video_register[reg_num].depth = 0;
+    xl_video_register[reg_num].time = 0;
+    xl_video_register[reg_num].used = 0;
+
+    return 0;
+}
 
 
 void DefaultSettings()
@@ -224,6 +278,13 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
      }
      fprintf(stderr,"%u MB of memory allocated for large video registers\n",(unsigned int) ( 3*res_x*res_y*LARGE_REGISTERS_COUNT*sizeof(unsigned short)) / 1048576);
 
+     for ( i=0; i<EXTRA_LARGE_REGISTERS_COUNT; i++)
+     {
+        if ( InitExtraLargeRegister(i,res_x,res_y,3)!=0 ) { fprintf(stderr,"Error initializing Vision Memory"); return 1; }
+     }
+     fprintf(stderr,"%u MB of memory allocated for extra large video registers\n",(unsigned int) ( 3*res_x*res_y*LARGE_REGISTERS_COUNT*sizeof(unsigned int)) / 1048576);
+
+
   //  unsigned int MEM3BIT = (res_x+1)*(res_y+1)*3;
     unsigned int MEM1BIT = (res_x+1)*(res_y+1);
 
@@ -250,6 +311,13 @@ int CloseVisionMemory()
     for ( i=0; i<LARGE_REGISTERS_COUNT; i++)
      {
         if ( CloseLargeRegister(i)!=0 ) { fprintf(stderr,"Error deinitializing Vision Memory"); return 1; }
+     }
+
+
+   fprintf(stderr,"Deinitializing Extra Large Vision Memory \n");
+    for ( i=0; i<EXTRA_LARGE_REGISTERS_COUNT; i++)
+     {
+        if ( CloseExtraLargeRegister(i)!=0 ) { fprintf(stderr,"Error deinitializing Vision Memory"); return 1; }
      }
 
    fprintf(stderr,"Deinitializing Depth data array \n");

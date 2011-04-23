@@ -176,7 +176,7 @@ unsigned int VisCortX_SaveVideoRegisterToFile(unsigned int reg_num,char * filena
 
 unsigned int VisCortx_WriteToVideoRegister(unsigned int reg_num,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
 {
-	if (  VideoRegisterRequestIsOk(reg_num,size_x,size_y,depth)!=0 ) { return 1; }
+	if (  !VideoRegisterRequestIsOk(reg_num,size_x,size_y,depth) ) { return 1; }
 
     unsigned long syst_mem_end=metrics[RESOLUTION_X]*metrics[RESOLUTION_Y]*3;
     unsigned long pic_mem_end=size_x*size_y*depth;
@@ -193,7 +193,7 @@ unsigned int VisCortx_WriteToVideoRegister(unsigned int reg_num,unsigned int siz
 
 unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int size_x,unsigned int size_y,unsigned int depth)
 {
-   if (  VideoRegisterRequestIsOk(reg_num,size_x,size_y,depth)!=0 ) { return 0; }
+   if (  !VideoRegisterRequestIsOk(reg_num,size_x,size_y,depth) ) { return 0; }
 
    if ( (size_x!=video_register[reg_num].size_x) ||
         (size_y!=video_register[reg_num].size_y) ||

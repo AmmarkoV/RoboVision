@@ -64,6 +64,18 @@ struct LargeVideoRegister
   unsigned short * pixels;
 };
 
+struct ExtraLargeVideoRegister
+{
+  unsigned int size_x;
+  unsigned int size_y;
+  unsigned int depth;
+
+  unsigned int time;
+  char used;
+
+  unsigned int * pixels;
+};
+
 extern unsigned int TIME_INC;
 extern unsigned int COLD_START;
 
@@ -84,6 +96,7 @@ void DefaultSettings();
 
 int ClearVideoRegister(unsigned int reg_num);
 int ClearLargeVideoRegister(unsigned int reg_num);
+int ClearExtraLargeVideoRegister(unsigned int reg_num);
 
 int InitVisionMemory(unsigned int res_x,unsigned int res_y);
 int CloseVisionMemory();

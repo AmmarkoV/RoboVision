@@ -1,6 +1,7 @@
 #include "StateSetting.h"
 #include "VisionMemory.h"
 #include "FaceDetection.h"
+#include "IntegralImageConversion.h"
 #include <math.h>
 
 unsigned int SetCamerasGeometry(float distance_between_cameras,float diagonal_field_of_view,float horizontal_field_of_view,float vertical_field_of_view)
@@ -64,7 +65,10 @@ unsigned int InitializeEverything(unsigned int res_x,unsigned int res_y)
     fprintf(stderr,"Machine numerical error , single : %e , double : %e \n",e1,e2);
 
    InitFaceRecognition(res_x,res_y);
-   return InitVisionMemory(res_x,res_y);
+    int i= InitVisionMemory(res_x,res_y);
+
+    VisCortx_SelfCheck();
+    return  i;
 }
 
 unsigned int CloseEverything()
@@ -76,9 +80,12 @@ unsigned int CloseEverything()
 unsigned int SelfCheckEverything()
 {
     fprintf(stderr,"VisCortx_SelfCheck starting!\n");
-    fprintf(stderr,"GenerateCompressHistogramOfImage Beeing called!\n");
-  // GenerateCompressHistogramOfImage(video_register[LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,30,30);
-    fprintf(stderr,"GenerateCompressHistogramOfImage is done!\n");
+    TestIntegralImaging();
+
+
+   // fprintf(stderr,"GenerateCompressHistogramOfImage Beeing called!\n");
+   // GenerateCompressHistogramOfImage(video_register[LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,30,30);
+   // fprintf(stderr,"GenerateCompressHistogramOfImage is done!\n");
 /*    int x=0,y=0;
 
 

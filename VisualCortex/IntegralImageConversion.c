@@ -197,6 +197,15 @@ inline int MakePatchFitInsideImage(int *x,int *y ,int *width,int *height)
 int GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,int height)
 {
     if (!MakePatchFitInsideImage(&x,&y,&width,&height)) { return 0; }
+    unsigned int ptr1 = metrics[RESOLUTION_X]*y+(x);
+    unsigned int ptr2 = metrics[RESOLUTION_X]*(y+height)+((x+width));
+    int total=l_video_register[comp_register].pixels[ptr1] - l_video_register[comp_register].pixels[ptr2];
+    return total;
+}
+
+int GetCompressedRegisterPatchSum3Byte(int comp_register,int x,int y,int width,int height)
+{
+    if (!MakePatchFitInsideImage(&x,&y,&width,&height)) { return 0; }
     unsigned int ptr1 = metrics[RESOLUTION_X]*y+(x*3);
     unsigned int ptr2 = metrics[RESOLUTION_X]*(y+height)+((x+width)*3);
     int total=l_video_register[comp_register].pixels[ptr1] - l_video_register[comp_register].pixels[ptr2];
@@ -205,18 +214,42 @@ int GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,i
 
 
 
-
 int CompressRegister1Byte(int input,int output)
 {
+    return 0;
   //This code will add up all the pixels to every other pixel , in order to speed up access
   //Patch procedures when each pixel must be added to the others..!
-
   if ( video_register[input].depth != 1 ) { fprintf(stderr,"CompressRegister1Bit called with 3bit image\n"); return 0; }
 
   ClearLargeVideoRegister(output);
   unsigned char *in_ptr_start=video_register[input].pixels,*in_ptr=in_ptr_start;
-  unsigned short *out_ptr_start=l_video_register[input].pixels,*out_ptr=out_ptr_start;
+  unsigned short *out_ptr_start=l_video_register[input].pixels,*out_ptr=out_ptr_start,*out_ptr_adj=out_ptr_start;
 
+  unsigned int x=0,y=0;
+  while (y<metrics[RESOLUTION_Y])
+	{
+	    x = metrics[RESOLUTION_X];
+	    in_ptr = metrics[RESOLUTION_X]*y+ x;
+	    out_ptr = metrics[RESOLUTION_X]*y + x;
+
+	    while (x>0)
+	     {
+           --in_ptr;
+           --out_ptr;
+           --x;
+
+           *out_ptr += (unsigned short ) *in_ptr;
+           out_ptr_adj = out_ptr-1;
+           *out_ptr_adj = (unsigned short ) *out_ptr;
+	     }
+
+	   // in_ptr += metrics[RESOLUTION_X];
+	   // out_ptr += metrics[RESOLUTION_X];
+	    ++y;
+	}
+
+
+/*
   unsigned int x=0,y=0;
   while (y<metrics[RESOLUTION_Y])
 	{
@@ -231,7 +264,8 @@ int CompressRegister1Byte(int input,int output)
            --x;
 
            *out_ptr += *in_ptr;
-           *(out_ptr-1) = *out_ptr;
+           if ( x > 1 ) { out_ptr_adj = out_ptr-1; }
+           *out_ptr_adj = *out_ptr;
 	     }
 
 	    in_ptr += metrics[RESOLUTION_X];
@@ -260,12 +294,44 @@ int CompressRegister1Byte(int input,int output)
 	    out_ptr += 1; //depth
 	    ++x;
 	}
-
+*/
 
  return 1;
 }
 
 
+int CompressRegister3Byte(int input,int output)
+{
+  //This code will add up all the pixels of a channel to every other pixel of the channel, in order to speed up access
+  //Patch procedures when each pixel must be added to the others..!
+  if ( video_register[input].depth != 3 ) { fprintf(stderr,"CompressRegister3Bit called with 1bit image\n"); return 0; }
+  fprintf(stderr,"Not implemented yet\n");
+  return 0;
+}
+
+int TestIntegralImaging()
+{
+    fprintf(stderr,"TestIntegralImaging starting ( %u x %u ) \n",metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+    if ( !VideoRegisterRequestIsOk(GENERAL_4,1,1,1 ) ) { return 0; }
+    unsigned char *start_px = video_register[GENERAL_4].pixels;
+    unsigned char *px = video_register[GENERAL_4].pixels;
+    video_register[GENERAL_4].depth=1;
+    unsigned int image_size = metrics[RESOLUTION_X] * metrics[RESOLUTION_Y];
+    while ( px < start_px+image_size)
+    {
+       *px=1; ++px;
+    }
+    //ALL OF GENERAL_4 IS now filled with ones :)
+    fprintf(stderr,"CompressRegister1Byte called \n");
+    CompressRegister1Byte(GENERAL_4,GENERAL_LARGE_2);
+    fprintf(stderr,"CompressRegister1Byte survived\n");
+
+    fprintf(stderr,"TestIntegralImaging : \n");
+    fprintf(stderr,"%u ",GetCompressedRegisterPatchSum1Byte(GENERAL_LARGE_2,1,1,2,2));
+
+    fprintf(stderr,"TestIntegralImaging survived\n");
+    return 1;
+}
 
 unsigned int CompressedHistogramPatch(unsigned short * compimg,struct Histogram * hist , unsigned int x,unsigned int y)
 {
