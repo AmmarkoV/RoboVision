@@ -23,7 +23,7 @@
 		<Cursor position="594" topLine="217" />
 	</File>
 	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
-		<Cursor position="10207" topLine="213" />
+		<Cursor position="8156" topLine="212" />
 	</File>
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
 		<Cursor position="670" topLine="0" />
@@ -68,15 +68,15 @@
 		<Cursor position="293" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="1045" topLine="18" />
+		<Cursor position="12086" topLine="266" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="1792" topLine="58" />
+		<Cursor position="2245" topLine="55" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
 		<Cursor position="5042" topLine="168" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="2774" topLine="87" />
+		<Cursor position="2888" topLine="117" />
 	</File>
 </CodeBlocks_layout_file>

@@ -199,8 +199,32 @@ int GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,i
     if (!MakePatchFitInsideImage(&x,&y,&width,&height)) { return 0; }
     unsigned int ptr1 = metrics[RESOLUTION_X]*y+(x);
     unsigned int ptr2 = metrics[RESOLUTION_X]*(y+height)+((x+width));
-    int total=l_video_register[comp_register].pixels[ptr1] - l_video_register[comp_register].pixels[ptr2];
+    int total=xl_video_register[comp_register].pixels[ptr1] - xl_video_register[comp_register].pixels[ptr2];
     return total;
+}
+
+unsigned int inline GetRegisterPatchSum1Byte(int comp_register, unsigned int x , unsigned int y,unsigned int width , unsigned int  height)
+{
+  if (!VideoRegisterRequestIsOk(comp_register,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
+   unsigned int counted_edges=0;
+   unsigned int x_c=x ,  y_c=y;
+   unsigned char *in_ptr_start = video_register[comp_register].pixels;
+   register BYTE *px;
+   register BYTE *stopx;
+
+	     while (y_c<=y+height)
+				{
+                  px= (BYTE *) in_ptr_start+precalc_memplace_3byte[x_c][y_c];
+				  stopx=px+width;
+				  while (px<stopx)
+				     {
+                       counted_edges+=(*px);
+				       px+=3;
+                     }
+
+				  ++y_c;
+			 	}
+  return counted_edges;
 }
 
 int GetCompressedRegisterPatchSum3Byte(int comp_register,int x,int y,int width,int height)
@@ -208,7 +232,7 @@ int GetCompressedRegisterPatchSum3Byte(int comp_register,int x,int y,int width,i
     if (!MakePatchFitInsideImage(&x,&y,&width,&height)) { return 0; }
     unsigned int ptr1 = metrics[RESOLUTION_X]*y+(x*3);
     unsigned int ptr2 = metrics[RESOLUTION_X]*(y+height)+((x+width)*3);
-    int total=l_video_register[comp_register].pixels[ptr1] - l_video_register[comp_register].pixels[ptr2];
+    int total=xl_video_register[comp_register].pixels[ptr1] - xl_video_register[comp_register].pixels[ptr2];
     return total;
 }
 
@@ -216,40 +240,19 @@ int GetCompressedRegisterPatchSum3Byte(int comp_register,int x,int y,int width,i
 
 int CompressRegister1Byte(int input,int output)
 {
-    return 0;
+  if (!VideoRegisterRequestIsOk(input,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
+  if (!ExtraLargeVideoRegisterRequestIsOk(output,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
   //This code will add up all the pixels to every other pixel , in order to speed up access
   //Patch procedures when each pixel must be added to the others..!
   if ( video_register[input].depth != 1 ) { fprintf(stderr,"CompressRegister1Bit called with 3bit image\n"); return 0; }
 
-  ClearLargeVideoRegister(output);
+  fprintf(stderr,"Clearing ");
+  ClearExtraLargeVideoRegister(output);
   unsigned char *in_ptr_start=video_register[input].pixels,*in_ptr=in_ptr_start;
-  unsigned short *out_ptr_start=l_video_register[input].pixels,*out_ptr=out_ptr_start,*out_ptr_adj=out_ptr_start;
-
-  unsigned int x=0,y=0;
-  while (y<metrics[RESOLUTION_Y])
-	{
-	    x = metrics[RESOLUTION_X];
-	    in_ptr = metrics[RESOLUTION_X]*y+ x;
-	    out_ptr = metrics[RESOLUTION_X]*y + x;
-
-	    while (x>0)
-	     {
-           --in_ptr;
-           --out_ptr;
-           --x;
-
-           *out_ptr += (unsigned short ) *in_ptr;
-           out_ptr_adj = out_ptr-1;
-           *out_ptr_adj = (unsigned short ) *out_ptr;
-	     }
-
-	   // in_ptr += metrics[RESOLUTION_X];
-	   // out_ptr += metrics[RESOLUTION_X];
-	    ++y;
-	}
+  unsigned int *out_ptr_start=xl_video_register[output].pixels,*out_ptr=out_ptr_start,*out_ptr_adj=out_ptr_start;
 
 
-/*
+  fprintf(stderr,"Horizontal Sum ");
   unsigned int x=0,y=0;
   while (y<metrics[RESOLUTION_Y])
 	{
@@ -273,28 +276,33 @@ int CompressRegister1Byte(int input,int output)
 	    ++y;
 	}
 
-  out_ptr=out_ptr_start+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
+  //out_ptr=out_ptr_start+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
+  //if ( out_ptr_start > out_ptr )  { fprintf(stderr,"WTF ? detected \n"); }
 
+  fprintf(stderr,"Vertical Sum ");
   x=0; y=0;
   unsigned int last_val=0;
   while (x<metrics[RESOLUTION_X])
 	{
+	    fprintf(stderr,"x %u ",x);
 	    y = metrics[RESOLUTION_Y];
-	    out_ptr -= metrics[RESOLUTION_X];
+	    out_ptr=out_ptr_start+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]+x; // You have subtract at least metrics[RESOLUTION_X]; to make it a usable pointer
         last_val = *out_ptr;
 
-	    while (y>0)
+	    while (y>0) /*Should be 0 TODO Fix pointer arithmetic*/
 	     {
-            out_ptr -= metrics[RESOLUTION_X];
+	        if ( out_ptr_start > out_ptr )  { fprintf(stderr,"Bug detected "); }
+            fprintf(stderr,"y %u ",y);
+	        out_ptr -= metrics[RESOLUTION_X];
             --y;
             *out_ptr += last_val;
             last_val=*out_ptr;
 	     }
 
-	    out_ptr += 1; //depth
+
 	    ++x;
 	}
-*/
+ fprintf(stderr," Ended\n");
 
  return 1;
 }
@@ -323,11 +331,12 @@ int TestIntegralImaging()
     }
     //ALL OF GENERAL_4 IS now filled with ones :)
     fprintf(stderr,"CompressRegister1Byte called \n");
-    CompressRegister1Byte(GENERAL_4,GENERAL_LARGE_2);
+    CompressRegister1Byte(GENERAL_4,GENERAL_XLARGE_1);
     fprintf(stderr,"CompressRegister1Byte survived\n");
 
     fprintf(stderr,"TestIntegralImaging : \n");
-    fprintf(stderr,"%u ",GetCompressedRegisterPatchSum1Byte(GENERAL_LARGE_2,1,1,2,2));
+    fprintf(stderr,"%u vs %u ",GetCompressedRegisterPatchSum1Byte(GENERAL_XLARGE_1,1,1,2,2),GetRegisterPatchSum1Byte(GENERAL_4,1,1,2,2));
+
 
     fprintf(stderr,"TestIntegralImaging survived\n");
     return 1;

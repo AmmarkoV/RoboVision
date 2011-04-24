@@ -43,6 +43,20 @@ int VideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsigned i
     return 1;
 }
 
+int LargeVideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth)
+{
+    if (reg_num>=LARGE_REGISTERS_COUNT) { fprintf(stderr,"Register does not exist! \n "); return 0; }
+    if (l_video_register[reg_num].pixels == 0 ) { fprintf(stderr,"Register is dead! \n "); return 0; }
+    return 1;
+}
+
+int ExtraLargeVideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth)
+{
+    if (reg_num>=EXTRA_LARGE_REGISTERS_COUNT) { fprintf(stderr,"Register does not exist! \n "); return 0; }
+    if (xl_video_register[reg_num].pixels == 0 ) { fprintf(stderr,"Register is dead! \n "); return 0; }
+    return 1;
+}
+
 int InitRegister( unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth )
 {
   if (video_register[reg_num].pixels!=0) { fprintf(stderr,"While Allocating Register : Video register %u is not empty !\n",reg_num);
