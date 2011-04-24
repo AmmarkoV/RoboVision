@@ -106,7 +106,8 @@ int CloseVisionMemory();
 
 void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y);
 
-
+int PrintRegister(char * filename,unsigned int reg_num);
+int PrintExtraLargeRegister(char * filename,unsigned int reg_num);
 int SaveRegisterToFile(char * filename,unsigned int reg_num);
 int LoadRegisterFromFile(char * filename,unsigned int reg_num);
 

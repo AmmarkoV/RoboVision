@@ -440,6 +440,93 @@ void ConvertRegisterTo1ByteKeepingRChannel(unsigned char * input_frame,int image
                 FILE OPERATIONS
     ---------------------------------------
 */
+
+int PrintRegister(char * filename,unsigned int reg_num)
+{
+    FILE *fd=0;
+    fd = fopen(filename,"wb");
+
+    if (fd!=0)
+	 {
+	  fprintf(fd,"<html><head></head><body><h1>Register %u</h1><br>",reg_num);
+      fprintf(fd,"<h2>%ux%u : %u </h2>",video_register[reg_num].size_x,video_register[reg_num].size_y,video_register[reg_num].depth);
+         int x=0,y=0;
+         unsigned char * ptr = video_register[reg_num].pixels;
+         fprintf(fd,"<table border=1>\n");
+           while (y<metrics[RESOLUTION_Y])
+            {
+              fprintf(fd," <tr>\n");
+              x=0;
+              while (x<metrics[RESOLUTION_X])
+              {
+                  fprintf(fd,"  <td>\n");
+                    if (video_register[reg_num].depth == 3 )
+                      {
+                        fprintf(fd," %u,",*ptr); ++ptr;
+                        fprintf(fd,"%u,",*ptr); ++ptr;
+                        fprintf(fd,"%u ",*ptr); ++ptr;
+                      } else
+                    if (video_register[reg_num].depth == 1 )
+                      {
+                          fprintf(fd," %u",*ptr);
+                          ++ptr;
+                      }
+                  fprintf(fd,"  </td>\n");
+                  ++x;
+              }
+              fprintf(fd," </tr>\n");
+                ++y;
+            }
+        fprintf(fd,"</table>\n");
+	  fprintf(fd,"</body></html>");
+	  fclose(fd);
+     }
+  return 1;
+}
+
+int PrintExtraLargeRegister(char * filename,unsigned int reg_num)
+{
+    FILE *fd=0;
+    fd = fopen(filename,"wb");
+
+    if (fd!=0)
+	 {
+	  fprintf(fd,"<html><head></head><body><h1>Register %u</h1><br>",reg_num);
+      fprintf(fd,"<h2>%ux%u : %u </h2>",xl_video_register[reg_num].size_x,xl_video_register[reg_num].size_y,xl_video_register[reg_num].depth);
+         int x=0,y=0;
+         unsigned char * ptr = xl_video_register[reg_num].pixels;
+         fprintf(fd,"<table border=1>\n");
+           while (y<metrics[RESOLUTION_Y])
+            {
+              fprintf(fd," <tr>\n");
+              x=0;
+              while (x<metrics[RESOLUTION_X])
+              {
+                  fprintf(fd,"  <td>\n");
+                    if (xl_video_register[reg_num].depth == 3 )
+                      {
+                        fprintf(fd," %u,",*ptr); ++ptr;
+                        fprintf(fd,"%u,",*ptr); ++ptr;
+                        fprintf(fd,"%u ",*ptr); ++ptr;
+                      } else
+                    if (xl_video_register[reg_num].depth == 1 )
+                      {
+                          fprintf(fd," %u",*ptr);
+                          ++ptr;
+                      }
+                  fprintf(fd,"  </td>\n");
+                  ++x;
+              }
+              fprintf(fd," </tr>\n");
+                ++y;
+            }
+        fprintf(fd,"</table>\n");
+	  fprintf(fd,"</body></html>");
+	  fclose(fd);
+     }
+  return 1;
+}
+
 int SaveRegisterToFile(char * filename,unsigned int reg_num)
 {
     FILE *fd=0;

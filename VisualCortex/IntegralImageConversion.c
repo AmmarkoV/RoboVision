@@ -194,16 +194,7 @@ inline int MakePatchFitInsideImage(int *x,int *y ,int *width,int *height)
 }
 
 
-int GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,int height)
-{
-    if (!MakePatchFitInsideImage(&x,&y,&width,&height)) { return 0; }
-    unsigned int ptr1 = metrics[RESOLUTION_X]*y+(x);
-    unsigned int ptr2 = metrics[RESOLUTION_X]*(y+height)+((x+width));
-    int total=xl_video_register[comp_register].pixels[ptr1] - xl_video_register[comp_register].pixels[ptr2];
-    return total;
-}
-
-unsigned int inline GetRegisterPatchSum1Byte(int comp_register, unsigned int x , unsigned int y,unsigned int width , unsigned int  height)
+unsigned int inline GetRegisterPatchSum(int comp_register, unsigned int x , unsigned int y,unsigned int width , unsigned int  height,unsigned int depth)
 {
   if (!VideoRegisterRequestIsOk(comp_register,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
    unsigned int counted_edges=0;
@@ -214,17 +205,45 @@ unsigned int inline GetRegisterPatchSum1Byte(int comp_register, unsigned int x ,
 
 	     while (y_c<=y+height)
 				{
-                  px= (BYTE *) in_ptr_start+precalc_memplace_3byte[x_c][y_c];
+				  if ( depth == 1 ) { px= (BYTE *) in_ptr_start+precalc_memplace_1byte[x_c][y_c]; }  else
+				  if ( depth == 3 ) { px= (BYTE *) in_ptr_start+precalc_memplace_3byte[x_c][y_c]; }  else
+                                    { return 0;  }
+
 				  stopx=px+width;
 				  while (px<stopx)
 				     {
                        counted_edges+=(*px);
-				       px+=3;
+				       px+=depth;
                      }
 
 				  ++y_c;
 			 	}
   return counted_edges;
+}
+
+unsigned int GetRegisterPatchSum1Byte(int comp_register, unsigned int x , unsigned int y,unsigned int width , unsigned int  height)
+{
+    return GetRegisterPatchSum(comp_register,x,y,width,height,1);
+}
+unsigned int inline GetRegisterPatchSum3Byte(int comp_register, unsigned int x , unsigned int y,unsigned int width , unsigned int  height)
+{
+    return GetRegisterPatchSum(comp_register,x,y,width,height,3);
+}
+
+
+
+
+int GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,int height)
+{
+    if (!MakePatchFitInsideImage(&x,&y,&width,&height)) { return 0; }
+    unsigned int ptr1 = metrics[RESOLUTION_X]*y+x;
+    unsigned int ptr2 = metrics[RESOLUTION_X]*(y+height)+(x+width);
+    if ( xl_video_register[comp_register].pixels[ptr1] < xl_video_register[comp_register].pixels[ptr2] )
+      {
+          fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Bug creating Compressed Register \n"); return 0;
+      }
+    int total=xl_video_register[comp_register].pixels[ptr1] - xl_video_register[comp_register].pixels[ptr2];
+    return total;
 }
 
 int GetCompressedRegisterPatchSum3Byte(int comp_register,int x,int y,int width,int height)
@@ -250,7 +269,7 @@ int CompressRegister1Byte(int input,int output)
   ClearExtraLargeVideoRegister(output);
   unsigned char *in_ptr_start=video_register[input].pixels,*in_ptr=in_ptr_start;
   unsigned int *out_ptr_start=xl_video_register[output].pixels,*out_ptr=out_ptr_start,*out_ptr_adj=out_ptr_start;
-
+  xl_video_register[output].depth = 1;
 
   fprintf(stderr,"Horizontal Sum ");
   unsigned int x=0,y=0;
@@ -289,7 +308,7 @@ int CompressRegister1Byte(int input,int output)
 	    out_ptr=out_ptr_start+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]+x; // You have subtract at least metrics[RESOLUTION_X]; to make it a usable pointer
         last_val = *out_ptr;
 
-	    while (y>0) /*Should be 0 TODO Fix pointer arithmetic*/
+	    while (y>0)
 	     {
 	        if ( out_ptr_start > out_ptr )  { fprintf(stderr,"Bug detected "); }
             fprintf(stderr,"y %u ",y);
@@ -334,6 +353,8 @@ int TestIntegralImaging()
     CompressRegister1Byte(GENERAL_4,GENERAL_XLARGE_1);
     fprintf(stderr,"CompressRegister1Byte survived\n");
 
+    PrintRegister("GENERAL_4_register.html",GENERAL_4);
+    PrintExtraLargeRegister("GENERAL_XLARGE_1_register.html",GENERAL_XLARGE_1);
     fprintf(stderr,"TestIntegralImaging : \n");
     fprintf(stderr,"%u vs %u ",GetCompressedRegisterPatchSum1Byte(GENERAL_XLARGE_1,1,1,2,2),GetRegisterPatchSum1Byte(GENERAL_4,1,1,2,2));
 
