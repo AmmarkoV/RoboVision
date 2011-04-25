@@ -233,7 +233,7 @@ unsigned int inline GetRegisterPatchSum3Byte(int comp_register, unsigned int x ,
 
 
 
-int GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,int height)
+unsigned int GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,int height)
 {
     if (!MakePatchFitInsideImage(&x,&y,&width,&height)) { return 0; }
     unsigned int ptr1 = metrics[RESOLUTION_X]*y+x;
@@ -242,7 +242,7 @@ int GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,i
       {
           fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Bug creating Compressed Register \n"); return 0;
       }
-    int total=xl_video_register[comp_register].pixels[ptr1] - xl_video_register[comp_register].pixels[ptr2];
+    unsigned int total=xl_video_register[comp_register].pixels[ptr1] - xl_video_register[comp_register].pixels[ptr2];
     return total;
 }
 
@@ -257,7 +257,7 @@ int GetCompressedRegisterPatchSum3Byte(int comp_register,int x,int y,int width,i
 
 
 
-int CompressRegister1Byte(int input,int output)
+unsigned int CompressRegister1Byte(int input,int output)
 {
   if (!VideoRegisterRequestIsOk(input,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
   if (!ExtraLargeVideoRegisterRequestIsOk(output,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
@@ -276,28 +276,30 @@ int CompressRegister1Byte(int input,int output)
   while (y<metrics[RESOLUTION_Y])
 	{
 	    x = metrics[RESOLUTION_X];
+
 	    in_ptr += metrics[RESOLUTION_X];
 	    out_ptr += metrics[RESOLUTION_X];
 
-	    while (x>0)
+        while (x>0)
 	     {
            --in_ptr;
            --out_ptr;
            --x;
 
            *out_ptr += *in_ptr;
-           if ( x > 1 ) { out_ptr_adj = out_ptr-1; }
-           *out_ptr_adj = *out_ptr;
+           out_ptr_adj = out_ptr-1;
+           if (x>0) *out_ptr_adj = *out_ptr;
 	     }
+
 
 	    in_ptr += metrics[RESOLUTION_X];
 	    out_ptr += metrics[RESOLUTION_X];
+
 	    ++y;
 	}
 
   //out_ptr=out_ptr_start+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
   //if ( out_ptr_start > out_ptr )  { fprintf(stderr,"WTF ? detected \n"); }
-
   fprintf(stderr,"Vertical Sum ");
   x=0; y=0;
   unsigned int last_val=0;
@@ -348,9 +350,17 @@ int TestIntegralImaging()
     {
        *px=1; ++px;
     }
+
+    unsigned int * opx = xl_video_register[GENERAL_XLARGE_1].pixels;
+    unsigned int * start_opx = opx;
+    xl_video_register[GENERAL_XLARGE_1].depth=1;
+    while ( opx < start_opx+image_size*3)
+    {
+       *opx=1; ++opx;
+    }
     //ALL OF GENERAL_4 IS now filled with ones :)
     fprintf(stderr,"CompressRegister1Byte called \n");
-    CompressRegister1Byte(GENERAL_4,GENERAL_XLARGE_1);
+     CompressRegister1Byte(GENERAL_4,GENERAL_XLARGE_1);
     fprintf(stderr,"CompressRegister1Byte survived\n");
 
     PrintRegister("GENERAL_4_register.html",GENERAL_4);

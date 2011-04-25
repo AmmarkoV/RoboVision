@@ -462,13 +462,13 @@ int PrintRegister(char * filename,unsigned int reg_num)
                   fprintf(fd,"  <td>\n");
                     if (video_register[reg_num].depth == 3 )
                       {
-                        fprintf(fd," %u,",*ptr); ++ptr;
                         fprintf(fd,"%u,",*ptr); ++ptr;
-                        fprintf(fd,"%u ",*ptr); ++ptr;
+                        fprintf(fd,"%u,",*ptr); ++ptr;
+                        fprintf(fd,"%u",*ptr); ++ptr;
                       } else
                     if (video_register[reg_num].depth == 1 )
                       {
-                          fprintf(fd," %u",*ptr);
+                          fprintf(fd,"%u",*ptr);
                           ++ptr;
                       }
                   fprintf(fd,"  </td>\n");
@@ -491,10 +491,10 @@ int PrintExtraLargeRegister(char * filename,unsigned int reg_num)
 
     if (fd!=0)
 	 {
-	  fprintf(fd,"<html><head></head><body><h1>Register %u</h1><br>",reg_num);
+	  fprintf(fd,"<html><head></head><body><h1>Extra Large Register %u</h1><br>",reg_num);
       fprintf(fd,"<h2>%ux%u : %u </h2>",xl_video_register[reg_num].size_x,xl_video_register[reg_num].size_y,xl_video_register[reg_num].depth);
          int x=0,y=0;
-         unsigned char * ptr = xl_video_register[reg_num].pixels;
+         unsigned int * ptr = xl_video_register[reg_num].pixels;
          fprintf(fd,"<table border=1>\n");
            while (y<metrics[RESOLUTION_Y])
             {
@@ -505,13 +505,13 @@ int PrintExtraLargeRegister(char * filename,unsigned int reg_num)
                   fprintf(fd,"  <td>\n");
                     if (xl_video_register[reg_num].depth == 3 )
                       {
-                        fprintf(fd," %u,",*ptr); ++ptr;
                         fprintf(fd,"%u,",*ptr); ++ptr;
-                        fprintf(fd,"%u ",*ptr); ++ptr;
+                        fprintf(fd,"%u,",*ptr); ++ptr;
+                        fprintf(fd,"%u" ,*ptr); ++ptr;
                       } else
                     if (xl_video_register[reg_num].depth == 1 )
                       {
-                          fprintf(fd," %u",*ptr);
+                          fprintf(fd,"%u",*ptr);
                           ++ptr;
                       }
                   fprintf(fd,"  </td>\n");

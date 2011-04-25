@@ -23,7 +23,7 @@
 		<Cursor position="594" topLine="217" />
 	</File>
 	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
-		<Cursor position="8156" topLine="212" />
+		<Cursor position="10832" topLine="277" />
 	</File>
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
 		<Cursor position="670" topLine="0" />
@@ -56,7 +56,7 @@
 		<Cursor position="731" topLine="0" />
 	</File>
 	<File name="VisCortexFilters.c" open="1" top="0" tabpos="3">
-		<Cursor position="3550" topLine="111" />
+		<Cursor position="869" topLine="18" />
 	</File>
 	<File name="VisCortexFilters.h" open="1" top="0" tabpos="4">
 		<Cursor position="576" topLine="0" />
@@ -67,16 +67,16 @@
 	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="23">
 		<Cursor position="293" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="12086" topLine="266" />
+	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
+		<Cursor position="18768" topLine="484" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="2245" topLine="55" />
+		<Cursor position="2967" topLine="74" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
 		<Cursor position="5042" topLine="168" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="2888" topLine="117" />
+		<Cursor position="2829" topLine="105" />
 	</File>
 </CodeBlocks_layout_file>

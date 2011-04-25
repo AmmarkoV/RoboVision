@@ -10,7 +10,7 @@ unsigned int CompressedHistogramPatch(unsigned short * compimg,struct Histogram 
 
 int TestIntegralImaging();
 
-int GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,int height);
-int CompressRegister1Byte(int input,int output);
+unsigned int GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,int height);
+unsigned int CompressRegister1Byte(int input,int output);
 
 #endif // INTEGRALIMAGECONVERSION_H_INCLUDED
