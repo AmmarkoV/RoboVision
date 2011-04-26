@@ -271,6 +271,9 @@ void DepthMapFull  ( unsigned int left_view_reg,
         ConvertRegisterFrom3ByteTo1Byte(GENERAL_3,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
         PixelsOverThresholdSetAsOne(GENERAL_3,1);
         CompressRegister(GENERAL_3,GENERAL_XLARGE_1);
+        PrintRegister("edges.html",GENERAL_3);
+        PrintExtraLargeRegister("edges_summed.html",GENERAL_XLARGE_1);
+
      }
 
     metrics[HISTOGRAM_DENIES]=0;
@@ -293,6 +296,9 @@ void DepthMapFull  ( unsigned int left_view_reg,
     unsigned int  prox=0;
     unsigned int  max_prox_score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED];
 
+
+
+              unsigned int times_passed_threshold=0;
     while (y<ylim)
 	   {
 	     x=settings[DEPTHMAP_STARTLEFT_X];
@@ -313,7 +319,6 @@ void DepthMapFull  ( unsigned int left_view_reg,
                    fprintf(stderr,"BUG : New function returns smaller num %u instead of %u @ %u,%u size %u,%u\n",counted_edges_2,counted_edges_1,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
                }
 
-              unsigned int times_passed_threshold=0;
               if (
                     ( counted_edges_1<=edges_required_to_process  ) &&
                     ( counted_edges_2>edges_required_to_process  )
@@ -321,8 +326,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
                  {
                    ++times_passed_threshold;
                    fprintf(stderr,"Well.. New function passes threshold %u instead of %u @ %u,%u size %u,%u\n",counted_edges_2,counted_edges_1,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+                   fprintf(stderr,"Well.. New function passed threshold total %u more times\n",times_passed_threshold);
                  }
-                   fprintf(stderr,"Well.. New function passed threshold %u more times\n",times_passed_threshold);
 
 
               unsigned int counted_edges=counted_edges_1;
