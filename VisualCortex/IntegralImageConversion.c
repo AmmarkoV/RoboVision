@@ -379,27 +379,32 @@ unsigned int GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,in
     {
       return 0;
     }
+  /*
   unsigned int ptr_up_left = metrics[RESOLUTION_X]*y+x;
   unsigned int ptr_up_right = metrics[RESOLUTION_X]*y+(x+width);
   unsigned int ptr_down_left = metrics[RESOLUTION_X]*(y+height)+x;
   unsigned int ptr_down_right = metrics[RESOLUTION_X]*(y+height)+(x+width);
+  */
+
+  unsigned int ptr_up_left = metrics[RESOLUTION_X]*y+x;
+  unsigned int ptr_up_right = ptr_up_left + width;
+  unsigned int ptr_down_left = ptr_up_left + metrics[RESOLUTION_X]*(height);
+  unsigned int ptr_down_right =ptr_down_left + width;
 
   unsigned int total;
-  total= xl_video_register[comp_register].pixels[ptr_up_left] + xl_video_register[comp_register].pixels[ptr_down_right];
-  total-=xl_video_register[comp_register].pixels[ptr_up_right] + xl_video_register[comp_register].pixels[ptr_down_left];
+  total= xl_video_register[comp_register].pixels[ptr_up_left]
+         + xl_video_register[comp_register].pixels[ptr_down_right]
+         - xl_video_register[comp_register].pixels[ptr_up_right]
+         - xl_video_register[comp_register].pixels[ptr_down_left];
+
   return total;
 }
 
 int GetCompressedRegisterPatchSum3Byte(int comp_register,int x,int y,int width,int height)
 {
-  if (!MakePatchFitInsideImage(&x,&y,&width,&height))
-    {
-      return 0;
-    }
-  unsigned int ptr1 = metrics[RESOLUTION_X]*y+(x*3);
-  unsigned int ptr2 = metrics[RESOLUTION_X]*(y+height)+((x+width)*3);
-  int total=xl_video_register[comp_register].pixels[ptr1] - xl_video_register[comp_register].pixels[ptr2];
-  return total;
+    fprintf(stderr,"Copy paste and change 1 to 3 :P \n");
+    return 0;
+
 }
 
 unsigned int GetCompressedRegisterPatchSum(int comp_register,int x,int y,int width,int height)
