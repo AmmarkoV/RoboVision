@@ -1,6 +1,13 @@
 #include "IntegralImageConversion.h"
 #include "Precalculations.h"
 
+
+/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        START OF OLDER HISTOGRAM PATCH CODE !
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
 inline void GenerateCompressHistogramOfImage_AddUpHorizontal(unsigned char * input_img,unsigned short * output_img,unsigned int block_x,unsigned int block_y)
 {
   register unsigned char *startblock_px,*image_px;
@@ -218,6 +225,28 @@ void GenerateCompressHistogramOfImage(unsigned char * input_img,unsigned short *
   */
 }
 
+
+unsigned int CompressedHistogramPatch(unsigned short * compimg,struct Histogram * hist , unsigned int x,unsigned int y)
+{
+  unsigned short * histpx;
+  unsigned int ptr_push = metrics[RESOLUTION_X_3_BYTE]*y+(x*3);
+  histpx = compimg + ptr_push;
+  hist->median_r = *histpx;
+  histpx++;
+  hist->median_g = *histpx;
+  histpx++;
+  hist->median_b = *histpx;
+  return 1;
+}
+
+
+/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        END OF OLDER HISTOGRAM PATCH CODE !
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
+
 inline int MakePatchFitInsideImage(int *x,int *y ,int *width,int *height)
 {
   if ( *x >= metrics[RESOLUTION_X] )
@@ -238,6 +267,13 @@ inline int MakePatchFitInsideImage(int *x,int *y ,int *width,int *height)
     }
   return 1;
 }
+
+
+/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   START OF GET FUNCTIONS FOR COMPRESSED AND NOT IMAGES
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 
 unsigned int inline GetRegisterPatchSum(int comp_register, unsigned int x , unsigned int y,unsigned int width , unsigned int  height,unsigned int depth)
@@ -365,6 +401,29 @@ int GetCompressedRegisterPatchSum3Byte(int comp_register,int x,int y,int width,i
   int total=xl_video_register[comp_register].pixels[ptr1] - xl_video_register[comp_register].pixels[ptr2];
   return total;
 }
+
+
+
+
+/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   END OF GET FUNCTIONS FOR COMPRESSED AND NOT IMAGES
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 unsigned int CompressRegister3Byte(int input,int output)
@@ -525,6 +584,20 @@ unsigned int CompressRegister1Byte(int input,int output)
   return 1;
 }
 
+
+unsigned int CompressRegister(int input,int output)
+{
+    if (video_register[input].depth==1) { return CompressRegister1Byte(input,output); }
+     else
+    if (video_register[input].depth==1) { return CompressRegister3Byte(input,output); }
+    return 0;
+}
+
+unsigned int CompressPresenceRegister3Byte(int input,int output,int threshold)
+{
+    return 0;
+}
+
 unsigned int CompressPresenceRegister1Byte(int input,int output,int threshold)
 {
   if (!VideoRegisterRequestIsOk(input,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3))
@@ -601,6 +674,21 @@ unsigned int CompressPresenceRegister1Byte(int input,int output,int threshold)
   return 1;
 }
 
+unsigned int CompressPresenceRegister(int input,int output,int threshold)
+{
+    if (video_register[input].depth==1) { return CompressPresenceRegister1Byte(input,output,threshold); }
+     else
+    if (video_register[input].depth==1) { return CompressPresenceRegister3Byte(input,output,threshold); }
+    return 0;
+}
+
+
+/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   START OF TESTER
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
 
 int TestIntegralImaging()
 {
@@ -642,15 +730,3 @@ int TestIntegralImaging()
   return 1;
 }
 
-unsigned int CompressedHistogramPatch(unsigned short * compimg,struct Histogram * hist , unsigned int x,unsigned int y)
-{
-  unsigned short * histpx;
-  unsigned int ptr_push = metrics[RESOLUTION_X_3_BYTE]*y+(x*3);
-  histpx = compimg + ptr_push;
-  hist->median_r = *histpx;
-  histpx++;
-  hist->median_g = *histpx;
-  histpx++;
-  hist->median_b = *histpx;
-  return 1;
-}
