@@ -318,41 +318,29 @@ unsigned int inline GetRegisterPatchSum(int comp_register, unsigned int x , unsi
 
 unsigned int inline GetRegisterPatchPresenceSum(int comp_register, unsigned int x , unsigned int y,unsigned int width , unsigned int  height,unsigned int depth,unsigned int threshold)
 {
-  if (!VideoRegisterRequestIsOk(comp_register,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3))
-    {
-      return 0;
-    }
+  if (!VideoRegisterRequestIsOk(comp_register,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
   unsigned int counted_edges=0;
-  unsigned int x_c=x ,  y_c=y;
+  unsigned int x_c=x ,  y_c=y , end_y = y + height;
   unsigned char *in_ptr_start = video_register[comp_register].pixels;
   register BYTE *px;
   register BYTE *stopx;
 
-  while (y_c<y+height)
+  while (y_c<end_y)
     {
-      if ( depth == 1 )
-        {
-          px= (BYTE *) in_ptr_start+precalc_memplace_1byte[x_c][y_c];
-        }
-      else if ( depth == 3 )
-        {
-          px= (BYTE *) in_ptr_start+precalc_memplace_3byte[x_c][y_c];
-        }
-      else
-        {
-          return 0;
-        }
+      if ( depth == 1 ) { px= (BYTE *) in_ptr_start+precalc_memplace_1byte[x_c][y_c]; stopx=px+width;     } else
+      if ( depth == 3 ) { px= (BYTE *) in_ptr_start+precalc_memplace_3byte[x_c][y_c]; stopx=px+(width*3); } else
+                        { return 0; }
 
-      stopx=px+width;
+
       while (px<stopx)
         {
-          if  (*px>=threshold) { ++counted_edges; }
-           else
+          if  (*px>=threshold) { ++counted_edges; } else
           if ( depth == 3 )
            {
-               if  (*(px+1)>=threshold) { ++counted_edges; } else
-               if  (*(px+2)>=threshold) { ++counted_edges; }
-             } else
+              // if  (*(px+1)>=threshold) { ++counted_edges; } else
+              // if  (*(px+2)>=threshold) { ++counted_edges; }
+           }
+
           px+=depth;
         }
 

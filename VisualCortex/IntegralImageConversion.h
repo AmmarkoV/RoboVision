@@ -8,6 +8,7 @@ inline void GenerateCompressHistogramOfImage_AddUpVertical(unsigned short * outp
 void GenerateCompressHistogramOfImage(unsigned char * input_img,unsigned short * output_img,unsigned int block_x,unsigned int block_y);
 unsigned int CompressedHistogramPatch(unsigned short * compimg,struct Histogram * hist , unsigned int x,unsigned int y);
 
+unsigned int inline GetRegisterPatchPresenceSum(int comp_register, unsigned int x , unsigned int y,unsigned int width , unsigned int  height,unsigned int depth,unsigned int threshold);
 
 int TestIntegralImaging();
 

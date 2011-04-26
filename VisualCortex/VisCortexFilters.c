@@ -33,7 +33,7 @@ unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned
 	     while (y_c<y+size_y)
 				{
                   px= (BYTE *) edge_array+precalc_memplace_3byte[x_c][y_c];
-				  stopx=px+size_x;
+				  stopx=px+(size_x*3);
 				  while (px<stopx) { if ( *px!=0 ) { ++counted_edges; }  px+=3;  }
 				  if ( edges_required_to_process < counted_edges ) { return counted_edges+1; } // ++PERFORMANCE --RESULT
 				  ++y_c;
@@ -254,7 +254,7 @@ void ReducePalette(unsigned char * image,int image_x,int image_y,int new_palette
  register BYTE *g;
  register BYTE *b;
 
-  while ( px < px + image_size )
+  while ( px < start_px + image_size )
   {
        r = px++;
        g = px++;

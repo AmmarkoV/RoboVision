@@ -312,25 +312,10 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
              //THA PREPEI TO SOURCE KOMMATI NA EXEI EDGES GIATI ALLIWS DEN EINAI K POLY AKRIVES TO ANTISTOIXO POU THA VRETHEI
 
-             unsigned int counted_edges_1=CountEdges(edges_required_to_process,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],video_register[EDGES_LEFT].pixels);
-             unsigned int counted_edges_2=GetCompressedRegisterPatchSum1Byte(GENERAL_XLARGE_1,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
-             if ( counted_edges_2 < counted_edges_1 )
-               {
-                   fprintf(stderr,"BUG : New function returns smaller num %u instead of %u @ %u,%u size %u,%u\n",counted_edges_2,counted_edges_1,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
-               }
-
-              if (
-                    ( counted_edges_1<=edges_required_to_process  ) &&
-                    ( counted_edges_2>edges_required_to_process  )
-                 )
-                 {
-                   ++times_passed_threshold;
-                   fprintf(stderr,"Well.. New function passes threshold %u instead of %u @ %u,%u size %u,%u\n",counted_edges_2,counted_edges_1,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
-                   fprintf(stderr,"Well.. New function passed threshold total %u more times\n",times_passed_threshold);
-                 }
+             //unsigned int  counted_edges=CountEdges(edges_required_to_process,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],video_register[EDGES_LEFT].pixels);
+             unsigned int  counted_edges=GetCompressedRegisterPatchSum1Byte(GENERAL_XLARGE_1,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
 
 
-              unsigned int counted_edges=counted_edges_1;
              //DEBUG COMMAND TO FIND WTF IS WRONG if (counted_edges>edges_required_to_process) { counted_edges=edges_required_to_process+1; }
 		     //THA PREPEI TO SOURCE KOMMATI NA EXEI EDGES GIATI ALLIWS DEN EINAI K POLY AKRIVES TO ANTISTOIXO POU THA VRETHEI
 

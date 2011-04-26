@@ -216,7 +216,7 @@ void DefaultSettings()
 {
     // Initialize all variables used by Visual Cortex
     settings[DEPTHMAP_STARTLEFT_X]=15;
-    settings[DEPTHMAP_DETAIL]=7;
+    settings[DEPTHMAP_DETAIL]=8;
     settings[DEPTHMAP_EDGE_STRICTNESS]=25;
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_OFFSET_UP]=2;
@@ -237,10 +237,10 @@ void DefaultSettings()
 
 
     settings[PATCH_COMPARISON_LEVELS]=3; /* It will use 3 different size block levels for comparison */
-    settings[PATCH_COMPARISON_SCORE_MIN]=30000;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=20;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=10;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=4;
+    settings[PATCH_COMPARISON_SCORE_MIN]=35000;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=60;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=25;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=10;
     settings[PATCH_HIST_THRESHOLD_R]=12; settings[PATCH_HIST_THRESHOLD_G]=12; settings[PATCH_HIST_THRESHOLD_B]=12;
 
     settings[MOVEMENT_PATCH_SENSITIVITY]=7;
