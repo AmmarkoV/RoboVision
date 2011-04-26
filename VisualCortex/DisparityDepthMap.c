@@ -262,10 +262,15 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
     PrepareCleanSobeledGaussian(video_register[LEFT_EYE].pixels,video_register[EDGES_LEFT].pixels,settings[DEPTHMAP_EDGE_STRICTNESS]);
     PrepareCleanSobeledGaussian(video_register[RIGHT_EYE].pixels,video_register[EDGES_RIGHT].pixels,settings[DEPTHMAP_EDGE_STRICTNESS]);
-    //CompressRegister1Byte(EDGES_LEFT,EDGES_COMPRESSED_LEFT);
+
     if ( clear_depth_arrays == 1 )
      {
-         CompressPresenceRegister(EDGES_LEFT,GENERAL_XLARGE_1,5);
+
+        // CompressPresenceRegister(EDGES_LEFT,GENERAL_XLARGE_1,5);
+        // I dont like the following , I should really change the sobel function to give a one byte response..!
+        CopyRegister(EDGES_LEFT,GENERAL_3);
+        ConvertRegisterFrom3ByteTo1Byte(GENERAL_3,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+        CompressPresenceRegister(GENERAL_3,GENERAL_XLARGE_1,5);
      }
 
     metrics[HISTOGRAM_DENIES]=0;
@@ -300,8 +305,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
             best_match.edge_count=0;
 
              //THA PREPEI TO SOURCE KOMMATI NA EXEI EDGES GIATI ALLIWS DEN EINAI K POLY AKRIVES TO ANTISTOIXO POU THA VRETHEI
-             unsigned int counted_edges=CountEdges(edges_required_to_process,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],video_register[EDGES_LEFT].pixels);
-             // TODO TODO TODO counted_edges=GetCompressedRegisterPatchSum(GENERAL_XLARGE_1,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+             unsigned int counted_edges;//=CountEdges(edges_required_to_process,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],video_register[EDGES_LEFT].pixels);
+             counted_edges=GetCompressedRegisterPatchSum(GENERAL_XLARGE_1,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
 		     //THA PREPEI TO SOURCE KOMMATI NA EXEI EDGES GIATI ALLIWS DEN EINAI K POLY AKRIVES TO ANTISTOIXO POU THA VRETHEI
 
 				if (counted_edges>edges_required_to_process)

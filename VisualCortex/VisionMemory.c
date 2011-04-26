@@ -404,10 +404,40 @@ void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img
 
 
 
-
-void ConvertRegisterFrom3ByteTo1Byte(in_reg,int image_x,int image_y)
+void CopyRegister(unsigned int source,unsigned int target)
 {
-  if (input_frame==0) {return;}
+  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+  if ( video_register[source].depth == 1 ) { image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]; } else
+  if ( video_register[source].depth == 3 ) { image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]; } else
+                                           {
+                                               fprintf(stderr,"assuming 3byte size");
+                                           }
+
+ register BYTE *start_px = (BYTE *) video_register[source].pixels;
+ register BYTE *px = (BYTE *) video_register[source].pixels;
+ register BYTE *tpx = (BYTE *) video_register[target].pixels;
+
+ while ( px < start_px+image_size)
+ {
+       *tpx = *px;
+       ++tpx;
+       ++px;
+ }
+
+  video_register[target].size_x=video_register[source].size_x;
+  video_register[target].size_y=video_register[source].size_y;
+  video_register[target].depth=video_register[source].depth;
+
+  video_register[target].time=video_register[source].time;
+  video_register[target].used=video_register[source].used;
+
+}
+
+
+
+void ConvertRegisterFrom3ByteTo1Byte(int in_reg,int image_x,int image_y)
+{
+  if (video_register[in_reg].pixels==0) {return;}
   int col_med;
   unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
   if ( video_register[in_reg].depth == 3 ) { video_register[in_reg].depth = 1; } else
@@ -416,13 +446,14 @@ void ConvertRegisterFrom3ByteTo1Byte(in_reg,int image_x,int image_y)
                                              return;
                                            }
 
+ register BYTE *start_px = (BYTE *) video_register[in_reg].pixels;
  register BYTE *opx = (BYTE *) video_register[in_reg].pixels;
  register BYTE *px =  (BYTE *) video_register[in_reg].pixels;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
 
- while ( px < px+image_size)
+ while ( px < start_px+image_size)
  {
        r = px++; g = px++; b = px++;
        col_med=  ( *r + *g + *b )/3;
@@ -439,10 +470,10 @@ void ConvertRegisterFrom3ByteTo1Byte(in_reg,int image_x,int image_y)
 }
 
 
-void ConvertRegisterFrom1ByteTo3Byte(in_reg,int image_x,int image_y)
+void ConvertRegisterFrom1ByteTo3Byte(int in_reg,int image_x,int image_y)
 {
-  if (input_frame==0) {return;}
-  int col_med;
+  if (video_register[in_reg].pixels==0) {return;}
+
   unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
   if ( video_register[in_reg].depth == 1 ) { video_register[in_reg].depth = 3; } else
                                            {
@@ -450,13 +481,14 @@ void ConvertRegisterFrom1ByteTo3Byte(in_reg,int image_x,int image_y)
                                              return;
                                            }
 
+ register BYTE *start_px = (BYTE *) video_register[in_reg].pixels;
  register BYTE *opx = (BYTE *) video_register[in_reg].pixels;
  register BYTE *px =  (BYTE *) video_register[in_reg].pixels;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
 
- while ( px < px+image_size)
+ while ( px < start_px+image_size)
  {
        r = px++; g = px++; b = px++;
        *r=*opx;
@@ -465,40 +497,6 @@ void ConvertRegisterFrom1ByteTo3Byte(in_reg,int image_x,int image_y)
        ++opx;
  }
  return;
-}
-
-int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg)
-{
-  // Convert from the Large ( unsigned short ) to 3 bytes per pixel storage ( r,g,b ) needed for outputting video
-  unsigned short *full_depth_map=l_video_register[depth_reg].pixels;
-  unsigned char *vid_depth_map=video_register[vid_reg].pixels;
-  unsigned int image_x=video_register[vid_reg].size_x;
-  unsigned int image_y=video_register[vid_reg].size_y;
-
-
-  register BYTE *px;
-  register BYTE *r;
-  register BYTE *g;
-  register BYTE *b;
-  unsigned char val;
-  px = (BYTE *)  vid_depth_map;
-
-  unsigned int ptr,ptr_3byte=0,dpth_lim=image_x*image_y;
-  for ( ptr = 0; ptr < dpth_lim; ptr++)
-   {
-       r = px++;
-       g = px++;
-       b = px++;
-       if ( full_depth_map[ptr] > 255 ) { val = 255; } else
-       //val = full_depth_map[ptr] / 65535;
-       val = ( unsigned char ) full_depth_map[ptr];
-       *r= val;
-       *g= val;
-       *b= val;
-       ptr_3byte+=3;
-   }
-
-   return 1;
 }
 
 

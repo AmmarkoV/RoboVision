@@ -417,107 +417,12 @@ unsigned int GetCompressedRegisterPatchSum(int comp_register,int x,int y,int wid
  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 unsigned int CompressRegister3Byte(int input,int output)
 {
-  if (!VideoRegisterRequestIsOk(input,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3))
-    {
-      return 0;
-    }
-  if (!ExtraLargeVideoRegisterRequestIsOk(output,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3))
-    {
-      return 0;
-    }
-  //This code will add up all the pixels to every other pixel , in order to speed up access
-  //Patch procedures when each pixel must be added to the others..!
-  if ( video_register[input].depth != 3 )
-    {
-      fprintf(stderr,"CompressRegister3Bit called with 1bit image\n");
-      return 0;
-    }
-
-  ClearExtraLargeVideoRegister(output);
-  unsigned char *in_ptr_start=video_register[input].pixels,*in_ptr=in_ptr_start;
-  unsigned int *out_ptr_start=xl_video_register[output].pixels,*out_ptr=out_ptr_start,*out_ptr_adj=out_ptr_start;
-  xl_video_register[output].depth = 3;
-
-  unsigned int x=0,y=0;
-  while (y<metrics[RESOLUTION_Y])
-    {
-      x = metrics[RESOLUTION_X];
-
-      in_ptr += metrics[RESOLUTION_X];
-      out_ptr += metrics[RESOLUTION_X];
-
-      while (x>0)
-        {
-          in_ptr-=3;
-          out_ptr-=3;
-          --x;
-
-          *out_ptr += *in_ptr;
-          *(out_ptr+1) += *(in_ptr+1);
-          *(out_ptr+2) += *(in_ptr+2);
-
-          out_ptr_adj = out_ptr-3;
-
-          if (x>0)
-           {
-             *out_ptr_adj = *out_ptr;
-             *(out_ptr_adj+1) = *(out_ptr+1);
-             *(out_ptr_adj+2) = *(out_ptr+2);
-
-           }
-        }
-
-
-      in_ptr += metrics[RESOLUTION_X];
-      out_ptr += metrics[RESOLUTION_X];
-
-      ++y;
-    }
-
-  x=0;
-  y=0;
-  unsigned int last_val_R=0,last_val_G=0,last_val_B=0;
-  while (x<metrics[RESOLUTION_X])
-    {
-      y = metrics[RESOLUTION_Y];
-      out_ptr=out_ptr_start+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]+x; // You have subtract at least metrics[RESOLUTION_X]; to make it a usable pointer
-      last_val_R = *out_ptr;
-      last_val_G = *(out_ptr+1);
-      last_val_B = *(out_ptr+2);
-
-      while (y>0)
-        {
-          out_ptr -= metrics[RESOLUTION_X];
-          --y;
-          *out_ptr += last_val_R;
-          *(out_ptr+1) += last_val_G;
-          *(out_ptr+2) += last_val_B;
-          last_val_R=*out_ptr;
-          last_val_G=*(out_ptr+1);
-          last_val_B=*(out_ptr+2);
-        }
-      ++x;
-    }
-
-  return 1;
+    fprintf(stderr,"Error!!!!!!!! CompressRegister3Byte Not implemented \n");
+    return 0;
 }
+
 
 unsigned int CompressRegister1Byte(int input,int output)
 {
@@ -590,7 +495,6 @@ unsigned int CompressRegister1Byte(int input,int output)
   return 1;
 }
 
-
 unsigned int CompressRegister(int input,int output)
 {
     if (video_register[input].depth==1) { return CompressRegister1Byte(input,output); }
@@ -601,6 +505,7 @@ unsigned int CompressRegister(int input,int output)
 
 unsigned int CompressPresenceRegister3Byte(int input,int output,int threshold)
 {
+    fprintf(stderr,"Error!!!!!!!! CompressPresenceRegister3Byte Not implemented \n");
     return 0;
 }
 
