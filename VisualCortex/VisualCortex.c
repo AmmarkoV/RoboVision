@@ -247,7 +247,7 @@ void  VisCortx_FullDepthMap()
                 DEPTH_RIGHT,
                 metrics[RESOLUTION_X],
                 metrics[RESOLUTION_Y],
-                0
+                1
              );
 
   /*

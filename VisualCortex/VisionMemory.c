@@ -405,13 +405,19 @@ void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img
 
 
 
-void ConvertRegisterTo1ByteKeepingRChannel(unsigned char * input_frame,int image_x,int image_y)
-{/*
+void ConvertRegisterFrom3ByteTo1Byte(in_reg,int image_x,int image_y)
+{
   if (input_frame==0) {return;}
   int col_med;
   unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+  if ( video_register[in_reg].depth == 3 ) { video_register[in_reg].depth = 1; } else
+                                           {
+                                             fprintf(stderr,"Error , ConvertRegisterFrom3ByteTo1Byte called with register of %u depth\n",video_register[in_reg].depth);
+                                             return;
+                                           }
 
- register BYTE *px = (BYTE *) input_frame;
+ register BYTE *opx = (BYTE *) video_register[in_reg].pixels;
+ register BYTE *px =  (BYTE *) video_register[in_reg].pixels;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
@@ -419,15 +425,80 @@ void ConvertRegisterTo1ByteKeepingRChannel(unsigned char * input_frame,int image
  while ( px < px+image_size)
  {
        r = px++; g = px++; b = px++;
-
        col_med=  ( *r + *g + *b )/3;
-	   *r= (BYTE)col_med ;
-       *g=*r;
-	   *b=*r;
+       if ( col_med < 255 ) {
+                              *opx= (BYTE)col_med ;
+                            }
+                            else
+                            {
+                              *opx= 255;
+                            }
+	   ++opx;
  }
- MONOCHROME CODE FOR NOW!
-*/
  return;
+}
+
+
+void ConvertRegisterFrom1ByteTo3Byte(in_reg,int image_x,int image_y)
+{
+  if (input_frame==0) {return;}
+  int col_med;
+  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+  if ( video_register[in_reg].depth == 1 ) { video_register[in_reg].depth = 3; } else
+                                           {
+                                             fprintf(stderr,"Error , ConvertRegisterFrom1ByteTo3Byte called with register of %u depth\n",video_register[in_reg].depth);
+                                             return;
+                                           }
+
+ register BYTE *opx = (BYTE *) video_register[in_reg].pixels;
+ register BYTE *px =  (BYTE *) video_register[in_reg].pixels;
+ register BYTE *r;
+ register BYTE *g;
+ register BYTE *b;
+
+ while ( px < px+image_size)
+ {
+       r = px++; g = px++; b = px++;
+       *r=*opx;
+	   *g=*opx;
+	   *b=*opx;
+       ++opx;
+ }
+ return;
+}
+
+int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg)
+{
+  // Convert from the Large ( unsigned short ) to 3 bytes per pixel storage ( r,g,b ) needed for outputting video
+  unsigned short *full_depth_map=l_video_register[depth_reg].pixels;
+  unsigned char *vid_depth_map=video_register[vid_reg].pixels;
+  unsigned int image_x=video_register[vid_reg].size_x;
+  unsigned int image_y=video_register[vid_reg].size_y;
+
+
+  register BYTE *px;
+  register BYTE *r;
+  register BYTE *g;
+  register BYTE *b;
+  unsigned char val;
+  px = (BYTE *)  vid_depth_map;
+
+  unsigned int ptr,ptr_3byte=0,dpth_lim=image_x*image_y;
+  for ( ptr = 0; ptr < dpth_lim; ptr++)
+   {
+       r = px++;
+       g = px++;
+       b = px++;
+       if ( full_depth_map[ptr] > 255 ) { val = 255; } else
+       //val = full_depth_map[ptr] / 65535;
+       val = ( unsigned char ) full_depth_map[ptr];
+       *r= val;
+       *g= val;
+       *b= val;
+       ptr_3byte+=3;
+   }
+
+   return 1;
 }
 
 

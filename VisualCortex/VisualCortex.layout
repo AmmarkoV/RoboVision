@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="5046" topLine="105" />
+	<File name="DisparityDepthMap.c" open="1" top="1" tabpos="7">
+		<Cursor position="12035" topLine="280" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="874" topLine="0" />
@@ -22,11 +22,11 @@
 	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
 		<Cursor position="594" topLine="217" />
 	</File>
-	<File name="IntegralImageConversion.c" open="1" top="1" tabpos="21">
-		<Cursor position="9328" topLine="313" />
+	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
+		<Cursor position="12680" topLine="387" />
 	</File>
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
-		<Cursor position="804" topLine="0" />
+		<Cursor position="809" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
 		<Cursor position="1076" topLine="2" />
@@ -56,7 +56,7 @@
 		<Cursor position="731" topLine="0" />
 	</File>
 	<File name="VisCortexFilters.c" open="1" top="0" tabpos="3">
-		<Cursor position="869" topLine="204" />
+		<Cursor position="869" topLine="6" />
 	</File>
 	<File name="VisCortexFilters.h" open="1" top="0" tabpos="4">
 		<Cursor position="737" topLine="0" />
@@ -74,9 +74,9 @@
 		<Cursor position="2967" topLine="74" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="5042" topLine="168" />
+		<Cursor position="7851" topLine="216" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="3662" topLine="84" />
+		<Cursor position="2829" topLine="120" />
 	</File>
 </CodeBlocks_layout_file>

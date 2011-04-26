@@ -402,7 +402,13 @@ int GetCompressedRegisterPatchSum3Byte(int comp_register,int x,int y,int width,i
   return total;
 }
 
-
+unsigned int GetCompressedRegisterPatchSum(int comp_register,int x,int y,int width,int height)
+{
+    if (xl_video_register[comp_register].depth==1) { return GetCompressedRegisterPatchSum1Byte(comp_register,x,y,width,height); }
+     else
+    if (xl_video_register[comp_register].depth==3) { return GetCompressedRegisterPatchSum3Byte(comp_register,x,y,width,height); }
+    return 0;
+}
 
 
 /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -589,7 +595,7 @@ unsigned int CompressRegister(int input,int output)
 {
     if (video_register[input].depth==1) { return CompressRegister1Byte(input,output); }
      else
-    if (video_register[input].depth==1) { return CompressRegister3Byte(input,output); }
+    if (video_register[input].depth==3) { return CompressRegister3Byte(input,output); }
     return 0;
 }
 
@@ -678,7 +684,7 @@ unsigned int CompressPresenceRegister(int input,int output,int threshold)
 {
     if (video_register[input].depth==1) { return CompressPresenceRegister1Byte(input,output,threshold); }
      else
-    if (video_register[input].depth==1) { return CompressPresenceRegister3Byte(input,output,threshold); }
+    if (video_register[input].depth==3) { return CompressPresenceRegister3Byte(input,output,threshold); }
     return 0;
 }
 

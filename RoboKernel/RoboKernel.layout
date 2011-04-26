@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="RoboKernel.h" open="1" top="0" tabpos="2">
+	<File name="RoboKernel.h" open="1" top="0" tabpos="27">
 		<Cursor position="495" topLine="0" />
 	</File>
-	<File name="command_hal.c" open="1" top="0" tabpos="3">
+	<File name="command_hal.c" open="1" top="0" tabpos="28">
 		<Cursor position="6196" topLine="140" />
 	</File>
-	<File name="command_hal.h" open="1" top="0" tabpos="4">
+	<File name="command_hal.h" open="1" top="0" tabpos="29">
 		<Cursor position="175" topLine="0" />
 	</File>
-	<File name="command_implementation.c" open="1" top="0" tabpos="11">
+	<File name="command_implementation.c" open="1" top="0" tabpos="36">
 		<Cursor position="4050" topLine="0" />
 	</File>
-	<File name="command_implementation.h" open="1" top="0" tabpos="12">
+	<File name="command_implementation.h" open="1" top="0" tabpos="37">
 		<Cursor position="304" topLine="0" />
 	</File>
-	<File name="configuration.c" open="1" top="0" tabpos="9">
+	<File name="configuration.c" open="1" top="0" tabpos="34">
 		<Cursor position="2084" topLine="84" />
 	</File>
-	<File name="configuration.h" open="1" top="0" tabpos="10">
+	<File name="configuration.h" open="1" top="0" tabpos="35">
 		<Cursor position="234" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="1" tabpos="1">
+	<File name="main.c" open="1" top="0" tabpos="26">
 		<Cursor position="1357" topLine="84" />
 	</File>
-	<File name="mapping_system.c" open="1" top="0" tabpos="15">
+	<File name="mapping_system.c" open="1" top="0" tabpos="40">
 		<Cursor position="479" topLine="0" />
 	</File>
-	<File name="mapping_system.h" open="1" top="0" tabpos="14">
+	<File name="mapping_system.h" open="1" top="0" tabpos="39">
 		<Cursor position="76" topLine="0" />
 	</File>
-	<File name="motor_system.c" open="1" top="0" tabpos="13">
+	<File name="motor_system.c" open="1" top="0" tabpos="38">
 		<Cursor position="196" topLine="0" />
 	</File>
-	<File name="motor_system.h" open="1" top="0" tabpos="16">
+	<File name="motor_system.h" open="1" top="0" tabpos="41">
 		<Cursor position="68" topLine="0" />
 	</File>
-	<File name="visual_system.c" open="1" top="0" tabpos="5">
+	<File name="visual_system.c" open="1" top="0" tabpos="30">
 		<Cursor position="1134" topLine="68" />
 	</File>
-	<File name="visual_system.h" open="1" top="0" tabpos="6">
+	<File name="visual_system.h" open="1" top="0" tabpos="31">
 		<Cursor position="107" topLine="0" />
 	</File>
-	<File name="webinterface.c" open="1" top="0" tabpos="7">
+	<File name="webinterface.c" open="1" top="0" tabpos="32">
 		<Cursor position="4724" topLine="58" />
 	</File>
-	<File name="webinterface.h" open="1" top="0" tabpos="8">
+	<File name="webinterface.h" open="1" top="0" tabpos="33">
 		<Cursor position="433" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
