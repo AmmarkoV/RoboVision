@@ -346,12 +346,12 @@ unsigned int inline GetRegisterPatchPresenceSum(int comp_register, unsigned int 
       stopx=px+width;
       while (px<stopx)
         {
-          if  (*px>threshold) { ++counted_edges; }
+          if  (*px>=threshold) { ++counted_edges; }
            else
           if ( depth == 3 )
            {
-               if  (*(px+1)>threshold) { ++counted_edges; } else
-               if  (*(px+2)>threshold) { ++counted_edges; }
+               if  (*(px+1)>=threshold) { ++counted_edges; } else
+               if  (*(px+2)>=threshold) { ++counted_edges; }
              } else
           px+=depth;
         }
@@ -373,31 +373,29 @@ unsigned int inline GetRegisterPatchSum3Byte(int comp_register, unsigned int x ,
 
 
 
-unsigned int GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,int height)
+unsigned int inline GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,int height)
 {
   if (!MakePatchFitInsideImage(&x,&y,&width,&height))
     {
       return 0;
     }
-  /*
+/*
   unsigned int ptr_up_left = metrics[RESOLUTION_X]*y+x;
   unsigned int ptr_up_right = metrics[RESOLUTION_X]*y+(x+width);
   unsigned int ptr_down_left = metrics[RESOLUTION_X]*(y+height)+x;
   unsigned int ptr_down_right = metrics[RESOLUTION_X]*(y+height)+(x+width);
   */
 
-  unsigned int ptr_up_left = metrics[RESOLUTION_X]*y+x;
-  unsigned int ptr_up_right = ptr_up_left + width;
-  unsigned int ptr_down_left = ptr_up_left + metrics[RESOLUTION_X]*(height);
-  unsigned int ptr_down_right =ptr_down_left + width;
+  register unsigned int * ptr_up_left = xl_video_register[comp_register].pixels + metrics[RESOLUTION_X]*y+x;
+  register unsigned int * ptr_up_right = ptr_up_left + width;
+  register unsigned int * ptr_down_left = ptr_up_left + metrics[RESOLUTION_X]*(height);
+  register unsigned int * ptr_down_right =ptr_down_left + width;
 
-  unsigned int total;
-  total= xl_video_register[comp_register].pixels[ptr_up_left]
-         + xl_video_register[comp_register].pixels[ptr_down_right]
-         - xl_video_register[comp_register].pixels[ptr_up_right]
-         - xl_video_register[comp_register].pixels[ptr_down_left];
+  return (  *ptr_up_left
+          + *ptr_down_right
+          - *ptr_up_right
+          - *ptr_down_left );
 
-  return total;
 }
 
 int GetCompressedRegisterPatchSum3Byte(int comp_register,int x,int y,int width,int height)
@@ -507,97 +505,6 @@ unsigned int CompressRegister(int input,int output)
     if (video_register[input].depth==3) { return CompressRegister3Byte(input,output); }
     return 0;
 }
-
-unsigned int CompressPresenceRegister3Byte(int input,int output,int threshold)
-{
-    fprintf(stderr,"Error!!!!!!!! CompressPresenceRegister3Byte Not implemented \n");
-    return 0;
-}
-
-unsigned int CompressPresenceRegister1Byte(int input,int output,int threshold)
-{
-  if (!VideoRegisterRequestIsOk(input,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3))
-    {
-      return 0;
-    }
-  if (!ExtraLargeVideoRegisterRequestIsOk(output,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3))
-    {
-      return 0;
-    }
-  //This code will add up all the pixels to every other pixel , in order to speed up access
-  //Patch procedures when each pixel must be added to the others..!
-  if ( video_register[input].depth != 1 )
-    {
-      fprintf(stderr,"CompressPresenceRegister1Byte called with 3bit image\n");
-      return 0;
-    }
-
-  ClearExtraLargeVideoRegister(output);
-  unsigned char *in_ptr_start=video_register[input].pixels,*in_ptr=in_ptr_start;
-  unsigned int *out_ptr_start=xl_video_register[output].pixels,*out_ptr=out_ptr_start,*out_ptr_adj=out_ptr_start;
-  xl_video_register[output].depth = 1;
-
-  unsigned int x=0,y=0;
-  while (y<metrics[RESOLUTION_Y])
-    {
-      x = metrics[RESOLUTION_X];
-
-      in_ptr += metrics[RESOLUTION_X];
-      out_ptr += metrics[RESOLUTION_X];
-
-      while (x>0)
-        {
-          --in_ptr;
-          --out_ptr;
-          --x;
-
-          if (threshold<*in_ptr)
-            {
-              *out_ptr += 1;
-            }
-          out_ptr_adj = out_ptr-1;
-          if (x>0) *out_ptr_adj = *out_ptr;
-        }
-
-
-      in_ptr += metrics[RESOLUTION_X];
-      out_ptr += metrics[RESOLUTION_X];
-
-      ++y;
-    }
-
-  x=0;
-  y=0;
-  unsigned int last_val=0;
-  while (x<metrics[RESOLUTION_X])
-    {
-      y = metrics[RESOLUTION_Y];
-      out_ptr=out_ptr_start+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]+x; // You have subtract at least metrics[RESOLUTION_X]; to make it a usable pointer
-      last_val = *out_ptr;
-
-      while (y>0)
-        {
-          out_ptr -= metrics[RESOLUTION_X];
-          --y;
-          *out_ptr += last_val;
-          last_val=*out_ptr;
-        }
-
-
-      ++x;
-    }
-
-  return 1;
-}
-
-unsigned int CompressPresenceRegister(int input,int output,int threshold)
-{
-    if (video_register[input].depth==1) { return CompressPresenceRegister1Byte(input,output,threshold); }
-     else
-    if (video_register[input].depth==3) { return CompressPresenceRegister3Byte(input,output,threshold); }
-    return 0;
-}
-
 
 /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

@@ -30,7 +30,7 @@ unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned
    register BYTE *px;
    register BYTE *stopx;
 
-	     while (y_c<=y+size_y)
+	     while (y_c<y+size_y)
 				{
                   px= (BYTE *) edge_array+precalc_memplace_3byte[x_c][y_c];
 				  stopx=px+size_x;
@@ -39,6 +39,26 @@ unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned
 				  ++y_c;
 			 	}
   return counted_edges;
+}
+
+
+
+unsigned int inline PixelsOverThresholdSetAsOne(int image_reg,unsigned int threshold)
+{
+   if (video_register[image_reg].depth!=1) { fprintf(stderr,"Function PixelsOverThresholdSetAsOne assumes 1byte array\n"); return 0; }
+
+ unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
+
+ register BYTE *start_px = (BYTE *) video_register[image_reg].pixels;
+ register BYTE *px = (BYTE *) video_register[image_reg].pixels;
+
+ while ( px < start_px+image_size)
+ {
+        if ( *px > threshold ) { *px = 1; } else { *px = 0; }
+        ++px;
+ }
+
+  return 1;
 }
 
 unsigned int HistogramPatch(struct Histogram *hist_data,unsigned char *img,unsigned int px,unsigned int py,unsigned int patch_x,unsigned int patch_y)
@@ -97,12 +117,13 @@ void Monochrome(unsigned char * input_frame,int image_x,int image_y)
   int col_med;
   unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
 
+ register BYTE *start_px = (BYTE *) input_frame;
  register BYTE *px = (BYTE *) input_frame;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
 
- while ( px < px+image_size)
+ while ( px < start_px+image_size)
  {
        r = px++; g = px++; b = px++;
 
@@ -121,12 +142,13 @@ void MonochromeL(unsigned char * input_frame,int image_x,int image_y)
   int col_med;
 
  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+ register BYTE *start_px = (BYTE *) input_frame;
  register BYTE *px = (BYTE *) input_frame;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
 
-  while ( px < px+image_size)
+  while ( px < start_px+image_size)
  {
        r = px++; g = px++; b = px++;
 
@@ -144,13 +166,14 @@ void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned 
 { if (image==0) {return;}
 
  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+ register BYTE *start_px = (BYTE *) image;
  register BYTE *px = (BYTE *) image;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
  char mismatch=0;
 
-  while ( px < px+image_size)
+  while ( px < start_px+image_size)
  {
        r = px++; g = px++; b = px++;
 
@@ -174,13 +197,14 @@ void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned 
 void KillPixelsBelow(unsigned char * image,int image_x,int image_y,int threshold)
 { if (image==0) {return;}
 
+ register BYTE *start_px = (BYTE *) image;
  register BYTE *px = (BYTE *) image;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
 
- while ( px < px + image_size )
+ while ( px < start_px + image_size )
   {
        r = px++;
        g = px++;
@@ -224,6 +248,7 @@ void ReducePalette(unsigned char * image,int image_x,int image_y,int new_palette
 { if (image==0) {return;}
 
  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+ register BYTE *start_px = ( BYTE * ) image;
  register BYTE *px = ( BYTE * ) image;
  register BYTE *r;
  register BYTE *g;

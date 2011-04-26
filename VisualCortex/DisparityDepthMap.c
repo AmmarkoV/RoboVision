@@ -236,7 +236,6 @@ void DepthMapFull  ( unsigned int left_view_reg,
                      unsigned char clear_depth_arrays /*Cleaning the depth arrays takes a little longer :) */
                     )
 {
-
     unsigned char *left_view=video_register[left_view_reg].pixels;
     unsigned char *right_view=video_register[right_view_reg].pixels;
     unsigned short *left_depth=l_video_register[left_depth_reg].pixels;
@@ -270,7 +269,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
         // I dont like the following , I should really change the sobel function to give a one byte response..!
         CopyRegister(EDGES_LEFT,GENERAL_3);
         ConvertRegisterFrom3ByteTo1Byte(GENERAL_3,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-        CompressPresenceRegister(GENERAL_3,GENERAL_XLARGE_1,5);
+        PixelsOverThresholdSetAsOne(GENERAL_3,1);
+        CompressRegister(GENERAL_3,GENERAL_XLARGE_1);
      }
 
     metrics[HISTOGRAM_DENIES]=0;
@@ -305,8 +305,28 @@ void DepthMapFull  ( unsigned int left_view_reg,
             best_match.edge_count=0;
 
              //THA PREPEI TO SOURCE KOMMATI NA EXEI EDGES GIATI ALLIWS DEN EINAI K POLY AKRIVES TO ANTISTOIXO POU THA VRETHEI
-             unsigned int counted_edges=CountEdges(edges_required_to_process,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],video_register[EDGES_LEFT].pixels);
-             //counted_edges=GetCompressedRegisterPatchSum(GENERAL_XLARGE_1,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+
+             unsigned int counted_edges_1=CountEdges(edges_required_to_process,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],video_register[EDGES_LEFT].pixels);
+             unsigned int counted_edges_2=GetCompressedRegisterPatchSum1Byte(GENERAL_XLARGE_1,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+             if ( counted_edges_2 < counted_edges_1 )
+               {
+                   fprintf(stderr,"BUG : New function returns smaller num %u instead of %u @ %u,%u size %u,%u\n",counted_edges_2,counted_edges_1,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+               }
+
+              unsigned int times_passed_threshold=0;
+              if (
+                    ( counted_edges_1<=edges_required_to_process  ) &&
+                    ( counted_edges_2>edges_required_to_process  )
+                 )
+                 {
+                   ++times_passed_threshold;
+                   fprintf(stderr,"Well.. New function passes threshold %u instead of %u @ %u,%u size %u,%u\n",counted_edges_2,counted_edges_1,x,y,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+                 }
+                   fprintf(stderr,"Well.. New function passed threshold %u more times\n",times_passed_threshold);
+
+
+              unsigned int counted_edges=counted_edges_1;
+             //DEBUG COMMAND TO FIND WTF IS WRONG if (counted_edges>edges_required_to_process) { counted_edges=edges_required_to_process+1; }
 		     //THA PREPEI TO SOURCE KOMMATI NA EXEI EDGES GIATI ALLIWS DEN EINAI K POLY AKRIVES TO ANTISTOIXO POU THA VRETHEI
 
 				if (counted_edges>edges_required_to_process)
@@ -412,6 +432,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
   if ( settings[DEPTHMAP_IMPROVE_FILLING_HOLES]!=0 )  EnhanceDepthMapFillHoles(video_register[LEFT_EYE].pixels,left_depth,image_x,image_y);
   if ( settings[DEPTHMAP_IMPROVE_USING_EDGES]!=0 )  EnhanceDepthMapWithEdges(video_register[LEFT_EYE].pixels,left_depth,video_register[EDGES_LEFT].pixels,image_x,image_y);
   //fprintf(stderr,"Histogram denied %u bad patches / ComparePatches Algorithm denied %u patches \n",metrics[HISTOGRAM_DENIES],metrics[COMPAREPATCH_ALGORITHM_DENIES]);
+
   return;
 }
 
