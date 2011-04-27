@@ -298,7 +298,6 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
 
 
-              unsigned int times_passed_threshold=0;
     while (y<ylim)
 	   {
 	     x=settings[DEPTHMAP_STARTLEFT_X];

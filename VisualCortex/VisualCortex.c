@@ -123,7 +123,10 @@ unsigned int VisCortx_GetTime()
 /*
  ----------------- VIDEO INPUT/OUTPUT ----------------------
 */
-
+unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum)
+{
+     CopyRegister(input_img_regnum,output_img_regnum);
+}
 
 unsigned int VisCortX_CopyFromVideoToVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum)
 {
@@ -341,10 +344,10 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
 int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam)
 {
    if ( left_cam == 1 ) {
-                          metrics[CHANGES_LEFT]=RegisterMovements(1,LAST_LEFT_EYE,LEFT_EYE,BACKGROUND_LEFT,DIFFERENCE_LEFT,MOVEMENT_LEFT);
+                          metrics[CHANGES_LEFT]=RegisterMovements(1,LAST_LEFT_EYE,LEFT_EYE,BACKGROUND_LEFT,MOVEMENT_LEFT);
                         }
    if (right_cam == 1 ) {
-                          metrics[CHANGES_RIGHT]=RegisterMovements(0,LAST_RIGHT_EYE,RIGHT_EYE,BACKGROUND_RIGHT,DIFFERENCE_RIGHT,MOVEMENT_RIGHT);
+                          metrics[CHANGES_RIGHT]=RegisterMovements(0,LAST_RIGHT_EYE,RIGHT_EYE,BACKGROUND_RIGHT,MOVEMENT_RIGHT);
                         }
   return 1;
 }

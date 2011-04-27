@@ -80,10 +80,16 @@ int PassVideoInputToCortex(unsigned int clock_time)
    }
 
   if ( NewFrameAvailiable(0) )
-   VisCortx_WriteToVideoRegister(LEFT_EYE,width,height,3,(unsigned char *)frame1);
+   {
+       VisCortX_CopyVideoRegister(LEFT_EYE,LAST_LEFT_EYE);
+       VisCortx_WriteToVideoRegister(LEFT_EYE,width,height,3,(unsigned char *)frame1);
+   }
 
   if ( NewFrameAvailiable(1) )
-   VisCortx_WriteToVideoRegister(RIGHT_EYE,width,height,3,(unsigned char *)frame2);
+  {
+      VisCortX_CopyVideoRegister(RIGHT_EYE,LAST_RIGHT_EYE);
+      VisCortx_WriteToVideoRegister(RIGHT_EYE,width,height,3,(unsigned char *)frame2);
+  }
 
  /*
   * Frames should be signaled processed AFTER they have been passed to Visual Cortex :P

@@ -37,8 +37,8 @@ void DrawMovement()
 //  VisCortX_CopyFromVideoToVideoRegister(MOVEMENT_LEFT,LAST_LEFT_OPERATION); /* CONVERTING 1 bit to 3bit :P*/
 //  VisCortX_CopyFromVideoToVideoRegister(MOVEMENT_RIGHT,LAST_RIGHT_OPERATION); /* CONVERTING 1 bit to 3bit :P*/
 
-   VisCortX_CopyFromVideoToVideoRegister(DIFFERENCE_LEFT,LAST_LEFT_OPERATION); /* CONVERTING 1 bit to 3bit :P*/
-   VisCortX_CopyFromVideoToVideoRegister(DIFFERENCE_RIGHT,LAST_RIGHT_OPERATION); /* CONVERTING 1 bit to 3bit :P*/
+   VisCortX_CopyFromVideoToVideoRegister(MOVEMENT_LEFT,LAST_LEFT_OPERATION); /* CONVERTING 1 bit to 3bit :P*/
+   VisCortX_CopyFromVideoToVideoRegister(MOVEMENT_RIGHT,LAST_RIGHT_OPERATION); /* CONVERTING 1 bit to 3bit :P*/
 
 
 

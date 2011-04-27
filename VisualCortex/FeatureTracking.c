@@ -224,6 +224,7 @@ unsigned int GetPointTrackList()
 
 void ExecuteTrackPoint(unsigned int point_num)
 {
+    /*
   const int FAIL_IF_SCORE_OVER=PATCH_SIZE*PATCH_SIZE*40;//35;
   struct ImageRegion track_buf;
   track_buf.x1=0; track_buf.y1=0;
@@ -273,7 +274,8 @@ void ExecuteTrackPoint(unsigned int point_num)
 	  if (PatchHasMovement(&this_buf,video_register[MOVEMENT_LEFT].pixels,video_register[GROUP_MOVEMENT_LEFT].pixels))
 	  { //PATCH MOVEMENT ara pithanon na metakinithikame ekei!
         score=PatchDistanceCompare_RGB(&track_buf,&this_buf,track_mem[point_num].now_block,video_register[LEFT_EYE].pixels,FAIL_IF_SCORE_OVER,&edges_counted);
-	    if (score>=FAIL_IF_SCORE_OVER) { /* DEN KANOUME TPT */ } else
+	    if (score>=FAIL_IF_SCORE_OVER) { // DEN KANOUME TPT
+	                                   } else
 	    if ((score<best_score)|| (res==0) )
 	     {
 		   best_score=score;
@@ -299,8 +301,7 @@ void ExecuteTrackPoint(unsigned int point_num)
     //AN DEN EINAI SET TO RES FLAG SIMAINEI #1 OTI DEN ALLAKSAME POINT GIATI DN YPIRKSE KINSII KONTA MAS
 	// #2 OTI XASAME TO TRACKING POINT! :(
 
-	  /* TODO NA VALW KWDIKA GIA NA SYGKRINEI TO DEFAULT KOMMATI ME AYTO STIN MNIMI KAI AN EINAI POLY DIAFORETIKO
-	    NA EPISTREFEI LOST */
+	  // TODO NA VALW KWDIKA GIA NA SYGKRINEI TO DEFAULT KOMMATI ME AYTO STIN MNIMI KAI AN EINAI POLY DIAFORETIKO NA EPISTREFEI LOST
 	this_buf.x1=track_mem[point_num].track_x-PATCH_DISPLACEMENT;
 	this_buf.x2=track_mem[point_num].track_x+PATCH_DISPLACEMENT;
     this_buf.y1=track_mem[point_num].track_y-PATCH_DISPLACEMENT;
@@ -322,4 +323,5 @@ void ExecuteTrackPoint(unsigned int point_num)
 								  }
 
   }
+  */
 }

@@ -337,8 +337,8 @@ unsigned int inline GetRegisterPatchPresenceSum(int comp_register, unsigned int 
           if  (*px>=threshold) { ++counted_edges; } else
           if ( depth == 3 )
            {
-              // if  (*(px+1)>=threshold) { ++counted_edges; } else
-              // if  (*(px+2)>=threshold) { ++counted_edges; }
+               if  (*(px+1)>=threshold) { ++counted_edges; } else
+               if  (*(px+2)>=threshold) { ++counted_edges; }
            }
 
           px+=depth;
@@ -363,10 +363,7 @@ unsigned int inline GetRegisterPatchSum3Byte(int comp_register, unsigned int x ,
 
 unsigned int inline GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,int height)
 {
-  if (!MakePatchFitInsideImage(&x,&y,&width,&height))
-    {
-      return 0;
-    }
+  if (!MakePatchFitInsideImage(&x,&y,&width,&height)) { return 0; }
 /*
   unsigned int ptr_up_left = metrics[RESOLUTION_X]*y+x;
   unsigned int ptr_up_right = metrics[RESOLUTION_X]*y+(x+width);
@@ -408,23 +405,10 @@ unsigned int GetCompressedRegisterPatchSum(int comp_register,int x,int y,int wid
  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
-unsigned int CompressRegister3Byte(int input,int output)
-{
-    fprintf(stderr,"Error!!!!!!!! CompressRegister3Byte Not implemented \n");
-    return 0;
-}
-
-
 unsigned int CompressRegister1Byte(int input,int output)
 {
-  if (!VideoRegisterRequestIsOk(input,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3))
-    {
-      return 0;
-    }
-  if (!ExtraLargeVideoRegisterRequestIsOk(output,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3))
-    {
-      return 0;
-    }
+  if (!VideoRegisterRequestIsOk(input,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
+  if (!ExtraLargeVideoRegisterRequestIsOk(output,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
   //This code will add up all the pixels to every other pixel , in order to speed up access
   //Patch procedures when each pixel must be added to the others..!
   if ( video_register[input].depth != 1 )
@@ -486,6 +470,15 @@ unsigned int CompressRegister1Byte(int input,int output)
   return 1;
 }
 
+
+
+unsigned int CompressRegister3Byte(int input,int output)
+{
+  fprintf(stderr,"This needs to be implemented!\n");
+  return 1;
+}
+
+
 unsigned int CompressRegister(int input,int output)
 {
     if (video_register[input].depth==1) { return CompressRegister1Byte(input,output); }
@@ -493,6 +486,21 @@ unsigned int CompressRegister(int input,int output)
     if (video_register[input].depth==3) { return CompressRegister3Byte(input,output); }
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -503,6 +511,10 @@ unsigned int CompressRegister(int input,int output)
 
 int TestIntegralImaging()
 {
+  return 1;
+
+
+
   fprintf(stderr,"TestIntegralImaging starting ( %u x %u ) \n",metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
   if ( !VideoRegisterRequestIsOk(GENERAL_4,1,1,1 ) )
     {
