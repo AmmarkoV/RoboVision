@@ -1,0 +1,4 @@
+#!/bin/sh
+bin/Release/VideoInputGUITester
+exit 0
+ 

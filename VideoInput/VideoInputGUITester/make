@@ -1,0 +1,9 @@
+#!/bin/bash
+echo "Hand made make script for RoboVisionX binary .."
+echo "Should provide bin/Release/VideoInputGUITester " 
+echo "Compiling files.."
+g++ VideoInputGUITesterApp.cpp VideoInputGUITesterApp.h VideoInputGUITesterMain.cpp VideoInputGUITesterMain.h  ../libVideoInput.a `wx-config --libs` `wx-config --cxxflags` -L. -pthread -o bin/Release/VideoInputGUITester
+
+
+echo "Done.."
+exit 0

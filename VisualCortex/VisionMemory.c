@@ -239,7 +239,7 @@ void DefaultSettings()
     settings[PATCH_COMPARISON_LEVELS]=3; /* It will use 3 different size block levels for comparison */
     settings[PATCH_COMPARISON_SCORE_MIN]=35000;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=60;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=25;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=30;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=10;
     settings[PATCH_HIST_THRESHOLD_R]=12; settings[PATCH_HIST_THRESHOLD_G]=12; settings[PATCH_HIST_THRESHOLD_B]=12;
 
@@ -272,10 +272,10 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[CHANGES_RIGHT]=0;
     metrics[VERTICAL_BUFFER]=30; //30
     metrics[HORIZONTAL_BUFFER]=20; //20
-    metrics[VERTICAL_BUFFER_LARGE]=75; //30
-    metrics[HORIZONTAL_BUFFER_LARGE]=50; //20
-    metrics[VERTICAL_BUFFER_EXTRALARGE]=188;
-    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=125;
+    metrics[VERTICAL_BUFFER_LARGE]=75; //75
+    metrics[HORIZONTAL_BUFFER_LARGE]=50; //50
+    metrics[VERTICAL_BUFFER_EXTRALARGE]=188; // 188
+    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=125; //125
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
 
    fprintf(stderr,"Initializing %u  Video Registers\n",REGISTERS_COUNT+LARGE_REGISTERS_COUNT);

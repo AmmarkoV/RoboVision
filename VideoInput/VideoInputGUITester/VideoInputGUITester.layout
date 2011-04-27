@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="VideoInputGUITesterMain.cpp" open="1" top="1" tabpos="2">
+		<Cursor position="4244" topLine="122" />
+	</File>
+	<File name="VideoInputGUITesterMain.h" open="1" top="0" tabpos="3">
+		<Cursor position="817" topLine="5" />
+	</File>
+</CodeBlocks_layout_file>

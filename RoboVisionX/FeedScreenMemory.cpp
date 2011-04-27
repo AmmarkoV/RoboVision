@@ -1,7 +1,7 @@
 #include "FeedScreenMemory.h"
 #include "RoboVisionXMain.h"
 #include <wx/wx.h>
-#include "wx/dc.h"
+#include <wx/dc.h>
 #include <wx/utils.h>
 #include "../MotorFoundation/MotorHAL.h"
 #include "../RoboKernel/RoboKernel.h"

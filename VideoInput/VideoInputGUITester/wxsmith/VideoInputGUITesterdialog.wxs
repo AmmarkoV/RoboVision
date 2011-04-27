@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="VideoInputGUITesterDialog">
+		<title>Video Input GUI Tester</title>
+		<size>397,355</size>
+		<object class="wxButton" name="ID_BUTTON1" variable="ButtonQuit" member="yes">
+			<label>Quit</label>
+			<pos>288,296</pos>
+			<handler function="OnButtonQuitClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxStaticBox" name="ID_STATICBOX1" variable="StaticBox1" member="yes">
+			<label>Video Input</label>
+			<pos>32,24</pos>
+			<size>340,260</size>
+		</object>
+		<object class="wxButton" name="ID_BUTTON2" variable="ButtonSaveSnapshot" member="yes">
+			<label>Save Snapshot</label>
+			<pos>40,296</pos>
+			<handler function="OnButtonSaveSnapshotClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxTimer" name="ID_TIMER1" variable="DrawTimer" member="yes">
+			<interval>100</interval>
+			<handler function="OnDrawTimerTrigger" entry="EVT_TIMER" />
+		</object>
+	</object>
+</wxsmith>
