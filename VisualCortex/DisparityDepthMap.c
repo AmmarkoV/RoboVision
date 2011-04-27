@@ -20,6 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "DisparityDepthMap.h"
 #include "VisCortexFilters.h"
 #include "IntegralImageConversion.h"
+#include "MovementRegistration.h"
 #include "Precalculations.h"
 #include <stdio.h>
 #include <string.h>
@@ -57,6 +58,7 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
                                    unsigned char *right_view,
                                    unsigned char *left_sobel,
                                    unsigned char *right_sobel,
+                                   unsigned int movement_difference,
                                    unsigned int patch_x,
                                    unsigned int patch_y,
                                    unsigned int image_x,
@@ -174,6 +176,8 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 	  ++y;
 	}
 
+   if ( movement_difference > 150 ) { movement_difference<< 3; total_score+=movement_difference; }
+
  return total_score;
 }
 
@@ -201,6 +205,8 @@ void inline FillDepthMemWithData(unsigned short * depth_data_raw,struct DepthDat
 			depth_data_full[x].depth=depth_data->depth;
             depth_data_full[x].score=depth_data->score;
             depth_data_full[x].edge_count=depth_data->edge_count;
+            depth_data_full[x].movement_count=depth_data->movement_count;
+            depth_data_full[x].movement_difference=depth_data->movement_difference;
             depth_data_full[x].x1_patch=depth_data->x1_patch;
             depth_data_full[x].y1_patch=depth_data->y1_patch;
             depth_data_full[x].x2_patch=depth_data->x2_patch;
@@ -271,9 +277,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
         ConvertRegisterFrom3ByteTo1Byte(GENERAL_3,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
         PixelsOverThresholdSetAsOne(GENERAL_3,1);
         CompressRegister(GENERAL_3,GENERAL_XLARGE_1);
-        PrintRegister("edges.html",GENERAL_3);
-        PrintExtraLargeRegister("edges_summed.html",GENERAL_XLARGE_1);
-
+        CompressRegister(MOVEMENT_LEFT,MOVEMENT_GROUPED_LEFT);
+        CompressRegister(MOVEMENT_RIGHT,MOVEMENT_GROUPED_RIGHT);
      }
 
     metrics[HISTOGRAM_DENIES]=0;
@@ -293,7 +298,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
     y_vima= (unsigned int) (metrics[VERTICAL_BUFFER] / settings[DEPTHMAP_DETAIL]);
 
 	unsigned int xblock=0 , yblock=0 ;
-    unsigned int  prox=0;
+    unsigned int  prox=0,movement_left=0 , movement_right=0 ,movement_difference =0;
     unsigned int  max_prox_score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED];
 
 
@@ -308,6 +313,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
             best_match.x1_patch=0; best_match.y1_patch=0;
             best_match.x2_patch=0; best_match.y2_patch=0;
             best_match.edge_count=0;
+            best_match.movement_difference =0; best_match.movement_count=0;
 
              //THA PREPEI TO SOURCE KOMMATI NA EXEI EDGES GIATI ALLIWS DEN EINAI K POLY AKRIVES TO ANTISTOIXO POU THA VRETHEI
 
@@ -340,6 +346,10 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
 						 struct ImageRegion source_rgn,target_rgn;
                          source_rgn.x1=x; source_rgn.y1=y; // To source ( tou aristerou matiou einai x,y )
+                         source_rgn.width=metrics[HORIZONTAL_BUFFER]; source_rgn.height=metrics[VERTICAL_BUFFER]; // These are standard
+                         target_rgn.width=metrics[HORIZONTAL_BUFFER]; target_rgn.height=metrics[VERTICAL_BUFFER]; // These are standard
+
+                         movement_left=GetMovementAtBlock(MOVEMENT_GROUPED_LEFT,&source_rgn);
 
                          while ( yblock <= y+settings[DEPTHMAP_VERT_OFFSET_DOWN] )
 						 { //KATHETI METATWPISI TOU BUFFER DEKSIAS EIKONAS
@@ -350,9 +360,13 @@ void DepthMapFull  ( unsigned int left_view_reg,
                                 target_rgn.x1=xblock; target_rgn.y1=yblock;
                                 target_rgn.x2=xblock+metrics[HORIZONTAL_BUFFER]; target_rgn.y2=yblock+metrics[VERTICAL_BUFFER];
 
+                                movement_right=GetMovementAtBlock(MOVEMENT_GROUPED_RIGHT,&target_rgn);
+                                movement_difference=abs(movement_right-movement_left);
+
 								prox = ComparePatches( source_rgn , target_rgn,
                                                        left_view  , right_view,
                                                        video_register[EDGES_LEFT].pixels , video_register[EDGES_RIGHT].pixels ,
+                                                       movement_difference ,
                                                        metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER],
                                                        image_x , image_y , best_match.score);
 
@@ -374,6 +388,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
                                     best_match.y1_patch=y;   // SYNTETAGMENES ARXIS PATCH Y STIN EIKONA #1
                                     best_match.x2_patch=xblock; // SYNTETAGMENES ARXIS PATCH X STIN EIKONA #2
                                     best_match.y2_patch=yblock;   // SYNTETAGMENES ARXIS PATCH Y STIN EIKONA #2
+                                    best_match.movement_count=movement_right;
+                                    best_match.movement_difference = movement_difference ;
 
 									FillDepthMemWithData(left_depth,depth_data_array,&best_match,image_x,image_y);
 
@@ -389,6 +405,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
 									  prox = ComparePatches( source_rgn,target_rgn,
                                                              left_view, right_view,
                                                              video_register[EDGES_LEFT].pixels , video_register[EDGES_RIGHT].pixels,
+                                                             0,
                                                              metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER],
                                                              image_x , image_y , best_match.score);
 									  // HEURISTIC GIA NA PETAME KAKES PROVLEPSEIS

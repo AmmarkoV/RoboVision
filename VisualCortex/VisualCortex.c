@@ -31,7 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 
-char * VISCORTEX_VER = "0.51";
+char * VISCORTEX_VER = "0.53";
 
 
 char *  VisCortx_Version()
@@ -125,7 +125,7 @@ unsigned int VisCortx_GetTime()
 */
 unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum)
 {
-     CopyRegister(input_img_regnum,output_img_regnum);
+    return CopyRegister(input_img_regnum,output_img_regnum);
 }
 
 unsigned int VisCortX_CopyFromVideoToVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum)
@@ -324,6 +324,8 @@ unsigned int  VisCortx_Get_DepthMapData(unsigned int typeofdata,unsigned int px,
      case 10 : retval= metrics[VERTICAL_BUFFER]; break;
 	 case 11 : retval= metrics[HORIZONTAL_BUFFER]; break;
      case 12 : retval= mem_place; break;
+     case 13 : retval= (unsigned int) depth_data_array[mem_place].movement_count; break;
+     case 14 : retval= (unsigned int) depth_data_array[mem_place].movement_difference; break;
      };
   return retval;
 }
@@ -344,10 +346,10 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
 int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam)
 {
    if ( left_cam == 1 ) {
-                          metrics[CHANGES_LEFT]=RegisterMovements(1,LAST_LEFT_EYE,LEFT_EYE,BACKGROUND_LEFT,MOVEMENT_LEFT);
+                          metrics[CHANGES_LEFT]=RegisterMovements(1,LAST_LEFT_EYE,LEFT_EYE,MOVEMENT_LEFT,MOVEMENT_GROUPED_LEFT);
                         }
    if (right_cam == 1 ) {
-                          metrics[CHANGES_RIGHT]=RegisterMovements(0,LAST_RIGHT_EYE,RIGHT_EYE,BACKGROUND_RIGHT,MOVEMENT_RIGHT);
+                          metrics[CHANGES_RIGHT]=RegisterMovements(0,LAST_RIGHT_EYE,RIGHT_EYE,MOVEMENT_RIGHT,MOVEMENT_GROUPED_RIGHT);
                         }
   return 1;
 }

@@ -404,7 +404,7 @@ void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img
 
 
 
-void CopyRegister(unsigned int source,unsigned int target)
+int CopyRegister(unsigned int source,unsigned int target)
 {
   unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
   if ( video_register[source].depth == 1 ) { image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]; } else
@@ -431,6 +431,7 @@ void CopyRegister(unsigned int source,unsigned int target)
   video_register[target].time=video_register[source].time;
   video_register[target].used=video_register[source].used;
 
+  return 1;
 }
 
 

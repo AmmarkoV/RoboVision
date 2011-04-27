@@ -13,6 +13,8 @@ struct DepthData{   // Declare PERSON struct type
         unsigned int score;
         unsigned short depth;
         unsigned short edge_count;
+        unsigned short movement_count;
+        unsigned short movement_difference;
         unsigned short x1_patch;
         unsigned short y1_patch;
         unsigned short x2_patch;
@@ -27,6 +29,8 @@ struct ImageRegion{
         unsigned int y1;
         unsigned int x2;
         unsigned int y2;
+		unsigned int width;
+        unsigned int height;
 		unsigned int full_x;
         unsigned int full_y;
 };
@@ -105,7 +109,7 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y);
 int CloseVisionMemory();
 
 void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y);
-void CopyRegister(unsigned int source,unsigned int target);
+int CopyRegister(unsigned int source,unsigned int target);
 
 void ConvertRegisterFrom3ByteTo1Byte(int in_reg,int image_x,int image_y);
 void ConvertRegisterFrom1ByteTo3Byte(int in_reg,int image_x,int image_y);
