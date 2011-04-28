@@ -221,14 +221,14 @@ void DefaultSettings()
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_OFFSET_UP]=2;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=2;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD]=30000;//18000; //16000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD]=50000;//18000; //16000;
     settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=settings[DEPTHMAP_COMPARISON_THRESHOLD]; // ;
     settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]=settings[DEPTHMAP_COMPARISON_THRESHOLD]; // ;
     settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
 
     settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT]=1; /* <- This actually should always be 1 :P */
     settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]=1; /* <- This actually should always be 1 :P */
-    settings[DEPTHMAP_CLOSEST_DEPTH]=100; // Praktika dedomena deixnoun oti synithws apotelesmata panw apo 100 einai thoryvos!
+    settings[DEPTHMAP_CLOSEST_DEPTH]=80; // Praktika dedomena deixnoun oti synithws apotelesmata panw apo 80 einai poly konta kai tha prepe na theorountai thoryvos!
     settings[DEPTHMAP_GUESSES]=0;
     settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM]=1;
     settings[DEPTHMAP_IMPROVE_FILLING_HOLES]=0;
@@ -240,7 +240,7 @@ void DefaultSettings()
     settings[PATCH_COMPARISON_SCORE_MIN]=35000;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=60;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=30;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=10;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=15;
     settings[PATCH_HIST_THRESHOLD_R]=12; settings[PATCH_HIST_THRESHOLD_G]=12; settings[PATCH_HIST_THRESHOLD_B]=12;
 
     settings[MOVEMENT_PATCH_SENSITIVITY]=7;

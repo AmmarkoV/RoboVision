@@ -99,7 +99,6 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 	register BYTE *sobel_px1,*sobel_px2;
 	register BYTE *image_px1,*image_px2;
 	register BYTE *stopx1;
-    register BYTE *r1,*g1,*b1,*r2,*g2,*b2;
 
     unsigned int source_start_memory_point=(unsigned int) precalc_memplace_3byte[source_block.x1][y+source_block.y1];
 	unsigned int target_start_memory_point=(unsigned int) precalc_memplace_3byte[target_block.x1][y+target_block.y1];
@@ -107,7 +106,6 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 
 	  image_px1= (BYTE *) left_view+source_start_memory_point;
 	  image_px2= (BYTE *) right_view+target_start_memory_point;
-
   	  sobel_px1= (BYTE *) left_sobel+source_start_memory_point;
       sobel_px2= (BYTE *) right_sobel+target_start_memory_point;
       //Pointers are ready ..!
@@ -136,11 +134,11 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 
 
 
-	    r1=image_px1++; g1=image_px1++; b1=image_px1++;
-		r2=image_px2++; g2=image_px2++; b2=image_px2++;
         // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-		pixel_score+= ( precalc_sub[*r1] [*r2]  ); pixel_score+= ( precalc_sub[*g1] [*g2]  ); pixel_score+= ( precalc_sub[*b1] [*b2]  );
-        // BIGER SCORE -> MORE PATCH DIFFERENCE  !
+		pixel_score+= ( precalc_sub[*image_px1] [*image_px2]  ); image_px1++; image_px2++;
+		pixel_score+= ( precalc_sub[*image_px1] [*image_px2]  ); image_px1++; image_px2++;
+		pixel_score+= ( precalc_sub[*image_px1] [*image_px2]  ); image_px1++; image_px2++;
+		// BIGER SCORE -> MORE PATCH DIFFERENCE  !
 
 
 
@@ -372,6 +370,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
 								 unsigned int depth_act;
 								 if ( x > xblock ) { depth_act=x-xblock; } else
 								                   { depth_act=xblock-x; }
+								                   depth_act=0;
 								// TEST/DOKIMASTIKO ALLA VGAZEI KALO APOTELESMA
 
                                 if (
