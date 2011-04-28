@@ -100,15 +100,17 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 	register BYTE *image_px1,*image_px2;
 	register BYTE *stopx1;
 
-    unsigned int source_start_memory_point=(unsigned int) precalc_memplace_3byte[source_block.x1][y+source_block.y1];
-	unsigned int target_start_memory_point=(unsigned int) precalc_memplace_3byte[target_block.x1][y+target_block.y1];
+    unsigned int source_start_memory_point_3byte=(unsigned int) precalc_memplace_3byte[source_block.x1][source_block.y1];
+	unsigned int target_start_memory_point_3byte=(unsigned int) precalc_memplace_3byte[target_block.x1][target_block.y1];
+	unsigned int source_start_memory_point_1byte=(unsigned int) precalc_memplace_1byte[source_block.x1][source_block.y1];
+	unsigned int target_start_memory_point_1byte=(unsigned int) precalc_memplace_1byte[target_block.x1][target_block.y1];
 	unsigned int incrementation_3byte_step = 3 * ( image_x-patch_x );
     unsigned int incrementation_1byte_step = 1 * ( image_x-patch_x );
 
-	  image_px1= (BYTE *) left_view+source_start_memory_point;
-	  image_px2= (BYTE *) right_view+target_start_memory_point;
-  	  sobel_px1= (BYTE *) left_sobel+source_start_memory_point;
-      sobel_px2= (BYTE *) right_sobel+target_start_memory_point;
+	  image_px1= (BYTE *) left_view+source_start_memory_point_3byte;
+	  image_px2= (BYTE *) right_view+target_start_memory_point_3byte;
+  	  sobel_px1= (BYTE *) left_sobel+source_start_memory_point_1byte;
+      sobel_px2= (BYTE *) right_sobel+target_start_memory_point_1byte;
       //Pointers are ready ..!
 
 	while (y<patch_y)
@@ -274,7 +276,6 @@ void DepthMapFull  ( unsigned int left_view_reg,
         // CompressPresenceRegister(EDGES_LEFT,GENERAL_XLARGE_1,5);
         // I dont like the following , I should really change the sobel function to give a one byte response..!
         CopyRegister(EDGES_LEFT,GENERAL_3);
-        ConvertRegisterFrom3ByteTo1Byte(GENERAL_3,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
         PixelsOverThresholdSetAsOne(GENERAL_3,1);
         CompressRegister(GENERAL_3,GENERAL_XLARGE_1);
         CompressRegister(MOVEMENT_LEFT,MOVEMENT_GROUPED_LEFT);
@@ -368,7 +369,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
                                                        video_register[EDGES_LEFT].pixels , video_register[EDGES_RIGHT].pixels ,
                                                        movement_difference ,
                                                        metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER],
-                                                       image_x , image_y , best_match.score);
+                                                       image_x , image_y ,
+                                                       best_match.score);
 
 								// TEST/DOKIMASTIKO DEPTH GIA TEST CULLING
 								// H IDEA EINAI OTI ANTIKEIMENA POU EINAI PAAAAAAARA POLY KONTA EINIA MALLON ERRORS

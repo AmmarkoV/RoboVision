@@ -222,7 +222,7 @@ void DefaultSettings()
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_OFFSET_UP]=2;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=2;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD]=40000;//18000; //16000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD]=18000;//18000; //16000;
     SetThresholdsForAllPatchSizes();
     settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
 
@@ -270,11 +270,11 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[CHANGES_LEFT]=0;
     metrics[CHANGES_RIGHT]=0;
     metrics[VERTICAL_BUFFER]=30; //30
-    metrics[HORIZONTAL_BUFFER]=20; //20
-    metrics[VERTICAL_BUFFER_LARGE]=60; //75
-    metrics[HORIZONTAL_BUFFER_LARGE]=40; //50
-    metrics[VERTICAL_BUFFER_EXTRALARGE]=120; // 188
-    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=80; //125
+    metrics[HORIZONTAL_BUFFER]=15; //20
+    metrics[VERTICAL_BUFFER_LARGE]=30; //75
+    metrics[HORIZONTAL_BUFFER_LARGE]=20; //50
+    metrics[VERTICAL_BUFFER_EXTRALARGE]=60; // 188
+    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=40; //125
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
 
     DefaultSettings(); //Settings must be set after metrics because they take them into account
