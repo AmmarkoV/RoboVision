@@ -66,7 +66,16 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
                                    unsigned int best_result_yet
                                   )
 {
+
     unsigned int score_threshold = settings[DEPTHMAP_COMPARISON_THRESHOLD];
+
+    	//Kovoume ta source ektos eikonas
+	if (source_block.x1+patch_x>=image_x) { return score_threshold+1; }
+    if (source_block.y1+patch_y>=image_y) { return score_threshold+1; }
+	if (target_block.x1+patch_x>=image_x) { return score_threshold+1; }
+    if (target_block.y1+patch_y>=image_y) { return score_threshold+1; }
+
+
     if (settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT])
        { /*In case we dont care for a full count of the total Comparison the threshold is the best result yet :)
            (The only reason we would like a full count is for improving this filter via statistics)*/
@@ -81,89 +90,62 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
           } //If histograms greatly different fail the test immediately ++SPEED ++ACCURACY
 
 
-    unsigned long total_score=0,pixel_score=0;
+
+    unsigned int total_score=0,pixel_score=0;
 	unsigned int sobel_diffr=0;
-	register unsigned int y=0,control;
-	char sobeled=0,sobel_mismatch=0;
-
-
-	//Kovoume ta source ektos eikonas
-	if (source_block.x1+patch_x>image_x) { patch_x=image_x-source_block.x1; }
-    if (source_block.y1+patch_y>image_y) { patch_y=image_y-source_block.y1; }
-	if (target_block.x1+patch_x>image_x) { patch_x=image_x-target_block.x1; }
-    if (target_block.y1+patch_y>image_y) { patch_y=image_y-target_block.y1; }
-
+	register unsigned int y=0;
+	char sobel_mismatch=0;
 
 	register BYTE *sobel_px1,*sobel_px2;
 	register BYTE *image_px1,*image_px2;
-	register BYTE *stopx1,*stopx2;
+	register BYTE *stopx1;
     register BYTE *r1,*g1,*b1,*r2,*g2,*b2;
 
     unsigned int source_start_memory_point=(unsigned int) precalc_memplace_3byte[source_block.x1][y+source_block.y1];
 	unsigned int target_start_memory_point=(unsigned int) precalc_memplace_3byte[target_block.x1][y+target_block.y1];
-	unsigned int incrementation_source = 3 * ( image_x );
-    unsigned int incrementation_target = 3 * ( image_x );
-
-
-
-	while (y<patch_y)
-	{
-      //Prepare the pointers of the left/right patch image and the left/right patch sobel
-	  source_start_memory_point+=incrementation_source;
-      target_start_memory_point+=incrementation_target;
+	unsigned int incrementation_3byte_step = 3 * ( image_x-patch_x );
 
 	  image_px1= (BYTE *) left_view+source_start_memory_point;
-	  stopx1=image_px1+patch_x;
-
 	  image_px2= (BYTE *) right_view+target_start_memory_point;
-      stopx2=image_px2+patch_y;
 
   	  sobel_px1= (BYTE *) left_sobel+source_start_memory_point;
       sobel_px2= (BYTE *) right_sobel+target_start_memory_point;
       //Pointers are ready ..!
 
-	  sobeled=0;
+	while (y<patch_y)
+	{
+      //Prepare the pointers of the left/right patch image and the left/right patch sobel
+      image_px1+=incrementation_3byte_step;
+      image_px2+=incrementation_3byte_step;
+      sobel_px1+=incrementation_3byte_step;
+      sobel_px2+=incrementation_3byte_step;
+
+      stopx1=image_px1+patch_x;
+
 	  sobel_mismatch=0;
       while (image_px1<stopx1)
 	  {
-
 		pixel_score=0; // This pixel initially has no score..
+
+		// BIGER SCORE -> MORE PATCH DIFFERENCE  !
 		sobel_diffr=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the sobel difference value
+        if ( sobel_diffr > 30 ) { sobel_mismatch=1; }
+        // BIGER SCORE -> MORE PATCH DIFFERENCE  !
+        sobel_px1+=3; sobel_px2+=3;
         pixel_score=sobel_diffr;
 
-		if ( sobel_diffr > 20 ) { sobel_mismatch=1; }
-
-	    if ( (sobel_diffr < 40) &&
-             (*sobel_px1>30) &&
-             (*sobel_px2>30)
-           ) { sobeled=1; }
-
-        sobel_px1+=3; sobel_px2+=3;
 
 
 	    r1=image_px1++; g1=image_px1++; b1=image_px1++;
 		r2=image_px2++; g2=image_px2++; b2=image_px2++;
-
-		// OSO PIO MEGALO TO SCORE TOSO PIO ANOMOIA TA PATCHES!
+        // BIGER SCORE -> MORE PATCH DIFFERENCE  !
 		pixel_score+= ( precalc_sub[*r1] [*r2]  ); pixel_score+= ( precalc_sub[*g1] [*g2]  ); pixel_score+= ( precalc_sub[*b1] [*b2]  );
+        // BIGER SCORE -> MORE PATCH DIFFERENCE  !
+
 
 
 		if ( sobel_mismatch == 1 )
-            { pixel_score = (pixel_score+sobel_diffr) << 2; } // *8 Multiply score ( because the sobel edges are mismatched
-		   else
-            { pixel_score+= sobel_diffr; }
-
-		if ( sobeled == 1)
-		               {
-                         control=pixel_score; //Overflow control
-			             pixel_score=pixel_score >> 1; // dia 2
-						 if (control<pixel_score) { pixel_score=0; fprintf(stderr,"PatchComparison Overflow :S\n"); }
-		               }
-
-        if ( settings[DEPTHMAP_IMPROVE_USING_MOVEMENT] )
-                        {
-                           //TODO ADD HERE MOVEMENT SCORE
-                        }
+            { pixel_score = pixel_score << 2; } // *8 Multiply score ( because the sobel edges are mismatched
 
 		total_score+=pixel_score;
         if ( score_threshold<total_score )
@@ -173,10 +155,25 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
           }
 
 	  }
+
+
 	  ++y;
 	}
 
-   if ( movement_difference > 150 ) { movement_difference<< 3; total_score+=movement_difference; }
+/* SHOULD BE ADDED ON SPEED CUT TO
+	  if ( settings[DEPTHMAP_IMPROVE_USING_MOVEMENT] )
+                        {
+                           //TODO ADD HERE MOVEMENT SCORE
+                           if ( movement_difference > 150 ) { movement_difference<<3; total_score+=movement_difference; }
+                       }*/
+
+
+  if ( total_score < 100 )
+    {
+        fprintf(stderr,"PATCH %u,%u -> %u,%u yields %u (patch size %ux%u) \n",source_block.x1,source_block.y1,target_block.x1,target_block.y1,total_score,patch_x,patch_y);
+        fprintf(stderr,"Source Start memory point %u Target Start memory point %u \n",precalc_memplace_3byte[source_block.x1][y+source_block.y1],precalc_memplace_3byte[target_block.x1][y+target_block.y1]);
+    }
+
 
  return total_score;
 }
@@ -377,7 +374,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
 								                   { depth_act=xblock-x; }
 								// TEST/DOKIMASTIKO ALLA VGAZEI KALO APOTELESMA
 
-                                if (     (prox<best_match.score) // kanoume qualify san kalytero apotelesma
+                                if (
+                                         (prox<best_match.score) // kanoume qualify san kalytero apotelesma
                                       && (prox<max_prox_score) // to threshold mas
 									  && (depth_act<settings[DEPTHMAP_CLOSEST_DEPTH])  // TEST -> Praktika dedomena deixnoun oti synithws apotelesmata panw apo 100 einai thoryvos!
 								    )

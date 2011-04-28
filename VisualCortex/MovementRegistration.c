@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "IntegralImageConversion.h"
 
 
+
 unsigned int GetMovementAtBlock(unsigned int movement,struct ImageRegion * source_rgn)
 {
    return GetCompressedRegisterPatchSum1Byte( movement, source_rgn->x1 , source_rgn->y1 , source_rgn->width , source_rgn->height );

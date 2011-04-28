@@ -31,7 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 
-char * VISCORTEX_VER = "0.56";
+char * VISCORTEX_VER = "0.57";
 
 
 char *  VisCortx_Version()
@@ -275,7 +275,6 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
 
 
 }
-
 
   /*
     CALCULATION OF NORMAL PATCHES FOLLOWS

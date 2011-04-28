@@ -21,5 +21,10 @@ cd VideoInputTester
 ./make
 cd ..
 
+echo "Compiling GUI Tester.."
+cd VideoInputGUITester
+./make
+cd ..
+
 echo "Done.."
 exit 0

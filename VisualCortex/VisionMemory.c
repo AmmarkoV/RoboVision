@@ -272,10 +272,10 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[CHANGES_RIGHT]=0;
     metrics[VERTICAL_BUFFER]=30; //30
     metrics[HORIZONTAL_BUFFER]=20; //20
-    metrics[VERTICAL_BUFFER_LARGE]=75; //75
-    metrics[HORIZONTAL_BUFFER_LARGE]=50; //50
-    metrics[VERTICAL_BUFFER_EXTRALARGE]=188; // 188
-    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=125; //125
+    metrics[VERTICAL_BUFFER_LARGE]=60; //75
+    metrics[HORIZONTAL_BUFFER_LARGE]=40; //50
+    metrics[VERTICAL_BUFFER_EXTRALARGE]=120; // 188
+    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=80; //125
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
 
    fprintf(stderr,"Initializing %u  Video Registers\n",REGISTERS_COUNT+LARGE_REGISTERS_COUNT);
