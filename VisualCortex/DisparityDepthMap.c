@@ -103,6 +103,7 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
     unsigned int source_start_memory_point=(unsigned int) precalc_memplace_3byte[source_block.x1][y+source_block.y1];
 	unsigned int target_start_memory_point=(unsigned int) precalc_memplace_3byte[target_block.x1][y+target_block.y1];
 	unsigned int incrementation_3byte_step = 3 * ( image_x-patch_x );
+    unsigned int incrementation_1byte_step = 1 * ( image_x-patch_x );
 
 	  image_px1= (BYTE *) left_view+source_start_memory_point;
 	  image_px2= (BYTE *) right_view+target_start_memory_point;
@@ -115,8 +116,8 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
       //Prepare the pointers of the left/right patch image and the left/right patch sobel
       image_px1+=incrementation_3byte_step;
       image_px2+=incrementation_3byte_step;
-      sobel_px1+=incrementation_3byte_step;
-      sobel_px2+=incrementation_3byte_step;
+      sobel_px1+=incrementation_1byte_step;
+      sobel_px2+=incrementation_1byte_step;
 
       stopx1=image_px1+patch_x;
 
@@ -127,17 +128,20 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 
 		// BIGER SCORE -> MORE PATCH DIFFERENCE  !
 		sobel_diffr=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the sobel difference value
-        if ( sobel_diffr > 30 ) { sobel_mismatch=1; }
+        if ( sobel_diffr > 20 ) { sobel_mismatch=1; }
         // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-        sobel_px1+=3; sobel_px2+=3;
+        ++sobel_px1; ++sobel_px2;
         pixel_score=sobel_diffr;
 
 
 
         // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-		pixel_score+= ( precalc_sub[*image_px1] [*image_px2]  ); image_px1++; image_px2++;
-		pixel_score+= ( precalc_sub[*image_px1] [*image_px2]  ); image_px1++; image_px2++;
-		pixel_score+= ( precalc_sub[*image_px1] [*image_px2]  ); image_px1++; image_px2++;
+		pixel_score+= ( precalc_sub[*image_px1] [*image_px2]  );
+		image_px1++; image_px2++;
+		pixel_score+= ( precalc_sub[*image_px1] [*image_px2]  );
+		image_px1++; image_px2++;
+		pixel_score+= ( precalc_sub[*image_px1] [*image_px2]  );
+		image_px1++; image_px2++;
 		// BIGER SCORE -> MORE PATCH DIFFERENCE  !
 
 
@@ -146,11 +150,12 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
             { pixel_score = pixel_score << 2; } // *8 Multiply score ( because the sobel edges are mismatched
 
 		total_score+=pixel_score;
+		/*
         if ( score_threshold<total_score )
           {
              ++metrics[COMPAREPATCH_ALGORITHM_DENIES];
              return total_score; // SPEED CUT :) ++PERFOMANCE  --DEBUGGING :P
-          }
+          }*/
 
 	  }
 
@@ -260,8 +265,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
        GenerateCompressHistogramOfImage(video_register[RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
    }
 
-    PrepareCleanSobeledGaussian(video_register[LEFT_EYE].pixels,video_register[EDGES_LEFT].pixels,settings[DEPTHMAP_EDGE_STRICTNESS]);
-    PrepareCleanSobeledGaussian(video_register[RIGHT_EYE].pixels,video_register[EDGES_RIGHT].pixels,settings[DEPTHMAP_EDGE_STRICTNESS]);
+    PrepareCleanSobeledGaussian(LEFT_EYE,EDGES_LEFT,settings[DEPTHMAP_EDGE_STRICTNESS]);
+    PrepareCleanSobeledGaussian(RIGHT_EYE,EDGES_RIGHT,settings[DEPTHMAP_EDGE_STRICTNESS]);
 
     if ( clear_depth_arrays == 1 )
      {
@@ -370,7 +375,6 @@ void DepthMapFull  ( unsigned int left_view_reg,
 								 unsigned int depth_act;
 								 if ( x > xblock ) { depth_act=x-xblock; } else
 								                   { depth_act=xblock-x; }
-								                   depth_act=0;
 								// TEST/DOKIMASTIKO ALLA VGAZEI KALO APOTELESMA
 
                                 if (

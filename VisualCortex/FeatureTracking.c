@@ -3,6 +3,24 @@
 #include "MovementRegistration.h"
 #include "VisCortexFilters.h"
 
+
+/*
+
+
+
+
+
+                THIS WILL HAVE TO BE REWRITTEN
+
+
+
+
+
+*/
+
+
+
+
 // MEMORY
 unsigned int total_track_points=0;
 struct TrackPoint track_mem[MAX_TRACK_MEM]={{0},{0},{0},{0},{0},{0},{0},{0},{0},{0},{0}};

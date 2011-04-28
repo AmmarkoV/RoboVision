@@ -114,10 +114,28 @@ unsigned int SelfCheckEverything()
    return 0;
 }
 
+
+
+void SetThresholdsForAllPatchSizes()
+{
+            unsigned int threshold=settings[DEPTHMAP_COMPARISON_THRESHOLD];
+            settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=  (unsigned int) ( (threshold * metrics[VERTICAL_BUFFER_LARGE] * metrics[HORIZONTAL_BUFFER_LARGE] ) / (metrics[HORIZONTAL_BUFFER]*metrics[VERTICAL_BUFFER]) );
+            settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]=  (unsigned int) ( (threshold * metrics[VERTICAL_BUFFER_EXTRALARGE] * metrics[HORIZONTAL_BUFFER_EXTRALARGE] ) / (metrics[HORIZONTAL_BUFFER]*metrics[VERTICAL_BUFFER]) );
+            fprintf(stderr,"Also adjusting settings for large and extra large patches to %u and %u \n",settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH],settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]);
+
+}
+
+
 void SetSetting(unsigned int set_num,unsigned int set_val)
 {
     if (set_num>=SETTINGS_COUNT) {return;}
+
     settings[set_num]=set_val;
+
+
+    if ( set_num == DEPTHMAP_COMPARISON_THRESHOLD )
+        { SetThresholdsForAllPatchSizes();  }
+
 }
 
 void SetDefaultSettings()

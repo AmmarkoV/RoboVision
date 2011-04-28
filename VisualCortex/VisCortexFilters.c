@@ -194,8 +194,11 @@ void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned 
 }
 
 
-void KillPixelsBelow(unsigned char * image,int image_x,int image_y,int threshold)
-{ if (image==0) {return;}
+void KillPixelsBelow(unsigned int image_reg,int image_x,int image_y,int threshold)
+{
+ unsigned char * image = video_register[image_reg].pixels;
+ if (image==0) {return;}
+ unsigned int image_depth = video_register[image_reg].depth;
 
  register BYTE *start_px = (BYTE *) image;
  register BYTE *px = (BYTE *) image;
@@ -204,8 +207,10 @@ void KillPixelsBelow(unsigned char * image,int image_x,int image_y,int threshold
  register BYTE *b;
  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
 
- while ( px < start_px + image_size )
-  {
+ if ( image_depth == 3 )
+ {
+   while ( px < start_px + image_size )
+     {
        r = px++;
        g = px++;
        b = px++;
@@ -214,39 +219,62 @@ void KillPixelsBelow(unsigned char * image,int image_x,int image_y,int threshold
        if (*r<threshold) { *r=0; }
        if (*g<threshold) { *g=0; }
        if (*b<threshold) { *b=0; }
+    }
+  }
+   else
+  if ( image_depth == 1 )
+ {
+   image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
+   while (px<start_px+image_size)
+   {
+	  if  ( *px<threshold) { *px=0; }
+	  px++;
+   }
   }
 
  return;
 }
 
 
-void Kill3PixelsBelow(unsigned char * image,int image_x,int image_y,int threshold)
+void Kill3PixelsBelow(unsigned int image_reg,int image_x,int image_y,int threshold)
 // LIKE KILLPIXELSBELOW , BUT WHENEVER EITHER A R , G or B PIXEL IS FOUND UNDER THRESHOLD IT WILL WIPE OUT ALL OF THE COLOR CHANNELS
 // IN THE PIXEL!
-{ if (image==0) {return;}
+{
+ unsigned char * image = video_register[image_reg].pixels;
+ if (image==0) {return;}
+ unsigned int image_depth = video_register[image_reg].depth;
+
+if ( image_depth == 1 )
+ {
+     KillPixelsBelow(image_reg,image_x,image_y,threshold);
+     return;
+ }
+
 
  register BYTE * px;
  register BYTE * endx;
  register BYTE *r; register BYTE *g; register BYTE *b;
 
- px =  (BYTE *)  image;
- endx = ( (BYTE *)    image + (image_x * (image_y-1) *3 ) + (3*(image_x-1)) );
-
- while (px<endx)
- {
+  px =  (BYTE *)  image;
+  endx = ( (BYTE *)    image + (image_x * (image_y-1) *3 ) + (3*(image_x-1)) );
+  while (px<endx)
+  {
 	  r = px++;
       g = px++;
       b = px++;
 	  if  ( (*r<threshold) || (*g<threshold) || (*b<threshold) ) { *r=0; *g=0; *b=0; }
- }
+  }
+
 
  return;
 }
 
 
-void ReducePalette(unsigned char * image,int image_x,int image_y,int new_palette)
-{ if (image==0) {return;}
-
+void ReducePalette(unsigned int image_reg,int image_x,int image_y,int new_palette)
+{
+ if (!ThisIsA3ByteRegister(image_reg)) { return; }
+ unsigned char * image = video_register[image_reg].pixels;
+ if (image==0) {return;}
  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
  register BYTE *start_px = ( BYTE * ) image;
  register BYTE *px = ( BYTE * ) image;
@@ -271,9 +299,11 @@ void ReducePalette(unsigned char * image,int image_x,int image_y,int new_palette
 
 
 
-BOOLEAN  Sobel(unsigned char * image,int image_x,int image_y)
+BOOLEAN  Sobel(unsigned int image_reg,int image_x,int image_y)
 {
-
+  if (!ThisIsA3ByteRegister(image_reg)) { return 0; }
+  unsigned char * image = video_register[image_reg].pixels;
+  video_register[image_reg].depth=1;
   unsigned int x=0,y=0;
   unsigned int x1=1,y1=1,x2=image_x,y2=image_y;
 
@@ -285,10 +315,6 @@ BOOLEAN  Sobel(unsigned char * image,int image_x,int image_y)
   proc_image = ( unsigned char * ) malloc ( sizeof(unsigned char) * image_x * image_y * 3 );
 
   BYTE *px;
-
-  BYTE *r;
-  BYTE *g;
-  BYTE *b;
 
  BYTE p1=0,p2=0,p3=0,p4=0,p5=0,p6=0,p7=0,p8=0,p9=0;
 
@@ -339,20 +365,14 @@ BOOLEAN  Sobel(unsigned char * image,int image_x,int image_y)
 
 
 
-		px = (BYTE *)  proc_image + precalc_memplace_3byte[x][y];
+		px = (BYTE *)  proc_image + precalc_memplace_1byte[x][y];
         //px = ((BYTE *)  proc_image + (effW * y ) + (3*x) );
-        r= px++;
-        g = px++;
-        b = px;
-
-	   *r=  (BYTE) sum ;
-       *g=*r;
-	   *b=*r;
+	    *px=  (BYTE) sum ;
    }
  } //SOBEL FILTER DONE
 
 
-memcpy(image,proc_image,image_x*image_y*3*sizeof(BYTE));
+memcpy(image,proc_image,image_x*image_y*sizeof(BYTE));
 
 
 free(proc_image);
@@ -361,9 +381,12 @@ return (1);
 }
 
 
-BOOLEAN SobelFromSource(unsigned char * source,unsigned char * target,int image_x,int image_y)
+BOOLEAN SobelFromSource(unsigned int source_reg,unsigned int target_reg,int image_x,int image_y)
 {
-
+  if (!ThisIsA3ByteRegister(source_reg)) { return 0; }
+  unsigned char * source = video_register[source_reg].pixels;
+  unsigned char * target = video_register[target_reg].pixels;
+  video_register[target_reg].depth=1;
   unsigned int x=0,y=0;
   unsigned int x1=1,y1=1,x2=image_x,y2=image_y;
 
@@ -374,10 +397,6 @@ BOOLEAN SobelFromSource(unsigned char * source,unsigned char * target,int image_
   //proc_image = new unsigned char [ image_x * image_y * 3 ];
 
   BYTE *px;
-
-  BYTE *r;
-  BYTE *g;
-  BYTE *b;
 
  BYTE p1=0,p2=0,p3=0,p4=0,p5=0,p6=0,p7=0,p8=0,p9=0;
 
@@ -428,34 +447,25 @@ BOOLEAN SobelFromSource(unsigned char * source,unsigned char * target,int image_
 
 
 
-		px = (BYTE *)  target + precalc_memplace_3byte[x][y];
+		px = (BYTE *)  target + precalc_memplace_1byte[x][y];
         //px = ((BYTE *)  proc_image + (effW * y ) + (3*x) );
-        r= px++;
-        g = px++;
-        b = px;
-
-	   *r=  (BYTE) sum ;
-       *g=*r;
-	   *b=*r;
+	    *px=  (BYTE) sum ;
    }
  } //SOBEL FILTER DONE
 
-
-//memcpy(image,proc_image,image_x*image_y*3*sizeof(BYTE));
-//delete[] proc_image;
 
 return (1);
 }
 
 
 
-BOOLEAN SobelNDegreeDerivative(int n,unsigned char * source,unsigned char * target,int image_x,int image_y)
+BOOLEAN SobelNDegreeDerivative(int n,unsigned int source_reg,unsigned int target_reg,int image_x,int image_y)
 {
-    SobelFromSource(source,target,image_x,image_y);
+    SobelFromSource(source_reg,target_reg,image_x,image_y);
     int i=1;
     while ( i < n )
      {
-         Sobel(target,image_x,image_y);
+         Sobel(target_reg,image_x,image_y);
          ++i;
      }
     return 1;
@@ -463,9 +473,13 @@ BOOLEAN SobelNDegreeDerivative(int n,unsigned char * source,unsigned char * targ
 
 
 
-BOOLEAN GaussianBlurFromSource(unsigned char * source,unsigned char * target,int image_x,int image_y,BOOLEAN monochrome)
+BOOLEAN GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int image_x,int image_y,BOOLEAN monochrome)
 {
   //return 1;
+
+  unsigned char * source = video_register[source_reg].pixels;
+  unsigned char * target = video_register[target_reg].pixels;
+  video_register[target_reg].depth = 3;
   int effW = (image_x*3);
 
   if ( (target==0) || (source==0) ) {return(0);}
@@ -576,9 +590,9 @@ BOOLEAN GaussianBlurFromSource(unsigned char * source,unsigned char * target,int
  return (1);
 }
 
-BOOLEAN GaussianBlur(unsigned char * image,int image_x,int image_y,BOOLEAN monochrome)
+BOOLEAN GaussianBlur(unsigned int image_reg,int image_x,int image_y,BOOLEAN monochrome)
 {
-  return GaussianBlurFromSource(image,image,image_x,image_y,monochrome);
+  return GaussianBlurFromSource(image_reg,image_reg,image_x,image_y,monochrome);
 }
 
 unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_array,unsigned int point_x,unsigned int point_y,unsigned int size_x,unsigned int size_y,unsigned char size_rgb)
@@ -589,19 +603,19 @@ unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_arr
 
 	x=point_x;
 	for ( y=point_y-1; point_y>=0; y--)
-	   { ptr_x=( (y) * size_x * size_rgb )+( x * size_rgb );
-
+	   {
+	       ptr_x=( (y) * size_x * size_rgb )+( x * size_rgb );
 	   }
   return 0;
 }
 
 
 
-void PrepareCleanSobeledGaussian(unsigned char * rgb_image,unsigned char * target_image,unsigned int kill_lower_edges_threshold)
+void PrepareCleanSobeledGaussian(unsigned int rgb_image_reg,unsigned int target_image_reg,unsigned int kill_lower_edges_threshold)
 {
-    GaussianBlurFromSource(rgb_image,target_image,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],1);
-	Sobel(target_image,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-	Kill3PixelsBelow(target_image,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],kill_lower_edges_threshold);
+    GaussianBlurFromSource(rgb_image_reg,target_image_reg,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],1);
+	Sobel(target_image_reg,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+	KillPixelsBelow(target_image_reg,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],kill_lower_edges_threshold);
 }
 
 

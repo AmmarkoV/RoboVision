@@ -8,6 +8,7 @@ unsigned int SetCamerasGeometry(float distance_between_cameras,float diagonal_fi
 unsigned int InitializeEverything(unsigned int res_x,unsigned int res_y);
 unsigned int CloseEverything();
 unsigned int SelfCheckEverything();
+void SetThresholdsForAllPatchSizes();
 void SetSetting(unsigned int set_num,unsigned int set_val);
 void SetDefaultSettings();
 unsigned int GetSetting(unsigned int get_num);

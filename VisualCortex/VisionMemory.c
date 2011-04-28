@@ -19,6 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "VisionMemory.h"
 #include "Precalculations.h"
 #include "VisCortexFilters.h"
+#include "StateSetting.h"
 
 #define PPMREADBUFLEN 256
 unsigned int TIME_INC=0;
@@ -221,9 +222,8 @@ void DefaultSettings()
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_OFFSET_UP]=2;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=2;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD]=50000;//18000; //16000;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=settings[DEPTHMAP_COMPARISON_THRESHOLD]; // ;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]=settings[DEPTHMAP_COMPARISON_THRESHOLD]; // ;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD]=40000;//18000; //16000;
+    SetThresholdsForAllPatchSizes();
     settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
 
     settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT]=1; /* <- This actually should always be 1 :P */
@@ -259,7 +259,6 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
      }
 
     COLD_START=0;
-    DefaultSettings();
 
     //INITIALIZE ALL IMAGE METRICS
     metrics[RESOLUTION_X]=res_x;
@@ -277,6 +276,8 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[VERTICAL_BUFFER_EXTRALARGE]=120; // 188
     metrics[HORIZONTAL_BUFFER_EXTRALARGE]=80; //125
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
+
+    DefaultSettings(); //Settings must be set after metrics because they take them into account
 
    fprintf(stderr,"Initializing %u  Video Registers\n",REGISTERS_COUNT+LARGE_REGISTERS_COUNT);
 
@@ -501,7 +502,16 @@ void ConvertRegisterFrom1ByteTo3Byte(int in_reg,int image_x,int image_y)
 }
 
 
+int ThisIsA3ByteRegister(int reg)
+{
+    if ( video_register[reg].depth == 3 )
+     {
+         return 1;
+     }
 
+     fprintf(stderr,"3byte register check failed\n");
+     return 0;
+}
 
 
 
