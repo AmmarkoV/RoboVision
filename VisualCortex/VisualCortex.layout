@@ -5,7 +5,7 @@
 		<Cursor position="6159" topLine="129" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
-		<Cursor position="874" topLine="0" />
+		<Cursor position="674" topLine="0" />
 	</File>
 	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
 		<Cursor position="1176" topLine="33" />
@@ -67,7 +67,7 @@
 	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="23">
 		<Cursor position="293" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
+	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
 		<Cursor position="11887" topLine="253" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">

@@ -3,7 +3,6 @@
 #include <string.h>
 #include <assert.h>
 
-#include <linux/videodev.h>
 #include <linux/videodev2.h>
 /*
 void print(struct v4l2_capability cap);
