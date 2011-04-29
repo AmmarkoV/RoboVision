@@ -222,7 +222,7 @@ void DefaultSettings()
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_OFFSET_UP]=2;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=2;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD]=18000;//18000; //16000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD]=35000;//18000; //16000;
     SetThresholdsForAllPatchSizes();
     settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
 
@@ -238,9 +238,9 @@ void DefaultSettings()
 
     settings[PATCH_COMPARISON_LEVELS]=3; /* It will use 3 different size block levels for comparison */
     settings[PATCH_COMPARISON_SCORE_MIN]=35000;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=60;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=30;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=15;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=50;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=40;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=20;
     settings[PATCH_HIST_THRESHOLD_R]=12; settings[PATCH_HIST_THRESHOLD_G]=12; settings[PATCH_HIST_THRESHOLD_B]=12;
 
     settings[MOVEMENT_PATCH_SENSITIVITY]=7;
@@ -271,10 +271,10 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[CHANGES_RIGHT]=0;
     metrics[VERTICAL_BUFFER]=30; //30
     metrics[HORIZONTAL_BUFFER]=15; //20
-    metrics[VERTICAL_BUFFER_LARGE]=30; //75
+    metrics[VERTICAL_BUFFER_LARGE]=75; //75
     metrics[HORIZONTAL_BUFFER_LARGE]=20; //50
-    metrics[VERTICAL_BUFFER_EXTRALARGE]=60; // 188
-    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=40; //125
+    metrics[VERTICAL_BUFFER_EXTRALARGE]=188; // 188
+    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=125; //125
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
 
     DefaultSettings(); //Settings must be set after metrics because they take them into account

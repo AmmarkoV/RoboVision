@@ -18,6 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "DisparityDepthMap.h"
+#include "DisparityDepthMap_Heuristics.h"
 #include "VisCortexFilters.h"
 #include "IntegralImageConversion.h"
 #include "MovementRegistration.h"
@@ -52,15 +53,16 @@ inline int ComparePatchesUsingHistogram(int hist_reg_left,int hist_reg_right,uns
 
 
 
-unsigned int inline ComparePatches(struct ImageRegion source_block,
-                                   struct ImageRegion target_block,
-                                   unsigned char *left_view,
-                                   unsigned char *right_view,
-                                   unsigned char *left_sobel,
-                                   unsigned char *right_sobel,
-                                   unsigned int movement_difference,
-                                   unsigned int patch_x,
-                                   unsigned int patch_y,
+unsigned int inline ComparePatches(struct ImageRegion * source_block,
+                                   struct ImageRegion * target_block,
+                                   unsigned char *rgb1,
+                                   unsigned char *rgb2,
+                                   unsigned char *sobel1,
+                                   unsigned char *sobel2,
+                                   unsigned char *movement1,
+                                   unsigned char *movement2,
+                                   unsigned int width,
+                                   unsigned int height,
                                    unsigned int image_x,
                                    unsigned int image_y,
                                    unsigned int best_result_yet
@@ -68,12 +70,12 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
 {
 
     unsigned int score_threshold = settings[DEPTHMAP_COMPARISON_THRESHOLD];
-
+    unsigned int failing_score = score_threshold+1;
     	//Kovoume ta source ektos eikonas
-	if (source_block.x1+patch_x>=image_x) { return score_threshold+1; }
-    if (source_block.y1+patch_y>=image_y) { return score_threshold+1; }
-	if (target_block.x1+patch_x>=image_x) { return score_threshold+1; }
-    if (target_block.y1+patch_y>=image_y) { return score_threshold+1; }
+	if (source_block->x1+width>=image_x)  { return failing_score; }
+    if (source_block->y1+height>=image_y) { return failing_score; }
+	if (target_block->x1+width>=image_x)  { return failing_score; }
+    if (target_block->y1+height>=image_y) { return failing_score; }
 
 
     if (settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT])
@@ -83,102 +85,113 @@ unsigned int inline ComparePatches(struct ImageRegion source_block,
        }
 
 
-    if (ComparePatchesUsingHistogram(HISTOGRAM_COMPRESSED_LEFT,HISTOGRAM_COMPRESSED_RIGHT,&source_block.x1,&source_block.y1,&target_block.x1,&target_block.y1))
+    if (ComparePatchesUsingHistogram(HISTOGRAM_COMPRESSED_LEFT,HISTOGRAM_COMPRESSED_RIGHT,&source_block->x1,&source_block->y1,&target_block->x1,&target_block->y1))
           {
             ++metrics[HISTOGRAM_DENIES];
-            return score_threshold+1;
+            return failing_score;
           } //If histograms greatly different fail the test immediately ++SPEED ++ACCURACY
 
 
 
-    unsigned int total_score=0,pixel_score=0;
-	unsigned int sobel_diffr=0;
+    unsigned int total_score=0,rgb_score=0,move_score=0,sobel_score=0;
 	register unsigned int y=0;
-	char sobel_mismatch=0;
+	char sobel_mismatch=0,move_mismatch=0;
 
 	register BYTE *sobel_px1,*sobel_px2;
 	register BYTE *image_px1,*image_px2;
+	register BYTE *move_px1, *move_px2;
 	register BYTE *stopx1;
 
-    unsigned int source_start_memory_point_3byte=(unsigned int) precalc_memplace_3byte[source_block.x1][source_block.y1];
-	unsigned int target_start_memory_point_3byte=(unsigned int) precalc_memplace_3byte[target_block.x1][target_block.y1];
-	unsigned int source_start_memory_point_1byte=(unsigned int) precalc_memplace_1byte[source_block.x1][source_block.y1];
-	unsigned int target_start_memory_point_1byte=(unsigned int) precalc_memplace_1byte[target_block.x1][target_block.y1];
-	unsigned int incrementation_3byte_step = 3 * ( image_x-patch_x );
-    unsigned int incrementation_1byte_step = 1 * ( image_x-patch_x );
+    unsigned int source_start_memory_point_3byte=(unsigned int) precalc_memplace_3byte[source_block->x1][source_block->y1];
+	unsigned int target_start_memory_point_3byte=(unsigned int) precalc_memplace_3byte[target_block->x1][target_block->y1];
+	unsigned int source_start_memory_point_1byte=(unsigned int) precalc_memplace_1byte[source_block->x1][source_block->y1];
+	unsigned int target_start_memory_point_1byte=(unsigned int) precalc_memplace_1byte[target_block->x1][target_block->y1];
+	unsigned int incrementation_3byte_step = 3 * ( image_x-width );
+    unsigned int incrementation_1byte_step = 1 * ( image_x-width );
 
-	  image_px1= (BYTE *) left_view+source_start_memory_point_3byte;
-	  image_px2= (BYTE *) right_view+target_start_memory_point_3byte;
-  	  sobel_px1= (BYTE *) left_sobel+source_start_memory_point_1byte;
-      sobel_px2= (BYTE *) right_sobel+target_start_memory_point_1byte;
+	  image_px1= (BYTE *) rgb1+source_start_memory_point_3byte;
+	  image_px2= (BYTE *) rgb2+target_start_memory_point_3byte;
+  	  sobel_px1= (BYTE *) sobel1+source_start_memory_point_1byte;
+      sobel_px2= (BYTE *) sobel2+target_start_memory_point_1byte;
+      move_px1=  (BYTE *) movement1+source_start_memory_point_1byte;
+      move_px2=  (BYTE *) movement2+target_start_memory_point_1byte;
       //Pointers are ready ..!
 
-	while (y<patch_y)
+	while (y<height)
 	{
       //Prepare the pointers of the left/right patch image and the left/right patch sobel
       image_px1+=incrementation_3byte_step;
       image_px2+=incrementation_3byte_step;
       sobel_px1+=incrementation_1byte_step;
       sobel_px2+=incrementation_1byte_step;
+      move_px1+=incrementation_1byte_step;
+      move_px2+=incrementation_1byte_step;
 
-      stopx1=image_px1+patch_x;
-
-	  sobel_mismatch=0;
+      stopx1=image_px1+width;
       while (image_px1<stopx1)
 	  {
-		pixel_score=0; // This pixel initially has no score..
 
-		// BIGER SCORE -> MORE PATCH DIFFERENCE  !
-		sobel_diffr=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the sobel difference value
-        if ( sobel_diffr > 20 ) { sobel_mismatch=1; }
+	    sobel_mismatch=0;
+
+         // ************** SOBEL COMPARISON **************
+		 // BIGER SCORE -> MORE PATCH DIFFERENCE  !
+		 sobel_score=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the sobel difference value
+         if ( sobel_score > 30 ) { sobel_mismatch=1; }
+         ++sobel_px1; ++sobel_px2;
+         // BIGER SCORE -> MORE PATCH DIFFERENCE  !
+         // ************** SOBEL COMPARISON **************
+
+
+        // ************** RGB COMPARISON **************
         // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-        ++sobel_px1; ++sobel_px2;
-        pixel_score=sobel_diffr;
-
-
-
-        // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-		pixel_score+= ( precalc_sub[*image_px1] [*image_px2]  );
+        rgb_score= ( precalc_sub[*image_px1] [*image_px2]  );
 		image_px1++; image_px2++;
-		pixel_score+= ( precalc_sub[*image_px1] [*image_px2]  );
+		rgb_score+= ( precalc_sub[*image_px1] [*image_px2]  );
 		image_px1++; image_px2++;
-		pixel_score+= ( precalc_sub[*image_px1] [*image_px2]  );
+		rgb_score+= ( precalc_sub[*image_px1] [*image_px2]  );
 		image_px1++; image_px2++;
+		rgb_score = rgb_score / 3;
 		// BIGER SCORE -> MORE PATCH DIFFERENCE  !
+        // ************** RGB COMPARISON **************
 
 
+         // ************** MOVEMENT COMPARISON **************
+		 // BIGER SCORE -> MORE PATCH DIFFERENCE  !
+		 move_score=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the move difference value
+         if ( move_score > 30 ) { move_mismatch=1; }
+         ++move_px1; ++move_px2;
+         // BIGER SCORE -> MORE PATCH DIFFERENCE  !
+         // ************** MOVEMENT COMPARISON **************
 
-		if ( sobel_mismatch == 1 )
-            { pixel_score = pixel_score << 2; } // *8 Multiply score ( because the sobel edges are mismatched
+		//if ( sobel_mismatch == 1 )  { pixel_score = pixel_score << 3; } // *8 Multiply score ( because the sobel edges are mismatched )
 
-		total_score+=pixel_score;
-		/*
+
+		total_score+= rgb_score + /* move_score + */sobel_score;
+
         if ( score_threshold<total_score )
           {
              ++metrics[COMPAREPATCH_ALGORITHM_DENIES];
              return total_score; // SPEED CUT :) ++PERFOMANCE  --DEBUGGING :P
-          }*/
-
+          }
 	  }
-
-
 	  ++y;
 	}
 
-/* SHOULD BE ADDED ON SPEED CUT TO
+
 	  if ( settings[DEPTHMAP_IMPROVE_USING_MOVEMENT] )
                         {
                            //TODO ADD HERE MOVEMENT SCORE
-                           if ( movement_difference > 150 ) { movement_difference<<3; total_score+=movement_difference; }
-                       }*/
+//                           if ( movement_difference > 150 ) { movement_difference<<3; total_score+=movement_difference; }
+                       }
 
 
+/*
   if ( total_score < 100 )
     {
-        fprintf(stderr,"PATCH %u,%u -> %u,%u yields %u (patch size %ux%u) \n",source_block.x1,source_block.y1,target_block.x1,target_block.y1,total_score,patch_x,patch_y);
-        fprintf(stderr,"Source Start memory point %u Target Start memory point %u \n",precalc_memplace_3byte[source_block.x1][y+source_block.y1],precalc_memplace_3byte[target_block.x1][y+target_block.y1]);
+        fprintf(stderr,"PATCH %u,%u -> %u,%u yields %u (patch size %ux%u) \n",source_block->x1,source_block->y1,target_block->x1,target_block->y1,total_score,width,height);
+        fprintf(stderr,"Source Start memory point %u Target Start memory point %u \n",precalc_memplace_3byte[source_block->x1][y+source_block->y1],precalc_memplace_3byte[target_block->x1][y+target_block->y1]);
     }
-
+*/
 
  return total_score;
 }
@@ -241,7 +254,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
                      unsigned int right_depth_reg,
                      unsigned int image_x,
                      unsigned int image_y,
-                     unsigned char clear_depth_arrays /*Cleaning the depth arrays takes a little longer :) */
+                     unsigned char clear_and_calculate /*Cleaning the depth arrays takes a little longer :) */
                     )
 {
     unsigned char *left_view=video_register[left_view_reg].pixels;
@@ -253,12 +266,16 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
 
 	unsigned int edges_required_to_process=( (unsigned int) ( metrics[VERTICAL_BUFFER] * metrics[HORIZONTAL_BUFFER] * settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] )  / 100 );
+    fprintf(stderr,"Edges required to process %u (%u %%) \n",edges_required_to_process,settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]);
 
-    if ( clear_depth_arrays == 1 )
+    if ( clear_and_calculate == 1 )
     {
-     ClearLargeVideoRegister(left_depth_reg);
-     ClearLargeVideoRegister(right_depth_reg);
-     memset(depth_data_array,0,sizeof(struct DepthData) * image_x*image_y );// CLEAR DEPTH MAP FROM ARTIFACTS
+       memset(depth_data_array,0,sizeof(struct DepthData) * image_x*image_y );// CLEAR DEPTH MAP FROM ARTIFACTS
+       ClearLargeVideoRegister(left_depth_reg);
+       ClearLargeVideoRegister(right_depth_reg);
+
+       PrepareCleanSobeledGaussian(LEFT_EYE,EDGES_LEFT,settings[DEPTHMAP_EDGE_STRICTNESS]);
+       PrepareCleanSobeledGaussian(RIGHT_EYE,EDGES_RIGHT,settings[DEPTHMAP_EDGE_STRICTNESS]);
     }
 
    if (  settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM] == 1 )
@@ -267,12 +284,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
        GenerateCompressHistogramOfImage(video_register[RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
    }
 
-    PrepareCleanSobeledGaussian(LEFT_EYE,EDGES_LEFT,settings[DEPTHMAP_EDGE_STRICTNESS]);
-    PrepareCleanSobeledGaussian(RIGHT_EYE,EDGES_RIGHT,settings[DEPTHMAP_EDGE_STRICTNESS]);
-
-    if ( clear_depth_arrays == 1 )
+    if ( clear_and_calculate == 1 )
      {
-
         // CompressPresenceRegister(EDGES_LEFT,GENERAL_XLARGE_1,5);
         // I dont like the following , I should really change the sobel function to give a one byte response..!
         CopyRegister(EDGES_LEFT,GENERAL_3);
@@ -297,11 +310,16 @@ void DepthMapFull  ( unsigned int left_view_reg,
 	if ( settings[DEPTHMAP_DETAIL] <= 0 ) { settings[DEPTHMAP_DETAIL]=1; } // :D , swstos programmatismos!
     x_vima= (unsigned int) (metrics[HORIZONTAL_BUFFER] / settings[DEPTHMAP_DETAIL]);
     y_vima= (unsigned int) (metrics[VERTICAL_BUFFER] / settings[DEPTHMAP_DETAIL]);
+    y_vima = y_vima / 3; if ( y_vima < 1 ) { y_vima = 1;}
 
 	unsigned int xblock=0 , yblock=0 ;
     unsigned int  prox=0,movement_left=0 , movement_right=0 ,movement_difference =0;
     unsigned int  max_prox_score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED];
 
+
+    struct ImageRegion source_rgn={0},target_rgn={0};
+    source_rgn.width=metrics[HORIZONTAL_BUFFER]; source_rgn.height=metrics[VERTICAL_BUFFER]; // These are standard
+    target_rgn.width=metrics[HORIZONTAL_BUFFER]; target_rgn.height=metrics[VERTICAL_BUFFER]; // These are standard
 
 
     while (y<ylim)
@@ -345,10 +363,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
                          yblock=y-settings[DEPTHMAP_VERT_OFFSET_UP]; //THELOUME NA KSEKINISOUME STIN IDIA SCAN LINE ME ENA PITHANO OFFSET LOGW KAKOU CALIBRATION
 
 
-						 struct ImageRegion source_rgn,target_rgn;
-                         source_rgn.x1=x; source_rgn.y1=y; // To source ( tou aristerou matiou einai x,y )
-                         source_rgn.width=metrics[HORIZONTAL_BUFFER]; source_rgn.height=metrics[VERTICAL_BUFFER]; // These are standard
-                         target_rgn.width=metrics[HORIZONTAL_BUFFER]; target_rgn.height=metrics[VERTICAL_BUFFER]; // These are standard
+						 source_rgn.x1=x; source_rgn.y1=y; // To source ( tou aristerou matiou einai x,y )
 
                          movement_left=GetMovementAtBlock(MOVEMENT_GROUPED_LEFT,&source_rgn);
 
@@ -364,10 +379,10 @@ void DepthMapFull  ( unsigned int left_view_reg,
                                 movement_right=GetMovementAtBlock(MOVEMENT_GROUPED_RIGHT,&target_rgn);
                                 movement_difference=abs(movement_right-movement_left);
 
-								prox = ComparePatches( source_rgn , target_rgn,
+								prox = ComparePatches( &source_rgn , &target_rgn,
                                                        left_view  , right_view,
                                                        video_register[EDGES_LEFT].pixels , video_register[EDGES_RIGHT].pixels ,
-                                                       movement_difference ,
+                                                       video_register[MOVEMENT_LEFT].pixels  , video_register[MOVEMENT_RIGHT].pixels ,
                                                        metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER],
                                                        image_x , image_y ,
                                                        best_match.score);
@@ -397,30 +412,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
 									FillDepthMemWithData(left_depth,depth_data_array,&best_match,image_x,image_y);
 
 
-							  if (settings[DEPTHMAP_GUESSES]==1)
-							    { // CODE TO GUESS NEXT BLOCK!
-									 source_rgn.x1=best_match.x1_patch+metrics[HORIZONTAL_BUFFER]; source_rgn.x2=source_rgn.x1+metrics[HORIZONTAL_BUFFER];
-									 target_rgn.x1=best_match.x2_patch+metrics[HORIZONTAL_BUFFER]; target_rgn.x2=target_rgn.x1+metrics[HORIZONTAL_BUFFER];
-									 if ( (source_rgn.x1>image_x) || (source_rgn.x2>image_x) || (target_rgn.x1>image_x) || (target_rgn.x2>image_x) )
-									 {    } // OUT OF MEMORY SPACE NOT GUESSING
-								     else
-								     {
-									  prox = ComparePatches( source_rgn,target_rgn,
-                                                             left_view, right_view,
-                                                             video_register[EDGES_LEFT].pixels , video_register[EDGES_RIGHT].pixels,
-                                                             0,
-                                                             metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER],
-                                                             image_x , image_y , best_match.score);
-									  // HEURISTIC GIA NA PETAME KAKES PROVLEPSEIS
-
-									  if ( (best_match.edge_count>edges_required_to_process) /*&& (prox<settings[PATCH_COMPARISON_SCORE_MIN])*/ && (best_match.score>=prox) )
-                                      // HEURISTIC GIA NA PETAME KAKES PROVLEPSEIS
-									   {
-									     PassGuessNextDepthMem(prox,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],left_depth,depth_data_array,&best_match,image_x,image_y);
-									   }
-									 }
-								  }	 // CODE TO GUESS NEXT BLOCK!
-
+						           /* CODE GUESS CODE PATCH GOES HERE $1 */
 								}
 
                                // ORIZONTIA METATWPISI TOU BUFFER DEKSIAS EIKONAS
@@ -446,269 +438,29 @@ void DepthMapFull  ( unsigned int left_view_reg,
 }
 
 
-unsigned char InstantMovementDisparity(unsigned short *left_depth,unsigned short *right_depth)
-{
+/*  $1
+	  if (settings[DEPTHMAP_GUESSES]==1)
+							    { // CODE TO GUESS NEXT BLOCK!
+									 source_rgn.x1=best_match.x1_patch+metrics[HORIZONTAL_BUFFER]; source_rgn.x2=source_rgn.x1+metrics[HORIZONTAL_BUFFER];
+									 target_rgn.x1=best_match.x2_patch+metrics[HORIZONTAL_BUFFER]; target_rgn.x2=target_rgn.x1+metrics[HORIZONTAL_BUFFER];
+									 if ( (source_rgn.x1>image_x) || (source_rgn.x2>image_x) || (target_rgn.x1>image_x) || (target_rgn.x2>image_x) )
+									 {    } // OUT OF MEMORY SPACE NOT GUESSING
+								     else
+								     {
+									  prox = ComparePatches( &source_rgn,&target_rgn,
+                                                             left_view, right_view,
+                                                             video_register[EDGES_LEFT].pixels , video_register[EDGES_RIGHT].pixels,
+                                                             0,
+                                                             metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER],
+                                                             image_x , image_y , best_match.score);
+									  // HEURISTIC GIA NA PETAME KAKES PROVLEPSEIS
 
- return 1;
-}
+									  if ( (best_match.edge_count>edges_required_to_process) && (prox<settings[PATCH_COMPARISON_SCORE_MIN]) && (best_match.score>=prox) )
+                                      // HEURISTIC GIA NA PETAME KAKES PROVLEPSEIS
+									   {
+									     PassGuessNextDepthMem(prox,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],left_depth,depth_data_array,&best_match,image_x,image_y);
+									   }
+									 }
+								  }	 // CODE TO GUESS NEXT BLOCK!
 
-
-
-unsigned char DisparityMapNormalize(unsigned short *left_depth,unsigned short *right_depth)
-{
-	// ENA GRIGORO CHECK POU AN ENA SIMEIO EXEI POLY DISPARITY SE SXESI ME TA GEITONIKA
-	// TO OMOGENOPOIEI
-/*
-  unsigned int memplace,y,xa=0,ya=0,xb=0,yb=0,memsize=0; //a simainei aristeri cam , b deksia
-  unsigned int x_start_left=15,avg_x;
-  xa=x_start_left;
-  memsize=max_res_x*max_res_y;
-  while (xa<max_res_x)
-	   {
-		 memplace=xa;
-		 ya=0;
-		 avg_x=0;
-         while (memplace<memsize)
-		 {
-            memplace+=max_res_x;
-			++ya;
-		 }
-		++xa;
-	   }
-  */
-  return 1;
-}
-
-
-
-
-
-inline unsigned short FindNeighborDepth(
-                                               unsigned short * full_depth_map,
-                                               unsigned char * rgb_image,
-                                               unsigned int search_area_stop,
-                                               unsigned char r,unsigned char g,unsigned char b,
-                                               unsigned int dpth_ptr,unsigned int img_ptr,
-                                               unsigned int x,unsigned int y,unsigned int depth
-                                       )
-{
-  // Heuristic , finds neighborhood depth..
-
-  unsigned int SHIFT_3_BYTE = metrics[RESOLUTION_X_3_BYTE];
-  unsigned int SHIFT_1_BYTE = metrics[RESOLUTION_X];
-
-  unsigned int stop_search_up=0,stop_search_down=0;
-  unsigned int dpth_ptr_up=dpth_ptr , dpth_ptr_down=dpth_ptr , y_up=y , y_down=y , img_ptr_up=img_ptr , img_ptr_down=img_ptr;
-  unsigned int search_area=0;
-  unsigned int THRESHOLD=20;
-  while (search_area<search_area_stop)
-  {
-    if ( stop_search_up==0 )
-    {
-     if (y_up<=1) stop_search_up=1; else
-     {
-      dpth_ptr_up-=SHIFT_1_BYTE;
-      img_ptr_up-=SHIFT_3_BYTE;
-      --y_up;
-
-      if ( (precalc_sub[r][rgb_image[img_ptr_up]]>THRESHOLD) || (precalc_sub[g][rgb_image[img_ptr_up+1]]>THRESHOLD) || (precalc_sub[b][rgb_image[img_ptr_up+2]]>THRESHOLD) ) stop_search_up=1; else
-      {
-        if (full_depth_map[dpth_ptr_up]!=0) return full_depth_map[dpth_ptr_up];
-      }
-     }
-    }
-
-    if ( stop_search_down==0 )
-    {
-     if (y_down>=metrics[RESOLUTION_Y]) stop_search_down=1; else
-     {
-      dpth_ptr_down+=SHIFT_1_BYTE;
-      img_ptr_down+=SHIFT_3_BYTE;
-      ++y_down;
-      if ( (precalc_sub[r][rgb_image[img_ptr_down]]>THRESHOLD) || (precalc_sub[g][rgb_image[img_ptr_down+1]]>THRESHOLD) || (precalc_sub[b][rgb_image[img_ptr_down+2]]>THRESHOLD) ) stop_search_down=1; else
-      {
-        if (full_depth_map[dpth_ptr_down]!=0) return full_depth_map[dpth_ptr_down];
-      }
-     }
-    }
-
-    if ((stop_search_down!=0)&&(stop_search_up!=0)) return 0;
-
-    ++search_area;
-  }
-  return 0;
-}
-
-
-void EnhanceDepthMapWithEdges(unsigned char * rgb_image,unsigned short *full_depth_map,unsigned char * edges_map,unsigned int image_x,unsigned int image_y)
-{
-  // Heuristic , fills depth map holes with neighborhood edge depth..
-
-  fprintf(stderr,"Todo : FindNeighborDepth is not complete , fix it ! \n");
-  memcpy(l_video_register[GENERAL_LARGE_1].pixels,full_depth_map,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
-  unsigned int SHIFT_1_BYTE = metrics[RESOLUTION_X];
-
-  unsigned int SHIFT_1_BYTE2 = SHIFT_1_BYTE*2;
-  unsigned int SHIFT_1_BYTE3 = SHIFT_1_BYTE*3;
-  unsigned int SHIFT_1_BYTE4 = SHIFT_1_BYTE*4;
-  unsigned int SHIFT_1_BYTE5 = SHIFT_1_BYTE*5;
-  //unsigned int SHIFT_1_BYTE6 = SHIFT_1_BYTE*6;
-
-  unsigned int ptr=0,ptr3bit=0;//,dpth_lim=image_x*image_y;
-  unsigned int xp=0,yp=0;
-  unsigned int left_scan=0,right_scan=0,up_scan=0,down_scan=0;
-  char  request_matchup=0;
-
- for (yp=0; yp<image_y; yp++)
-  {
-    for (xp=0; xp<image_x; xp++)
-    {
-     if (edges_map[ptr3bit]==0)
-     {
-       left_scan=0; right_scan=0; up_scan=0; down_scan=0;
-
-      // KANOUME ENA SCAN PANW KATW ARISTERA K DEKSIA GIA NA VROUME MIA KONTINI EDGE
-      // VRISKONTAS MIA KONTINI EDGE ELPIZOUME OTI THA EXEI SWSTO DEPTH VALUE
-
-       if (xp <image_x-10 )
-      {
-       if  ( full_depth_map[ptr+1]>0 )  { ++right_scan; }
-       if  ( full_depth_map[ptr+2]>0 )  { ++right_scan; }
-       if  ( full_depth_map[ptr+3]>0 )  { ++right_scan; }
-       if  ( full_depth_map[ptr+4]>0 )  { ++right_scan; }
-       if  ( full_depth_map[ptr+5]>0 )  { ++right_scan; }
-      }
-
-      if (xp >10 )
-      {
-       if  ( full_depth_map[ptr-1]>0 )  { ++left_scan; }
-       if  ( full_depth_map[ptr-2]>0 )  { ++left_scan; }
-       if  ( full_depth_map[ptr-3]>0 )  { ++left_scan; }
-       if  ( full_depth_map[ptr-4]>0 )  { ++left_scan; }
-       if  ( full_depth_map[ptr-5]>0 )  { ++left_scan; }
-      }
-
-     if (yp <image_y-10 )
-      {
-       if  ( full_depth_map[ptr+SHIFT_1_BYTE]>0 )  { ++down_scan; }
-       if  ( full_depth_map[ptr+SHIFT_1_BYTE2]>0 )  { ++down_scan; }
-       if  ( full_depth_map[ptr+SHIFT_1_BYTE3]>0 )  { ++down_scan; }
-       if  ( full_depth_map[ptr+SHIFT_1_BYTE4]>0 )  { ++down_scan; }
-       if  ( full_depth_map[ptr+SHIFT_1_BYTE5]>0 )  { ++down_scan; }
-      }
-
-      if (yp >10 )
-      {
-       if  ( full_depth_map[ptr-SHIFT_1_BYTE]>0 )  { ++up_scan; }
-       if  ( full_depth_map[ptr-SHIFT_1_BYTE2]>0 )  { ++up_scan; }
-       if  ( full_depth_map[ptr-SHIFT_1_BYTE3]>0 )  { ++up_scan; }
-       if  ( full_depth_map[ptr-SHIFT_1_BYTE4]>0 )  { ++up_scan; }
-       if  ( full_depth_map[ptr-SHIFT_1_BYTE5]>0 )  { ++up_scan; }
-      }
-         // EXOUME PROSMETRISEI POSES EDGES YPARXOUN DEKSIA ARISTER PANW K KATW
-         // TWRA AN EIMASTE ANAMESA SE EDGES , PAROTI THA VRISKOMASTE SE KENO SPOT
-         // WSTOSO EXOUME KALI PITHANOTITA NA PAROUME KAPOIA GEITONIKI TIMI KAI NA OMOGENOPOIITHEI TO MAP
-
-         request_matchup=0;
-         // AN VRISKOMASTE ANAMESA SE EDGES TOTE SE PERIPTWSI POU EXOUME KAPOIO DEPTH VALUE TO DIATIROUME
-         // ALLIWS AN DEN EXOUME PSAXNOUME GYRW GYRW NA VROUME ENA
-         if ( (up_scan>=1)&&(down_scan>=5) )  { if (full_depth_map[ptr]==0) { request_matchup=1; } } else
-         if ( (up_scan>=5)&&(down_scan>=1) )  { if (full_depth_map[ptr]==0) { request_matchup=1; } } else
-         if ( (left_scan>=1)&&(right_scan>=5) )  { if (full_depth_map[ptr]==0) { request_matchup=1; } } else
-         if ( (left_scan>=5)&&(right_scan>=1) )  { if (full_depth_map[ptr]==0) { request_matchup=1; } } else
-         {
-           // AMA DEN EIMASTE ANAMESA SE KAPOIA EDGES APLA SVINETAI TO SIMEIO
-           // YPARXEI MEGALI PITHANOTITA NA MIN EINAI SWSTO!
-           //if ( PixelIsBright(rgb_image,ptr3bit) == 0 )
-           if ( PixelBelongsWithSurroundingPixels(rgb_image,xp,yp,ptr3bit) == 0 )
-           { //UNRELATED PIXEL , REMOVE IT !
-             l_video_register[GENERAL_LARGE_1].pixels[ptr]=0;
-           }
-         }
-
-         if (request_matchup!=0 )
-          {
-
-          }
-       } else
-       {  // GRAPHICAL DEBUGING
-         // l_video_register[GENERAL_LARGE_1].pixels[ptr]= edges_map[ptr3bit];
-       }
-
-       ++ptr;
-      ptr3bit+=3;
-
-    }
-  }
-
-  memcpy(full_depth_map,l_video_register[GENERAL_LARGE_1].pixels,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
-  return;
-}
-
-
-unsigned int EnhanceDepthMapFillHoles(unsigned char * rgb_image,unsigned short *full_depth_map,unsigned int image_x,unsigned int image_y)
-{
-  // Heuristic , fills depth map holes with neighborhood depth..
-
-  fprintf(stderr,"Todo : EnhanceDepthMapFillHoles is not complete , fix it ! \n");
-  memcpy(l_video_register[GENERAL_LARGE_1].pixels,full_depth_map,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
- // unsigned int SHIFT_1_BYTE = metrics[RESOLUTION_X];
-
-  unsigned int ptr=0,ptr3bit=0;
-  unsigned int xp=0,yp=0,fill_counter=0;
-  char r=0 , g=0 , b=0 ;
- for (yp=0; yp<image_y; yp++)
-  {
-    for (xp=0; xp<image_x; xp++)
-    {
-
-      if (full_depth_map[ptr]==0)
-      {
-          r=rgb_image[ptr3bit]; g=rgb_image[ptr3bit+1]; b=rgb_image[ptr3bit+2];
-          l_video_register[GENERAL_LARGE_1].pixels[ptr] = FindNeighborDepth(full_depth_map,rgb_image,25,r,g,b,ptr,ptr3bit,xp,yp,0);
-          ++fill_counter;
-      }
-
-      ++ptr;
-      ptr3bit+=3;
-    }
-  }
-  memcpy(full_depth_map,l_video_register[GENERAL_LARGE_1].pixels,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
-  fprintf(stderr,"%u pixels filled \n",fill_counter);
-  return fill_counter;
-}
-
-
-int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg)
-{
-  // Convert from the Large ( unsigned short ) to 3 bytes per pixel storage ( r,g,b ) needed for outputting video
-  unsigned short *full_depth_map=l_video_register[depth_reg].pixels;
-  unsigned char *vid_depth_map=video_register[vid_reg].pixels;
-  unsigned int image_x=video_register[vid_reg].size_x;
-  unsigned int image_y=video_register[vid_reg].size_y;
-
-
-  register BYTE *px;
-  register BYTE *r;
-  register BYTE *g;
-  register BYTE *b;
-  unsigned char val;
-  px = (BYTE *)  vid_depth_map;
-
-  unsigned int ptr,ptr_3byte=0,dpth_lim=image_x*image_y;
-  for ( ptr = 0; ptr < dpth_lim; ptr++)
-   {
-       r = px++;
-       g = px++;
-       b = px++;
-       if ( full_depth_map[ptr] > 255 ) { val = 255; } else
-       //val = full_depth_map[ptr] / 65535;
-       val = ( unsigned char ) full_depth_map[ptr];
-       *r= val;
-       *g= val;
-       *b= val;
-       ptr_3byte+=3;
-   }
-
-   return 1;
-}
+*/

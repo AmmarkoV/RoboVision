@@ -4,6 +4,7 @@ echo "Should provide libVisualCortex.a and VisCortx_Tester/bin/Release/VisCortx_
 echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
 echo "Compiling files.."
 gcc -c DisparityDepthMap.c -o DisparityDepthMap.o
+gcc -c DisparityDepthMap_Heuristics.c -o DisparityDepthMap_Heuristics.o 
 gcc -c MovementRegistration.c -o MovementRegistration.o
 gcc -c FeatureExtraction.c -o FeatureExtraction.o 
 gcc -c FeatureTracking.c -o FeatureTracking.o
@@ -18,10 +19,10 @@ gcc -c VisualCortex.c -o VisualCortex.o
 
 
 echo "Linking files.."
-ar  rcs libVisualCortex.a DisparityDepthMap.o MovementRegistration.o FeatureExtraction.o PatternRecognition.o FeatureTracking.o Precalculations.o StateSetting.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o LinearAlgebra.o VisualCortex.o
+ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FeatureExtraction.o PatternRecognition.o FeatureTracking.o Precalculations.o StateSetting.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o LinearAlgebra.o VisualCortex.o
 
 echo "Cleaning compiled object files.."
-rm DisparityDepthMap.o MovementRegistration.o FeatureExtraction.o PatternRecognition.o FeatureTracking.o Precalculations.o StateSetting.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o LinearAlgebra.o VisualCortex.o
+rm DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FeatureExtraction.o PatternRecognition.o FeatureTracking.o Precalculations.o StateSetting.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o LinearAlgebra.o VisualCortex.o
 
 echo "Compiling Tester.."
 cd VisCortx_Tester
