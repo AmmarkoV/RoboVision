@@ -112,6 +112,7 @@ void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img
 int CopyRegister(unsigned int source,unsigned int target);
 
 int ThisIsA3ByteRegister(int reg);
+int ThisIsA1ByteRegister(int reg);
 
 void ConvertRegisterFrom3ByteTo1Byte(int in_reg,int image_x,int image_y);
 void ConvertRegisterFrom1ByteTo3Byte(int in_reg,int image_x,int image_y);

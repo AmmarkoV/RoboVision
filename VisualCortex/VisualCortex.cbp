@@ -41,6 +41,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="DisparityDepthMap.h" />
+		<Unit filename="DisparityDepthMap_Heuristics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="DisparityDepthMap_Heuristics.h" />
 		<Unit filename="FaceDetection.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -77,6 +81,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="StateSetting.h" />
+		<Unit filename="VisCortexConvolutionFilters.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="VisCortexConvolutionFilters.h" />
 		<Unit filename="VisCortexFilters.c">
 			<Option compilerVar="CC" />
 		</Unit>

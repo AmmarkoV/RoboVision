@@ -163,10 +163,8 @@ unsigned int inline ComparePatches(struct ImageRegion * source_block,
          // BIGER SCORE -> MORE PATCH DIFFERENCE  !
          // ************** MOVEMENT COMPARISON **************
 
-		//if ( sobel_mismatch == 1 )  { pixel_score = pixel_score << 3; } // *8 Multiply score ( because the sobel edges are mismatched )
 
-
-		total_score+= rgb_score + /* move_score + */sobel_score;
+		total_score+= rgb_score +  move_score + sobel_score;
 
         if ( score_threshold<total_score )
           {
@@ -176,23 +174,6 @@ unsigned int inline ComparePatches(struct ImageRegion * source_block,
 	  }
 	  ++y;
 	}
-
-
-	  if ( settings[DEPTHMAP_IMPROVE_USING_MOVEMENT] )
-                        {
-                           //TODO ADD HERE MOVEMENT SCORE
-//                           if ( movement_difference > 150 ) { movement_difference<<3; total_score+=movement_difference; }
-                       }
-
-
-/*
-  if ( total_score < 100 )
-    {
-        fprintf(stderr,"PATCH %u,%u -> %u,%u yields %u (patch size %ux%u) \n",source_block->x1,source_block->y1,target_block->x1,target_block->y1,total_score,width,height);
-        fprintf(stderr,"Source Start memory point %u Target Start memory point %u \n",precalc_memplace_3byte[source_block->x1][y+source_block->y1],precalc_memplace_3byte[target_block->x1][y+target_block->y1]);
-    }
-*/
-
  return total_score;
 }
 
@@ -280,8 +261,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
    if (  settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM] == 1 )
    {
-       GenerateCompressHistogramOfImage(video_register[LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
-       GenerateCompressHistogramOfImage(video_register[RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+       GenerateCompressHistogramOfImage(video_register[CALIBRATED_LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+       GenerateCompressHistogramOfImage(video_register[CALIBRATED_RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
    }
 
     if ( clear_and_calculate == 1 )
@@ -310,7 +291,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
 	if ( settings[DEPTHMAP_DETAIL] <= 0 ) { settings[DEPTHMAP_DETAIL]=1; } // :D , swstos programmatismos!
     x_vima= (unsigned int) (metrics[HORIZONTAL_BUFFER] / settings[DEPTHMAP_DETAIL]);
     y_vima= (unsigned int) (metrics[VERTICAL_BUFFER] / settings[DEPTHMAP_DETAIL]);
-    y_vima = y_vima / 3; if ( y_vima < 1 ) { y_vima = 1;}
+    y_vima = y_vima / 2; if ( y_vima < 1 ) { y_vima = 1;}
 
 	unsigned int xblock=0 , yblock=0 ;
     unsigned int  prox=0,movement_left=0 , movement_right=0 ,movement_difference =0;

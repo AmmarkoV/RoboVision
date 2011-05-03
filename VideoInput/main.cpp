@@ -42,6 +42,7 @@
 char * VIDEOINPT_VERSION=(char *) "0.243 RGB24/YUYV compatible";
 int increase_priority=0;
 
+
 struct Video
 {
   /* DEVICE NAME */
@@ -189,6 +190,7 @@ int CloseVideoInputs()
     fprintf(stderr,"Deallocation of Video Structures\n");
 
     free(camera_feeds);
+
 
     fprintf(stderr,"Video Input successfully deallocated\n");
 

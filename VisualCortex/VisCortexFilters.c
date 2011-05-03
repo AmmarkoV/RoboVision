@@ -475,8 +475,7 @@ BOOLEAN SobelNDegreeDerivative(int n,unsigned int source_reg,unsigned int target
 
 BOOLEAN GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int image_x,int image_y,BOOLEAN monochrome)
 {
-  //return 1;
-
+  if (!ThisIsA3ByteRegister(source_reg)) { return 0; }
   unsigned char * source = video_register[source_reg].pixels;
   unsigned char * target = video_register[target_reg].pixels;
   video_register[target_reg].depth = 3;
@@ -618,4 +617,10 @@ void PrepareCleanSobeledGaussian(unsigned int rgb_image_reg,unsigned int target_
 	KillPixelsBelow(target_image_reg,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],kill_lower_edges_threshold);
 }
 
+
+int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated)
+{
+    /*TODO HERE ADD CALIBRATION CODE*/
+    return GaussianBlurFromSource(rgb_image,rgb_calibrated,video_register[rgb_image].size_x,video_register[rgb_image].size_y,0);
+}
 

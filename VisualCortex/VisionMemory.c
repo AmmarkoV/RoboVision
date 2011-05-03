@@ -29,7 +29,7 @@ unsigned int settings[SETTINGS_COUNT]={0};
 unsigned int metrics[METRICS_COUNT]={0};
 struct VideoRegister video_register[REGISTERS_COUNT]={{0},{0},{0},{0},{0},{0}};
 struct LargeVideoRegister l_video_register[LARGE_REGISTERS_COUNT]={{0},{0},{0},{0},{0},{0}};
-struct ExtraLargeVideoRegister xl_video_register[EXTRA_LARGE_REGISTERS_COUNT]={{0},{0},{0},{0},{0},{0}};
+struct ExtraLargeVideoRegister xl_video_register[EXTRA_LARGE_REGISTERS_COUNT]={{0},{0},{0},{0}};
 struct DepthData * depth_data_array=0;
 
 float camera_distance=0;
@@ -217,12 +217,12 @@ void DefaultSettings()
 {
     // Initialize all variables used by Visual Cortex
     settings[DEPTHMAP_STARTLEFT_X]=15;
-    settings[DEPTHMAP_DETAIL]=8;
+    settings[DEPTHMAP_DETAIL]=6;
     settings[DEPTHMAP_EDGE_STRICTNESS]=25;
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_OFFSET_UP]=2;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=2;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD]=35000;//18000; //16000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD]=27000;//18000; //16000;
     SetThresholdsForAllPatchSizes();
     settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
 
@@ -238,7 +238,7 @@ void DefaultSettings()
 
     settings[PATCH_COMPARISON_LEVELS]=3; /* It will use 3 different size block levels for comparison */
     settings[PATCH_COMPARISON_SCORE_MIN]=35000;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=50;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=20;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=40;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=20;
     settings[PATCH_HIST_THRESHOLD_R]=12; settings[PATCH_HIST_THRESHOLD_G]=12; settings[PATCH_HIST_THRESHOLD_B]=12;
@@ -270,9 +270,9 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[CHANGES_LEFT]=0;
     metrics[CHANGES_RIGHT]=0;
     metrics[VERTICAL_BUFFER]=30; //30
-    metrics[HORIZONTAL_BUFFER]=15; //20
+    metrics[HORIZONTAL_BUFFER]=20; //20
     metrics[VERTICAL_BUFFER_LARGE]=75; //75
-    metrics[HORIZONTAL_BUFFER_LARGE]=20; //50
+    metrics[HORIZONTAL_BUFFER_LARGE]=30; //50
     metrics[VERTICAL_BUFFER_EXTRALARGE]=188; // 188
     metrics[HORIZONTAL_BUFFER_EXTRALARGE]=125; //125
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
@@ -513,6 +513,17 @@ int ThisIsA3ByteRegister(int reg)
      return 0;
 }
 
+
+int ThisIsA1ByteRegister(int reg)
+{
+    if ( video_register[reg].depth == 1 )
+     {
+         return 1;
+     }
+
+     fprintf(stderr,"1byte register check failed\n");
+     return 0;
+}
 
 
 /*

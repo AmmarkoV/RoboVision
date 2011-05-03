@@ -31,6 +31,7 @@ int InitVisualSystem()
     struct VideoFeedSettings feedsettings={0};
     feedsettings.PixelFormat=V4L2_PIX_FMT_RGB24;
 
+
     camerasok+=InitVideoFeed(0,video_device_1,width,height,24,1,feedsettings);
     camerasok+=InitVideoFeed(1,video_device_2,width,height,24,1,feedsettings);
     if ( (camerasok==2) )

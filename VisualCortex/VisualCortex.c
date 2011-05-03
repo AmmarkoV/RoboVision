@@ -19,6 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "VisualCortex.h"
 #include "VisionMemory.h"
 #include "DisparityDepthMap.h"
+#include "DisparityDepthMap_Heuristics.h"
 #include "MovementRegistration.h"
 #include "VisCortexFilters.h"
 #include "FeatureExtraction.h"
@@ -31,7 +32,60 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 
-char * VISCORTEX_VER = "0.58";
+char * VISCORTEX_VER = "0.581";
+
+/*
+
+                 TODO LIST , BULETTIN BOARD
+
+  I am currently restructuring the whole library to make it a little more organized..
+  Different "logical functions" have been split to different files , basically the project is now divided
+  to the following sections
+
+
+     MAIN LIBRARY / MEMORY / INTERFACES
+          VisualCortex.c
+          VisionMemory.c
+          StateSetting.c
+
+     MATH
+          Linear Algebra.c
+          Precalculations.c <- this is to speed up math that are cpu intensive
+
+     FILTERS / IMAGE PROCESSING TOOLS ( These are shared functions and are used to all other parts )
+          VisCortexConvolutionFilters.c
+          VisCortexFilters.c
+          VisCortexHeuristics.c
+          IntegralImageConversion.c
+
+     MOVEMENT REGISTRATION
+          MovementRegistration.c <- This is complete , it doesn`t track features it just uoutputs on memory segments of the frame that have motion to help other functions
+
+     DISPARITY MAPPING
+          DisparityDepthMap.c <- This is in a good state :)
+          DisparityDepthMap_Heuristics.c <- This is in a good state , although not very useful
+
+
+    ---
+
+     FEATURE EXTRACTION
+          FeatureExtraction.c <- This currently is a stub , it should output second degree derivative edges or something
+
+     FEATURE TRACKING
+          FeatureTracking.c <- This used to work , but due to changes on the basic functions called , it will have to be rewritten from scratch
+
+     PATTERN RECOGNITION
+          PatternRecognition.c <- This currently is a stub , I have written some code for haar features but it needs much more
+
+     FACE DETECTION
+          FaceDetection.c <- This currently is a stub
+
+
+*/
+
+
+
+
 
 
 char *  VisCortx_Version()
@@ -191,6 +245,16 @@ unsigned int VisCortx_WriteToVideoRegister(unsigned int reg_num,unsigned int siz
 
     memcpy(video_register[reg_num].pixels,rgbdata,mem_end);
 
+    switch (reg_num)
+     {
+        case LEFT_EYE :
+         CalibrateImage(LEFT_EYE,CALIBRATED_LEFT_EYE);
+        break;
+        case RIGHT_EYE :
+         CalibrateImage(RIGHT_EYE,CALIBRATED_RIGHT_EYE);
+        break;
+     };
+
 	return 0;
 }
 
@@ -238,8 +302,8 @@ void  VisCortx_FullDepthMap()
   metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_EXTRALARGE];
   metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_EXTRALARGE];
 
-  DepthMapFull( LEFT_EYE,
-                RIGHT_EYE,
+  DepthMapFull( CALIBRATED_LEFT_EYE,
+                CALIBRATED_RIGHT_EYE,
                 DEPTH_LEFT,
                 DEPTH_RIGHT,
                 metrics[RESOLUTION_X],
@@ -258,8 +322,8 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
   metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_LARGE];
   metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_LARGE];
 
-  DepthMapFull( LEFT_EYE,
-                RIGHT_EYE,
+  DepthMapFull( CALIBRATED_LEFT_EYE,
+                CALIBRATED_RIGHT_EYE,
                 DEPTH_LEFT,
                 DEPTH_RIGHT,
                 metrics[RESOLUTION_X],
@@ -281,8 +345,8 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
 
 if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
 {
-  DepthMapFull( LEFT_EYE,
-                RIGHT_EYE,
+  DepthMapFull( CALIBRATED_LEFT_EYE,
+                CALIBRATED_RIGHT_EYE,
                 DEPTH_LEFT,
                 DEPTH_RIGHT,
                 metrics[RESOLUTION_X],

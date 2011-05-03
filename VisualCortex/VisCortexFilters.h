@@ -21,6 +21,7 @@ void MonochromeL(unsigned char * input_frame,int image_x,int image_y);
 BOOLEAN GaussianBlur(unsigned int image_reg,int image_x,int image_y,BOOLEAN monochrome);
 BOOLEAN GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int image_x,int image_y,BOOLEAN monochrome);
 void PrepareCleanSobeledGaussian(unsigned int rgb_image_reg,unsigned int target_image,unsigned int kill_lower_edges_threshold);
+int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated);
 
 //BOOLEAN FindGoodTrackingPoints(unsigned char * edge_source,unsigned char * target,int image_x,int image_y,BOOLEAN monochrome);
 BOOLEAN PixelIsBright(unsigned char * rgb_image,unsigned int memplace_3_byte);
