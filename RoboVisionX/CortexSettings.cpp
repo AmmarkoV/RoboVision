@@ -59,6 +59,8 @@ const long CortexSettings::ID_STATICTEXT22 = wxNewId();
 const long CortexSettings::ID_TEXTCTRL20 = wxNewId();
 const long CortexSettings::ID_CHECKBOX4 = wxNewId();
 const long CortexSettings::ID_CHECKBOX5 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL21 = wxNewId();
+const long CortexSettings::ID_STATICTEXT23 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CortexSettings,wxDialog)
@@ -130,6 +132,8 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	ImproveUsingHistogram->SetValue(true);
 	DoNotProcessFar = new wxCheckBox(this, ID_CHECKBOX5, _("Do not process further than this"), wxPoint(32,160), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX5"));
 	DoNotProcessFar->SetValue(false);
+	EdgeStrictnessHigh = new wxTextCtrl(this, ID_TEXTCTRL21, _("150"), wxPoint(424,40), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL21"));
+	StaticText23 = new wxStaticText(this, ID_STATICTEXT23, _("to"), wxPoint(400,48), wxDefaultSize, 0, _T("ID_STATICTEXT23"));
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnSaveButtonClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnCancelButtonClick);
@@ -156,8 +160,11 @@ void CortexSettings::PullSettingsFromCortex()
   val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_DETAIL);
   Quality->SetValue(val);
 
-  val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_EDGE_STRICTNESS);
+  val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_EDGE_LOW_STRICTNESS);
   EdgeStrictness->SetValue(val);
+
+  val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_EDGE_HIGH_STRICTNESS);
+  EdgeStrictnessHigh->SetValue(val);
 
   val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_INSTANT_DETAIL);
   InstantQuality->SetValue(val);
@@ -247,7 +254,9 @@ void CortexSettings::PushSettingsToCortex()
 
   if(Quality->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_DETAIL,(unsigned int) value); }
 
-  if(EdgeStrictness->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_EDGE_STRICTNESS,(unsigned int) value); }
+  if(EdgeStrictness->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_EDGE_LOW_STRICTNESS,(unsigned int) value); }
+
+  if(EdgeStrictnessHigh->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_EDGE_HIGH_STRICTNESS,(unsigned int) value); }
 
   if(InstantQuality->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_INSTANT_DETAIL,(unsigned int) value); }
 

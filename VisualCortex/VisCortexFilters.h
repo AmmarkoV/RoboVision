@@ -15,12 +15,13 @@ BOOLEAN SobelNDegreeDerivative(int n,unsigned int source_reg,unsigned int target
 void ReducePalette(unsigned int image_reg,int image_x,int image_y,int new_palette);
 void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned char R,unsigned char G,unsigned char B,unsigned char threshold);
 void KillPixelsBelow(unsigned int image_reg,int image_x,int image_y,int threshold);
+void KillPixelsBetween(unsigned int image_reg,int image_x,int image_y,int low_threshold,int high_threshold);
 void Kill3PixelsBelow(unsigned int image_reg,int image_x,int image_y,int threshold);
 void Monochrome(unsigned char * input_frame,int image_x,int image_y);
 void MonochromeL(unsigned char * input_frame,int image_x,int image_y);
 BOOLEAN GaussianBlur(unsigned int image_reg,int image_x,int image_y,BOOLEAN monochrome);
 BOOLEAN GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int image_x,int image_y,BOOLEAN monochrome);
-void PrepareCleanSobeledGaussian(unsigned int rgb_image_reg,unsigned int target_image,unsigned int kill_lower_edges_threshold);
+void PrepareCleanSobeledGaussian(unsigned int rgb_image_reg,unsigned int target_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold);
 int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated);
 
 //BOOLEAN FindGoodTrackingPoints(unsigned char * edge_source,unsigned char * target,int image_x,int image_y,BOOLEAN monochrome);

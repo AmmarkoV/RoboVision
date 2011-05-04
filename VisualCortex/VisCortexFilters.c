@@ -193,6 +193,46 @@ void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned 
 
 }
 
+void KillPixelsBetween(unsigned int image_reg,int image_x,int image_y,int low_threshold,int high_threshold)
+{
+ unsigned char * image = video_register[image_reg].pixels;
+ if (image==0) {return;}
+ unsigned int image_depth = video_register[image_reg].depth;
+
+ register BYTE *start_px = (BYTE *) image;
+ register BYTE *px = (BYTE *) image;
+ register BYTE *r;
+ register BYTE *g;
+ register BYTE *b;
+ unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+
+ if ( image_depth == 3 )
+ {
+   while ( px < start_px + image_size )
+     {
+       r = px++;
+       g = px++;
+       b = px++;
+
+       // The kill Pixels function kills selected channels to help stabilize output
+       if ((*r>high_threshold)||(*r<low_threshold)) { *r=0; }
+       if ((*g>high_threshold)||(*g<low_threshold)) { *g=0; }
+       if ((*b>high_threshold)||(*b<low_threshold)) { *b=0; }
+    }
+  }
+   else
+  if ( image_depth == 1 )
+ {
+   image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
+   while (px<start_px+image_size)
+   {
+	  if  ((*px>high_threshold)||(*px<low_threshold)) { *px=0; }
+	  px++;
+   }
+  }
+
+ return;
+}
 
 void KillPixelsBelow(unsigned int image_reg,int image_x,int image_y,int threshold)
 {
@@ -610,11 +650,11 @@ unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_arr
 
 
 
-void PrepareCleanSobeledGaussian(unsigned int rgb_image_reg,unsigned int target_image_reg,unsigned int kill_lower_edges_threshold)
+void PrepareCleanSobeledGaussian(unsigned int rgb_image_reg,unsigned int target_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
 {
     GaussianBlurFromSource(rgb_image_reg,target_image_reg,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],1);
 	Sobel(target_image_reg,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-	KillPixelsBelow(target_image_reg,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],kill_lower_edges_threshold);
+	KillPixelsBetween(target_image_reg,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],kill_lower_edges_threshold,kill_higher_edges_threshold);
 }
 
 

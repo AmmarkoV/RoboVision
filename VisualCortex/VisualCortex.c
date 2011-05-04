@@ -443,7 +443,7 @@ void  VisCortx_AutoAddTrackPoints(unsigned int cam)
 {
  if (cam==0)
   {
-      PrepareCleanSobeledGaussian(LEFT_EYE,EDGES_LEFT,settings[DEPTHMAP_EDGE_STRICTNESS]);
+      PrepareCleanSobeledGaussian(LEFT_EYE,EDGES_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
       ClearVideoRegister(GENERAL_1);
       ClearTrackPoints();
       ExtractFeatures(100,video_register[EDGES_LEFT].pixels,video_register[GENERAL_1].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],0);

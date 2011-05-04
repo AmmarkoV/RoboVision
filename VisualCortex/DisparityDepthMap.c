@@ -255,8 +255,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
        ClearLargeVideoRegister(left_depth_reg);
        ClearLargeVideoRegister(right_depth_reg);
 
-       PrepareCleanSobeledGaussian(LEFT_EYE,EDGES_LEFT,settings[DEPTHMAP_EDGE_STRICTNESS]);
-       PrepareCleanSobeledGaussian(RIGHT_EYE,EDGES_RIGHT,settings[DEPTHMAP_EDGE_STRICTNESS]);
+       PrepareCleanSobeledGaussian(LEFT_EYE,EDGES_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
+       PrepareCleanSobeledGaussian(RIGHT_EYE,EDGES_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
     }
 
    if (  settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM] == 1 )

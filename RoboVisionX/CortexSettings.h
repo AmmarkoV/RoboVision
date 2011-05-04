@@ -50,6 +50,8 @@ class CortexSettings: public wxDialog
 		wxTextCtrl* MinR;
 		wxStaticText* StaticText3;
 		wxTextCtrl* InstantQuality;
+		wxTextCtrl* EdgeStrictnessHigh;
+		wxStaticText* StaticText23;
 		wxTextCtrl* OffsetUp;
 		wxButton* DefaultButton;
 		wxCheckBox* ImproveUsingHistogram;
@@ -129,6 +131,8 @@ class CortexSettings: public wxDialog
 		static const long ID_TEXTCTRL20;
 		static const long ID_CHECKBOX4;
 		static const long ID_CHECKBOX5;
+		static const long ID_TEXTCTRL21;
+		static const long ID_STATICTEXT23;
 		//*)
 
 	private:

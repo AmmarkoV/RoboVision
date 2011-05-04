@@ -238,5 +238,14 @@
 			<label>Do not process further than this</label>
 			<pos>32,160</pos>
 		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL21" variable="EdgeStrictnessHigh" member="yes">
+			<value>150</value>
+			<pos>424,40</pos>
+			<size>40,27</size>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT23" variable="StaticText23" member="yes">
+			<label>to</label>
+			<pos>400,48</pos>
+		</object>
 	</object>
 </wxsmith>
