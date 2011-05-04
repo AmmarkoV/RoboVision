@@ -11,7 +11,7 @@
 		<Cursor position="175" topLine="0" />
 	</File>
 	<File name="command_implementation.c" open="1" top="0" tabpos="11">
-		<Cursor position="1213" topLine="21" />
+		<Cursor position="1543" topLine="35" />
 	</File>
 	<File name="command_implementation.h" open="1" top="0" tabpos="12">
 		<Cursor position="273" topLine="0" />
@@ -38,7 +38,7 @@
 		<Cursor position="68" topLine="0" />
 	</File>
 	<File name="visual_system.c" open="1" top="0" tabpos="5">
-		<Cursor position="689" topLine="11" />
+		<Cursor position="689" topLine="0" />
 	</File>
 	<File name="visual_system.h" open="1" top="0" tabpos="6">
 		<Cursor position="107" topLine="0" />

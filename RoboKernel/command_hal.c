@@ -49,7 +49,7 @@ enum command_id_consts
   CMD_SENSORS,
   CMD_DEPTHMAP_TO_FILE,
   CMD_DEPTHMAP_IMPORT_TO_MAP,
-
+  CMD_CONVOLUTION_FILTER,
  /* ------------------ */
   CMD_TOTAL_CONSTS
 };
@@ -230,8 +230,23 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  sprintf(outptstr,"From %s : Identify Image - Camera %u , Start (%u,%u) , Size (%u,%u) .. ( NOT IMPLEMENTED )! \n",from,cmdi_1,cmdi_2,cmdi_3,cmdi_4,cmdi_5);
 
      break;
-
-
+     case CMD_CONVOLUTION_FILTER :
+                 sprintf(outptstr,"From %s : Apply Convolution Filter (%u) \n",from,cmdi_1);
+                 unsigned int table_size = cmdi_1;
+                 unsigned char * table;
+                 table = (unsigned char * ) malloc ( table_size * sizeof(unsigned char) );
+                 if ( table != 0 )
+                  {
+                    int i=0;
+                     while (i<table_size)
+                     {
+                         table[i] = InputParser_GetWordInt(ipc,2+i);
+                         ++i;
+                     }
+                    ConvolutionFilter(table,table_size);
+                    free(table);
+                  }
+     break;
 
      default :
        return 0;
@@ -285,8 +300,7 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SOBEL DERIVATIVE",16)==1) { chosen_command=CMD_SOBEL_N_DERIVATIVE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"REMEMBER IMAGE",14)==1) { chosen_command=CMD_REMEMBER_IMAGE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"IDENTIFY IMAGE",14)==1) { chosen_command=CMD_IDENTIFY_IMAGE; } else
-
-
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"CONVOLUTION FILTER",18)==1) { chosen_command=CMD_CONVOLUTION_FILTER; } else
         /*
          * >>>>>>>>>>>>>>>>>>>>>>>>>>!!!WRONG COMMAND!!!<<<<<<<<<<<<<<<<<<<<<<<<
          */

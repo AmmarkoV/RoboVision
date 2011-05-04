@@ -22,6 +22,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "DisparityDepthMap_Heuristics.h"
 #include "MovementRegistration.h"
 #include "VisCortexFilters.h"
+#include "VisCortexConvolutionFilters.h"
 #include "FeatureExtraction.h"
 #include "PatternRecognition.h"
 #include "FeatureTracking.h"
@@ -52,14 +53,14 @@ char * VISCORTEX_VER = "0.581";
           Linear Algebra.c
           Precalculations.c <- this is to speed up math that are cpu intensive
 
-     FILTERS / IMAGE PROCESSING TOOLS ( These are shared functions and are used to all other parts )
+     FILTERS / IMAGE PROCESSING TOOLS ( These are shared functions and are used in all other parts )
           VisCortexConvolutionFilters.c
           VisCortexFilters.c
           VisCortexHeuristics.c
           IntegralImageConversion.c
 
      MOVEMENT REGISTRATION
-          MovementRegistration.c <- This is complete , it doesn`t track features it just uoutputs on memory segments of the frame that have motion to help other functions
+          MovementRegistration.c <- This is complete , it doesn`t track features it just outputs on memory segments of the frame that have motion to help other functions
 
      DISPARITY MAPPING
           DisparityDepthMap.c <- This is in a good state :)
@@ -395,6 +396,16 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
 /*
  ----------------- DEPTH MAPPING FUNCTIONS ----------------------
 */
+
+
+ int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,unsigned char * table,unsigned int table_size)
+ {
+    // assuming table_size 9
+    return ConvolutionFilter9_3Byte(reg_in,reg_out,table);
+ }
+
+
+
 
 
 /*
