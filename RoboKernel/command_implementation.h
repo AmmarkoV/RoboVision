@@ -7,7 +7,7 @@ int PlaySound(char * sndname);
 void FullDepthMap(unsigned char write_to_file);
 void DrawMovement();
 void DrawNewPalette(char R,char G,char B,char threshold);
-void ConvolutionFilter(unsigned char * table,unsigned int table_size);
+void ConvolutionFilter(signed char * table,unsigned int table_size);
 void SobelNDerivative_in(int n);
 void CheckAlarm(unsigned int flow1,unsigned int flow2);
 void FindFeatures();

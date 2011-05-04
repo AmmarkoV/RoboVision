@@ -233,8 +233,8 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      case CMD_CONVOLUTION_FILTER :
                  sprintf(outptstr,"From %s : Apply Convolution Filter (%u) \n",from,cmdi_1);
                  unsigned int table_size = cmdi_1;
-                 unsigned char * table;
-                 table = (unsigned char * ) malloc ( table_size * sizeof(unsigned char) );
+                 signed char * table;
+                 table = (signed char * ) malloc ( table_size * sizeof(signed char) );
                  if ( table != 0 )
                   {
                     int i=0;

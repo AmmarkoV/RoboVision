@@ -398,7 +398,7 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
 */
 
 
- int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,unsigned char * table,unsigned int table_size)
+ int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,unsigned int table_size)
  {
     // assuming table_size 9
     return ConvolutionFilter9_3Byte(reg_in,reg_out,table);

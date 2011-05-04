@@ -30,19 +30,22 @@ char * InputParserC_Version()
 inline signed int Str2Int_internal(char * inpt,unsigned int start_from,unsigned int length)
 {
     if ( inpt == 0 ) { fprintf(stderr,"Null string to Str2IntInternal!\n"); return 0;}
-    int intresult,multiplier,curnum;
-    intresult=0,multiplier=1,curnum=0;
-    unsigned char error_flag; error_flag=0;
+    int intresult;
+    int multiplier;
+    int curnum;
+    unsigned char error_flag;
+    unsigned char trailing_sign_seek;
+    unsigned char positive_number;
     signed int i;
 
+    intresult=0,multiplier=1,curnum=0;
+    error_flag=0 , trailing_sign_seek=1 , positive_number=1;
     /*fprintf(stderr,"Converting to int string (%p) begining from %u and ending at %u ",inpt,start_from,start_from+length);*/
     for (i=start_from+length-1; i>=start_from; i--)
     {
-        if ( i < 0 ) { /*fprintf("Gone negative! %u \n",i);*/
-                       break; }
-        /*fprintf(stderr,"Translating %u , %c \n",i,inpt[i]);*/
-        curnum=(char) (inpt[i])-'0';
+        if ( i < 0 ) { /*fprintf("Gone negative! %u \n",i);*/ break; }
 
+        curnum=(char) (inpt[i])-'0';
         if ((curnum>=0)&(curnum<=9))
         {
             intresult=intresult+(multiplier*curnum);
@@ -52,9 +55,16 @@ inline signed int Str2Int_internal(char * inpt,unsigned int start_from,unsigned 
         {
             error_flag=1;
         }
+
+      if (trailing_sign_seek)
+       {
+          //fprintf(stderr,"Run to %c while searching for sign \n",inpt[i]);
+          if (inpt[i]=='+') { trailing_sign_seek=0; } else
+          if (inpt[i]=='-') { trailing_sign_seek=0; positive_number=0; }
+       }
     }
 
-
+    if (!positive_number) { intresult = intresult * (-1); }
     return intresult;
 }
 
