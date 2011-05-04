@@ -178,7 +178,7 @@ void  VisCortx_FullDepthMap();
 unsigned int  VisCortx_Get_DepthMapData(unsigned int typeofdata,unsigned int px,unsigned int py);
 unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int x,unsigned int y,unsigned int patch_x,unsigned int patch_y,struct PatchSignature * result);
 
- int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,unsigned int table_size);
+ int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,signed int divisor,unsigned int table_size);
 
 int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam);
 

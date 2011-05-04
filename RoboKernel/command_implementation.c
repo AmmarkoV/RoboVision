@@ -52,9 +52,10 @@ void DrawNewPalette(char R,char G,char B,char threshold)
  VisCortX_CopyFromVideoToVideoRegister(GENERAL_2,LAST_RIGHT_OPERATION);
 }
 
-void ConvolutionFilter(signed char * table,unsigned int table_size)
+void ConvolutionFilter(signed char * table,signed int divisor,unsigned int table_size)
 {
-  VisCortx_ConvolutionFilter(LEFT_EYE,LAST_LEFT_OPERATION,table,table_size);
+  VisCortx_ConvolutionFilter(LEFT_EYE,LAST_LEFT_OPERATION,table,divisor,table_size);
+  //VisCortX_CopyFromVideoToVideoRegister(GENERAL_2,LAST_LEFT_OPERATION);
 }
 
 void SobelNDerivative_in(int n)

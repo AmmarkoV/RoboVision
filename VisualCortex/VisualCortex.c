@@ -398,10 +398,21 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
 */
 
 
- int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,unsigned int table_size)
+ int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,signed int divisor,unsigned int table_size)
  {
     // assuming table_size 9
-    return ConvolutionFilter9_3Byte(reg_in,reg_out,table);
+    //CONVOLUTION FILTER(9,1,-1,0,1,0,0,0,1,0,-1)
+    //CONVOLUTION FILTER(9,1,1,1,1,1,5,1,1,1,1)
+    fprintf(stderr,"VisCortx_ConvolutionFilter called ");
+    CopyRegister(reg_in,GENERAL_2);
+    fprintf(stderr,"Step CopyRegister ");
+    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2,video_register[reg_in].size_x,video_register[reg_in].size_y);
+    fprintf(stderr,"Step ConvertRegisterFrom3ByteTo1Byte ");
+    ConvolutionFilter9_1Byte(GENERAL_2,reg_out,table,divisor);
+    ConvertRegisterFrom1ByteTo3Byte(reg_out,video_register[reg_in].size_x,video_register[reg_in].size_y);
+    fprintf(stderr,"Step ConvolutionFilter9_1Byte ");
+    fprintf(stderr," VisCortx_ConvolutionFilter Survived\n");
+    return 1;
  }
 
 

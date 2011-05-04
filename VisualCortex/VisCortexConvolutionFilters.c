@@ -21,11 +21,19 @@ signed int SumTable(signed char * table , signed int total_blocks)
 }
 
 
-int ConvolutionFilter9_1Byte(unsigned int monochrome_reg,unsigned int target_reg,signed char * table)
+
+
+
+int ConvolutionFilter9_1Byte(unsigned int monochrome_reg,unsigned int target_reg,signed char * table,signed int divisor)
 {
-    fprintf(stderr,"Convolution Filters should be implemented as seperable matrixes , and currently have no implementation on guarddog so a good implementation will come later \n");
-    return 0;
-    fprintf(stderr,"ConvolutionFilter9_1Byte not tested \n");
+   /*
+       -1 0 1
+        0 0 0
+        1 0-1 <-trying to implement this
+
+   */
+   // TODO TODO TODO TODO TODO
+
     if (!ThisIsA1ByteRegister(monochrome_reg)) { return 0; }
     video_register[target_reg].depth=1;
     // 3 x 3 = 9 :P
@@ -33,8 +41,7 @@ int ConvolutionFilter9_1Byte(unsigned int monochrome_reg,unsigned int target_reg
     unsigned char * cur_px=video_register[monochrome_reg].pixels;
     unsigned char * px=video_register[monochrome_reg].pixels;
 
-    signed int summed_table = SumTable(table,9);
-    if ( summed_table == 0 ) { fprintf(stderr,"Convolution filter called with a zero table\n"); return 0; }
+    if ( divisor == 0 ) { divisor = 1; }
     signed int cur_value ;
     unsigned int x=1,y=1;
 
@@ -44,29 +51,33 @@ int ConvolutionFilter9_1Byte(unsigned int monochrome_reg,unsigned int target_reg
     while ( y < video_register[monochrome_reg].size_y-1 )
      {
          x=1;
+         ++cur_px;
+         ++out_px;
+
 
          while ( x < video_register[monochrome_reg].size_x-1 )
           {
             px = cur_px - metrics[RESOLUTION_X];
 
-            cur_value   = *px * table[0]; ++px;
-            cur_value  += *px * table[1]; ++px;
-            cur_value  += *px * table[2]; ++px;
+            cur_value   = (signed int) *px * table[0]; ++px;
+            cur_value  += (signed int) *px * table[1]; ++px;
+            cur_value  += (signed int) *px * table[2]; ++px;
 
             px += metrics[RESOLUTION_X]-3;
-            cur_value  += *px * table[5]; --px;
-            cur_value  += *px * table[4]; --px;
-            cur_value  += *px * table[3]; --px;
+            cur_value  += (signed int) *px * table[5]; --px;
+            cur_value  += (signed int) *px * table[4]; --px;
+            cur_value  += (signed int) *px * table[3]; --px;
 
             px += metrics[RESOLUTION_X]-3;
-            cur_value  += *px * table[6]; ++px;
-            cur_value  += *px * table[7]; ++px;
-            cur_value  += *px * table[8]; ++px;
+            cur_value  += (signed int) *px * table[6]; ++px;
+            cur_value  += (signed int) *px * table[7]; ++px;
+            cur_value  += (signed int) *px * table[8]; ++px;
 
-            cur_value = cur_value / summed_table;
+            cur_value = (signed int) cur_value / divisor;
             px = px - metrics[RESOLUTION_X] - 2;
 
-            if ( cur_value < 0   ) { *out_px=255; } else
+
+            if ( cur_value < 0   ) { *out_px=0; } else
             if ( cur_value > 255 ) { *out_px=255; } else
                                    { *out_px=cur_value; }
 
@@ -74,6 +85,10 @@ int ConvolutionFilter9_1Byte(unsigned int monochrome_reg,unsigned int target_reg
             ++cur_px;
             ++x;
           }
+
+          out_px+=1; /*This because we go until 1 byte before the edge of the array*/
+          cur_px+=1; /*This because we go until 1 byte before the edge of the array*/
+
          ++y;
      }
 
@@ -99,7 +114,7 @@ int ConvolutionFilter9_3Byte(unsigned int rgb_reg,unsigned int target_reg,signed
     signed int summed_table = 9; //SumTable(table,9);
     fprintf(stderr,"Using table \n%i %i %i\n%i %i %i\n%i %i %i\n Each: 1/%i\n",table[0],table[1],table[2],table[3],table[4],table[5],table[6],table[7],table[8],summed_table);
 
-    if ( summed_table == 0 ) { summed_table=1; /*If zero we wont make any divisions :P */ return 0; }
+    if ( summed_table == 0 ) { summed_table=1; /*If zero we wont make any divisions :P */   }
     signed int cur_value_r , cur_value_g , cur_value_b  ;
     unsigned int x=1,y=1;
 
@@ -163,4 +178,3 @@ int ConvolutionFilter9_3Byte(unsigned int rgb_reg,unsigned int target_reg,signed
 
      return 1;
 }
-

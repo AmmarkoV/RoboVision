@@ -110,7 +110,6 @@ unsigned int HistogramPatch(struct Histogram *hist_data,unsigned char *img,unsig
 }
 
 
-
 void Monochrome(unsigned char * input_frame,int image_x,int image_y)
 {
   if (input_frame==0) {return;}
@@ -127,10 +126,10 @@ void Monochrome(unsigned char * input_frame,int image_x,int image_y)
  {
        r = px++; g = px++; b = px++;
 
-       col_med=  ( *r + *g + *b )/3;
-	   *r= (BYTE)col_med ;
+       col_med= ( *r + *g + *b )/3;
+*r= (BYTE)col_med ;
        *g=*r;
-	   *b=*r;
+*b=*r;
  }
 
  return;

@@ -232,6 +232,7 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      break;
      case CMD_CONVOLUTION_FILTER :
                  sprintf(outptstr,"From %s : Apply Convolution Filter (%u) \n",from,cmdi_1);
+                 signed int divisor = InputParser_GetWordInt(ipc,2);
                  unsigned int table_size = cmdi_1;
                  signed char * table;
                  table = (signed char * ) malloc ( table_size * sizeof(signed char) );
@@ -240,10 +241,10 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                     int i=0;
                      while (i<table_size)
                      {
-                         table[i] = InputParser_GetWordInt(ipc,2+i);
+                         table[i] = InputParser_GetWordInt(ipc,3+i);
                          ++i;
                      }
-                    ConvolutionFilter(table,table_size);
+                    ConvolutionFilter(table,divisor,table_size);
                     free(table);
                   }
      break;
