@@ -33,7 +33,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 
-char * VISCORTEX_VER = "0.581";
+char * VISCORTEX_VER = "0.582";
 
 /*
 
