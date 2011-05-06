@@ -401,6 +401,7 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
  int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,signed int divisor,unsigned int table_size)
  {
     // assuming table_size 9
+    //CONVOLUTION FILTER(9,6,-1,0,1,0,0,0,1,0,-1)
     //CONVOLUTION FILTER(9,1,-1,0,1,0,0,0,1,0,-1)
     //CONVOLUTION FILTER(9,1,1,1,1,1,5,1,1,1,1)
     fprintf(stderr,"VisCortx_ConvolutionFilter called ");

@@ -79,7 +79,7 @@ int ConvolutionFilter9_1Byte(unsigned int monochrome_reg,unsigned int target_reg
 
             if ( cur_value < 0   ) { *out_px=0; } else
             if ( cur_value > 255 ) { *out_px=255; } else
-                                   { *out_px=cur_value; }
+                                   { *out_px=(unsigned char) cur_value; }
 
             ++out_px;
             ++cur_px;

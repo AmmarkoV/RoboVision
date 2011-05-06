@@ -477,7 +477,6 @@ void ConvertRegisterFrom1ByteTo3Byte(int in_reg,int image_x,int image_y)
 {
   if (video_register[in_reg].pixels==0) {return;}
 
-  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
   if ( video_register[in_reg].depth == 1 ) { video_register[in_reg].depth = 3; } else
                                            {
                                              fprintf(stderr,"Error , ConvertRegisterFrom1ByteTo3Byte called with register of %u depth\n",video_register[in_reg].depth);
@@ -485,19 +484,15 @@ void ConvertRegisterFrom1ByteTo3Byte(int in_reg,int image_x,int image_y)
                                            }
 
  register BYTE *start_px = (BYTE *) video_register[in_reg].pixels;
- register BYTE *opx = (BYTE *) video_register[in_reg].pixels;
- register BYTE *px =  (BYTE *) video_register[in_reg].pixels;
- register BYTE *r;
- register BYTE *g;
- register BYTE *b;
+ register BYTE *opx      = (BYTE *) video_register[in_reg].pixels+metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+ register BYTE *px       = (BYTE *) video_register[in_reg].pixels+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
 
- while ( px < start_px+image_size)
+ while ( px >= start_px)
  {
-       r = px++; g = px++; b = px++;
-       *r=*opx;
-	   *g=*opx;
-	   *b=*opx;
-       ++opx;
+       *opx = *px;   --opx;
+       *opx = *px;   --opx;
+       *opx = *px;   --opx;
+       --px;
  }
  return;
 }
