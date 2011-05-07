@@ -118,13 +118,20 @@ void * KernelLoop(void *ptr )
         usleep(1000);
     }
 
+
   CloseSenses();
+
   go_to_sleep=2;
   return 0;
 }
 
 void StopRoboKernel()
 {
+
+    fprintf(stderr,"NOTE : Flushing consoleout.dat to prevent it from beeing refreshed over and over on github.. :P\n");
+    int i = system((const char *) "echo " " > memfs/public_html/consoleout.dat");
+    if ( i!=0 ) { fprintf(stderr,"It failed.. well , no big deal \n"); }
+
   go_to_sleep=1;
 }
 
