@@ -398,21 +398,22 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
 */
 
 
+
+
  int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,signed int divisor,unsigned int table_size)
  {
     // assuming table_size 9
     //CONVOLUTION FILTER(9,6,-1,0,1,0,0,0,1,0,-1)
     //CONVOLUTION FILTER(9,1,-1,0,1,0,0,0,1,0,-1)
     //CONVOLUTION FILTER(9,1,1,1,1,1,5,1,1,1,1)
-    fprintf(stderr,"VisCortx_ConvolutionFilter called ");
+    /*Testing*/
+    int image_x=video_register[reg_in].size_x;
+    int image_y=video_register[reg_in].size_y;
     CopyRegister(reg_in,GENERAL_2);
-    fprintf(stderr,"Step CopyRegister ");
-    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2,video_register[reg_in].size_x,video_register[reg_in].size_y);
-    fprintf(stderr,"Step ConvertRegisterFrom3ByteTo1Byte ");
+    GaussianBlur(GENERAL_2,image_x,image_y,0);
+    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2,image_x,image_y);
     ConvolutionFilter9_1Byte(GENERAL_2,reg_out,table,divisor);
-    ConvertRegisterFrom1ByteTo3Byte(reg_out,video_register[reg_in].size_x,video_register[reg_in].size_y);
-    fprintf(stderr,"Step ConvolutionFilter9_1Byte ");
-    fprintf(stderr," VisCortx_ConvolutionFilter Survived\n");
+    ConvertRegisterFrom1ByteTo3Byte(reg_out,image_x,image_y);
     return 1;
  }
 
@@ -455,10 +456,9 @@ void  VisCortx_AutoAddTrackPoints(unsigned int cam)
 {
  if (cam==0)
   {
-      PrepareCleanSobeledGaussian(LEFT_EYE,EDGES_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
-      ClearVideoRegister(GENERAL_1);
       ClearTrackPoints();
-      ExtractFeatures(100,video_register[EDGES_LEFT].pixels,video_register[GENERAL_1].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],0);
+      ExtractFeatures(LEFT_EYE,LAST_LEFT_OPERATION,100);
+      //ExtractFeatures(100,video_register[EDGES_LEFT].pixels,video_register[GENERAL_1].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],0);
   }
   //fprintf(stderr,"VisCortx_AutoAddingTrackPoint %u %u,%u : %u\n",cam,x,y,group);
  //
@@ -525,7 +525,6 @@ void  VisCortx_RenewAllTrackPoints()
 {
   if ( GetPointTrackList() == 0 ) { return; }
 
-  fprintf(stderr,"TODO : Add different levels of gaussian blur to track points! :P\n");
   unsigned int i=0;
   for (i=0; i<GetPointTrackList(); i++)
    {

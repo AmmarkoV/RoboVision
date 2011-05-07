@@ -70,7 +70,7 @@ void FindFeatures()
 {
   VisCortx_RemoveTimedoutTrackPoints(1);
   VisCortx_AutoAddTrackPoints(0);
- VisCortX_CopyFromVideoToVideoRegister(GENERAL_1,LAST_LEFT_OPERATION);
+  //VisCortX_CopyFromVideoToVideoRegister(GENERAL_1,LAST_LEFT_OPERATION);
   fprintf(stderr," FindFeatures() ok \n");
 }
 

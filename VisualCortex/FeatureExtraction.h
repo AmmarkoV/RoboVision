@@ -1,6 +1,6 @@
 #ifndef FEATUREEXTRACTION_H_INCLUDED
 #define FEATUREEXTRACTION_H_INCLUDED
 
-int ExtractFeatures(int max_features,unsigned char * edge_source,unsigned char * target,int image_x,int image_y,int monochrome);
+int ExtractFeatures(int rgb_reg,unsigned int target_reg,unsigned int max_features);
 
 #endif // FEATUREEXTRACTION_H_INCLUDED
