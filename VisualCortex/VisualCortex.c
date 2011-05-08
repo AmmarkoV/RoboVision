@@ -457,7 +457,7 @@ void  VisCortx_AutoAddTrackPoints(unsigned int cam)
  if (cam==0)
   {
       ClearTrackPoints();
-      ExtractFeatures(LEFT_EYE,LAST_LEFT_OPERATION,100);
+      ExtractFeatures(LEFT_EYE,LAST_LEFT_OPERATION,200);
       //ExtractFeatures(100,video_register[EDGES_LEFT].pixels,video_register[GENERAL_1].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],0);
   }
   //fprintf(stderr,"VisCortx_AutoAddingTrackPoint %u %u,%u : %u\n",cam,x,y,group);

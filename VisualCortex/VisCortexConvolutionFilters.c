@@ -26,14 +26,6 @@ signed int SumTable(signed char * table , signed int total_blocks)
 
 int ConvolutionFilter9_1Byte(unsigned int monochrome_reg,unsigned int target_reg,signed char * table,signed int divisor)
 {
-   /*
-       -1 0 1
-        0 0 0
-        1 0-1 <-trying to implement this
-
-   */
-   // TODO TODO TODO TODO TODO
-
     if (!ThisIsA1ByteRegister(monochrome_reg)) { return 0; }
     video_register[target_reg].depth=1;
     // 3 x 3 = 9 :P
@@ -91,15 +83,13 @@ int ConvolutionFilter9_1Byte(unsigned int monochrome_reg,unsigned int target_reg
 
          ++y;
      }
-
-
      return 1;
 }
 
 
 int ConvolutionFilter9_3Byte(unsigned int rgb_reg,unsigned int target_reg,signed char * table)
 {
-    fprintf(stderr,"Convolution Filters should be implemented as seperable matrixes , and currently have no implementation on guarddog so a good implementation will come later \n");
+    fprintf(stderr,"ConvolutionFilter9_3Byte is not tested yet and its disabled \n");
     return 0;
 
     if (!ThisIsA3ByteRegister(rgb_reg)) { return 0; }

@@ -17,13 +17,13 @@
 		<Cursor position="345" topLine="0" />
 	</File>
 	<File name="FeatureExtraction.c" open="1" top="0" tabpos="14">
-		<Cursor position="627" topLine="0" />
+		<Cursor position="1302" topLine="27" />
 	</File>
 	<File name="FeatureExtraction.h" open="1" top="0" tabpos="15">
 		<Cursor position="81" topLine="0" />
 	</File>
 	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
-		<Cursor position="149" topLine="21" />
+		<Cursor position="149" topLine="24" />
 	</File>
 	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
 		<Cursor position="12590" topLine="270" />
@@ -65,7 +65,7 @@
 		<Cursor position="179" topLine="0" />
 	</File>
 	<File name="VisCortexFilters.c" open="1" top="0" tabpos="3">
-		<Cursor position="16888" topLine="621" />
+		<Cursor position="13157" topLine="480" />
 	</File>
 	<File name="VisCortexFilters.h" open="1" top="0" tabpos="4">
 		<Cursor position="1976" topLine="0" />
@@ -82,8 +82,8 @@
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="2547" topLine="85" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
-		<Cursor position="13109" topLine="378" />
+	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
+		<Cursor position="16096" topLine="508" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
 		<Cursor position="5020" topLine="172" />

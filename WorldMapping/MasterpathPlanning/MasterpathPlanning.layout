@@ -17,7 +17,7 @@
 		<Cursor position="275" topLine="0" />
 	</File>
 	<File name="PathPlanningCore.c" open="1" top="0" tabpos="3">
-		<Cursor position="4374" topLine="216" />
+		<Cursor position="4328" topLine="65" />
 	</File>
 	<File name="PathPlanningCore.h" open="1" top="0" tabpos="4">
 		<Cursor position="703" topLine="0" />
@@ -35,6 +35,6 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="7075" topLine="175" />
+		<Cursor position="3064" topLine="67" />
 	</File>
 </CodeBlocks_layout_file>

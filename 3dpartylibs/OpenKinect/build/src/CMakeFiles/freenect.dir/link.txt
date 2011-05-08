@@ -1,1 +1,0 @@
-/usr/bin/gcc  -fPIC -Wall  -shared -Wl,-soname,libfreenect.so.0.0 -o ../lib/libfreenect.so.0.0.1 CMakeFiles/freenect.dir/core.c.o CMakeFiles/freenect.dir/tilt.c.o CMakeFiles/freenect.dir/cameras.c.o CMakeFiles/freenect.dir/usb_libusb10.c.o -lusb-1.0 
