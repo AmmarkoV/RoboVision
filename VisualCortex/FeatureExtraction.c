@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned int target_reg)
+int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned int target_reg,unsigned int cam_num)
 {
   int total_features_added=0;
 
@@ -22,65 +22,76 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
 
   if ( (edges==0) || ( target == 0 ) ) { return 0; }
 
- //Source
- register BYTE * source_p; register BYTE * source_end;
- //Target
- register BYTE * target_p; register BYTE * target_end;
 
 
- source_p =  (BYTE *)  edges;
- source_end = ( (BYTE *)    edges + (image_x * (image_y-1)  ) + ((image_x-1)) );
+ unsigned x_start = 10;
+ unsigned y_start = 10;
+ unsigned x_end = image_x-10;
+ unsigned y_end = image_y-10;
 
- target_p =  (BYTE *)  target;
- target_end = ( (BYTE *)    target + (image_x * (image_y-1) ) + ((image_x-1)) );
+
+ register BYTE * source_p; register BYTE * source_end; //Source
+ register BYTE * target_p; register BYTE * target_end; //Target
+
+
+
+ source_p =   ( (BYTE *) edges + (image_x * y_start) + (x_start) );
+ source_end = ( (BYTE *) edges + (image_x * (y_end-1)  ) + (x_end-1) );
+
+ target_p =   ( (BYTE *) target + (image_x * y_start) + (x_start) );
+ target_end = ( (BYTE *) target + (image_x * (y_end-1) ) + (x_end-1) );
+
 
 
  memset(target,0,image_x*image_y); // CLEAR TARGET
 
 
- unsigned x_start =10;
- unsigned y_start =10;
- unsigned x_end = image_x-10;
- unsigned y_end = image_y-10;
 
+ unsigned int INTENSITY_THRESHOLD_LOW = 17;
 
  unsigned int line_width = image_x;
  unsigned int skip_step_abs = 40;
  unsigned int skip_step =  skip_step_abs;
- unsigned int x=0,y=1;
+ unsigned int x=x_start,y=y_start;
 
 
- while (source_p<source_end)
+ while ( (source_p<source_end) && ( y < y_end ) )
  {
-	  source_p++;
-      target_p++;
-      ++x;
+	  ++x; source_p++; target_p++;
 
-	  if (*source_p>20)
+
+	  if ( *source_p>=INTENSITY_THRESHOLD_LOW )
 	   {
-
 	     *target_p=255;
 
-         if ( x >= image_x )
-           { x=x-image_x;
-             ++y;
+         if ( x >= x_end )
+           {
+             x=x_start; ++y;
+             source_p+=image_x-x_end; target_p+=image_x-x_end;
+             source_p+=x_start; target_p+=x_start;
 
-             ++y;   source_p+=line_width;   target_p+=line_width;
-             ++y;   source_p+=line_width;   target_p+=line_width;
+             ++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
+             ++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
            }
 
-         AddPointToTrackList(0,x,y,0);
+         AddPointToTrackList(cam_num,x,y,0);
          ++total_features_added;
-         if ( total_features_added >= max_features ) { /*Cannot add more features .. :) */ return 1; }
+         //if ( total_features_added >= max_features ) { fprintf(stderr,"Cannot add more features .. :) \n"); return 1; }
+	   } else
+	   {
+         if ( x >= x_end )
+           {
+             x=x_start; ++y;
+             source_p+=image_x-x_end; target_p+=image_x-x_end;
+             source_p+=x_start; target_p+=x_start;
+
+             ++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
+             ++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
+           }
+
+
 	   }
 
-     if ( x >= image_x )
-           { x=x-image_x;
-             ++y;
-
-             ++y;   source_p+=line_width;   target_p+=line_width;
-             ++y;   source_p+=line_width;   target_p+=line_width;
-           }
  }
 
 
@@ -97,7 +108,7 @@ int ExtractFeaturesOpenSURF()
 }
 
 
-int ExtractFeatures(int rgb_reg,unsigned int target_reg,unsigned int max_features)
+int ExtractFeatures(int rgb_reg,unsigned int target_reg,unsigned int max_features,unsigned int cam_num)
 {
         //CONVOLUTION FILTER(9,1,-1,0,1,0,0,0,1,0,-1)
     //CONVOLUTION FILTER(9,1,1,1,1,1,5,1,1,1,1)
@@ -111,12 +122,14 @@ int ExtractFeatures(int rgb_reg,unsigned int target_reg,unsigned int max_feature
     GaussianBlur(GENERAL_2,image_x,image_y,0);
     ConvertRegisterFrom3ByteTo1Byte(GENERAL_2,image_x,image_y);
     ConvolutionFilter9_1Byte(GENERAL_2,GENERAL_3,table,divisor);
-    ExtractFeatures_MyAlgorithm(max_features,GENERAL_3,target_reg);
-//<- This is not needed
-    CopyRegister(GENERAL_3,LAST_RIGHT_OPERATION);
-    ConvertRegisterFrom1ByteTo3Byte(LAST_RIGHT_OPERATION,image_x,image_y);
-// <- This is not needed
+    ExtractFeatures_MyAlgorithm(max_features,GENERAL_3,target_reg,cam_num);
     ConvertRegisterFrom1ByteTo3Byte(target_reg,image_x,image_y);
+
+/*
+  THIS CODE OUTPUTS SECOND DERIVATIVE TO THE RIGHT OPERATION SCREEN
+  //  CopyRegister(GENERAL_3,LAST_RIGHT_OPERATION);
+  //  ConvertRegisterFrom1ByteTo3Byte(LAST_RIGHT_OPERATION,image_x,image_y);
+*/
 
     return 1;
 }

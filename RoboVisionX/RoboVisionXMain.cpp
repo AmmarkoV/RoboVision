@@ -314,6 +314,18 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     if ( draw_on == 0 ) { DrawFeeds->SetValue(false); fprintf(stderr,"Switching off Video Drawing\n"); } else
                         { DrawFeeds->SetValue(true);  fprintf(stderr,"Switching on Video Drawing\n"); }
 */
+    feed_0_x=10;
+    feed_0_y=15;
+
+    feed_1_x=feed_0_x+default_feed->GetWidth()+10;
+    feed_1_y=15;
+
+    feed_2_x=feed_0_x;
+    feed_2_y=feed_0_y+default_feed->GetHeight()+10;
+
+    feed_3_x=feed_1_x;
+    feed_3_y=feed_2_y;
+
     IssueCommand((char *)"Say(Robo Vision X started!)",0,0,(char *)"GUI");
 }
 
@@ -358,26 +370,26 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
      if ( !DrawFeeds->IsChecked() ) { return ; }
     wxPaintDC dc(this);
 
-     int x=10;
-     int y=15;
+    // int x=10;
+     //int y=15;
      //FEED 1
-     dc.DrawBitmap(*live_feeds[0].bmp,x,y,true);
+     dc.DrawBitmap(*live_feeds[0].bmp,feed_0_x,feed_0_y,true);
 
 
-     x+=default_feed->GetWidth()+10;
+     //x+=default_feed->GetWidth()+10;
      //FEED 2
-     dc.DrawBitmap(*live_feeds[1].bmp,x,y,true);
+     dc.DrawBitmap(*live_feeds[1].bmp,feed_1_x,feed_1_y,true);
 
 
-     x=10;
-     y+=default_feed->GetHeight()+10;
+     //x=10;
+     //y+=default_feed->GetHeight()+10;
      //FEED 3
-     dc.DrawBitmap(*live_feeds[2].bmp,x,y,true);
+     dc.DrawBitmap(*live_feeds[2].bmp,feed_2_x,feed_2_y,true);
 
 
-     x+=default_feed->GetWidth()+10;
+     //x+=default_feed->GetWidth()+10;
      //FEED 4
-     dc.DrawBitmap(*live_feeds[3].bmp,x,y,true);
+     dc.DrawBitmap(*live_feeds[3].bmp,feed_3_x,feed_3_y,true);
 
      if ( dpth_on == 1 )
      {
@@ -449,7 +461,17 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
         dc.SetBrush(*wxTRANSPARENT_BRUSH);
         for ( i=0; i<VisCortx_GetTrackedPoints(); i++ )
          {
-            dc.DrawRectangle(10+VisCortx_GetTrackPoint(1,i),15+VisCortx_GetTrackPoint(2,i),5,5);
+            if (VisCortx_GetTrackPoint(3,i) == 0 )
+              {
+                  //LEFT CAMERA
+                  dc.DrawRectangle(feed_0_x+VisCortx_GetTrackPoint(1,i),feed_0_y+VisCortx_GetTrackPoint(2,i),5,5);
+              } else
+            if (VisCortx_GetTrackPoint(3,i) == 1 )
+              {
+                  //RIGHT CAMERA
+                  dc.DrawRectangle(feed_1_x+VisCortx_GetTrackPoint(1,i),feed_1_y+VisCortx_GetTrackPoint(2,i),5,5);
+              }
+
          }
      }
 
@@ -622,8 +644,8 @@ void RoboVisionXFrame::OnMotion(wxMouseEvent& event)
            fprintf(stderr,"Opening Remember Image segment dialog\n");
              RememberImage* RIFrame = new RememberImage(0);
              RIFrame->camera = LEFT_EYE;
-             RIFrame->patch_x =  DepthMap ( 4 , dpth_x , dpth_y );;
-             RIFrame->patch_y =  DepthMap ( 5 , dpth_x , dpth_y );;
+             RIFrame->patch_x =  DepthMap ( 4 , dpth_x , dpth_y );
+             RIFrame->patch_y =  DepthMap ( 5 , dpth_x , dpth_y );
              RIFrame->patch_width = DepthMap ( 8 , dpth_x , dpth_y );
              RIFrame->patch_height = DepthMap ( 9 , dpth_x , dpth_y );
              VisCortx_GetPatchDescriptor(RIFrame->camera,RIFrame->patch_x,RIFrame->patch_y,RIFrame->patch_width,RIFrame->patch_height,&RIFrame->sig);

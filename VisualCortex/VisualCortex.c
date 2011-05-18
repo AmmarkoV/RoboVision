@@ -452,16 +452,23 @@ void  VisCortx_AddTrackPoint(unsigned int cam,unsigned int x,unsigned int y,unsi
   AddPointToTrackList(cam,x-1,y-1,group);
 }
 
+void VisCortxClearTrackPoints()
+{
+      ClearTrackPoints();
+}
+
 void  VisCortx_AutoAddTrackPoints(unsigned int cam)
 {
  if (cam==0)
   {
-      ClearTrackPoints();
-      ExtractFeatures(LEFT_EYE,LAST_LEFT_OPERATION,200);
+      ExtractFeatures(LEFT_EYE,LAST_LEFT_OPERATION,200,0);
       //ExtractFeatures(100,video_register[EDGES_LEFT].pixels,video_register[GENERAL_1].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],0);
+  } else
+  if (cam==1)
+  {
+      ExtractFeatures(RIGHT_EYE,LAST_RIGHT_OPERATION,200,1);
   }
-  //fprintf(stderr,"VisCortx_AutoAddingTrackPoint %u %u,%u : %u\n",cam,x,y,group);
- //
+
  fprintf(stderr,"VisCortx_AutoAddTrackPoints ok\n");
  return;
 }

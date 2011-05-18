@@ -35,6 +35,9 @@ class RoboVisionXFrame: public wxFrame
         void RedrawWindow();
         void DrawPatchComp(unsigned int basedon,unsigned int x,unsigned int y);
         void PrintStats();
+
+        int feed_0_x,feed_0_y,feed_1_x,feed_1_y,feed_2_x,feed_2_y,feed_3_x,feed_3_y;
+
     private:
 
         //(*Handlers(RoboVisionXFrame)

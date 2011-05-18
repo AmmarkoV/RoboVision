@@ -4,8 +4,8 @@
 	<File name="CortexSettings.cpp" open="1" top="0" tabpos="7">
 		<Cursor position="18575" topLine="290" />
 	</File>
-	<File name="CortexSettings.h" open="1" top="1" tabpos="8">
-		<Cursor position="283" topLine="0" />
+	<File name="CortexSettings.h" open="1" top="0" tabpos="8">
+		<Cursor position="229" topLine="0" />
 	</File>
 	<File name="FeedScreenMemory.cpp" open="1" top="0" tabpos="5">
 		<Cursor position="4871" topLine="141" />
@@ -25,8 +25,8 @@
 	<File name="RoboVisionXApp.h" open="1" top="0" tabpos="4">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="RoboVisionXMain.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="18902" topLine="318" />
+	<File name="RoboVisionXMain.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="19651" topLine="360" />
 	</File>
 	<File name="RoboVisionXMain.h" open="1" top="0" tabpos="2">
 		<Cursor position="6377" topLine="0" />

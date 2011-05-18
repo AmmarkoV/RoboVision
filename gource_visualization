@@ -1,0 +1,3 @@
+#!/bin/bash
+gource
+exit 0

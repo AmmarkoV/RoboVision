@@ -184,6 +184,7 @@ int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam);
 
 unsigned int  VisCortx_GetTrackedPoints();
 void  VisCortx_AddTrackPoint(unsigned int cam,unsigned int x,unsigned int y,unsigned int group);
+void VisCortxClearTrackPoints();
 void  VisCortx_AutoAddTrackPoints(unsigned int cam);
 void  VisCortx_RemoveTimedoutTrackPoints(unsigned int timeout);
 unsigned int  VisCortx_GetTrackPoint(unsigned int dat,unsigned int trackpoint);
