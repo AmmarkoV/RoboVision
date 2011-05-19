@@ -114,8 +114,8 @@ int CopyRegister(unsigned int source,unsigned int target);
 int ThisIsA3ByteRegister(int reg);
 int ThisIsA1ByteRegister(int reg);
 
-void ConvertRegisterFrom3ByteTo1Byte(int in_reg,int image_x,int image_y);
-void ConvertRegisterFrom1ByteTo3Byte(int in_reg,int image_x,int image_y);
+void ConvertRegisterFrom3ByteTo1Byte(int in_reg);
+void ConvertRegisterFrom1ByteTo3Byte(int in_reg);
 
 int PrintRegister(char * filename,unsigned int reg_num);
 int PrintExtraLargeRegister(char * filename,unsigned int reg_num);

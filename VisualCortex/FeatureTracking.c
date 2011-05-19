@@ -242,7 +242,7 @@ unsigned int GetPointTrackList()
 
 void ExecuteTrackPoint(unsigned int point_num)
 {
-    /*
+/*
   const int FAIL_IF_SCORE_OVER=PATCH_SIZE*PATCH_SIZE*40;//35;
   struct ImageRegion track_buf;
   track_buf.x1=0; track_buf.y1=0;
@@ -289,7 +289,7 @@ void ExecuteTrackPoint(unsigned int point_num)
       this_buf.x1=x;
 	  this_buf.x2=x+PATCH_SIZE;
 
-	  if (PatchHasMovement(&this_buf,video_register[MOVEMENT_LEFT].pixels,video_register[GROUP_MOVEMENT_LEFT].pixels))
+	 // if (PatchHasMovement(&this_buf,video_register[MOVEMENT_LEFT].pixels,video_register[GROUP_MOVEMENT_LEFT].pixels))
 	  { //PATCH MOVEMENT ara pithanon na metakinithikame ekei!
         score=PatchDistanceCompare_RGB(&track_buf,&this_buf,track_mem[point_num].now_block,video_register[LEFT_EYE].pixels,FAIL_IF_SCORE_OVER,&edges_counted);
 	    if (score>=FAIL_IF_SCORE_OVER) { // DEN KANOUME TPT
@@ -341,5 +341,5 @@ void ExecuteTrackPoint(unsigned int point_num)
 								  }
 
   }
-  */
+*/
 }

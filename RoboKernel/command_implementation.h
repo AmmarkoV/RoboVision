@@ -11,6 +11,7 @@ void ConvolutionFilter(signed char * table,signed int divisor,unsigned int table
 void SobelNDerivative_in(int n);
 void CheckAlarm(unsigned int flow1,unsigned int flow2);
 void FindFeatures();
+void GetFundamentalMatrix();
 void DrawFeatures();
 void Panoramic();
 void SnapshotWithTimeStamp();

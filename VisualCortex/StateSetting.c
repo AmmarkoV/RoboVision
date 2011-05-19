@@ -2,6 +2,7 @@
 #include "VisionMemory.h"
 #include "FaceDetection.h"
 #include "IntegralImageConversion.h"
+#include "FeatureLists.h"
 #include <math.h>
 
 unsigned int SetCamerasGeometry(float distance_between_cameras,float diagonal_field_of_view,float horizontal_field_of_view,float vertical_field_of_view)
@@ -66,6 +67,7 @@ unsigned int InitializeEverything(unsigned int res_x,unsigned int res_y)
 
    InitFaceRecognition(res_x,res_y);
     int i= InitVisionMemory(res_x,res_y);
+
 
     VisCortx_SelfCheck();
     return  i;

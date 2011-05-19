@@ -219,7 +219,7 @@ void DefaultSettings()
     settings[DEPTHMAP_STARTLEFT_X]=15;
     settings[DEPTHMAP_DETAIL]=6;
     settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=40;
-    settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=180;
+    settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=220;
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_OFFSET_UP]=2;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=2;
@@ -243,6 +243,10 @@ void DefaultSettings()
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=40;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=20;
     settings[PATCH_HIST_THRESHOLD_R]=12; settings[PATCH_HIST_THRESHOLD_G]=12; settings[PATCH_HIST_THRESHOLD_B]=12;
+
+    settings[PATCH_TRACKING_WIDTH]=19;
+    settings[PATCH_TRACKING_HEIGHT]=19;
+
 
     settings[MOVEMENT_PATCH_SENSITIVITY]=7;
     settings[MOVEMENT_R_THRESHOLD]=45; settings[MOVEMENT_G_THRESHOLD]=45;   settings[MOVEMENT_B_THRESHOLD]=45;
@@ -438,7 +442,7 @@ int CopyRegister(unsigned int source,unsigned int target)
 
 
 
-void ConvertRegisterFrom3ByteTo1Byte(int in_reg,int image_x,int image_y)
+void ConvertRegisterFrom3ByteTo1Byte(int in_reg)
 {
   if (video_register[in_reg].pixels==0) {return;}
   int col_med;
@@ -473,7 +477,7 @@ void ConvertRegisterFrom3ByteTo1Byte(int in_reg,int image_x,int image_y)
 }
 
 
-void ConvertRegisterFrom1ByteTo3Byte(int in_reg,int image_x,int image_y)
+void ConvertRegisterFrom1ByteTo3Byte(int in_reg)
 {
   if (video_register[in_reg].pixels==0) {return;}
 

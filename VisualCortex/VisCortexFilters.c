@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 #include "VisCortexFilters.h"
+#include "VisCortexConvolutionFilters.h"
 #include "Precalculations.h"
 #include "FeatureTracking.h"
 #include <stdlib.h>
@@ -192,7 +193,7 @@ void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned 
 
 }
 
-void KillPixelsBetween(unsigned int image_reg,int image_x,int image_y,int low_threshold,int high_threshold)
+void KillPixelsBetween(unsigned int image_reg,int low_threshold,int high_threshold)
 {
  unsigned char * image = video_register[image_reg].pixels;
  if (image==0) {return;}
@@ -233,7 +234,7 @@ void KillPixelsBetween(unsigned int image_reg,int image_x,int image_y,int low_th
  return;
 }
 
-void KillPixelsBelow(unsigned int image_reg,int image_x,int image_y,int threshold)
+void KillPixelsBelow(unsigned int image_reg,int threshold)
 {
  unsigned char * image = video_register[image_reg].pixels;
  if (image==0) {return;}
@@ -275,17 +276,19 @@ void KillPixelsBelow(unsigned int image_reg,int image_x,int image_y,int threshol
 }
 
 
-void Kill3PixelsBelow(unsigned int image_reg,int image_x,int image_y,int threshold)
+void Kill3PixelsBelow(unsigned int image_reg,int threshold)
 // LIKE KILLPIXELSBELOW , BUT WHENEVER EITHER A R , G or B PIXEL IS FOUND UNDER THRESHOLD IT WILL WIPE OUT ALL OF THE COLOR CHANNELS
 // IN THE PIXEL!
 {
  unsigned char * image = video_register[image_reg].pixels;
+  int image_x=video_register[image_reg].size_x;
+  int image_y=video_register[image_reg].size_y;
  if (image==0) {return;}
  unsigned int image_depth = video_register[image_reg].depth;
 
 if ( image_depth == 1 )
  {
-     KillPixelsBelow(image_reg,image_x,image_y,threshold);
+     KillPixelsBelow(image_reg,threshold);
      return;
  }
 
@@ -309,7 +312,7 @@ if ( image_depth == 1 )
 }
 
 
-void ReducePalette(unsigned int image_reg,int image_x,int image_y,int new_palette)
+void ReducePalette(unsigned int image_reg,int new_palette)
 {
  if (!ThisIsA3ByteRegister(image_reg)) { return; }
  unsigned char * image = video_register[image_reg].pixels;
@@ -338,10 +341,12 @@ void ReducePalette(unsigned int image_reg,int image_x,int image_y,int new_palett
 
 
 
-BOOLEAN  Sobel(unsigned int image_reg,int image_x,int image_y)
+int  Sobel(unsigned int image_reg)
 {
   if (!ThisIsA3ByteRegister(image_reg)) { return 0; }
   unsigned char * image = video_register[image_reg].pixels;
+  int image_x=video_register[image_reg].size_x;
+  int image_y=video_register[image_reg].size_y;
   video_register[image_reg].depth=1;
   unsigned int x=0,y=0;
   unsigned int x1=1,y1=1,x2=image_x,y2=image_y;
@@ -420,11 +425,13 @@ return (1);
 }
 
 
-BOOLEAN SobelFromSource(unsigned int source_reg,unsigned int target_reg,int image_x,int image_y)
+int SobelFromSource(unsigned int source_reg,unsigned int target_reg)
 {
   if (!ThisIsA3ByteRegister(source_reg)) { return 0; }
   unsigned char * source = video_register[source_reg].pixels;
   unsigned char * target = video_register[target_reg].pixels;
+  int image_x=video_register[source_reg].size_x;
+  int image_y=video_register[source_reg].size_y;
   video_register[target_reg].depth=1;
   unsigned int x=0,y=0;
   unsigned int x1=1,y1=1,x2=image_x,y2=image_y;
@@ -498,13 +505,23 @@ return (1);
 
 
 
-BOOLEAN SobelNDegreeDerivative(int n,unsigned int source_reg,unsigned int target_reg,int image_x,int image_y)
+int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int target_reg)
 {
-    SobelFromSource(source_reg,target_reg,image_x,image_y);
+    if (ThisIsA3ByteRegister(source_reg)) { fprintf(stderr,"SecondDerivative Intensities requires monochrome image conversion"); return 0; }
+
+    signed char table[9]={-1,0,1,0,0,0,1,0,-1};
+    signed int divisor = 3;
+
+    return  ConvolutionFilter9_1Byte(source_reg,target_reg,table,divisor);
+}
+
+int SobelNDegreeDerivative(int n,unsigned int source_reg,unsigned int target_reg)
+{
+    SobelFromSource(source_reg,target_reg);
     int i=1;
     while ( i < n )
      {
-         Sobel(target_reg,image_x,image_y);
+         Sobel(target_reg);
          ++i;
      }
     return 1;
@@ -512,11 +529,13 @@ BOOLEAN SobelNDegreeDerivative(int n,unsigned int source_reg,unsigned int target
 
 
 
-BOOLEAN GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int image_x,int image_y,BOOLEAN monochrome)
+int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int monochrome)
 {
   if (!ThisIsA3ByteRegister(source_reg)) { return 0; }
   unsigned char * source = video_register[source_reg].pixels;
   unsigned char * target = video_register[target_reg].pixels;
+   int image_x=video_register[source_reg].size_x;
+   int image_y=video_register[source_reg].size_y;
   video_register[target_reg].depth = 3;
   int effW = (image_x*3);
 
@@ -628,9 +647,9 @@ BOOLEAN GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,i
  return (1);
 }
 
-BOOLEAN GaussianBlur(unsigned int image_reg,int image_x,int image_y,BOOLEAN monochrome)
+int GaussianBlur(unsigned int image_reg,int monochrome)
 {
-  return GaussianBlurFromSource(image_reg,image_reg,image_x,image_y,monochrome);
+  return GaussianBlurFromSource(image_reg,image_reg,monochrome);
 }
 
 unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_array,unsigned int point_x,unsigned int point_y,unsigned int size_x,unsigned int size_y,unsigned char size_rgb)
@@ -651,15 +670,15 @@ unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_arr
 
 void PrepareCleanSobeledGaussian(unsigned int rgb_image_reg,unsigned int target_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
 {
-    GaussianBlurFromSource(rgb_image_reg,target_image_reg,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],1);
-	Sobel(target_image_reg,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-	KillPixelsBetween(target_image_reg,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],kill_lower_edges_threshold,kill_higher_edges_threshold);
+    GaussianBlurFromSource(rgb_image_reg,target_image_reg,1);
+	Sobel(target_image_reg);
+	KillPixelsBetween(target_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
 }
 
 
 int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated)
 {
     /*TODO HERE ADD CALIBRATION CODE*/
-    return GaussianBlurFromSource(rgb_image,rgb_calibrated,video_register[rgb_image].size_x,video_register[rgb_image].size_y,0);
+    return GaussianBlurFromSource(rgb_image,rgb_calibrated,0);
 }
 

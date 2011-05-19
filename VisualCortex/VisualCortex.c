@@ -407,13 +407,11 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
     //CONVOLUTION FILTER(9,1,-1,0,1,0,0,0,1,0,-1)
     //CONVOLUTION FILTER(9,1,1,1,1,1,5,1,1,1,1)
     /*Testing*/
-    int image_x=video_register[reg_in].size_x;
-    int image_y=video_register[reg_in].size_y;
     CopyRegister(reg_in,GENERAL_2);
-    GaussianBlur(GENERAL_2,image_x,image_y,0);
-    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2,image_x,image_y);
+    GaussianBlur(GENERAL_2,0);
+    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2);
     ConvolutionFilter9_1Byte(GENERAL_2,reg_out,table,divisor);
-    ConvertRegisterFrom1ByteTo3Byte(reg_out,image_x,image_y);
+    ConvertRegisterFrom1ByteTo3Byte(reg_out);
     return 1;
  }
 
@@ -441,6 +439,12 @@ int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam)
 /*
  ----------------- FEATURE TRACKING ----------------------
 */
+int VisCortxGetFundamentalMatrix(float * table,int size_of_table)
+{
+    return ComputeFundamentalMatrix();
+}
+
+
 unsigned int  VisCortx_GetTrackedPoints()
 {
   return GetPointTrackList();
@@ -555,7 +559,7 @@ void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,
 
 int SobelNDerivative(int n)
 {
-    return SobelNDegreeDerivative(n,LEFT_EYE,LAST_LEFT_OPERATION,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+    return SobelNDegreeDerivative(n,LEFT_EYE,LAST_LEFT_OPERATION);
 }
 
 /*

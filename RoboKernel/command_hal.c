@@ -47,6 +47,7 @@ enum command_id_consts
   CMD_PLAYBACK_SNAPSHOT,
   CMD_PLAYBACK_LIVE,
   CMD_SENSORS,
+  CMD_FUNDAMENTAL_MATRIX,
   CMD_DEPTHMAP_TO_FILE,
   CMD_DEPTHMAP_IMPORT_TO_MAP,
   CMD_CONVOLUTION_FILTER,
@@ -248,6 +249,12 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                     free(table);
                   }
      break;
+     case CMD_FUNDAMENTAL_MATRIX :
+            GetFundamentalMatrix();
+
+     break;
+
+
 
      default :
        return 0;
@@ -302,6 +309,8 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"REMEMBER IMAGE",14)==1) { chosen_command=CMD_REMEMBER_IMAGE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"IDENTIFY IMAGE",14)==1) { chosen_command=CMD_IDENTIFY_IMAGE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"CONVOLUTION FILTER",18)==1) { chosen_command=CMD_CONVOLUTION_FILTER; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"FUNDAMENTAL MATRIX",18)==1) { chosen_command=CMD_FUNDAMENTAL_MATRIX; } else
+
         /*
          * >>>>>>>>>>>>>>>>>>>>>>>>>>!!!WRONG COMMAND!!!<<<<<<<<<<<<<<<<<<<<<<<<
          */

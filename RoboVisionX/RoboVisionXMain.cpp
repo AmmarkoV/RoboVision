@@ -403,14 +403,14 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
        wxPen red(wxColour(255,0,0),1,wxSOLID);
        dc.SetPen(red);
        dc.SetBrush(*wxTRANSPARENT_BRUSH);
-       dc.DrawRectangle(10+x1,15+y1,sizex,sizey);
+       dc.DrawRectangle(feed_0_x+x1,feed_0_y+y1,sizex,sizey);
        dc.DrawRectangle(mouse_x,mouse_y-250,3,3);
        dc.DrawRectangle(mouse_x,mouse_y,3,3);
 
 
        x1 = DepthMap ( 6 , dpth_x , dpth_y );
        y1 = DepthMap ( 7 , dpth_x , dpth_y );
-       dc.DrawRectangle(10+default_feed->GetWidth()+10+x1,15+y1,sizex,sizey);
+       dc.DrawRectangle(feed_1_x+x1,feed_1_y+y1,sizex,sizey);
 
        wxString msg; msg.clear();
        msg<<wxT("Left-Right-Mouse X/Y : ");

@@ -47,6 +47,11 @@ enum VisCortxSettings
    PATCH_COMPARISON_END,
    PATCH_HIST_THRESHOLD_R, PATCH_HIST_THRESHOLD_G , PATCH_HIST_THRESHOLD_B,
 
+   PATCH_TRACKING_WIDTH,
+   PATCH_TRACKING_HEIGHT,
+
+
+
    MOVEMENT_PATCH_SENSITIVITY,
 
    MOVEMENT_R_THRESHOLD, MOVEMENT_G_THRESHOLD , MOVEMENT_B_THRESHOLD ,
@@ -149,6 +154,7 @@ enum VisCortxExtraLargeRegisters
     EXTRA_LARGE_REGISTERS_COUNT
 };
 
+
 char *  VisCortx_Version();
 void VisCortx_SetTime(unsigned int thetime);
 unsigned int VisCortx_GetTime();
@@ -182,6 +188,7 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
 
 int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam);
 
+int VisCortxGetFundamentalMatrix(float * table,int size_of_table);
 unsigned int  VisCortx_GetTrackedPoints();
 void  VisCortx_AddTrackPoint(unsigned int cam,unsigned int x,unsigned int y,unsigned int group);
 void VisCortxClearTrackPoints();

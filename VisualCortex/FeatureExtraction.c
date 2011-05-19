@@ -24,10 +24,10 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
 
 
 
- unsigned x_start = 10;
- unsigned y_start = 10;
- unsigned x_end = image_x-10;
- unsigned y_end = image_y-10;
+ unsigned x_start = 15;
+ unsigned y_start = 15;
+ unsigned x_end = image_x-15;
+ unsigned y_end = image_y-15;
 
 
  register BYTE * source_p; register BYTE * source_end; //Source
@@ -47,7 +47,7 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
 
 
 
- unsigned int INTENSITY_THRESHOLD_LOW = 17;
+ unsigned int INTENSITY_THRESHOLD_LOW = 16;
 
  unsigned int line_width = image_x;
  unsigned int skip_step_abs = 40;
@@ -110,20 +110,12 @@ int ExtractFeaturesOpenSURF()
 
 int ExtractFeatures(int rgb_reg,unsigned int target_reg,unsigned int max_features,unsigned int cam_num)
 {
-        //CONVOLUTION FILTER(9,1,-1,0,1,0,0,0,1,0,-1)
-    //CONVOLUTION FILTER(9,1,1,1,1,1,5,1,1,1,1)
-    /*Testing*/
-    int image_x=video_register[rgb_reg].size_x;
-    int image_y=video_register[rgb_reg].size_y;
-    signed char table[9]={-1,0,1,0,0,0,1,0,-1};
-    signed int divisor = 3;
-
     CopyRegister(rgb_reg,GENERAL_2);
-    GaussianBlur(GENERAL_2,image_x,image_y,0);
-    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2,image_x,image_y);
-    ConvolutionFilter9_1Byte(GENERAL_2,GENERAL_3,table,divisor);
+    GaussianBlur(GENERAL_2,0);
+    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2);
+    SecondDerivativeIntensitiesFromSource(GENERAL_2,GENERAL_3);
     ExtractFeatures_MyAlgorithm(max_features,GENERAL_3,target_reg,cam_num);
-    ConvertRegisterFrom1ByteTo3Byte(target_reg,image_x,image_y);
+    ConvertRegisterFrom1ByteTo3Byte(target_reg);
 
 /*
   THIS CODE OUTPUTS SECOND DERIVATIVE TO THE RIGHT OPERATION SCREEN

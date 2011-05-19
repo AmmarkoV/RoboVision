@@ -38,6 +38,9 @@
 		</Compiler>
 		<Linker>
 			<Add option="-pthread" />
+			<Add option="-lgsl" />
+			<Add option="-lgslcblas" />
+			<Add option="-lm" />
 			<Add option="`wx-config --libs`" />
 			<Add library="../RoboKernel/libRoboKernel.a" />
 			<Add library="../VideoInput/libVideoInput.a" />

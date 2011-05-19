@@ -76,6 +76,14 @@ void FindFeatures()
   fprintf(stderr," FindFeatures() ok \n");
 }
 
+void GetFundamentalMatrix()
+{
+    float * table;
+    table = (float *) malloc(9 * sizeof(float));
+    VisCortxGetFundamentalMatrix(table,9);
+    free(table);
+}
+
 
 void DrawFeatures()
 {
