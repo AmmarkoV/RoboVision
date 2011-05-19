@@ -483,29 +483,11 @@ void  VisCortx_RemoveTimedoutTrackPoints(unsigned int timeout)
    RemoveTrackPointIfTimedOut(timeout);
 }
 
-unsigned int  VisCortx_GetTrackPoint(unsigned int dat,unsigned int trackpoint)
+
+unsigned int  VisCortx_GetFeature(unsigned int vid_reg,unsigned int point_num,unsigned int data_type)
 {
-
-  char cam;
-  unsigned int x,y;
-  if (dat<4) { GetTrackPoint(trackpoint,1,&cam,&x,&y); } else
-             { GetTrackPoint(trackpoint,2,&cam,&x,&y); }
-  switch (dat)
-  {
-   case 1: { return x; break; }
-   case 2: { return y; break; }
-   case 3: { return cam; break; }
-   case 4: { return x; break; }
-   case 5: { return y; break; }
-   case 6: { return cam; break; }
-   case 7: { return GetTrackData(trackpoint,1); break; }
-   case 8: { return GetTrackData(trackpoint,2); break; }
-   case 9: { return GetTrackData(trackpoint,3); break; }
-   default : return 0;
-  };
- return 0;
+  return GetFeatureData(video_register[vid_reg].features,point_num,data_type);
 }
-
 
 void  VisCortx_TrackPoints()
 {

@@ -50,7 +50,7 @@ enum VisCortxSettings
    PATCH_TRACKING_WIDTH,
    PATCH_TRACKING_HEIGHT,
 
-
+   MAX_FEATURES,
 
    MOVEMENT_PATCH_SENSITIVITY,
 
@@ -155,6 +155,19 @@ enum VisCortxExtraLargeRegisters
 };
 
 
+enum FeatureTypeElements
+{
+    TOTAL_POINTS = 0,
+    FEATURE_X ,
+    FEATURE_Y ,
+    FEATURE_Z ,
+    PRINT_FEATURE_LIST,
+    MATCHED_WITH_REG ,
+
+    // ---------------
+    TOTAL_FEATURE_ELEMENTS
+};
+
 char *  VisCortx_Version();
 void VisCortx_SetTime(unsigned int thetime);
 unsigned int VisCortx_GetTime();
@@ -194,7 +207,8 @@ void  VisCortx_AddTrackPoint(unsigned int cam,unsigned int x,unsigned int y,unsi
 void VisCortxClearTrackPoints();
 void  VisCortx_AutoAddTrackPoints(unsigned int cam);
 void  VisCortx_RemoveTimedoutTrackPoints(unsigned int timeout);
-unsigned int  VisCortx_GetTrackPoint(unsigned int dat,unsigned int trackpoint);
+//unsigned int  VisCortx_GetTrackPoint(unsigned int dat,unsigned int trackpoint);
+unsigned int  VisCortx_GetFeature(unsigned int vid_reg,unsigned int point_num,unsigned int data_type);
 void  VisCortx_TrackPoints();
 void  VisCortx_DrawTrackPoints();
 void  VisCortx_RenewTrackPoint(unsigned int tpoint);

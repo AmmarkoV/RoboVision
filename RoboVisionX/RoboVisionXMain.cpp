@@ -453,26 +453,29 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
      }
 
 
-     if (VisCortx_GetTrackedPoints()>0)
+     if (  (VisCortx_GetFeature(LEFT_EYE,0,TOTAL_POINTS)>0) || (VisCortx_GetFeature(RIGHT_EYE,0,TOTAL_POINTS)>0) )
      {
         unsigned int i=0;
         wxPen marker(wxColour(255,255,0),1,wxSOLID);
         dc.SetPen(marker);
         dc.SetBrush(*wxTRANSPARENT_BRUSH);
-        for ( i=0; i<VisCortx_GetTrackedPoints(); i++ )
-         {
-            if (VisCortx_GetTrackPoint(3,i) == 0 )
-              {
-                  //LEFT CAMERA
-                  dc.DrawRectangle(feed_0_x+VisCortx_GetTrackPoint(1,i),feed_0_y+VisCortx_GetTrackPoint(2,i),5,5);
-              } else
-            if (VisCortx_GetTrackPoint(3,i) == 1 )
-              {
-                  //RIGHT CAMERA
-                  dc.DrawRectangle(feed_1_x+VisCortx_GetTrackPoint(1,i),feed_1_y+VisCortx_GetTrackPoint(2,i),5,5);
-              }
 
+        /*We want to draw features on left eye*/
+       if (VisCortx_GetFeature(LEFT_EYE,0,TOTAL_POINTS)>0  )
+       {
+        for ( i=0; i<VisCortx_GetFeature(LEFT_EYE,0,TOTAL_POINTS); i++ )
+         {
+             dc.DrawRectangle(feed_0_x+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_Y),5,5);
          }
+       }
+
+       if (VisCortx_GetFeature(RIGHT_EYE,0,TOTAL_POINTS)>0  )
+       {
+        for ( i=0; i<VisCortx_GetFeature(RIGHT_EYE,0,TOTAL_POINTS); i++ )
+         {
+             dc.DrawRectangle(feed_1_x+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_Y),5,5);
+         }
+       }
      }
 
 

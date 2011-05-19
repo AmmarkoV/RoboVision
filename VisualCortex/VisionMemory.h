@@ -1,6 +1,7 @@
 #ifndef VISIONMEMORY_H_INCLUDED
 #define VISIONMEMORY_H_INCLUDED
 
+#include "FeatureLists.h"
 #include "VisualCortex.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -54,6 +55,8 @@ struct VideoRegister
   char used;
 
   unsigned char * pixels;
+
+  struct FeatureList * features;
 };
 
 struct LargeVideoRegister
@@ -66,6 +69,7 @@ struct LargeVideoRegister
   char used;
 
   unsigned short * pixels;
+  struct FeatureList * features;
 };
 
 struct ExtraLargeVideoRegister
@@ -78,6 +82,7 @@ struct ExtraLargeVideoRegister
   char used;
 
   unsigned int * pixels;
+  struct FeatureList * features;
 };
 
 extern unsigned int TIME_INC;

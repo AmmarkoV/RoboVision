@@ -1,4 +1,5 @@
 #include "FeatureExtraction.h"
+#include "FeatureLists.h"
 #include "VisCortexFilters.h"
 #include "VisCortexConvolutionFilters.h"
 #include "FeatureTracking.h"
@@ -22,6 +23,7 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
 
   if ( (edges==0) || ( target == 0 ) ) { return 0; }
 
+ ClearFeatureList(video_register[edge_reg].features);
 
 
  unsigned x_start = 15;
@@ -74,7 +76,8 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
              ++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
            }
 
-         AddPointToTrackList(cam_num,x,y,0);
+         //OLD AddPointToTrackList(cam_num,x,y,0);
+         AddToFeatureList(video_register[edge_reg].features,x,y,1);
          ++total_features_added;
          //if ( total_features_added >= max_features ) { fprintf(stderr,"Cannot add more features .. :) \n"); return 1; }
 	   } else
@@ -116,7 +119,10 @@ int ExtractFeatures(int rgb_reg,unsigned int target_reg,unsigned int max_feature
     SecondDerivativeIntensitiesFromSource(GENERAL_2,GENERAL_3);
     ExtractFeatures_MyAlgorithm(max_features,GENERAL_3,target_reg,cam_num);
     ConvertRegisterFrom1ByteTo3Byte(target_reg);
-
+    CopyFeatureList(video_register[GENERAL_3].features,video_register[rgb_reg].features);
+    //PrintFeatureListContents(video_register[GENERAL_3].features);
+    //fprintf(stderr,"COPY\n");
+    //PrintFeatureListContents(video_register[rgb_reg].features);
 /*
   THIS CODE OUTPUTS SECOND DERIVATIVE TO THE RIGHT OPERATION SCREEN
   //  CopyRegister(GENERAL_3,LAST_RIGHT_OPERATION);

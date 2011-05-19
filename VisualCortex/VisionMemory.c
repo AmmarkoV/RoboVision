@@ -70,6 +70,7 @@ int InitRegister( unsigned int reg_num, unsigned int res_x,unsigned int res_y,un
   video_register[reg_num].depth = depth;
   video_register[reg_num].time = 0;
   video_register[reg_num].used = 0;
+  video_register[reg_num].features =  CreateFeatureList(settings[MAX_FEATURES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
 
   if ( video_register[reg_num].pixels == 0 ) { fprintf(stderr,"While Allocating Register : Unable to allocate video register %u memory !\n",reg_num);
                                                return 1; }
@@ -90,6 +91,7 @@ int InitLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned int res
   l_video_register[reg_num].depth = depth;
   l_video_register[reg_num].time = 0;
   l_video_register[reg_num].used = 0;
+  l_video_register[reg_num].features =  CreateFeatureList(settings[MAX_FEATURES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
 
   if ( l_video_register[reg_num].pixels == 0 ) { fprintf(stderr,"While Allocating Large Register : Unable to allocate video register %u memory !\n",reg_num);
                                                  return 1; }
@@ -109,6 +111,7 @@ int InitExtraLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned in
   xl_video_register[reg_num].depth = depth;
   xl_video_register[reg_num].time = 0;
   xl_video_register[reg_num].used = 0;
+  xl_video_register[reg_num].features =  CreateFeatureList(settings[MAX_FEATURES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
 
   if ( xl_video_register[reg_num].pixels == 0 ) { fprintf(stderr,"While Allocating Extra Large Register : Unable to allocate video register %u memory !\n",reg_num);
                                                  return 1; }
@@ -125,10 +128,12 @@ int ClearVideoRegister(unsigned int reg_num)
         memset(video_register[reg_num].pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(unsigned char));
      } else
      {
-       memset(video_register[reg_num].pixels,0,video_register[reg_num].size_x*video_register[reg_num].size_y*video_register[reg_num].depth*sizeof(unsigned char));
+        memset(video_register[reg_num].pixels,0,video_register[reg_num].size_x*video_register[reg_num].size_y*video_register[reg_num].depth*sizeof(unsigned char));
      }
     video_register[reg_num].time = 0;
     video_register[reg_num].used = 0;
+    ClearFeatureList(video_register[reg_num].features);
+
     return 1;
 
 }
@@ -144,6 +149,8 @@ int ClearLargeVideoRegister(unsigned int reg_num)
      }
     l_video_register[reg_num].time = 0;
     l_video_register[reg_num].used = 0;
+    ClearFeatureList(l_video_register[reg_num].features);
+
     return 1;
 
 }
@@ -159,6 +166,8 @@ int ClearExtraLargeVideoRegister(unsigned int reg_num)
      }
     xl_video_register[reg_num].time = 0;
     xl_video_register[reg_num].used = 0;
+    ClearFeatureList(xl_video_register[reg_num].features);
+
     return 1;
 
 }
@@ -174,6 +183,7 @@ int CloseRegister( unsigned int reg_num )
     video_register[reg_num].depth = 0;
     video_register[reg_num].time = 0;
     video_register[reg_num].used = 0;
+    DestroyFeatureList(video_register[reg_num].features);
 
     return 0;
 }
@@ -192,6 +202,7 @@ int CloseLargeRegister( unsigned int reg_num )
     l_video_register[reg_num].depth = 0;
     l_video_register[reg_num].time = 0;
     l_video_register[reg_num].used = 0;
+    DestroyFeatureList(l_video_register[reg_num].features);
 
     return 0;
 }
@@ -208,6 +219,8 @@ int CloseExtraLargeRegister( unsigned int reg_num )
     xl_video_register[reg_num].depth = 0;
     xl_video_register[reg_num].time = 0;
     xl_video_register[reg_num].used = 0;
+    DestroyFeatureList(xl_video_register[reg_num].features);
+
 
     return 0;
 }
@@ -244,6 +257,7 @@ void DefaultSettings()
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=20;
     settings[PATCH_HIST_THRESHOLD_R]=12; settings[PATCH_HIST_THRESHOLD_G]=12; settings[PATCH_HIST_THRESHOLD_B]=12;
 
+    settings[MAX_FEATURES]=500;
     settings[PATCH_TRACKING_WIDTH]=19;
     settings[PATCH_TRACKING_HEIGHT]=19;
 
@@ -436,6 +450,8 @@ int CopyRegister(unsigned int source,unsigned int target)
 
   video_register[target].time=video_register[source].time;
   video_register[target].used=video_register[source].used;
+
+ // DO NOT AUTO COPY FEATURES :) CopyFeatureList(video_register[source].features,video_register[target].features);
 
   return 1;
 }
