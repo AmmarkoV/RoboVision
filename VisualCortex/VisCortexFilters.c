@@ -668,11 +668,16 @@ unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_arr
 
 
 
-void PrepareCleanSobeledGaussian(unsigned int rgb_image_reg,unsigned int target_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
+void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
 {
-    GaussianBlurFromSource(rgb_image_reg,target_image_reg,1);
-	Sobel(target_image_reg);
-	KillPixelsBetween(target_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
+    GaussianBlurFromSource(rgb_image_reg,target_sobel_image_reg,1);
+	Sobel(target_sobel_image_reg);
+
+    CopyRegister(rgb_image_reg,GENERAL_3);
+    ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
+	SecondDerivativeIntensitiesFromSource(GENERAL_3,target_derivative_image_reg);
+
+	KillPixelsBetween(target_sobel_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
 }
 
 

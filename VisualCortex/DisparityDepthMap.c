@@ -59,6 +59,8 @@ unsigned int inline ComparePatches(struct ImageRegion * source_block,
                                    unsigned char *rgb2,
                                    unsigned char *sobel1,
                                    unsigned char *sobel2,
+                                   unsigned char *secondderiv1,
+                                   unsigned char *secondderiv2,
                                    unsigned char *movement1,
                                    unsigned char *movement2,
                                    unsigned int width,
@@ -95,8 +97,9 @@ unsigned int inline ComparePatches(struct ImageRegion * source_block,
 
     unsigned int total_score=0,rgb_score=0,move_score=0,sobel_score=0;
 	register unsigned int y=0;
-	char sobel_mismatch=0,move_mismatch=0;
+	char sobel_mismatch=0,move_mismatch=0,second_deriv_score=0;
 
+	register BYTE *secondderiv_px1,*secondderiv_px2;
 	register BYTE *sobel_px1,*sobel_px2;
 	register BYTE *image_px1,*image_px2;
 	register BYTE *move_px1, *move_px2;
@@ -113,6 +116,8 @@ unsigned int inline ComparePatches(struct ImageRegion * source_block,
 	  image_px2= (BYTE *) rgb2+target_start_memory_point_3byte;
   	  sobel_px1= (BYTE *) sobel1+source_start_memory_point_1byte;
       sobel_px2= (BYTE *) sobel2+target_start_memory_point_1byte;
+      secondderiv_px1=(BYTE *) secondderiv1 + source_start_memory_point_1byte;
+      secondderiv_px2=(BYTE *) secondderiv2 + target_start_memory_point_1byte;
       move_px1=  (BYTE *) movement1+source_start_memory_point_1byte;
       move_px2=  (BYTE *) movement2+target_start_memory_point_1byte;
       //Pointers are ready ..!
@@ -124,6 +129,8 @@ unsigned int inline ComparePatches(struct ImageRegion * source_block,
       image_px2+=incrementation_3byte_step;
       sobel_px1+=incrementation_1byte_step;
       sobel_px2+=incrementation_1byte_step;
+      secondderiv_px1+=incrementation_1byte_step;
+      secondderiv_px2+=incrementation_1byte_step;
       move_px1+=incrementation_1byte_step;
       move_px2+=incrementation_1byte_step;
 
@@ -140,6 +147,15 @@ unsigned int inline ComparePatches(struct ImageRegion * source_block,
          ++sobel_px1; ++sobel_px2;
          // BIGER SCORE -> MORE PATCH DIFFERENCE  !
          // ************** SOBEL COMPARISON **************
+
+
+         // ************** SOBEL SECOND DERIVATIVE **************
+		 // BIGER SCORE -> MORE PATCH DIFFERENCE  !
+		 second_deriv_score=precalc_sub[*secondderiv_px1][*secondderiv_px2]; //This holds the sobel difference value
+		 second_deriv_score = second_deriv_score * 20;
+         ++secondderiv_px1; ++secondderiv_px2;
+         // BIGER SCORE -> MORE PATCH DIFFERENCE  !
+         // ************** SOBEL SECOND DERIVATIVE **************
 
 
         // ************** RGB COMPARISON **************
@@ -164,7 +180,7 @@ unsigned int inline ComparePatches(struct ImageRegion * source_block,
          // ************** MOVEMENT COMPARISON **************
 
 
-		total_score+= rgb_score +  move_score + sobel_score;
+		total_score+= rgb_score +  move_score + sobel_score + second_deriv_score;
 
         if ( score_threshold<total_score )
           {
@@ -255,8 +271,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
        ClearLargeVideoRegister(left_depth_reg);
        ClearLargeVideoRegister(right_depth_reg);
 
-       PrepareCleanSobeledGaussian(LEFT_EYE,EDGES_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
-       PrepareCleanSobeledGaussian(RIGHT_EYE,EDGES_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
+       PrepareCleanSobeledGaussianAndDerivative(LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
+       PrepareCleanSobeledGaussianAndDerivative(RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
     }
 
    if (  settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM] == 1 )
@@ -363,6 +379,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
 								prox = ComparePatches( &source_rgn , &target_rgn,
                                                        left_view  , right_view,
                                                        video_register[EDGES_LEFT].pixels , video_register[EDGES_RIGHT].pixels ,
+                                                       video_register[SECOND_DERIVATIVE_LEFT].pixels  , video_register[SECOND_DERIVATIVE_RIGHT].pixels ,
                                                        video_register[MOVEMENT_LEFT].pixels  , video_register[MOVEMENT_RIGHT].pixels ,
                                                        metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER],
                                                        image_x , image_y ,

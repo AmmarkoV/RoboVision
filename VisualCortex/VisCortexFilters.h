@@ -22,7 +22,7 @@ void Monochrome(unsigned char * input_frame,int image_x,int image_y);
 void MonochromeL(unsigned char * input_frame,int image_x,int image_y);
 int GaussianBlur(unsigned int image_reg,int monochrome);
 int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int monochrome);
-void PrepareCleanSobeledGaussian(unsigned int rgb_image_reg,unsigned int target_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold);
+void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold);
 int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated);
 
 //BOOLEAN FindGoodTrackingPoints(unsigned char * edge_source,unsigned char * target,int image_x,int image_y,BOOLEAN monochrome);

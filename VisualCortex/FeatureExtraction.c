@@ -120,9 +120,8 @@ int ExtractFeatures(int rgb_reg,unsigned int target_reg,unsigned int max_feature
     ExtractFeatures_MyAlgorithm(max_features,GENERAL_3,target_reg,cam_num);
     ConvertRegisterFrom1ByteTo3Byte(target_reg);
     CopyFeatureList(video_register[GENERAL_3].features,video_register[rgb_reg].features);
-    //PrintFeatureListContents(video_register[GENERAL_3].features);
-    //fprintf(stderr,"COPY\n");
-    //PrintFeatureListContents(video_register[rgb_reg].features);
+
+
 /*
   THIS CODE OUTPUTS SECOND DERIVATIVE TO THE RIGHT OPERATION SCREEN
   //  CopyRegister(GENERAL_3,LAST_RIGHT_OPERATION);
