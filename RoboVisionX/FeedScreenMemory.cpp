@@ -222,7 +222,7 @@ void GUI_DrawNewPalette(char R,char G,char B,char threshold)
 
 void GUI_FindFeatures()
 {
-  VisCortx_RemoveTimedoutTrackPoints(1);
+  VisCortx_RemoveTimedoutTrackPoints(0,1);
   VisCortx_AutoAddTrackPoints(0);
   PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
   fprintf(stderr," FindFeatures() ok \n");

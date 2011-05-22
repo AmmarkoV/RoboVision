@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
-		<Project filename="WorldMapping/MasterpathPlanning/MasterpathPlanning.cbp" />
-		<Project filename="MotorFoundation/Arduino/RoboVisionSensorLib.cbp" />
-		<Project filename="MotorFoundation/MD23/MD23.cbp" />
-		<Project filename="VideoInput/VideoInput.cbp" />
-		<Project filename="MotorFoundation/MotorHAL.cbp" />
-		<Project filename="RoboKernel/RoboKernel.cbp" />
-		<Project filename="VisualCortex/VisualCortex.cbp" active="1" />
-		<Project filename="RoboVisionX/RoboVisionX.cbp" />
+		<Project filename="../../../Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.cbp" />
+		<Project filename="../../../Documents/Programming/RoboVision/MotorFoundation/Arduino/RoboVisionSensorLib.cbp" />
+		<Project filename="../../../Documents/Programming/RoboVision/MotorFoundation/MD23/MD23.cbp" />
+		<Project filename="../../../Documents/Programming/RoboVision/VideoInput/VideoInput.cbp" />
+		<Project filename="../../../Documents/Programming/RoboVision/MotorFoundation/MotorHAL.cbp" />
+		<Project filename="../../../Documents/Programming/RoboVision/RoboKernel/RoboKernel.cbp" />
+		<Project filename="../../../Documents/Programming/RoboVision/VisualCortex/VisualCortex.cbp" active="1" />
+		<Project filename="../../../Documents/Programming/RoboVision/RoboVisionX/RoboVisionX.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

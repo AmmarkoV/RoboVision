@@ -298,6 +298,10 @@ void  VisCortx_FullDepthMap()
     CALCULATION OF EXTRA LARGE PATCHES FOLLOWS
    */
 
+   unsigned int default_detail =  settings[DEPTHMAP_DETAIL];
+
+   settings[DEPTHMAP_DETAIL]=settings[DEPTHMAP_DETAIL]/2;
+
   settings[DEPTHMAP_COMPARISON_THRESHOLD]=settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH];
   settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH];
   metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_EXTRALARGE];
@@ -316,6 +320,8 @@ void  VisCortx_FullDepthMap()
     CALCULATION OF LARGE PATCHES FOLLOWS
    */
 
+settings[DEPTHMAP_DETAIL]=default_detail;
+
 if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
 {
   settings[DEPTHMAP_COMPARISON_THRESHOLD]=settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH];
@@ -329,7 +335,7 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
                 DEPTH_RIGHT,
                 metrics[RESOLUTION_X],
                 metrics[RESOLUTION_Y],
-                0
+                1
              );
 
 
@@ -445,31 +451,37 @@ int VisCortxGetFundamentalMatrix(float * table,int size_of_table)
 }
 
 
-unsigned int  VisCortx_GetTrackedPoints()
+unsigned int  VisCortx_GetTrackedPoints(unsigned int cam)
 {
-  return GetPointTrackList();
+   if (cam==0) { GetFeatureData(video_register[LEFT_EYE].features,0,TOTAL_POINTS); } else
+   if (cam==1) { GetFeatureData(video_register[RIGHT_EYE].features,0,TOTAL_POINTS); }
+  return 0;
 }
 
 void  VisCortx_AddTrackPoint(unsigned int cam,unsigned int x,unsigned int y,unsigned int group)
 {
   fprintf(stderr,"VisCortx_AddTrackPoint %u %u,%u : %u\n",cam,x,y,group);
-  AddPointToTrackList(cam,x-1,y-1,group);
+   if (cam==0) { AddToFeatureList(video_register[LEFT_EYE].features,x,y,1); } else
+   if (cam==1) { AddToFeatureList(video_register[RIGHT_EYE].features,x,y,1); }
 }
 
-void VisCortxClearTrackPoints()
+void VisCortxClearTrackPoints(unsigned int cam)
 {
-      ClearTrackPoints();
+   if (cam==0) { ClearFeatureList(video_register[LEFT_EYE].features); } else
+   if (cam==1) { ClearFeatureList(video_register[RIGHT_EYE].features); }
 }
 
 void  VisCortx_AutoAddTrackPoints(unsigned int cam)
 {
  if (cam==0)
   {
+      CopyFeatureList(video_register[LEFT_EYE].features,video_register[LAST_LEFT_EYE].features);
       ExtractFeatures(LEFT_EYE,LAST_LEFT_OPERATION,200,0);
       //ExtractFeatures(100,video_register[EDGES_LEFT].pixels,video_register[GENERAL_1].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],0);
   } else
   if (cam==1)
   {
+      CopyFeatureList(video_register[RIGHT_EYE].features,video_register[LAST_RIGHT_EYE].features);
       ExtractFeatures(RIGHT_EYE,LAST_RIGHT_OPERATION,200,1);
   }
 
@@ -478,9 +490,10 @@ void  VisCortx_AutoAddTrackPoints(unsigned int cam)
 }
 
 
-void  VisCortx_RemoveTimedoutTrackPoints(unsigned int timeout)
+void  VisCortx_RemoveTimedoutTrackPoints(unsigned int cam,unsigned int timeout)
 {
-   RemoveTrackPointIfTimedOut(timeout);
+   if (cam==0) { RemoveTrackPointsIfTimedOut(video_register[LEFT_EYE].features,timeout); } else
+   if (cam==1) { RemoveTrackPointsIfTimedOut(video_register[RIGHT_EYE].features,timeout); }
 }
 
 
@@ -489,39 +502,32 @@ unsigned int  VisCortx_GetFeature(unsigned int vid_reg,unsigned int point_num,un
   return GetFeatureData(video_register[vid_reg].features,point_num,data_type);
 }
 
-void  VisCortx_TrackPoints()
+void  VisCortx_TrackPoints(unsigned int vid_reg)
 {
   unsigned int i=0;
-  for (i=0; i<GetPointTrackList(); i++)
+  for (i=0; i<GetFeatureData(video_register[vid_reg].features,0,TOTAL_POINTS); i++)
    {
-	   ExecuteTrackPoint(i);
+	   ExecuteTrackPoint(video_register[vid_reg].features,i);
    }
 }
 
 void  VisCortx_DrawTrackPoints()
-{ fprintf(stderr,"Draw Track Points not implemented ok\n");
-
-  unsigned int i=0;
-  for (i=0; i<GetPointTrackList(); i++)
-   {
-	 BitBltTrackPointMemToRegister(i,LAST_LEFT_OPERATION,i*30,0);
-   }
+{
+  fprintf(stderr,"Draw Track Points not used & implemented\n");
 }
 
-void  VisCortx_RenewTrackPoint(unsigned int tpoint)
+void  VisCortx_RenewTrackPoint(unsigned int vid_reg,unsigned int tpoint)
 {
-  ApplyTrackPositionAsOriginal(tpoint);
+   RenewTrackPoints(video_register[vid_reg].features,tpoint);
 }
 
 
-void  VisCortx_RenewAllTrackPoints()
+void  VisCortx_RenewAllTrackPoints(unsigned int vid_reg)
 {
-  if ( GetPointTrackList() == 0 ) { return; }
-
   unsigned int i=0;
-  for (i=0; i<GetPointTrackList(); i++)
+  for (i=0; i<GetFeatureData(video_register[vid_reg].features,0,TOTAL_POINTS); i++)
    {
-	   ApplyTrackPositionAsOriginal(i);
+	   RenewTrackPoints(video_register[vid_reg].features,i);
    }
 }
 /*

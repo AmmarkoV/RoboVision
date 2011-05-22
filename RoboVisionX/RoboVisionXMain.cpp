@@ -520,9 +520,12 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
    if ( SnapWebCams() == 1 )
     {
       VisCortx_Movement_Detection(1,1);
-      VisCortx_RemoveTimedoutTrackPoints(8000);
-      VisCortx_TrackPoints();
-      VisCortx_RenewAllTrackPoints();
+      VisCortx_RemoveTimedoutTrackPoints(0,8000);
+      VisCortx_RemoveTimedoutTrackPoints(1,8000);
+      VisCortx_TrackPoints(LEFT_EYE);
+      VisCortx_TrackPoints(RIGHT_EYE);
+      VisCortx_RenewAllTrackPoints(LEFT_EYE);
+      VisCortx_RenewAllTrackPoints(RIGHT_EYE);
     }
    sw1.Pause();
 

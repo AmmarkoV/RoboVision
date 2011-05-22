@@ -51,6 +51,7 @@ int GetCameraCoords_From_Angle(float horizontal_angle,float vertical_angle,unsig
 
 int ComputeFundamentalMatrix(void)
 {
+    //The following program solves the linear system A x = b. The system to be solved is, and the solution is found using LU decomposition of the matrix A.
        double a_data[] = { 0.18, 0.60, 0.57, 0.96,
                            0.41, 0.24, 0.99, 0.58,
                            0.14, 0.30, 0.97, 0.66,

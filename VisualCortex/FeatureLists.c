@@ -1,5 +1,6 @@
 #include "FeatureLists.h"
 #include "VisualCortex.h"
+#include "VisionMemory.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -100,6 +101,13 @@ int CopyFeatureList(struct FeatureList * source,struct FeatureList * target)
    return 1;
 }
 
+int RenewTrackPoints(struct FeatureList * list,int point)
+{
+    list->list[point].lost_since = 0;
+    return 1;
+}
+
+
 int AddToFeatureList(struct FeatureList * list, int x, int y,int z)
 {
    if ( list->current_features >= list->max_features-1 ) { fprintf(stderr,"Cannot add to feature list , feature list is full\n"); return 0; }
@@ -125,10 +133,24 @@ int RemoveFromFeatureList(struct FeatureList * list, int point)
 }
 
 
-int GetFeatureList(struct FeatureList * list, int point)
+
+void RemoveTrackPointsIfTimedOut(struct FeatureList * list,unsigned int timeout)
 {
- return 0;
+	int i=0;
+	while ( i < list->current_features )
+    {
+     if (list->list[i].lost==1)
+	 {
+	  if (  list->list[i].lost_since+timeout>TIME_INC   )
+	   {
+	       RemoveFromFeatureList(list,i);
+	   }
+	 }
+	   ++i;
+    }
 }
+
+
 
 
 int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned int data_type)

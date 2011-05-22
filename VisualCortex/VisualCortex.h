@@ -205,17 +205,23 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
 int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam);
 
 int VisCortxGetFundamentalMatrix(float * table,int size_of_table);
-unsigned int  VisCortx_GetTrackedPoints();
+
+
+// FEATURE EXTRACTION / LISTING / TRACKING
+// ------------------------------------------------------------------------------------------
+unsigned int  VisCortx_GetTrackedPoints(unsigned int cam);
 void  VisCortx_AddTrackPoint(unsigned int cam,unsigned int x,unsigned int y,unsigned int group);
-void VisCortxClearTrackPoints();
+void VisCortxClearTrackPoints(unsigned int cam);
 void  VisCortx_AutoAddTrackPoints(unsigned int cam);
-void  VisCortx_RemoveTimedoutTrackPoints(unsigned int timeout);
-//unsigned int  VisCortx_GetTrackPoint(unsigned int dat,unsigned int trackpoint);
+void  VisCortx_RemoveTimedoutTrackPoints(unsigned int cam,unsigned int timeout);
 unsigned int  VisCortx_GetFeature(unsigned int vid_reg,unsigned int point_num,unsigned int data_type);
-void  VisCortx_TrackPoints();
+void  VisCortx_TrackPoints(unsigned int vid_reg);
 void  VisCortx_DrawTrackPoints();
-void  VisCortx_RenewTrackPoint(unsigned int tpoint);
-void  VisCortx_RenewAllTrackPoints();
+void  VisCortx_RenewTrackPoint(unsigned int vid_reg,unsigned int tpoint);
+void  VisCortx_RenewAllTrackPoints(unsigned int vid_reg);
+// ------------------------------------------------------------------------------------------
+// FEATURE EXTRACTION / LISTING / TRACKING
+
 
 int SobelNDerivative();
 void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,unsigned char howclose);

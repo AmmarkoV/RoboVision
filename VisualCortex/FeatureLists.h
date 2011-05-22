@@ -38,6 +38,9 @@ struct FeatureList * CreateFeatureList(unsigned int size , unsigned int def_patc
 int DestroyFeatureList(struct FeatureList * list);
 int CopyFeatureList(struct FeatureList * source,struct FeatureList * target);
 int ClearFeatureList(struct FeatureList * list);
+int RenewTrackPoints(struct FeatureList * list,int point);
+int AddToFeatureList(struct FeatureList * list, int x, int y,int z);
+void RemoveTrackPointsIfTimedOut(struct FeatureList * list,unsigned int timeout);
 int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned int data_type);
 int PrintFeatureListContents(struct FeatureList * list);
 #endif // FEATURELISTS_H_INCLUDED

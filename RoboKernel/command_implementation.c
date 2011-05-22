@@ -68,8 +68,9 @@ void SobelNDerivative_in(int n)
 
 void FindFeatures()
 {
-  VisCortx_RemoveTimedoutTrackPoints(1);
-  VisCortxClearTrackPoints();
+  //VisCortx_RemoveTimedoutTrackPoints(0,1);
+  VisCortxClearTrackPoints(0);
+  VisCortxClearTrackPoints(1);
   VisCortx_AutoAddTrackPoints(0);
   VisCortx_AutoAddTrackPoints(1);
   //VisCortX_CopyFromVideoToVideoRegister(GENERAL_1,LAST_LEFT_OPERATION);
