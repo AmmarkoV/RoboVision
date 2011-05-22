@@ -2,6 +2,7 @@
 #include "command_implementation.h"
 
 #include "../InputParser/InputParser_C.h"
+#include "../RVKnowledgeBase/RVKnowledgeBase.h"
 
 #include "visual_system.h"
 #include "motor_system.h"
@@ -29,6 +30,7 @@ enum command_id_consts
   CMD_DRAW_MOVEMENT,
   CMD_DRAW_FEATURES,
   CMD_FIND_FEATURES,
+  CMD_CLEAR_FEATURES,
   CMD_PLAYSOUND,
   CMD_SAY,
   CMD_DEPTHMAP,
@@ -51,6 +53,11 @@ enum command_id_consts
   CMD_DEPTHMAP_TO_FILE,
   CMD_DEPTHMAP_IMPORT_TO_MAP,
   CMD_CONVOLUTION_FILTER,
+
+  CMD_SEARCH,
+  CMD_TELL,
+  CMD_ASK,
+
  /* ------------------ */
   CMD_TOTAL_CONSTS
 };
@@ -114,6 +121,10 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      case CMD_FIND_FEATURES :
                  sprintf(outptstr,"From %s : Command Finding Features\n",from);
                  FindFeatures();
+     break;
+     case CMD_CLEAR_FEATURES :
+                 sprintf(outptstr,"From %s : Command Clearing Features\n",from);
+                 ClearFeatures();
      break;
      case CMD_PLAYSOUND :
                  sprintf(outptstr,"From %s : Command Parser Playing sound : %s\n",from,cmds_1);
@@ -251,10 +262,19 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      break;
      case CMD_FUNDAMENTAL_MATRIX :
             GetFundamentalMatrix();
-
      break;
-
-
+     case CMD_TELL :
+          sprintf(outptstr,"From %s : Tell(%s) \n",from,cmds_1);
+          Tell(cmds_1);
+     break;
+     case CMD_ASK :
+          sprintf(outptstr,"From %s : Ask(%s) \n",from,cmds_1);
+          Ask(cmds_1);
+     break;
+     case CMD_SEARCH :
+          sprintf(outptstr,"From %s : Search(%s) \n",from,cmds_1);
+          Search(cmds_1);
+     break;
 
      default :
        return 0;
@@ -268,6 +288,7 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
 
 int IssueCommandInternal(char * command,char * from)
 {
+  //fprintf(stderr,"Processing command %s \n",command);
   struct InputParserC * ipc=0;
   ipc = InputParser_Create(512,5);
 
@@ -286,6 +307,7 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DRAW MOVEMENT",13)==1) { chosen_command=CMD_DRAW_MOVEMENT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DRAW FEATURES",13)==1) { chosen_command=CMD_DRAW_FEATURES; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FIND FEATURES",13)==1) { chosen_command=CMD_FIND_FEATURES; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"CLEAR FEATURES",14)==1) { chosen_command=CMD_CLEAR_FEATURES; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"PLAYSOUND",9)==1) { chosen_command=CMD_PLAYSOUND; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SAY",3)==1) { chosen_command=CMD_SAY;} else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP",9)==1) { chosen_command=CMD_DEPTHMAP; } else
@@ -303,13 +325,15 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP TO FILE",17)==1) { chosen_command=CMD_DEPTHMAP_TO_FILE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"REFRESH MAP",11)==1) { chosen_command=CMD_REFRESH_MAP_AT_WEB_INTERFACE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP IMPORT TO MAP",23)==1) { chosen_command=CMD_DEPTHMAP_IMPORT_TO_MAP; } else
-      if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP IMPORT TO MAP",23)==1) { chosen_command=CMD_DEPTHMAP_IMPORT_TO_MAP; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SOBEL SECOND DERIVATIVE",23)==1) { chosen_command=CMD_SOBEL_SECOND_DERIVATIVE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SOBEL DERIVATIVE",16)==1) { chosen_command=CMD_SOBEL_N_DERIVATIVE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"REMEMBER IMAGE",14)==1) { chosen_command=CMD_REMEMBER_IMAGE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"IDENTIFY IMAGE",14)==1) { chosen_command=CMD_IDENTIFY_IMAGE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"CONVOLUTION FILTER",18)==1) { chosen_command=CMD_CONVOLUTION_FILTER; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FUNDAMENTAL MATRIX",18)==1) { chosen_command=CMD_FUNDAMENTAL_MATRIX; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"TELL",4)==1) { chosen_command=CMD_TELL; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"ASK",3)==1) { chosen_command=CMD_ASK; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"SEARCH",6)==1) { chosen_command=CMD_SEARCH; } else
 
         /*
          * >>>>>>>>>>>>>>>>>>>>>>>>>>!!!WRONG COMMAND!!!<<<<<<<<<<<<<<<<<<<<<<<<

@@ -81,6 +81,7 @@
 		<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="CommandBox" member="yes">
 			<pos>680,336</pos>
 			<size>200,27</size>
+			<style>wxTE_PROCESS_ENTER</style>
 		</object>
 		<object class="wxButton" name="ID_BUTTON3" variable="Ok" member="yes">
 			<label>OK</label>

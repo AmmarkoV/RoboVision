@@ -14,7 +14,7 @@ struct PatchSignature
 
 enum VisCortxSettings
 {
-   NOTHING = 0,
+   EMPTY = 0,
 
    DEPTHMAP_START,
    DEPTHMAP_STARTLEFT_X,
@@ -215,7 +215,7 @@ void VisCortxClearTrackPoints(unsigned int cam);
 void  VisCortx_AutoAddTrackPoints(unsigned int cam);
 void  VisCortx_RemoveTimedoutTrackPoints(unsigned int cam,unsigned int timeout);
 unsigned int  VisCortx_GetFeature(unsigned int vid_reg,unsigned int point_num,unsigned int data_type);
-void  VisCortx_TrackPoints(unsigned int vid_reg);
+void  VisCortx_TrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg);
 void  VisCortx_DrawTrackPoints();
 void  VisCortx_RenewTrackPoint(unsigned int vid_reg,unsigned int tpoint);
 void  VisCortx_RenewAllTrackPoints(unsigned int vid_reg);

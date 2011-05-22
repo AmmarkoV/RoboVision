@@ -50,6 +50,7 @@
 			<Add library="../MotorFoundation/MD23/libMD23.a" />
 			<Add library="../MotorFoundation/Arduino/libRoboVisionSensorLib.a" />
 			<Add library="../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a" />
+			<Add library="../RVKnowledgeBase/libRVKnowledgeBase.a" />
 		</Linker>
 		<Unit filename="CortexSettings.cpp" />
 		<Unit filename="CortexSettings.h" />

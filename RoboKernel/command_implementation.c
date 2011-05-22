@@ -10,7 +10,7 @@
 int Say(char * what2say)
 {
  char command_s[1024]={0};
- sprintf(command_s,"echo \"%s\" | esddsp festival --tts",what2say);
+ sprintf(command_s,"echo \"%s\" | festival --tts&",what2say);
  int i=system((const char * ) command_s);
  return i;
 }
@@ -19,7 +19,7 @@ int Say(char * what2say)
 int PlaySound(char * sndname)
 {
   char command_s[1024]={0};
-  sprintf(command_s,"aplay Sounds/%s.wav",sndname);
+  sprintf(command_s,"paplay Sounds/%s.wav&",sndname);
   int i=system((const char * ) command_s);
   return i;
 }
@@ -75,6 +75,14 @@ void FindFeatures()
   VisCortx_AutoAddTrackPoints(1);
   //VisCortX_CopyFromVideoToVideoRegister(GENERAL_1,LAST_LEFT_OPERATION);
   fprintf(stderr," FindFeatures() ok \n");
+}
+
+
+void ClearFeatures()
+{
+  VisCortxClearTrackPoints(0);
+  VisCortxClearTrackPoints(1);
+  fprintf(stderr," ClearFeatures() ok \n");
 }
 
 void GetFundamentalMatrix()

@@ -10,6 +10,7 @@ void DrawNewPalette(char R,char G,char B,char threshold);
 void ConvolutionFilter(signed char * table,signed int divisor,unsigned int table_size);
 void SobelNDerivative_in(int n);
 void CheckAlarm(unsigned int flow1,unsigned int flow2);
+void ClearFeatures();
 void FindFeatures();
 void GetFundamentalMatrix();
 void DrawFeatures();

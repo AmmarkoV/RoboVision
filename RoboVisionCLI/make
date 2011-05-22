@@ -3,7 +3,7 @@ echo "Hand made make script for RoboVisionCLI binary .."
 echo "Should provide bin/Release/RoboVisionCLI "
 echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
 echo "Compiling files.."
-g++ main.cpp ../RoboKernel/libRoboKernel.a ../VideoInput/libVideoInput.a ../VisualCortex/libVisualCortex.a ../InputParser/libInputParser_C.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/MD23/libMD23.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a  ../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a -L. -pthread -lgsl -lgslcblas -lm -lrt -o bin/Release/RoboVisionCLI
+g++ main.cpp ../RoboKernel/libRoboKernel.a ../VideoInput/libVideoInput.a ../VisualCortex/libVisualCortex.a ../InputParser/libInputParser_C.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/MD23/libMD23.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a  ../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a ../RVKnowledgeBase/libRVKnowledgeBase.a -L. -pthread -lgsl -lgslcblas -lm -lrt -o bin/Release/RoboVisionCLI
 
 
 echo "Done.."

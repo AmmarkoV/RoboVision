@@ -158,9 +158,11 @@ void PrintObjectsAtKnowledgeBase(struct KnowledgeBase * kb);
 
 char Ask(char * question);
 char Tell(char * info);
+char Search(char * what);
 
 boolean SaveKnowledgeBase(struct KnowledgeBase * kb,char * filename);
 boolean LoadKnowledgeBase(struct KnowledgeBase * kb,char * filename);
+
 
 #ifdef __cplusplus
 }

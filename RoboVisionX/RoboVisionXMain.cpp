@@ -150,7 +150,7 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     Battery = new wxGauge(this, ID_GAUGE1, 100, wxPoint(736,8), wxSize(176,16), 0, wxDefaultValidator, _T("ID_GAUGE1"));
     StaticText6 = new wxStaticText(this, ID_STATICTEXT9, _("FrameRate :"), wxPoint(688,216), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
     FrameRate = new wxStaticText(this, ID_STATICTEXT10, _("0"), wxPoint(776,216), wxDefaultSize, 0, _T("ID_STATICTEXT10"));
-    CommandBox = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxPoint(680,336), wxSize(200,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+    CommandBox = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxPoint(680,336), wxSize(200,27), wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
     Ok = new wxButton(this, ID_BUTTON3, _("OK"), wxPoint(880,336), wxSize(32,24), 0, wxDefaultValidator, _T("ID_BUTTON3"));
     SwapFeeds = new wxButton(this, ID_BUTTON4, _("Swap Feeds"), wxPoint(744,368), wxSize(64,24), 0, wxDefaultValidator, _T("ID_BUTTON4"));
     wxFont SwapFeedsFont(6,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Sans"),wxFONTENCODING_DEFAULT);
@@ -274,6 +274,9 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&RoboVisionXFrame::OnAbout);
     Connect(ID_TIMER1,wxEVT_TIMER,(wxObjectEventFunction)&RoboVisionXFrame::OnTimer1Trigger);
     //*)
+
+
+   Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&RoboVisionXFrame::OnOkClick);
 
     Timer1.Stop();
 
@@ -522,8 +525,8 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
       VisCortx_Movement_Detection(1,1);
       VisCortx_RemoveTimedoutTrackPoints(0,8000);
       VisCortx_RemoveTimedoutTrackPoints(1,8000);
-      VisCortx_TrackPoints(LEFT_EYE);
-      VisCortx_TrackPoints(RIGHT_EYE);
+      VisCortx_TrackPoints(LAST_LEFT_EYE,LEFT_EYE);
+      VisCortx_TrackPoints(LAST_RIGHT_EYE,RIGHT_EYE);
       VisCortx_RenewAllTrackPoints(LEFT_EYE);
       VisCortx_RenewAllTrackPoints(RIGHT_EYE);
     }

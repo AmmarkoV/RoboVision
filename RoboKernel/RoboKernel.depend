@@ -1,1 +1,95 @@
 # depslib dependency file v1.0
+1306099604 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_implementation.c
+	<time.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"command_hal.h"
+	"command_implementation.h"
+	"visual_system.h"
+	<unistd.h>
+
+1292630068 /home/ammar/Documents/Programming/RoboVision/RoboKernel/command_hal.h
+
+1306099073 /home/ammar/Documents/Programming/RoboVision/RoboKernel/command_implementation.h
+
+1276996669 /home/ammar/Documents/Programming/RoboVision/RoboKernel/visual_system.h
+	"../VideoInput/VideoInput.h"
+	"../VisualCortex/VisualCortex.h"
+
+1304212359 /home/ammar/Documents/Programming/RoboVision/VideoInput/VideoInput.h
+
+1306101140 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+
+1285831855 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.c
+	"configuration.h"
+	<stdio.h>
+	<stdlib.h>
+	"../InputParser/InputParser_C.h"
+	"../VisualCortex/VisualCortex.h"
+
+1285831711 /home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.h
+
+1282907255 /home/ammar/Documents/Programming/RoboVision/InputParser/InputParser_C.h
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<ctype.h>
+
+1304768367 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
+	<pthread.h>
+	"RoboKernel.h"
+	"command_hal.h"
+	"visual_system.h"
+	"mapping_system.h"
+	"motor_system.h"
+	"webinterface.h"
+	<time.h>
+	<unistd.h>
+
+1277561336 /home/ammar/Documents/Programming/RoboVision/RoboKernel/RoboKernel.h
+
+1289515348 /home/ammar/Documents/Programming/RoboVision/RoboKernel/mapping_system.h
+
+1276865893 /home/ammar/Documents/Programming/RoboVision/RoboKernel/motor_system.h
+	"../MotorFoundation/MotorHAL.h"
+
+1289312029 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
+	"../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
+
+1289554847 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
+	<stdio.h>
+
+1277076155 /home/ammar/Documents/Programming/RoboVision/RoboKernel/webinterface.h
+	<stdio.h>
+	<stdlib.h>
+
+1289555599 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/mapping_system.c
+	"mapping_system.h"
+	<stdio.h>
+	<stdlib.h>
+	"../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
+	"../MotorFoundation/MotorHAL.h"
+	"../VisualCortex/VisualCortex.h"
+
+1285831676 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/motor_system.c
+	"motor_system.h"
+	"configuration.h"
+
+1304212412 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/visual_system.c
+	"visual_system.h"
+	"configuration.h"
+	<stdio.h>
+	<stdlib.h>
+	"webinterface.h"
+	<linux/videodev2.h>
+
+1286913011 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/webinterface.c
+	"webinterface.h"
+	"command_hal.h"
+	"visual_system.h"
+	"configuration.h"
+	"../InputParser/InputParser_C.h"
+	"../MotorFoundation/MotorHAL.h"
+	<unistd.h>
+

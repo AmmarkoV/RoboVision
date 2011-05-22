@@ -17,22 +17,22 @@
 		<Cursor position="345" topLine="0" />
 	</File>
 	<File name="FeatureExtraction.c" open="1" top="0" tabpos="14">
-		<Cursor position="3776" topLine="97" />
+		<Cursor position="1581" topLine="36" />
 	</File>
 	<File name="FeatureExtraction.h" open="1" top="0" tabpos="15">
 		<Cursor position="182" topLine="0" />
 	</File>
 	<File name="FeatureLists.c" open="1" top="0" tabpos="31">
-		<Cursor position="4123" topLine="119" />
+		<Cursor position="3837" topLine="96" />
 	</File>
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
-		<Cursor position="357" topLine="3" />
+		<Cursor position="1061" topLine="6" />
 	</File>
 	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
-		<Cursor position="7243" topLine="306" />
+		<Cursor position="302" topLine="0" />
 	</File>
 	<File name="FeatureTracking.h" open="1" top="0" tabpos="29">
-		<Cursor position="89" topLine="0" />
+		<Cursor position="402" topLine="0" />
 	</File>
 	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
 		<Cursor position="14801" topLine="345" />
@@ -41,7 +41,7 @@
 		<Cursor position="850" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
-		<Cursor position="2997" topLine="47" />
+		<Cursor position="2631" topLine="14" />
 	</File>
 	<File name="LinearAlgebra.h" open="1" top="0" tabpos="32">
 		<Cursor position="240" topLine="0" />
@@ -89,15 +89,15 @@
 		<Cursor position="293" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="19194" topLine="448" />
+		<Cursor position="9671" topLine="540" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="213" topLine="86" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="14093" topLine="460" />
+	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+		<Cursor position="8956" topLine="583" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="2619" topLine="100" />
+		<Cursor position="6178" topLine="197" />
 	</File>
 </CodeBlocks_layout_file>

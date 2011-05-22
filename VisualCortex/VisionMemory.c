@@ -232,7 +232,7 @@ void DefaultSettings()
     settings[DEPTHMAP_STARTLEFT_X]=15;
     settings[DEPTHMAP_DETAIL]=6;
     settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=40;
-    settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=220;
+    settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=250;
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_OFFSET_UP]=2;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=2;

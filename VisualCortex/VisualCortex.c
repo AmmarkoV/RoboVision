@@ -33,7 +33,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdlib.h>
 #include <string.h>
 
-char * VISCORTEX_VER = "0.582";
+char * VISCORTEX_VER = "0.586";
 
 /*
 
@@ -68,6 +68,9 @@ char * VISCORTEX_VER = "0.582";
 
 
     ---
+
+     FEATURE LISTS
+          FeatureLists.c <- This creates the Feature containers to be used by the next 2 modules
 
      FEATURE EXTRACTION
           FeatureExtraction.c <- This currently is a stub , it should output second degree derivative edges or something
@@ -122,6 +125,16 @@ unsigned int VisCortx_Stop()
    return  CloseEverything();
 }
 
+void VisCortx_SetTime(unsigned int thetime)
+{
+     SetTime(thetime);
+}
+
+unsigned int VisCortx_GetTime()
+{
+    return GetTime();
+}
+
 unsigned int VisCortx_SelfCheck()
 {
     return SelfCheckEverything();
@@ -153,17 +166,6 @@ unsigned int VisCortx_GetMetric(unsigned int get_num)
 unsigned int VisCortx_GetVideoRegisterStats(unsigned int metric_num)
 {
    return GetVideoRegisterStats(metric_num);
-}
-
-
-void VisCortx_SetTime(unsigned int thetime)
-{
-     SetTime(thetime);
-}
-
-unsigned int VisCortx_GetTime()
-{
-    return GetTime();
 }
 
 /*
@@ -275,8 +277,6 @@ unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int
 
    return video_register[reg_num].pixels;
 }
-
-
 /*
  ----------------- VIDEO INPUT/OUTPUT ----------------------
 */
@@ -293,7 +293,6 @@ void  VisCortx_FullDepthMap()
   /*
      WE COMPARE PATCHES ON 3 DIFFERENT LEVELS , EXTRA LARGE PATCHES , LARGE PATCHES , NORMAL PATCHES
    */
-
   /*
     CALCULATION OF EXTRA LARGE PATCHES FOLLOWS
    */
@@ -502,12 +501,12 @@ unsigned int  VisCortx_GetFeature(unsigned int vid_reg,unsigned int point_num,un
   return GetFeatureData(video_register[vid_reg].features,point_num,data_type);
 }
 
-void  VisCortx_TrackPoints(unsigned int vid_reg)
+void  VisCortx_TrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg)
 {
   unsigned int i=0;
-  for (i=0; i<GetFeatureData(video_register[vid_reg].features,0,TOTAL_POINTS); i++)
+  for (i=0; i<GetFeatureData(video_register[from_vid_reg].features,0,TOTAL_POINTS); i++)
    {
-	   ExecuteTrackPoint(video_register[vid_reg].features,i);
+	   ExecuteTrackPoint(from_vid_reg,to_vid_reg,i);
    }
 }
 

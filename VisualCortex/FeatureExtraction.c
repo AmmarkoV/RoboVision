@@ -49,7 +49,7 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
 
 
 
- unsigned int INTENSITY_THRESHOLD_LOW = 16;
+ unsigned int INTENSITY_THRESHOLD_LOW = 17;
 
  unsigned int line_width = image_x;
  unsigned int skip_step_abs = 40;
