@@ -88,16 +88,16 @@
 	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="23">
 		<Cursor position="293" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="9671" topLine="540" />
+	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
+		<Cursor position="9821" topLine="222" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="213" topLine="86" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
 		<Cursor position="8956" topLine="583" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="6178" topLine="197" />
+		<Cursor position="640" topLine="9" />
 	</File>
 </CodeBlocks_layout_file>

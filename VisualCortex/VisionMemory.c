@@ -231,12 +231,12 @@ void DefaultSettings()
     // Initialize all variables used by Visual Cortex
     settings[DEPTHMAP_STARTLEFT_X]=15;
     settings[DEPTHMAP_DETAIL]=6;
-    settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=40;
+    settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=30;
     settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=250;
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_OFFSET_UP]=2;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=2;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD]=27000;//18000; //16000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD]=15000; // 27000;//18000; //16000;
     SetThresholdsForAllPatchSizes();
     settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
 
@@ -253,8 +253,8 @@ void DefaultSettings()
     settings[PATCH_COMPARISON_LEVELS]=3; /* It will use 3 different size block levels for comparison */
     settings[PATCH_COMPARISON_SCORE_MIN]=35000;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=20;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=40;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=20;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=30;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=10;
     settings[PATCH_HIST_THRESHOLD_R]=12; settings[PATCH_HIST_THRESHOLD_G]=12; settings[PATCH_HIST_THRESHOLD_B]=12;
 
     settings[MAX_FEATURES]=500;
@@ -291,7 +291,7 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[VERTICAL_BUFFER]=30; //30
     metrics[HORIZONTAL_BUFFER]=20; //20
     metrics[VERTICAL_BUFFER_LARGE]=75; //75
-    metrics[HORIZONTAL_BUFFER_LARGE]=30; //50
+    metrics[HORIZONTAL_BUFFER_LARGE]=50; //50
     metrics[VERTICAL_BUFFER_EXTRALARGE]=188; // 188
     metrics[HORIZONTAL_BUFFER_EXTRALARGE]=125; //125
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
