@@ -83,13 +83,21 @@ int PassVideoInputToCortex(unsigned int clock_time)
   if ( NewFrameAvailiable(0) )
    {
        VisCortX_CopyVideoRegister(LEFT_EYE,LAST_LEFT_EYE);
+       VisCortX_CopyVideoRegister(EDGES_LEFT,LAST_EDGES_LEFT);
+       VisCortX_CopyVideoRegister(SECOND_DERIVATIVE_LEFT,LAST_SECOND_DERIVATIVE_LEFT);
+       VisCortX_CopyVideoRegister(MOVEMENT_LEFT,LAST_MOVEMENT_LEFT);
+
        VisCortx_WriteToVideoRegister(LEFT_EYE,width,height,3,(unsigned char *)frame1);
    }
 
   if ( NewFrameAvailiable(1) )
   {
       VisCortX_CopyVideoRegister(RIGHT_EYE,LAST_RIGHT_EYE);
-      VisCortx_WriteToVideoRegister(RIGHT_EYE,width,height,3,(unsigned char *)frame2);
+      VisCortX_CopyVideoRegister(EDGES_RIGHT,LAST_EDGES_RIGHT);
+      VisCortX_CopyVideoRegister(SECOND_DERIVATIVE_RIGHT,LAST_SECOND_DERIVATIVE_RIGHT);
+      VisCortX_CopyVideoRegister(MOVEMENT_RIGHT,LAST_MOVEMENT_RIGHT);
+
+       VisCortx_WriteToVideoRegister(RIGHT_EYE,width,height,3,(unsigned char *)frame2);
   }
 
  /*

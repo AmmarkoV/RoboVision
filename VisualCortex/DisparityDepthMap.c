@@ -52,7 +52,6 @@ inline int ComparePatchesUsingHistogram(int hist_reg_left,int hist_reg_right,uns
 }
 
 
-
 unsigned int inline ComparePatches(struct ImageRegion * source_block,
                                    struct ImageRegion * target_block,
                                    unsigned char *rgb1,
@@ -70,7 +69,6 @@ unsigned int inline ComparePatches(struct ImageRegion * source_block,
                                    unsigned int best_result_yet
                                   )
 {
-
     unsigned int score_threshold = settings[DEPTHMAP_COMPARISON_THRESHOLD];
     unsigned int failing_score = score_threshold+1;
     	//Kovoume ta source ektos eikonas
@@ -145,6 +143,7 @@ unsigned int inline ComparePatches(struct ImageRegion * source_block,
 		 sobel_score=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the sobel difference value
          if ( sobel_score > 30 ) { sobel_mismatch=1; }
          ++sobel_px1; ++sobel_px2;
+         //USE SSD instead of SAD :P sobel_score = sobel_score * sobel_score;
          // BIGER SCORE -> MORE PATCH DIFFERENCE  !
          // ************** SOBEL COMPARISON **************
 
@@ -154,6 +153,7 @@ unsigned int inline ComparePatches(struct ImageRegion * source_block,
 		 second_deriv_score=precalc_sub[*secondderiv_px1][*secondderiv_px2]; //This holds the sobel difference value
 		 second_deriv_score = second_deriv_score * 20;
          ++secondderiv_px1; ++secondderiv_px2;
+         //USE SSD instead of SAD :P second_deriv_score = second_deriv_score * second_deriv_score;
          // BIGER SCORE -> MORE PATCH DIFFERENCE  !
          // ************** SOBEL SECOND DERIVATIVE **************
 

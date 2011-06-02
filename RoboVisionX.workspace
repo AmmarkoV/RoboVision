@@ -7,8 +7,8 @@
 		<Project filename="../../../Documents/Programming/RoboVision/VideoInput/VideoInput.cbp" />
 		<Project filename="../../../Documents/Programming/RoboVision/MotorFoundation/MotorHAL.cbp" />
 		<Project filename="../../../Documents/Programming/RoboVision/RVKnowledgeBase/RVKnowledgeBase.cbp" />
-		<Project filename="../../../Documents/Programming/RoboVision/RoboKernel/RoboKernel.cbp" active="1" />
-		<Project filename="../../../Documents/Programming/RoboVision/VisualCortex/VisualCortex.cbp" />
+		<Project filename="../../../Documents/Programming/RoboVision/RoboKernel/RoboKernel.cbp" />
+		<Project filename="../../../Documents/Programming/RoboVision/VisualCortex/VisualCortex.cbp" active="1" />
 		<Project filename="../../../Documents/Programming/RoboVision/RoboVisionX/RoboVisionX.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

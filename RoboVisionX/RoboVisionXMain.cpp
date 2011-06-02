@@ -525,7 +525,9 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
       VisCortx_Movement_Detection(1,1);
       VisCortx_RemoveTimedoutTrackPoints(0,8000);
       VisCortx_RemoveTimedoutTrackPoints(1,8000);
+      VisCortx_CopyTrackPoints(LEFT_EYE,LAST_LEFT_EYE);
       VisCortx_TrackPoints(LAST_LEFT_EYE,LEFT_EYE);
+      VisCortx_CopyTrackPoints(RIGHT_EYE,LAST_RIGHT_EYE);
       VisCortx_TrackPoints(LAST_RIGHT_EYE,RIGHT_EYE);
       VisCortx_RenewAllTrackPoints(LEFT_EYE);
       VisCortx_RenewAllTrackPoints(RIGHT_EYE);

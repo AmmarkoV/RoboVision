@@ -93,3 +93,19 @@
 	"../MotorFoundation/MotorHAL.h"
 	<unistd.h>
 
+1306102501 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_hal.c
+	"command_hal.h"
+	"command_implementation.h"
+	"../InputParser/InputParser_C.h"
+	"../RVKnowledgeBase/RVKnowledgeBase.h"
+	"visual_system.h"
+	"motor_system.h"
+	"mapping_system.h"
+	"configuration.h"
+	"webinterface.h"
+
+1306101181 /home/ammar/Documents/Programming/RoboVision/RVKnowledgeBase/RVKnowledgeBase.h
+	"../../CStringOrganize/CStringOrganize.h"
+
+1265652107 /home/ammar/Documents/Programming/CStringOrganize/CStringOrganize.h
+

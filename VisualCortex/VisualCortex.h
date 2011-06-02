@@ -127,6 +127,16 @@ enum VisCortxRegisters
    SECOND_DERIVATIVE_LEFT,
    SECOND_DERIVATIVE_RIGHT,
 
+   LAST_EDGES_LEFT,
+   LAST_EDGES_RIGHT,
+
+   LAST_SECOND_DERIVATIVE_LEFT,
+   LAST_SECOND_DERIVATIVE_RIGHT,
+
+   LAST_MOVEMENT_LEFT,
+   LAST_MOVEMENT_RIGHT,
+
+
    GENERAL_1,
    GENERAL_2,
    GENERAL_3,
@@ -215,6 +225,7 @@ void VisCortxClearTrackPoints(unsigned int cam);
 void  VisCortx_AutoAddTrackPoints(unsigned int cam);
 void  VisCortx_RemoveTimedoutTrackPoints(unsigned int cam,unsigned int timeout);
 unsigned int  VisCortx_GetFeature(unsigned int vid_reg,unsigned int point_num,unsigned int data_type);
+void  VisCortx_CopyTrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg);
 void  VisCortx_TrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg);
 void  VisCortx_DrawTrackPoints();
 void  VisCortx_RenewTrackPoint(unsigned int vid_reg,unsigned int tpoint);

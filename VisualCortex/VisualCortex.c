@@ -491,8 +491,8 @@ void  VisCortx_AutoAddTrackPoints(unsigned int cam)
 
 void  VisCortx_RemoveTimedoutTrackPoints(unsigned int cam,unsigned int timeout)
 {
-   if (cam==0) { RemoveTrackPointsIfTimedOut(video_register[LEFT_EYE].features,timeout); } else
-   if (cam==1) { RemoveTrackPointsIfTimedOut(video_register[RIGHT_EYE].features,timeout); }
+  // if (cam==0) { RemoveTrackPointsIfTimedOut(video_register[LEFT_EYE].features,timeout); } else
+  // if (cam==1) { RemoveTrackPointsIfTimedOut(video_register[RIGHT_EYE].features,timeout); }
 }
 
 
@@ -500,6 +500,14 @@ unsigned int  VisCortx_GetFeature(unsigned int vid_reg,unsigned int point_num,un
 {
   return GetFeatureData(video_register[vid_reg].features,point_num,data_type);
 }
+
+
+void  VisCortx_CopyTrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg)
+{
+  CopyFeatureList(video_register[from_vid_reg].features,video_register[to_vid_reg].features);
+}
+
+
 
 void  VisCortx_TrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg)
 {
