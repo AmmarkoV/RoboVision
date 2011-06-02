@@ -100,6 +100,8 @@ extern float camera_diagonal_field_of_view,camera_horizontal_field_of_view,camer
 extern float depth_units_in_cm[256];
 
 
+int SetImageRegion( struct ImageRegion * ir , unsigned int x1,unsigned int y1,unsigned int width,unsigned int height);
+
 // INIT / DEINIT
 int VideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth);
 int LargeVideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth);

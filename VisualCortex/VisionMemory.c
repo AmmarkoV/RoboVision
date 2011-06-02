@@ -37,6 +37,19 @@ float camera_diagonal_field_of_view=0,camera_horizontal_field_of_view=0,camera_v
 
 float depth_units_in_cm[256]={0};
 
+int SetImageRegion( struct ImageRegion * ir , unsigned int x1,unsigned int y1,unsigned int width,unsigned int height)
+{
+   if ( ir == 0 ) { return 0; }
+   ir->x1=x1;
+   ir->y1=y1;
+   ir->x2=x1+width;
+   ir->y2=y1+height;
+   ir->width = width;
+   ir->height = height;
+   return 1;
+}
+
+
 int VideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth)
 {
     if (reg_num>=REGISTERS_COUNT) { fprintf(stderr,"Register does not exist! \n "); return 0; }

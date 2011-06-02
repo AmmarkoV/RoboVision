@@ -180,6 +180,43 @@ unsigned int VisCortx_GetVideoRegisterStats(unsigned int metric_num)
 /*
  ----------------- VIDEO INPUT/OUTPUT ----------------------
 */
+unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
+{
+   if ( input_img_regnum == LEFT_EYE )
+    {
+       // FIRST STORE OLD REGISTERS
+       VisCortX_CopyVideoRegister(LEFT_EYE,LAST_LEFT_EYE);
+       VisCortX_CopyVideoRegister(EDGES_LEFT,LAST_EDGES_LEFT);
+       VisCortX_CopyVideoRegister(SECOND_DERIVATIVE_LEFT,LAST_SECOND_DERIVATIVE_LEFT);
+       VisCortX_CopyVideoRegister(MOVEMENT_LEFT,LAST_MOVEMENT_LEFT);
+
+       // SECOND PASS NEW IMAGE
+       VisCortx_WriteToVideoRegister(LEFT_EYE,size_x,size_y,depth,rgbdata);
+
+       // THIRD PROCESS NEW IMAGE
+       //PrepareCleanSobeledGaussianAndDerivative(LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
+       //GenerateCompressHistogramOfImage(video_register[CALIBRATED_LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+    } else
+    if ( input_img_regnum == RIGHT_EYE )
+    {
+       // FIRST STORE OLD REGISTERS
+       VisCortX_CopyVideoRegister(RIGHT_EYE,LAST_RIGHT_EYE);
+       VisCortX_CopyVideoRegister(EDGES_RIGHT,LAST_EDGES_RIGHT);
+       VisCortX_CopyVideoRegister(SECOND_DERIVATIVE_RIGHT,LAST_SECOND_DERIVATIVE_RIGHT);
+       VisCortX_CopyVideoRegister(MOVEMENT_RIGHT,LAST_MOVEMENT_RIGHT);
+
+       // SECOND PASS NEW IMAGE
+       VisCortx_WriteToVideoRegister(RIGHT_EYE,size_x,size_y,depth,rgbdata);
+
+       // THIRD PROCESS NEW IMAGE
+       //PrepareCleanSobeledGaussianAndDerivative(RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
+       //GenerateCompressHistogramOfImage(video_register[CALIBRATED_RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+    }
+ return 0;
+}
+
+
+
 unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum)
 {
     return CopyRegister(input_img_regnum,output_img_regnum);

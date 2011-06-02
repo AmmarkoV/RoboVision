@@ -507,7 +507,7 @@ return (1);
 
 int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int target_reg)
 {
-    if (ThisIsA3ByteRegister(source_reg)) { fprintf(stderr,"SecondDerivative Intensities requires monochrome image conversion"); return 0; }
+    if (!ThisIsA1ByteRegister(source_reg)) { fprintf(stderr,"SecondDerivative Intensities requires monochrome image conversion"); return 0; }
 
     signed char table[9]={-1,0,1,0,0,0,1,0,-1};
     signed int divisor = 3;

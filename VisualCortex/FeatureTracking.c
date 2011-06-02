@@ -3,6 +3,8 @@
 #include "Precalculations.h"
 #include "MovementRegistration.h"
 #include "VisCortexFilters.h"
+#include "VisionMemory.h"
+#include "DisparityDepthMap.h"
 
 
 unsigned int PATCH_DISPLACEMENT=PATCH_SIZE/3; // PATCH_SIZE div 2 ( gia PATCH_SIZE=9 -> 4 )
@@ -31,7 +33,21 @@ inline void PointGoDownRight(unsigned int *x,unsigned int *y,unsigned int *x_add
 }
 
 void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
-{
+{ return;
+  unsigned int from_edges,from_derivatives,from_movement;
+  unsigned int to_edges,to_derivatives,to_movement;
+  if ((from==LEFT_EYE)||(to==LEFT_EYE))
+       {
+         from_edges=LAST_EDGES_LEFT; from_derivatives=LAST_SECOND_DERIVATIVE_LEFT; from_movement=LAST_MOVEMENT_LEFT;
+         to_edges=EDGES_LEFT; to_derivatives=SECOND_DERIVATIVE_LEFT; to_movement=MOVEMENT_LEFT;
+       }
+  if ((from==RIGHT_EYE)||(to==RIGHT_EYE))
+       {
+         from_edges=LAST_EDGES_RIGHT; from_derivatives=LAST_SECOND_DERIVATIVE_RIGHT; from_movement=LAST_MOVEMENT_RIGHT;
+         to_edges=EDGES_RIGHT; to_derivatives=SECOND_DERIVATIVE_RIGHT; to_movement=MOVEMENT_RIGHT;
+       }
+
+
 
   unsigned int min=0,size_x=metrics[RESOLUTION_X],size_y=metrics[RESOLUTION_Y];
   unsigned int x1=0,y1=0,x2=size_x,y2=size_y , width =  PATCH_SIZE /2 , height =  PATCH_SIZE /2;
@@ -57,12 +73,33 @@ void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
 
       fprintf(stderr," Search area from %u,%u to %u,%u\n",x_search_area_start,y_search_area_start,x_search_area_end,y_search_area_end);
 
+
+      struct ImageRegion source_rgn={0},target_rgn={0};
+      SetImageRegion(&source_rgn,x1,y1,x2-x1,y2-y1);
+
+      unsigned int best_score=settings[DEPTHMAP_COMPARISON_THRESHOLD]+1 , best_x=0,best_y=0;
+      unsigned int  prox=0;
+
       unsigned int x,y;
       for (x=x_search_area_start; x<x_search_area_end; x++)
        {
          for (y=y_search_area_start; y<y_search_area_end; y++)
          {
-            //fprintf(stderr," Point %u,%u \n",x,y);
+            SetImageRegion(&target_rgn,x,y,width,height);
+            prox = ComparePatches( &source_rgn , &target_rgn,
+                                   from  , to,
+                                   video_register[from_edges].pixels , video_register[to_edges].pixels ,
+                                   video_register[from_derivatives].pixels  , video_register[to_derivatives].pixels ,
+                                   video_register[from_movement].pixels  , video_register[to_movement].pixels ,
+                                   metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER],
+                                   size_x , size_y ,
+                                   best_score);
+
+
+           if ( best_score > prox )
+            {
+                //NEW BEST RESULT
+            }
          }
        }
 
