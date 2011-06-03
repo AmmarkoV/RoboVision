@@ -108,6 +108,7 @@ int RenewTrackPoints(struct FeatureList * list,int point)
 }
 
 
+// TODO ADD HERE COPYING OF THE FEATURE IMAGE PATCH , IT IS NEEDED FOR BETTER TRACKING..!
 int AddToFeatureList(struct FeatureList * list, int x, int y,int z)
 {
    if ( list->current_features >= list->max_features-1 ) { fprintf(stderr,"Cannot add to feature list , feature list is full\n"); return 0; }

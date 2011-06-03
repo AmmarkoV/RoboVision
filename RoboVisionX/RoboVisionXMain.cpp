@@ -7,7 +7,7 @@
  * License:
  **************************************************************/
 
-char * ROBOGUI_VERSION=(char *) "0.37";
+char * ROBOGUI_VERSION=(char *) "0.38";
 
 int position = 0;
 

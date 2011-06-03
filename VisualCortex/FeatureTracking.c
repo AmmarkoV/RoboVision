@@ -14,12 +14,12 @@ unsigned int PATCH_SIZE_MULT_3=PATCH_SIZE*3;
 
 inline void PointGoUpLeft(unsigned int *x,unsigned int *y,unsigned int *x_subtract,unsigned int *y_subtract,unsigned int *x_min,unsigned int *y_min)
 {
-   if ( *x - *x_subtract >= *x_min )
+   if ( *x > *x_min + *x_subtract)
           { *x=*x - *x_subtract; } else
-          { *x=0; }
-   if ( *y - *y_subtract >= *y_min )
+          { *x=*x_min; }
+   if ( *y > *y_min + *y_subtract)
           { *y=*y - *y_subtract; } else
-          { *y=0; }
+          { *y=*y_min; }
 }
 
 inline void PointGoDownRight(unsigned int *x,unsigned int *y,unsigned int *x_add,unsigned int *y_add,unsigned int *x_max,unsigned int *y_max)
@@ -33,7 +33,7 @@ inline void PointGoDownRight(unsigned int *x,unsigned int *y,unsigned int *x_add
 }
 
 void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
-{ return;
+{
   unsigned int from_edges,from_derivatives,from_movement;
   unsigned int to_edges,to_derivatives,to_movement;
   if ((from==LEFT_EYE)||(to==LEFT_EYE))
@@ -50,15 +50,17 @@ void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
 
 
   unsigned int min=0,size_x=metrics[RESOLUTION_X],size_y=metrics[RESOLUTION_Y];
-  unsigned int x1=0,y1=0,x2=size_x,y2=size_y , width =  PATCH_SIZE /2 , height =  PATCH_SIZE /2;
+  unsigned int x1=0,y1=0,x2=size_x,y2=size_y , width =  PATCH_SIZE , height =  PATCH_SIZE;
+  unsigned int center_distance_x = PATCH_SIZE / 2;
+  unsigned int center_distance_y = PATCH_SIZE / 2;
 
       x1=video_register[from].features->list[point_num].x;
       y1=video_register[from].features->list[point_num].y;
-      PointGoUpLeft(&x1,&y1,&width,&height,&min,&min);
+      PointGoUpLeft(&x1,&y1,&center_distance_x,&center_distance_y,&min,&min);
 
       x2=video_register[from].features->list[point_num].x;
       y2=video_register[from].features->list[point_num].y;
-      PointGoDownRight(&x2,&y2,&width,&height,&size_x,&size_y);
+      PointGoDownRight(&x2,&y2,&center_distance_x,&center_distance_y,&size_x,&size_y);
       /*We now have the starting X1,Y1 - X2,Y2 rectangle and will now try to compare it to its neighborhood on the target image*/
 
       unsigned int patch_displacement = PATCH_SEEK_AREA /2;
@@ -77,8 +79,15 @@ void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
       struct ImageRegion source_rgn={0},target_rgn={0};
       SetImageRegion(&source_rgn,x1,y1,x2-x1,y2-y1);
 
-      unsigned int best_score=settings[DEPTHMAP_COMPARISON_THRESHOLD]+1 , best_x=0,best_y=0;
+      unsigned int  result_exists=0, best_score=settings[DEPTHMAP_COMPARISON_THRESHOLD]+1 , best_x=0,best_y=0;
       unsigned int  prox=0;
+
+      best_x=video_register[from].features->list[point_num].x;
+      best_y=video_register[from].features->list[point_num].y;
+      SetImageRegion(&target_rgn,best_x,best_y,width,height);
+      best_score = ComparePatches( &source_rgn , &target_rgn, video_register[from].pixels,video_register[to].pixels, video_register[from_edges].pixels , video_register[to_edges].pixels , video_register[from_derivatives].pixels  , video_register[to_derivatives].pixels ,
+                                   video_register[from_movement].pixels  , video_register[to_movement].pixels , metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER], size_x , size_y , best_score);
+
 
       unsigned int x,y;
       for (x=x_search_area_start; x<x_search_area_end; x++)
@@ -102,8 +111,15 @@ void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
                 best_x = target_rgn.x1;
                 best_y = target_rgn.y1;
                 best_score = prox;
+                result_exists=1;
             }
          }
        }
+
+ if (result_exists)
+ {
+  video_register[from].features->list[point_num].x=best_x+center_distance_x;
+  video_register[from].features->list[point_num].y=best_y+center_distance_y;
+ }
 
 }

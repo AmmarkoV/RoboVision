@@ -3,6 +3,10 @@
 #include "Precalculations.h"
 
 
+/*
+   ComparePatchesUsingHistogram uses compares compressed histograms ( Integral Imaging ) to get a fast reaction
+   smaller return values means closer patches
+*/
 int ComparePatchesUsingHistogram(int hist_reg_left,int hist_reg_right,unsigned int *source_x1,unsigned int *source_y1,unsigned int *target_x1,unsigned int *target_y1)
 {
   if (  settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM] ==0 ) { return 0; }
@@ -29,6 +33,10 @@ int ComparePatchesUsingHistogram(int hist_reg_left,int hist_reg_right,unsigned i
 }
 
 
+/*
+   ComparePatches uses compares rgb , sobel , secondderivatives , movement data , from 2 patches to
+   compare them , smaller return values mean best matches
+*/
 unsigned int ComparePatches(       struct ImageRegion * source_block,    struct ImageRegion * target_block,
                                    unsigned char *rgb1,                  unsigned char *rgb2,
                                    unsigned char *sobel1,                unsigned char *sobel2,

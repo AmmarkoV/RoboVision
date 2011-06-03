@@ -73,6 +73,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="MovementRegistration.h" />
+		<Unit filename="PatchComparison.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PatchComparison.h" />
 		<Unit filename="PatternRecognition.c">
 			<Option compilerVar="CC" />
 		</Unit>
