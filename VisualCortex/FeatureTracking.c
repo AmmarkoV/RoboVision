@@ -4,7 +4,7 @@
 #include "MovementRegistration.h"
 #include "VisCortexFilters.h"
 #include "VisionMemory.h"
-#include "DisparityDepthMap.h"
+#include "PatchComparison.h"
 
 
 unsigned int PATCH_DISPLACEMENT=PATCH_SIZE/3; // PATCH_SIZE div 2 ( gia PATCH_SIZE=9 -> 4 )
@@ -87,7 +87,7 @@ void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
          {
             SetImageRegion(&target_rgn,x,y,width,height);
             prox = ComparePatches( &source_rgn , &target_rgn,
-                                   from  , to,
+                                   video_register[from].pixels,video_register[to].pixels,
                                    video_register[from_edges].pixels , video_register[to_edges].pixels ,
                                    video_register[from_derivatives].pixels  , video_register[to_derivatives].pixels ,
                                    video_register[from_movement].pixels  , video_register[to_movement].pixels ,
@@ -99,6 +99,9 @@ void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
            if ( best_score > prox )
             {
                 //NEW BEST RESULT
+                best_x = target_rgn.x1;
+                best_y = target_rgn.y1;
+                best_score = prox;
             }
          }
        }

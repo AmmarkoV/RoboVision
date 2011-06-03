@@ -11,6 +11,7 @@ gcc -c FeatureLists.c -o FeatureLists.o
 gcc -c FeatureExtraction.c -o FeatureExtraction.o 
 gcc -c FeatureTracking.c -o FeatureTracking.o
 gcc -c IntegralImageConversion.c -o IntegralImageConversion.o
+gcc -c PatchComparison.c -o PatchComparison.o
 gcc -c PatternRecognition.c -o PatternRecognition.o
 gcc -c Precalculations.c -o Precalculations.o 
 gcc -c StateSetting.c -o StateSetting.o
@@ -23,10 +24,10 @@ gcc -c VisualCortex.c -o VisualCortex.o
 
 
 echo "Linking files.."
-ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatternRecognition.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o LinearAlgebra.o VisualCortex.o
+ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o LinearAlgebra.o VisualCortex.o
 
 echo "Cleaning compiled object files.."
-rm DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatternRecognition.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o LinearAlgebra.o VisualCortex.o
+rm DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o LinearAlgebra.o VisualCortex.o
 
 echo "Compiling Tester.."
 cd VisCortx_Tester

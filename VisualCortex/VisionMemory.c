@@ -42,8 +42,6 @@ int SetImageRegion( struct ImageRegion * ir , unsigned int x1,unsigned int y1,un
    if ( ir == 0 ) { return 0; }
    ir->x1=x1;
    ir->y1=y1;
-   ir->x2=x1+width;
-   ir->y2=y1+height;
    ir->width = width;
    ir->height = height;
    return 1;
