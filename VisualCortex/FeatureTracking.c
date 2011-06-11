@@ -118,6 +118,8 @@ void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
 
  if (result_exists)
  {
+  video_register[from].features->list[point_num].last_x=video_register[from].features->list[point_num].x;
+  video_register[from].features->list[point_num].last_y=video_register[from].features->list[point_num].y;
   video_register[from].features->list[point_num].x=best_x+center_distance_x;
   video_register[from].features->list[point_num].y=best_y+center_distance_y;
  }

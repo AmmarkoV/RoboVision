@@ -7,6 +7,7 @@ struct FeatureData
   char lost_since;
 
   unsigned int x,y,z;
+  unsigned int last_x,last_y,last_z;
   unsigned int mem;
   unsigned int group;
 };

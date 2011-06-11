@@ -65,8 +65,11 @@ int CopyFeatureList(struct FeatureList * source,struct FeatureList * target)
       target->list[i].lost = source->list[i].lost;
       target->list[i].lost_since = source->list[i].lost_since;
       target->list[i].x = source->list[i].x;
+      target->list[i].last_x = source->list[i].last_x;
       target->list[i].y = source->list[i].y;
+      target->list[i].last_y = source->list[i].last_y;
       target->list[i].z = source->list[i].z;
+      target->list[i].last_z = source->list[i].last_z;
       target->list[i].mem = source->list[i].mem;
       target->list[i].group = source->list[i].group;
    }
@@ -113,9 +116,8 @@ int AddToFeatureList(struct FeatureList * list, int x, int y,int z)
 {
    if ( list->current_features >= list->max_features-1 ) { fprintf(stderr,"Cannot add to feature list , feature list is full\n"); return 0; }
    unsigned int cur=list->current_features;
-    list->list[cur].x=x;
-    list->list[cur].y=y;
-    list->list[cur].z=z;
+    list->list[cur].x=x; list->list[cur].y=y; list->list[cur].z=z;
+    list->list[cur].last_x=x; list->list[cur].last_y=y; list->list[cur].last_z=z;
 
    ++list->current_features;
  return 1;
