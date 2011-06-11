@@ -20,6 +20,8 @@ int YUYVY_ImplementationCheck_OK()
 */
 int Convert2RGB24(unsigned char * ENC_frame , unsigned char * RGB_frame,unsigned int width,unsigned int height,int inp_videoformat,int inp_bitdepth)
 {
+  if ( ( ENC_frame == 0 ) || ( RGB_frame == 0 ) ) { return 0; }
+
   /* This function will pick an appropriate decoder to change signal from ENC to RGB24*/
   switch (inp_videoformat)
    {

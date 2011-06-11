@@ -141,3 +141,48 @@ int ClearImage(struct Image * pic )
     return 0;
 }
 
+
+
+
+
+
+int PutPixel_inFrame(unsigned int x,unsigned int y,unsigned int R,unsigned int G,unsigned int B, unsigned char * frame,unsigned int depth, unsigned int size_x,unsigned int size_y)
+{
+    if ( ( x >= size_x ) || ( y >= size_y ) ) { return 0; }
+
+    unsigned char * ptr;
+    ptr = frame + ( y*depth*size_x ) + (x * depth);
+    *ptr=R; ++ptr;
+    *ptr=G; ++ptr;
+    *ptr=B;
+
+    return 1;
+}
+
+int DrawLine_inFrame( unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2 , unsigned int R,unsigned int G,unsigned int B , unsigned char * frame,unsigned int depth, unsigned int size_x,unsigned int size_y)
+{
+      unsigned int x,y,end,p;
+      unsigned int dx = abs(x1 - x2);
+      unsigned int dy = abs(y1 - y2);
+      p = 2 * dy - dx;
+      if(x1 > x2)
+      { x = x2; y = y2; end = x1; }
+      else
+      { x = x1; y = y1; end = x2; }
+      PutPixel_inFrame(x,y,  R,G,B , frame,depth,size_x,size_y);
+
+      while(x < end)
+      {
+        x = x + 1;
+        if(p < 0) { p = p + 2 * dy; }
+                    else
+                  { y = y + 1;
+                    p = p + 2 * (dy - dx);
+                  }
+        PutPixel_inFrame(x,y,  R,G,B , frame,depth,size_x,size_y);
+      }
+    return 1;
+}
+
+
+

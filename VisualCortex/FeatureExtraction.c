@@ -52,8 +52,8 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
  unsigned int INTENSITY_THRESHOLD_LOW = 17;
 
  unsigned int line_width = image_x;
- unsigned int skip_step_abs = 40;
- unsigned int skip_step =  skip_step_abs;
+// unsigned int skip_step_abs = 40;
+// unsigned int skip_step =  skip_step_abs;
  unsigned int x=x_start,y=y_start;
 
 

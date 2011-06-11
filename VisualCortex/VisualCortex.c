@@ -182,6 +182,7 @@ unsigned int VisCortx_GetVideoRegisterStats(unsigned int metric_num)
 */
 unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
 {
+   if ( rgbdata == 0 ) { fprintf(stderr,"VisCortX_NewFrame given zero pointer"); return 0; }
    if ( input_img_regnum == LEFT_EYE )
     {
        // FIRST STORE OLD REGISTERS
@@ -273,7 +274,8 @@ unsigned int VisCortX_SaveVideoRegisterToFile(unsigned int reg_num,char * filena
 
 unsigned int VisCortx_WriteToVideoRegister(unsigned int reg_num,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
 {
-	if (  !VideoRegisterRequestIsOk(reg_num,size_x,size_y,depth) ) { return 1; }
+	if (  !VideoRegisterRequestIsOk(reg_num,size_x,size_y,depth) ) { fprintf(stderr,"VisCortx_WriteToVideoRegister failing.."); return 0; }
+	if ( ( rgbdata == 0 ) || ( depth == 0 ) || ( size_x == 0 ) || ( size_y == 0 ) ) { fprintf(stderr,"VisCortx_WriteToVideoRegister failing..");  return 0; /*Discarding erroneous input*/ }
 
     unsigned long syst_mem_end=metrics[RESOLUTION_X]*metrics[RESOLUTION_Y]*3;
     unsigned long pic_mem_end=size_x*size_y*depth;
@@ -295,7 +297,7 @@ unsigned int VisCortx_WriteToVideoRegister(unsigned int reg_num,unsigned int siz
         break;
      };
 
-	return 0;
+	return 1;
 }
 
 unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int size_x,unsigned int size_y,unsigned int depth)

@@ -45,6 +45,8 @@ int ClearImage(struct Image * pic );
 int ConvertImageFormats(char * filenamein,char * filenameout);
 int ConvertSnapshotsToVideo(int framerate,int bitrate,char * filenameout);
 
+int DrawLine_inFrame( unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2 , unsigned int R,unsigned int G,unsigned int B , unsigned char * frame,unsigned int depth, unsigned int size_x,unsigned int size_y);
+
 #ifdef __cplusplus
 }
 #endif

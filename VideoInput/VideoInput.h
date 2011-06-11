@@ -118,7 +118,7 @@ int FeedReceiveLoopAlive(int feed_num);
 int PauseFeed(int feednum);
 int UnpauseFeed(int feednum);
 
-
+unsigned char * GetEmptyFrame();
 unsigned char * GetFrame(int webcam_id);
 unsigned int NewFrameAvailiable(int webcam_id);
 void SignalFrameProcessed(int webcam_id);

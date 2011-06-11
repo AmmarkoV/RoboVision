@@ -164,6 +164,9 @@ int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned in
       case FEATURE_X : return list->list[point_num].x; break;
       case FEATURE_Y : return list->list[point_num].y; break;
       case FEATURE_Z : return list->list[point_num].z; break;
+      case FEATURE_LAST_X : return list->list[point_num].last_x; break;
+      case FEATURE_LAST_Y : return list->list[point_num].last_y; break;
+      case FEATURE_LAST_Z : return list->list[point_num].last_z; break;
       case PRINT_FEATURE_LIST : PrintFeatureListContents(list); break;
       case MATCHED_WITH_REG : return 0; break;
     };

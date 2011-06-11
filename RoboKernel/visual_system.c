@@ -36,11 +36,12 @@ int InitVisualSystem()
     camerasok+=InitVideoFeed(1,video_device_2,width,height,24,1,feedsettings);
     if ( (camerasok==2) )
       {
-          if ( !wait_for_cameras_to_init() ) { fprintf(stderr,"CamerasTimed out!!\n"); return 0; }
+          if ( !wait_for_cameras_to_init() ) { fprintf(stderr,"CamerasTimed out!!\n"); /*return 0; The rest of the libs must be inited regardless of the failure of the visual system , or else the whole thing will segfault */
+                                                  }
       } else
       {
        fprintf(stderr,"Failed to init Video Feeds!\n");
-       return 0;
+       /*return 0; The rest of the libs must be inited regardless of the failure of the visual system , or else the whole thing will segfault */
       }
 
 
@@ -55,7 +56,7 @@ int InitVisualSystem()
 
 int PassVideoInputToCortex(unsigned int clock_time)
 {
- void *frame1=0 ,*frame2 = 0;
+  void *frame1=0 ,*frame2 = 0;
 
 
  // GET INPUT  ( SWAPED OR NOT! )
@@ -76,7 +77,7 @@ int PassVideoInputToCortex(unsigned int clock_time)
   if (( frame1 == 0 ) || ( frame2 == 0 ))
    {
      /*Video Input not returning frames , kernel skipping frame */
-     //fprintf(stderr,"Video Input not returning frames , kernel skipping frame \n");
+     fprintf(stderr,"Video Input not returning frames , kernel skipping frame \n");
      return 0;
    }
 

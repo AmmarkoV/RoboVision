@@ -174,6 +174,9 @@ enum FeatureTypeElements
     FEATURE_X ,
     FEATURE_Y ,
     FEATURE_Z ,
+    FEATURE_LAST_X ,
+    FEATURE_LAST_Y ,
+    FEATURE_LAST_Z ,
     PRINT_FEATURE_LIST,
     MATCHED_WITH_REG ,
 

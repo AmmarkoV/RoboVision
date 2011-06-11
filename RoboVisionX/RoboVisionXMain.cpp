@@ -7,7 +7,7 @@
  * License:
  **************************************************************/
 
-char * ROBOGUI_VERSION=(char *) "0.38";
+char * ROBOGUI_VERSION=(char *) "0.39";
 
 int position = 0;
 
@@ -469,6 +469,8 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
         for ( i=0; i<VisCortx_GetFeature(LEFT_EYE,0,TOTAL_POINTS); i++ )
          {
              dc.DrawRectangle(feed_0_x+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_Y),5,5);
+             dc.DrawLine(feed_0_x+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_Y),feed_0_x+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_LAST_X),feed_0_y+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_LAST_Y));
+
          }
        }
 
@@ -477,6 +479,7 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
         for ( i=0; i<VisCortx_GetFeature(RIGHT_EYE,0,TOTAL_POINTS); i++ )
          {
              dc.DrawRectangle(feed_1_x+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_Y),5,5);
+             dc.DrawLine(feed_1_x+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_Y),feed_1_x+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_LAST_X),feed_1_y+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_LAST_Y));
          }
        }
      }
