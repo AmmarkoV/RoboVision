@@ -161,6 +161,56 @@ int PutPixel_inFrame(unsigned int x,unsigned int y,unsigned int R,unsigned int G
 
 int DrawLine_inFrame( unsigned int x1,unsigned int y1,unsigned int x2,unsigned int y2 , unsigned int R,unsigned int G,unsigned int B , unsigned char * frame,unsigned int depth, unsigned int size_x,unsigned int size_y)
 {
+    unsigned int startx=x1 ,starty=y1 , endx = x2 , endy = y2 ;
+
+
+    int t, distance;
+    int xerr=0, yerr=0, delta_x, delta_y;
+    int incx, incy;
+
+    /* compute the distances in both directions */
+    delta_x=endx-startx;
+    delta_y=endy-starty;
+
+    /* Compute the direction of the increment,
+       an increment of 0 means either a horizontal or vertical
+       line.
+    */
+    if(delta_x>0) incx=1;
+    else if(delta_x==0) incx=0;
+    else incx=-1;
+
+    if(delta_y>0) incy=1;
+    else if(delta_y==0) incy=0;
+    else incy=-1;
+
+    /* determine which distance is greater */
+    delta_x=abs(delta_x);
+    delta_y=abs(delta_y);
+    if(delta_x>delta_y) distance=delta_x;
+    else distance=delta_y;
+
+    /* draw the line */
+    for(t=0; t<=distance+1; t++)
+    {
+       PutPixel_inFrame(startx,starty,  R,G,B , frame,depth,size_x,size_y);
+
+        xerr+=delta_x;
+        yerr+=delta_y;
+        if(xerr>distance)
+        {
+            xerr-=distance;
+            startx+=incx;
+        }
+        if(yerr>distance)
+        {
+            yerr-=distance;
+            starty+=incy;
+        }
+    }
+
+
+    /*
       unsigned int x,y,end,p;
       unsigned int dx = abs(x1 - x2);
       unsigned int dy = abs(y1 - y2);
@@ -180,7 +230,7 @@ int DrawLine_inFrame( unsigned int x1,unsigned int y1,unsigned int x2,unsigned i
                     p = p + 2 * (dy - dx);
                   }
         PutPixel_inFrame(x,y,  R,G,B , frame,depth,size_x,size_y);
-      }
+      }*/
     return 1;
 }
 

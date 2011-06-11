@@ -39,7 +39,7 @@
 
 #define THREAD_SLEEP_TIME_NANOSECONDS 15000
 
-char * VIDEOINPT_VERSION=(char *) "0.246 RGB24/YUYV compatible";
+char * VIDEOINPT_VERSION=(char *) "0.247 RGB24/YUYV compatible";
 int do_not_return_zero_pointers=1;
 int increase_priority=0;
 
@@ -115,8 +115,11 @@ int ReallocEmptyFrame(unsigned int new_size_x,unsigned int new_size_y)
           if ( empty_frame != 0 ) { free(empty_frame); }
           empty_frame=(unsigned char * ) malloc(largest_feed_x * largest_feed_y * 3 * sizeof ( unsigned char) );
 
-         // DrawLine_inFrame(0,0,largest_feed_x-1,largest_feed_y-1,255,0,0,empty_frame,3,largest_feed_x,largest_feed_y);
-         // DrawLine_inFrame(0,largest_feed_y-1,largest_feed_x-1,0,255,0,0,empty_frame,3,largest_feed_x,largest_feed_y);
+          int i=0;
+          for (i=0; i<largest_feed_x * largest_feed_y * 3; i++) { empty_frame[i]=0;}
+
+          DrawLine_inFrame(0,0,largest_feed_x-1,largest_feed_y-1,255,0,0,empty_frame,3,largest_feed_x,largest_feed_y);
+          DrawLine_inFrame(0,largest_feed_y-1,largest_feed_x-1,0,255,0,0,empty_frame,3,largest_feed_x,largest_feed_y);
 
 
           fprintf(stderr,"Reallocating new `empty` frame with size %ux%u \n",largest_feed_x,largest_feed_y);
