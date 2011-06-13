@@ -68,34 +68,34 @@ int PassVideoInputToCortex(unsigned int clock_time)
     frame1=GetFrame(1); frame2=GetFrame(0);
  }
 
-  if ( ( !NewFrameAvailiable(0) ) || ( !NewFrameAvailiable(1) ) )
-   {
-     /*No New frames at all , skipping */
-     return 0;
-   }
-
-  if (( frame1 == 0 ) || ( frame2 == 0 ))
-   {
-     /*Video Input not returning frames , kernel skipping frame */
-     fprintf(stderr,"Video Input not returning frames , kernel skipping frame \n");
-     return 0;
-   }
 
   if ( NewFrameAvailiable(0) )
    {
-       VisCortX_NewFrame(LEFT_EYE,width,height,3,(unsigned char *)frame1);
+      if ( frame1 != 0 )
+       {
+         VisCortX_NewFrame(LEFT_EYE,width,height,3,(unsigned char *)frame1);
+         SignalFrameProcessed(0);
+       } else
+       {
+          /* FRAME1 IS DEAD*/
+       }
    }
 
   if ( NewFrameAvailiable(1) )
   {
-       VisCortX_NewFrame(RIGHT_EYE,width,height,3,(unsigned char *)frame2);
+       if ( frame2 != 0 )
+       {
+        VisCortX_NewFrame(RIGHT_EYE,width,height,3,(unsigned char *)frame2);
+        SignalFrameProcessed(1);
+       } else
+       {
+          /* FRAME2 IS DEAD*/
+       }
   }
 
  /*
   * Frames should be signaled processed AFTER they have been passed to Visual Cortex :P
   */
- SignalFrameProcessed(0);
- SignalFrameProcessed(1);
 
 
  VisCortx_SetTime(clock_time);

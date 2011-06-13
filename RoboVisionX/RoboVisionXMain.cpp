@@ -367,7 +367,7 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
     if ( !RoboKernelAlive() ) { fprintf(stderr,"Robo Kernel died\n"); return; }
  //   if ( VideoFeedsNotAccessible== 1 ) { return; }
 
-    if ( uptimer->Time() < 5000 ) { return ; }
+    if ( uptimer->Time() < 3000 ) { return ; }
 
 
      if ( !DrawFeeds->IsChecked() ) { return ; }

@@ -115,7 +115,7 @@ int ReallocEmptyFrame(unsigned int new_size_x,unsigned int new_size_y)
           if ( empty_frame != 0 ) { free(empty_frame); }
           empty_frame=(unsigned char * ) malloc(largest_feed_x * largest_feed_y * 3 * sizeof ( unsigned char) );
 
-          int i=0;
+          unsigned int i=0;
           for (i=0; i<largest_feed_x * largest_feed_y * 3; i++) { empty_frame[i]=0;}
 
           DrawLine_inFrame(0,0,largest_feed_x-1,largest_feed_y-1,255,0,0,empty_frame,3,largest_feed_x,largest_feed_y);

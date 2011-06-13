@@ -1,8 +1,6 @@
 #ifndef RVKNOWLEDGEBASE_H_INCLUDED
 #define RVKNOWLEDGEBASE_H_INCLUDED
 
-#include "../../CStringOrganize/CStringOrganize.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -59,7 +57,15 @@ enum TOKENTYPE            /* Defines an enumeration type    */
 } toktype;
 
 
+struct CStringO
+{
+    unsigned int TODO_ADD_THINGS_HERE;
+};
 
+struct CStringOArray
+{
+    unsigned int TODO_ADD_THINGS_HERE;
+};
 
 struct Event
 {  //     id       id2       place       time          description
