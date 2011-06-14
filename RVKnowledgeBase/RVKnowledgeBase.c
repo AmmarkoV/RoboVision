@@ -1,7 +1,7 @@
 #include "RVKnowledgeBase.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../InputParser/InputParser_C.h"
+#include "../InputParser/InputParser_C.h"
 
 boolean KB_ok(struct KnowledgeBase * kb)
 {

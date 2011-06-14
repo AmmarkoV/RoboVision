@@ -1,3 +1,15 @@
 #!/bin/bash
-echo "Make bash script Not Implemented !" 
+echo "Hand made make script for VideoInput - VideoInputTester .."
+echo "Should provide libVideoInput.a and VideoInputTester/bin/Debug/VideoInputTester"
+echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
+echo "Compiling files.."
+gcc -c RVKnowledgeBase.c -o RVKnowledgeBase.o 
+
+echo "Linking files.."
+ar  rcs libRVKnowledgeBase.a RVKnowledgeBase.o 
+
+echo "Cleaning compiled object files.."
+rm RVKnowledgeBase.o 
+ 
+echo "Done.."
 exit 0
