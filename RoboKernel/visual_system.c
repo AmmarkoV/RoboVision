@@ -68,6 +68,7 @@ int PassVideoInputToCortex(unsigned int clock_time)
     frame1=GetFrame(1); frame2=GetFrame(0);
  }
 
+ VisCortx_SetTime(clock_time);
 
   if ( NewFrameAvailiable(0) )
    {
@@ -98,7 +99,6 @@ int PassVideoInputToCortex(unsigned int clock_time)
   */
 
 
- VisCortx_SetTime(clock_time);
  return 1;
 }
 

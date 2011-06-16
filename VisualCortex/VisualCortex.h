@@ -50,6 +50,8 @@ enum VisCortxSettings
    PATCH_TRACKING_WIDTH,
    PATCH_TRACKING_HEIGHT,
 
+   TIME_BETWEEN_TRACKING ,
+
    MAX_FEATURES,
 
    MOVEMENT_PATCH_SENSITIVITY,
@@ -226,7 +228,7 @@ unsigned int  VisCortx_GetTrackedPoints(unsigned int cam);
 void  VisCortx_AddTrackPoint(unsigned int cam,unsigned int x,unsigned int y,unsigned int group);
 void VisCortxClearTrackPoints(unsigned int cam);
 void  VisCortx_AutoAddTrackPoints(unsigned int cam);
-void  VisCortx_RemoveTimedoutTrackPoints(unsigned int cam,unsigned int timeout);
+void  VisCortx_RemoveTimedoutTrackPoints(unsigned int vid_reg,unsigned int timeout);
 unsigned int  VisCortx_GetFeature(unsigned int vid_reg,unsigned int point_num,unsigned int data_type);
 void  VisCortx_CopyTrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg);
 void  VisCortx_TrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg);

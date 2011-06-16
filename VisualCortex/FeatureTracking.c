@@ -124,4 +124,19 @@ void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
   video_register[from].features->list[point_num].y=best_y+center_distance_y;
  }
 
+
+}
+
+
+int TrackAllPointsOnRegisters(unsigned int reg_new , unsigned int reg_old , unsigned int timeout)
+{
+    if (   video_register[reg_old].features->last_track_time < settings[TIME_BETWEEN_TRACKING] + TIME_INC )
+     {
+        RemoveTrackPointsIfTimedOut(video_register[reg_new].features,timeout);
+        CopyFeatureList(video_register[reg_new].features,video_register[reg_old].features);
+        VisCortx_TrackPoints(reg_old,reg_new);
+        VisCortx_RenewAllTrackPoints(reg_new);
+     }
+
+    return 1;
 }

@@ -180,6 +180,10 @@ unsigned int VisCortx_GetVideoRegisterStats(unsigned int metric_num)
 /*
  ----------------- VIDEO INPUT/OUTPUT ----------------------
 */
+
+/*
+ THIS FUNCTION IS CALLED EVERY TIME A NEW FRAME IS READY FOR STEREO VISION
+*/
 unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
 {
    if ( rgbdata == 0 ) { fprintf(stderr,"VisCortX_NewFrame given zero pointer"); return 0; }
@@ -197,6 +201,9 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
        // THIRD PROCESS NEW IMAGE
        PrepareCleanSobeledGaussianAndDerivative(LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
        GenerateCompressHistogramOfImage(video_register[CALIBRATED_LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+
+        VisCortx_Movement_Detection(1,0);
+        TrackAllPointsOnRegisters(LEFT_EYE,LAST_LEFT_EYE,8000);
     } else
     if ( input_img_regnum == RIGHT_EYE )
     {
@@ -212,6 +219,9 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
        // THIRD PROCESS NEW IMAGE
        PrepareCleanSobeledGaussianAndDerivative(RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
        GenerateCompressHistogramOfImage(video_register[CALIBRATED_RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+
+        VisCortx_Movement_Detection(0,1);
+        TrackAllPointsOnRegisters(RIGHT_EYE,LAST_RIGHT_EYE,8000);
     }
  return 0;
 }
@@ -528,10 +538,9 @@ void  VisCortx_AutoAddTrackPoints(unsigned int cam)
 }
 
 
-void  VisCortx_RemoveTimedoutTrackPoints(unsigned int cam,unsigned int timeout)
+void  VisCortx_RemoveTimedoutTrackPoints(unsigned int vid_reg,unsigned int timeout)
 {
-  // if (cam==0) { RemoveTrackPointsIfTimedOut(video_register[LEFT_EYE].features,timeout); } else
-  // if (cam==1) { RemoveTrackPointsIfTimedOut(video_register[RIGHT_EYE].features,timeout); }
+   RemoveTrackPointsIfTimedOut(video_register[vid_reg].features,timeout);
 }
 
 
@@ -556,6 +565,7 @@ void  VisCortx_TrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg)
 	   ExecuteTrackPoint(from_vid_reg,to_vid_reg,i);
    }
   VisCortx_CopyTrackPoints(from_vid_reg,to_vid_reg);
+  video_register[to_vid_reg].features->last_track_time = TIME_INC;
 }
 
 void  VisCortx_DrawTrackPoints()

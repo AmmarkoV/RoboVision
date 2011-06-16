@@ -272,6 +272,7 @@ void DefaultSettings()
     settings[PATCH_TRACKING_WIDTH]=19;
     settings[PATCH_TRACKING_HEIGHT]=19;
 
+    settings[TIME_BETWEEN_TRACKING]=500;
 
     settings[MOVEMENT_PATCH_SENSITIVITY]=7;
     settings[MOVEMENT_R_THRESHOLD]=45; settings[MOVEMENT_G_THRESHOLD]=45;   settings[MOVEMENT_B_THRESHOLD]=45;

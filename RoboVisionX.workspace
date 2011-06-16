@@ -7,8 +7,8 @@
 		<Project filename="VideoInput/VideoInput.cbp" />
 		<Project filename="MotorFoundation/MotorHAL.cbp" />
 		<Project filename="RVKnowledgeBase/RVKnowledgeBase.cbp" />
-		<Project filename="VisualCortex/VisualCortex.cbp" active="1" />
 		<Project filename="RoboKernel/RoboKernel.cbp" />
+		<Project filename="VisualCortex/VisualCortex.cbp" active="1" />
 		<Project filename="RoboVisionX/RoboVisionX.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

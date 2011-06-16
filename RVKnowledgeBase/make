@@ -1,6 +1,6 @@
 #!/bin/bash
-echo "Hand made make script for VideoInput - VideoInputTester .."
-echo "Should provide libVideoInput.a and VideoInputTester/bin/Debug/VideoInputTester"
+echo "Hand made make script for RVKnowledgeBase placer .."
+echo "Should provide libRVKnowledgeBase.a"
 echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
 echo "Compiling files.."
 gcc -c RVKnowledgeBase.c -o RVKnowledgeBase.o 

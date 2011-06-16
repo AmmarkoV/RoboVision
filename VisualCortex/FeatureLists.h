@@ -23,6 +23,7 @@ struct FeatureList
 {
   unsigned int max_features;
   unsigned int current_features;
+  unsigned int last_track_time;
   struct FeatureData * list;
 
   unsigned int reg_for_correspondance_1;

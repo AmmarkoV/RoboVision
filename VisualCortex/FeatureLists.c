@@ -21,6 +21,7 @@ struct FeatureList * CreateFeatureList(unsigned int size , unsigned int def_patc
   struct FeatureList * new_fls =  malloc( sizeof(struct FeatureList) );
   new_fls->max_features = size;
   new_fls->list = malloc ( sizeof(struct FeatureData) * size );
+  new_fls->last_track_time = 0;
 
   new_fls->correspondance_1 = malloc ( sizeof(struct PointCorrespondence) * size );
 
@@ -58,6 +59,8 @@ int CopyFeatureList(struct FeatureList * source,struct FeatureList * target)
   target->current_features = source->current_features;
 
   if ( target->current_features == 0 ) { return 1; }
+
+  target->last_track_time = source->last_track_time;
 
   int i=0;
   for (i=0; i < target->current_features; i++)
