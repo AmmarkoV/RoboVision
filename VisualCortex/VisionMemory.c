@@ -141,6 +141,8 @@ int ClearVideoRegister(unsigned int reg_num)
      {
         memset(video_register[reg_num].pixels,0,video_register[reg_num].size_x*video_register[reg_num].size_y*video_register[reg_num].depth*sizeof(unsigned char));
      }
+
+    video_register[reg_num].lock = 0;
     video_register[reg_num].time = 0;
     video_register[reg_num].used = 0;
     ClearFeatureList(video_register[reg_num].features);
@@ -158,6 +160,8 @@ int ClearLargeVideoRegister(unsigned int reg_num)
      {
        memset(l_video_register[reg_num].pixels,0,l_video_register[reg_num].size_x*l_video_register[reg_num].size_y*l_video_register[reg_num].depth*sizeof(unsigned short));
      }
+
+    l_video_register[reg_num].lock = 0;
     l_video_register[reg_num].time = 0;
     l_video_register[reg_num].used = 0;
     ClearFeatureList(l_video_register[reg_num].features);
@@ -175,6 +179,8 @@ int ClearExtraLargeVideoRegister(unsigned int reg_num)
      {
        memset(xl_video_register[reg_num].pixels,0,l_video_register[reg_num].size_x*l_video_register[reg_num].size_y*l_video_register[reg_num].depth*sizeof(unsigned int));
      }
+
+    xl_video_register[reg_num].lock = 0;
     xl_video_register[reg_num].time = 0;
     xl_video_register[reg_num].used = 0;
     ClearFeatureList(xl_video_register[reg_num].features);

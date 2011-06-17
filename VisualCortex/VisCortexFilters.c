@@ -684,6 +684,9 @@ void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigne
 int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated)
 {
     /*TODO HERE ADD CALIBRATION CODE*/
-    return GaussianBlurFromSource(rgb_image,rgb_calibrated,0);
+
+    return CopyRegister(rgb_image,rgb_calibrated);
+
+    //return GaussianBlurFromSource(rgb_image,rgb_calibrated,0);
 }
 

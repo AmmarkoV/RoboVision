@@ -43,6 +43,8 @@ struct Histogram
 
 struct VideoRegister
 {
+  unsigned int lock;
+
   unsigned int size_x;
   unsigned int size_y;
   unsigned int depth;
@@ -57,6 +59,8 @@ struct VideoRegister
 
 struct LargeVideoRegister
 {
+  unsigned int lock;
+
   unsigned int size_x;
   unsigned int size_y;
   unsigned int depth;
@@ -70,6 +74,8 @@ struct LargeVideoRegister
 
 struct ExtraLargeVideoRegister
 {
+  unsigned int lock;
+
   unsigned int size_x;
   unsigned int size_y;
   unsigned int depth;

@@ -74,8 +74,7 @@ int PassVideoInputToCortex(unsigned int clock_time)
    {
       if ( frame1 != 0 )
        {
-         VisCortX_NewFrame(LEFT_EYE,width,height,3,(unsigned char *)frame1);
-         SignalFrameProcessed(0);
+         if ( VisCortX_NewFrame(LEFT_EYE,width,height,3,(unsigned char *)frame1) ) { SignalFrameProcessed(0); }
        } else
        {
           /* FRAME1 IS DEAD*/
@@ -86,8 +85,7 @@ int PassVideoInputToCortex(unsigned int clock_time)
   {
        if ( frame2 != 0 )
        {
-        VisCortX_NewFrame(RIGHT_EYE,width,height,3,(unsigned char *)frame2);
-        SignalFrameProcessed(1);
+        if ( VisCortX_NewFrame(RIGHT_EYE,width,height,3,(unsigned char *)frame2) ) { SignalFrameProcessed(1); }
        } else
        {
           /* FRAME2 IS DEAD*/

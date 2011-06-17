@@ -32,8 +32,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
-char * VISCORTEX_VER = "0.586";
+char * VISCORTEX_VER = "0.587";
 
 /*
 
@@ -189,6 +190,13 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
    if ( rgbdata == 0 ) { fprintf(stderr,"VisCortX_NewFrame given zero pointer"); return 0; }
    if ( input_img_regnum == LEFT_EYE )
     {
+       if ( video_register[input_img_regnum].lock )
+         {
+            // fprintf(stderr,"Left Reg is locked \n ");
+             return 0;
+         }
+
+       video_register[input_img_regnum].lock=1;
        // FIRST STORE OLD REGISTERS
        VisCortX_CopyVideoRegister(LEFT_EYE,LAST_LEFT_EYE);
        VisCortX_CopyVideoRegister(EDGES_LEFT,LAST_EDGES_LEFT);
@@ -204,9 +212,19 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
 
         VisCortx_Movement_Detection(1,0);
         TrackAllPointsOnRegisters(LEFT_EYE,LAST_LEFT_EYE,8000);
+
+       video_register[input_img_regnum].lock=0;
     } else
     if ( input_img_regnum == RIGHT_EYE )
     {
+
+        if ( video_register[input_img_regnum].lock )
+         {
+            // fprintf(stderr,"Right Reg is locked \n ");
+             return 0;
+         }
+
+       video_register[input_img_regnum].lock=1;
        // FIRST STORE OLD REGISTERS
        VisCortX_CopyVideoRegister(RIGHT_EYE,LAST_RIGHT_EYE);
        VisCortX_CopyVideoRegister(EDGES_RIGHT,LAST_EDGES_RIGHT);
@@ -222,8 +240,9 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
 
         VisCortx_Movement_Detection(0,1);
         TrackAllPointsOnRegisters(RIGHT_EYE,LAST_RIGHT_EYE,8000);
+        video_register[input_img_regnum].lock=0;
     }
- return 0;
+ return 1;
 }
 
 
@@ -331,6 +350,37 @@ unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int
 */
 
 
+int VisCortx_OperationLockFrames()
+{
+ int waiting_counter = 0;
+ while ( ( video_register[LEFT_EYE].lock ) && ( waiting_counter < 10000 ) )    { ++waiting_counter; usleep(1); }
+ if ( !video_register[LEFT_EYE].lock )
+   {
+    // fprintf(stderr,"LOCKING 1\n");
+     video_register[LEFT_EYE].lock=1;
+   }
+
+
+ waiting_counter = 0;
+ while ( ( video_register[RIGHT_EYE].lock ) && ( waiting_counter < 10000 ) )    { ++waiting_counter; usleep(1); }
+
+ if ( !video_register[RIGHT_EYE].lock )
+   {
+    // fprintf(stderr,"LOCKING 2\n");
+     video_register[RIGHT_EYE].lock=1;
+   }
+
+ return 1;
+}
+
+int VisCortx_OperationUnLockFrames()
+{
+     video_register[LEFT_EYE].lock=0;
+     video_register[RIGHT_EYE].lock=0;
+     return 1;
+}
+
+
 /*
  ----------------- DEPTH MAPPING FUNCTIONS ----------------------
 */
@@ -338,6 +388,13 @@ void  VisCortx_FullDepthMap()
 {
   unsigned int edgepercent=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED],patch_x=metrics[HORIZONTAL_BUFFER],patch_y=metrics[VERTICAL_BUFFER];
    unsigned int originalthreshold=settings[DEPTHMAP_COMPARISON_THRESHOLD];
+
+
+ /*
+    The register CALIBRATED_LEFT_EYE , CALIBRATED_RIGHT_EYE IS CONSTANTLY UPDATED , SO WE CANNOT OUTPUT A STEADY RESULT IF WHILE CALCULATING THE IMAGE CHANGES ..!
+    Thats why we copy to LEFT_EYE_NOT_LIVE and RIGHT_EYE_NOT_LIVE , which are in turn passed for disparity mapping
+ */
+   if (!VisCortx_OperationLockFrames()) { fprintf(stderr,"Cannot Lock Video Input\n"); }
 
   /*
      WE COMPARE PATCHES ON 3 DIFFERENT LEVELS , EXTRA LARGE PATCHES , LARGE PATCHES , NORMAL PATCHES
@@ -413,6 +470,8 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
     CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
    */
   DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO);
+
+  VisCortx_OperationUnLockFrames();
 
 }
 

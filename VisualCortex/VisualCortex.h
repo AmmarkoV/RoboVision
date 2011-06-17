@@ -99,6 +99,9 @@ enum VisCortxRegisters
    LEFT_EYE = 0,
    RIGHT_EYE,
 
+   LEFT_EYE_NOT_LIVE,
+   RIGHT_EYE_NOT_LIVE,
+
    LAST_LEFT_OPERATION,
    LAST_RIGHT_OPERATION,
 
@@ -210,6 +213,9 @@ unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int
 
 unsigned int VisCortX_LoadVideoRegisterFromFile(unsigned int reg_num,char * filename);
 unsigned int VisCortX_SaveVideoRegisterToFile(unsigned int reg_num,char * filename);
+
+int VisCortx_OperationLockFrames();
+int VisCortx_OperationUnLockFrames();
 
 void  VisCortx_FullDepthMap();
 unsigned int  VisCortx_Get_DepthMapData(unsigned int typeofdata,unsigned int px,unsigned int py);
