@@ -6,4 +6,4 @@ The testing platform for the software is my pet project named “GuardDoG” , a
 RoboVision works on linux, and uses V4L2, wxWidgets, OpenGL, Festival, CMU Sphinx, Apache and other foss as extensions.
 I have made an effort to implement everything in a low enough level so that the console “daemon” mode will need only V4L2 support, and everything will be compiled together to reduce unneeded code.
 
-
+To make the project run the make bash script in the parent directory or ./make from the shell ( not make but ./make it is not a standard makefile but a bash script  ) 

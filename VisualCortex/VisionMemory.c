@@ -466,6 +466,7 @@ int CopyRegister(unsigned int source,unsigned int target)
   video_register[target].size_y=video_register[source].size_y;
   video_register[target].depth=video_register[source].depth;
 
+  video_register[target].lock=video_register[source].lock;
   video_register[target].time=video_register[source].time;
   video_register[target].used=video_register[source].used;
 

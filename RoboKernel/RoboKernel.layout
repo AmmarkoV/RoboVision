@@ -22,7 +22,7 @@
 	<File name="configuration.h" open="1" top="0" tabpos="10">
 		<Cursor position="234" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="1" tabpos="1">
+	<File name="main.c" open="1" top="0" tabpos="1">
 		<Cursor position="3050" topLine="103" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
@@ -38,13 +38,13 @@
 		<Cursor position="68" topLine="0" />
 	</File>
 	<File name="visual_system.c" open="1" top="0" tabpos="5">
-		<Cursor position="620" topLine="0" />
+		<Cursor position="2074" topLine="60" />
 	</File>
 	<File name="visual_system.h" open="1" top="0" tabpos="6">
 		<Cursor position="107" topLine="0" />
 	</File>
 	<File name="webinterface.c" open="1" top="0" tabpos="7">
-		<Cursor position="4724" topLine="58" />
+		<Cursor position="2254" topLine="58" />
 	</File>
 	<File name="webinterface.h" open="1" top="0" tabpos="8">
 		<Cursor position="433" topLine="0" />
