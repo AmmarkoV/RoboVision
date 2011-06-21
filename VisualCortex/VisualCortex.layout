@@ -23,7 +23,7 @@
 		<Cursor position="182" topLine="0" />
 	</File>
 	<File name="FeatureLists.c" open="1" top="0" tabpos="31">
-		<Cursor position="4464" topLine="0" />
+		<Cursor position="974" topLine="0" />
 	</File>
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
 		<Cursor position="466" topLine="8" />
@@ -41,7 +41,7 @@
 		<Cursor position="850" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.c" open="1" top="1" tabpos="25">
-		<Cursor position="3393" topLine="45" />
+		<Cursor position="4295" topLine="85" />
 	</File>
 	<File name="LinearAlgebra.h" open="1" top="0" tabpos="32">
 		<Cursor position="240" topLine="0" />
@@ -95,10 +95,10 @@
 		<Cursor position="293" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="19068" topLine="426" />
+		<Cursor position="19066" topLine="408" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="1045" topLine="39" />
+		<Cursor position="868" topLine="9" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
 		<Cursor position="8942" topLine="256" />

@@ -32,6 +32,11 @@ struct ImageRegion{
         unsigned int height;
 };
 
+struct FundamentalMatrix
+{
+    float item[9];
+};
+
 struct Histogram
 {
    unsigned char median_r;

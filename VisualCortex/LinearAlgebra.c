@@ -84,7 +84,41 @@ int ComputeFundamentalMatrix(void)
 }
 
 
+int ComputeFundamentalMatrixFromPointCorrespondance(struct FeatureList * list,struct FundamentalMatrix * E)
+{
+    //The following program solves the linear system A x = b. The system to be solved is, and the solution is found using LU decomposition of the matrix A.
+       double a_data[] = { 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
+                           1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
+                           1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
+                           1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
+                           1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9
+                         };
 
+       double b_data[] = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0  };
+
+       gsl_matrix_view m
+         = gsl_matrix_view_array (a_data, 9, 5);
+
+       gsl_vector_view b
+         = gsl_vector_view_array (b_data, 9);
+
+       gsl_vector *x = gsl_vector_alloc (9);
+
+       int s;
+
+       gsl_permutation * p = gsl_permutation_alloc (4);
+
+       gsl_linalg_LU_decomp (&m.matrix, p, &s);
+
+       gsl_linalg_LU_solve (&m.matrix, p, &b.vector, x);
+
+       printf ("x = \n");
+       gsl_vector_fprintf (stdout, x, "%g");
+
+       gsl_permutation_free (p);
+       gsl_vector_free (x);
+       return 0;
+}
 
 
 
