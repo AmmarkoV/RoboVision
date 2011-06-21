@@ -130,7 +130,6 @@ unsigned int ComparePatches(       struct ImageRegion * source_block,    struct 
          // ************** SOBEL SECOND DERIVATIVE **************
 		 // BIGER SCORE -> MORE PATCH DIFFERENCE  !
 		 second_deriv_score=precalc_sub[*secondderiv_px1][*secondderiv_px2]; //This holds the sobel difference value
-		 second_deriv_score = second_deriv_score * 20;
          ++secondderiv_px1; ++secondderiv_px2;
          //USE SSD instead of SAD :P second_deriv_score = second_deriv_score * second_deriv_score;
          // BIGER SCORE -> MORE PATCH DIFFERENCE  !
@@ -159,7 +158,7 @@ unsigned int ComparePatches(       struct ImageRegion * source_block,    struct 
          // ************** MOVEMENT COMPARISON **************
 
 
-		total_score+= rgb_score +  move_score + sobel_score + second_deriv_score;
+		total_score+= rgb_score +  move_score + sobel_score + second_deriv_score*35;
 
         if ( score_threshold<total_score )
           {
