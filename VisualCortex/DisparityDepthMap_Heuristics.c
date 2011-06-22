@@ -235,8 +235,8 @@ unsigned int EnhanceDepthMapFillHoles(unsigned char * rgb_image,unsigned short *
 }
 
 
-int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg)
-{
+int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int depth_scale)
+{ // TODO depth_scale added as debugging visual aid
   // Convert from the Large ( unsigned short ) to 3 bytes per pixel storage ( r,g,b ) needed for outputting video
   unsigned short *full_depth_map=l_video_register[depth_reg].pixels;
   unsigned char *vid_depth_map=video_register[vid_reg].pixels;
@@ -251,19 +251,24 @@ int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg)
   unsigned char val;
   px = (BYTE *)  vid_depth_map;
 
-  unsigned int ptr,ptr_3byte=0,dpth_lim=image_x*image_y;
+  unsigned int ptr,dpth_lim=image_x*image_y;
   for ( ptr = 0; ptr < dpth_lim; ptr++)
    {
-       r = px++;
-       g = px++;
-       b = px++;
-       if ( full_depth_map[ptr] > 255 ) { val = 255; } else
-       //val = full_depth_map[ptr] / 65535;
-       val = ( unsigned char ) full_depth_map[ptr];
-       *r= val;
-       *g= val;
-       *b= val;
-       ptr_3byte+=3;
+       r = px++; g = px++; b = px++;
+
+       if ( depth_scale == 1 )
+        {
+          if ( full_depth_map[ptr] >= 255 ) { val = 255; } else
+                                            { val = ( unsigned char ) (full_depth_map[ptr]); }
+        } else
+        { //AFTER REMOVING DEPTH_SCALE THIS WILL NOT BE NEEDED :P , ITS UGLY
+          if ( full_depth_map[ptr]*depth_scale >= 255 ) { val = 255; } else
+                                                        { val = ( unsigned char ) (full_depth_map[ptr]*depth_scale); }
+        }
+
+
+
+       *r= val; *g= val; *b= val;
    }
 
    return 1;

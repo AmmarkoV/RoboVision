@@ -32,9 +32,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 void inline FillDepthMemWithData(unsigned short * depth_data_raw,struct DepthData * depth_data_full,struct DepthData *depth_data,unsigned int image_x,unsigned int image_y)
 {
 
-	 unsigned int far_away=0;
+	 unsigned short far_away=0;
      if (depth_data->x1_patch-depth_data->x2_patch>0) { far_away=depth_data->x1_patch-depth_data->x2_patch; } else
-     if (depth_data->x2_patch-depth_data->x1_patch>0) { far_away=depth_data->x2_patch-depth_data->x1_patch; }
+                                                      { far_away=depth_data->x2_patch-depth_data->x1_patch; }
 
 	 unsigned int x=0;
 	 unsigned int y=0;
@@ -143,7 +143,12 @@ void DepthMapFull  ( unsigned int left_view_reg,
 	if ( settings[DEPTHMAP_DETAIL] <= 0 ) { settings[DEPTHMAP_DETAIL]=1; } // :D , swstos programmatismos!
     x_vima= (unsigned int) (metrics[HORIZONTAL_BUFFER] / settings[DEPTHMAP_DETAIL]);
     y_vima= (unsigned int) (metrics[VERTICAL_BUFFER] / settings[DEPTHMAP_DETAIL]);
-    y_vima = y_vima / 2; if ( y_vima < 1 ) { y_vima = 1;}
+
+    if ( metrics[HORIZONTAL_BUFFER]<metrics[VERTICAL_BUFFER]  ) { y_vima = y_vima / 2; } else
+    if ( metrics[HORIZONTAL_BUFFER]>metrics[VERTICAL_BUFFER]  ) { x_vima = x_vima / 2; }
+
+    if ( y_vima < 1 ) { y_vima = 1;}
+    if ( x_vima < 1 ) { x_vima = 1;}
 
 	unsigned int xblock=0 , yblock=0 ;
     unsigned int  prox=0,movement_left=0 , movement_right=0 ,movement_difference =0;
@@ -245,6 +250,12 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
 									FillDepthMemWithData(left_depth,depth_data_array,&best_match,image_x,image_y);
 
+                                    if ( settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD] >= prox )
+                                      {
+                                         // THE RESULT IS VERY GOOD , SKIP REST OF CHECKING
+                                         yblock = y+settings[DEPTHMAP_VERT_OFFSET_DOWN];
+                                         xblock = x_end_right;
+                                      }
 
 						           /* CODE GUESS CODE PATCH GOES HERE $1 */
 								}

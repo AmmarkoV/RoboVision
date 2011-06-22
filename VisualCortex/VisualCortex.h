@@ -24,6 +24,7 @@ enum VisCortxSettings
    DEPTHMAP_INSTANT_DETAIL,
    DEPTHMAP_VERT_OFFSET_UP,
    DEPTHMAP_VERT_OFFSET_DOWN,
+   DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD,
    DEPTHMAP_COMPARISON_THRESHOLD,
    DEPTHMAP_COMPARISON_THRESHOLD_ADDED,
    DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH,
@@ -201,6 +202,7 @@ void VisCortx_SetSetting(unsigned int set_num,unsigned int set_val);
 void VisCortx_SetDefaultSettings();
 unsigned int VisCortx_GetSetting(unsigned int get_num);
 unsigned int VisCortx_GetMetric(unsigned int get_num);
+void VisCortx_SetMetric(unsigned int set_num,unsigned int set_val);
 unsigned int VisCortx_GetVideoRegisterStats(unsigned int metric_num);
 
 unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata);

@@ -61,6 +61,26 @@ const long CortexSettings::ID_CHECKBOX4 = wxNewId();
 const long CortexSettings::ID_CHECKBOX5 = wxNewId();
 const long CortexSettings::ID_TEXTCTRL21 = wxNewId();
 const long CortexSettings::ID_STATICTEXT23 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL22 = wxNewId();
+const long CortexSettings::ID_STATICTEXT24 = wxNewId();
+const long CortexSettings::ID_STATICTEXT25 = wxNewId();
+const long CortexSettings::ID_STATICTEXT26 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL23 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL24 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL25 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL26 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL27 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL28 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL29 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL30 = wxNewId();
+const long CortexSettings::ID_STATICTEXT27 = wxNewId();
+const long CortexSettings::ID_STATICTEXT28 = wxNewId();
+const long CortexSettings::ID_STATICTEXT29 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL31 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL32 = wxNewId();
+const long CortexSettings::ID_STATICTEXT30 = wxNewId();
+const long CortexSettings::ID_STATICTEXT31 = wxNewId();
+const long CortexSettings::ID_STATICLINE1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CortexSettings,wxDialog)
@@ -72,54 +92,54 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 {
 	//(*Initialize(CortexSettings)
 	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
-	SetClientSize(wxSize(719,542));
+	SetClientSize(wxSize(792,622));
 	Move(wxDefaultPosition);
-	StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, _("Disparity Map"), wxPoint(24,16), wxSize(456,312), 0, _T("ID_STATICBOX1"));
+	StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, _("Disparity Map"), wxPoint(24,16), wxSize(456,464), 0, _T("ID_STATICBOX1"));
 	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Quality ( 1..15)"), wxPoint(32,48), wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	Quality = new wxTextCtrl(this, ID_TEXTCTRL1, _("6"), wxPoint(136,40), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
-	SaveButton = new wxButton(this, ID_BUTTON1, _("Save"), wxPoint(312,496), wxSize(157,29), 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	SaveButton = new wxButton(this, ID_BUTTON1, _("Save"), wxPoint(416,544), wxSize(157,29), 0, wxDefaultValidator, _T("ID_BUTTON1"));
 	SaveButton->SetDefault();
-	CancelButton = new wxButton(this, ID_BUTTON2, _("Cancel"), wxPoint(600,496), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
+	CancelButton = new wxButton(this, ID_BUTTON2, _("Cancel"), wxPoint(696,544), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
 	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Start Left Px"), wxPoint(32,112), wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	StartLeft = new wxTextCtrl(this, ID_TEXTCTRL2, _("15"), wxPoint(128,104), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
 	StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Edge Strictness"), wxPoint(240,48), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	EdgeStrictness = new wxTextCtrl(this, ID_TEXTCTRL3, _("25"), wxPoint(360,40), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
-	DefaultButton = new wxButton(this, ID_BUTTON3, _("Default"), wxPoint(512,496), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
+	DefaultButton = new wxButton(this, ID_BUTTON3, _("Default"), wxPoint(608,544), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
 	StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("Instant Quality (1..15)"), wxPoint(32,80), wxDefaultSize, 0, _T("ID_STATICTEXT4"));
 	InstantQuality = new wxTextCtrl(this, ID_TEXTCTRL4, _("2"), wxPoint(184,72), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
-	StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _("Camera Offsets Up/Down"), wxPoint(240,80), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+	StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _("Camera Offset Up/Down"), wxPoint(240,80), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
 	OffsetUp = new wxTextCtrl(this, ID_TEXTCTRL5, _("1"), wxPoint(416,72), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL5"));
 	OffsetDown = new wxTextCtrl(this, ID_TEXTCTRL6, _("1"), wxPoint(448,72), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL6"));
-	StaticText6 = new wxStaticText(this, ID_STATICTEXT6, _("Comparison Threshold"), wxPoint(240,112), wxDefaultSize, 0, _T("ID_STATICTEXT6"));
-	ComparisonThreshold = new wxTextCtrl(this, ID_TEXTCTRL7, _("15000"), wxPoint(392,104), wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
-	StaticText7 = new wxStaticText(this, ID_STATICTEXT7, _("Comparison Min Score"), wxPoint(240,144), wxDefaultSize, 0, _T("ID_STATICTEXT7"));
-	ComparisonMinScore = new wxTextCtrl(this, ID_TEXTCTRL8, _("30000"), wxPoint(392,136), wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
-	StaticText8 = new wxStaticText(this, ID_STATICTEXT8, _("Closest Depth Plane"), wxPoint(32,144), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
-	ClosestDepth = new wxTextCtrl(this, ID_TEXTCTRL9, _("90"), wxPoint(168,136), wxSize(56,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
-	StaticText9 = new wxStaticText(this, ID_STATICTEXT9, _("Comparison EdgesPerCent Required"), wxPoint(152,192), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
-	PatchesEdgesPerCent = new wxTextCtrl(this, ID_TEXTCTRL10, _("15"), wxPoint(392,184), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL10"));
-	StaticText10 = new wxStaticText(this, ID_STATICTEXT10, _("%"), wxPoint(440,186), wxDefaultSize, 0, _T("ID_STATICTEXT10"));
-	FillHoles = new wxCheckBox(this, ID_CHECKBOX1, _("Fill Holes"), wxPoint(208,224), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
+	StaticText6 = new wxStaticText(this, ID_STATICTEXT6, _("Comparison Expected/Max Threshold"), wxPoint(40,376), wxDefaultSize, 0, _T("ID_STATICTEXT6"));
+	ComparisonThreshold = new wxTextCtrl(this, ID_TEXTCTRL7, _("15000"), wxPoint(288,232), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
+	StaticText7 = new wxStaticText(this, ID_STATICTEXT7, _("Comparison Min Score"), wxPoint(560,344), wxDefaultSize, 0, _T("ID_STATICTEXT7"));
+	ComparisonMinScore = new wxTextCtrl(this, ID_TEXTCTRL8, _("30000"), wxPoint(592,368), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
+	StaticText8 = new wxStaticText(this, ID_STATICTEXT8, _("Closest Depth Plane"), wxPoint(40,296), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
+	ClosestDepth = new wxTextCtrl(this, ID_TEXTCTRL9, _("90"), wxPoint(192,288), wxSize(48,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
+	StaticText9 = new wxStaticText(this, ID_STATICTEXT9, _("Comparison EdgesPerCent Required"), wxPoint(360,448), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
+	PatchesEdgesPerCent = new wxTextCtrl(this, ID_TEXTCTRL10, _("15"), wxPoint(392,232), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL10"));
+	StaticText10 = new wxStaticText(this, ID_STATICTEXT10, _("%"), wxPoint(440,240), wxDefaultSize, 0, _T("ID_STATICTEXT10"));
+	FillHoles = new wxCheckBox(this, ID_CHECKBOX1, _("Fill Holes"), wxPoint(224,528), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
 	FillHoles->SetValue(false);
-	ImproveEdges = new wxCheckBox(this, ID_CHECKBOX2, _("Improve Using Edges"), wxPoint(304,224), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX2"));
+	ImproveEdges = new wxCheckBox(this, ID_CHECKBOX2, _("Improve Using Edges"), wxPoint(40,504), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX2"));
 	ImproveEdges->SetValue(false);
-	StaticBox2 = new wxStaticBox(this, ID_STATICBOX2, _("Movement"), wxPoint(488,16), wxSize(208,224), 0, _T("ID_STATICBOX2"));
-	StaticText11 = new wxStaticText(this, ID_STATICTEXT11, _("Patch Sensitivity"), wxPoint(496,40), wxDefaultSize, 0, _T("ID_STATICTEXT11"));
-	PatchSensitivity = new wxTextCtrl(this, ID_TEXTCTRL11, _("7"), wxPoint(616,32), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL11"));
-	StaticText12 = new wxStaticText(this, ID_STATICTEXT12, _("MinRGB Threshold"), wxPoint(496,72), wxDefaultSize, 0, _T("ID_STATICTEXT12"));
-	MinR = new wxTextCtrl(this, ID_TEXTCTRL12, _("25"), wxPoint(512,104), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL12"));
-	MinG = new wxTextCtrl(this, ID_TEXTCTRL13, _("25"), wxPoint(568,104), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL13"));
-	MinB = new wxTextCtrl(this, ID_TEXTCTRL14, _("25"), wxPoint(632,104), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL14"));
-	StaticText13 = new wxStaticText(this, ID_STATICTEXT13, _("R"), wxPoint(496,108), wxDefaultSize, 0, _T("ID_STATICTEXT13"));
-	StaticText14 = new wxStaticText(this, ID_STATICTEXT14, _("G"), wxPoint(552,108), wxDefaultSize, 0, _T("ID_STATICTEXT14"));
-	MaxR = new wxTextCtrl(this, ID_TEXTCTRL15, _("45"), wxPoint(512,144), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL15"));
-	MaxG = new wxTextCtrl(this, ID_TEXTCTRL16, _("45"), wxPoint(568,144), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL16"));
-	MaxB = new wxTextCtrl(this, ID_TEXTCTRL17, _("45"), wxPoint(632,144), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL17"));
-	StaticText15 = new wxStaticText(this, ID_STATICTEXT15, _("B"), wxPoint(608,108), wxDefaultSize, 0, _T("ID_STATICTEXT15"));
-	StaticText16 = new wxStaticText(this, ID_STATICTEXT16, _("R"), wxPoint(496,148), wxDefaultSize, 0, _T("ID_STATICTEXT16"));
-	StaticText17 = new wxStaticText(this, ID_STATICTEXT17, _("G"), wxPoint(552,148), wxDefaultSize, 0, _T("ID_STATICTEXT17"));
-	StaticText18 = new wxStaticText(this, ID_STATICTEXT18, _("B"), wxPoint(608,148), wxDefaultSize, 0, _T("ID_STATICTEXT18"));
-	DepthMapGuesses = new wxCheckBox(this, ID_CHECKBOX3, _("Depth Map Guessing"), wxPoint(32,224), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX3"));
+	StaticBox2 = new wxStaticBox(this, ID_STATICBOX2, _("Movement"), wxPoint(552,16), wxSize(208,224), 0, _T("ID_STATICBOX2"));
+	StaticText11 = new wxStaticText(this, ID_STATICTEXT11, _("Patch Sensitivity"), wxPoint(576,40), wxDefaultSize, 0, _T("ID_STATICTEXT11"));
+	PatchSensitivity = new wxTextCtrl(this, ID_TEXTCTRL11, _("7"), wxPoint(704,32), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL11"));
+	StaticText12 = new wxStaticText(this, ID_STATICTEXT12, _("RGB Threshold"), wxPoint(576,64), wxDefaultSize, 0, _T("ID_STATICTEXT12"));
+	MinR = new wxTextCtrl(this, ID_TEXTCTRL12, _("25"), wxPoint(600,88), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL12"));
+	MinG = new wxTextCtrl(this, ID_TEXTCTRL13, _("25"), wxPoint(664,88), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL13"));
+	MinB = new wxTextCtrl(this, ID_TEXTCTRL14, _("25"), wxPoint(720,88), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL14"));
+	StaticText13 = new wxStaticText(this, ID_STATICTEXT13, _("R"), wxPoint(584,88), wxDefaultSize, 0, _T("ID_STATICTEXT13"));
+	StaticText14 = new wxStaticText(this, ID_STATICTEXT14, _("G"), wxPoint(648,88), wxDefaultSize, 0, _T("ID_STATICTEXT14"));
+	MaxR = new wxTextCtrl(this, ID_TEXTCTRL15, _("45"), wxPoint(600,120), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL15"));
+	MaxG = new wxTextCtrl(this, ID_TEXTCTRL16, _("45"), wxPoint(664,120), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL16"));
+	MaxB = new wxTextCtrl(this, ID_TEXTCTRL17, _("45"), wxPoint(720,120), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL17"));
+	StaticText15 = new wxStaticText(this, ID_STATICTEXT15, _("B"), wxPoint(704,88), wxDefaultSize, 0, _T("ID_STATICTEXT15"));
+	StaticText16 = new wxStaticText(this, ID_STATICTEXT16, _("R"), wxPoint(584,120), wxDefaultSize, 0, _T("ID_STATICTEXT16"));
+	StaticText17 = new wxStaticText(this, ID_STATICTEXT17, _("G"), wxPoint(648,120), wxDefaultSize, 0, _T("ID_STATICTEXT17"));
+	StaticText18 = new wxStaticText(this, ID_STATICTEXT18, _("B"), wxPoint(704,120), wxDefaultSize, 0, _T("ID_STATICTEXT18"));
+	DepthMapGuesses = new wxCheckBox(this, ID_CHECKBOX3, _("Depth Map Guessing"), wxPoint(40,528), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX3"));
 	DepthMapGuesses->SetValue(false);
 	StaticText19 = new wxStaticText(this, ID_STATICTEXT19, _("Patch Histogram Threshold"), wxPoint(504,192), wxDefaultSize, 0, _T("ID_STATICTEXT19"));
 	StaticText20 = new wxStaticText(this, ID_STATICTEXT20, _("R"), wxPoint(496,230), wxDefaultSize, 0, _T("ID_STATICTEXT20"));
@@ -128,12 +148,32 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	PatchMinG = new wxTextCtrl(this, ID_TEXTCTRL19, _("18"), wxPoint(568,224), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL19"));
 	StaticText22 = new wxStaticText(this, ID_STATICTEXT22, _("B"), wxPoint(608,230), wxDefaultSize, 0, _T("ID_STATICTEXT22"));
 	PatchMinB = new wxTextCtrl(this, ID_TEXTCTRL20, _("18"), wxPoint(632,224), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL20"));
-	ImproveUsingHistogram = new wxCheckBox(this, ID_CHECKBOX4, _("Depth Map Improve Using Histogram"), wxPoint(32,248), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
+	ImproveUsingHistogram = new wxCheckBox(this, ID_CHECKBOX4, _("Depth Map Improve Using Histogram"), wxPoint(40,552), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
 	ImproveUsingHistogram->SetValue(true);
-	DoNotProcessFar = new wxCheckBox(this, ID_CHECKBOX5, _("Do not process further than this"), wxPoint(32,160), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX5"));
+	DoNotProcessFar = new wxCheckBox(this, ID_CHECKBOX5, _("Do not process closer"), wxPoint(40,320), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX5"));
 	DoNotProcessFar->SetValue(false);
 	EdgeStrictnessHigh = new wxTextCtrl(this, ID_TEXTCTRL21, _("150"), wxPoint(424,40), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL21"));
 	StaticText23 = new wxStaticText(this, ID_STATICTEXT23, _("to"), wxPoint(400,48), wxDefaultSize, 0, _T("ID_STATICTEXT23"));
+	ComparisonExpectedThreshold = new wxTextCtrl(this, ID_TEXTCTRL22, _("5000"), wxPoint(312,368), wxSize(64,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL22"));
+	StaticText24 = new wxStaticText(this, ID_STATICTEXT24, _("Small Patches"), wxPoint(32,240), wxDefaultSize, 0, _T("ID_STATICTEXT24"));
+	StaticText25 = new wxStaticText(this, ID_STATICTEXT25, _("Medium Patches"), wxPoint(32,205), wxDefaultSize, 0, _T("ID_STATICTEXT25"));
+	StaticText26 = new wxStaticText(this, ID_STATICTEXT26, _("Large Patches"), wxPoint(32,168), wxDefaultSize, 0, _T("ID_STATICTEXT26"));
+	PatchSizeXSmall = new wxTextCtrl(this, ID_TEXTCTRL23, _("30"), wxPoint(176,232), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL23"));
+	PatchSizeYSmall = new wxTextCtrl(this, ID_TEXTCTRL24, _("30"), wxPoint(232,232), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL24"));
+	PatchSizeXMedium = new wxTextCtrl(this, ID_TEXTCTRL25, _("50"), wxPoint(176,200), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL25"));
+	PatchSizeYMedium = new wxTextCtrl(this, ID_TEXTCTRL26, _("50"), wxPoint(232,200), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL26"));
+	PatchSizeXLarge = new wxTextCtrl(this, ID_TEXTCTRL27, _("100"), wxPoint(176,168), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL27"));
+	PatchSizeYLarge = new wxTextCtrl(this, ID_TEXTCTRL28, _("100"), wxPoint(232,168), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL28"));
+	ComparisonThresholdLarge = new wxTextCtrl(this, ID_TEXTCTRL29, _("200000"), wxPoint(288,168), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL29"));
+	ComparisonThresholdMedium = new wxTextCtrl(this, ID_TEXTCTRL30, _("100000"), wxPoint(288,200), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL30"));
+	StaticText27 = new wxStaticText(this, ID_STATICTEXT27, _("Size X/Y"), wxPoint(200,136), wxDefaultSize, 0, _T("ID_STATICTEXT27"));
+	StaticText28 = new wxStaticText(this, ID_STATICTEXT28, _("Threshold"), wxPoint(288,136), wxDefaultSize, 0, _T("ID_STATICTEXT28"));
+	StaticText29 = new wxStaticText(this, ID_STATICTEXT29, _("Edge Quota"), wxPoint(376,136), wxDefaultSize, 0, _T("ID_STATICTEXT29"));
+	PatchesEdgesPercentMedium = new wxTextCtrl(this, ID_TEXTCTRL31, _("5"), wxPoint(392,200), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL31"));
+	PatchesEdgesPercentLarge = new wxTextCtrl(this, ID_TEXTCTRL32, _("1"), wxPoint(392,168), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL32"));
+	StaticText30 = new wxStaticText(this, ID_STATICTEXT30, _("%"), wxPoint(440,208), wxDefaultSize, 0, _T("ID_STATICTEXT30"));
+	StaticText31 = new wxStaticText(this, ID_STATICTEXT31, _("%"), wxPoint(440,176), wxDefaultSize, 0, _T("ID_STATICTEXT31"));
+	StaticLine1 = new wxStaticLine(this, ID_STATICLINE1, wxPoint(168,160), wxSize(296,0), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnSaveButtonClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnCancelButtonClick);
@@ -178,6 +218,44 @@ void CortexSettings::PullSettingsFromCortex()
   val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_COMPARISON_THRESHOLD);
   ComparisonThreshold->SetValue(val);
 
+  val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH);
+  ComparisonThresholdMedium->SetValue(val);
+
+  val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH);
+  ComparisonThresholdLarge->SetValue(val);
+
+ // PATCHES
+
+  val.Clear(); val<<VisCortx_GetSetting(PATCH_COMPARISON_SCORE_MIN);
+  ComparisonMinScore->SetValue(val);
+
+  val.Clear(); val<<VisCortx_GetMetric(HORIZONTAL_BUFFER);
+  PatchSizeXSmall->SetValue(val);
+  val.Clear(); val<<VisCortx_GetMetric(VERTICAL_BUFFER);
+  PatchSizeYSmall->SetValue(val);
+
+  val.Clear(); val<<VisCortx_GetMetric(HORIZONTAL_BUFFER_LARGE);
+  PatchSizeXMedium->SetValue(val);
+  val.Clear(); val<<VisCortx_GetMetric(VERTICAL_BUFFER_LARGE);
+  PatchSizeYMedium->SetValue(val);
+
+  val.Clear(); val<<VisCortx_GetMetric(HORIZONTAL_BUFFER_EXTRALARGE);
+  PatchSizeXLarge->SetValue(val);
+  val.Clear(); val<<VisCortx_GetMetric(VERTICAL_BUFFER_EXTRALARGE);
+  PatchSizeYLarge->SetValue(val);
+
+
+  val.Clear(); val<<VisCortx_GetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED);
+  PatchesEdgesPerCent->SetValue(val);
+  val.Clear(); val<<VisCortx_GetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH);
+  PatchesEdgesPercentMedium->SetValue(val);
+  val.Clear(); val<<VisCortx_GetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH);
+  PatchesEdgesPercentLarge->SetValue(val);
+
+
+  val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD);
+  ComparisonExpectedThreshold->SetValue(val);
+
   val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_CLOSEST_DEPTH);
   ClosestDepth->SetValue(val);
 
@@ -196,13 +274,6 @@ void CortexSettings::PullSettingsFromCortex()
 
  if (VisCortx_GetSetting(DEPTHMAP_IMPROVE_USING_HISTOGRAM)==1) { ImproveUsingHistogram->SetValue(1); } else
                                                                { ImproveUsingHistogram->SetValue(0); }
- // PATCHES
-
-  val.Clear(); val<<VisCortx_GetSetting(PATCH_COMPARISON_SCORE_MIN);
-  ComparisonMinScore->SetValue(val);
-
-  val.Clear(); val<<VisCortx_GetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED);
-  PatchesEdgesPerCent->SetValue(val);
 
 
 // MOVEMENT
@@ -266,6 +337,30 @@ void CortexSettings::PushSettingsToCortex()
 
   if(ComparisonThreshold->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD,(unsigned int) value); }
 
+  if(ComparisonThresholdMedium->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH,(unsigned int) value); }
+
+  if(ComparisonThresholdLarge->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH,(unsigned int) value); }
+
+ // PATCHES
+  if(ComparisonMinScore->GetValue().ToLong(&value)) { VisCortx_SetSetting(PATCH_COMPARISON_SCORE_MIN,(unsigned int) value); }
+
+  if(PatchSizeXSmall->GetValue().ToLong(&value)) { VisCortx_SetMetric(HORIZONTAL_BUFFER,(unsigned int) value); }
+  if(PatchSizeYSmall->GetValue().ToLong(&value)) { VisCortx_SetMetric(VERTICAL_BUFFER,(unsigned int) value); }
+
+  if(PatchSizeXMedium->GetValue().ToLong(&value)) { VisCortx_SetMetric(HORIZONTAL_BUFFER_LARGE,(unsigned int) value); }
+  if(PatchSizeYMedium->GetValue().ToLong(&value)) { VisCortx_SetMetric(VERTICAL_BUFFER_LARGE,(unsigned int) value); }
+
+  if(PatchSizeXLarge->GetValue().ToLong(&value)) { VisCortx_SetMetric(HORIZONTAL_BUFFER_EXTRALARGE,(unsigned int) value); }
+  if(PatchSizeYLarge->GetValue().ToLong(&value)) { VisCortx_SetMetric(VERTICAL_BUFFER_EXTRALARGE,(unsigned int) value); }
+
+  if(PatchesEdgesPerCent->GetValue().ToLong(&value)) { VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED,(unsigned int) value); }
+  if(PatchesEdgesPercentMedium->GetValue().ToLong(&value)) { VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH,(unsigned int) value); }
+  if(PatchesEdgesPercentLarge->GetValue().ToLong(&value)) { VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH,(unsigned int) value); }
+
+
+
+  if(ComparisonExpectedThreshold->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD,(unsigned int) value); }
+
   if(ClosestDepth->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_CLOSEST_DEPTH,(unsigned int) value); }
 
   if ( DoNotProcessFar->IsChecked() ) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH,1); } else
@@ -283,11 +378,6 @@ void CortexSettings::PushSettingsToCortex()
   if ( ImproveUsingHistogram->IsChecked() ) { VisCortx_SetSetting(DEPTHMAP_IMPROVE_USING_HISTOGRAM,1); } else
                                             { VisCortx_SetSetting(DEPTHMAP_IMPROVE_USING_HISTOGRAM,0); }
 
-
- // PATCHES
-  if(ComparisonMinScore->GetValue().ToLong(&value)) { VisCortx_SetSetting(PATCH_COMPARISON_SCORE_MIN,(unsigned int) value); }
-
-  if(PatchesEdgesPerCent->GetValue().ToLong(&value)) { VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED,(unsigned int) value); }
 
   // MOVEMENT
   if(PatchSensitivity->GetValue().ToLong(&value)) { VisCortx_SetSetting(MOVEMENT_PATCH_SENSITIVITY,(unsigned int) value); }

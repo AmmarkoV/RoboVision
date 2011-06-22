@@ -34,11 +34,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.587";
+char * VISCORTEX_VER = "0.588";
 
 /*
 
                  TODO LIST , BULETTIN BOARD
+  TODO STUFF
+   - I Have the parameters of my cameras , I must add calibration/rectification code for the frames , there is no excuse :P
+   - I Currently have 2 Histogram block generators , the one specific and one generic , I should only use the generic one :P
+   - I have to make an algorithm that identifies lines
+   - ... etc ...
 
   I am currently restructuring the whole library to make it a little more organized..
   Different "logical functions" have been split to different files , basically the project is now divided
@@ -157,6 +162,10 @@ unsigned int VisCortx_GetSetting(unsigned int get_num)
 }
 
 
+void VisCortx_SetMetric(unsigned int set_num,unsigned int set_val)
+{
+  metrics[set_num]=set_val;
+}
 
 unsigned int VisCortx_GetMetric(unsigned int get_num)
 {
@@ -469,7 +478,7 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
   /*
     CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
    */
-  DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO);
+  DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1);
 
   VisCortx_OperationUnLockFrames();
 

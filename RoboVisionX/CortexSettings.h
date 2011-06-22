@@ -6,6 +6,7 @@
 #include <wx/dialog.h>
 #include <wx/button.h>
 #include <wx/statbox.h>
+#include <wx/statline.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 //*)
@@ -21,6 +22,7 @@ class CortexSettings: public wxDialog
 
 		//(*Declarations(CortexSettings)
 		wxTextCtrl* ComparisonMinScore;
+		wxStaticText* StaticText24;
 		wxButton* CancelButton;
 		wxStaticText* StaticText22;
 		wxTextCtrl* MinG;
@@ -34,14 +36,20 @@ class CortexSettings: public wxDialog
 		wxCheckBox* DepthMapGuesses;
 		wxStaticText* StaticText15;
 		wxTextCtrl* ComparisonThreshold;
+		wxTextCtrl* ComparisonThresholdLarge;
 		wxStaticText* StaticText17;
+		wxStaticText* StaticText28;
+		wxTextCtrl* ComparisonThresholdMedium;
 		wxButton* SaveButton;
 		wxTextCtrl* PatchMinB;
+		wxTextCtrl* ComparisonExpectedThreshold;
 		wxTextCtrl* PatchMinG;
 		wxStaticText* StaticText20;
+		wxTextCtrl* PatchSizeYMedium;
 		wxStaticText* StaticText18;
 		wxStaticText* StaticText1;
 		wxStaticText* StaticText10;
+		wxTextCtrl* PatchSizeXLarge;
 		wxStaticText* StaticText16;
 		wxTextCtrl* EdgeStrictness;
 		wxCheckBox* DoNotProcessFar;
@@ -52,6 +60,9 @@ class CortexSettings: public wxDialog
 		wxTextCtrl* InstantQuality;
 		wxTextCtrl* EdgeStrictnessHigh;
 		wxStaticText* StaticText23;
+		wxTextCtrl* PatchSizeYLarge;
+		wxStaticLine* StaticLine1;
+		wxTextCtrl* PatchesEdgesPercentMedium;
 		wxTextCtrl* OffsetUp;
 		wxButton* DefaultButton;
 		wxCheckBox* ImproveUsingHistogram;
@@ -59,21 +70,31 @@ class CortexSettings: public wxDialog
 		wxTextCtrl* Quality;
 		wxStaticText* StaticText12;
 		wxCheckBox* ImproveEdges;
+		wxTextCtrl* PatchesEdgesPercentLarge;
 		wxStaticBox* StaticBox1;
 		wxStaticText* StaticText7;
 		wxTextCtrl* MaxR;
 		wxStaticText* StaticText4;
 		wxCheckBox* FillHoles;
 		wxStaticText* StaticText5;
+		wxStaticText* StaticText30;
 		wxStaticText* StaticText2;
+		wxStaticText* StaticText27;
+		wxStaticText* StaticText26;
 		wxStaticText* StaticText6;
 		wxTextCtrl* StartLeft;
 		wxTextCtrl* PatchSensitivity;
 		wxStaticText* StaticText19;
+		wxStaticText* StaticText29;
+		wxTextCtrl* PatchSizeXMedium;
 		wxStaticText* StaticText9;
 		wxTextCtrl* OffsetDown;
+		wxStaticText* StaticText31;
+		wxTextCtrl* PatchSizeXSmall;
 		wxStaticText* StaticText11;
+		wxStaticText* StaticText25;
 		wxTextCtrl* MaxB;
+		wxTextCtrl* PatchSizeYSmall;
 		//*)
 
 	protected:
@@ -133,6 +154,26 @@ class CortexSettings: public wxDialog
 		static const long ID_CHECKBOX5;
 		static const long ID_TEXTCTRL21;
 		static const long ID_STATICTEXT23;
+		static const long ID_TEXTCTRL22;
+		static const long ID_STATICTEXT24;
+		static const long ID_STATICTEXT25;
+		static const long ID_STATICTEXT26;
+		static const long ID_TEXTCTRL23;
+		static const long ID_TEXTCTRL24;
+		static const long ID_TEXTCTRL25;
+		static const long ID_TEXTCTRL26;
+		static const long ID_TEXTCTRL27;
+		static const long ID_TEXTCTRL28;
+		static const long ID_TEXTCTRL29;
+		static const long ID_TEXTCTRL30;
+		static const long ID_STATICTEXT27;
+		static const long ID_STATICTEXT28;
+		static const long ID_STATICTEXT29;
+		static const long ID_TEXTCTRL31;
+		static const long ID_TEXTCTRL32;
+		static const long ID_STATICTEXT30;
+		static const long ID_STATICTEXT31;
+		static const long ID_STATICLINE1;
 		//*)
 
 	private:
