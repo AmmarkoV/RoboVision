@@ -4,6 +4,7 @@
 int Say(char * what2say);
 int PlaySound(char * sndname);
 
+void CalibratedView();
 void FullDepthMap(unsigned char write_to_file);
 void DrawMovement();
 void DrawNewPalette(char R,char G,char B,char threshold);

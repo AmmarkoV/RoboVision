@@ -2,10 +2,10 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="CortexSettings.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="18575" topLine="290" />
+		<Cursor position="21325" topLine="335" />
 	</File>
 	<File name="CortexSettings.h" open="1" top="0" tabpos="8">
-		<Cursor position="229" topLine="0" />
+		<Cursor position="254" topLine="0" />
 	</File>
 	<File name="FeedScreenMemory.cpp" open="1" top="0" tabpos="5">
 		<Cursor position="7330" topLine="190" />

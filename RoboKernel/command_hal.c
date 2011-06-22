@@ -29,6 +29,7 @@ enum command_id_consts
   CMD_REFRESH_MAP_AT_WEB_INTERFACE,
   CMD_DRAW_MOVEMENT,
   CMD_DRAW_FEATURES,
+  CMD_DRAW_CALIBRATED,
   CMD_FIND_FEATURES,
   CMD_CLEAR_FEATURES,
   CMD_PLAYSOUND,
@@ -118,6 +119,12 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  sprintf(outptstr,"From %s : Command Drawing Features\n",from);
                  DrawFeatures();
      break;
+     case CMD_DRAW_CALIBRATED :
+                 sprintf(outptstr,"From %s : Command Drawing Calibrated images\n",from);
+                 CalibratedView();
+     break;
+
+
      case CMD_FIND_FEATURES :
                  sprintf(outptstr,"From %s : Command Finding Features\n",from);
                  FindFeatures();
@@ -306,6 +313,7 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"WEB INTERFACE",13)==1) { chosen_command=CMD_WEB_INTERFACE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DRAW MOVEMENT",13)==1) { chosen_command=CMD_DRAW_MOVEMENT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DRAW FEATURES",13)==1) { chosen_command=CMD_DRAW_FEATURES; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"DRAW CALIBRATED",15)==1) { chosen_command=CMD_DRAW_CALIBRATED; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FIND FEATURES",13)==1) { chosen_command=CMD_FIND_FEATURES; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"CLEAR FEATURES",14)==1) { chosen_command=CMD_CLEAR_FEATURES; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"PLAYSOUND",9)==1) { chosen_command=CMD_PLAYSOUND; } else

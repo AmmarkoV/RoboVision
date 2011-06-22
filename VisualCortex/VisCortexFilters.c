@@ -681,12 +681,29 @@ void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigne
 }
 
 
-int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated)
+
+int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned int * M)
 {
-    /*TODO HERE ADD CALIBRATION CODE*/
-
+    /* TODO , For now the full register is returned!*/
     return CopyRegister(rgb_image,rgb_calibrated);
+    /*The array M is the array calculated from Precalculations.c to speed up things*/
 
-    //return GaussianBlurFromSource(rgb_image,rgb_calibrated,0);
+    unsigned int ptr=0 , new_ptr = 0, ptr_end = metrics[RESOLUTION_MEMORY_LIMIT_3BYTE] ;
+    while (ptr < ptr_end)
+     {
+         new_ptr = M[ptr];
+         video_register[rgb_calibrated].pixels[new_ptr] = video_register[rgb_image].pixels[ptr];
+         ++new_ptr; ++ptr;
+
+         video_register[rgb_calibrated].pixels[new_ptr] = video_register[rgb_image].pixels[ptr];
+         ++new_ptr; ++ptr;
+
+         video_register[rgb_calibrated].pixels[new_ptr] = video_register[rgb_image].pixels[ptr];
+         ++ptr;
+     }
+
+
+    //return CopyRegister(rgb_image,rgb_calibrated);
+   return 1;
 }
 

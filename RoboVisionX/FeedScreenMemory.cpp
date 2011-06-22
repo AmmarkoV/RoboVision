@@ -168,7 +168,7 @@ int SnapWebCams()
 
 
  if ( frame != 0)
- {
+ {                                                //
     live_feeds[0].img.SetData(GetVideoRegister(LEFT_EYE),GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),true);
     if ( resc_width != GetCortexMetric(RESOLUTION_X) ) { live_feeds[0].img.Rescale(resc_width,resc_height); }
     live_feeds[0].bmp= new wxBitmap(live_feeds[0].img);
@@ -176,7 +176,7 @@ int SnapWebCams()
  }
 
  if ( frame2 != 0)
- {
+ {                                               //
   live_feeds[1].img.SetData(GetVideoRegister(RIGHT_EYE),GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),true);
   if ( resc_width != GetCortexMetric(RESOLUTION_X) ) { live_feeds[1].img.Rescale(resc_width,resc_height); }
   live_feeds[1].bmp= new wxBitmap(live_feeds[1].img);

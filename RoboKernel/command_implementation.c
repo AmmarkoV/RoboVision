@@ -24,6 +24,13 @@ int PlaySound(char * sndname)
   return i;
 }
 
+
+void CalibratedView()
+{
+  VisCortX_CopyFromVideoToVideoRegister(CALIBRATED_LEFT_EYE,LAST_LEFT_OPERATION);
+  VisCortX_CopyFromVideoToVideoRegister(CALIBRATED_RIGHT_EYE,LAST_RIGHT_OPERATION);
+}
+
 void FullDepthMap(unsigned char write_to_file)
 {
   VisCortx_FullDepthMap();
@@ -39,9 +46,6 @@ void DrawMovement()
 
    VisCortX_CopyFromVideoToVideoRegister(MOVEMENT_LEFT,LAST_LEFT_OPERATION); /* CONVERTING 1 bit to 3bit :P*/
    VisCortX_CopyFromVideoToVideoRegister(MOVEMENT_RIGHT,LAST_RIGHT_OPERATION); /* CONVERTING 1 bit to 3bit :P*/
-
-
-
 
 }
 

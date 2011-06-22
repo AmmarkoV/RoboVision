@@ -18,6 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 #include "VisualCortex.h"
 #include "VisionMemory.h"
+#include "Precalculations.h"
 #include "DisparityDepthMap.h"
 #include "DisparityDepthMap_Heuristics.h"
 #include "MovementRegistration.h"
@@ -34,13 +35,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.588";
+char * VISCORTEX_VER = "0.589";
 
 /*
 
                  TODO LIST , BULETTIN BOARD
   TODO STUFF
-   - I Have the parameters of my cameras , I must add calibration/rectification code for the frames , there is no excuse :P
+   - I Have the parameters of my cameras , I must add calibration/rectification/Camera resectioning code for the frames , there is no excuse :P
    - I Currently have 2 Histogram block generators , the one specific and one generic , I should only use the generic one :P
    - I have to make an algorithm that identifies lines
    - ... etc ...
@@ -216,7 +217,8 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
        VisCortx_WriteToVideoRegister(LEFT_EYE,size_x,size_y,depth,rgbdata);
 
        // THIRD PROCESS NEW IMAGE
-       PrepareCleanSobeledGaussianAndDerivative(LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
+       CalibrateImage(LEFT_EYE,CALIBRATED_LEFT_EYE,resection_left_precalc);
+       PrepareCleanSobeledGaussianAndDerivative(CALIBRATED_LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
        GenerateCompressHistogramOfImage(video_register[CALIBRATED_LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
 
         VisCortx_Movement_Detection(1,0);
@@ -244,7 +246,8 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
        VisCortx_WriteToVideoRegister(RIGHT_EYE,size_x,size_y,depth,rgbdata);
 
        // THIRD PROCESS NEW IMAGE
-       PrepareCleanSobeledGaussianAndDerivative(RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
+       CalibrateImage(RIGHT_EYE,CALIBRATED_RIGHT_EYE,resection_right_precalc);
+       PrepareCleanSobeledGaussianAndDerivative(CALIBRATED_RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
        GenerateCompressHistogramOfImage(video_register[CALIBRATED_RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
 
         VisCortx_Movement_Detection(0,1);
@@ -325,6 +328,7 @@ unsigned int VisCortx_WriteToVideoRegister(unsigned int reg_num,unsigned int siz
 
     memcpy(video_register[reg_num].pixels,rgbdata,mem_end);
 
+/*
     switch (reg_num)
      {
         case LEFT_EYE :
@@ -333,7 +337,7 @@ unsigned int VisCortx_WriteToVideoRegister(unsigned int reg_num,unsigned int siz
         case RIGHT_EYE :
          CalibrateImage(RIGHT_EYE,CALIBRATED_RIGHT_EYE);
         break;
-     };
+     };*/
 
 	return 1;
 }
