@@ -127,8 +127,31 @@ dist=[-8.269976e-02 1.691322e-01 -1.120546e-03 -4.395945e-04 0.000000e+00]
 focal_length=0.000000e+00
 */
 
-  PrecalcResectioning(resection_left_precalc,307.1862,262.4510,569.0248,571.1376);
-  PrecalcResectioning(resection_right_precalc,325.8495,245.6993,602.1574,603.9465);
+/*
+         |fx  0   cx|       a   b   c
+   M =   |0   fy  cy|       d   e   f
+         |0   0   1 |       g   h   i
+  PrecalcResectioning(unsigned int * frame , double cx,double cy, double fx,double fy )
+*/
+  // CAMERA 0
+  PrecalcResectioning(resection_left_precalc,
+                                                245.25550923611289 ,
+                                                250.19296587860512 ,
+                                                145.25550923611289 ,
+                                                130.04606153570572
+                                                );
+
+
+  // CAMERA 1
+  PrecalcResectioning(resection_right_precalc,
+                                                187.84788538437246 ,
+                                                121.96154872803314 ,
+                                                215.91485882957815 ,
+                                                215.14672655968261
+                                                );
+
+//  PrecalcResectioning(resection_left_precalc,307.1862,262.4510,569.0248,571.1376);
+//  PrecalcResectioning(resection_right_precalc,325.8495,245.6993,602.1574,603.9465);
 
 
   unsigned int div_res;
