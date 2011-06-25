@@ -48,46 +48,46 @@ unsigned long precalc_memplace_1byte[641][481];
 unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , double cx,double cy ,
                                                          double k1,double k2 , double p1,double p2 , double k3   )
 {
-
-
-
   double new_x,new_y,new_w;
   unsigned int x,y , mem;
   unsigned int undistorted_x,undistorted_y, new_mem ;
   mem = 0;
 
-  double r = 0;
+  double r_sq  = 0;
   double k_coefficient = 0;
-
-  double scale_x , scale_y;
-
- /* FIRE IT UP FOR 320x240 TO HAVE A SCALE MEASURE*/
-  x=metrics[RESOLUTION_X]; y=metrics[RESOLUTION_Y];
-  r = sqrt(x*x + y*y);
-  k_coefficient = 1 + ( k1 * r * r ) + ( k2 * r * r * r * r ) + ( k3 * r * r * r * r * r * r);
-  new_x =x*k_coefficient + ((2 * p1 * y) * ( r*r + 2 * x * x));
-  new_y =y*k_coefficient + (p1 * ( r * r + 2 * y * y) + 2 * p2 * x);
-  scale_x =  (new_x * fx + cx ) / metrics[RESOLUTION_X];
-  scale_y =  (new_y * fy + cy ) / metrics[RESOLUTION_Y];
-
 
   for (y=0; y<metrics[RESOLUTION_Y]; y++)
   {
      for (x=0; x<metrics[RESOLUTION_X]; x++)
         {
          // SEE http://opencv.willowgarage.com/documentation/camera_calibration_and_3d_reconstruction.html
+         // Also Learning OpenCV page 375-377
 
-          r = sqrt(x*x + y*y);
-          k_coefficient = 1 + ( k1 * r * r ) + ( k2 * r * r * r * r ) + ( k3 * r * r * r * r * r * r);
-          new_x =x*k_coefficient + ((2 * p1 * y) * ( r*r + 2 * x * x));
-          new_y =y*k_coefficient + (p1 * ( r * r + 2 * y * y) + 2 * p2 * x);
+          //r_sq = x*x + y*y;
+          //k_coefficient = 1 + ( k1 * r_sq ) + ( k2 * r_sq * r_sq ) + ( k3 * r_sq * r_sq * r_sq);
+          //new_x =  x*k_coefficient  + ((2 * p1 * y) * ( r_sq + 2 * x * x));
+          //new_y =  y*k_coefficient  + (p1 * ( r_sq + 2 * y * y) + 2 * p2 * x);
+
+          //Well this is supposed to rectify lens distortions based on calibration done with my image sets
+          //but the values returned are way off ..
+          r_sq = x*x + y*y;
+
+          k_coefficient = 1;
+          k_coefficient += k1 * r_sq;
+          k_coefficient += k2 * r_sq * r_sq;
+          k_coefficient += k3 * r_sq * r_sq * r_sq ;
+
+          new_x = x * k_coefficient;
+          new_x += p1 * ( r_sq + 2 * x * x ) + (2 * p2 * x * y);
+
+          new_y = y * k_coefficient;
+          new_y += p2 * ( r_sq + 2 * y * y) + (2 * p1 * x * y);
+
+          undistorted_x  = (unsigned int) new_x;
+          undistorted_y  = (unsigned int) new_y;
 
 
-          undistorted_x =(unsigned int) ((new_x * fx + cx )/scale_x);
-          undistorted_y =(unsigned int) ((new_y * fy + cy )/scale_y);
-
-
-          if ( ( undistorted_x > metrics[RESOLUTION_X] ) || ( undistorted_y > metrics[RESOLUTION_Y] ) )
+          if ( ( undistorted_x >= metrics[RESOLUTION_X] ) || ( undistorted_y >= metrics[RESOLUTION_Y] ) )
              {
                  fprintf(stderr,"!!%u,%u to %u,%u!!",x,y,undistorted_x,undistorted_y);
                  new_mem = 0;
@@ -156,30 +156,30 @@ void Precalculations()
   */
 
   PrecalcResectioning(resection_left_precalc,
-                                                287.3170 ,
-                                                288.1220  ,
-                                                167.1293,
-                                                188.1220 ,
+                                               287.3169556, // fx
+                                               288.1220093 , // fy
+                                               167.1293335 , // cx
+                                               127.3991699 , // cy
 
-                                                0.1753691,
-                                                0.07749228,
-                                                0.000167197,
-                                                0.01667649 ,
-                                                0.0
+                                                -0.0031672, //k1
+                                                0.0166765,  //k2
+                                                -0.1753691, //p1
+                                                0.0774923 , //p2
+                                                0.0         //k3
                                                 );
 
   // CAMERA 1
   PrecalcResectioning(resection_right_precalc,
-                                                232.97080393892657 ,
-                                                275.24989549871043 ,
-                                                163.78706430546723 ,
-                                                129.05282322284381 ,
+                                                285.3517456 , // fx
+                                                284.4697876 , // fy
+                                                173.1338501 , // cx
+                                                126.5036926 , // cy
 
-                                                0.1753691,
-                                                0.07749228,
-                                                0.000167197,
-                                                0.01667649 ,
-                                                0.0
+                                                -0.0022525 , //k1
+                                                0.0097993 ,  //k2
+                                                -0.1602673 , //p1
+                                                -0.0077100 , //p2
+                                                0.0          //k3
                                                 );
 
 
