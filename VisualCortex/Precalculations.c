@@ -20,6 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "Precalculations.h"
 #include "VisionMemory.h"
 #include <limits.h>
+#include <math.h>
 
 unsigned int resection_left_precalc[321*241*3];
 unsigned int resection_right_precalc[321*241*3];
@@ -33,37 +34,68 @@ unsigned long precalc_memplace_1byte[641][481];
 
 
 /*
+
+   RectifiedPoint = M * OriginalPoint
+
+   Rectified Point = [ new_x new_y new_w ]
+   Original Point  = [ x y w ]
+
          |fx  0   cx|       a   b   c
    M =   |0   fy  cy|       d   e   f
          |0   0   1 |       g   h   i
 */
 
-unsigned int PrecalcResectioning(unsigned int * frame , double cx,double cy, double fx,double fy )
+unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , double cx,double cy ,
+                                                         double k1,double k2 , double p1,double p2 , double k3   )
 {
-  double new_w;
+
+
+
+  double new_x,new_y,new_w;
   unsigned int x,y , mem;
-  unsigned int new_x,new_y , new_mem ;
+  unsigned int undistorted_x,undistorted_y, new_mem ;
   mem = 0;
+
+  double r = 0;
+  double k_coefficient = 0;
+
+  double scale_x , scale_y;
+
+ /* FIRE IT UP FOR 320x240 TO HAVE A SCALE MEASURE*/
+  x=metrics[RESOLUTION_X]; y=metrics[RESOLUTION_Y];
+  r = sqrt(x*x + y*y);
+  k_coefficient = 1 + ( k1 * r * r ) + ( k2 * r * r * r * r ) + ( k3 * r * r * r * r * r * r);
+  new_x =x*k_coefficient + ((2 * p1 * y) * ( r*r + 2 * x * x));
+  new_y =y*k_coefficient + (p1 * ( r * r + 2 * y * y) + 2 * p2 * x);
+  scale_x =  (new_x * fx + cx ) / metrics[RESOLUTION_X];
+  scale_y =  (new_y * fy + cy ) / metrics[RESOLUTION_Y];
+
+
   for (y=0; y<metrics[RESOLUTION_Y]; y++)
   {
      for (x=0; x<metrics[RESOLUTION_X]; x++)
         {
+         // SEE http://opencv.willowgarage.com/documentation/camera_calibration_and_3d_reconstruction.html
 
-         /* TODO REMOVE STATIC MULTIPLICATIONS , ETC ( MAYBE EVEN MOVE THIS TO VIDEO INPUT :P )
-          new_x = x * a + y * d  + 1 * g;
-          new_y = x * b + y * e  + 1 * h;
-          new_w = x * c + y * f  + 1 * i;*/
-          new_w = x * cx + y * cy  + 1 ;
-          new_x =(unsigned int)  x*((x * fx + y * 0  + 1 * 0)/new_w);
-          new_y =(unsigned int)  y*((x * 0 + y * fy  + 1 * 0)/new_w);
-          if ( ( new_x > metrics[RESOLUTION_X] ) || ( new_y > metrics[RESOLUTION_Y] ) )
+          r = sqrt(x*x + y*y);
+          k_coefficient = 1 + ( k1 * r * r ) + ( k2 * r * r * r * r ) + ( k3 * r * r * r * r * r * r);
+          new_x =x*k_coefficient + ((2 * p1 * y) * ( r*r + 2 * x * x));
+          new_y =y*k_coefficient + (p1 * ( r * r + 2 * y * y) + 2 * p2 * x);
+
+
+          undistorted_x =(unsigned int) ((new_x * fx + cx )/scale_x);
+          undistorted_y =(unsigned int) ((new_y * fy + cy )/scale_y);
+
+
+          if ( ( undistorted_x > metrics[RESOLUTION_X] ) || ( undistorted_y > metrics[RESOLUTION_Y] ) )
              {
-                 fprintf(stderr,"(!)");
-                 new_mem = mem;
+                 fprintf(stderr,"!!%u,%u to %u,%u!!",x,y,undistorted_x,undistorted_y);
+                 new_mem = 0;
+                 // new_mem = mem;
              } else
              {
-                new_mem = new_y * metrics[RESOLUTION_X_3_BYTE] + new_x * 3 ;
-                fprintf(stderr,"%u,%u -> %u,%u .. \n",x,y,new_x,new_y);
+                new_mem = undistorted_y * metrics[RESOLUTION_X_3_BYTE] + undistorted_x * 3 ;
+                fprintf(stderr,"%u,%u -> %u,%u .. \n",x,y,undistorted_x,undistorted_y);
              }
 
 
@@ -110,48 +142,46 @@ void Precalculations()
   //fprintf(stderr,"Signed/Unsigned long max %u/%u \n",LONG_MAX,ULONG_MAX);
 
 /*
-LEFT CAMERA
-cx=3.071862e+02
-cy=2.624510e+02
-fx=5.690248e+02
-fy=5.711376e+02
-dist=[-9.984673e-02 4.476950e-02 -9.349797e-04 -6.787937e-03 0.000000e+00]
-focal_length=0.000000e+00
-
-RIGHT CAMERA
-cx=3.258495e+02
-cy=2.456993e+02
-fx=6.021574e+02
-fy=6.039465e+02
-dist=[-8.269976e-02 1.691322e-01 -1.120546e-03 -4.395945e-04 0.000000e+00]
-focal_length=0.000000e+00
-*/
-
-/*
          |fx  0   cx|       a   b   c
    M =   |0   fy  cy|       d   e   f
          |0   0   1 |       g   h   i
   PrecalcResectioning(unsigned int * frame , double cx,double cy, double fx,double fy )
 */
-  // CAMERA 0
-  PrecalcResectioning(resection_left_precalc,
-                                                245.25550923611289 ,
-                                                250.19296587860512 ,
-                                                145.25550923611289 ,
-                                                130.04606153570572
-                                                );
+  /* CAMERA 0
+  resolution=[320 240]
+  cx=1.671293e+02
+  cy=1.273992e+02
+  fx=2.873170e+02
+  fy=2.881220e+02
+  */
 
+  PrecalcResectioning(resection_left_precalc,
+                                                287.3170 ,
+                                                288.1220  ,
+                                                167.1293,
+                                                188.1220 ,
+
+                                                0.1753691,
+                                                0.07749228,
+                                                0.000167197,
+                                                0.01667649 ,
+                                                0.0
+                                                );
 
   // CAMERA 1
   PrecalcResectioning(resection_right_precalc,
-                                                187.84788538437246 ,
-                                                121.96154872803314 ,
-                                                215.91485882957815 ,
-                                                215.14672655968261
+                                                232.97080393892657 ,
+                                                275.24989549871043 ,
+                                                163.78706430546723 ,
+                                                129.05282322284381 ,
+
+                                                0.1753691,
+                                                0.07749228,
+                                                0.000167197,
+                                                0.01667649 ,
+                                                0.0
                                                 );
 
-//  PrecalcResectioning(resection_left_precalc,307.1862,262.4510,569.0248,571.1376);
-//  PrecalcResectioning(resection_right_precalc,325.8495,245.6993,602.1574,603.9465);
 
 
   unsigned int div_res;

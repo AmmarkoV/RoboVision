@@ -1,0 +1,9 @@
+#!/bin/bash
+rm cam0/*.jpg
+rm cam0/*.ppm 
+
+rm cam1/*.jpg
+rm cam1/*.ppm
+
+
+exit 0

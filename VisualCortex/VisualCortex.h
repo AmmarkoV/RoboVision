@@ -16,6 +16,8 @@ enum VisCortxSettings
 {
    EMPTY = 0,
 
+   INPUT_CALIBRATION,
+
    DEPTHMAP_START,
    DEPTHMAP_STARTLEFT_X,
    DEPTHMAP_DETAIL,
