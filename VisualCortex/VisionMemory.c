@@ -246,11 +246,11 @@ int CloseExtraLargeRegister( unsigned int reg_num )
 void DefaultSettings()
 {
     // Initialize all variables used by Visual Cortex
-    settings[INPUT_CALIBRATION]=1; // DEACTIVATED UNTIL FIX :P
+    settings[INPUT_CALIBRATION]=0; // DEACTIVATED UNTIL FIX :P
     settings[DEPTHMAP_STARTLEFT_X]=15;
     settings[DEPTHMAP_DETAIL]=6;
     settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=30;
-    settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=250;
+    settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=255;
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_OFFSET_UP]=2;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=2;

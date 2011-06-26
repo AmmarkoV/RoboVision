@@ -68,7 +68,7 @@
 		<Cursor position="299" topLine="0" />
 	</File>
 	<File name="Precalculations.c" open="1" top="0" tabpos="11">
-		<Cursor position="3322" topLine="68" />
+		<Cursor position="1755" topLine="42" />
 	</File>
 	<File name="Precalculations.h" open="1" top="0" tabpos="36">
 		<Cursor position="74" topLine="0" />
@@ -98,7 +98,7 @@
 		<Cursor position="293" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
-		<Cursor position="9883" topLine="240" />
+		<Cursor position="9854" topLine="225" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="868" topLine="28" />
@@ -107,6 +107,6 @@
 		<Cursor position="6288" topLine="240" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="311" topLine="4" />
+		<Cursor position="310" topLine="4" />
 	</File>
 </CodeBlocks_layout_file>

@@ -47,9 +47,9 @@ unsigned int RobotInit(char * md23_device_id,char * arduino_device_id)
 
     if (AutoMapping)
      {
-       worldmap=CreateMap(3000,3000,3);
+       worldmap=CreateMap(500,500,3);
        SetMapUnit_In_cm(worldmap,15);
-       SetAgentLocation(worldmap,0,1500,1500);
+       SetAgentLocation(worldmap,0,250,250);
      }
 
     pthread_create(&monitor_thread_id, NULL,  HAL_Monitor ,0);

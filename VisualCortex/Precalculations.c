@@ -48,6 +48,12 @@ unsigned long precalc_memplace_1byte[641][481];
 unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , double cx,double cy ,
                                                          double k1,double k2 , double p1,double p2 , double k3   )
 {
+  if ( settings[INPUT_CALIBRATION]==0)
+    {
+        fprintf(stderr,"Calibration is disabled , please set settings[INPUT_CALIBRATION]=1");
+        return 0;
+    }
+
   double new_x,new_y,new_w;
   unsigned int x,y , mem;
   unsigned int undistorted_x,undistorted_y, new_mem ;
