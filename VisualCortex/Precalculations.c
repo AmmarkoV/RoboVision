@@ -33,105 +33,6 @@ unsigned long precalc_memplace_1byte[641][481];
 
 
 
-/*
-
-   RectifiedPoint = M * OriginalPoint
-
-   Rectified Point = [ new_x new_y new_w ]
-   Original Point  = [ x y w ]
-
-         |fx  0   cx|       a   b   c
-   M =   |0   fy  cy|       d   e   f
-         |0   0   1 |       g   h   i
-*/
-unsigned int PrecalcOCVResectioning(unsigned int * frame ,  double fx,double fy , double cx,double cy ,
-                                                         double k1,double k2 , double p1,double p2 , double k3   )
-{
-  if ( settings[INPUT_CALIBRATION]==0)
-    {
-        fprintf(stderr,"Calibration is disabled , please set settings[INPUT_CALIBRATION]=1");
-        return 0;
-    }
-
-  unsigned int x   , y , mem , new_mem;
-  unsigned int undistorted_x,undistorted_y;
-
-  mem = 0;
-
-
-  const double a1 = 1.f / fx , b1 = 1.f / fy;
-  double p22 = 2.f * p2;
-
-  // SEE http://opencv.willowgarage.com/documentation/camera_calibration_and_3d_reconstruction.html
-  // https://code.ros.org/trac/opencv/browser/trunk/opencv/src/cv/cvundistort.cpp?rev=18
-  // https://code.ros.org/trac/opencv/browser/trunk/opencv/modules/imgproc/src/undistort.cpp?rev=4885
-  // Also Learning OpenCV page 375-377
-
-  for (y=0; y<metrics[RESOLUTION_Y]; y++)
-  {
-
-     double dy = y - cy;
-     double y0 = b1 * dy;
-     double y1 ;
-     if ( y0 == 0 ) { y1 = 0; } else
-                    { y1 = p1 / y0; }
-     double y2 = y0 * y0;
-     double y3 = 2.f * p1 * y0;
-
-     for (x=0; x<metrics[RESOLUTION_X]; x++)
-        {
-
-          double dx = x - cx;
-          double x0 = a1 * dx;
-          double x1;
-          if ( x0 == 0 ) { x1 = 0; } else
-                         { x1 = p2 / x0; }
-          double x2 = x0 * x0;
-          double x3 = p22 * x0;
-          double r2 = x2 + y2;
-          double bx = r2 * (k1 + r2 * k2) + x3 + y3;
-          double by = bx + r2 * y1;
-          bx += r2 * x1;
-
-          int xd = x0, yd = y0;
-
-
-           xd += round( bx * dx );
-           yd += round( by * dy );
-
-          undistorted_x  = (unsigned int) xd;
-          undistorted_y  = (unsigned int) yd;
-
-
-
-          if ( ( undistorted_x >= metrics[RESOLUTION_X] ) || ( undistorted_y >= metrics[RESOLUTION_Y] ) )
-             {
-                 fprintf(stderr,"!!%u,%u to %u,%u!!",x,y,undistorted_x,undistorted_y);
-                 new_mem = 0;
-                 // new_mem = mem;
-             } else
-             {
-                new_mem = undistorted_y * metrics[RESOLUTION_X_3_BYTE] + undistorted_x * 3 ;
-                fprintf(stderr,"%u,%u -> %u,%u .. \n",x,y,undistorted_x,undistorted_y);
-             }
-
-
-
-          frame [mem] = new_mem;
-          ++mem;  ++new_mem;
-
-          frame [mem] = new_mem;
-          ++mem;  ++new_mem;
-
-          frame [mem] = new_mem;
-          ++mem;  ++new_mem;
-       }
-   }
- return 1;
-
-}
-
-
 
 /*
 
@@ -144,22 +45,21 @@ unsigned int PrecalcOCVResectioning(unsigned int * frame ,  double fx,double fy 
    M =   |0   fy  cy|       d   e   f
          |0   0   1 |       g   h   i
 */
-
 unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , double cx,double cy ,
                                                          double k1,double k2 , double p1,double p2 , double k3   )
 {
-  //return PrecalcOCVResectioning (frame,fx,fy,cx,cy,k1,k2,p1,p2,k3);
-
   if ( settings[INPUT_CALIBRATION]==0)
     {
         fprintf(stderr,"Calibration is disabled , please set settings[INPUT_CALIBRATION]=1");
         return 0;
     }
 
-  unsigned int x = metrics[RESOLUTION_X] ,y=metrics[RESOLUTION_Y] , mem , new_mem;
+  unsigned int i,x = metrics[RESOLUTION_X] ,y=metrics[RESOLUTION_Y] , mem , new_mem;
   unsigned int undistorted_x,undistorted_y;
 
   mem = 0;
+  double ifx=1.f/fx,ify=1.f/fy;
+  double dstdx,dstdy;
   double dx,dy;
   double r_sq  = 0;
   double k_coefficient = 0;
@@ -168,7 +68,15 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
   // SEE http://opencv.willowgarage.com/documentation/camera_calibration_and_3d_reconstruction.html
   // https://code.ros.org/trac/opencv/browser/trunk/opencv/src/cv/cvundistort.cpp?rev=18
   // https://code.ros.org/trac/opencv/browser/trunk/opencv/modules/imgproc/src/undistort.cpp?rev=4885
+  // http://tech.groups.yahoo.com/group/OpenCV/message/26019
   // Also Learning OpenCV page 375-377
+  /*
+
+        Finaly fixed using code from Philip Gruebele @
+            http://tech.groups.yahoo.com/group/OpenCV/message/26019
+
+            archived at 3dpartylibs/code/undistort_point.cpp
+  */
 
   for (y=0; y<metrics[RESOLUTION_Y]; y++)
   {
@@ -176,25 +84,39 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
         {
           //Well this is supposed to rectify lens distortions based on calibration done with my image sets
           //but the values returned are way off ..
+          dstdx = ( x - cx ) * ifx;
+          dstdy = ( y - cy ) * ify;
 
-          dx = ( x - cx );// / fx;
-          dy = ( y - cy );// / fy;
+          new_x = dstdx;
+          new_y = dstdy;
 
-          r_sq = dx*dx + dy*dy;
+          for ( i=0; i<5; i++)
+           {
+               r_sq = new_x*new_x + new_y*new_y;
+               k_coefficient = 1;
+               k_coefficient += k1 * r_sq;
+               k_coefficient += k2 * r_sq * r_sq;
+               k_coefficient += k3 * r_sq * r_sq * r_sq ;
 
-          k_coefficient = 1;
-          k_coefficient += k1 * r_sq;
-          k_coefficient += k2 * r_sq * r_sq;
-          k_coefficient += k3 * r_sq * r_sq * r_sq ;
+               dx =  2 * p1 * new_x * new_y + p2 * ( r_sq + 2 * new_x * new_x);
+               dy =  2 * p2 * new_x * new_y + p1 * ( r_sq + 2 * new_y * new_y);
 
-          new_x = dx * k_coefficient;
-          new_x +=   ((2 * p1 * dy) * ( r_sq + 2 * dx * dy));
+               new_x = ( dstdx - dx ) / k_coefficient;
+               new_y = ( dstdy - dy ) / k_coefficient;
+           }
 
-          new_y = dy * k_coefficient;
-          new_y +=  p1 * ( r_sq + 2 * dy * dy) + 2 * p2 * dx;
+          dstdx = new_x;
+          dstdy = new_y;
 
-          undistorted_x  = (unsigned int) (new_x/* *fx */ + cx);
-          undistorted_y  = (unsigned int) (new_y/* *fy */ + cy);
+          dstdx *= fx;
+          dstdx += cx;
+
+          dstdy *= fy;
+          dstdy += cy;
+
+
+          undistorted_x  = (unsigned int) (dstdx);
+          undistorted_y  = (unsigned int) (dstdy);
 
 
 
