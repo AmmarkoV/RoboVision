@@ -59,7 +59,7 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
 
   mem = 0;
   double ifx=1.f/fx,ify=1.f/fy;
-  double dstdx,dstdy;
+  double dstdx,dstdy , distx,disty;
   double dx,dy;
   double r_sq  = 0;
   double k_coefficient = 0;
@@ -108,11 +108,8 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
           dstdx = new_x;
           dstdy = new_y;
 
-          dstdx *= fx;
-          dstdx += cx;
-
-          dstdy *= fy;
-          dstdy += cy;
+          dstdx *= fx; dstdx += cx;
+          dstdy *= fy; dstdy += cy;
 
 
           undistorted_x  = (unsigned int) (dstdx);
@@ -120,15 +117,39 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
 
 
 
+                   /* REVERSE CHECK ! */
+                   new_x = dstdx - cx; new_x /= fx;
+                   new_y = dstdy - cy; new_y /= fy;
+
+                   r_sq = new_x*new_x + new_y*new_y;
+                   distx = new_x + new_x*(k1*r_sq + k2*r_sq*r_sq) + (2*p1*new_x*new_y + p2*(r_sq + 2*new_x*new_x));
+                   disty = new_y + new_y*(k1*r_sq + k2*r_sq*r_sq) + (2*p2*new_x*new_y + p1*(r_sq + 2*new_y*new_y));
+
+                   distx *= fx; distx += cx;
+                   disty *= fy; disty += cy;
+
+
+
+      // This should never be more than .2 pixels...
+      double diffx = x - distx;
+      double diffy = y - disty;
+
+         if ((diffx> 0.1) || (diffy>0.1) )
+          {
+             /* ACCURACY ERROR , This means that we have a percision error in the way math is done*/
+             fprintf(stderr,"$%u,%u to %u,%u",x,y,undistorted_x,undistorted_y);
+             new_mem = 0;
+          }
+
           if ( ( undistorted_x >= metrics[RESOLUTION_X] ) || ( undistorted_y >= metrics[RESOLUTION_Y] ) )
              {
-                 fprintf(stderr,"!!%u,%u to %u,%u!!",x,y,undistorted_x,undistorted_y);
+                 fprintf(stderr,"!%u,%u to %u,%u",x,y,undistorted_x,undistorted_y);
                  new_mem = 0;
-                 // new_mem = mem;
+                 //new_mem = mem;
              } else
              {
                 new_mem = undistorted_y * metrics[RESOLUTION_X_3_BYTE] + undistorted_x * 3 ;
-                fprintf(stderr,"%u,%u -> %u,%u .. \n",x,y,undistorted_x,undistorted_y);
+                //fprintf(stderr,"%u,%u -> %u,%u .. \n",x,y,undistorted_x,undistorted_y);
              }
 
 
