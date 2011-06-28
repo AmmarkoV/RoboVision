@@ -58,6 +58,10 @@ struct Video
   unsigned int size_of_frame;
   V4L2 *v4l2_intf;
 
+  /* CAMERA INTRINSIC PARAMETERS */
+  double fx,fy,cx,cy;
+  double k1,k2,p1,p2,k3;
+
   /* DATA NEEDED FOR DECODERS TO WORK */
   unsigned int input_pixel_format;
   unsigned int input_pixel_format_bitdepth;
@@ -433,6 +437,43 @@ unsigned char * GetEmptyFrame()
 {
     return empty_frame;
 }
+
+
+void SetCameraParameter(int webcam_id,int param_id,double * param)
+{
+    switch (param_id)
+    {
+      case  2 : camera_feeds[webcam_id].fx=*param; break;
+      case  3 : camera_feeds[webcam_id].fy=*param; break;
+      case  4 : camera_feeds[webcam_id].cx=*param; break;
+      case  5 : camera_feeds[webcam_id].cy=*param; break;
+      case  6 : camera_feeds[webcam_id].k1=*param; break;
+      case  7 : camera_feeds[webcam_id].k2=*param; break;
+      case  8 : camera_feeds[webcam_id].k3=*param; break;
+      case  9 : camera_feeds[webcam_id].p1=*param; break;
+      case 10 : camera_feeds[webcam_id].p2=*param; break;
+    };
+}
+
+double GetCameraParameter(int webcam_id,int param_id)
+{
+    switch (param_id)
+    {
+      case  2 : return camera_feeds[webcam_id].fx; break;
+      case  3 : return camera_feeds[webcam_id].fy; break;
+      case  4 : return camera_feeds[webcam_id].cx; break;
+      case  5 : return camera_feeds[webcam_id].cy; break;
+      case  6 : return camera_feeds[webcam_id].k1; break;
+      case  7 : return camera_feeds[webcam_id].k2; break;
+      case  8 : return camera_feeds[webcam_id].k3; break;
+      case  9 : return camera_feeds[webcam_id].p1; break;
+      case 10 : return camera_feeds[webcam_id].p2; break;
+    };
+
+    return 0.0;
+}
+
+
 
 unsigned char * GetFrame(int webcam_id)
 {

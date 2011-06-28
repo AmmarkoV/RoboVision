@@ -4,6 +4,7 @@
 
 #include "../InputParser/InputParser_C.h"
 #include "../VisualCortex/VisualCortex.h"
+#include "../VideoInput/VideoInput.h"
 
 char video_device_1[MAX_STR]="/dev/video0";
 char video_device_2[MAX_STR]="/dev/video1";
@@ -143,6 +144,66 @@ void ParseConfigString(char * inpt)
         {
            if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,video_device_2,MAX_STR);
         }
+      else
+      if ( (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO1_CAMERA_PARAMETERS",24)==1) || (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO2_CAMERA_PARAMETERS",24)==1) )
+        {
+           fprintf(stderr,"CAMERA_PARAMETERS(");
+           char str[MAX_STR]={0};
+           InputParser_GetWord(ipc,1,str,MAX_STR);
+           double fx = atof ( str );
+           fprintf(stderr,"fx=%f,",fx);
+           InputParser_GetWord(ipc,2,str,MAX_STR);
+           double fy = atof ( str );
+           fprintf(stderr,"fy=%f,",fy);
+           InputParser_GetWord(ipc,3,str,MAX_STR);
+           double cx = atof ( str );
+           fprintf(stderr,"cx=%f,",cx);
+           InputParser_GetWord(ipc,4,str,MAX_STR);
+           double cy = atof ( str );
+           fprintf(stderr,"cy=%f,",cy);
+           unsigned int VReg=0;
+           if (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO2_CAMERA_PARAMETERS",24)==1) { VReg=1; }
+           fprintf(stderr," - Passing ");
+           /*SetCameraParameter(VReg,2,&fx); <-These calls segfault , no idea why :P ( Guess C doesn`t like passing double values as paremeters
+           SetCameraParameter(VReg,3,&fy);       so I made them a pointer but the issue remains
+           SetCameraParameter(VReg,4,&cx);
+           SetCameraParameter(VReg,5,&cy);*/
+           fprintf(stderr," ) OK \n");
+        }
+      else
+      if ( (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO1_DISTORTION_PARAMETERS",28)==1) || (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO2_DISTORTION_PARAMETERS",28)==1) )
+        {
+           fprintf(stderr,"DISTORTION_PARAMETERS(");
+           char str[MAX_STR]={0};
+           InputParser_GetWord(ipc,1,str,MAX_STR);
+           double k1 = atof ( str );
+           fprintf(stderr,"k1=%f,",k1);
+           InputParser_GetWord(ipc,2,str,MAX_STR);
+           double k2 = atof ( str );
+           fprintf(stderr,"k2=%f,",k2);
+           InputParser_GetWord(ipc,3,str,MAX_STR);
+           double p1 = atof ( str );
+           fprintf(stderr,"p1=%f,",p1);
+           InputParser_GetWord(ipc,4,str,MAX_STR);
+           double p2 = atof ( str );
+           fprintf(stderr,"p2=%f,",p2);
+           InputParser_GetWord(ipc,5,str,MAX_STR);
+           double k3 = atof ( str );
+           fprintf(stderr,"k3=%f,",k3);
+           unsigned int VReg=0;
+           if (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO2_DISTORTION_PARAMETERS",28)==1) { VReg=1; }
+           fprintf(stderr," - Passing ");/*
+           SetCameraParameter(VReg,6,&k1); <-These calls segfault , no idea why :P ( Guess C doesn`t like passing double values as paremeters
+           SetCameraParameter(VReg,7,&k2);       so I made them a pointer but the issue remains
+           SetCameraParameter(VReg,8,&k3);
+           SetCameraParameter(VReg,9,&p1);
+           SetCameraParameter(VReg,10,&p2);*/
+           fprintf(stderr," ) OK \n");
+        }
+
+
+void VisCortx_SetDistortionParemeters(unsigned int reg_cam,double k1,double k2,double p1,double p2,double k3);
+
     }
 
     InputParser_Destroy(ipc);

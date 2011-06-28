@@ -54,6 +54,11 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
         return 0;
     }
 
+  fprintf(stderr,"Calibrating fx=%f fy=%f cx=%f cy=%f\n",fx,fy,cx,cy);
+  fprintf(stderr,"k1=%f k2=%f p1=%f p2=%f k3=%f \n",k1,k2,p1,p2,k3);
+
+  if ( ( fx == 0) || ( fy == 0) || ( (k1==0)&&(k2==0)&&(k3==0) )) { fprintf(stderr,"Erroneous parameters calibration canceled\n"); return 0; }
+
   unsigned int i,x = metrics[RESOLUTION_X] ,y=metrics[RESOLUTION_Y] , mem , new_mem;
   unsigned int undistorted_x,undistorted_y;
 
@@ -61,7 +66,8 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
   double ifx=1.f/fx,ify=1.f/fy;
   double dstdx,dstdy , distx,disty;
   double dx,dy;
-  double r_sq  = 0;
+  double r_sq  = 0;  // R Squared
+  double r_cu = 0;   // R Cubed
   double k_coefficient = 0;
   double new_x,new_y;
 
@@ -93,10 +99,11 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
           for ( i=0; i<5; i++)
            {
                r_sq = new_x*new_x + new_y*new_y;
+               r_cu = r_sq*r_sq;
                k_coefficient = 1;
                k_coefficient += k1 * r_sq;
-               k_coefficient += k2 * r_sq * r_sq;
-               k_coefficient += k3 * r_sq * r_sq * r_sq ;
+               k_coefficient += k2 * r_cu;
+               k_coefficient += k3 * r_cu * r_sq ;
 
                dx =  2 * p1 * new_x * new_y + p2 * ( r_sq + 2 * new_x * new_x);
                dy =  2 * p2 * new_x * new_y + p1 * ( r_sq + 2 * new_y * new_y);
@@ -188,12 +195,10 @@ void TestPrecalculations()
    if (errors>0) { fprintf(stderr,"Precalculation errors\n"); }
 }
 
-void Precalculations()
+
+int ExecuteResectioningPrecalculations()
 {
 
-  //fprintf(stderr,"Signed/Unsigned short max %u/%u \n",SHRT_MAX,USHRT_MAX);
-  //fprintf(stderr,"Signed/Unsigned int max %u/%u \n",INT_MAX,UINT_MAX);
-  //fprintf(stderr,"Signed/Unsigned long max %u/%u \n",LONG_MAX,ULONG_MAX);
 
 /*
          |fx  0   cx|       a   b   c
@@ -210,33 +215,43 @@ void Precalculations()
   */
 
   PrecalcResectioning(resection_left_precalc,
-                                               287.3169556, // fx
-                                               288.1220093 , // fy
-                                               167.1293335 , // cx
-                                               127.3991699 , // cy
+                                               288.8283081, // fx
+                                               289.7019043 , // fy
+                                               167.0304413 , // cx
+                                               124.1020355 , // cy
 
-                                                -0.0031672, //k1
-                                                0.0166765,  //k2
-                                                -0.1753691, //p1
-                                                0.0774923 , //p2
+                                                -0.0067172, //k1
+                                                0.0185508,  //k2
+                                                -0.1727557, //p1
+                                                0.0390107 , //p2
                                                 0.0         //k3
                                                 );
 
   // CAMERA 1
   PrecalcResectioning(resection_right_precalc,
-                                                285.3517456 , // fx
-                                                284.4697876 , // fy
-                                                173.1338501 , // cx
-                                                126.5036926 , // cy
+                                                288.7614746 , // fx
+                                                287.6744080 , // fy
+                                                172.2446136 , // cx
+                                                124.0350800 , // cy
 
-                                                -0.0022525 , //k1
-                                                0.0097993 ,  //k2
-                                                -0.1602673 , //p1
-                                                -0.0077100 , //p2
+                                                -0.0060547 , //k1
+                                                0.0117494 ,  //k2
+                                                -0.1632244 , //p1
+                                                -0.0179199 , //p2
                                                 0.0          //k3
                                                 );
 
+return 1;
+}
 
+void Precalculations()
+{
+
+  //fprintf(stderr,"Signed/Unsigned short max %u/%u \n",SHRT_MAX,USHRT_MAX);
+  //fprintf(stderr,"Signed/Unsigned int max %u/%u \n",INT_MAX,UINT_MAX);
+  //fprintf(stderr,"Signed/Unsigned long max %u/%u \n",LONG_MAX,ULONG_MAX);
+
+  ExecuteResectioningPrecalculations();
 
   unsigned int div_res;
   unsigned char i,z;

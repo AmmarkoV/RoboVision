@@ -47,6 +47,14 @@ int InitVisualSystem()
 
 
     VisCortx_Start(width,height);
+    double fx=GetCameraParameter(0,2) , fy=GetCameraParameter(0,3) , cx=GetCameraParameter(0,4) , cy=GetCameraParameter(0,5);
+    double k1=GetCameraParameter(0,6) , k2=GetCameraParameter(0,7) , p1=GetCameraParameter(0,9) , p2=GetCameraParameter(0,10) , k3=GetCameraParameter(0,8);
+    VisCortx_CameraParameters(0,fx,fy,cx,cy,k1,k2,p1,p2,k3);
+
+    fx=GetCameraParameter(1,2) , fy=GetCameraParameter(1,3) , cx=GetCameraParameter(1,4) , cy=GetCameraParameter(1,5);
+    k1=GetCameraParameter(1,6) , k2=GetCameraParameter(1,7) , p1=GetCameraParameter(1,9) , p2=GetCameraParameter(1,10) , k3=GetCameraParameter(1,8);
+    VisCortx_CameraParameters(1,fx,fy,cx,cy,k1,k2,p1,p2,k3);
+
     VisCortx_SetCamerasGeometry(6.0,72.0,0.0,0.0);
 
     OpenWebInterface();

@@ -163,6 +163,11 @@ unsigned int VisCortx_GetSetting(unsigned int get_num)
 }
 
 
+void VisCortx_RecalculateResectioning()
+{
+  ExecuteResectioningPrecalculations();
+}
+
 void VisCortx_SetMetric(unsigned int set_num,unsigned int set_val)
 {
   metrics[set_num]=set_val;
@@ -186,6 +191,13 @@ unsigned int VisCortx_GetVideoRegisterStats(unsigned int metric_num)
                                       ----------------------
 */
 
+
+
+void VisCortx_CameraParameters(int right_cam,double fx,double fy,double cx,double cy,double k1,double k2,double p1,double p2,double k3)
+{
+   if ( right_cam == 0 )  { PrecalcResectioning(resection_left_precalc,fx,fy,cx,cy,k1,k2,p1,p2,k3); } else
+   if ( right_cam == 1 )  { PrecalcResectioning(resection_right_precalc,fx,fy,cx,cy,k1,k2,p1,p2,k3); }
+}
 
 
 /*
