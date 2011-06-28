@@ -12,7 +12,6 @@ extern unsigned long precalc_memplace_1byte[641][481];
 unsigned int RGB(unsigned char R,unsigned char G,unsigned char B);
 unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , double cx,double cy ,
                                                          double k1,double k2 , double p1,double p2 , double k3   );
-int ExecuteResectioningPrecalculations();
 void Precalculations();
 
 #endif // PRECALCULATIONS_H_INCLUDED

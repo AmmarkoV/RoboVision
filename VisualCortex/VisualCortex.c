@@ -163,11 +163,6 @@ unsigned int VisCortx_GetSetting(unsigned int get_num)
 }
 
 
-void VisCortx_RecalculateResectioning()
-{
-  ExecuteResectioningPrecalculations();
-}
-
 void VisCortx_SetMetric(unsigned int set_num,unsigned int set_val)
 {
   metrics[set_num]=set_val;

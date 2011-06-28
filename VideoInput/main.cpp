@@ -177,6 +177,8 @@ int InitVideoInputs(int numofinputs)
           camera_feeds[i].rec_video.pixels=0;
           camera_feeds[i].frame=0;
           camera_feeds[i].v4l2_intf=0;
+          camera_feeds[i].fx=0,camera_feeds[i].fy=0,camera_feeds[i].cx=0,camera_feeds[i].cy=0;
+          camera_feeds[i].k1=0,camera_feeds[i].k2=0,camera_feeds[i].p1=0,camera_feeds[i].p2=0,camera_feeds[i].k3=0;
       }
 
     /*Lets Refresh USB devices list :)*/
@@ -469,7 +471,6 @@ double GetCameraParameter(int webcam_id,int param_id)
       case  9 : return camera_feeds[webcam_id].p1; break;
       case 10 : return camera_feeds[webcam_id].p2; break;
     };
-
     return 0.0;
 }
 

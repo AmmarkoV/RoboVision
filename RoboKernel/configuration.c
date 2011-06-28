@@ -14,6 +14,9 @@ char user[MAX_STR]="guarddog";
 char group[MAX_STR]="guarddog";
 char parentdir[MAX_STR]="/home/guarddog/RoboVisionRuntime/";
 
+double camera_params_1[12]={0};
+double camera_params_2[12]={0};
+
 unsigned int fps=8;
 unsigned int draw_on=1;
 unsigned int web_interface=1;
@@ -151,54 +154,72 @@ void ParseConfigString(char * inpt)
            char str[MAX_STR]={0};
            InputParser_GetWord(ipc,1,str,MAX_STR);
            double fx = atof ( str );
-           fprintf(stderr,"fx=%f,",fx);
+
            InputParser_GetWord(ipc,2,str,MAX_STR);
            double fy = atof ( str );
-           fprintf(stderr,"fy=%f,",fy);
+
            InputParser_GetWord(ipc,3,str,MAX_STR);
            double cx = atof ( str );
-           fprintf(stderr,"cx=%f,",cx);
+
            InputParser_GetWord(ipc,4,str,MAX_STR);
            double cy = atof ( str );
-           fprintf(stderr,"cy=%f,",cy);
+
            unsigned int VReg=0;
            if (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO2_CAMERA_PARAMETERS",24)==1) { VReg=1; }
-           fprintf(stderr," - Passing ");
-           /*SetCameraParameter(VReg,2,&fx); <-These calls segfault , no idea why :P ( Guess C doesn`t like passing double values as paremeters
-           SetCameraParameter(VReg,3,&fy);       so I made them a pointer but the issue remains
-           SetCameraParameter(VReg,4,&cx);
-           SetCameraParameter(VReg,5,&cy);*/
-           fprintf(stderr," ) OK \n");
+
+           if (VReg==0)
+            {
+                camera_params_1[2]=fx;
+                camera_params_1[3]=fy;
+                camera_params_1[4]=cx;
+                camera_params_1[5]=cy;
+            } else
+           if (VReg==1)
+            {
+                camera_params_2[2]=fx;
+                camera_params_2[3]=fy;
+                camera_params_2[4]=cx;
+                camera_params_2[5]=cy;
+            }
         }
       else
       if ( (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO1_DISTORTION_PARAMETERS",28)==1) || (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO2_DISTORTION_PARAMETERS",28)==1) )
         {
-           fprintf(stderr,"DISTORTION_PARAMETERS(");
            char str[MAX_STR]={0};
            InputParser_GetWord(ipc,1,str,MAX_STR);
            double k1 = atof ( str );
-           fprintf(stderr,"k1=%f,",k1);
+
            InputParser_GetWord(ipc,2,str,MAX_STR);
            double k2 = atof ( str );
-           fprintf(stderr,"k2=%f,",k2);
+
            InputParser_GetWord(ipc,3,str,MAX_STR);
            double p1 = atof ( str );
-           fprintf(stderr,"p1=%f,",p1);
+
            InputParser_GetWord(ipc,4,str,MAX_STR);
            double p2 = atof ( str );
-           fprintf(stderr,"p2=%f,",p2);
+
            InputParser_GetWord(ipc,5,str,MAX_STR);
            double k3 = atof ( str );
-           fprintf(stderr,"k3=%f,",k3);
+
            unsigned int VReg=0;
            if (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO2_DISTORTION_PARAMETERS",28)==1) { VReg=1; }
-           fprintf(stderr," - Passing ");/*
-           SetCameraParameter(VReg,6,&k1); <-These calls segfault , no idea why :P ( Guess C doesn`t like passing double values as paremeters
-           SetCameraParameter(VReg,7,&k2);       so I made them a pointer but the issue remains
-           SetCameraParameter(VReg,8,&k3);
-           SetCameraParameter(VReg,9,&p1);
-           SetCameraParameter(VReg,10,&p2);*/
-           fprintf(stderr," ) OK \n");
+
+           if (VReg==0)
+            {
+                camera_params_1[6]=k1;
+                camera_params_1[7]=k2;
+                camera_params_1[8]=k3;
+                camera_params_1[9]=p1;
+                camera_params_1[10]=p2;
+            } else
+           if (VReg==1)
+            {
+                camera_params_2[6]=k1;
+                camera_params_2[7]=k2;
+                camera_params_2[8]=k3;
+                camera_params_2[9]=p1;
+                camera_params_2[10]=p2;
+            }
         }
 
 

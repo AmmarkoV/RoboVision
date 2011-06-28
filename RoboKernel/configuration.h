@@ -10,6 +10,9 @@ extern char arduino_device[MAX_STR];
 extern char user[MAX_STR];
 extern char group[MAX_STR];
 extern char parentdir[MAX_STR];
+extern double camera_params_1[12];
+extern double camera_params_2[12];
+
 
 extern unsigned int fps;
 extern unsigned int draw_on;

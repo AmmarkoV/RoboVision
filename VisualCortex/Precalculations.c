@@ -57,7 +57,7 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
   fprintf(stderr,"Calibrating fx=%f fy=%f cx=%f cy=%f\n",fx,fy,cx,cy);
   fprintf(stderr,"k1=%f k2=%f p1=%f p2=%f k3=%f \n",k1,k2,p1,p2,k3);
 
-  if ( ( fx == 0) || ( fy == 0) || ( (k1==0)&&(k2==0)&&(k3==0) )) { fprintf(stderr,"Erroneous parameters calibration canceled\n"); return 0; }
+  if ( ( fx == 0.0) || ( fy == 0.0) || ( (k1==0.0)&&(k2==0.0)&&(k3==0.0) )) { fprintf(stderr,"Erroneous parameters calibration canceled\n"); return 0; }
 
   unsigned int i,x = metrics[RESOLUTION_X] ,y=metrics[RESOLUTION_Y] , mem , new_mem;
   unsigned int undistorted_x,undistorted_y;
@@ -144,13 +144,13 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
          if ((diffx> 0.1) || (diffy>0.1) )
           {
              /* ACCURACY ERROR , This means that we have a percision error in the way math is done*/
-             fprintf(stderr,"$%u,%u to %u,%u",x,y,undistorted_x,undistorted_y);
+           //  fprintf(stderr,"$%u,%u to %u,%u",x,y,undistorted_x,undistorted_y);
              new_mem = 0;
           }
 
           if ( ( undistorted_x >= metrics[RESOLUTION_X] ) || ( undistorted_y >= metrics[RESOLUTION_Y] ) )
              {
-                 fprintf(stderr,"!%u,%u to %u,%u",x,y,undistorted_x,undistorted_y);
+               //  fprintf(stderr,"!%u,%u to %u,%u",x,y,undistorted_x,undistorted_y);
                  new_mem = 0;
                  //new_mem = mem;
              } else
@@ -196,53 +196,6 @@ void TestPrecalculations()
 }
 
 
-int ExecuteResectioningPrecalculations()
-{
-
-
-/*
-         |fx  0   cx|       a   b   c
-   M =   |0   fy  cy|       d   e   f
-         |0   0   1 |       g   h   i
-  PrecalcResectioning(unsigned int * frame , double cx,double cy, double fx,double fy )
-*/
-  /* CAMERA 0
-  resolution=[320 240]
-  cx=1.671293e+02
-  cy=1.273992e+02
-  fx=2.873170e+02
-  fy=2.881220e+02
-  */
-
-  PrecalcResectioning(resection_left_precalc,
-                                               288.8283081, // fx
-                                               289.7019043 , // fy
-                                               167.0304413 , // cx
-                                               124.1020355 , // cy
-
-                                                -0.0067172, //k1
-                                                0.0185508,  //k2
-                                                -0.1727557, //p1
-                                                0.0390107 , //p2
-                                                0.0         //k3
-                                                );
-
-  // CAMERA 1
-  PrecalcResectioning(resection_right_precalc,
-                                                288.7614746 , // fx
-                                                287.6744080 , // fy
-                                                172.2446136 , // cx
-                                                124.0350800 , // cy
-
-                                                -0.0060547 , //k1
-                                                0.0117494 ,  //k2
-                                                -0.1632244 , //p1
-                                                -0.0179199 , //p2
-                                                0.0          //k3
-                                                );
-
-return 1;
-}
 
 void Precalculations()
 {
@@ -250,8 +203,12 @@ void Precalculations()
   //fprintf(stderr,"Signed/Unsigned short max %u/%u \n",SHRT_MAX,USHRT_MAX);
   //fprintf(stderr,"Signed/Unsigned int max %u/%u \n",INT_MAX,UINT_MAX);
   //fprintf(stderr,"Signed/Unsigned long max %u/%u \n",LONG_MAX,ULONG_MAX);
-
-  ExecuteResectioningPrecalculations();
+  unsigned int mem;
+   for (mem=0; mem<metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]; mem++)
+   {
+      resection_left_precalc[mem]=mem;
+      resection_right_precalc[mem]=mem;
+   }
 
   unsigned int div_res;
   unsigned char i,z;

@@ -47,13 +47,31 @@ int InitVisualSystem()
 
 
     VisCortx_Start(width,height);
+
+    /*
+         THE FOLLOWING CODE IS KIND OF BAD :P  , I WILL GRADUALLY MOVE RESECTIONING TO VIDEO INPUT SO
+         IT MAKES SENSE , BUT IT IS BAD FOR NOW
+     */
+    SetCameraParameter(0,2,&camera_params_1[2]); SetCameraParameter(0,3,&camera_params_1[3]); SetCameraParameter(0,4,&camera_params_1[4]); SetCameraParameter(0,5,&camera_params_1[5]);
+    SetCameraParameter(0,6,&camera_params_1[6]); SetCameraParameter(0,7,&camera_params_1[7]); SetCameraParameter(0,8,&camera_params_1[8]); SetCameraParameter(0,9,&camera_params_1[9]);
+    SetCameraParameter(0,10,&camera_params_1[10]);
+
     double fx=GetCameraParameter(0,2) , fy=GetCameraParameter(0,3) , cx=GetCameraParameter(0,4) , cy=GetCameraParameter(0,5);
     double k1=GetCameraParameter(0,6) , k2=GetCameraParameter(0,7) , p1=GetCameraParameter(0,9) , p2=GetCameraParameter(0,10) , k3=GetCameraParameter(0,8);
     VisCortx_CameraParameters(0,fx,fy,cx,cy,k1,k2,p1,p2,k3);
 
+
+    SetCameraParameter(1,2,&camera_params_2[2]); SetCameraParameter(1,3,&camera_params_2[3]); SetCameraParameter(1,4,&camera_params_2[4]); SetCameraParameter(1,5,&camera_params_2[5]);
+    SetCameraParameter(1,6,&camera_params_2[6]); SetCameraParameter(1,7,&camera_params_2[7]); SetCameraParameter(1,8,&camera_params_2[8]); SetCameraParameter(1,9,&camera_params_2[9]);
+    SetCameraParameter(1,10,&camera_params_2[10]);
+
     fx=GetCameraParameter(1,2) , fy=GetCameraParameter(1,3) , cx=GetCameraParameter(1,4) , cy=GetCameraParameter(1,5);
     k1=GetCameraParameter(1,6) , k2=GetCameraParameter(1,7) , p1=GetCameraParameter(1,9) , p2=GetCameraParameter(1,10) , k3=GetCameraParameter(1,8);
     VisCortx_CameraParameters(1,fx,fy,cx,cy,k1,k2,p1,p2,k3);
+    /*
+        END OF BAD CODE -----------------------------------------------------------------------------
+     */
+
 
     VisCortx_SetCamerasGeometry(6.0,72.0,0.0,0.0);
 
