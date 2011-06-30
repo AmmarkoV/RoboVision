@@ -8,8 +8,6 @@ void DepthMapFull  ( unsigned int left_view_reg,
                      unsigned int right_view_reg,
                      unsigned int left_depth_reg,
                      unsigned int right_depth_reg,
-                     unsigned int image_x,
-                     unsigned int image_y,
                      unsigned char clear_and_calculate /*Cleaning the depth arrays takes a little longer :) */
                     );
 

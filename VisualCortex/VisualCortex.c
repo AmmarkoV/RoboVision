@@ -436,8 +436,6 @@ void  VisCortx_FullDepthMap()
                 CALIBRATED_RIGHT_EYE,
                 DEPTH_LEFT,
                 DEPTH_RIGHT,
-                metrics[RESOLUTION_X],
-                metrics[RESOLUTION_Y],
                 1
              );
 
@@ -458,8 +456,6 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
                 CALIBRATED_RIGHT_EYE,
                 DEPTH_LEFT,
                 DEPTH_RIGHT,
-                metrics[RESOLUTION_X],
-                metrics[RESOLUTION_Y],
                 1
              );
 
@@ -481,8 +477,6 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
                 CALIBRATED_RIGHT_EYE,
                 DEPTH_LEFT,
                 DEPTH_RIGHT,
-                metrics[RESOLUTION_X],
-                metrics[RESOLUTION_Y],
                 0
              );
 }

@@ -150,7 +150,7 @@ void ParseConfigString(char * inpt)
       else
       if ( (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO1_CAMERA_PARAMETERS",24)==1) || (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO2_CAMERA_PARAMETERS",24)==1) )
         {
-           fprintf(stderr,"CAMERA_PARAMETERS(");
+
            char str[MAX_STR]={0};
            InputParser_GetWord(ipc,1,str,MAX_STR);
            double fx = atof ( str );
