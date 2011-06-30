@@ -106,10 +106,6 @@ void inline FillDepthMemWithData(unsigned short * depth_data_raw,struct DepthDat
 	}
 
 
-
-  fprintf(stderr,"Match %u,%u->%u,%u  %u = %u\n",depth_data->x1_patch,depth_data->y1_patch,
-                                                 depth_data->x2_patch,depth_data->y2_patch,
-                                                 depth_data->score,depth_data->depth);
 }
 
 
@@ -358,26 +354,38 @@ inline int MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
                                      struct DepthData *best_match)
 {
   int retres=0;
-  unsigned int  max_prox_score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED];
+  uint  max_prox_score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED];
   best_match->score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+1;
 
-  uint xrstart = 0; if ( xl>settings[DEPTHMAP_CLOSEST_DEPTH] ) { xrstart = xl-settings[DEPTHMAP_CLOSEST_DEPTH]; }
+
+  uint xrstart = 0;
+  if ( ( xl>settings[DEPTHMAP_CLOSEST_DEPTH] ) && (settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]) )
+        { xrstart = xl-settings[DEPTHMAP_CLOSEST_DEPTH]; }
+
+
   uint xr=xrstart, yr=yl-settings[DEPTHMAP_VERT_OFFSET_UP];
   uint xr_lim=xl , yr_lim=yl+settings[DEPTHMAP_VERT_OFFSET_DOWN];
   uint prox=0;
+
   struct ImageRegion right_rgn={0};
   right_rgn.width=metrics[HORIZONTAL_BUFFER]; right_rgn.height=metrics[VERTICAL_BUFFER];
 
-      while (yr<yr_lim)
+      while (yr<=yr_lim)
        {
          right_rgn.y1=yr;
-         xr=xrstart;
-         while (xr<xr_lim)
-         {
 
+         xr=xrstart;
+         while (xr<=xr_lim)
+         {
            right_rgn.x1=xr;
 
+                /*
+                   TODO TODO TODO TODO TODO
 
+                   THERE IS ROOM FOR GREAT OPTIMIZATION HERE
+                   BY RE USING CALCULATIONS AND ADDING/SUBTRACTING VERTICAL BLOCKS OF THE PATCH INSTEAD OF
+                   THE WHOLE RECTANGLE EVERY TIME COMPARE PATCHES IS CALLED
+                */
 								prox = ComparePatches( left_rgn , &right_rgn,
                                                        rgb1,rgb2,
                                                        video_register[EDGES_LEFT].pixels , video_register[EDGES_RIGHT].pixels ,
@@ -395,8 +403,8 @@ inline int MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
 
 
                                 if (
-                                         (prox<best_match->score) // kanoume qualify san kalytero apotelesma
-                                      && (prox<max_prox_score) // to threshold mas
+                                         (prox < best_match->score) // kanoume qualify san kalytero apotelesma
+                                      && (prox < max_prox_score) // to threshold mas
 									  && (depth_act<settings[DEPTHMAP_CLOSEST_DEPTH])  // TEST -> Praktika dedomena deixnoun oti synithws apotelesmata panw apo 100 einai thoryvos!
 								    )
 								{
@@ -411,13 +419,16 @@ inline int MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
                                     best_match->movement_difference = 0 ;
                                     *xr_matched = xl;
                                     *yr_matched = yl;
+
                                     retres=1;
+
+                                   if ( settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD] >= prox )
+                                   {
+                                     return 1;
+                                   }
                                 }
 
-                                if ( settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD] >= prox )
-                                {
-                                  return 1;
-                                }
+
 
           ++xr;
          }
@@ -437,7 +448,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
                      unsigned char clear_and_calculate /*Cleaning the depth arrays takes a little longer :) */
                     )
 {
-  int run_old = 1;
+  int run_old = 0;
   if (run_old)
    {
 
@@ -456,11 +467,15 @@ void DepthMapFull  ( unsigned int left_view_reg,
     uint counted_edges,edges_required_to_process=( (uint) ( metrics[VERTICAL_BUFFER] * metrics[HORIZONTAL_BUFFER] * settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] )  / 100 );
 
     struct DepthData best_match={0};
+    best_match.patch_size_x=(unsigned short) metrics[HORIZONTAL_BUFFER];
+	best_match.patch_size_y=(unsigned short) metrics[VERTICAL_BUFFER];
+
+
     uint xl=settings[DEPTHMAP_STARTLEFT_X],yl=1; // Coords on LeftFrame
     uint xl_lim=metrics[RESOLUTION_X]-metrics[HORIZONTAL_BUFFER];
     uint yl_lim=metrics[RESOLUTION_Y]-metrics[VERTICAL_BUFFER]; // Added 5/3/2010 :) SPEED++ Quality ++
 
-    unsigned int xr,yr;
+    unsigned int xr=0,yr=0;
     struct ImageRegion left_rgn={0};
     left_rgn.width=metrics[HORIZONTAL_BUFFER]; left_rgn.height=metrics[VERTICAL_BUFFER]; // These are standard
 
@@ -482,34 +497,37 @@ void DepthMapFull  ( unsigned int left_view_reg,
        while ( xl < xl_lim )
          {
            counted_edges = GetCompressedRegisterPatchSum1Byte(GENERAL_XLARGE_1,xl,yl,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+
            if ( edges_required_to_process < counted_edges )
            {
              //IF THIS PATCH ( xl,yl with size metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER] has enough edges process it..
              best_match.edge_count=counted_edges;
 
              left_rgn.x1=xl; left_rgn.y1=yl;
-             if ( MatchInHorizontalScanline(video_register[left_view_reg].pixels,video_register[right_view_reg].pixels,
+             if ( MatchInHorizontalScanline(video_register[left_view_reg].pixels , video_register[right_view_reg].pixels,
                                             &left_rgn,
                                             xl,yl,&xr,&yr,&best_match)
                 )
                {
                  /* WE FOUND A MATCH */
-                 FillDepthMemWithData(  l_video_register[left_depth_reg].pixels,
-                                        depth_data_array,
-                                        &best_match,
-                                        metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+                 FillDepthMemWithData(l_video_register[left_depth_reg].pixels,
+                                      depth_data_array,
+                                      &best_match,
+                                      metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
                } else
                {
                  /* AREA IS NOT MATCHED :P */
                }
            }
+
+
             xl+=x_vima;
          }
          yl+=y_vima;
        }
 
-  //if ( settings[DEPTHMAP_IMPROVE_FILLING_HOLES]!=0 )  EnhanceDepthMapFillHoles(video_register[LEFT_EYE].pixels, l_video_register[left_depth_reg].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-  //if ( settings[DEPTHMAP_IMPROVE_USING_EDGES]!=0 )  EnhanceDepthMapWithEdges(video_register[LEFT_EYE].pixels, l_video_register[left_depth_reg].pixels,video_register[EDGES_LEFT].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+  if ( settings[DEPTHMAP_IMPROVE_FILLING_HOLES]!=0 )  EnhanceDepthMapFillHoles(video_register[LEFT_EYE].pixels, l_video_register[left_depth_reg].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+  if ( settings[DEPTHMAP_IMPROVE_USING_EDGES]!=0 )  EnhanceDepthMapWithEdges(video_register[LEFT_EYE].pixels, l_video_register[left_depth_reg].pixels,video_register[EDGES_LEFT].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
   return;
 }
 
