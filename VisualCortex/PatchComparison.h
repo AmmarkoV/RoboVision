@@ -3,9 +3,9 @@
 
 #include "VisionMemory.h"
 
-int ComparePatchesUsingHistogram(int hist_reg_left,int hist_reg_right,unsigned int *source_x1,unsigned int *source_y1,unsigned int *target_x1,unsigned int *target_y1);
+inline int ComparePatchesUsingHistogram(int hist_reg_left,int hist_reg_right,unsigned int *source_x1,unsigned int *source_y1,unsigned int *target_x1,unsigned int *target_y1);
 
-unsigned int ComparePatches(       struct ImageRegion * source_block,    struct ImageRegion * target_block,
+inline unsigned int ComparePatches(       struct ImageRegion * source_block,    struct ImageRegion * target_block,
                                    unsigned char *rgb1,                  unsigned char *rgb2,
                                    unsigned char *sobel1,                unsigned char *sobel2,
                                    unsigned char *secondderiv1,          unsigned char *secondderiv2,
