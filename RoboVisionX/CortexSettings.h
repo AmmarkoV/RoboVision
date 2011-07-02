@@ -37,6 +37,7 @@ class CortexSettings: public wxDialog
 		wxStaticText* StaticText15;
 		wxTextCtrl* ComparisonThreshold;
 		wxTextCtrl* ComparisonThresholdLarge;
+		wxStaticText* StaticText32;
 		wxStaticText* StaticText17;
 		wxStaticText* StaticText28;
 		wxTextCtrl* ComparisonThresholdMedium;
@@ -74,11 +75,13 @@ class CortexSettings: public wxDialog
 		wxStaticBox* StaticBox1;
 		wxStaticText* StaticText7;
 		wxTextCtrl* MaxR;
+		wxTextCtrl* ShiftDown;
 		wxStaticText* StaticText4;
 		wxCheckBox* FillHoles;
 		wxStaticText* StaticText5;
 		wxStaticText* StaticText30;
 		wxStaticText* StaticText2;
+		wxTextCtrl* ShiftUp;
 		wxStaticText* StaticText27;
 		wxStaticText* StaticText26;
 		wxStaticText* StaticText6;
@@ -174,6 +177,9 @@ class CortexSettings: public wxDialog
 		static const long ID_STATICTEXT30;
 		static const long ID_STATICTEXT31;
 		static const long ID_STATICLINE1;
+		static const long ID_STATICTEXT32;
+		static const long ID_TEXTCTRL33;
+		static const long ID_TEXTCTRL34;
 		//*)
 
 	private:

@@ -205,7 +205,7 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     Choice2->Append(_("General 2 "));
     Choice2->Append(_("General 3"));
     Choice2->Append(_("General 4"));
-    ConfigurationButton = new wxButton(this, ID_BUTTON9, _("Configuration"), wxPoint(808,368), wxSize(99,24), 0, wxDefaultValidator, _T("ID_BUTTON9"));
+    ConfigurationButton = new wxButton(this, ID_BUTTON9, _("Configuration"), wxPoint(808,368), wxSize(104,24), 0, wxDefaultValidator, _T("ID_BUTTON9"));
     LeftButton = new wxButton(this, ID_BUTTON10, _("<"), wxPoint(840,84), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON10"));
     RightButton = new wxButton(this, ID_BUTTON11, _(">"), wxPoint(888,84), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON11"));
     UpButton = new wxButton(this, ID_BUTTON12, _("/\\"), wxPoint(864,56), wxSize(24,29), 0, wxDefaultValidator, _T("ID_BUTTON12"));

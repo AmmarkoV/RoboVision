@@ -245,13 +245,18 @@ int CloseExtraLargeRegister( unsigned int reg_num )
 
 void DefaultSettings()
 {
+
+
     // Initialize all variables used by Visual Cortex
-    settings[INPUT_CALIBRATION]=0; // DEACTIVATED UNTIL FIX :P
+    settings[INPUT_CALIBRATION]=1; // DEACTIVATED UNTIL FIX :P
+    // TEST
     settings[DEPTHMAP_STARTLEFT_X]=15;
     settings[DEPTHMAP_DETAIL]=6;
     settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=30;
     settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=255;
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
+    settings[DEPTHMAP_VERT_SHIFT_UP]=5;
+    settings[DEPTHMAP_VERT_SHIFT_DOWN]=0;
     settings[DEPTHMAP_VERT_OFFSET_UP]=0;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=0;
     settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD]=1000;
@@ -309,7 +314,7 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[CHANGES_LEFT]=0;
     metrics[CHANGES_RIGHT]=0;
     metrics[VERTICAL_BUFFER]=30; //30
-    metrics[HORIZONTAL_BUFFER]=20; //20
+    metrics[HORIZONTAL_BUFFER]=15; //20
     metrics[VERTICAL_BUFFER_LARGE]=75; //75
     metrics[HORIZONTAL_BUFFER_LARGE]=50; //50
     metrics[VERTICAL_BUFFER_EXTRALARGE]=188; // 188

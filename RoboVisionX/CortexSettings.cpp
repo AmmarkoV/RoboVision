@@ -81,6 +81,9 @@ const long CortexSettings::ID_TEXTCTRL32 = wxNewId();
 const long CortexSettings::ID_STATICTEXT30 = wxNewId();
 const long CortexSettings::ID_STATICTEXT31 = wxNewId();
 const long CortexSettings::ID_STATICLINE1 = wxNewId();
+const long CortexSettings::ID_STATICTEXT32 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL33 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL34 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CortexSettings,wxDialog)
@@ -102,14 +105,14 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	CancelButton = new wxButton(this, ID_BUTTON2, _("Cancel"), wxPoint(696,544), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
 	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Start Left Px"), wxPoint(32,112), wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	StartLeft = new wxTextCtrl(this, ID_TEXTCTRL2, _("15"), wxPoint(128,104), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
-	StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Edge Strictness"), wxPoint(240,48), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
-	EdgeStrictness = new wxTextCtrl(this, ID_TEXTCTRL3, _("25"), wxPoint(360,40), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
+	StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Edge Strictness"), wxPoint(240,40), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+	EdgeStrictness = new wxTextCtrl(this, ID_TEXTCTRL3, _("25"), wxPoint(360,34), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
 	DefaultButton = new wxButton(this, ID_BUTTON3, _("Default"), wxPoint(608,544), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
 	StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("Instant Quality (1..15)"), wxPoint(32,80), wxDefaultSize, 0, _T("ID_STATICTEXT4"));
 	InstantQuality = new wxTextCtrl(this, ID_TEXTCTRL4, _("2"), wxPoint(184,72), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
-	StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _("Camera Offset Up/Down"), wxPoint(240,80), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
-	OffsetUp = new wxTextCtrl(this, ID_TEXTCTRL5, _("1"), wxPoint(416,72), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL5"));
-	OffsetDown = new wxTextCtrl(this, ID_TEXTCTRL6, _("1"), wxPoint(448,72), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL6"));
+	StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _("Camera Search Up/Down"), wxPoint(240,72), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+	OffsetUp = new wxTextCtrl(this, ID_TEXTCTRL5, _("1"), wxPoint(416,68), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL5"));
+	OffsetDown = new wxTextCtrl(this, ID_TEXTCTRL6, _("1"), wxPoint(448,68), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL6"));
 	StaticText6 = new wxStaticText(this, ID_STATICTEXT6, _("Comparison Expected/Max Threshold"), wxPoint(40,376), wxDefaultSize, 0, _T("ID_STATICTEXT6"));
 	ComparisonThreshold = new wxTextCtrl(this, ID_TEXTCTRL7, _("15000"), wxPoint(288,232), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
 	StaticText7 = new wxStaticText(this, ID_STATICTEXT7, _("Comparison Min Score"), wxPoint(560,344), wxDefaultSize, 0, _T("ID_STATICTEXT7"));
@@ -152,8 +155,8 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	ImproveUsingHistogram->SetValue(true);
 	DoNotProcessFar = new wxCheckBox(this, ID_CHECKBOX5, _("Do not process closer"), wxPoint(40,320), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX5"));
 	DoNotProcessFar->SetValue(false);
-	EdgeStrictnessHigh = new wxTextCtrl(this, ID_TEXTCTRL21, _("150"), wxPoint(424,40), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL21"));
-	StaticText23 = new wxStaticText(this, ID_STATICTEXT23, _("to"), wxPoint(400,48), wxDefaultSize, 0, _T("ID_STATICTEXT23"));
+	EdgeStrictnessHigh = new wxTextCtrl(this, ID_TEXTCTRL21, _("150"), wxPoint(424,34), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL21"));
+	StaticText23 = new wxStaticText(this, ID_STATICTEXT23, _("to"), wxPoint(400,40), wxDefaultSize, 0, _T("ID_STATICTEXT23"));
 	ComparisonExpectedThreshold = new wxTextCtrl(this, ID_TEXTCTRL22, _("5000"), wxPoint(312,368), wxSize(64,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL22"));
 	StaticText24 = new wxStaticText(this, ID_STATICTEXT24, _("Small Patches"), wxPoint(32,240), wxDefaultSize, 0, _T("ID_STATICTEXT24"));
 	StaticText25 = new wxStaticText(this, ID_STATICTEXT25, _("Medium Patches"), wxPoint(32,205), wxDefaultSize, 0, _T("ID_STATICTEXT25"));
@@ -174,6 +177,9 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	StaticText30 = new wxStaticText(this, ID_STATICTEXT30, _("%"), wxPoint(440,208), wxDefaultSize, 0, _T("ID_STATICTEXT30"));
 	StaticText31 = new wxStaticText(this, ID_STATICTEXT31, _("%"), wxPoint(440,176), wxDefaultSize, 0, _T("ID_STATICTEXT31"));
 	StaticLine1 = new wxStaticLine(this, ID_STATICLINE1, wxPoint(168,160), wxSize(296,0), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
+	StaticText32 = new wxStaticText(this, ID_STATICTEXT32, _("Camera Shift      Up/Down"), wxPoint(240,104), wxDefaultSize, 0, _T("ID_STATICTEXT32"));
+	ShiftUp = new wxTextCtrl(this, ID_TEXTCTRL33, _("0"), wxPoint(416,96), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL33"));
+	ShiftDown = new wxTextCtrl(this, ID_TEXTCTRL34, _("0"), wxPoint(448,96), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL34"));
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnSaveButtonClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnCancelButtonClick);
@@ -214,6 +220,12 @@ void CortexSettings::PullSettingsFromCortex()
 
   val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_VERT_OFFSET_DOWN);
   OffsetDown->SetValue(val);
+
+  val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_VERT_SHIFT_UP);
+  ShiftUp->SetValue(val);
+
+  val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_VERT_SHIFT_DOWN);
+  ShiftDown->SetValue(val);
 
   val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_COMPARISON_THRESHOLD);
   ComparisonThreshold->SetValue(val);
@@ -332,8 +344,10 @@ void CortexSettings::PushSettingsToCortex()
   if(InstantQuality->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_INSTANT_DETAIL,(unsigned int) value); }
 
   if(OffsetUp->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_VERT_OFFSET_UP,(unsigned int) value); }
-
   if(OffsetDown->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_VERT_OFFSET_DOWN,(unsigned int) value); }
+
+  if(ShiftUp->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_VERT_SHIFT_UP,(unsigned int) value); }
+  if(ShiftDown->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_VERT_SHIFT_DOWN,(unsigned int) value); }
 
   if(ComparisonThreshold->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD,(unsigned int) value); }
 

@@ -684,11 +684,21 @@ void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigne
 
 int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned int * M)
 {
+
     /* TODO , For now the full register is returned!*/
        if ( settings[INPUT_CALIBRATION]==0 ) { return CopyRegister(rgb_image,rgb_calibrated); }
     /*The array M is the array calculated from Precalculations.c to speed up things*/
 
     unsigned int ptr=0 , new_ptr = 0, ptr_end = metrics[RESOLUTION_MEMORY_LIMIT_3BYTE] ;
+
+    video_register[rgb_image].pixels[0]=255; // DEBUG KEEP BLACK PIXEL
+    video_register[rgb_image].pixels[1]=0; // DEBUG KEEP BLACK PIXEL
+    video_register[rgb_image].pixels[2]=0; // DEBUG KEEP BLACK PIXEL
+    video_register[rgb_image].pixels[3]=255; // DEBUG KEEP BLACK PIXEL
+    video_register[rgb_image].pixels[4]=0; // DEBUG KEEP BLACK PIXEL
+    video_register[rgb_image].pixels[5]=0; // DEBUG KEEP BLACK PIXEL
+    memset(video_register[rgb_calibrated].pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(unsigned char));
+
     while (ptr < ptr_end)
      {
          new_ptr = M[ptr];

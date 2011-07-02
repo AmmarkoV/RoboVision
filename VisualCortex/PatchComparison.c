@@ -145,7 +145,7 @@ inline unsigned int ComparePatches(       struct ImageRegion * source_block,    
 		image_px1++; image_px2++;
 		rgb_score+= ( precalc_sub[*image_px1] [*image_px2]  );
 		image_px1++; image_px2++;
-		rgb_score = rgb_score / 3;
+		//rgb_score = rgb_score / 3;
 		// BIGER SCORE -> MORE PATCH DIFFERENCE  !
         // ************** RGB COMPARISON **************
 

@@ -24,6 +24,8 @@ enum VisCortxSettings
    DEPTHMAP_EDGE_LOW_STRICTNESS,
    DEPTHMAP_EDGE_HIGH_STRICTNESS,
    DEPTHMAP_INSTANT_DETAIL,
+   DEPTHMAP_VERT_SHIFT_UP,
+   DEPTHMAP_VERT_SHIFT_DOWN,
    DEPTHMAP_VERT_OFFSET_UP,
    DEPTHMAP_VERT_OFFSET_DOWN,
    DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD,
@@ -210,6 +212,7 @@ void VisCortx_CameraParameters(int right_cam,double fx,double fy,double cx,doubl
 unsigned int VisCortx_GetVideoRegisterStats(unsigned int metric_num);
 
 unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata);
+unsigned int VisCortX_ClearVideoRegister(unsigned int input_img_regnum);
 unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum);
 unsigned int VisCortX_CopyFromVideoToVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum);
 unsigned int VisCortX_BitBltVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y);

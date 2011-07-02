@@ -157,6 +157,7 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
                                       unsigned char * has_match
                                      )
 {
+
   *has_match=0;
   uint max_prox_score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED];
   best_match->score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+1;
@@ -170,14 +171,15 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
         { xr_start = left_rgn->x1 - settings[DEPTHMAP_CLOSEST_DEPTH]; }
 
 
-
-  uint yr_lim=left_rgn->y1+settings[DEPTHMAP_VERT_OFFSET_DOWN];
+                                                                 /*SHIFTING LEFT IMAGE UP OR DOWN  TO MAKE UP FOR WRONG PHYSICAL CALIBRATION*/
+  uint yr_lim=left_rgn->y1+settings[DEPTHMAP_VERT_OFFSET_DOWN] + settings[DEPTHMAP_VERT_SHIFT_DOWN];
   uint prox=0;
-
-
-  right_rgn.y1=left_rgn->y1-settings[DEPTHMAP_VERT_OFFSET_UP];
+                                                                /*SHIFTING LEFT IMAGE UP OR DOWN  TO MAKE UP FOR WRONG PHYSICAL CALIBRATION*/
+  right_rgn.y1=left_rgn->y1-settings[DEPTHMAP_VERT_OFFSET_UP] - settings[DEPTHMAP_VERT_SHIFT_UP];
   right_rgn.width=metrics[HORIZONTAL_BUFFER];
   right_rgn.height=metrics[VERTICAL_BUFFER];
+
+
 
       while (right_rgn.y1 <= yr_lim)
        {
@@ -208,7 +210,7 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
 								// CULLING ---------------------------------------
 
 
-                                if (
+                                if  (
                                          (prox < best_match->score) // kanoume qualify san kalytero apotelesma
                                       && (prox < max_prox_score) // to threshold mas
 									  && (depth_act<settings[DEPTHMAP_CLOSEST_DEPTH])  // TEST -> Praktika dedomena deixnoun oti synithws apotelesmata panw apo 100 einai thoryvos!
@@ -266,7 +268,6 @@ void DepthMapFull  ( unsigned int left_view_reg,
     best_match.patch_size_x=(unsigned short) metrics[HORIZONTAL_BUFFER];
 	best_match.patch_size_y=(unsigned short) metrics[VERTICAL_BUFFER];
 
-
 	unsigned int x_vima=metrics[HORIZONTAL_BUFFER] , y_vima=metrics[VERTICAL_BUFFER];
 	if ( settings[DEPTHMAP_DETAIL] <= 0 ) { settings[DEPTHMAP_DETAIL]=1; } // :D , swstos programmatismos!
     x_vima= (unsigned int) (metrics[HORIZONTAL_BUFFER] / settings[DEPTHMAP_DETAIL]);
@@ -280,9 +281,9 @@ void DepthMapFull  ( unsigned int left_view_reg,
     left_rgn.width=metrics[HORIZONTAL_BUFFER];
     left_rgn.height=metrics[VERTICAL_BUFFER]; // These are standard
 
-    left_rgn.y1=1; // Coords on LeftFrame
+    left_rgn.y1=settings[DEPTHMAP_VERT_OFFSET_DOWN]; // Coords on LeftFrame
     uint xl_lim=metrics[RESOLUTION_X]-metrics[HORIZONTAL_BUFFER];
-    uint yl_lim=metrics[RESOLUTION_Y]-metrics[VERTICAL_BUFFER]; // Added 5/3/2010 :) SPEED++ Quality ++
+    uint yl_lim=metrics[RESOLUTION_Y]-metrics[VERTICAL_BUFFER]-settings[DEPTHMAP_VERT_OFFSET_UP]; // Added 5/3/2010 :) SPEED++ Quality ++
 
 
     unsigned char patch_has_match=0;

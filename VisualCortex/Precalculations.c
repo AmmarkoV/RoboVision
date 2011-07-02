@@ -33,7 +33,6 @@ unsigned long precalc_memplace_1byte[641][481];
 
 
 
-
 /*
 
    RectifiedPoint = M * OriginalPoint
@@ -59,7 +58,7 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
 
   if ( ( fx == 0.0) || ( fy == 0.0) || ( (k1==0.0)&&(k2==0.0)&&(k3==0.0) )) { fprintf(stderr,"Erroneous parameters calibration canceled\n"); return 0; }
 
-  unsigned int i,x = metrics[RESOLUTION_X] ,y=metrics[RESOLUTION_Y] , mem , new_mem;
+  unsigned int i,x = metrics[RESOLUTION_X] ,y=metrics[RESOLUTION_Y] , mem , new_mem , interpolation_mem;
   unsigned int undistorted_x,undistorted_y;
 
   mem = 0;
@@ -83,33 +82,50 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
 
             archived at 3dpartylibs/code/undistort_point.cpp
   */
+  unsigned int PrecisionErrors=0;
+  unsigned int OffFrame=0;
+  unsigned int OutOfMemory=0;
+
 
   for (y=0; y<metrics[RESOLUTION_Y]; y++)
   {
+     interpolation_mem=0;
      for (x=0; x<metrics[RESOLUTION_X]; x++)
         {
           //Well this is supposed to rectify lens distortions based on calibration done with my image sets
           //but the values returned are way off ..
-          dstdx = ( x - cx ) * ifx;
-          dstdy = ( y - cy ) * ify;
+          dstdx = ( x - cx );
+          dstdx *=  ifx;
+
+          dstdy = ( y - cy );
+          dstdy *=  ify;
 
           new_x = dstdx;
           new_y = dstdy;
 
           for ( i=0; i<5; i++)
            {
-               r_sq = new_x*new_x + new_y*new_y;
+               r_sq =  new_x*new_x;
+               r_sq += new_y*new_y;
+
                r_cu = r_sq*r_sq;
+
                k_coefficient = 1;
                k_coefficient += k1 * r_sq;
                k_coefficient += k2 * r_cu;
                k_coefficient += k3 * r_cu * r_sq ;
 
-               dx =  2 * p1 * new_x * new_y + p2 * ( r_sq + 2 * new_x * new_x);
-               dy =  2 * p2 * new_x * new_y + p1 * ( r_sq + 2 * new_y * new_y);
+               dx =  2 * p1 * new_x * new_y;
+               dx += p2 * ( r_sq + 2 * new_x * new_x);
 
-               new_x = ( dstdx - dx ) / k_coefficient;
-               new_y = ( dstdy - dy ) / k_coefficient;
+               dy =  2 * p2 * new_x * new_y;
+               dy += p1 * ( r_sq + 2 * new_y * new_y);
+
+               new_x = ( dstdx - dx );
+               new_x /= k_coefficient;
+
+               new_y = ( dstdy - dy );
+               new_y /= k_coefficient;
            }
 
           dstdx = new_x;
@@ -119,21 +135,29 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
           dstdy *= fy; dstdy += cy;
 
 
-          undistorted_x  = (unsigned int) (dstdx);
-          undistorted_y  = (unsigned int) (dstdy);
+          undistorted_x  = (unsigned int) round(dstdx);
+          undistorted_y  = (unsigned int) round(dstdy);
 
 
 
-                   /* REVERSE CHECK ! */
+                   /* REVERSE CHECK ! >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
                    new_x = dstdx - cx; new_x /= fx;
                    new_y = dstdy - cy; new_y /= fy;
 
                    r_sq = new_x*new_x + new_y*new_y;
-                   distx = new_x + new_x*(k1*r_sq + k2*r_sq*r_sq) + (2*p1*new_x*new_y + p2*(r_sq + 2*new_x*new_x));
-                   disty = new_y + new_y*(k1*r_sq + k2*r_sq*r_sq) + (2*p2*new_x*new_y + p1*(r_sq + 2*new_y*new_y));
+                   distx = new_x ;
+                   distx += new_x*(k1*r_sq + k2*r_sq*r_sq);
+                   distx += (2*p1*new_x*new_y + p2*(r_sq + 2*new_x*new_x));
+
+
+                   disty = new_y;
+                   disty +=new_y*(k1*r_sq + k2*r_sq*r_sq);
+                   disty +=(2*p2*new_x*new_y + p1*(r_sq + 2*new_y*new_y));
+
 
                    distx *= fx; distx += cx;
                    disty *= fy; disty += cy;
+                   /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
 
 
@@ -141,21 +165,31 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
       double diffx = x - distx;
       double diffy = y - disty;
 
-         if ((diffx> 0.1) || (diffy>0.1) )
+         if ( (diffx> 0.1) || (diffy>0.1) )
           {
              /* ACCURACY ERROR , This means that we have a percision error in the way math is done*/
-           //  fprintf(stderr,"$%u,%u to %u,%u",x,y,undistorted_x,undistorted_y);
+             //fprintf(stderr,"$%u,%u to %u,%u",x,y,undistorted_x,undistorted_y);
              new_mem = 0;
+                 new_mem=interpolation_mem ; //TEST THIS USESTHE INTERPOLATED TO GET RID OF SOME BLANK SPOT ARTIFACTS
+             ++PrecisionErrors;
           }
 
           if ( ( undistorted_x >= metrics[RESOLUTION_X] ) || ( undistorted_y >= metrics[RESOLUTION_Y] ) )
              {
-               //  fprintf(stderr,"!%u,%u to %u,%u",x,y,undistorted_x,undistorted_y);
+                 // OFF RESULTS SHOULD BE INTERPOLATED WITH CLOSE MEMORY SPOTS
+                 //fprintf(stderr,"!%u,%u to %u,%u",x,y,undistorted_x,undistorted_y);
                  new_mem = 0;
-                 //new_mem = mem;
+                 new_mem=interpolation_mem ; //TEST THIS USESTHE INTERPOLATED TO GET RID OF SOME BLANK SPOT ARTIFACTS
+                 ++OffFrame;
              } else
              {
                 new_mem = undistorted_y * metrics[RESOLUTION_X_3_BYTE] + undistorted_x * 3 ;
+                interpolation_mem = new_mem;
+                if ( new_mem>= metrics[RESOLUTION_MEMORY_LIMIT_3BYTE])
+                 {
+                   new_mem = 0;
+                   ++OutOfMemory;
+                  }
                 //fprintf(stderr,"%u,%u -> %u,%u .. \n",x,y,undistorted_x,undistorted_y);
              }
 
@@ -169,8 +203,12 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
 
           frame [mem] = new_mem;
           ++mem;  ++new_mem;
+
        }
    }
+
+ fprintf(stderr,"PrecalculationErrors - Precision=%u , OffFrame=%u , OutOfMemory=%u\n",PrecisionErrors,OffFrame,OutOfMemory);
+
  return 1;
 
 }

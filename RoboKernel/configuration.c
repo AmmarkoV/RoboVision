@@ -102,8 +102,10 @@ void ParseConfigString(char * inpt)
 
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"CAMERA_OFFSETS",14)==1)
         {
-           VisCortx_SetSetting(DEPTHMAP_VERT_OFFSET_UP,InputParser_GetWordInt(ipc,1));
-           VisCortx_SetSetting(DEPTHMAP_VERT_OFFSET_DOWN,InputParser_GetWordInt(ipc,2));
+           VisCortx_SetSetting(DEPTHMAP_VERT_SHIFT_UP,InputParser_GetWordInt(ipc,1));
+           VisCortx_SetSetting(DEPTHMAP_VERT_SHIFT_DOWN,InputParser_GetWordInt(ipc,2));
+           VisCortx_SetSetting(DEPTHMAP_VERT_OFFSET_UP,InputParser_GetWordInt(ipc,3));
+           VisCortx_SetSetting(DEPTHMAP_VERT_OFFSET_DOWN,InputParser_GetWordInt(ipc,4));
         }
       else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"WEBINTERFACE_DELAY",14)==1)

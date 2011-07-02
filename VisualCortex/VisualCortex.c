@@ -264,7 +264,10 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
  return 1;
 }
 
-
+unsigned int VisCortX_ClearVideoRegister(unsigned int input_img_regnum)
+{
+    return ClearVideoRegister(input_img_regnum);
+}
 
 unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum)
 {

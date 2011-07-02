@@ -188,7 +188,7 @@
 		<object class="wxButton" name="ID_BUTTON9" variable="ConfigurationButton" member="yes">
 			<label>Configuration</label>
 			<pos>808,368</pos>
-			<size>99,24</size>
+			<size>104,24</size>
 			<handler function="OnConfigurationButtonClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxButton" name="ID_BUTTON10" variable="LeftButton" member="yes">
