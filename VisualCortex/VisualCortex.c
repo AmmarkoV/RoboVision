@@ -485,6 +485,7 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
    */
   DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1);
 
+
   VisCortx_OperationUnLockFrames();
 
 }

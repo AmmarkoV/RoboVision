@@ -2,33 +2,33 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="CortexSettings.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="21325" topLine="335" />
+		<Cursor position="21325" topLine="380" />
 	</File>
 	<File name="CortexSettings.h" open="1" top="0" tabpos="7">
 		<Cursor position="254" topLine="0" />
 	</File>
 	<File name="FeedScreenMemory.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="5443" topLine="151" />
+		<Cursor position="5443" topLine="182" />
 	</File>
 	<File name="FeedScreenMemory.h" open="1" top="0" tabpos="5">
 		<Cursor position="649" topLine="0" />
 	</File>
 	<File name="RememberImage.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="2953" topLine="11" />
+		<Cursor position="2953" topLine="34" />
 	</File>
 	<File name="RememberImage.h" open="1" top="0" tabpos="9">
-		<Cursor position="890" topLine="4" />
+		<Cursor position="890" topLine="0" />
 	</File>
-	<File name="RoboVisionXApp.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="648" topLine="0" />
+	<File name="RoboVisionXApp.cpp" open="1" top="1" tabpos="10">
+		<Cursor position="278" topLine="0" />
 	</File>
 	<File name="RoboVisionXApp.h" open="1" top="0" tabpos="3">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="RoboVisionXMain.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="29192" topLine="670" />
+	<File name="RoboVisionXMain.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="29267" topLine="719" />
 	</File>
 	<File name="RoboVisionXMain.h" open="1" top="0" tabpos="2">
-		<Cursor position="1135" topLine="21" />
+		<Cursor position="1135" topLine="4" />
 	</File>
 </CodeBlocks_layout_file>

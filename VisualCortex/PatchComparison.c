@@ -71,6 +71,7 @@ inline unsigned int ComparePatches(       struct ImageRegion * source_block,    
           } //If histograms greatly different fail the test immediately ++SPEED ++ACCURACY
 
 
+    ++metrics[COMPAREPATCH_TOTAL_CALLS];
 
     unsigned int total_score=0,rgb_score=0,move_score=0,sobel_score=0;
 	register unsigned int y=0;
