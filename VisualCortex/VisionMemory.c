@@ -260,19 +260,22 @@ void DefaultSettings()
 
     settings[DEPTHMAP_STARTLEFT_X]=15;
     settings[DEPTHMAP_DETAIL]=6;
-    settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=30;
-    settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=255;
+    settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=40;
+    settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=250;
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_SHIFT_UP]=5;
     settings[DEPTHMAP_VERT_SHIFT_DOWN]=0;
     settings[DEPTHMAP_VERT_OFFSET_UP]=0;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=0;
-    settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD]=1000;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD]=65000; // 27000;//18000; //16000;
-    SetThresholdsForAllPatchSizes();
+    settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD]=500;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD]=30000; // 27000;//18000; //16000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=20000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]=20000;
+    // SetThresholdsForAllPatchSizes();
     settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
 
     settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT]=1; /* <- This actually should always be 1 :P */
+    settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH]=0;
     settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]=1; /* <- This actually should always be 1 :P */
     settings[DEPTHMAP_CLOSEST_DEPTH]=80; // Praktika dedomena deixnoun oti synithws apotelesmata panw apo 80 einai poly konta kai tha prepe na theorountai thoryvos!
     settings[DEPTHMAP_GUESSES]=0;
@@ -321,12 +324,12 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[RESOLUTION_DEPTH]=3;
     metrics[CHANGES_LEFT]=0;
     metrics[CHANGES_RIGHT]=0;
-    metrics[VERTICAL_BUFFER]=30; //30
     metrics[HORIZONTAL_BUFFER]=15; //20
-    metrics[VERTICAL_BUFFER_LARGE]=75; //75
-    metrics[HORIZONTAL_BUFFER_LARGE]=50; //50
-    metrics[VERTICAL_BUFFER_EXTRALARGE]=188; // 188
-    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=125; //125
+    metrics[VERTICAL_BUFFER]=30; //30
+    metrics[HORIZONTAL_BUFFER_LARGE]=25; //50
+    metrics[VERTICAL_BUFFER_LARGE]=45; //75
+    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=40; //125
+    metrics[VERTICAL_BUFFER_EXTRALARGE]=70; // 188
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
 
     DefaultSettings(); //Settings must be set after metrics because they take them into account

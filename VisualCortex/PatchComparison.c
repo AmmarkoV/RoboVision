@@ -37,7 +37,7 @@ inline int ComparePatchesUsingHistogram(int hist_reg_left,int hist_reg_right,uns
    ComparePatches uses compares rgb , sobel , secondderivatives , movement data , from 2 patches to
    compare them , smaller return values mean best matches
 */
-inline unsigned int ComparePatches(       struct ImageRegion * source_block,    struct ImageRegion * target_block,
+inline unsigned int ComparePatchesOLD(       struct ImageRegion * source_block,    struct ImageRegion * target_block,
                                    unsigned char *rgb1,                  unsigned char *rgb2,
                                    unsigned char *sobel1,                unsigned char *sobel2,
                                    unsigned char *secondderiv1,          unsigned char *secondderiv2,
@@ -176,4 +176,138 @@ inline unsigned int ComparePatches(       struct ImageRegion * source_block,    
 	  ++y;
 	}
  return total_score;
+}
+
+
+inline unsigned int AbsDiff(unsigned int num1,unsigned int num2)
+{
+    if (num1>num2 ) { return num1-num2;}
+    return num2-num1;
+}
+
+
+
+inline unsigned int ComparePatches(
+                                   struct ImageRegion * source_block,    struct ImageRegion * target_block,
+                                   unsigned char *rgb1,                  unsigned char *rgb2,
+                                   unsigned char *sobel1,                unsigned char *sobel2,
+                                   unsigned char *secondderiv1,          unsigned char *secondderiv2,
+                                   unsigned char *movement1,             unsigned char *movement2,
+                                   unsigned int width,                   unsigned int height,
+
+                                   unsigned int image_x,unsigned int image_y,
+                                   unsigned int best_result_yet
+                                  )
+{
+    ++metrics[COMPAREPATCH_TOTAL_CALLS];
+
+    unsigned int score_threshold = settings[DEPTHMAP_COMPARISON_THRESHOLD];
+    unsigned int failing_score = score_threshold+1;
+    	//Kovoume ta source ektos eikonas
+	if (source_block->x1+width>=image_x)  { return failing_score; }
+    if (source_block->y1+height>=image_y) { return failing_score; }
+	if (target_block->x1+width>=image_x)  { return failing_score; }
+    if (target_block->y1+height>=image_y) { return failing_score; }
+
+
+    if (ComparePatchesUsingHistogram(HISTOGRAM_COMPRESSED_LEFT,HISTOGRAM_COMPRESSED_RIGHT,&source_block->x1,&source_block->y1,&target_block->x1,&target_block->y1))
+          {
+            ++metrics[HISTOGRAM_DENIES];
+            return failing_score;
+          } //If histograms greatly different fail the test immediately ++SPEED ++ACCURACY
+
+
+    unsigned int patch_size = width*height ;
+    unsigned int total_score = 0;
+
+
+    /*R G B Difference ------------------------------------------------------------------------------------- */
+    struct Histogram hist1;
+    struct Histogram hist2;
+    CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,&hist1,source_block->x1,source_block->y1);
+    CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,&hist2,target_block->x1,target_block->y1);
+    total_score+=precalc_sub[hist1.median_r][hist2.median_r]*patch_size;
+    total_score+=precalc_sub[hist1.median_g][hist2.median_g]*patch_size;
+    total_score+=precalc_sub[hist1.median_b][hist2.median_b]*patch_size;
+    total_score*=settings[DEPTHMAP_RGB_MULTIPLIER];
+    /* ------------------------------------------------------------------------------------------------------ */
+
+
+    /*Movement Difference -------------------------------------------------------------------------- */
+    total_score+=
+    AbsDiff(
+              GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
+              GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
+            )
+            * settings[DEPTHMAP_MOVEMENT_MULTIPLIER];
+    /* ------------------------------------------------------------------------------------------------------ */
+
+
+    /*EDGE Difference ------------------------------------------------------------------------------------- */
+    total_score+=
+    AbsDiff(
+              GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
+              GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
+            )
+            * settings[DEPTHMAP_SOBEL_MULTIPLIER];
+    /* ------------------------------------------------------------------------------------------------------ */
+
+
+    /*Second Derivative Difference -------------------------------------------------------------------------- */
+    total_score+=
+    AbsDiff(
+              GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
+              GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
+            )
+            * settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER];
+    /* ------------------------------------------------------------------------------------------------------ */
+
+
+
+
+
+    return total_score;
+
+
+}
+
+
+
+
+inline unsigned int ComparePatchesSelector(
+                                   struct ImageRegion * source_block,    struct ImageRegion * target_block,
+                                   unsigned char *rgb1,                  unsigned char *rgb2,
+                                   unsigned char *sobel1,                unsigned char *sobel2,
+                                   unsigned char *secondderiv1,          unsigned char *secondderiv2,
+                                   unsigned char *movement1,             unsigned char *movement2,
+                                   unsigned int width,                   unsigned int height,
+
+                                   unsigned int image_x,unsigned int image_y,
+                                   unsigned int best_result_yet
+                                  )
+
+{
+   int use_old_code = 0;
+   if ( use_old_code )
+     {
+          return ComparePatchesOLD(source_block,target_block,
+                                   rgb1,rgb2,
+                                   sobel1,sobel2,
+                                   secondderiv1,secondderiv2,
+                                   movement1,movement2,
+                                   width,height,
+                                   image_x,image_y,
+                                   best_result_yet
+                                  );
+     }
+
+   return ComparePatches(source_block,target_block,
+                                   rgb1,rgb2,
+                                   sobel1,sobel2,
+                                   secondderiv1,secondderiv2,
+                                   movement1,movement2,
+                                   width,height,
+                                   image_x,image_y,
+                                   best_result_yet
+                                  );
 }

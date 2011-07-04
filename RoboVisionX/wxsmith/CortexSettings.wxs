@@ -77,8 +77,8 @@
 			<size>24,27</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText6" member="yes">
-			<label>Comparison Expected/Max Threshold</label>
-			<pos>40,376</pos>
+			<label>Comparison Good Enough Match</label>
+			<pos>48,268</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL7" variable="ComparisonThreshold" member="yes">
 			<value>15000</value>
@@ -96,11 +96,11 @@
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT8" variable="StaticText8" member="yes">
 			<label>Closest Depth Plane</label>
-			<pos>40,296</pos>
+			<pos>40,336</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL9" variable="ClosestDepth" member="yes">
 			<value>90</value>
-			<pos>192,288</pos>
+			<pos>192,328</pos>
 			<size>48,27</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT9" variable="StaticText9" member="yes">
@@ -238,7 +238,7 @@
 		</object>
 		<object class="wxCheckBox" name="ID_CHECKBOX5" variable="DoNotProcessFar" member="yes">
 			<label>Do not process closer</label>
-			<pos>40,320</pos>
+			<pos>40,360</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL21" variable="EdgeStrictnessHigh" member="yes">
 			<value>150</value>
@@ -251,7 +251,7 @@
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL22" variable="ComparisonExpectedThreshold" member="yes">
 			<value>5000</value>
-			<pos>312,368</pos>
+			<pos>288,264</pos>
 			<size>64,27</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT24" variable="StaticText24" member="yes">
@@ -353,6 +353,10 @@
 			<value>0</value>
 			<pos>448,96</pos>
 			<size>24,27</size>
+		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX6" variable="DoNotProcessCloserThanPreviousSizeResult" member="yes">
+			<label>Do not process closer than previous size results</label>
+			<pos>32,296</pos>
 		</object>
 	</object>
 </wxsmith>

@@ -42,6 +42,7 @@ class CortexSettings: public wxDialog
 		wxStaticText* StaticText28;
 		wxTextCtrl* ComparisonThresholdMedium;
 		wxButton* SaveButton;
+		wxCheckBox* DoNotProcessCloserThanPreviousSizeResult;
 		wxTextCtrl* PatchMinB;
 		wxTextCtrl* ComparisonExpectedThreshold;
 		wxTextCtrl* PatchMinG;
@@ -180,6 +181,7 @@ class CortexSettings: public wxDialog
 		static const long ID_STATICTEXT32;
 		static const long ID_TEXTCTRL33;
 		static const long ID_TEXTCTRL34;
+		static const long ID_CHECKBOX6;
 		//*)
 
 	private:

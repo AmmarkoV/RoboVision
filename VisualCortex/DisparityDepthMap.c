@@ -62,14 +62,15 @@ int PrepareForDepthMapping(
         CopyRegister(EDGES_LEFT,GENERAL_3);
         PixelsOverThresholdSetAsOne(GENERAL_3,1);
         CompressRegister(GENERAL_3,GENERAL_XLARGE_1);
+
         CompressRegister(MOVEMENT_LEFT,MOVEMENT_GROUPED_LEFT);
         CompressRegister(MOVEMENT_RIGHT,MOVEMENT_GROUPED_RIGHT);
-/*
+
         CompressRegister(EDGES_LEFT,EDGES_GROUPED_LEFT);
         CompressRegister(EDGES_RIGHT,EDGES_GROUPED_RIGHT);
 
-        CompressRegister(SECOND_DERIVATIVE_LEFT,EDGES_GROUPED_LEFT);
-        CompressRegister(SECOND_DERIVATIVE_RIGHT,EDGES_GROUPED_RIGHT);*/
+        CompressRegister(SECOND_DERIVATIVE_LEFT,SECOND_DERIVATIVE_GROUPED_LEFT);
+        CompressRegister(SECOND_DERIVATIVE_RIGHT,SECOND_DERIVATIVE_GROUPED_RIGHT);
      }
   return 1;
 }
@@ -131,32 +132,6 @@ void PassGuessNextDepthMem(unsigned int prox,unsigned int patch_x,unsigned int p
 
 
 
-/*  $1
-	  if (settings[DEPTHMAP_GUESSES]==1)
-							    { // CODE TO GUESS NEXT BLOCK!
-									 source_rgn.x1=best_match.x1_patch+metrics[HORIZONTAL_BUFFER]; source_rgn.x2=source_rgn.x1+metrics[HORIZONTAL_BUFFER];
-									 target_rgn.x1=best_match.x2_patch+metrics[HORIZONTAL_BUFFER]; target_rgn.x2=target_rgn.x1+metrics[HORIZONTAL_BUFFER];
-									 if ( (source_rgn.x1>image_x) || (source_rgn.x2>image_x) || (target_rgn.x1>image_x) || (target_rgn.x2>image_x) )
-									 {    } // OUT OF MEMORY SPACE NOT GUESSING
-								     else
-								     {
-									  prox = ComparePatches( &source_rgn,&target_rgn,
-                                                             left_view, right_view,
-                                                             video_register[EDGES_LEFT].pixels , video_register[EDGES_RIGHT].pixels,
-                                                             0,
-                                                             metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER],
-                                                             image_x , image_y , best_match.score);
-									  // HEURISTIC GIA NA PETAME KAKES PROVLEPSEIS
-
-									  if ( (best_match.edge_count>edges_required_to_process) && (prox<settings[PATCH_COMPARISON_SCORE_MIN]) && (best_match.score>=prox) )
-                                      // HEURISTIC GIA NA PETAME KAKES PROVLEPSEIS
-									   {
-									     PassGuessNextDepthMem(prox,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER],left_depth,depth_data_array,&best_match,image_x,image_y);
-									   }
-									 }
-								  }	 // CODE TO GUESS NEXT BLOCK!
-
-*/
 
 inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
                                       struct ImageRegion * left_rgn,
@@ -174,6 +149,7 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
 
   uint xr_start = 0;
   uint xr_lim=left_rgn->x1;
+
   if ( ( left_rgn->x1 > settings[DEPTHMAP_CLOSEST_DEPTH] ) && (settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]) )
         { xr_start = left_rgn->x1 - settings[DEPTHMAP_CLOSEST_DEPTH]; }
 
@@ -186,6 +162,18 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
   right_rgn.width=metrics[HORIZONTAL_BUFFER];
   right_rgn.height=metrics[VERTICAL_BUFFER];
 
+  if ( settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH] )
+  {
+      //TODO : THIS COULD BE IMPROVED
+     unsigned int depth_at_point = VisCortx_Get_DepthMapData(1,left_rgn->x1,left_rgn->y1);
+      if ( depth_at_point > 1 )
+       {
+         if (left_rgn->x1-depth_at_point-10>0)
+         {
+            xr_start=left_rgn->x1-depth_at_point-10;
+         }
+       }
+  }
 
 
       while (right_rgn.y1 <= yr_lim)
@@ -193,13 +181,7 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
          right_rgn.x1=xr_lim;
          while (right_rgn.x1 > xr_start)
          {
-                /*
-                   TODO TODO TODO TODO TODO
 
-                   THERE IS ROOM FOR GREAT OPTIMIZATION HERE
-                   BY RE USING CALCULATIONS AND ADDING/SUBTRACTING VERTICAL BLOCKS OF THE PATCH INSTEAD OF
-                   THE WHOLE RECTANGLE EVERY TIME COMPARE PATCHES IS CALLED
-                */
 								prox = ComparePatches( left_rgn , &right_rgn,
                                                        rgb1,rgb2,
                                                        video_register[EDGES_LEFT].pixels , video_register[EDGES_RIGHT].pixels ,
@@ -308,6 +290,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
                                              &left_rgn,
                                              &best_match,
                                              &patch_has_match );
+
              if ( patch_has_match )
                {
                  /* WE FOUND A MATCH */

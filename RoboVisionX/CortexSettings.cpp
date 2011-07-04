@@ -84,6 +84,7 @@ const long CortexSettings::ID_STATICLINE1 = wxNewId();
 const long CortexSettings::ID_STATICTEXT32 = wxNewId();
 const long CortexSettings::ID_TEXTCTRL33 = wxNewId();
 const long CortexSettings::ID_TEXTCTRL34 = wxNewId();
+const long CortexSettings::ID_CHECKBOX6 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CortexSettings,wxDialog)
@@ -113,12 +114,12 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _("Camera Search Up/Down"), wxPoint(240,72), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
 	OffsetUp = new wxTextCtrl(this, ID_TEXTCTRL5, _("1"), wxPoint(416,68), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL5"));
 	OffsetDown = new wxTextCtrl(this, ID_TEXTCTRL6, _("1"), wxPoint(448,68), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL6"));
-	StaticText6 = new wxStaticText(this, ID_STATICTEXT6, _("Comparison Expected/Max Threshold"), wxPoint(40,376), wxDefaultSize, 0, _T("ID_STATICTEXT6"));
+	StaticText6 = new wxStaticText(this, ID_STATICTEXT6, _("Comparison Good Enough Match"), wxPoint(48,268), wxDefaultSize, 0, _T("ID_STATICTEXT6"));
 	ComparisonThreshold = new wxTextCtrl(this, ID_TEXTCTRL7, _("15000"), wxPoint(288,232), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
 	StaticText7 = new wxStaticText(this, ID_STATICTEXT7, _("Comparison Min Score"), wxPoint(560,344), wxDefaultSize, 0, _T("ID_STATICTEXT7"));
 	ComparisonMinScore = new wxTextCtrl(this, ID_TEXTCTRL8, _("30000"), wxPoint(592,368), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
-	StaticText8 = new wxStaticText(this, ID_STATICTEXT8, _("Closest Depth Plane"), wxPoint(40,296), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
-	ClosestDepth = new wxTextCtrl(this, ID_TEXTCTRL9, _("90"), wxPoint(192,288), wxSize(48,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
+	StaticText8 = new wxStaticText(this, ID_STATICTEXT8, _("Closest Depth Plane"), wxPoint(40,336), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
+	ClosestDepth = new wxTextCtrl(this, ID_TEXTCTRL9, _("90"), wxPoint(192,328), wxSize(48,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
 	StaticText9 = new wxStaticText(this, ID_STATICTEXT9, _("Comparison EdgesPerCent Required"), wxPoint(360,448), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
 	PatchesEdgesPerCent = new wxTextCtrl(this, ID_TEXTCTRL10, _("15"), wxPoint(392,232), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL10"));
 	StaticText10 = new wxStaticText(this, ID_STATICTEXT10, _("%"), wxPoint(440,240), wxDefaultSize, 0, _T("ID_STATICTEXT10"));
@@ -153,11 +154,11 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	PatchMinB = new wxTextCtrl(this, ID_TEXTCTRL20, _("18"), wxPoint(632,224), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL20"));
 	ImproveUsingHistogram = new wxCheckBox(this, ID_CHECKBOX4, _("Depth Map Improve Using Histogram"), wxPoint(40,552), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
 	ImproveUsingHistogram->SetValue(true);
-	DoNotProcessFar = new wxCheckBox(this, ID_CHECKBOX5, _("Do not process closer"), wxPoint(40,320), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX5"));
+	DoNotProcessFar = new wxCheckBox(this, ID_CHECKBOX5, _("Do not process closer"), wxPoint(40,360), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX5"));
 	DoNotProcessFar->SetValue(false);
 	EdgeStrictnessHigh = new wxTextCtrl(this, ID_TEXTCTRL21, _("150"), wxPoint(424,34), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL21"));
 	StaticText23 = new wxStaticText(this, ID_STATICTEXT23, _("to"), wxPoint(400,40), wxDefaultSize, 0, _T("ID_STATICTEXT23"));
-	ComparisonExpectedThreshold = new wxTextCtrl(this, ID_TEXTCTRL22, _("5000"), wxPoint(312,368), wxSize(64,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL22"));
+	ComparisonExpectedThreshold = new wxTextCtrl(this, ID_TEXTCTRL22, _("5000"), wxPoint(288,264), wxSize(64,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL22"));
 	StaticText24 = new wxStaticText(this, ID_STATICTEXT24, _("Small Patches"), wxPoint(32,240), wxDefaultSize, 0, _T("ID_STATICTEXT24"));
 	StaticText25 = new wxStaticText(this, ID_STATICTEXT25, _("Medium Patches"), wxPoint(32,205), wxDefaultSize, 0, _T("ID_STATICTEXT25"));
 	StaticText26 = new wxStaticText(this, ID_STATICTEXT26, _("Large Patches"), wxPoint(32,168), wxDefaultSize, 0, _T("ID_STATICTEXT26"));
@@ -180,6 +181,8 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	StaticText32 = new wxStaticText(this, ID_STATICTEXT32, _("Camera Shift      Up/Down"), wxPoint(240,104), wxDefaultSize, 0, _T("ID_STATICTEXT32"));
 	ShiftUp = new wxTextCtrl(this, ID_TEXTCTRL33, _("0"), wxPoint(416,96), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL33"));
 	ShiftDown = new wxTextCtrl(this, ID_TEXTCTRL34, _("0"), wxPoint(448,96), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL34"));
+	DoNotProcessCloserThanPreviousSizeResult = new wxCheckBox(this, ID_CHECKBOX6, _("Do not process closer than previous size results"), wxPoint(32,296), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX6"));
+	DoNotProcessCloserThanPreviousSizeResult->SetValue(false);
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnSaveButtonClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnCancelButtonClick);
@@ -273,6 +276,10 @@ void CortexSettings::PullSettingsFromCortex()
 
   if (VisCortx_GetSetting(DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH)==1) { DoNotProcessFar->SetValue(1); } else
                                                                                              { DoNotProcessFar->SetValue(0); }
+
+  if (VisCortx_GetSetting(DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH)==1) { DoNotProcessCloserThanPreviousSizeResult->SetValue(1); } else
+                                                                                                         { DoNotProcessCloserThanPreviousSizeResult->SetValue(0); }
+
 
  if (VisCortx_GetSetting(DEPTHMAP_GUESSES)==1) { DepthMapGuesses->SetValue(1); } else
                                                { DepthMapGuesses->SetValue(0); }
@@ -379,6 +386,9 @@ void CortexSettings::PushSettingsToCortex()
 
   if ( DoNotProcessFar->IsChecked() ) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH,1); } else
                                       { VisCortx_SetSetting(DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH,0); }
+
+  if ( DoNotProcessCloserThanPreviousSizeResult->IsChecked() ) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH,1); } else
+                                                               { VisCortx_SetSetting(DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH,0); }
 
   if ( DepthMapGuesses->IsChecked() ) { VisCortx_SetSetting(DEPTHMAP_GUESSES,1); } else
                                       { VisCortx_SetSetting(DEPTHMAP_GUESSES,0); }

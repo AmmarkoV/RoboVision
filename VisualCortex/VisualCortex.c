@@ -459,7 +459,7 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
                 CALIBRATED_RIGHT_EYE,
                 DEPTH_LEFT,
                 DEPTH_RIGHT,
-                1
+                0
              );
 
 

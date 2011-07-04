@@ -363,6 +363,11 @@ unsigned int inline GetRegisterPatchSum3Byte(int comp_register, unsigned int x ,
 
 unsigned int inline GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,int height)
 {
+  if ( (comp_register<0) || (comp_register>=EXTRA_LARGE_REGISTERS_COUNT) )
+           {
+              fprintf(stderr,"GetCompressedRegisterPatchSum1Byte called with register %u ( %u  registers exist )",comp_register,EXTRA_LARGE_REGISTERS_COUNT);
+              return 0;
+           }
   if (!MakePatchFitInsideImage(&x,&y,&width,&height)) { return 0; }
 /*
   unsigned int ptr_up_left = metrics[RESOLUTION_X]*y+x;
