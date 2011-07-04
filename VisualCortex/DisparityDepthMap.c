@@ -54,6 +54,7 @@ int PrepareForDepthMapping(
        /* TODO ADD GENERIC HISTOGRAM COMPRESSION  HERE .. ( 3 byte )*/
    }
 
+
     if ( clear_and_calculate == 1 )
      {
         // CompressPresenceRegister(EDGES_LEFT,GENERAL_XLARGE_1,5);
@@ -63,6 +64,12 @@ int PrepareForDepthMapping(
         CompressRegister(GENERAL_3,GENERAL_XLARGE_1);
         CompressRegister(MOVEMENT_LEFT,MOVEMENT_GROUPED_LEFT);
         CompressRegister(MOVEMENT_RIGHT,MOVEMENT_GROUPED_RIGHT);
+/*
+        CompressRegister(EDGES_LEFT,EDGES_GROUPED_LEFT);
+        CompressRegister(EDGES_RIGHT,EDGES_GROUPED_RIGHT);
+
+        CompressRegister(SECOND_DERIVATIVE_LEFT,EDGES_GROUPED_LEFT);
+        CompressRegister(SECOND_DERIVATIVE_RIGHT,EDGES_GROUPED_RIGHT);*/
      }
   return 1;
 }
@@ -202,18 +209,18 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
                                                        metrics[RESOLUTION_X] , metrics[RESOLUTION_Y] ,
                                                        best_match->score);
 
-                                // CULLING ---------------------------------------
+                                // DEPTH ESTIMATION ---------------------------------------
 								 unsigned int depth_act;
 								 if ( left_rgn->x1 > right_rgn.x1 )
 								                          { depth_act=left_rgn->x1 - right_rgn.x1; } else
                                                           { depth_act=right_rgn.x1 - left_rgn->x1; }
-								// CULLING ---------------------------------------
+								// DEPTH ESTIMATION ---------------------------------------
 
 
                                 if  (
                                          (prox < best_match->score) // kanoume qualify san kalytero apotelesma
                                       && (prox < max_prox_score) // to threshold mas
-									  && (depth_act<settings[DEPTHMAP_CLOSEST_DEPTH])  // TEST -> Praktika dedomena deixnoun oti synithws apotelesmata panw apo 100 einai thoryvos!
+									  && (depth_act<settings[DEPTHMAP_CLOSEST_DEPTH])  // CULLING -> Praktika dedomena deixnoun oti synithws apotelesmata panw apo 100 einai thoryvos!
 								    )
 								{
                                     /* THIS IS THE BEST PATCH SO FAR! */

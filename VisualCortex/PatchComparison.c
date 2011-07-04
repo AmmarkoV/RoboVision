@@ -103,6 +103,8 @@ inline unsigned int ComparePatches(       struct ImageRegion * source_block,    
 	while (y<height)
 	{
       //Prepare the pointers of the left/right patch image and the left/right patch sobel
+      rgb_score=0,move_score=0,sobel_score=0,second_deriv_score=0;
+
       image_px1+=incrementation_3byte_step;
       image_px2+=incrementation_3byte_step;
       sobel_px1+=incrementation_1byte_step;
@@ -120,7 +122,7 @@ inline unsigned int ComparePatches(       struct ImageRegion * source_block,    
 
          // ************** SOBEL COMPARISON **************
 		 // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-		 sobel_score=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the sobel difference value
+		 sobel_score+=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the sobel difference value
          if ( sobel_score > 30 ) { sobel_mismatch=1; }
          ++sobel_px1; ++sobel_px2;
          //USE SSD instead of SAD :P sobel_score = sobel_score * sobel_score;
@@ -130,7 +132,7 @@ inline unsigned int ComparePatches(       struct ImageRegion * source_block,    
 
          // ************** SOBEL SECOND DERIVATIVE **************
 		 // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-		 second_deriv_score=precalc_sub[*secondderiv_px1][*secondderiv_px2]; //This holds the sobel difference value
+		 second_deriv_score+=precalc_sub[*secondderiv_px1][*secondderiv_px2]; //This holds the sobel difference value
          ++secondderiv_px1; ++secondderiv_px2;
          //USE SSD instead of SAD :P second_deriv_score = second_deriv_score * second_deriv_score;
          // BIGER SCORE -> MORE PATCH DIFFERENCE  !
@@ -139,7 +141,7 @@ inline unsigned int ComparePatches(       struct ImageRegion * source_block,    
 
         // ************** RGB COMPARISON **************
         // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-        rgb_score= ( precalc_sub[*image_px1] [*image_px2]  );
+        rgb_score+= ( precalc_sub[*image_px1] [*image_px2]  );
 		image_px1++; image_px2++;
 		rgb_score+= ( precalc_sub[*image_px1] [*image_px2]  );
 		image_px1++; image_px2++;
@@ -152,21 +154,25 @@ inline unsigned int ComparePatches(       struct ImageRegion * source_block,    
 
          // ************** MOVEMENT COMPARISON **************
 		 // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-		 move_score=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the move difference value
+		 move_score+=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the move difference value
          if ( move_score > 30 ) { move_mismatch=1; }
          ++move_px1; ++move_px2;
          // BIGER SCORE -> MORE PATCH DIFFERENCE  !
          // ************** MOVEMENT COMPARISON **************
+	  }
 
 
-		total_score+= rgb_score +  move_score + sobel_score + second_deriv_score*35;
+	  total_score+= rgb_score*settings[DEPTHMAP_RGB_MULTIPLIER];
+	  total_score+= move_score*settings[DEPTHMAP_MOVEMENT_MULTIPLIER];
+	  total_score+= sobel_score*settings[DEPTHMAP_SOBEL_MULTIPLIER];
+	  total_score+= second_deriv_score*settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER];
 
         if ( score_threshold<total_score )
           {
              ++metrics[COMPAREPATCH_ALGORITHM_DENIES];
              return total_score; // SPEED CUT :) ++PERFOMANCE  --DEBUGGING :P
           }
-	  }
+
 	  ++y;
 	}
  return total_score;

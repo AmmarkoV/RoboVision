@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="CortexSettings.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="21325" topLine="380" />
+		<Cursor position="22345" topLine="305" />
 	</File>
 	<File name="CortexSettings.h" open="1" top="0" tabpos="7">
 		<Cursor position="254" topLine="0" />
@@ -26,7 +26,7 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="RoboVisionXMain.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="31326" topLine="719" />
+		<Cursor position="31022" topLine="719" />
 	</File>
 	<File name="RoboVisionXMain.h" open="1" top="0" tabpos="2">
 		<Cursor position="1135" topLine="4" />

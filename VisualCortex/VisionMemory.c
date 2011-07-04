@@ -248,8 +248,16 @@ void DefaultSettings()
 
 
     // Initialize all variables used by Visual Cortex
-    settings[INPUT_CALIBRATION]=1; // DEACTIVATED UNTIL FIX :P
+    settings[INPUT_CALIBRATION]=0; // DEACTIVATED UNTIL FIX :P
     // TEST
+
+
+   settings[DEPTHMAP_RGB_MULTIPLIER]=1;
+   settings[DEPTHMAP_MOVEMENT_MULTIPLIER]=1;
+   settings[DEPTHMAP_SOBEL_MULTIPLIER]=1;
+   settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER]=35;
+
+
     settings[DEPTHMAP_STARTLEFT_X]=15;
     settings[DEPTHMAP_DETAIL]=6;
     settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=30;
