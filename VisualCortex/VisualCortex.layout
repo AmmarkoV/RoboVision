@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="DisparityDepthMap.c" open="1" top="1" tabpos="7">
-		<Cursor position="6905" topLine="149" />
+	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
+		<Cursor position="6123" topLine="138" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="588" topLine="0" />
@@ -97,8 +97,8 @@
 	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="23">
 		<Cursor position="293" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="10292" topLine="250" />
+	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
+		<Cursor position="9983" topLine="244" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="3295" topLine="0" />
