@@ -1,0 +1,27 @@
+#V4L2/CTRL/0.0.2
+APP{"v4l2-re-store-ctrls example app"}
+# control data
+#Brightness
+ID{0x00980900};CHK{0:255:1:127}=VAL{127}
+#Contrast
+ID{0x00980901};CHK{0:255:1:127}=VAL{127}
+#Saturation
+ID{0x00980902};CHK{0:255:1:127}=VAL{127}
+#Hue
+ID{0x00980903};CHK{-180:180:1:0}=VAL{0}
+#Red Balance
+ID{0x0098090e};CHK{0:127:1:40}=VAL{40}
+#Blue Balance
+ID{0x0098090f};CHK{0:127:1:40}=VAL{40}
+#Gamma
+ID{0x00980910};CHK{0:255:1:16}=VAL{16}
+#Exposure
+ID{0x00980911};CHK{0:6016:1:51}=VAL{0}
+#Auto Exposure
+ID{0x00980912};CHK{0:1:1:1}=VAL{0}
+#Gain
+ID{0x00980913};CHK{0:28:1:0}=VAL{0}
+#Horizontal Flip
+ID{0x00980914};CHK{0:1:1:0}=VAL{0}
+#Vertical Flip
+ID{0x00980915};CHK{0:1:1:0}=VAL{0}

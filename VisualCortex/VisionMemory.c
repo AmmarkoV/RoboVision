@@ -275,7 +275,7 @@ void DefaultSettings()
     settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
 
     settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT]=1; /* <- This actually should always be 1 :P */
-    settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH]=0;
+    settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH]=1;
     settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]=1; /* <- This actually should always be 1 :P */
     settings[DEPTHMAP_CLOSEST_DEPTH]=80; // Praktika dedomena deixnoun oti synithws apotelesmata panw apo 80 einai poly konta kai tha prepe na theorountai thoryvos!
     settings[DEPTHMAP_GUESSES]=0;

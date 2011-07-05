@@ -168,9 +168,9 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
      unsigned int depth_at_point = VisCortx_Get_DepthMapData(1,left_rgn->x1,left_rgn->y1);
       if ( depth_at_point > 1 )
        {
-         if (left_rgn->x1-depth_at_point-10>0)
+         if (left_rgn->x1-depth_at_point-7>0)
          {
-            xr_start=left_rgn->x1-depth_at_point-10;
+            xr_start=left_rgn->x1-depth_at_point-7;
          }
        }
   }

@@ -114,16 +114,11 @@ void DrawGLScene()
 
 	pthread_mutex_unlock(&gl_backbuf_mutex);
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
-
-	glEnable(GL_TEXTURE_2D);
-
 	glBindTexture(GL_TEXTURE_2D, gl_depth_tex);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, 640, 480, 0, GL_RGB, GL_UNSIGNED_BYTE, depth_front);
 
 	glBegin(GL_TRIANGLE_FAN);
-	glColor4f(255.0f, 255.0f, 255.0f, 255.0f);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glTexCoord2f(0, 0); glVertex3f(0,0,0);
 	glTexCoord2f(1, 0); glVertex3f(640,0,0);
 	glTexCoord2f(1, 1); glVertex3f(640,480,0);
@@ -137,7 +132,7 @@ void DrawGLScene()
 		glTexImage2D(GL_TEXTURE_2D, 0, 1, 640, 480, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, rgb_front+640*4);
 
 	glBegin(GL_TRIANGLE_FAN);
-	glColor4f(255.0f, 255.0f, 255.0f, 255.0f);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glTexCoord2f(0, 0); glVertex3f(640,0,0);
 	glTexCoord2f(1, 0); glVertex3f(1280,0,0);
 	glTexCoord2f(1, 1); glVertex3f(1280,480,0);
@@ -215,6 +210,7 @@ void ReSizeGLScene(int Width, int Height)
 	glLoadIdentity();
 	glOrtho (0, 1280, 480, 0, -1.0f, 1.0f);
 	glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 void InitGL(int Width, int Height)
@@ -222,18 +218,24 @@ void InitGL(int Width, int Height)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClearDepth(1.0);
 	glDepthFunc(GL_LESS);
+    glDepthMask(GL_FALSE);
 	glDisable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
+	glDisable(GL_BLEND);
+    glDisable(GL_ALPHA_TEST);
+    glEnable(GL_TEXTURE_2D);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glShadeModel(GL_SMOOTH);
+	glShadeModel(GL_FLAT);
+
 	glGenTextures(1, &gl_depth_tex);
 	glBindTexture(GL_TEXTURE_2D, gl_depth_tex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 	glGenTextures(1, &gl_rgb_tex);
 	glBindTexture(GL_TEXTURE_2D, gl_rgb_tex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 	ReSizeGLScene(Width, Height);
 }
 
@@ -269,7 +271,7 @@ void depth_cb(freenect_device *dev, void *v_depth, uint32_t timestamp)
 	uint16_t *depth = (uint16_t*)v_depth;
 
 	pthread_mutex_lock(&gl_backbuf_mutex);
-	for (i=0; i<FREENECT_FRAME_PIX; i++) {
+	for (i=0; i<640*480; i++) {
 		int pval = t_gamma[depth[i]];
 		int lb = pval & 0xff;
 		switch (pval>>8) {
@@ -338,8 +340,8 @@ void *freenect_threadfunc(void *arg)
 	freenect_set_led(f_dev,LED_RED);
 	freenect_set_depth_callback(f_dev, depth_cb);
 	freenect_set_video_callback(f_dev, rgb_cb);
-	freenect_set_video_format(f_dev, current_format);
-	freenect_set_depth_format(f_dev, FREENECT_DEPTH_11BIT);
+	freenect_set_video_mode(f_dev, freenect_find_video_mode(FREENECT_RESOLUTION_MEDIUM, current_format));
+	freenect_set_depth_mode(f_dev, freenect_find_depth_mode(FREENECT_RESOLUTION_MEDIUM, FREENECT_DEPTH_11BIT));
 	freenect_set_video_buffer(f_dev, rgb_back);
 
 	freenect_start_depth(f_dev);
@@ -363,7 +365,7 @@ void *freenect_threadfunc(void *arg)
 
 		if (requested_format != current_format) {
 			freenect_stop_video(f_dev);
-			freenect_set_video_format(f_dev, requested_format);
+			freenect_set_video_mode(f_dev, freenect_find_video_mode(FREENECT_RESOLUTION_MEDIUM, requested_format));
 			freenect_start_video(f_dev);
 			current_format = requested_format;
 		}

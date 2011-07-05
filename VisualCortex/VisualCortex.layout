@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="9561" topLine="188" />
+	<File name="DisparityDepthMap.c" open="1" top="1" tabpos="7">
+		<Cursor position="6905" topLine="149" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="588" topLine="0" />
@@ -38,7 +38,7 @@
 		<Cursor position="488" topLine="0" />
 	</File>
 	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
-		<Cursor position="15990" topLine="358" />
+		<Cursor position="11906" topLine="355" />
 	</File>
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
 		<Cursor position="850" topLine="0" />
@@ -50,13 +50,13 @@
 		<Cursor position="240" topLine="0" />
 	</File>
 	<File name="MovementRegistration.c" open="1" top="0" tabpos="9">
-		<Cursor position="1309" topLine="0" />
+		<Cursor position="960" topLine="0" />
 	</File>
 	<File name="MovementRegistration.h" open="1" top="0" tabpos="10">
 		<Cursor position="364" topLine="0" />
 	</File>
-	<File name="PatchComparison.c" open="1" top="1" tabpos="33">
-		<Cursor position="5262" topLine="94" />
+	<File name="PatchComparison.c" open="1" top="0" tabpos="33">
+		<Cursor position="9194" topLine="175" />
 	</File>
 	<File name="PatchComparison.h" open="1" top="0" tabpos="34">
 		<Cursor position="284" topLine="0" />
@@ -74,7 +74,7 @@
 		<Cursor position="726" topLine="0" />
 	</File>
 	<File name="StateSetting.c" open="1" top="0" tabpos="18">
-		<Cursor position="138" topLine="0" />
+		<Cursor position="4741" topLine="101" />
 	</File>
 	<File name="StateSetting.h" open="1" top="0" tabpos="19">
 		<Cursor position="397" topLine="0" />
@@ -98,15 +98,15 @@
 		<Cursor position="293" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="10234" topLine="241" />
+		<Cursor position="10292" topLine="250" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="3295" topLine="0" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="7587" topLine="193" />
+		<Cursor position="16376" topLine="487" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="313" topLine="6" />
+		<Cursor position="988" topLine="11" />
 	</File>
 </CodeBlocks_layout_file>
