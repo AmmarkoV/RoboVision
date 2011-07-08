@@ -49,15 +49,16 @@ unsigned int RegisterMovements(BOOLEAN lefteye,unsigned int last_source_block_re
   {
       last_changes = changes;
 
-      diff=precalc_sub[*ptr] [*lfsptr];
+
+      diff=AbsUCharDiff(ptr,lfsptr);
       if (diff>settings[MOVEMENT_R_THRESHOLD]) { changes+=2; }  else if (diff>settings[MOVEMENT_MIN_R_THRESHOLD]) { changes++; }
       ++ptr; ++lfsptr;
 
-      diff=precalc_sub[*ptr] [*lfsptr];
+      diff=AbsUCharDiff(ptr,lfsptr);
       if (diff>settings[MOVEMENT_G_THRESHOLD]) { changes+=2; }  else if (diff>settings[MOVEMENT_MIN_G_THRESHOLD]) { changes++; }
       ++ptr; ++lfsptr;
 
-      diff=precalc_sub[*ptr] [*lfsptr];
+      diff=AbsUCharDiff(ptr,lfsptr);
       if (diff>settings[MOVEMENT_B_THRESHOLD]) { changes+=2; }  else if (diff>settings[MOVEMENT_MIN_B_THRESHOLD]) { changes++; }
       ++ptr; ++lfsptr;
 

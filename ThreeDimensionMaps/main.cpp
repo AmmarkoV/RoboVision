@@ -145,51 +145,7 @@ static void display(void)
          angle+=20;
        }
 
-/*
-    glPushMatrix();
-     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-         glRotatef( rot, 0.0, 1.0, 0.0 );
-             glTranslated(vx,vy,vz);
 
-        glLineWidth(3.0);
-        glPointSize(3.0);
-        glBegin(GL_QUADS);
-        //glBegin(GL_POINTS);
-         int x,y,memplace=0;
-         for (y=0; y<240; y++)
-         { for (x=0; x<320; x++)
-           {
-            //if ( video_depth[memplace]==0 ) glColor3f(0.0f, 0.0f, 0.0f); else
-                                              glColorRGB(video_color[memplace],video_color[memplace+1],video_color[memplace+2]);
-
-            // ACTUAL VOXEL
-            glVertex3f(x-1,-(y-1),2*video_depth[memplace]);
-            glVertex3f(x+1,-(y-1),2*video_depth[memplace]);
-            glVertex3f(x+1,-(y+1),2*video_depth[memplace]);
-            glVertex3f(x-1,-(y+1),2*video_depth[memplace]);
-
-            // ACTUAL TAIL
-            glVertex3f(x-1,-(y-1),0);
-            glVertex3f(x-1,-(y+1),0);
-            glVertex3f(x+1,-(y-1),2*video_depth[memplace]);
-            glVertex3f(x+1,-(y+1),2*video_depth[memplace]);
-
-            glVertex3f(x-1,-(y-1),2*video_depth[memplace]);
-            glVertex3f(x+1,-(y-1),2*video_depth[memplace]);
-            glVertex3f(x+1,-(y+1),2*video_depth[memplace]);
-            glVertex3f(x-1,-(y+1),2*video_depth[memplace]);
-
-
-            memplace+=3;
-           }
-         }
-        glEnd();
-
-
-
-    glPopMatrix();
-*/
     gluLookAt(vx,vy,vz,  vx,vy-20,vz,   0,1,0);
     glutSwapBuffers();
 }

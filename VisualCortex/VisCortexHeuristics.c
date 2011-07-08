@@ -2,12 +2,22 @@
 #include "Precalculations.h"
 #include "VisionMemory.h"
 
+
+
+inline unsigned char AbsUCharDiffLoc(unsigned char param1,unsigned char param2)
+{
+    if ( param1<param2 ) { return param2-param1; }
+    return param1-param2;
+}
+
+
+
 char PixelsSameColour(unsigned char * rgb_image,unsigned int memplace1,unsigned int memplace2)
 {
   char res=0;
-  if ( precalc_sub [ rgb_image[memplace1] ] [ rgb_image[memplace2] ] < 20 ) ++res;
-  if ( precalc_sub [ rgb_image[memplace1+1] ] [ rgb_image[memplace2+1] ] < 20 ) ++res;
-  if ( precalc_sub [ rgb_image[memplace1+2] ] [ rgb_image[memplace2+2] ] < 20 ) ++res;
+  if ( AbsUCharDiffLoc(rgb_image[memplace1],rgb_image[memplace2]) < 20 ) ++res;
+  if ( AbsUCharDiffLoc(rgb_image[memplace1+1],rgb_image[memplace2+1]) < 20 ) ++res;
+  if ( AbsUCharDiffLoc(rgb_image[memplace1+2],rgb_image[memplace2+2]) < 20 ) ++res;
 
   if ( res == 3 ) res=1; else
                   res=0;
@@ -18,9 +28,9 @@ char PixelsSameColour(unsigned char * rgb_image,unsigned int memplace1,unsigned 
 char PixelIsBright(unsigned char * rgb_image,unsigned int memplace_3_byte)
 {
   char res=0;
-  if ( precalc_sub [ rgb_image[memplace_3_byte] ] [ rgb_image[255] ] < 150 ) ++res;
-  if ( precalc_sub [ rgb_image[memplace_3_byte] ] [ rgb_image[255] ] < 150 ) ++res;
-  if ( precalc_sub [ rgb_image[memplace_3_byte] ] [ rgb_image[255] ] < 150 ) ++res;
+  if ( AbsUCharDiffLoc(rgb_image[memplace_3_byte],rgb_image[255]) < 150 ) ++res;
+  if ( AbsUCharDiffLoc(rgb_image[memplace_3_byte],rgb_image[255]) < 150 ) ++res;
+  if ( AbsUCharDiffLoc(rgb_image[memplace_3_byte],rgb_image[255]) < 150 ) ++res;
 
   if ( res == 3 ) res=1; else
                   res=0;

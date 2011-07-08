@@ -11,6 +11,7 @@ int acquire_width=320,acquire_height=240;
 int width=320,height=240;
 int has_init = 0;
 
+
 int wait_for_cameras_to_init()
 {
         int waittime=0;

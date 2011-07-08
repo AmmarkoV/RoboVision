@@ -18,10 +18,11 @@ inline int ComparePatchesUsingHistogram(int hist_reg_left,int hist_reg_right,uns
     CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,&hist1,*source_x1,*source_y1);
     CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,&hist2,*target_x1,*target_y1);
 
+
     if (
-        (precalc_sub[hist1.median_r][hist2.median_r]>settings[PATCH_HIST_THRESHOLD_R])||
-        (precalc_sub[hist1.median_g][hist2.median_g]>settings[PATCH_HIST_THRESHOLD_G])||
-        (precalc_sub[hist1.median_b][hist2.median_b]>settings[PATCH_HIST_THRESHOLD_B])
+        ( AbsUCharDiff(&hist1.median_r,&hist2.median_r) > settings[PATCH_HIST_THRESHOLD_R])||
+        ( AbsUCharDiff(&hist1.median_g,&hist2.median_g) > settings[PATCH_HIST_THRESHOLD_G])||
+        ( AbsUCharDiff(&hist1.median_b,&hist2.median_b) > settings[PATCH_HIST_THRESHOLD_B])
        )
           {
             ++metrics[HISTOGRAM_DENIES];
@@ -122,7 +123,7 @@ inline unsigned int ComparePatchesOLD(       struct ImageRegion * source_block, 
 
          // ************** SOBEL COMPARISON **************
 		 // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-		 sobel_score+=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the sobel difference value
+		 sobel_score+=AbsUCharDiff(sobel_px1,sobel_px2);
          if ( sobel_score > 30 ) { sobel_mismatch=1; }
          ++sobel_px1; ++sobel_px2;
          //USE SSD instead of SAD :P sobel_score = sobel_score * sobel_score;
@@ -132,7 +133,7 @@ inline unsigned int ComparePatchesOLD(       struct ImageRegion * source_block, 
 
          // ************** SOBEL SECOND DERIVATIVE **************
 		 // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-		 second_deriv_score+=precalc_sub[*secondderiv_px1][*secondderiv_px2]; //This holds the sobel difference value
+		 second_deriv_score+=AbsUCharDiff(secondderiv_px1,secondderiv_px2);
          ++secondderiv_px1; ++secondderiv_px2;
          //USE SSD instead of SAD :P second_deriv_score = second_deriv_score * second_deriv_score;
          // BIGER SCORE -> MORE PATCH DIFFERENCE  !
@@ -141,11 +142,11 @@ inline unsigned int ComparePatchesOLD(       struct ImageRegion * source_block, 
 
         // ************** RGB COMPARISON **************
         // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-        rgb_score+= ( precalc_sub[*image_px1] [*image_px2]  );
+		rgb_score+= ( AbsUCharDiff(image_px1,image_px2)  );
 		image_px1++; image_px2++;
-		rgb_score+= ( precalc_sub[*image_px1] [*image_px2]  );
+		rgb_score+= ( AbsUCharDiff(image_px1,image_px2) );
 		image_px1++; image_px2++;
-		rgb_score+= ( precalc_sub[*image_px1] [*image_px2]  );
+		rgb_score+= ( AbsUCharDiff(image_px1,image_px2) );
 		image_px1++; image_px2++;
 		//rgb_score = rgb_score / 3;
 		// BIGER SCORE -> MORE PATCH DIFFERENCE  !
@@ -154,7 +155,7 @@ inline unsigned int ComparePatchesOLD(       struct ImageRegion * source_block, 
 
          // ************** MOVEMENT COMPARISON **************
 		 // BIGER SCORE -> MORE PATCH DIFFERENCE  !
-		 move_score+=precalc_sub[*sobel_px1][*sobel_px2]; //This holds the move difference value
+		 move_score+= AbsUCharDiff(sobel_px1,sobel_px2);
          if ( move_score > 30 ) { move_mismatch=1; }
          ++move_px1; ++move_px2;
          // BIGER SCORE -> MORE PATCH DIFFERENCE  !
@@ -179,11 +180,6 @@ inline unsigned int ComparePatchesOLD(       struct ImageRegion * source_block, 
 }
 
 
-inline unsigned int AbsDiff(unsigned int num1,unsigned int num2)
-{
-    if (num1>num2 ) { return num1-num2;}
-    return num2-num1;
-}
 
 
 
@@ -226,39 +222,39 @@ inline unsigned int ComparePatches(
     struct Histogram hist2;
     CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,&hist1,source_block->x1,source_block->y1);
     CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,&hist2,target_block->x1,target_block->y1);
-    total_score+=precalc_sub[hist1.median_r][hist2.median_r]*patch_size;
-    total_score+=precalc_sub[hist1.median_g][hist2.median_g]*patch_size;
-    total_score+=precalc_sub[hist1.median_b][hist2.median_b]*patch_size;
+    total_score+=AbsUCharDiff(&hist1.median_r,&hist2.median_r)*patch_size; //precalc_sub[hist1.median_r][hist2.median_r]*patch_size;
+    total_score+=AbsUCharDiff(&hist1.median_g,&hist2.median_g)*patch_size; //precalc_sub[hist1.median_g][hist2.median_g]*patch_size;
+    total_score+=AbsUCharDiff(&hist1.median_b,&hist2.median_b)*patch_size; //precalc_sub[hist1.median_b][hist2.median_b]*patch_size;
     total_score*=settings[DEPTHMAP_RGB_MULTIPLIER];
     /* ------------------------------------------------------------------------------------------------------ */
 
 
     /*Movement Difference -------------------------------------------------------------------------- */
     total_score+=
-    AbsDiff(
-              GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
-              GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
-            )
-            * settings[DEPTHMAP_MOVEMENT_MULTIPLIER];
+    AbsUIntDiff(
+                 GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
+                 GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
+               )
+             * settings[DEPTHMAP_MOVEMENT_MULTIPLIER];
     /* ------------------------------------------------------------------------------------------------------ */
 
 
     /*EDGE Difference ------------------------------------------------------------------------------------- */
     total_score+=
-    AbsDiff(
-              GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
-              GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
-            )
+    AbsUIntDiff(
+                GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
+                GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
+               )
             * settings[DEPTHMAP_SOBEL_MULTIPLIER];
     /* ------------------------------------------------------------------------------------------------------ */
 
 
     /*Second Derivative Difference -------------------------------------------------------------------------- */
     total_score+=
-    AbsDiff(
-              GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
-              GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
-            )
+    AbsUIntDiff(
+                GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
+                GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
+               )
             * settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER];
     /* ------------------------------------------------------------------------------------------------------ */
 

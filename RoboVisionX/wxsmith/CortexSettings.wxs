@@ -77,8 +77,8 @@
 			<size>24,27</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText6" member="yes">
-			<label>Comparison Good Enough Match</label>
-			<pos>48,268</pos>
+			<label> Good Enough Match</label>
+			<pos>32,320</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL7" variable="ComparisonThreshold" member="yes">
 			<value>15000</value>
@@ -96,11 +96,11 @@
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT8" variable="StaticText8" member="yes">
 			<label>Closest Depth Plane</label>
-			<pos>40,336</pos>
+			<pos>40,392</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL9" variable="ClosestDepth" member="yes">
 			<value>90</value>
-			<pos>192,328</pos>
+			<pos>192,388</pos>
 			<size>48,27</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT9" variable="StaticText9" member="yes">
@@ -238,7 +238,7 @@
 		</object>
 		<object class="wxCheckBox" name="ID_CHECKBOX5" variable="DoNotProcessFar" member="yes">
 			<label>Do not process closer</label>
-			<pos>40,360</pos>
+			<pos>40,416</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL21" variable="EdgeStrictnessHigh" member="yes">
 			<value>150</value>
@@ -251,8 +251,8 @@
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL22" variable="ComparisonExpectedThreshold" member="yes">
 			<value>5000</value>
-			<pos>288,264</pos>
-			<size>64,27</size>
+			<pos>192,318</pos>
+			<size>72,27</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT24" variable="StaticText24" member="yes">
 			<label>Small Patches</label>
@@ -356,7 +356,79 @@
 		</object>
 		<object class="wxCheckBox" name="ID_CHECKBOX6" variable="DoNotProcessCloserThanPreviousSizeResult" member="yes">
 			<label>Do not process closer than previous size results</label>
-			<pos>32,296</pos>
+			<pos>32,344</pos>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT33" variable="StaticText33" member="yes">
+			<label>Comparison Weights</label>
+			<pos>32,284</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL35" variable="RGBMultiplier" member="yes">
+			<value>1</value>
+			<pos>192,280</pos>
+			<size>40,27</size>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL36" variable="MoveMultiplier" member="yes">
+			<value>1</value>
+			<pos>240,280</pos>
+			<size>40,27</size>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL37" variable="SobelMultiplier" member="yes">
+			<value>2</value>
+			<pos>288,280</pos>
+			<size>40,27</size>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL38" variable="SecondDerMultiplier" member="yes">
+			<value>35</value>
+			<pos>336,280</pos>
+			<size>40,27</size>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT34" variable="StaticText34" member="yes">
+			<label>RGB</label>
+			<pos>192,264</pos>
+			<font>
+				<size>8</size>
+				<style>normal</style>
+				<weight>normal</weight>
+				<underlined>0</underlined>
+				<family>swiss</family>
+				<face>Sans</face>
+			</font>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT35" variable="StaticText35" member="yes">
+			<label>Move</label>
+			<pos>240,264</pos>
+			<font>
+				<size>8</size>
+				<style>normal</style>
+				<weight>normal</weight>
+				<underlined>0</underlined>
+				<family>swiss</family>
+				<face>Sans</face>
+			</font>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT36" variable="StaticText36" member="yes">
+			<label>1st Der</label>
+			<pos>288,264</pos>
+			<font>
+				<size>8</size>
+				<style>normal</style>
+				<weight>normal</weight>
+				<underlined>0</underlined>
+				<family>swiss</family>
+				<face>Sans</face>
+			</font>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT37" variable="StaticText37" member="yes">
+			<label>2nd Der</label>
+			<pos>336,264</pos>
+			<font>
+				<size>8</size>
+				<style>normal</style>
+				<weight>normal</weight>
+				<underlined>0</underlined>
+				<family>swiss</family>
+				<face>Sans</face>
+			</font>
 		</object>
 	</object>
 </wxsmith>

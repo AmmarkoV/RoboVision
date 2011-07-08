@@ -543,11 +543,11 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
 
 
     ++tick_count;
-    if ( tick_count%20 == 0 )
+    if ( tick_count%2 == 0 )
     {
       if ( Autonomous->IsChecked() )
        {
-        if ( ( VisCortx_GetMetric(CHANGES_LEFT) >3000 ) || ( VisCortx_GetMetric(CHANGES_RIGHT)>3000 ) )
+        if ( ( VisCortx_GetMetric(CHANGES_LEFT) >2000 ) || ( VisCortx_GetMetric(CHANGES_RIGHT)>2000 ) )
         {
 
          wxStopWatch sw2;
@@ -558,19 +558,20 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
          msg.Printf( wxT("Full DepthMap ( %u ms )\n") , sw2.Time() );
          Status->AppendText( msg );
 
-         IssueCommand((char *) "DEPTH MAP TO FILE",0,0,(char *)"GUI");
+         IssueCommand((char *) "DEPTH MAP",0,0,(char *)"GUI");
 
-         if (!lowcpuusage->IsChecked()) {
-
-         IssueCommand((char *) "PLAYSOUND(alarm)",0,0,(char *)"GUI");
-         /* DEMO MOVEMENT*/
-         ++position;
-         if ( position <= 2 ) { IssueCommand((char *) "LEFT",0,0,(char *)"GUI"); } else
-         if ( position <= 4 ) { IssueCommand((char *) "RIGHT",0,0,(char *)"GUI"); } else
-                              {position=0;}
+/*
+         if (!lowcpuusage->IsChecked())
+         {
+          IssueCommand((char *) "PLAYSOUND(alarm)",0,0,(char *)"GUI");
+          // DEMO MOVEMENT
+          ++position;
+          if ( position <= 2 ) { IssueCommand((char *) "LEFT",0,0,(char *)"GUI"); } else
+          if ( position <= 4 ) { IssueCommand((char *) "RIGHT",0,0,(char *)"GUI"); } else
+                               {position=0;}
 
          }
-
+*/
 
         Refresh();
         }

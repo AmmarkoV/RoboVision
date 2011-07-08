@@ -36,6 +36,8 @@ class CortexSettings: public wxDialog
 		wxCheckBox* DepthMapGuesses;
 		wxStaticText* StaticText15;
 		wxTextCtrl* ComparisonThreshold;
+		wxStaticText* StaticText35;
+		wxStaticText* StaticText37;
 		wxTextCtrl* ComparisonThresholdLarge;
 		wxStaticText* StaticText32;
 		wxStaticText* StaticText17;
@@ -50,6 +52,7 @@ class CortexSettings: public wxDialog
 		wxTextCtrl* PatchSizeYMedium;
 		wxStaticText* StaticText18;
 		wxStaticText* StaticText1;
+		wxTextCtrl* SobelMultiplier;
 		wxStaticText* StaticText10;
 		wxTextCtrl* PatchSizeXLarge;
 		wxStaticText* StaticText16;
@@ -67,19 +70,24 @@ class CortexSettings: public wxDialog
 		wxTextCtrl* PatchesEdgesPercentMedium;
 		wxTextCtrl* OffsetUp;
 		wxButton* DefaultButton;
+		wxTextCtrl* RGBMultiplier;
 		wxCheckBox* ImproveUsingHistogram;
 		wxStaticText* StaticText8;
 		wxTextCtrl* Quality;
+		wxStaticText* StaticText34;
 		wxStaticText* StaticText12;
 		wxCheckBox* ImproveEdges;
+		wxTextCtrl* MoveMultiplier;
 		wxTextCtrl* PatchesEdgesPercentLarge;
 		wxStaticBox* StaticBox1;
 		wxStaticText* StaticText7;
 		wxTextCtrl* MaxR;
 		wxTextCtrl* ShiftDown;
 		wxStaticText* StaticText4;
+		wxTextCtrl* SecondDerMultiplier;
 		wxCheckBox* FillHoles;
 		wxStaticText* StaticText5;
+		wxStaticText* StaticText36;
 		wxStaticText* StaticText30;
 		wxStaticText* StaticText2;
 		wxTextCtrl* ShiftUp;
@@ -93,6 +101,7 @@ class CortexSettings: public wxDialog
 		wxTextCtrl* PatchSizeXMedium;
 		wxStaticText* StaticText9;
 		wxTextCtrl* OffsetDown;
+		wxStaticText* StaticText33;
 		wxStaticText* StaticText31;
 		wxTextCtrl* PatchSizeXSmall;
 		wxStaticText* StaticText11;
@@ -182,6 +191,15 @@ class CortexSettings: public wxDialog
 		static const long ID_TEXTCTRL33;
 		static const long ID_TEXTCTRL34;
 		static const long ID_CHECKBOX6;
+		static const long ID_STATICTEXT33;
+		static const long ID_TEXTCTRL35;
+		static const long ID_TEXTCTRL36;
+		static const long ID_TEXTCTRL37;
+		static const long ID_TEXTCTRL38;
+		static const long ID_STATICTEXT34;
+		static const long ID_STATICTEXT35;
+		static const long ID_STATICTEXT36;
+		static const long ID_STATICTEXT37;
 		//*)
 
 	private:

@@ -3,6 +3,8 @@
 
 #include "VisionMemory.h"
 
+inline unsigned char AbsUCharDiff(unsigned char * param1,unsigned char * param2);
+
 inline int ComparePatchesUsingHistogram(int hist_reg_left,int hist_reg_right,unsigned int *source_x1,unsigned int *source_y1,unsigned int *target_x1,unsigned int *target_y1);
 
 inline unsigned int ComparePatches(       struct ImageRegion * source_block,    struct ImageRegion * target_block,

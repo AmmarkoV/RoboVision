@@ -487,7 +487,12 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
     CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
    */
   DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1);
-
+  if (settings[PASS_TO_WORLD_3D])
+   {
+       //(unsigned char *)
+       SaveRegisterToFile("DEPTH0",DEPTH_LEFT_VIDEO);
+       SaveRegisterToFile("COLOR0",CALIBRATED_LEFT_EYE);
+   }
 
   VisCortx_OperationUnLockFrames();
 

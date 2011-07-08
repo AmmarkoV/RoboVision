@@ -2,13 +2,13 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="6123" topLine="138" />
+		<Cursor position="13580" topLine="283" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="588" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
-		<Cursor position="9303" topLine="232" />
+		<Cursor position="9303" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="35">
 		<Cursor position="1276" topLine="0" />
@@ -26,13 +26,13 @@
 		<Cursor position="182" topLine="0" />
 	</File>
 	<File name="FeatureLists.c" open="1" top="0" tabpos="31">
-		<Cursor position="974" topLine="0" />
+		<Cursor position="322" topLine="24" />
 	</File>
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
 		<Cursor position="466" topLine="8" />
 	</File>
-	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
-		<Cursor position="6200" topLine="13" />
+	<File name="FeatureTracking.c" open="1" top="1" tabpos="20">
+		<Cursor position="0" topLine="103" />
 	</File>
 	<File name="FeatureTracking.h" open="1" top="0" tabpos="29">
 		<Cursor position="488" topLine="0" />
@@ -97,16 +97,16 @@
 	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="23">
 		<Cursor position="293" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
-		<Cursor position="9983" topLine="244" />
+	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
+		<Cursor position="10279" topLine="237" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="3295" topLine="0" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="16376" topLine="487" />
+		<Cursor position="16494" topLine="463" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="988" topLine="11" />
+		<Cursor position="316" topLine="11" />
 	</File>
 </CodeBlocks_layout_file>
