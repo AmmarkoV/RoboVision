@@ -2,6 +2,7 @@
 #include "configuration.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "webinterface.h"
 
 // TO SET VIDEO MODE V4L2_PIX_FMT_RGB24
@@ -36,6 +37,8 @@ int InitVisualSystem()
 
     camerasok+=InitVideoFeed(0,video_device_1,acquire_width,acquire_height,24,1,feedsettings);
     camerasok+=InitVideoFeed(1,video_device_2,acquire_width,acquire_height,24,1,feedsettings);
+    usleep(100);
+
     if ( (camerasok==2) )
       {
           if ( !wait_for_cameras_to_init() ) { fprintf(stderr,"CamerasTimed out!!\n"); /*return 0; The rest of the libs must be inited regardless of the failure of the visual system , or else the whole thing will segfault */

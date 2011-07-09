@@ -299,12 +299,9 @@ inline unsigned int ComparePatches(
     unsigned int total_score = 0;
 
     unsigned int half_width = width / 2;
-    unsigned int half_height = width / 2;
-
-    unsigned int x1_mid = source_block->x1 + ( half_width );
-    unsigned int y1_mid = source_block->y1 + ( half_height );
-    unsigned int x2_mid = target_block->x1 + ( half_width );
-    unsigned int y2_mid = target_block->y1 + ( half_height );
+    unsigned int half_height = height / 2;
+    unsigned int quarter_width = half_width / 2;
+    unsigned int quarter_height = half_height / 2;
 
 
     unsigned int rgb_score , movement_score , edge_score , secondderiv_score;
@@ -324,13 +321,13 @@ inline unsigned int ComparePatches(
     /*Movement Difference -------------------------------------------------------------------------- */
     movement_score =
     AbsUIntDiff(
-                 GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_LEFT ,source_block->x1,source_block->y1,half_width,half_height) ,
-                 GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_RIGHT,target_block->x1,target_block->y1,half_width,half_height)
+                 GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
+                 GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
                );
     movement_score +=
     AbsUIntDiff(
-                 GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_LEFT ,x1_mid,source_block->y1,half_width,half_height) ,
-                 GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_RIGHT,x2_mid,target_block->y1,half_width,half_height)
+                 GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_LEFT ,source_block->x1+quarter_width,source_block->y1+quarter_height,half_width,half_height) ,
+                 GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_RIGHT,target_block->x1+quarter_width,target_block->y1+quarter_height,half_width,half_height)
                );
 
     total_score+=   movement_score  * settings[DEPTHMAP_MOVEMENT_MULTIPLIER];
@@ -340,13 +337,13 @@ inline unsigned int ComparePatches(
     /*EDGE Difference ------------------------------------------------------------------------------------- */
     edge_score =
     AbsUIntDiff(
-                GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_LEFT ,source_block->x1,source_block->y1,half_width,half_height) ,
-                GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_RIGHT,target_block->x1,target_block->y1,half_width,half_height)
+                GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
+                GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
                );
     edge_score +=
     AbsUIntDiff(
-                GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_LEFT ,x1_mid,source_block->y1,half_width,half_height) ,
-                GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_RIGHT,x2_mid,target_block->y1,half_width,half_height)
+                GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_LEFT ,source_block->x1+quarter_width,source_block->y1+quarter_height,half_width,half_height) ,
+                GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_RIGHT,target_block->x1+quarter_width,target_block->y1+quarter_height,half_width,half_height)
                );
 
     total_score += edge_score  * settings[DEPTHMAP_SOBEL_MULTIPLIER];
@@ -356,14 +353,14 @@ inline unsigned int ComparePatches(
     /*Second Derivative Difference -------------------------------------------------------------------------- */
     secondderiv_score =
     AbsUIntDiff(
-                GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_LEFT ,source_block->x1,source_block->y1,half_width,half_height) ,
-                GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_RIGHT,target_block->x1,target_block->y1,half_width,half_height)
+                GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
+                GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
                );
 
     secondderiv_score +=
     AbsUIntDiff(
-                GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_LEFT ,x1_mid,source_block->y1,half_width,half_height) ,
-                GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_RIGHT,x2_mid,target_block->y1,half_width,half_height)
+                GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_LEFT ,source_block->x1+quarter_width,source_block->y1+quarter_height,half_width,half_height) ,
+                GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_RIGHT,target_block->x1+quarter_width,target_block->y1+quarter_height,half_width,half_height)
                );
 
     total_score += secondderiv_score * settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER];

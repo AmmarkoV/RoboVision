@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="DisparityDepthMap.c" open="1" top="1" tabpos="7">
-		<Cursor position="2517" topLine="114" />
+	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
+		<Cursor position="13779" topLine="283" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="588" topLine="0" />
@@ -55,8 +55,8 @@
 	<File name="MovementRegistration.h" open="1" top="0" tabpos="10">
 		<Cursor position="364" topLine="0" />
 	</File>
-	<File name="PatchComparison.c" open="1" top="0" tabpos="33">
-		<Cursor position="10162" topLine="189" />
+	<File name="PatchComparison.c" open="1" top="1" tabpos="33">
+		<Cursor position="16159" topLine="334" />
 	</File>
 	<File name="PatchComparison.h" open="1" top="0" tabpos="34">
 		<Cursor position="133" topLine="0" />
@@ -98,15 +98,15 @@
 		<Cursor position="293" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="11145" topLine="258" />
+		<Cursor position="10370" topLine="258" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="3295" topLine="0" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="17577" topLine="448" />
+		<Cursor position="21109" topLine="596" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="316" topLine="11" />
+		<Cursor position="6335" topLine="206" />
 	</File>
 </CodeBlocks_layout_file>
