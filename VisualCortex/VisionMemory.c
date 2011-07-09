@@ -261,7 +261,7 @@ void DefaultSettings()
 
 
     settings[DEPTHMAP_STARTLEFT_X]=15;
-    settings[DEPTHMAP_DETAIL]=6;
+    settings[DEPTHMAP_DETAIL]=5;
     settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=40;
     settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=250;
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
@@ -270,7 +270,7 @@ void DefaultSettings()
     settings[DEPTHMAP_VERT_OFFSET_UP]=0;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=0;
     settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD]=500;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD]=30000; // 27000;//18000; //16000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD]=25000; // 27000;//18000; //16000;
     settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=20000;
     settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]=20000;
     // SetThresholdsForAllPatchSizes();
@@ -292,7 +292,7 @@ void DefaultSettings()
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=20;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=30;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=10;
-    settings[PATCH_HIST_THRESHOLD_R]=12; settings[PATCH_HIST_THRESHOLD_G]=12; settings[PATCH_HIST_THRESHOLD_B]=12;
+    settings[PATCH_HIST_THRESHOLD_R]=10; settings[PATCH_HIST_THRESHOLD_G]=10; settings[PATCH_HIST_THRESHOLD_B]=10;
 
     settings[MAX_FEATURES]=500;
     settings[PATCH_TRACKING_WIDTH]=19;
@@ -328,10 +328,10 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[CHANGES_RIGHT]=0;
     metrics[HORIZONTAL_BUFFER]=15; //20
     metrics[VERTICAL_BUFFER]=30; //30
-    metrics[HORIZONTAL_BUFFER_LARGE]=25; //50
-    metrics[VERTICAL_BUFFER_LARGE]=45; //75
-    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=40; //125
-    metrics[VERTICAL_BUFFER_EXTRALARGE]=70; // 188
+    metrics[HORIZONTAL_BUFFER_LARGE]=20; //50
+    metrics[VERTICAL_BUFFER_LARGE]=40; //75
+    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=25; //125
+    metrics[VERTICAL_BUFFER_EXTRALARGE]=50; // 188
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
 
     DefaultSettings(); //Settings must be set after metrics because they take them into account

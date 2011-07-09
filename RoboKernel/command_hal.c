@@ -34,6 +34,7 @@ enum command_id_consts
   CMD_CLEAR_FEATURES,
   CMD_PLAYSOUND,
   CMD_SAY,
+  CMD_AUTOCALIBRATE,
   CMD_DEPTHMAP,
   CMD_FORWARD,
   CMD_BACKWARD,
@@ -140,6 +141,11 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      case CMD_SAY :
                  sprintf(outptstr,"From %s : Command Parser TTS Saying : %s\n",from,cmds_1);
                  Say(cmds_1);
+     break;
+     case CMD_AUTOCALIBRATE :
+                 sprintf(outptstr,"From %s : Command Parser AutoCalibrating : %u\n",from,cmdi_1);
+                 if ( cmdi_1 == 0 ) { fprintf(stderr,"Setting Vertical shift to 12 , ( 0 has no meaning ) \n"); cmdi_1=12; }
+                 VisCorteX_DisparityMapAutoCalibrate(cmdi_1);
      break;
      case CMD_DEPTHMAP :
                  sprintf(outptstr,"From %s : Command Parser , Performing DepthMap \n",from);
@@ -318,6 +324,7 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"CLEAR FEATURES",14)==1) { chosen_command=CMD_CLEAR_FEATURES; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"PLAYSOUND",9)==1) { chosen_command=CMD_PLAYSOUND; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SAY",3)==1) { chosen_command=CMD_SAY;} else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"AUTO CALIBRATE",14)==1) { chosen_command=CMD_AUTOCALIBRATE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP",9)==1) { chosen_command=CMD_DEPTHMAP; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FORWARD",7)==1) { chosen_command=CMD_FORWARD; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"BACKWARD",8)==1) { chosen_command=CMD_BACKWARD; } else

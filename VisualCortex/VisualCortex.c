@@ -35,7 +35,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.592";
+char * VISCORTEX_VER = "0.594";
 
 /*
 
@@ -407,6 +407,8 @@ int VisCortx_OperationUnLockFrames()
 /*
  ----------------- DEPTH MAPPING FUNCTIONS ----------------------
 */
+
+
 void  VisCortx_FullDepthMap()
 {
   unsigned int edgepercent=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED],patch_x=metrics[HORIZONTAL_BUFFER],patch_y=metrics[VERTICAL_BUFFER];
@@ -490,6 +492,7 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
   if (settings[PASS_TO_WORLD_3D])
    {
        //(unsigned char *)
+       fprintf(stderr,"Registers DEPTH0 and COLOR0 are written to filesystem\n");
        SaveRegisterToFile("DEPTH0",DEPTH_LEFT_VIDEO);
        SaveRegisterToFile("COLOR0",CALIBRATED_LEFT_EYE);
    }
@@ -535,6 +538,67 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
 
 
 
+void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error)
+{
+   //TEST FUNCTION ######################################################################
+   fprintf(stderr,"For now this only works as an heuristic to vertically calibrate LEFT_EYE and RIGHT_EYE\n");
+   fprintf(stderr,"it basically scans for the vertical shift that takes the fewest comparisons to compute..\n");
+
+   if ( max_vertical_error == 0 ) { return ; }
+   unsigned int up_deviation=max_vertical_error , down_deviation=0;
+   unsigned int up_deviation_preset=settings[DEPTHMAP_VERT_SHIFT_UP];
+   unsigned int down_deviation_preset=settings[DEPTHMAP_VERT_SHIFT_DOWN];
+
+   fprintf(stderr,"Vertical Calibration was %u-%u ",settings[DEPTHMAP_VERT_SHIFT_UP],settings[DEPTHMAP_VERT_SHIFT_DOWN]);
+
+
+   unsigned int best_result = metrics[RESOLUTION_X]*metrics[RESOLUTION_X]*metrics[RESOLUTION_Y]+1;
+   signed int vertical_shift = 0;
+
+   settings[DEPTHMAP_VERT_SHIFT_DOWN]=0;
+   while ( up_deviation>0 )
+     {
+         settings[DEPTHMAP_VERT_SHIFT_UP]=up_deviation;
+         VisCortx_FullDepthMap();
+         if ( metrics[COMPAREPATCH_TOTAL_CALLS]<best_result )
+            {
+                best_result=metrics[COMPAREPATCH_TOTAL_CALLS];
+                vertical_shift = up_deviation;
+            }
+         --up_deviation;
+     }
+
+
+   settings[DEPTHMAP_VERT_SHIFT_UP]=0;
+   down_deviation=0;
+   while ( down_deviation<max_vertical_error )
+     {
+         settings[DEPTHMAP_VERT_SHIFT_DOWN]=down_deviation;
+         VisCortx_FullDepthMap();
+         if ( metrics[COMPAREPATCH_TOTAL_CALLS]<best_result )
+            {
+                best_result=metrics[COMPAREPATCH_TOTAL_CALLS];
+                vertical_shift = (-1) * down_deviation;
+            }
+         ++down_deviation;
+     }
+
+
+   if ( best_result == 0 )    {
+                                settings[DEPTHMAP_VERT_SHIFT_UP]=up_deviation_preset;
+                                settings[DEPTHMAP_VERT_SHIFT_DOWN]=down_deviation_preset;
+                              } else
+   if ( vertical_shift >= 0 ) {
+                                settings[DEPTHMAP_VERT_SHIFT_UP] = vertical_shift;
+                                settings[DEPTHMAP_VERT_SHIFT_DOWN] = 0;
+                              } else
+   if ( vertical_shift < 0 )  {
+                                settings[DEPTHMAP_VERT_SHIFT_DOWN] = (-1)*vertical_shift;
+                                settings[DEPTHMAP_VERT_SHIFT_UP] = 0;
+                              }
+   fprintf(stderr," and is now fixed to %u-%u \n",settings[DEPTHMAP_VERT_SHIFT_UP],settings[DEPTHMAP_VERT_SHIFT_DOWN]);
+   //TEST FUNCTION ######################################################################
+}
 
  int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,signed int divisor,unsigned int table_size)
  {

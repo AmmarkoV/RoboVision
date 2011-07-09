@@ -240,6 +240,7 @@ int VisCortx_OperationLockFrames();
 int VisCortx_OperationUnLockFrames();
 
 void  VisCortx_FullDepthMap();
+void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error);
 unsigned int  VisCortx_Get_DepthMapData(unsigned int typeofdata,unsigned int px,unsigned int py);
 unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int x,unsigned int y,unsigned int patch_x,unsigned int patch_y,struct PatchSignature * result);
 
