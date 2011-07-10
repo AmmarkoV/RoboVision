@@ -262,7 +262,7 @@ void DefaultSettings()
 
     settings[DEPTHMAP_STARTLEFT_X]=15;
     settings[DEPTHMAP_DETAIL]=5;
-    settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=40;
+    settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=35;
     settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=250;
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_SHIFT_UP]=5;

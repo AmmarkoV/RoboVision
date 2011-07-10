@@ -67,7 +67,11 @@ inline unsigned short FindNeighborDepth(
       img_ptr_up-=SHIFT_3_BYTE;
       --y_up;
 
-      if ( (precalc_sub[r][rgb_image[img_ptr_up]]>THRESHOLD) || (precalc_sub[g][rgb_image[img_ptr_up+1]]>THRESHOLD) || (precalc_sub[b][rgb_image[img_ptr_up+2]]>THRESHOLD) ) stop_search_up=1; else
+      if (
+           (AbsUCharVDiff(r,rgb_image[img_ptr_up])>THRESHOLD) ||
+           (AbsUCharVDiff(g,rgb_image[img_ptr_up+1])>THRESHOLD) ||
+           (AbsUCharVDiff(b,rgb_image[img_ptr_up+2])>THRESHOLD)
+         ) stop_search_up=1; else
       {
         if (full_depth_map[dpth_ptr_up]!=0) return full_depth_map[dpth_ptr_up];
       }
@@ -81,7 +85,9 @@ inline unsigned short FindNeighborDepth(
       dpth_ptr_down+=SHIFT_1_BYTE;
       img_ptr_down+=SHIFT_3_BYTE;
       ++y_down;
-      if ( (precalc_sub[r][rgb_image[img_ptr_down]]>THRESHOLD) || (precalc_sub[g][rgb_image[img_ptr_down+1]]>THRESHOLD) || (precalc_sub[b][rgb_image[img_ptr_down+2]]>THRESHOLD) ) stop_search_down=1; else
+      if ( (AbsUCharVDiff(r,rgb_image[img_ptr_down])>THRESHOLD) ||
+           (AbsUCharVDiff(g,rgb_image[img_ptr_down+1])>THRESHOLD) ||
+           (AbsUCharVDiff(b,rgb_image[img_ptr_down+2])>THRESHOLD) ) stop_search_down=1; else
       {
         if (full_depth_map[dpth_ptr_down]!=0) return full_depth_map[dpth_ptr_down];
       }

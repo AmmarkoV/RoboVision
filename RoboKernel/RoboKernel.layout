@@ -22,7 +22,7 @@
 	<File name="configuration.h" open="1" top="0" tabpos="10">
 		<Cursor position="390" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="1" tabpos="1">
+	<File name="main.c" open="1" top="0" tabpos="1">
 		<Cursor position="3050" topLine="81" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
@@ -37,8 +37,8 @@
 	<File name="motor_system.h" open="1" top="0" tabpos="16">
 		<Cursor position="68" topLine="0" />
 	</File>
-	<File name="visual_system.c" open="1" top="0" tabpos="5">
-		<Cursor position="276" topLine="0" />
+	<File name="visual_system.c" open="1" top="1" tabpos="5">
+		<Cursor position="109" topLine="0" />
 	</File>
 	<File name="visual_system.h" open="1" top="0" tabpos="6">
 		<Cursor position="175" topLine="0" />

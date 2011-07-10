@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="13779" topLine="283" />
+		<Cursor position="13287" topLine="268" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="588" topLine="0" />
@@ -55,8 +55,8 @@
 	<File name="MovementRegistration.h" open="1" top="0" tabpos="10">
 		<Cursor position="364" topLine="0" />
 	</File>
-	<File name="PatchComparison.c" open="1" top="1" tabpos="33">
-		<Cursor position="16159" topLine="334" />
+	<File name="PatchComparison.c" open="1" top="0" tabpos="33">
+		<Cursor position="19258" topLine="318" />
 	</File>
 	<File name="PatchComparison.h" open="1" top="0" tabpos="34">
 		<Cursor position="133" topLine="0" />

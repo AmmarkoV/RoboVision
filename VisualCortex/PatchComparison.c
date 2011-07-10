@@ -220,9 +220,9 @@ if (target_block->x1+width>=image_x) { return failing_score; }
     struct Histogram hist2;
     CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,&hist1,source_block->x1,source_block->y1);
     CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,&hist2,target_block->x1,target_block->y1);
-    total_score+=AbsUCharDiff(&hist1.median_r,&hist2.median_r)*patch_size; //precalc_sub[hist1.median_r][hist2.median_r]*patch_size;
-    total_score+=AbsUCharDiff(&hist1.median_g,&hist2.median_g)*patch_size; //precalc_sub[hist1.median_g][hist2.median_g]*patch_size;
-    total_score+=AbsUCharDiff(&hist1.median_b,&hist2.median_b)*patch_size; //precalc_sub[hist1.median_b][hist2.median_b]*patch_size;
+    total_score+=AbsUCharDiff(&hist1.median_r,&hist2.median_r)*patch_size;
+    total_score+=AbsUCharDiff(&hist1.median_g,&hist2.median_g)*patch_size;
+    total_score+=AbsUCharDiff(&hist1.median_b,&hist2.median_b)*patch_size;
     total_score*=settings[DEPTHMAP_RGB_MULTIPLIER];
     /* ------------------------------------------------------------------------------------------------------ */
 
@@ -311,9 +311,9 @@ inline unsigned int ComparePatches(
     struct Histogram hist2;
     CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,&hist1,source_block->x1,source_block->y1);
     CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,&hist2,target_block->x1,target_block->y1);
-    rgb_score=AbsUCharDiff(&hist1.median_r,&hist2.median_r)*patch_size; //precalc_sub[hist1.median_r][hist2.median_r]*patch_size;
-    rgb_score+=AbsUCharDiff(&hist1.median_g,&hist2.median_g)*patch_size; //precalc_sub[hist1.median_g][hist2.median_g]*patch_size;
-    rgb_score+=AbsUCharDiff(&hist1.median_b,&hist2.median_b)*patch_size; //precalc_sub[hist1.median_b][hist2.median_b]*patch_size;
+    rgb_score=AbsUCharDiff(&hist1.median_r,&hist2.median_r)*patch_size;
+    rgb_score+=AbsUCharDiff(&hist1.median_g,&hist2.median_g)*patch_size;
+    rgb_score+=AbsUCharDiff(&hist1.median_b,&hist2.median_b)*patch_size;
     total_score= rgb_score * settings[DEPTHMAP_RGB_MULTIPLIER];
     /* ------------------------------------------------------------------------------------------------------ */
 

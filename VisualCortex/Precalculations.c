@@ -25,14 +25,17 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 unsigned int resection_left_precalc[321*241*3];
 unsigned int resection_right_precalc[321*241*3];
 
-unsigned char precalc_med[256][256];
-unsigned char precalc_sub[256][256];
 unsigned int precalc_group_block_belong[641][481];
 unsigned long precalc_memplace_3byte[641][481];
 unsigned long precalc_memplace_1byte[641][481];
 
 
 
+inline unsigned char AbsUCharVDiff(unsigned char param1,unsigned char param2)
+{
+    if ( param1<param2 ) { return param2-param1; }
+    return param1-param2;
+}
 
 inline unsigned char AbsUCharDiff(unsigned char * param1,unsigned char * param2)
 {
@@ -235,15 +238,8 @@ unsigned int RGB(unsigned char R,unsigned char G,unsigned char B)
 
 void TestPrecalculations()
 {
-  int i,z,errors=0;
-  for (i=0; i<=255; i++)
-   { for (z=0; z<=255; z++)
-     {
+  int errors=0;
 
-		 if (precalc_med[i][z] != (short)  ( (i + z) / 2 )) { ++errors; }
-
-	 }
-   }
 
    if (errors>0) { fprintf(stderr,"Precalculation errors\n"); }
 }
@@ -263,18 +259,6 @@ void Precalculations()
       resection_right_precalc[mem]=mem;
    }
 
-  unsigned int div_res;
-  unsigned char i,z;
-  for (i=0; i<255; i++)
-   { for (z=0; z<255; z++)
-     {
-		 if ( z - i > 0 )  { precalc_sub[i][z] = (unsigned char) z - (unsigned char) i  ; } else
-		 if ( i - z > 0  )  { precalc_sub[i][z] = (unsigned char) i - (unsigned char) z  ; } else
-                             { precalc_sub[i][z] = 0 ; }
-		 div_res=(unsigned int)  ( (i + z) / 2 );
-		 precalc_med[i][z] = (unsigned char) div_res;
-	 }
-   }
 
    if ((metrics[HORIZONTAL_BUFFER]==0)||(metrics[VERTICAL_BUFFER]==0)) { fprintf(stderr,"Problematic Group Block Size , may crash me :(  (division by 0) !"); return; }
 

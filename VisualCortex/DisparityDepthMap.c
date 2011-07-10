@@ -48,9 +48,10 @@ int PrepareForDepthMapping(
 
    if (  settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM] == 1 )
    {
+       /*
        GenerateCompressHistogramOfImage(video_register[CALIBRATED_LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
        GenerateCompressHistogramOfImage(video_register[CALIBRATED_RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
-
+       */
        /* TODO ADD GENERIC HISTOGRAM COMPRESSION  HERE .. ( 3 byte )*/
    }
 
@@ -59,6 +60,8 @@ int PrepareForDepthMapping(
      {
         // CompressPresenceRegister(EDGES_LEFT,GENERAL_XLARGE_1,5);
         // I dont like the following , I should really change the sobel function to give a one byte response..!
+
+        /* This is now calculated in every frame
         CopyRegister(EDGES_LEFT,GENERAL_3);
         PixelsOverThresholdSetAsOne(GENERAL_3,1);
         CompressRegister(GENERAL_3,GENERAL_XLARGE_1);
@@ -71,6 +74,7 @@ int PrepareForDepthMapping(
 
         CompressRegister(SECOND_DERIVATIVE_LEFT,SECOND_DERIVATIVE_GROUPED_LEFT);
         CompressRegister(SECOND_DERIVATIVE_RIGHT,SECOND_DERIVATIVE_GROUPED_RIGHT);
+        */
      }
   return 1;
 }

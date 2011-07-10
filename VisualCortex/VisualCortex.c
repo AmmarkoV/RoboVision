@@ -29,6 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "FeatureTracking.h"
 #include "FaceDetection.h"
 #include "StateSetting.h"
+#include "IntegralImageConversion.h"
 #include "LinearAlgebra.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -222,11 +223,20 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
 
        // SECOND PASS NEW IMAGE
        VisCortx_WriteToVideoRegister(LEFT_EYE,size_x,size_y,depth,rgbdata);
-
-       // THIRD PROCESS NEW IMAGE
        CalibrateImage(LEFT_EYE,CALIBRATED_LEFT_EYE,resection_left_precalc);
+
+       // THIRD PROCESS NEW IMAGE  ( COMPRESSION )
        PrepareCleanSobeledGaussianAndDerivative(CALIBRATED_LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
        GenerateCompressHistogramOfImage(video_register[CALIBRATED_LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+
+        CopyRegister(EDGES_LEFT,GENERAL_3);
+        PixelsOverThresholdSetAsOne(GENERAL_3,1);
+        CompressRegister(GENERAL_3,GENERAL_XLARGE_1);
+
+        CompressRegister(MOVEMENT_LEFT,MOVEMENT_GROUPED_LEFT);
+        CompressRegister(EDGES_LEFT,EDGES_GROUPED_LEFT);
+        CompressRegister(SECOND_DERIVATIVE_LEFT,SECOND_DERIVATIVE_GROUPED_LEFT);
+
 
         VisCortx_Movement_Detection(1,0);
         TrackAllPointsOnRegisters(LEFT_EYE,LAST_LEFT_EYE,8000);
@@ -251,16 +261,24 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
 
        // SECOND PASS NEW IMAGE
        VisCortx_WriteToVideoRegister(RIGHT_EYE,size_x,size_y,depth,rgbdata);
-
-       // THIRD PROCESS NEW IMAGE
        CalibrateImage(RIGHT_EYE,CALIBRATED_RIGHT_EYE,resection_right_precalc);
+
+       // THIRD PROCESS NEW IMAGE ( COMPRESSION )
        PrepareCleanSobeledGaussianAndDerivative(CALIBRATED_RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
        GenerateCompressHistogramOfImage(video_register[CALIBRATED_RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+
+        CompressRegister(MOVEMENT_RIGHT,MOVEMENT_GROUPED_RIGHT);
+        CompressRegister(EDGES_RIGHT,EDGES_GROUPED_RIGHT);
+        CompressRegister(SECOND_DERIVATIVE_RIGHT,SECOND_DERIVATIVE_GROUPED_RIGHT);
 
         VisCortx_Movement_Detection(0,1);
         TrackAllPointsOnRegisters(RIGHT_EYE,LAST_RIGHT_EYE,8000);
         video_register[input_img_regnum].lock=0;
     }
+
+
+
+
  return 1;
 }
 
