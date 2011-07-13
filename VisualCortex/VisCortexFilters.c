@@ -672,12 +672,12 @@ void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigne
 {
     GaussianBlurFromSource(rgb_image_reg,target_sobel_image_reg,1);
 	Sobel(target_sobel_image_reg);
+	KillPixelsBetween(target_sobel_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
 
     CopyRegister(rgb_image_reg,GENERAL_3);
     ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
 	SecondDerivativeIntensitiesFromSource(GENERAL_3,target_derivative_image_reg);
 
-	KillPixelsBetween(target_sobel_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
 }
 
 

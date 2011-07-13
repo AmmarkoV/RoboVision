@@ -81,7 +81,7 @@ int PrepareForDepthMapping(
 
 
 
-void inline FillDepthMemWithData(unsigned short * depth_data_raw,struct DepthData * depth_data_full,struct DepthData *depth_data,unsigned int image_x,unsigned int image_y)
+void inline FillDepthMemWithData(unsigned short * depth_data_raw_left,unsigned short * depth_data_raw_right,struct DepthData * depth_data_full,struct DepthData *depth_data,unsigned int image_x,unsigned int image_y)
 {
 
 	 unsigned short far_away=0;
@@ -102,7 +102,8 @@ void inline FillDepthMemWithData(unsigned short * depth_data_raw,struct DepthDat
 
 		while ( ( x<xlim ) && ( x < full_lim) )
 		{
-		    depth_data_raw[x]=far_away;
+		    depth_data_raw_left[x]=far_away;
+		    // TODO depth_data_raw_right
 			depth_data_full[x].depth=depth_data->depth;
             depth_data_full[x].score=depth_data->score;
             depth_data_full[x].edge_count=depth_data->edge_count;
@@ -123,14 +124,14 @@ void inline FillDepthMemWithData(unsigned short * depth_data_raw,struct DepthDat
 }
 
 
-void PassGuessNextDepthMem(unsigned int prox,unsigned int patch_x,unsigned int patch_y,unsigned short * depth_data_raw,struct DepthData * depth_data_full,struct DepthData *depth_data,unsigned int image_x,unsigned int image_y)
+void PassGuessNextDepthMem(unsigned int prox,unsigned int patch_x,unsigned int patch_y,unsigned short * depth_data_raw_left,unsigned short * depth_data_raw_right,struct DepthData * depth_data_full,struct DepthData *depth_data,unsigned int image_x,unsigned int image_y)
 {
 
 		//if (depth_data.x1_patch>image_x) { depth_data.x1_patch=image_x; }
 	    //if (depth_data.x2_patch>image_x) { depth_data.x2_patch=image_x; }
 		//if (depth_data.x2_patch<=depth_data.x1_patch) {depth_data.x1_patch=depth_data.x2_patch-1;}
         depth_data->score=prox;
-        FillDepthMemWithData(depth_data_raw,depth_data_full,depth_data,image_x,image_y);
+        FillDepthMemWithData(depth_data_raw_left,depth_data_raw_right,depth_data_full,depth_data,image_x,image_y);
 }
 
 
@@ -143,7 +144,6 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
                                       unsigned char * has_match
                                      )
 {
-
   *has_match=0;
   uint max_prox_score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED];
   best_match->score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+1;
@@ -166,15 +166,16 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
   right_rgn.width=metrics[HORIZONTAL_BUFFER];
   right_rgn.height=metrics[VERTICAL_BUFFER];
 
+  unsigned int PREVIOUS_PATCH_SIZE_DISTANCE = 10;
   if ( settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH] )
   {
       //TODO : THIS COULD BE IMPROVED
      unsigned int depth_at_point = VisCortx_Get_DepthMapData(1,left_rgn->x1,left_rgn->y1);
       if ( depth_at_point > 1 )
        {
-         if (left_rgn->x1-depth_at_point-7>0)
+         if (left_rgn->x1-depth_at_point-PREVIOUS_PATCH_SIZE_DISTANCE>0)
          {
-            xr_start=left_rgn->x1-depth_at_point-7;
+            xr_start=left_rgn->x1-depth_at_point-PREVIOUS_PATCH_SIZE_DISTANCE;
          }
        }
   }
@@ -299,6 +300,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
                {
                  /* WE FOUND A MATCH */
                  FillDepthMemWithData(l_video_register[left_depth_reg].pixels,
+                                      l_video_register[right_depth_reg].pixels,
                                       depth_data_array,
                                       &best_match,
                                       metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
