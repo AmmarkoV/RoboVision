@@ -72,8 +72,8 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
              source_p+=image_x-x_end; target_p+=image_x-x_end;
              source_p+=x_start; target_p+=x_start;
 
-             ++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
-             ++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
+             //++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
+             //++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
            }
 
          //OLD AddPointToTrackList(cam_num,x,y,0);
@@ -88,8 +88,8 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
              source_p+=image_x-x_end; target_p+=image_x-x_end;
              source_p+=x_start; target_p+=x_start;
 
-             ++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
-             ++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
+             //++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
+             //++y;   source_p+=line_width;   target_p+=line_width; // SKIP A LINE
            }
 
 

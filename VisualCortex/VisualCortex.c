@@ -231,7 +231,7 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
 
         CopyRegister(EDGES_LEFT,GENERAL_3);
         PixelsOverThresholdSetAsOne(GENERAL_3,1);
-        CompressRegister(GENERAL_3,GENERAL_XLARGE_1);
+        CompressRegister(GENERAL_3,EDGES_PRESENCE_GROUPED_LEFT);
 
         CompressRegister(MOVEMENT_LEFT,MOVEMENT_GROUPED_LEFT);
         CompressRegister(EDGES_LEFT,EDGES_GROUPED_LEFT);
@@ -768,7 +768,24 @@ void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,
 
 int SobelNDerivative(int n)
 {
-    return SobelNDegreeDerivative(n,LEFT_EYE,LAST_LEFT_OPERATION);
+    if ( n == 1 ) {
+                    SobelFromSource(LEFT_EYE,LAST_LEFT_OPERATION);
+                    SobelFromSource(RIGHT_EYE,LAST_RIGHT_OPERATION);
+                  } else
+    if ( n == 2 ) {
+                    CopyRegister(LEFT_EYE,GENERAL_3);
+                    ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
+                    SecondDerivativeIntensitiesFromSource(GENERAL_3,LAST_LEFT_OPERATION);
+
+                    CopyRegister(RIGHT_EYE,GENERAL_3);
+                    ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
+                    SecondDerivativeIntensitiesFromSource(GENERAL_3,LAST_RIGHT_OPERATION);
+                  } else
+                  {
+                      fprintf(stderr,"Higher order derivative not implemented\n");
+                      return 0;
+                  }
+    return 1;
 }
 
 /*

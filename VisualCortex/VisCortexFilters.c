@@ -515,17 +515,6 @@ int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int t
     return  ConvolutionFilter9_1Byte(source_reg,target_reg,table,divisor);
 }
 
-int SobelNDegreeDerivative(int n,unsigned int source_reg,unsigned int target_reg)
-{
-    SobelFromSource(source_reg,target_reg);
-    int i=1;
-    while ( i < n )
-     {
-         Sobel(target_reg);
-         ++i;
-     }
-    return 1;
-}
 
 
 

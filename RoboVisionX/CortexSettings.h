@@ -107,6 +107,7 @@ class CortexSettings: public wxDialog
 		wxStaticText* StaticText11;
 		wxStaticText* StaticText25;
 		wxTextCtrl* MaxB;
+		wxCheckBox* DepthMapReverseCheck;
 		wxTextCtrl* PatchSizeYSmall;
 		//*)
 
@@ -200,6 +201,7 @@ class CortexSettings: public wxDialog
 		static const long ID_STATICTEXT35;
 		static const long ID_STATICTEXT36;
 		static const long ID_STATICTEXT37;
+		static const long ID_CHECKBOX7;
 		//*)
 
 	private:

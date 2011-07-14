@@ -58,7 +58,7 @@ int PrepareForDepthMapping(
 
     if ( clear_and_calculate == 1 )
      {
-        // CompressPresenceRegister(EDGES_LEFT,GENERAL_XLARGE_1,5);
+       //CompressPresenceRegister(EDGES_LEFT,GENERAL_XLARGE_1,5); // This must be executed
         // I dont like the following , I should really change the sobel function to give a one byte response..!
 
         /* This is now calculated in every frame
@@ -144,18 +144,20 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
                                       unsigned char * has_match
                                      )
 {
+
   *has_match=0;
   uint max_prox_score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED];
   best_match->score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+1;
 
   struct ImageRegion right_rgn={0};
 
-
   uint xr_start = 0;
   uint xr_lim=left_rgn->x1;
 
-  if ( ( left_rgn->x1 > settings[DEPTHMAP_CLOSEST_DEPTH] ) && (settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]) )
-        { xr_start = left_rgn->x1 - settings[DEPTHMAP_CLOSEST_DEPTH]; }
+  if ( ( left_rgn->x1 > settings[DEPTHMAP_CLOSEST_DEPTH] ) &&
+       (settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH])
+     )
+      { xr_start = left_rgn->x1 - settings[DEPTHMAP_CLOSEST_DEPTH]; }
 
 
                                                                  /*SHIFTING LEFT IMAGE UP OR DOWN  TO MAKE UP FOR WRONG PHYSICAL CALIBRATION*/
@@ -166,11 +168,14 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
   right_rgn.width=metrics[HORIZONTAL_BUFFER];
   right_rgn.height=metrics[VERTICAL_BUFFER];
 
-  unsigned int PREVIOUS_PATCH_SIZE_DISTANCE = 10;
+
+
+
+  uint PREVIOUS_PATCH_SIZE_DISTANCE = 10;
   if ( settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH] )
   {
       //TODO : THIS COULD BE IMPROVED
-     unsigned int depth_at_point = VisCortx_Get_DepthMapData(1,left_rgn->x1,left_rgn->y1);
+     uint depth_at_point = VisCortx_Get_DepthMapData(1,left_rgn->x1,left_rgn->y1);
       if ( depth_at_point > 1 )
        {
          if (left_rgn->x1-depth_at_point-PREVIOUS_PATCH_SIZE_DISTANCE>0)
@@ -197,10 +202,9 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
                                                        best_match->score);
 
                                 // DEPTH ESTIMATION ---------------------------------------
-								 unsigned int depth_act;
-								 if ( left_rgn->x1 > right_rgn.x1 )
-								                          { depth_act=left_rgn->x1 - right_rgn.x1; } else
-                                                          { depth_act=right_rgn.x1 - left_rgn->x1; }
+								 uint depth_act;
+								 if ( left_rgn->x1 > right_rgn.x1 ) { depth_act=left_rgn->x1 - right_rgn.x1; } else
+                                                                    { depth_act=right_rgn.x1 - left_rgn->x1; }
 								// DEPTH ESTIMATION ---------------------------------------
 
 
@@ -225,6 +229,7 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
 
                                    if ( settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD] >= prox )
                                    {
+                                     ++metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS];
                                      *has_match=1;
                                      return ;
                                    }
@@ -236,6 +241,68 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
          }
           ++right_rgn.y1;
        }
+
+
+  /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+  if ( settings[DEPTHMAP_COMPARISON_ALSO_REVERSE_CHECK] )
+   {
+       /*Check from left to right for optimal result , if the two results contradict each other fail matching..!*/
+       struct ImageRegion new_left_rgn={0};
+
+       new_left_rgn.height=left_rgn->height;
+       new_left_rgn.width=left_rgn->width;
+       new_left_rgn.x1=left_rgn->x1;
+       new_left_rgn.y1=left_rgn->y1;
+       right_rgn.x1 = best_match->x2_patch;
+       right_rgn.y1 = best_match->y2_patch;
+
+       //while ( reverse_check_y )
+        while ( ( new_left_rgn.x1 > right_rgn.x1 ) && (new_left_rgn.x1>1) )
+         {
+              // TODO ADD OCCLUSION HANDLING HERE ! AND RIGHT -> LEFT CHECKING HERE !
+             prox = ComparePatches( &new_left_rgn , &right_rgn,
+                                     rgb1,rgb2,
+                                     video_register[EDGES_LEFT].pixels , video_register[EDGES_RIGHT].pixels ,
+                                     video_register[SECOND_DERIVATIVE_LEFT].pixels  , video_register[SECOND_DERIVATIVE_RIGHT].pixels ,
+                                     video_register[MOVEMENT_LEFT].pixels  , video_register[MOVEMENT_RIGHT].pixels ,
+                                     metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER],
+                                     metrics[RESOLUTION_X] , metrics[RESOLUTION_Y] ,
+                                     best_match->score);
+            // DEPTH ESTIMATION ---------------------------------------
+			 uint depth_act;
+			 if ( new_left_rgn.x1 > right_rgn.x1 ) { depth_act=new_left_rgn.x1 - right_rgn.x1; } else
+                                                   { depth_act=right_rgn.x1 - new_left_rgn.x1; }
+            // DEPTH ESTIMATION ---------------------------------------
+            if  (
+                      (prox < best_match->score) // kanoume qualify san kalytero apotelesma
+                   && (prox < max_prox_score) // to threshold mas
+                   && (depth_act<settings[DEPTHMAP_CLOSEST_DEPTH])  // CULLING -> Praktika dedomena deixnoun oti synithws apotelesmata panw apo 100 einai thoryvos!
+                )
+	            	{
+                                    /* THIS IS THE BEST PATCH SO FAR! */
+								    best_match->score=prox;
+                                    best_match->depth=depth_act;
+                                    best_match->x1_patch=new_left_rgn.x1;   // SYNTETAGMENES ARXIS PATCH X STIN EIKONA #1
+                                    best_match->y1_patch=new_left_rgn.y1;   // SYNTETAGMENES ARXIS PATCH Y STIN EIKONA #1
+                                    best_match->x2_patch=right_rgn.x1; // SYNTETAGMENES ARXIS PATCH X STIN EIKONA #2
+                                    best_match->y2_patch=right_rgn.y1;   // SYNTETAGMENES ARXIS PATCH Y STIN EIKONA #2
+                                    best_match->movement_count=0;
+                                    best_match->movement_difference = 0 ;
+                                    /* WE FOUND A MATCH */
+
+                                    ++metrics[COMPAREPATCH_REVERSE_ACCEPTS];
+                                    *has_match=1;
+                    }
+
+           --new_left_rgn.x1;
+         }
+    }
+  /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+
 
   return;
 }
@@ -250,6 +317,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
                     )
 {
     metrics[COMPAREPATCH_TOTAL_CALLS]=0;
+    metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS]=0;
+    metrics[COMPAREPATCH_REVERSE_ACCEPTS]=0;
 
     PrepareForDepthMapping( left_depth_reg , right_depth_reg , clear_and_calculate);
 
@@ -287,7 +356,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
         left_rgn.x1 = settings[DEPTHMAP_STARTLEFT_X];
         while ( left_rgn.x1 < xl_lim )
          {
-           best_match.edge_count = GetCompressedRegisterPatchSum1Byte(GENERAL_XLARGE_1,left_rgn.x1,left_rgn.y1,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+           best_match.edge_count = GetCompressedRegisterPatchSum1Byte(EDGES_PRESENCE_GROUPED_LEFT,left_rgn.x1,left_rgn.y1,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
            if ( best_match.edge_count > edges_required_to_process)
            {
              //IF THIS PATCH ( xl,yl with size metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER] has enough edges process it..
@@ -315,7 +384,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
          left_rgn.y1+=y_vima;
        }
 
-  fprintf(stderr,"Depth Map did a total of %u Patch Comparisons\n",metrics[COMPAREPATCH_TOTAL_CALLS]);
+  fprintf(stderr,"Depth Map did a total of %u Patch Comparisons , %u reverse , %u immediate \n",metrics[COMPAREPATCH_TOTAL_CALLS] , metrics[COMPAREPATCH_REVERSE_ACCEPTS] , metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS]);
 
   if ( settings[DEPTHMAP_IMPROVE_FILLING_HOLES]!=0 )  EnhanceDepthMapFillHoles(video_register[LEFT_EYE].pixels, l_video_register[left_depth_reg].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
   if ( settings[DEPTHMAP_IMPROVE_USING_EDGES]!=0 )  EnhanceDepthMapWithEdges(video_register[LEFT_EYE].pixels, l_video_register[left_depth_reg].pixels,video_register[EDGES_LEFT].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);

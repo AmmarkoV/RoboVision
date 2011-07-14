@@ -311,9 +311,10 @@ inline unsigned int ComparePatches(
     struct Histogram hist2;
     CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,&hist1,source_block->x1,source_block->y1);
     CompressedHistogramPatch(l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,&hist2,target_block->x1,target_block->y1);
-    rgb_score=AbsUCharDiff(&hist1.median_r,&hist2.median_r)*patch_size;
-    rgb_score+=AbsUCharDiff(&hist1.median_g,&hist2.median_g)*patch_size;
-    rgb_score+=AbsUCharDiff(&hist1.median_b,&hist2.median_b)*patch_size;
+    unsigned int patch_size_div_3 = patch_size / 3 ;
+    rgb_score= AbsUCharDiff(&hist1.median_r,&hist2.median_r)*patch_size_div_3;
+    rgb_score+=AbsUCharDiff(&hist1.median_g,&hist2.median_g)*patch_size_div_3;
+    rgb_score+=AbsUCharDiff(&hist1.median_b,&hist2.median_b)*patch_size_div_3;
     total_score= rgb_score * settings[DEPTHMAP_RGB_MULTIPLIER];
     /* ------------------------------------------------------------------------------------------------------ */
 
@@ -325,12 +326,12 @@ inline unsigned int ComparePatches(
                  GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
                );
     movement_score +=
-    AbsUIntDiff(
+    4*AbsUIntDiff(
                  GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_LEFT ,source_block->x1+quarter_width,source_block->y1+quarter_height,half_width,half_height) ,
                  GetCompressedRegisterPatchSum1Byte(MOVEMENT_GROUPED_RIGHT,target_block->x1+quarter_width,target_block->y1+quarter_height,half_width,half_height)
                );
 
-    total_score+=   movement_score  * settings[DEPTHMAP_MOVEMENT_MULTIPLIER];
+    total_score += movement_score  * settings[DEPTHMAP_MOVEMENT_MULTIPLIER];
     /* ------------------------------------------------------------------------------------------------------ */
 
 
@@ -341,7 +342,7 @@ inline unsigned int ComparePatches(
                 GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
                );
     edge_score +=
-    AbsUIntDiff(
+    4*AbsUIntDiff(
                 GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_LEFT ,source_block->x1+quarter_width,source_block->y1+quarter_height,half_width,half_height) ,
                 GetCompressedRegisterPatchSum1Byte(EDGES_GROUPED_RIGHT,target_block->x1+quarter_width,target_block->y1+quarter_height,half_width,half_height)
                );
@@ -356,9 +357,8 @@ inline unsigned int ComparePatches(
                 GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_LEFT ,source_block->x1,source_block->y1,width,height) ,
                 GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_RIGHT,target_block->x1,target_block->y1,width,height)
                );
-
     secondderiv_score +=
-    AbsUIntDiff(
+    4*AbsUIntDiff(
                 GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_LEFT ,source_block->x1+quarter_width,source_block->y1+quarter_height,half_width,half_height) ,
                 GetCompressedRegisterPatchSum1Byte(SECOND_DERIVATIVE_GROUPED_RIGHT,target_block->x1+quarter_width,target_block->y1+quarter_height,half_width,half_height)
                );
@@ -367,11 +367,7 @@ inline unsigned int ComparePatches(
     /* ------------------------------------------------------------------------------------------------------ */
 
 
-
-
-
     return total_score;
-
 
 }
 

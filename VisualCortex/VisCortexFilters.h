@@ -12,7 +12,6 @@ unsigned int inline PixelsOverThresholdSetAsOne(int image_reg,unsigned int thres
 int Sobel(unsigned int image_reg);
 int SobelFromSource(unsigned int source_reg,unsigned int target_reg);
 int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int target_reg);
-int SobelNDegreeDerivative(int n,unsigned int source_reg,unsigned int target_reg);
 void ReducePalette(unsigned int image_reg,int new_palette);
 void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned char R,unsigned char G,unsigned char B,unsigned char threshold);
 void KillPixelsBelow(unsigned int image_reg,int threshold);

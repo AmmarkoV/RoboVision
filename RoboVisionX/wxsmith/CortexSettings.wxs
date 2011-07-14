@@ -96,11 +96,11 @@
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT8" variable="StaticText8" member="yes">
 			<label>Closest Depth Plane</label>
-			<pos>40,392</pos>
+			<pos>40,400</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL9" variable="ClosestDepth" member="yes">
 			<value>90</value>
-			<pos>192,388</pos>
+			<pos>192,392</pos>
 			<size>48,27</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT9" variable="StaticText9" member="yes">
@@ -238,7 +238,7 @@
 		</object>
 		<object class="wxCheckBox" name="ID_CHECKBOX5" variable="DoNotProcessFar" member="yes">
 			<label>Do not process closer</label>
-			<pos>40,416</pos>
+			<pos>40,432</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL21" variable="EdgeStrictnessHigh" member="yes">
 			<value>150</value>
@@ -429,6 +429,10 @@
 				<family>swiss</family>
 				<face>Sans</face>
 			</font>
+		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX7" variable="DepthMapReverseCheck" member="yes">
+			<label>Reverese check patches right to left </label>
+			<pos>32,368</pos>
 		</object>
 	</object>
 </wxsmith>

@@ -254,8 +254,10 @@ void DefaultSettings()
    settings[PASS_TO_WORLD_3D]=0; // FOR NOW ONLY PASSES TO 3D Visualization
 
 
+   settings[DEPTHMAP_COMPARISON_ALSO_REVERSE_CHECK]=1;
+
    settings[DEPTHMAP_RGB_MULTIPLIER]=1;
-   settings[DEPTHMAP_MOVEMENT_MULTIPLIER]=5;
+   settings[DEPTHMAP_MOVEMENT_MULTIPLIER]=10;
    settings[DEPTHMAP_SOBEL_MULTIPLIER]=4;
    settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER]=39;
 
@@ -263,7 +265,7 @@ void DefaultSettings()
     settings[DEPTHMAP_STARTLEFT_X]=15;
     settings[DEPTHMAP_DETAIL]=5;
     settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=45;
-    settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=250;
+    settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=255; // 255
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
     settings[DEPTHMAP_VERT_SHIFT_UP]=5;
     settings[DEPTHMAP_VERT_SHIFT_DOWN]=0;
@@ -271,7 +273,7 @@ void DefaultSettings()
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=0;
     settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD]=500;
     settings[DEPTHMAP_COMPARISON_THRESHOLD]=30000; // 27000;//18000; //16000;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=20000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=30000;
     settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]=20000;
     // SetThresholdsForAllPatchSizes();
     settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
@@ -279,7 +281,7 @@ void DefaultSettings()
     settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT]=1; /* <- This actually should always be 1 :P */
     settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH]=1;
     settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]=1; /* <- This actually should always be 1 :P */
-    settings[DEPTHMAP_CLOSEST_DEPTH]=80; // Praktika dedomena deixnoun oti synithws apotelesmata panw apo 80 einai poly konta kai tha prepe na theorountai thoryvos!
+    settings[DEPTHMAP_CLOSEST_DEPTH]=75; // Praktika dedomena deixnoun oti synithws apotelesmata panw apo 80 einai poly konta kai tha prepe na theorountai thoryvos!
     settings[DEPTHMAP_GUESSES]=0;
     settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM]=1;
     settings[DEPTHMAP_IMPROVE_FILLING_HOLES]=0;
@@ -290,9 +292,9 @@ void DefaultSettings()
     settings[PATCH_COMPARISON_LEVELS]=3; /* It will use 3 different size block levels for comparison */
     settings[PATCH_COMPARISON_SCORE_MIN]=35000;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=20;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=30;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=20;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=10;
-    settings[PATCH_HIST_THRESHOLD_R]=10; settings[PATCH_HIST_THRESHOLD_G]=10; settings[PATCH_HIST_THRESHOLD_B]=10;
+    settings[PATCH_HIST_THRESHOLD_R]=9; settings[PATCH_HIST_THRESHOLD_G]=9; settings[PATCH_HIST_THRESHOLD_B]=9;
 
     settings[MAX_FEATURES]=500;
     settings[PATCH_TRACKING_WIDTH]=19;
@@ -326,11 +328,11 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[RESOLUTION_DEPTH]=3;
     metrics[CHANGES_LEFT]=0;
     metrics[CHANGES_RIGHT]=0;
-    metrics[HORIZONTAL_BUFFER]=15; //20
-    metrics[VERTICAL_BUFFER]=30; //30
+    metrics[HORIZONTAL_BUFFER]=20; //20
+    metrics[VERTICAL_BUFFER]=25; //30
     metrics[HORIZONTAL_BUFFER_LARGE]=20; //50
     metrics[VERTICAL_BUFFER_LARGE]=40; //75
-    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=25; //125
+    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=40; //125
     metrics[VERTICAL_BUFFER_EXTRALARGE]=50; // 188
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
 

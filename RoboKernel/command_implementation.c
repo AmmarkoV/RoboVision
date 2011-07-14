@@ -65,8 +65,6 @@ void ConvolutionFilter(signed char * table,signed int divisor,unsigned int table
 void SobelNDerivative_in(int n)
 {
  SobelNDerivative(n);
- VisCortX_CopyFromVideoToVideoRegister(EDGES_LEFT,LAST_LEFT_OPERATION);
- VisCortX_CopyFromVideoToVideoRegister(EDGES_RIGHT,LAST_RIGHT_OPERATION);
 }
 
 
