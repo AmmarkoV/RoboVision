@@ -6,12 +6,61 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "../3dpartylibs/fast/fast.h"
 
-int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned int target_reg,unsigned int cam_num)
+struct xy_local
+{
+ int x, y;
+};
+
+enum LineDirections
+{
+   LUp = 0 ,
+   LUpLeft,
+   LUpRight,
+
+   LLeft,
+
+   LDownLeft,
+   LDown,
+   LDownRight,
+
+   LRight ,
+
+   TOTAL_LINE_DIRECTIONS
+};
+
+
+int PatchIsACorner(unsigned int x,unsigned int y,unsigned char * edge_mem,unsigned int edge_reg,unsigned int second_deriv_reg)
+{
+    /*
+    unsigned char * ptr = edge_mem;
+    //TODO , THIS COULD ALSO POINT TO THE FAST ALGORITHM
+
+    unsigned int direct_response[TOTAL_LINE_DIRECTIONS]={0};
+
+    if  ( (y>4) && ( x>4 ) && (y<metrics[RESOLUTION_Y]) && ( x<metrics[RESOLUTION_X] ))
+       {
+
+
+
+       }
+
+
+*/
+    return 0;
+}
+
+
+
+
+int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned int second_deriv_reg,unsigned int target_reg,unsigned int cam_num)
 {
   int total_features_added=0;
 
-  if (!ThisIsA1ByteRegister(edge_reg)) { fprintf(stderr,"ExtractFeatures_MyAlgorithm expects 1byte (monochrome) color info"); return 0; }
+  if (!ThisIsA1ByteRegister(edge_reg)) { fprintf(stderr,"ExtractFeatures_MyAlgorithm expects 1byte (monochrome) color info for edge_reg"); return 0; }
+  if (!ThisIsA1ByteRegister(second_deriv_reg)) { fprintf(stderr,"ExtractFeatures_MyAlgorithm expects 1byte (monochrome) color info for second_deriv_reg"); return 0; }
+
   video_register[target_reg].depth=1;
   unsigned int image_x=video_register[edge_reg].size_x;
   unsigned int image_y=video_register[edge_reg].size_y;
@@ -49,9 +98,9 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
 
 
 
- unsigned int INTENSITY_THRESHOLD_LOW = 17;
+ unsigned int INTENSITY_THRESHOLD_LOW = 16;
 
- unsigned int line_width = image_x;
+// unsigned int line_width = image_x;
 // unsigned int skip_step_abs = 40;
 // unsigned int skip_step =  skip_step_abs;
  unsigned int x=x_start,y=y_start;
@@ -77,9 +126,13 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
            }
 
          //OLD AddPointToTrackList(cam_num,x,y,0);
-         AddToFeatureList(video_register[edge_reg].features,x,y,1);
-         ++total_features_added;
-         //if ( total_features_added >= max_features ) { fprintf(stderr,"Cannot add more features .. :) \n"); return 1; }
+
+         if ( PatchIsACorner(x,y,source_p,edge_reg,second_deriv_reg) )
+           {
+             AddToFeatureList(video_register[edge_reg].features,x,y,1);
+             ++total_features_added;
+           }
+
 	   } else
 	   {
          if ( x >= x_end )
@@ -110,16 +163,21 @@ int ExtractFeaturesOpenSURF()
 }
 
 
-int ExtractFeatures(int rgb_reg,unsigned int target_reg,unsigned int max_features,unsigned int cam_num)
+int ExtractFeaturesMy(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_reg,unsigned int target_reg,unsigned int max_features,unsigned int cam_num)
 {
+    /*
     CopyRegister(rgb_reg,GENERAL_2);
     GaussianBlur(GENERAL_2,0);
     ConvertRegisterFrom3ByteTo1Byte(GENERAL_2);
     SecondDerivativeIntensitiesFromSource(GENERAL_2,GENERAL_3);
-    ExtractFeatures_MyAlgorithm(max_features,GENERAL_3,target_reg,cam_num);
+    ExtractFeatures_MyAlgorithm(max_features,GENERAL_3,GENERAL_3,target_reg,cam_num);
     ConvertRegisterFrom1ByteTo3Byte(target_reg);
     CopyFeatureList(video_register[GENERAL_3].features,video_register[rgb_reg].features);
+*/
 
+    ExtractFeatures_MyAlgorithm(max_features,edge_reg,second_deriv_reg,target_reg,cam_num);
+    ConvertRegisterFrom1ByteTo3Byte(target_reg);
+    CopyFeatureList(video_register[edge_reg].features,video_register[rgb_reg].features);
 
 /*
   THIS CODE OUTPUTS SECOND DERIVATIVE TO THE RIGHT OPERATION SCREEN
@@ -129,6 +187,37 @@ int ExtractFeatures(int rgb_reg,unsigned int target_reg,unsigned int max_feature
 
     return 1;
 }
+
+
+
+int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_reg,unsigned int target_reg,unsigned int max_features,unsigned int cam_num)
+{
+   CopyRegister(rgb_reg,GENERAL_2);
+   ConvertRegisterFrom3ByteTo1Byte(GENERAL_2);
+   ClearFeatureList(video_register[rgb_reg].features);
+
+   int numcorners;
+   struct xy_local * corner_list; //(struct xy * )
+   corner_list = (struct xy_local *) fast9_detect_nonmax ( video_register[GENERAL_2].pixels ,
+                                                           metrics[RESOLUTION_X] , metrics[RESOLUTION_Y] ,
+                                                           metrics[RESOLUTION_X] ,
+                                                           30 ,
+                                                           &numcorners );
+
+  int i=0 ;
+  for ( i=0; i < numcorners; i++ )
+    {
+
+         AddToFeatureList(  video_register[rgb_reg].features  ,
+                            corner_list[i].x , corner_list[i].y , 1);
+    }
+
+  free(corner_list);
+
+    fprintf(stderr,"Extract features returns %u corners \n",numcorners);
+    return numcorners;
+}
+
 
 
 

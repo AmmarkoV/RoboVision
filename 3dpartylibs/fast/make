@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "Hand made make script for Fast lib  .."
+echo "Should provide libFast.a"
+echo "Fast is written by Edward Rosten (http://www.edwardrosten.com/work/fast.html ) "
+echo "Compiling files.."
+gcc -Os -O3 -fexpensive-optimizations -c fast.c -o fast.o
+gcc -Os -O3 -fexpensive-optimizations -c fast_9.c -o fast_9.o 
+gcc -Os -O3 -fexpensive-optimizations -c nonmax.c -o nonmax.o
+
+echo "Linking files.."
+ar  rcs libFast.a fast.o fast_9.o nonmax.o
+
+echo "Cleaning compiled object files.."
+rm fast.o fast_9.o nonmax.o
+  
+echo "Done.."
+exit 0

@@ -54,6 +54,7 @@
 			<Add library="../MotorFoundation/Arduino/libRoboVisionSensorLib.a" />
 			<Add library="../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a" />
 			<Add library="../RVKnowledgeBase/libRVKnowledgeBase.a" />
+			<Add library="../3dpartylibs/fast/libFast.a" />
 		</Linker>
 		<Unit filename="CortexSettings.cpp" />
 		<Unit filename="CortexSettings.h" />

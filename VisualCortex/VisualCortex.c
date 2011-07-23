@@ -239,7 +239,7 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
 
 
         VisCortx_Movement_Detection(1,0);
-        TrackAllPointsOnRegisters(LEFT_EYE,LAST_LEFT_EYE,8000);
+        TrackAllPointsOnRegisters(CALIBRATED_LEFT_EYE,LAST_LEFT_EYE,8000);
 
        video_register[input_img_regnum].lock=0;
     } else
@@ -272,7 +272,7 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
         CompressRegister(SECOND_DERIVATIVE_RIGHT,SECOND_DERIVATIVE_GROUPED_RIGHT);
 
         VisCortx_Movement_Detection(0,1);
-        TrackAllPointsOnRegisters(RIGHT_EYE,LAST_RIGHT_EYE,8000);
+        TrackAllPointsOnRegisters(CALIBRATED_RIGHT_EYE,LAST_RIGHT_EYE,8000);
         video_register[input_img_regnum].lock=0;
     }
 
@@ -665,36 +665,36 @@ int VisCortxGetFundamentalMatrix(float * table,int size_of_table)
 
 unsigned int  VisCortx_GetTrackedPoints(unsigned int cam)
 {
-   if (cam==0) { GetFeatureData(video_register[LEFT_EYE].features,0,TOTAL_POINTS); } else
-   if (cam==1) { GetFeatureData(video_register[RIGHT_EYE].features,0,TOTAL_POINTS); }
+   if (cam==0) { GetFeatureData(video_register[CALIBRATED_LEFT_EYE].features,0,TOTAL_POINTS); } else
+   if (cam==1) { GetFeatureData(video_register[CALIBRATED_RIGHT_EYE].features,0,TOTAL_POINTS); }
   return 0;
 }
 
 void  VisCortx_AddTrackPoint(unsigned int cam,unsigned int x,unsigned int y,unsigned int group)
 {
   fprintf(stderr,"VisCortx_AddTrackPoint %u %u,%u : %u\n",cam,x,y,group);
-   if (cam==0) { AddToFeatureList(video_register[LEFT_EYE].features,x,y,1); } else
-   if (cam==1) { AddToFeatureList(video_register[RIGHT_EYE].features,x,y,1); }
+   if (cam==0) { AddToFeatureList(video_register[CALIBRATED_LEFT_EYE].features,x,y,1); } else
+   if (cam==1) { AddToFeatureList(video_register[CALIBRATED_RIGHT_EYE].features,x,y,1); }
 }
 
 void VisCortxClearTrackPoints(unsigned int cam)
 {
-   if (cam==0) { ClearFeatureList(video_register[LEFT_EYE].features); } else
-   if (cam==1) { ClearFeatureList(video_register[RIGHT_EYE].features); }
+   if (cam==0) { ClearFeatureList(video_register[CALIBRATED_LEFT_EYE].features); } else
+   if (cam==1) { ClearFeatureList(video_register[CALIBRATED_RIGHT_EYE].features); }
 }
 
 void  VisCortx_AutoAddTrackPoints(unsigned int cam)
 {
  if (cam==0)
   {
-      CopyFeatureList(video_register[LEFT_EYE].features,video_register[LAST_LEFT_EYE].features);
-      ExtractFeatures(LEFT_EYE,LAST_LEFT_OPERATION,200,0);
+      CopyFeatureList(video_register[CALIBRATED_LEFT_EYE].features,video_register[LAST_LEFT_EYE].features);
+      ExtractFeatures(CALIBRATED_LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,LAST_LEFT_OPERATION,200,0);
       //ExtractFeatures(100,video_register[EDGES_LEFT].pixels,video_register[GENERAL_1].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],0);
   } else
   if (cam==1)
   {
-      CopyFeatureList(video_register[RIGHT_EYE].features,video_register[LAST_RIGHT_EYE].features);
-      ExtractFeatures(RIGHT_EYE,LAST_RIGHT_OPERATION,200,1);
+      CopyFeatureList(video_register[CALIBRATED_RIGHT_EYE].features,video_register[LAST_RIGHT_EYE].features);
+      ExtractFeatures(CALIBRATED_RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,LAST_RIGHT_OPERATION,200,1);
   }
 
  fprintf(stderr,"VisCortx_AutoAddTrackPoints ok\n");
@@ -769,17 +769,21 @@ void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,
 int SobelNDerivative(int n)
 {
     if ( n == 1 ) {
-                    SobelFromSource(LEFT_EYE,LAST_LEFT_OPERATION);
-                    SobelFromSource(RIGHT_EYE,LAST_RIGHT_OPERATION);
+                    SobelFromSource(CALIBRATED_LEFT_EYE,LAST_LEFT_OPERATION);
+                    ConvertRegisterFrom1ByteTo3Byte(LAST_LEFT_OPERATION);
+                    SobelFromSource(CALIBRATED_RIGHT_EYE,LAST_RIGHT_OPERATION);
+                    ConvertRegisterFrom1ByteTo3Byte(LAST_RIGHT_OPERATION);
                   } else
     if ( n == 2 ) {
-                    CopyRegister(LEFT_EYE,GENERAL_3);
+                    CopyRegister(CALIBRATED_LEFT_EYE,GENERAL_3);
                     ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
                     SecondDerivativeIntensitiesFromSource(GENERAL_3,LAST_LEFT_OPERATION);
+                    ConvertRegisterFrom1ByteTo3Byte(LAST_LEFT_OPERATION);
 
-                    CopyRegister(RIGHT_EYE,GENERAL_3);
+                    CopyRegister(CALIBRATED_RIGHT_EYE,GENERAL_3);
                     ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
                     SecondDerivativeIntensitiesFromSource(GENERAL_3,LAST_RIGHT_OPERATION);
+                    ConvertRegisterFrom1ByteTo3Byte(LAST_RIGHT_OPERATION);
                   } else
                   {
                       fprintf(stderr,"Higher order derivative not implemented\n");

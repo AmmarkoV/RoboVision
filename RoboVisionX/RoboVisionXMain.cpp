@@ -456,7 +456,7 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
      }
 
 
-     if (  (VisCortx_GetFeature(LEFT_EYE,0,TOTAL_POINTS)>0) || (VisCortx_GetFeature(RIGHT_EYE,0,TOTAL_POINTS)>0) )
+     if (  (VisCortx_GetFeature(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS)>0) || (VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS)>0) )
      {
         unsigned int i=0;
         wxPen marker(wxColour(255,255,0),1,wxSOLID);
@@ -464,22 +464,24 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
         dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
         /*We want to draw features on left eye*/
-       if (VisCortx_GetFeature(LEFT_EYE,0,TOTAL_POINTS)>0  )
+       if (VisCortx_GetFeature(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS)>0  )
        {
-        for ( i=0; i<VisCortx_GetFeature(LEFT_EYE,0,TOTAL_POINTS); i++ )
+        for ( i=0; i<VisCortx_GetFeature(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS); i++ )
          {
-             dc.DrawRectangle(feed_0_x+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_Y),5,5);
-             dc.DrawLine(feed_0_x+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_Y),feed_0_x+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_LAST_X),feed_0_y+VisCortx_GetFeature(LEFT_EYE,i,FEATURE_LAST_Y));
+             dc.DrawRectangle(feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_Y),5,5);
+             dc.DrawLine(feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_Y),
+                         feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_LAST_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_LAST_Y));
 
          }
        }
 
-       if (VisCortx_GetFeature(RIGHT_EYE,0,TOTAL_POINTS)>0  )
+       if (VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS)>0  )
        {
-        for ( i=0; i<VisCortx_GetFeature(RIGHT_EYE,0,TOTAL_POINTS); i++ )
+        for ( i=0; i<VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS); i++ )
          {
-             dc.DrawRectangle(feed_1_x+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_Y),5,5);
-             dc.DrawLine(feed_1_x+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_Y),feed_1_x+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_LAST_X),feed_1_y+VisCortx_GetFeature(RIGHT_EYE,i,FEATURE_LAST_Y));
+             dc.DrawRectangle(feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_Y),5,5);
+             dc.DrawLine(feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_Y),
+                         feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_LAST_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_LAST_Y));
          }
        }
      }
