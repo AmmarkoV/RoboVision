@@ -229,6 +229,11 @@ unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned i
     return CopyRegister(input_img_regnum,output_img_regnum);
 }
 
+unsigned int VisCortX_SwapVideoRegisters(unsigned int input_img_regnum,unsigned int output_img_regnum)
+{
+    return SwapRegister(input_img_regnum,output_img_regnum);
+}
+
 unsigned int VisCortX_CopyFromVideoToVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum)
 {
   unsigned long syst_mem_end=metrics[RESOLUTION_X]*metrics[RESOLUTION_Y]*3;

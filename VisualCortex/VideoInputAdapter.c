@@ -27,10 +27,10 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
 
        video_register[input_img_regnum].lock=1;
        // FIRST STORE OLD REGISTERS
-       VisCortX_CopyVideoRegister(LEFT_EYE,LAST_LEFT_EYE);
-       VisCortX_CopyVideoRegister(EDGES_LEFT,LAST_EDGES_LEFT);
-       VisCortX_CopyVideoRegister(SECOND_DERIVATIVE_LEFT,LAST_SECOND_DERIVATIVE_LEFT);
-       VisCortX_CopyVideoRegister(MOVEMENT_LEFT,LAST_MOVEMENT_LEFT);
+       SwapRegister(LEFT_EYE,LAST_LEFT_EYE);//VisCortX_CopyVideoRegister(LEFT_EYE,LAST_LEFT_EYE);
+       SwapRegister(EDGES_LEFT,LAST_EDGES_LEFT);//VisCortX_CopyVideoRegister(EDGES_LEFT,LAST_EDGES_LEFT);
+       SwapRegister(SECOND_DERIVATIVE_LEFT,LAST_SECOND_DERIVATIVE_LEFT);//VisCortX_CopyVideoRegister(SECOND_DERIVATIVE_LEFT,LAST_SECOND_DERIVATIVE_LEFT);
+       SwapRegister(MOVEMENT_LEFT,LAST_MOVEMENT_LEFT);//VisCortX_CopyVideoRegister(MOVEMENT_LEFT,LAST_MOVEMENT_LEFT);
 
        // SECOND PASS NEW IMAGE
        VisCortx_WriteToVideoRegister(LEFT_EYE,size_x,size_y,depth,rgbdata);
@@ -58,10 +58,10 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
 
        video_register[input_img_regnum].lock=1;
        // FIRST STORE OLD REGISTERS
-       VisCortX_CopyVideoRegister(RIGHT_EYE,LAST_RIGHT_EYE);
-       VisCortX_CopyVideoRegister(EDGES_RIGHT,LAST_EDGES_RIGHT);
-       VisCortX_CopyVideoRegister(SECOND_DERIVATIVE_RIGHT,LAST_SECOND_DERIVATIVE_RIGHT);
-       VisCortX_CopyVideoRegister(MOVEMENT_RIGHT,LAST_MOVEMENT_RIGHT);
+       SwapRegister(RIGHT_EYE,LAST_RIGHT_EYE);// VisCortX_CopyVideoRegister(RIGHT_EYE,LAST_RIGHT_EYE);
+       SwapRegister(EDGES_RIGHT,LAST_EDGES_RIGHT);//VisCortX_CopyVideoRegister(EDGES_RIGHT,LAST_EDGES_RIGHT);
+       SwapRegister(SECOND_DERIVATIVE_RIGHT,LAST_SECOND_DERIVATIVE_RIGHT);//VisCortX_CopyVideoRegister(SECOND_DERIVATIVE_RIGHT,LAST_SECOND_DERIVATIVE_RIGHT);
+       SwapRegister(MOVEMENT_RIGHT,LAST_MOVEMENT_RIGHT);//VisCortX_CopyVideoRegister(MOVEMENT_RIGHT,LAST_MOVEMENT_RIGHT);
 
        // SECOND PASS NEW IMAGE
        VisCortx_WriteToVideoRegister(RIGHT_EYE,size_x,size_y,depth,rgbdata);

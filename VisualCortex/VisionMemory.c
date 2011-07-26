@@ -463,6 +463,30 @@ void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img
   }
 }
 
+void SwapInts(unsigned int * int1,unsigned int *int2)
+{
+   unsigned int tmp = *int1;
+   *int1=*int2;
+   *int2=tmp;
+}
+
+int SwapRegister(unsigned int source,unsigned int target)
+{
+
+  register unsigned char *tmp_reg  = video_register[source].pixels;
+  video_register[source].pixels = video_register[target].pixels;
+  video_register[target].pixels = tmp_reg;
+
+  SwapInts(&video_register[source].size_x,&video_register[target].size_x);
+  SwapInts(&video_register[source].size_y,&video_register[target].size_y);
+  SwapInts(&video_register[source].depth,&video_register[target].depth);
+
+  SwapInts(&video_register[source].lock,&video_register[target].lock);
+  SwapInts(&video_register[source].time,&video_register[target].time);
+//  SwapInts(&video_register[source].used,&video_register[target].used);
+
+  return 1;
+}
 
 
 int CopyRegister(unsigned int source,unsigned int target)

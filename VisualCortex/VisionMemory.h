@@ -124,6 +124,7 @@ int CloseVisionMemory();
 
 void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y);
 int CopyRegister(unsigned int source,unsigned int target);
+int SwapRegister(unsigned int source,unsigned int target);
 
 int ThisIsA3ByteRegister(int reg);
 int ThisIsA1ByteRegister(int reg);
