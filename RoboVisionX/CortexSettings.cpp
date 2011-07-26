@@ -96,6 +96,8 @@ const long CortexSettings::ID_STATICTEXT35 = wxNewId();
 const long CortexSettings::ID_STATICTEXT36 = wxNewId();
 const long CortexSettings::ID_STATICTEXT37 = wxNewId();
 const long CortexSettings::ID_CHECKBOX7 = wxNewId();
+const long CortexSettings::ID_STATICTEXT38 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL39 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CortexSettings,wxDialog)
@@ -127,8 +129,8 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	OffsetDown = new wxTextCtrl(this, ID_TEXTCTRL6, _("1"), wxPoint(448,68), wxSize(24,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL6"));
 	StaticText6 = new wxStaticText(this, ID_STATICTEXT6, _(" Good Enough Match"), wxPoint(32,320), wxDefaultSize, 0, _T("ID_STATICTEXT6"));
 	ComparisonThreshold = new wxTextCtrl(this, ID_TEXTCTRL7, _("15000"), wxPoint(288,232), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
-	StaticText7 = new wxStaticText(this, ID_STATICTEXT7, _("Comparison Min Score"), wxPoint(560,344), wxDefaultSize, 0, _T("ID_STATICTEXT7"));
-	ComparisonMinScore = new wxTextCtrl(this, ID_TEXTCTRL8, _("30000"), wxPoint(592,368), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
+	StaticText7 = new wxStaticText(this, ID_STATICTEXT7, _("Comparison Min Score"), wxPoint(312,304), wxDefaultSize, 0, _T("ID_STATICTEXT7"));
+	ComparisonMinScore = new wxTextCtrl(this, ID_TEXTCTRL8, _("30000"), wxPoint(352,320), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
 	StaticText8 = new wxStaticText(this, ID_STATICTEXT8, _("Closest Depth Plane"), wxPoint(40,400), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
 	ClosestDepth = new wxTextCtrl(this, ID_TEXTCTRL9, _("90"), wxPoint(192,392), wxSize(48,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
 	StaticText9 = new wxStaticText(this, ID_STATICTEXT9, _("Comparison EdgesPerCent Required"), wxPoint(360,448), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
@@ -156,13 +158,13 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	StaticText18 = new wxStaticText(this, ID_STATICTEXT18, _("B"), wxPoint(704,120), wxDefaultSize, 0, _T("ID_STATICTEXT18"));
 	DepthMapGuesses = new wxCheckBox(this, ID_CHECKBOX3, _("Depth Map Guessing"), wxPoint(40,528), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX3"));
 	DepthMapGuesses->SetValue(false);
-	StaticText19 = new wxStaticText(this, ID_STATICTEXT19, _("Patch Histogram Threshold"), wxPoint(504,192), wxDefaultSize, 0, _T("ID_STATICTEXT19"));
-	StaticText20 = new wxStaticText(this, ID_STATICTEXT20, _("R"), wxPoint(496,230), wxDefaultSize, 0, _T("ID_STATICTEXT20"));
-	PatchMinR = new wxTextCtrl(this, ID_TEXTCTRL18, _("18"), wxPoint(512,224), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL18"));
-	StaticText21 = new wxStaticText(this, ID_STATICTEXT21, _("G"), wxPoint(552,230), wxDefaultSize, 0, _T("ID_STATICTEXT21"));
-	PatchMinG = new wxTextCtrl(this, ID_TEXTCTRL19, _("18"), wxPoint(568,224), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL19"));
-	StaticText22 = new wxStaticText(this, ID_STATICTEXT22, _("B"), wxPoint(608,230), wxDefaultSize, 0, _T("ID_STATICTEXT22"));
-	PatchMinB = new wxTextCtrl(this, ID_TEXTCTRL20, _("18"), wxPoint(632,224), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL20"));
+	StaticText19 = new wxStaticText(this, ID_STATICTEXT19, _("Patch Histogram Threshold"), wxPoint(560,160), wxDefaultSize, 0, _T("ID_STATICTEXT19"));
+	StaticText20 = new wxStaticText(this, ID_STATICTEXT20, _("R"), wxPoint(576,192), wxDefaultSize, 0, _T("ID_STATICTEXT20"));
+	PatchMinR = new wxTextCtrl(this, ID_TEXTCTRL18, _("18"), wxPoint(600,184), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL18"));
+	StaticText21 = new wxStaticText(this, ID_STATICTEXT21, _("G"), wxPoint(648,192), wxDefaultSize, 0, _T("ID_STATICTEXT21"));
+	PatchMinG = new wxTextCtrl(this, ID_TEXTCTRL19, _("18"), wxPoint(664,184), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL19"));
+	StaticText22 = new wxStaticText(this, ID_STATICTEXT22, _("B"), wxPoint(704,192), wxDefaultSize, 0, _T("ID_STATICTEXT22"));
+	PatchMinB = new wxTextCtrl(this, ID_TEXTCTRL20, _("18"), wxPoint(720,184), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL20"));
 	ImproveUsingHistogram = new wxCheckBox(this, ID_CHECKBOX4, _("Depth Map Improve Using Histogram"), wxPoint(40,552), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
 	ImproveUsingHistogram->SetValue(true);
 	DoNotProcessFar = new wxCheckBox(this, ID_CHECKBOX5, _("Do not process closer"), wxPoint(40,432), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX5"));
@@ -213,6 +215,8 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	StaticText37->SetFont(StaticText37Font);
 	DepthMapReverseCheck = new wxCheckBox(this, ID_CHECKBOX7, _("Reverese check patches right to left "), wxPoint(32,368), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX7"));
 	DepthMapReverseCheck->SetValue(false);
+	StaticText38 = new wxStaticText(this, ID_STATICTEXT38, _("Feature Detection Threshold"), wxPoint(552,232), wxDefaultSize, 0, _T("ID_STATICTEXT38"));
+	FeatureDetectionThreshold = new wxTextCtrl(this, ID_TEXTCTRL39, _("30"), wxPoint(640,256), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL39"));
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnSaveButtonClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnCancelButtonClick);
@@ -340,6 +344,11 @@ void CortexSettings::PullSettingsFromCortex()
                                                                { ImproveUsingHistogram->SetValue(0); }
 
 
+
+  val.Clear(); val<<VisCortx_GetSetting(FEATURE_DETECTION_THRESHOLD);
+  FeatureDetectionThreshold->SetValue(val);
+
+
 // MOVEMENT
 
   val.Clear(); val<<VisCortx_GetSetting(MOVEMENT_PATCH_SENSITIVITY);
@@ -459,6 +468,9 @@ void CortexSettings::PushSettingsToCortex()
   if ( ImproveUsingHistogram->IsChecked() ) { VisCortx_SetSetting(DEPTHMAP_IMPROVE_USING_HISTOGRAM,1); } else
                                             { VisCortx_SetSetting(DEPTHMAP_IMPROVE_USING_HISTOGRAM,0); }
 
+
+
+  if(FeatureDetectionThreshold->GetValue().ToLong(&value)) { VisCortx_SetSetting(FEATURE_DETECTION_THRESHOLD,(unsigned int) value); }
 
   // MOVEMENT
   if(PatchSensitivity->GetValue().ToLong(&value)) { VisCortx_SetSetting(MOVEMENT_PATCH_SENSITIVITY,(unsigned int) value); }

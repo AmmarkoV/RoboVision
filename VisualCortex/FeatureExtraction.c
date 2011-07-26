@@ -201,7 +201,7 @@ int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_
    corner_list = (struct xy_local *) fast9_detect_nonmax ( video_register[GENERAL_2].pixels ,
                                                            metrics[RESOLUTION_X] , metrics[RESOLUTION_Y] ,
                                                            metrics[RESOLUTION_X] ,
-                                                           30 ,
+                                                           settings[FEATURE_DETECTION_THRESHOLD] ,
                                                            &numcorners );
 
   int i=0 ;

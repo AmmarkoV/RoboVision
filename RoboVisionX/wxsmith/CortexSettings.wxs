@@ -87,11 +87,11 @@
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT7" variable="StaticText7" member="yes">
 			<label>Comparison Min Score</label>
-			<pos>560,344</pos>
+			<pos>312,304</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL8" variable="ComparisonMinScore" member="yes">
 			<value>30000</value>
-			<pos>592,368</pos>
+			<pos>352,320</pos>
 			<size>72,27</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT8" variable="StaticText8" member="yes">
@@ -202,33 +202,33 @@
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT19" variable="StaticText19" member="yes">
 			<label>Patch Histogram Threshold</label>
-			<pos>504,192</pos>
+			<pos>560,160</pos>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT20" variable="StaticText20" member="yes">
 			<label>R</label>
-			<pos>496,230</pos>
+			<pos>576,192</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL18" variable="PatchMinR" member="yes">
 			<value>18</value>
-			<pos>512,224</pos>
+			<pos>600,184</pos>
 			<size>32,27</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT21" variable="StaticText21" member="yes">
 			<label>G</label>
-			<pos>552,230</pos>
+			<pos>648,192</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL19" variable="PatchMinG" member="yes">
 			<value>18</value>
-			<pos>568,224</pos>
+			<pos>664,184</pos>
 			<size>32,27</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT22" variable="StaticText22" member="yes">
 			<label>B</label>
-			<pos>608,230</pos>
+			<pos>704,192</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL20" variable="PatchMinB" member="yes">
 			<value>18</value>
-			<pos>632,224</pos>
+			<pos>720,184</pos>
 			<size>32,27</size>
 		</object>
 		<object class="wxCheckBox" name="ID_CHECKBOX4" variable="ImproveUsingHistogram" member="yes">
@@ -433,6 +433,15 @@
 		<object class="wxCheckBox" name="ID_CHECKBOX7" variable="DepthMapReverseCheck" member="yes">
 			<label>Reverese check patches right to left </label>
 			<pos>32,368</pos>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT38" variable="StaticText38" member="yes">
+			<label>Feature Detection Threshold</label>
+			<pos>552,232</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL39" variable="FeatureDetectionThreshold" member="yes">
+			<value>30</value>
+			<pos>640,256</pos>
+			<size>40,27</size>
 		</object>
 	</object>
 </wxsmith>

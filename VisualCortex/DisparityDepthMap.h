@@ -11,4 +11,5 @@ void DepthMapFull  ( unsigned int left_view_reg,
                      unsigned char clear_and_calculate /*Cleaning the depth arrays takes a little longer :) */
                     );
 
+int ExecuteDisparityMappingPyramid();
 #endif

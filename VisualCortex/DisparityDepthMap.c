@@ -393,5 +393,89 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
 
 
+int ExecuteDisparityMappingPyramid()
+{
 
+  unsigned int edgepercent=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED],patch_x=metrics[HORIZONTAL_BUFFER],patch_y=metrics[VERTICAL_BUFFER];
+   unsigned int originalthreshold=settings[DEPTHMAP_COMPARISON_THRESHOLD];
+
+  /*
+     WE COMPARE PATCHES ON 3 DIFFERENT LEVELS , EXTRA LARGE PATCHES , LARGE PATCHES , NORMAL PATCHES
+   */
+  /*
+    CALCULATION OF EXTRA LARGE PATCHES FOLLOWS
+   */
+
+   unsigned int default_detail =  settings[DEPTHMAP_DETAIL];
+
+   settings[DEPTHMAP_DETAIL]=settings[DEPTHMAP_DETAIL]/2;
+
+  settings[DEPTHMAP_COMPARISON_THRESHOLD]=settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH];
+  settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH];
+  metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_EXTRALARGE];
+  metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_EXTRALARGE];
+
+  DepthMapFull( CALIBRATED_LEFT_EYE,
+                CALIBRATED_RIGHT_EYE,
+                DEPTH_LEFT,
+                DEPTH_RIGHT,
+                1
+             );
+
+  /*
+    CALCULATION OF LARGE PATCHES FOLLOWS
+   */
+
+settings[DEPTHMAP_DETAIL]=default_detail;
+
+if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
+{
+  settings[DEPTHMAP_COMPARISON_THRESHOLD]=settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH];
+  settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH];
+  metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_LARGE];
+  metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_LARGE];
+
+  DepthMapFull( CALIBRATED_LEFT_EYE,
+                CALIBRATED_RIGHT_EYE,
+                DEPTH_LEFT,
+                DEPTH_RIGHT,
+                0
+             );
+
+
+}
+
+  /*
+    CALCULATION OF NORMAL PATCHES FOLLOWS
+   */
+   settings[DEPTHMAP_COMPARISON_THRESHOLD]=originalthreshold;
+   settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=edgepercent;
+   metrics[VERTICAL_BUFFER]=patch_y;
+   metrics[HORIZONTAL_BUFFER]=patch_x;
+   /* THESE 3 LINES ARE DELIBERATELY OUT OF THE IF CONTROL BECAUSE THESE VALUES ARE DEFAULT*/
+
+if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
+{
+  DepthMapFull( CALIBRATED_LEFT_EYE,
+                CALIBRATED_RIGHT_EYE,
+                DEPTH_LEFT,
+                DEPTH_RIGHT,
+                0
+             );
+}
+  /*
+    CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
+   */
+  DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1);
+  if (settings[PASS_TO_WORLD_3D])
+   {
+       //(unsigned char *)
+       fprintf(stderr,"Registers DEPTH0 and COLOR0 are written to filesystem\n");
+       SaveRegisterToFile("DEPTH0",DEPTH_LEFT_VIDEO);
+       SaveRegisterToFile("COLOR0",CALIBRATED_LEFT_EYE);
+   }
+
+
+return 1;
+}
 

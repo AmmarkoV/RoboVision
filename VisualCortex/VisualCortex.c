@@ -31,12 +31,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "StateSetting.h"
 #include "IntegralImageConversion.h"
 #include "LinearAlgebra.h"
+#include "VideoInputAdapter.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.594";
+char * VISCORTEX_VER = "0.597";
 
 /*
 
@@ -205,81 +206,17 @@ void VisCortx_CameraParameters(int right_cam,double fx,double fy,double cx,doubl
 */
 unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
 {
-   if ( rgbdata == 0 ) { fprintf(stderr,"VisCortX_NewFrame given zero pointer"); return 0; }
-   if ( input_img_regnum == LEFT_EYE )
-    {
-       if ( video_register[input_img_regnum].lock )
+    if ( video_register[input_img_regnum].lock )
          {
             // fprintf(stderr,"Left Reg is locked \n ");
              return 0;
          }
 
-       video_register[input_img_regnum].lock=1;
-       // FIRST STORE OLD REGISTERS
-       VisCortX_CopyVideoRegister(LEFT_EYE,LAST_LEFT_EYE);
-       VisCortX_CopyVideoRegister(EDGES_LEFT,LAST_EDGES_LEFT);
-       VisCortX_CopyVideoRegister(SECOND_DERIVATIVE_LEFT,LAST_SECOND_DERIVATIVE_LEFT);
-       VisCortX_CopyVideoRegister(MOVEMENT_LEFT,LAST_MOVEMENT_LEFT);
-
-       // SECOND PASS NEW IMAGE
-       VisCortx_WriteToVideoRegister(LEFT_EYE,size_x,size_y,depth,rgbdata);
-       CalibrateImage(LEFT_EYE,CALIBRATED_LEFT_EYE,resection_left_precalc);
-
-       // THIRD PROCESS NEW IMAGE  ( COMPRESSION )
-       PrepareCleanSobeledGaussianAndDerivative(CALIBRATED_LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
-       GenerateCompressHistogramOfImage(video_register[CALIBRATED_LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
-
-        CopyRegister(EDGES_LEFT,GENERAL_3);
-        PixelsOverThresholdSetAsOne(GENERAL_3,1);
-        CompressRegister(GENERAL_3,EDGES_PRESENCE_GROUPED_LEFT);
-
-        CompressRegister(MOVEMENT_LEFT,MOVEMENT_GROUPED_LEFT);
-        CompressRegister(EDGES_LEFT,EDGES_GROUPED_LEFT);
-        CompressRegister(SECOND_DERIVATIVE_LEFT,SECOND_DERIVATIVE_GROUPED_LEFT);
+    unsigned int retres = PassNewFrameFromVideoInput(input_img_regnum,size_x,size_y,depth,rgbdata);
 
 
-        VisCortx_Movement_Detection(1,0);
-        TrackAllPointsOnRegisters(CALIBRATED_LEFT_EYE,LAST_LEFT_EYE,8000);
-
-       video_register[input_img_regnum].lock=0;
-    } else
-    if ( input_img_regnum == RIGHT_EYE )
-    {
-
-        if ( video_register[input_img_regnum].lock )
-         {
-            // fprintf(stderr,"Right Reg is locked \n ");
-             return 0;
-         }
-
-       video_register[input_img_regnum].lock=1;
-       // FIRST STORE OLD REGISTERS
-       VisCortX_CopyVideoRegister(RIGHT_EYE,LAST_RIGHT_EYE);
-       VisCortX_CopyVideoRegister(EDGES_RIGHT,LAST_EDGES_RIGHT);
-       VisCortX_CopyVideoRegister(SECOND_DERIVATIVE_RIGHT,LAST_SECOND_DERIVATIVE_RIGHT);
-       VisCortX_CopyVideoRegister(MOVEMENT_RIGHT,LAST_MOVEMENT_RIGHT);
-
-       // SECOND PASS NEW IMAGE
-       VisCortx_WriteToVideoRegister(RIGHT_EYE,size_x,size_y,depth,rgbdata);
-       CalibrateImage(RIGHT_EYE,CALIBRATED_RIGHT_EYE,resection_right_precalc);
-
-       // THIRD PROCESS NEW IMAGE ( COMPRESSION )
-       PrepareCleanSobeledGaussianAndDerivative(CALIBRATED_RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
-       GenerateCompressHistogramOfImage(video_register[CALIBRATED_RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
-
-        CompressRegister(MOVEMENT_RIGHT,MOVEMENT_GROUPED_RIGHT);
-        CompressRegister(EDGES_RIGHT,EDGES_GROUPED_RIGHT);
-        CompressRegister(SECOND_DERIVATIVE_RIGHT,SECOND_DERIVATIVE_GROUPED_RIGHT);
-
-        VisCortx_Movement_Detection(0,1);
-        TrackAllPointsOnRegisters(CALIBRATED_RIGHT_EYE,LAST_RIGHT_EYE,8000);
-        video_register[input_img_regnum].lock=0;
-    }
-
-
-
-
- return 1;
+    video_register[input_img_regnum].lock=0;
+    return retres;
 }
 
 unsigned int VisCortX_ClearVideoRegister(unsigned int input_img_regnum)
@@ -429,91 +366,13 @@ int VisCortx_OperationUnLockFrames()
 
 void  VisCortx_FullDepthMap()
 {
-  unsigned int edgepercent=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED],patch_x=metrics[HORIZONTAL_BUFFER],patch_y=metrics[VERTICAL_BUFFER];
-   unsigned int originalthreshold=settings[DEPTHMAP_COMPARISON_THRESHOLD];
-
-
  /*
     The register CALIBRATED_LEFT_EYE , CALIBRATED_RIGHT_EYE IS CONSTANTLY UPDATED , SO WE CANNOT OUTPUT A STEADY RESULT IF WHILE CALCULATING THE IMAGE CHANGES ..!
     Thats why we copy to LEFT_EYE_NOT_LIVE and RIGHT_EYE_NOT_LIVE , which are in turn passed for disparity mapping
  */
    if (!VisCortx_OperationLockFrames()) { fprintf(stderr,"Cannot Lock Video Input\n"); }
 
-  /*
-     WE COMPARE PATCHES ON 3 DIFFERENT LEVELS , EXTRA LARGE PATCHES , LARGE PATCHES , NORMAL PATCHES
-   */
-  /*
-    CALCULATION OF EXTRA LARGE PATCHES FOLLOWS
-   */
-
-   unsigned int default_detail =  settings[DEPTHMAP_DETAIL];
-
-   settings[DEPTHMAP_DETAIL]=settings[DEPTHMAP_DETAIL]/2;
-
-  settings[DEPTHMAP_COMPARISON_THRESHOLD]=settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH];
-  settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH];
-  metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_EXTRALARGE];
-  metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_EXTRALARGE];
-
-  DepthMapFull( CALIBRATED_LEFT_EYE,
-                CALIBRATED_RIGHT_EYE,
-                DEPTH_LEFT,
-                DEPTH_RIGHT,
-                1
-             );
-
-  /*
-    CALCULATION OF LARGE PATCHES FOLLOWS
-   */
-
-settings[DEPTHMAP_DETAIL]=default_detail;
-
-if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
-{
-  settings[DEPTHMAP_COMPARISON_THRESHOLD]=settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH];
-  settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH];
-  metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_LARGE];
-  metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_LARGE];
-
-  DepthMapFull( CALIBRATED_LEFT_EYE,
-                CALIBRATED_RIGHT_EYE,
-                DEPTH_LEFT,
-                DEPTH_RIGHT,
-                0
-             );
-
-
-}
-
-  /*
-    CALCULATION OF NORMAL PATCHES FOLLOWS
-   */
-   settings[DEPTHMAP_COMPARISON_THRESHOLD]=originalthreshold;
-   settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=edgepercent;
-   metrics[VERTICAL_BUFFER]=patch_y;
-   metrics[HORIZONTAL_BUFFER]=patch_x;
-   /* THESE 3 LINES ARE DELIBERATELY OUT OF THE IF CONTROL BECAUSE THESE VALUES ARE DEFAULT*/
-
-if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
-{
-  DepthMapFull( CALIBRATED_LEFT_EYE,
-                CALIBRATED_RIGHT_EYE,
-                DEPTH_LEFT,
-                DEPTH_RIGHT,
-                0
-             );
-}
-  /*
-    CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
-   */
-  DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1);
-  if (settings[PASS_TO_WORLD_3D])
-   {
-       //(unsigned char *)
-       fprintf(stderr,"Registers DEPTH0 and COLOR0 are written to filesystem\n");
-       SaveRegisterToFile("DEPTH0",DEPTH_LEFT_VIDEO);
-       SaveRegisterToFile("COLOR0",CALIBRATED_LEFT_EYE);
-   }
+   ExecuteDisparityMappingPyramid();
 
   VisCortx_OperationUnLockFrames();
 

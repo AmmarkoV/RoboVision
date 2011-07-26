@@ -76,6 +76,7 @@ class CortexSettings: public wxDialog
 		wxTextCtrl* Quality;
 		wxStaticText* StaticText34;
 		wxStaticText* StaticText12;
+		wxStaticText* StaticText38;
 		wxCheckBox* ImproveEdges;
 		wxTextCtrl* MoveMultiplier;
 		wxTextCtrl* PatchesEdgesPercentLarge;
@@ -92,6 +93,7 @@ class CortexSettings: public wxDialog
 		wxStaticText* StaticText2;
 		wxTextCtrl* ShiftUp;
 		wxStaticText* StaticText27;
+		wxTextCtrl* FeatureDetectionThreshold;
 		wxStaticText* StaticText26;
 		wxStaticText* StaticText6;
 		wxTextCtrl* StartLeft;
@@ -202,6 +204,8 @@ class CortexSettings: public wxDialog
 		static const long ID_STATICTEXT36;
 		static const long ID_STATICTEXT37;
 		static const long ID_CHECKBOX7;
+		static const long ID_STATICTEXT38;
+		static const long ID_TEXTCTRL39;
 		//*)
 
 	private:

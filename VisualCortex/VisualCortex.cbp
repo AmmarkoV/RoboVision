@@ -89,6 +89,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="StateSetting.h" />
+		<Unit filename="VideoInputAdapter.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="VideoInputAdapter.h" />
 		<Unit filename="VisCortexConvolutionFilters.c">
 			<Option compilerVar="CC" />
 		</Unit>
