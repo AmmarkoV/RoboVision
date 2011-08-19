@@ -251,7 +251,7 @@ void DefaultSettings()
     settings[INPUT_CALIBRATION]=0; // DEACTIVATED UNTIL FIX :P
     // TEST
 
-   settings[PASS_TO_WORLD_3D]=1; // FOR NOW ONLY PASSES TO 3D Visualization
+   settings[PASS_TO_WORLD_3D]=0; // FOR NOW ONLY PASSES TO 3D Visualization
 
    settings[FEATURE_DETECTION_THRESHOLD]=30; // 30
 
