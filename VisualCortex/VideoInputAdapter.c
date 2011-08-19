@@ -48,8 +48,9 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
         CompressRegister(EDGES_LEFT,EDGES_GROUPED_LEFT);
         CompressRegister(SECOND_DERIVATIVE_LEFT,SECOND_DERIVATIVE_GROUPED_LEFT);
 
-
+        // FOURTH TRACK ALL POINTS ON NEW FRAME FROM OLD FRAME
         VisCortx_Movement_Detection(1,0);
+        VisCortx_AutoAddTrackPoints(0);
         TrackAllPointsOnRegisters(CALIBRATED_LEFT_EYE,LAST_LEFT_EYE,8000);
 
     } else
@@ -75,7 +76,9 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
         CompressRegister(EDGES_RIGHT,EDGES_GROUPED_RIGHT);
         CompressRegister(SECOND_DERIVATIVE_RIGHT,SECOND_DERIVATIVE_GROUPED_RIGHT);
 
+        // FOURTH TRACK ALL POINTS ON NEW FRAME FROM OLD FRAME
         VisCortx_Movement_Detection(0,1);
+        VisCortx_AutoAddTrackPoints(1);
         TrackAllPointsOnRegisters(CALIBRATED_RIGHT_EYE,LAST_RIGHT_EYE,8000);
     }
 

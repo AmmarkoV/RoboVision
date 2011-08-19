@@ -14,25 +14,21 @@ unsigned int PATCH_SIZE_MULT_3=PATCH_SIZE*3;
 
 inline void PointGoUpLeft(unsigned int *x,unsigned int *y,unsigned int *x_subtract,unsigned int *y_subtract,unsigned int *x_min,unsigned int *y_min)
 {
-   if ( *x > *x_min + *x_subtract)
-          { *x=*x - *x_subtract; } else
-          { *x=*x_min; }
-   if ( *y > *y_min + *y_subtract)
-          { *y=*y - *y_subtract; } else
-          { *y=*y_min; }
+   if ( *x > *x_min + *x_subtract) { *x=*x - *x_subtract; } else
+                                   { *x=*x_min; }
+   if ( *y > *y_min + *y_subtract) { *y=*y - *y_subtract; } else
+                                   { *y=*y_min; }
 }
 
 inline void PointGoDownRight(unsigned int *x,unsigned int *y,unsigned int *x_add,unsigned int *y_add,unsigned int *x_max,unsigned int *y_max)
 {
-   if ( *x + *x_add < *x_max )
-          { *x=*x + *x_add; } else
-          { *x=*x_max; }
-   if ( *y + *y_add < *y_max )
-          { *y=*y + *y_add; } else
-          { *y=*y_max; }
+   if ( *x + *x_add < *x_max ) { *x=*x + *x_add; } else
+                               { *x=*x_max; }
+   if ( *y + *y_add < *y_max ) { *y=*y + *y_add; } else
+                               { *y=*y_max; }
 }
 
-void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
+void ExecuteTrackPointBrute(unsigned int from,unsigned int to,unsigned int point_num)
 {
   unsigned int from_edges,from_derivatives,from_movement;
   unsigned int to_edges,to_derivatives,to_movement;
@@ -127,8 +123,7 @@ void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
 
 }
 
-
-int TrackAllPointsOnRegisters(unsigned int reg_new , unsigned int reg_old , unsigned int timeout)
+int TrackAllPointsOnRegistersBrute(unsigned int reg_new , unsigned int reg_old , unsigned int timeout)
 {
     if (   video_register[reg_old].features->last_track_time < settings[TIME_BETWEEN_TRACKING] + TIME_INC )
      {
@@ -140,3 +135,60 @@ int TrackAllPointsOnRegisters(unsigned int reg_new , unsigned int reg_old , unsi
 
     return 1;
 }
+
+
+
+void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
+{
+  unsigned int from_edges,from_derivatives,from_movement;
+  unsigned int to_edges,to_derivatives,to_movement;
+  if ((from==LEFT_EYE)||(to==LEFT_EYE))
+       {
+         from_edges=LAST_EDGES_LEFT; from_derivatives=LAST_SECOND_DERIVATIVE_LEFT; from_movement=LAST_MOVEMENT_LEFT;
+         to_edges=EDGES_LEFT; to_derivatives=SECOND_DERIVATIVE_LEFT; to_movement=MOVEMENT_LEFT;
+       }
+  if ((from==RIGHT_EYE)||(to==RIGHT_EYE))
+       {
+         from_edges=LAST_EDGES_RIGHT; from_derivatives=LAST_SECOND_DERIVATIVE_RIGHT; from_movement=LAST_MOVEMENT_RIGHT;
+         to_edges=EDGES_RIGHT; to_derivatives=SECOND_DERIVATIVE_RIGHT; to_movement=MOVEMENT_RIGHT;
+       }
+
+}
+
+int MatchFeaturesPoints(unsigned int reg_1,unsigned int feature_num_1,unsigned int reg_2,unsigned int feature_num_2)
+{
+    /*
+       TODO TODO TODO TODO TODO
+    */
+    return 1;
+}
+
+
+int TrackAllPointsOnRegisters(unsigned int reg_new , unsigned int reg_old , unsigned int timeout)
+{
+    if (   video_register[reg_old].features->last_track_time < settings[TIME_BETWEEN_TRACKING] + TIME_INC )
+     {
+        RemoveTrackPointsIfTimedOut(video_register[reg_new].features,timeout);
+
+
+        int old_feature_iterator = 0;
+        int new_feature_iterator = 0;
+
+        while ( old_feature_iterator < video_register[reg_old].features->current_features)
+          {
+             ++old_feature_iterator;
+             new_feature_iterator = 0;
+
+             while ( new_feature_iterator < video_register[reg_new].features->current_features)
+             {
+               ++new_feature_iterator;
+               MatchFeaturesPoints(reg_new,new_feature_iterator,reg_old,old_feature_iterator);
+             }
+          }
+     }
+
+    return 1;
+}
+
+
+

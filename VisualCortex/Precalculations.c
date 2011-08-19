@@ -239,9 +239,7 @@ unsigned int RGB(unsigned char R,unsigned char G,unsigned char B)
 void TestPrecalculations()
 {
   int errors=0;
-
-
-   if (errors>0) { fprintf(stderr,"Precalculation errors\n"); }
+  if (errors>0) { fprintf(stderr,"Precalculation errors\n"); }
 }
 
 

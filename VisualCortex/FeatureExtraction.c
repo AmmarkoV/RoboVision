@@ -42,10 +42,7 @@ int PatchIsACorner(unsigned int x,unsigned int y,unsigned char * edge_mem,unsign
     if  ( (y>4) && ( x>4 ) && (y<metrics[RESOLUTION_Y]) && ( x<metrics[RESOLUTION_X] ))
        {
 
-
-
        }
-
 
 */
     return 0;
@@ -190,7 +187,7 @@ int ExtractFeaturesMy(int rgb_reg,unsigned int edge_reg,unsigned int second_deri
 
 
 
-int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_reg,unsigned int target_reg,unsigned int max_features,unsigned int cam_num)
+int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_reg,unsigned int max_features,unsigned int cam_num)
 {
    CopyRegister(rgb_reg,GENERAL_2);
    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2);

@@ -251,7 +251,7 @@ void DefaultSettings()
     settings[INPUT_CALIBRATION]=0; // DEACTIVATED UNTIL FIX :P
     // TEST
 
-   settings[PASS_TO_WORLD_3D]=0; // FOR NOW ONLY PASSES TO 3D Visualization
+   settings[PASS_TO_WORLD_3D]=1; // FOR NOW ONLY PASSES TO 3D Visualization
 
    settings[FEATURE_DETECTION_THRESHOLD]=30; // 30
 
@@ -463,6 +463,13 @@ void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img
   }
 }
 
+void SwapChars(char * chr1,char *chr2)
+{
+   char tmp = *chr1;
+   *chr1=*chr2;
+   *chr2=tmp;
+}
+
 void SwapInts(unsigned int * int1,unsigned int *int2)
 {
    unsigned int tmp = *int1;
@@ -483,7 +490,11 @@ int SwapRegister(unsigned int source,unsigned int target)
 
   SwapInts(&video_register[source].lock,&video_register[target].lock);
   SwapInts(&video_register[source].time,&video_register[target].time);
-//  SwapInts(&video_register[source].used,&video_register[target].used);
+  SwapChars(&video_register[source].used,&video_register[target].used);
+
+  struct FeatureList * tmp_features = video_register[source].features;
+  video_register[source].features = video_register[target].features;
+  video_register[target].features = tmp_features;
 
   return 1;
 }

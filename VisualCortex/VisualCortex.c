@@ -37,7 +37,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.597";
+char * VISCORTEX_VER = "0.598";
 
 /*
 
@@ -187,14 +187,12 @@ unsigned int VisCortx_GetVideoRegisterStats(unsigned int metric_num)
                      StateSetting.c/h
                                       ----------------------
 */
-
-
-
 void VisCortx_CameraParameters(int right_cam,double fx,double fy,double cx,double cy,double k1,double k2,double p1,double p2,double k3)
 {
    if ( right_cam == 0 )  { PrecalcResectioning(resection_left_precalc,fx,fy,cx,cy,k1,k2,p1,p2,k3); } else
    if ( right_cam == 1 )  { PrecalcResectioning(resection_right_precalc,fx,fy,cx,cy,k1,k2,p1,p2,k3); }
 }
+
 
 
 /*
@@ -208,16 +206,14 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
 {
     if ( video_register[input_img_regnum].lock )
          {
-            // fprintf(stderr,"Left Reg is locked \n ");
+            // We do not want the frame to be rewritten while an operation is pending on last frame so we return a failure..
              return 0;
          }
-
     unsigned int retres = PassNewFrameFromVideoInput(input_img_regnum,size_x,size_y,depth,rgbdata);
-
-
     video_register[input_img_regnum].lock=0;
     return retres;
 }
+
 
 unsigned int VisCortX_ClearVideoRegister(unsigned int input_img_regnum)
 {
@@ -295,22 +291,10 @@ unsigned int VisCortx_WriteToVideoRegister(unsigned int reg_num,unsigned int siz
     if ( pic_mem_end > mem_end ) { fprintf(stderr,"Register is not big enough to accomodate data! \n "); return 1; } else
     if ( pic_mem_end < mem_end ) { mem_end = pic_mem_end; }
 
-
     memcpy(video_register[reg_num].pixels,rgbdata,mem_end);
-
-/*
-    switch (reg_num)
-     {
-        case LEFT_EYE :
-         CalibrateImage(LEFT_EYE,CALIBRATED_LEFT_EYE);
-        break;
-        case RIGHT_EYE :
-         CalibrateImage(RIGHT_EYE,CALIBRATED_RIGHT_EYE);
-        break;
-     };*/
-
 	return 1;
 }
+
 
 unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int size_x,unsigned int size_y,unsigned int depth)
 {
@@ -333,13 +317,12 @@ unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int
 */
 
 
-int VisCortx_OperationLockFrames()
+int VisCortx_OperationLockFramesLeftRight()
 {
  int waiting_counter = 0;
  while ( ( video_register[LEFT_EYE].lock ) && ( waiting_counter < 10000 ) )    { ++waiting_counter; usleep(1); }
  if ( !video_register[LEFT_EYE].lock )
    {
-    // fprintf(stderr,"LOCKING 1\n");
      video_register[LEFT_EYE].lock=1;
    }
 
@@ -349,14 +332,13 @@ int VisCortx_OperationLockFrames()
 
  if ( !video_register[RIGHT_EYE].lock )
    {
-    // fprintf(stderr,"LOCKING 2\n");
      video_register[RIGHT_EYE].lock=1;
    }
 
  return 1;
 }
 
-int VisCortx_OperationUnLockFrames()
+int VisCortx_OperationUnLockFramesLeftRight()
 {
      video_register[LEFT_EYE].lock=0;
      video_register[RIGHT_EYE].lock=0;
@@ -375,11 +357,11 @@ void  VisCortx_FullDepthMap()
     The register CALIBRATED_LEFT_EYE , CALIBRATED_RIGHT_EYE IS CONSTANTLY UPDATED , SO WE CANNOT OUTPUT A STEADY RESULT IF WHILE CALCULATING THE IMAGE CHANGES ..!
     Thats why we copy to LEFT_EYE_NOT_LIVE and RIGHT_EYE_NOT_LIVE , which are in turn passed for disparity mapping
  */
-   if (!VisCortx_OperationLockFrames()) { fprintf(stderr,"Cannot Lock Video Input\n"); }
+   if (!VisCortx_OperationLockFramesLeftRight()) { fprintf(stderr,"Cannot Lock Video Input\n"); }
 
-   ExecuteDisparityMappingPyramid();
+     ExecuteDisparityMappingPyramid();
 
-  VisCortx_OperationUnLockFrames();
+   VisCortx_OperationUnLockFramesLeftRight();
 
 }
 
@@ -552,16 +534,13 @@ void  VisCortx_AutoAddTrackPoints(unsigned int cam)
  if (cam==0)
   {
       CopyFeatureList(video_register[CALIBRATED_LEFT_EYE].features,video_register[LAST_LEFT_EYE].features);
-      ExtractFeatures(CALIBRATED_LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,LAST_LEFT_OPERATION,200,0);
-      //ExtractFeatures(100,video_register[EDGES_LEFT].pixels,video_register[GENERAL_1].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],0);
+      ExtractFeatures(CALIBRATED_LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,200,0);
   } else
   if (cam==1)
   {
       CopyFeatureList(video_register[CALIBRATED_RIGHT_EYE].features,video_register[LAST_RIGHT_EYE].features);
-      ExtractFeatures(CALIBRATED_RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,LAST_RIGHT_OPERATION,200,1);
+      ExtractFeatures(CALIBRATED_RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,200,1);
   }
-
- fprintf(stderr,"VisCortx_AutoAddTrackPoints ok\n");
  return;
 }
 
@@ -590,7 +569,7 @@ void  VisCortx_TrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg)
   unsigned int i=0;
   for (i=0; i<GetFeatureData(video_register[from_vid_reg].features,0,TOTAL_POINTS); i++)
    {
-	   ExecuteTrackPoint(from_vid_reg,to_vid_reg,i);
+	   ExecuteTrackPointBrute(from_vid_reg,to_vid_reg,i);
    }
   VisCortx_CopyTrackPoints(from_vid_reg,to_vid_reg);
   video_register[to_vid_reg].features->last_track_time = TIME_INC;
@@ -622,7 +601,6 @@ void  VisCortx_RenewAllTrackPoints(unsigned int vid_reg)
 /*
  ----------------- IMAGE PROCESSING ----------------------
 */
-
 void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,unsigned char howclose)
 {
  //   VisCortX_BitBltVideoRegister(LEFT_EYE,GENERAL_1,0,0,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
@@ -670,7 +648,6 @@ void VisCortx_GetFaceNumber(char num,unsigned int *pos_x,unsigned int *pos_y,uns
 {
     GetFaceNumber(num,pos_x,pos_y,total_size);
 }
-
 /*
  ----------------- LIDAR DEPTH DATA EMULATION ----------------------
 */
@@ -693,19 +670,13 @@ float VisCortx_CameraHorizontalAngleStep()
 
 unsigned short VisCortx_SetDepthScale(unsigned short depth_units,float centimeters)
 {
-  if ( depth_units<255 )
-     {
-       depth_units_in_cm[depth_units]=centimeters;
-     }
+  if ( depth_units<255 ) { depth_units_in_cm[depth_units]=centimeters; }
   return 0;
 }
 
 float VisCortx_DepthUnitsToCM(unsigned short depth_units)
 {
-  if (depth_units<255)
-   {
-       return depth_units_in_cm[depth_units];
-   }
+  if (depth_units<255) { return depth_units_in_cm[depth_units]; }
   return 0.0;
 }
 

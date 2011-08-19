@@ -11,6 +11,7 @@ extern unsigned int PATCH_DISPLACEMENT; // PATCH_SIZE div 2 ( gia PATCH_SIZE=9 -
 extern unsigned int PATCH_SIZE_MULT_3;
 
 
+void ExecuteTrackPointBrute(unsigned int from,unsigned int to,unsigned int point_num);
 void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num);
 int TrackAllPointsOnRegisters(unsigned int reg_new , unsigned int reg_old , unsigned int timeout);
 

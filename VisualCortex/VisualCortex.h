@@ -244,8 +244,8 @@ unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int
 unsigned int VisCortX_LoadVideoRegisterFromFile(unsigned int reg_num,char * filename);
 unsigned int VisCortX_SaveVideoRegisterToFile(unsigned int reg_num,char * filename);
 
-int VisCortx_OperationLockFrames();
-int VisCortx_OperationUnLockFrames();
+int VisCortx_OperationLockFramesLeftRight();
+int VisCortx_OperationUnLockFramesLeftRight();
 
 void  VisCortx_FullDepthMap();
 void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error);

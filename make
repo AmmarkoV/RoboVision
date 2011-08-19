@@ -3,6 +3,7 @@ echo "Compiling The whole RoboVision Project :D"
 
 
 echo "Compiling 3d Party Libraries.."
+notify-send "Compiling 3d Party Libraries.."
 cd 3dpartylibs
 ./make
 cd ..
@@ -17,6 +18,11 @@ echo "Compiling KinectInput.."
 cd KinectInput
 ./make
 cd ..
+
+
+echo "Compiling GuarddoG Main Libs.."
+notify-send "Compiling GuarddoG Main Libs.."
+
 
 echo "Compiling VisualCortex.."
 cd VisualCortex
@@ -54,6 +60,11 @@ cd RoboKernel
 cd ..
 
 #COMPILE INTERFACES
+
+echo "Compiling GuarddoG Interfaces.."
+notify-send "Compiling GuarddoG Interfaces.."
+
+
 echo "Compiling ThreeDimensionMaps.."
 cd ThreeDimensionMaps
 ./make
@@ -71,6 +82,6 @@ cd RoboVisionX
 ./make
 cd ..
 
-
+notify-send "GuarddoG compilation is done.."
 echo "Done.."
 exit 0
