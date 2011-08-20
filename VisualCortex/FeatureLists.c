@@ -7,11 +7,8 @@
 
 int ClearFeatureList(struct FeatureList * list)
 {
-  list->reg_for_correspondance_1=0;
-  list->reg_for_correspondance_2=0;
-  list->reg_for_correspondance_3=0;
+  list->reg_for_correspondance=0;
   list->current_features = 0;
-
   return 1;
 }
 
@@ -23,11 +20,7 @@ struct FeatureList * CreateFeatureList(unsigned int size , unsigned int def_patc
   new_fls->list = malloc ( sizeof(struct FeatureData) * size );
   new_fls->last_track_time = 0;
 
-  new_fls->correspondance_1 = malloc ( sizeof(struct PointCorrespondence) * size );
-
-  new_fls->correspondance_2 = malloc ( sizeof(struct PointCorrespondence) * size );
-
-  new_fls->correspondance_3 = malloc ( sizeof(struct PointCorrespondence) * size );
+  new_fls->correspondance = malloc ( sizeof(struct PointCorrespondence) * size );
 
   ClearFeatureList(new_fls);
   return new_fls;
@@ -36,14 +29,9 @@ struct FeatureList * CreateFeatureList(unsigned int size , unsigned int def_patc
 int DestroyFeatureList(struct FeatureList * list)
 {
 
-  list->reg_for_correspondance_1=0;
-  free(list->correspondance_1);
+  list->reg_for_correspondance=0;
+  free(list->correspondance);
 
-  list->reg_for_correspondance_2=0;
-  free(list->correspondance_2);
-
-  list->reg_for_correspondance_3=0;
-  free(list->correspondance_3);
 
   list->max_features = 0;
   free(list->list);
@@ -77,32 +65,15 @@ int CopyFeatureList(struct FeatureList * source,struct FeatureList * target)
       target->list[i].group = source->list[i].group;
    }
 
-  target->reg_for_correspondance_1 = source->reg_for_correspondance_1;
+  target->reg_for_correspondance = source->reg_for_correspondance;
   for (i=0; i < target->current_features; i++)
    {
-      target->correspondance_1[i].mapped_to = source->correspondance_1[i].mapped_to;
-      target->correspondance_1[i].patch_width = source->correspondance_1[i].patch_width;
-      target->correspondance_1[i].patch_height = source->correspondance_1[i].patch_height;
-      target->correspondance_1[i].score = source->correspondance_1[i].score;
+      target->correspondance[i].mapped_to = source->correspondance[i].mapped_to;
+      target->correspondance[i].patch_width = source->correspondance[i].patch_width;
+      target->correspondance[i].patch_height = source->correspondance[i].patch_height;
+      target->correspondance[i].score = source->correspondance[i].score;
    }
 
-   target->reg_for_correspondance_2 = source->reg_for_correspondance_2;
-  for (i=0; i < target->current_features; i++)
-   {
-      target->correspondance_2[i].mapped_to = source->correspondance_2[i].mapped_to;
-      target->correspondance_2[i].patch_width = source->correspondance_2[i].patch_width;
-      target->correspondance_2[i].patch_height = source->correspondance_2[i].patch_height;
-      target->correspondance_2[i].score = source->correspondance_2[i].score;
-   }
-
-  target->reg_for_correspondance_3 = source->reg_for_correspondance_3;
-  for (i=0; i < target->current_features; i++)
-   {
-      target->correspondance_3[i].mapped_to = source->correspondance_3[i].mapped_to;
-      target->correspondance_3[i].patch_width = source->correspondance_3[i].patch_width;
-      target->correspondance_3[i].patch_height = source->correspondance_3[i].patch_height;
-      target->correspondance_3[i].score = source->correspondance_3[i].score;
-   }
 
    return 1;
 }

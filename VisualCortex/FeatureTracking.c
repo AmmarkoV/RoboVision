@@ -28,10 +28,42 @@ inline void PointGoDownRight(unsigned int *x,unsigned int *y,unsigned int *x_add
                                { *y=*y_max; }
 }
 
+
+void GetSecondaryRegisterNamesFromLastToNew
+                             (unsigned int from,unsigned int to ,
+                              unsigned int * from_edges , unsigned int * from_derivatives , unsigned int * from_movement,
+                              unsigned int * to_edges , unsigned int * to_derivatives , unsigned int * to_movement
+                              )
+{
+  /*
+     This is a small function to reduce code clutter in the functions bellow
+     If we are looking at left_eye we want to go from LAST_EDGES_LEFT ( etc ) TO  EDGES_LEFT
+  */
+  if ((from==LEFT_EYE)||(to==LEFT_EYE))
+       {
+         *from_edges=LAST_EDGES_LEFT; *from_derivatives=LAST_SECOND_DERIVATIVE_LEFT; *from_movement=LAST_MOVEMENT_LEFT;
+         *to_edges=EDGES_LEFT; *to_derivatives=SECOND_DERIVATIVE_LEFT; *to_movement=MOVEMENT_LEFT;
+       }
+  if ((from==RIGHT_EYE)||(to==RIGHT_EYE))
+       {
+         *from_edges=LAST_EDGES_RIGHT; *from_derivatives=LAST_SECOND_DERIVATIVE_RIGHT; *from_movement=LAST_MOVEMENT_RIGHT;
+         *to_edges=EDGES_RIGHT; *to_derivatives=SECOND_DERIVATIVE_RIGHT; *to_movement=MOVEMENT_RIGHT;
+       }
+}
+
+
+
 void ExecuteTrackPointBrute(unsigned int from,unsigned int to,unsigned int point_num)
 {
   unsigned int from_edges,from_derivatives,from_movement;
   unsigned int to_edges,to_derivatives,to_movement;
+
+  GetSecondaryRegisterNamesFromLastToNew
+                             ( from,to ,
+                               &from_edges,&from_derivatives,&from_movement,
+                               &to_edges,&to_derivatives,&to_movement
+                              );
+/*
   if ((from==LEFT_EYE)||(to==LEFT_EYE))
        {
          from_edges=LAST_EDGES_LEFT; from_derivatives=LAST_SECOND_DERIVATIVE_LEFT; from_movement=LAST_MOVEMENT_LEFT;
@@ -42,7 +74,7 @@ void ExecuteTrackPointBrute(unsigned int from,unsigned int to,unsigned int point
          from_edges=LAST_EDGES_RIGHT; from_derivatives=LAST_SECOND_DERIVATIVE_RIGHT; from_movement=LAST_MOVEMENT_RIGHT;
          to_edges=EDGES_RIGHT; to_derivatives=SECOND_DERIVATIVE_RIGHT; to_movement=MOVEMENT_RIGHT;
        }
-
+*/
 
 
   unsigned int min=0,size_x=metrics[RESOLUTION_X],size_y=metrics[RESOLUTION_Y];
@@ -142,25 +174,64 @@ void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
 {
   unsigned int from_edges,from_derivatives,from_movement;
   unsigned int to_edges,to_derivatives,to_movement;
-  if ((from==LEFT_EYE)||(to==LEFT_EYE))
-       {
-         from_edges=LAST_EDGES_LEFT; from_derivatives=LAST_SECOND_DERIVATIVE_LEFT; from_movement=LAST_MOVEMENT_LEFT;
-         to_edges=EDGES_LEFT; to_derivatives=SECOND_DERIVATIVE_LEFT; to_movement=MOVEMENT_LEFT;
-       }
-  if ((from==RIGHT_EYE)||(to==RIGHT_EYE))
-       {
-         from_edges=LAST_EDGES_RIGHT; from_derivatives=LAST_SECOND_DERIVATIVE_RIGHT; from_movement=LAST_MOVEMENT_RIGHT;
-         to_edges=EDGES_RIGHT; to_derivatives=SECOND_DERIVATIVE_RIGHT; to_movement=MOVEMENT_RIGHT;
-       }
-
+    GetSecondaryRegisterNamesFromLastToNew
+                             ( from,to ,
+                              &from_edges,&from_derivatives,&from_movement,
+                              &to_edges,&to_derivatives,&to_movement
+                              );
 }
+
+int SetImageRegionFromFeatureNumber( struct ImageRegion * last_ir, struct ImageRegion * ir ,unsigned int reg,unsigned int feature_num)
+{
+   if ( ir == 0 ) { return 0; }
+   last_ir->x1=video_register[reg].features->list[feature_num].last_x;
+   last_ir->y1=video_register[reg].features->list[feature_num].last_y;
+   ir->x1=video_register[reg].features->list[feature_num].x;
+   ir->y1=video_register[reg].features->list[feature_num].y;
+
+/*
+   last_ir->width = width;
+   last_ir->height = height;
+   ir->width = width;
+   ir->height = height;*/
+   return 1;
+}
+
 
 int MatchFeaturesPoints(unsigned int reg_1,unsigned int feature_num_1,unsigned int reg_2,unsigned int feature_num_2)
 {
-    /*
-       TODO TODO TODO TODO TODO
-    */
-    return 1;
+  unsigned int size_x=metrics[RESOLUTION_X],size_y=metrics[RESOLUTION_Y];
+  unsigned int from_edges,from_derivatives,from_movement;
+  unsigned int to_edges,to_derivatives,to_movement;
+    GetSecondaryRegisterNamesFromLastToNew
+                             ( reg_1,reg_2 ,
+                              &from_edges,&from_derivatives,&from_movement,
+                              &to_edges,&to_derivatives,&to_movement
+                              );
+  unsigned int best_score = video_register[reg_1].features->list[feature_num_1].correspondance_score;
+  unsigned int score;
+  struct ImageRegion source_rgn={0},target_rgn={0};
+  SetImageRegionFromFeatureNumber(&source_rgn,&target_rgn,reg_1,feature_num_1);
+  SetImageRegionFromFeatureNumber(&source_rgn,&target_rgn,reg_2,feature_num_2);
+
+  score = ComparePatches( &source_rgn , &target_rgn, video_register[reg_1].pixels,video_register[reg_2].pixels,
+                           video_register[from_edges].pixels , video_register[to_edges].pixels ,
+                           video_register[from_derivatives].pixels  , video_register[to_derivatives].pixels ,
+                           video_register[from_movement].pixels  , video_register[to_movement].pixels ,
+                           metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER],
+                           size_x , size_y ,
+                           best_score);
+
+  if ( (score < video_register[reg_1].features->list[feature_num_1].correspondance_score) &&
+       (score < video_register[reg_2].features->list[feature_num_2].correspondance_score)
+      )
+     {
+          video_register[reg_1].features->list[feature_num_1].correspondance_score = score;
+          video_register[reg_2].features->list[feature_num_2].correspondance_score = score;
+     }
+
+
+  return 1;
 }
 
 

@@ -8,6 +8,7 @@ struct FeatureData
 
   unsigned int x,y,z;
   unsigned int last_x,last_y,last_z;
+  unsigned int correspondance_score;
   unsigned int mem;
   unsigned int group;
 };
@@ -26,14 +27,8 @@ struct FeatureList
   unsigned int last_track_time;
   struct FeatureData * list;
 
-  unsigned int reg_for_correspondance_1;
-  struct PointCorrespondence * correspondance_1;
-
-  unsigned int reg_for_correspondance_2;
-  struct PointCorrespondence * correspondance_2;
-
-  unsigned int reg_for_correspondance_3;
-  struct PointCorrespondence * correspondance_3;
+  unsigned int reg_for_correspondance;
+  struct PointCorrespondence * correspondance;
 };
 
 struct FeatureList * CreateFeatureList(unsigned int size , unsigned int def_patch_width,unsigned int def_patch_height);
