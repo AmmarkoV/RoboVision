@@ -253,6 +253,8 @@ void DefaultSettings()
 
    settings[PASS_TO_WORLD_3D]=0; // FOR NOW ONLY PASSES TO 3D Visualization
 
+   settings[FEATURE_TRACKING_COMPARISON_THRESHOLD]=30000; /* FEATURE Tracking comparison threshold */
+
    settings[FEATURE_DETECTION_THRESHOLD]=40; // 30
 
    settings[DEPTHMAP_COMPARISON_ALSO_REVERSE_CHECK]=1;

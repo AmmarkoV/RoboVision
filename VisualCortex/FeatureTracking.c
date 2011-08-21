@@ -52,6 +52,18 @@ void GetSecondaryRegisterNamesFromLastToNew
 }
 
 
+int FastDistanceBetween2Points(struct ImageRegion * ir1,struct ImageRegion * ir2)
+{
+  int total_length=0;
+   if ( ir1->x1 > ir2->x1 ) { total_length=ir1->x1 - ir2->x1; } else
+                            { total_length=ir2->x1 - ir1->x1; }
+
+   if ( ir1->y1 > ir2->y1 ) { total_length+=ir1->y1 - ir2->y1; } else
+                            { total_length+=ir2->y1 - ir1->y1; }
+
+
+   return total_length;
+}
 
 void ExecuteTrackPointBrute(unsigned int from,unsigned int to,unsigned int point_num)
 {
@@ -79,7 +91,7 @@ void ExecuteTrackPointBrute(unsigned int from,unsigned int to,unsigned int point
       PointGoDownRight(&x2,&y2,&center_distance_x,&center_distance_y,&size_x,&size_y);
       /*We now have the starting X1,Y1 - X2,Y2 rectangle and will now try to compare it to its neighborhood on the target image*/
 
-      unsigned int patch_displacement = PATCH_SEEK_AREA /2;
+      unsigned int patch_displacement = PATCH_SEEK_AREA / 3;
 
       unsigned int x_search_area_start=video_register[from].features->list[point_num].x;
       unsigned int y_search_area_start=video_register[from].features->list[point_num].y;
@@ -89,7 +101,7 @@ void ExecuteTrackPointBrute(unsigned int from,unsigned int to,unsigned int point
       unsigned int y_search_area_end=video_register[from].features->list[point_num].y;
       PointGoDownRight(&x_search_area_end,&y_search_area_end,&patch_displacement,&patch_displacement,&size_x,&size_y);
 
-      fprintf(stderr," Search area from %u,%u to %u,%u\n",x_search_area_start,y_search_area_start,x_search_area_end,y_search_area_end);
+     // fprintf(stderr," Search area from %u,%u to %u,%u\n",x_search_area_start,y_search_area_start,x_search_area_end,y_search_area_end);
 
 
       struct ImageRegion source_rgn={0},target_rgn={0};
@@ -103,6 +115,7 @@ void ExecuteTrackPointBrute(unsigned int from,unsigned int to,unsigned int point
       SetImageRegion(&target_rgn,best_x,best_y,width,height);
       best_score = ComparePatches( &source_rgn , &target_rgn, video_register[from].pixels,video_register[to].pixels, video_register[from_edges].pixels , video_register[to_edges].pixels , video_register[from_derivatives].pixels  , video_register[to_derivatives].pixels ,
                                    video_register[from_movement].pixels  , video_register[to_movement].pixels , metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER], size_x , size_y , best_score);
+
 
 
       unsigned int x,y;
@@ -193,18 +206,6 @@ int LinkFeatures(unsigned int reg_new,unsigned int feature_num_new,unsigned int 
    return 1;
 }
 
-int FastDistanceBetween2Points(struct ImageRegion * ir1,struct ImageRegion * ir2)
-{
-  int total_length=0;
-   if ( ir1->x1 > ir2->x1 ) { total_length=ir1->x1 - ir2->x1; } else
-                            { total_length=ir2->x1 - ir1->x1; }
-
-   if ( ir1->y1 > ir2->y1 ) { total_length+=ir1->y1 - ir2->y1; } else
-                            { total_length+=ir2->y1 - ir1->y1; }
-
-
-   return total_length;
-}
 
 
 int MatchFeaturesPoints(unsigned int reg_new,unsigned int feature_num_new,unsigned int reg_old,unsigned int feature_num_old)
@@ -225,7 +226,7 @@ int MatchFeaturesPoints(unsigned int reg_new,unsigned int feature_num_new,unsign
 
   if (FastDistanceBetween2Points(&target_rgn,&source_rgn)>10 ) { /* Points to far away filtering */ return 0; }
 
-  score = ComparePatches( &source_rgn , &target_rgn, video_register[reg_new].pixels,video_register[reg_old].pixels,
+  score = ComparePatches( &target_rgn,&source_rgn ,  video_register[reg_new].pixels,video_register[reg_old].pixels,
                            video_register[from_edges].pixels , video_register[to_edges].pixels ,
                            video_register[from_derivatives].pixels  , video_register[to_derivatives].pixels ,
                            video_register[from_movement].pixels  , video_register[to_movement].pixels ,
@@ -233,7 +234,10 @@ int MatchFeaturesPoints(unsigned int reg_new,unsigned int feature_num_new,unsign
                            size_x , size_y ,
                            best_score);
 
-  if ( (score < video_register[reg_new].features->list[feature_num_new].correspondance_score) )
+  if (
+        (score < settings[FEATURE_TRACKING_COMPARISON_THRESHOLD] ) &&
+        (score < video_register[reg_new].features->list[feature_num_new].correspondance_score)
+     )
      {
           video_register[reg_new].features->list[feature_num_new].correspondance_score = score;
           LinkFeatures(reg_new,feature_num_new,reg_old,feature_num_old);
@@ -250,18 +254,15 @@ int TrackAllPointsOnRegisters(unsigned int reg_new , unsigned int reg_old , unsi
     if (   video_register[reg_old].features->last_track_time < settings[TIME_BETWEEN_TRACKING] + TIME_INC )
      {
        // RemoveTrackPointsIfTimedOut(video_register[reg_new].features,timeout);
-
-
         int old_feature_iterator = 0;
         int new_feature_iterator = 0;
 
         while ( new_feature_iterator < video_register[reg_new].features->current_features)
              { // RESET SCORE AND MARK ALL NODES AS LOST
-                video_register[reg_new].features->list[new_feature_iterator].correspondance_score = 100000;
+                video_register[reg_new].features->list[new_feature_iterator].correspondance_score = settings[FEATURE_TRACKING_COMPARISON_THRESHOLD]+1;
                 video_register[reg_new].features->list[new_feature_iterator].lost = 1;
                 ++new_feature_iterator;
              }
-
 
 
         old_feature_iterator = 0;

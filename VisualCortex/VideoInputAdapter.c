@@ -52,7 +52,7 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
         // FOURTH TRACK ALL POINTS ON NEW FRAME FROM OLD FRAME
         VisCortx_Movement_Detection(1,0);
         VisCortx_AutoAddTrackPoints(0);
-        TrackAllPointsOnRegisters(CALIBRATED_LEFT_EYE,LAST_CALIBRATED_LEFT_EYE,8000);
+        TrackAllPointsOnRegistersBrute(CALIBRATED_LEFT_EYE,LAST_CALIBRATED_LEFT_EYE,8000);
 
         video_register[input_img_regnum].lock=0;
     } else
@@ -82,7 +82,7 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
         // FOURTH TRACK ALL POINTS ON NEW FRAME FROM OLD FRAME
         VisCortx_Movement_Detection(0,1);
         VisCortx_AutoAddTrackPoints(1);
-        TrackAllPointsOnRegisters(CALIBRATED_RIGHT_EYE,LAST_CALIBRATED_RIGHT_EYE,8000);
+        TrackAllPointsOnRegistersBrute(CALIBRATED_RIGHT_EYE,LAST_CALIBRATED_RIGHT_EYE,8000);
 
         video_register[input_img_regnum].lock=0;
     }

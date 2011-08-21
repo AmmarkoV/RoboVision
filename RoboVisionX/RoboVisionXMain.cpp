@@ -472,9 +472,9 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
          {
             if ( VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_IS_LOST) == 0 )
             {
-             //  dc.SetPen(marker);
+               dc.SetPen(marker);
              dc.DrawRectangle(feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_Y),3,3);
-             // dc.SetPen(red_marker);
+              dc.SetPen(red_marker);
              dc.DrawLine(feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_Y),
                          feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_LAST_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_LAST_Y));
             }
@@ -487,16 +487,18 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
          {
            if ( VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_IS_LOST) == 0 )
             {
-           //  dc.SetPen(marker);
+              dc.SetPen(marker);
              dc.DrawRectangle(feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_Y),3,3);
-           //  dc.SetPen(red_marker);
+              dc.SetPen(red_marker);
              dc.DrawLine(feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_Y),
                          feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_LAST_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_LAST_Y));
             }
          }
        }
-     }
 
+
+      dc.SetPen(marker);
+     }
 
 
      if ( uptimer->Time() - last_draw < 4500 ) { return; }

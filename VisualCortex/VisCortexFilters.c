@@ -675,7 +675,10 @@ int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned i
 {
 
     /* TODO , For now the full register is returned!*/
-       if ( settings[INPUT_CALIBRATION]==0 ) { return CopyRegister(rgb_image,rgb_calibrated); }
+       if ( settings[INPUT_CALIBRATION]==0 )
+         {
+           return CopyRegister(rgb_image,rgb_calibrated);
+         }
     /*The array M is the array calculated from Precalculations.c to speed up things*/
 
     unsigned int ptr=0 , new_ptr = 0, ptr_end = metrics[RESOLUTION_MEMORY_LIMIT_3BYTE] ;
