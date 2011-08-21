@@ -20,19 +20,19 @@
 		<Cursor position="345" topLine="0" />
 	</File>
 	<File name="FeatureExtraction.c" open="1" top="0" tabpos="14">
-		<Cursor position="4925" topLine="170" />
+		<Cursor position="5838" topLine="171" />
 	</File>
 	<File name="FeatureExtraction.h" open="1" top="0" tabpos="15">
-		<Cursor position="78" topLine="0" />
+		<Cursor position="162" topLine="0" />
 	</File>
 	<File name="FeatureLists.c" open="1" top="0" tabpos="38">
-		<Cursor position="2224" topLine="60" />
+		<Cursor position="3860" topLine="111" />
 	</File>
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
-		<Cursor position="164" topLine="0" />
+		<Cursor position="305" topLine="0" />
 	</File>
 	<File name="FeatureTracking.c" open="1" top="1" tabpos="20">
-		<Cursor position="10842" topLine="221" />
+		<Cursor position="12068" topLine="241" />
 	</File>
 	<File name="FeatureTracking.h" open="1" top="0" tabpos="29">
 		<Cursor position="489" topLine="0" />
@@ -80,7 +80,7 @@
 		<Cursor position="397" topLine="0" />
 	</File>
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="4220" topLine="42" />
+		<Cursor position="1635" topLine="38" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="91" topLine="0" />
@@ -104,15 +104,15 @@
 		<Cursor position="293" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="1713" topLine="17" />
+		<Cursor position="12088" topLine="265" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="712" topLine="0" />
+		<Cursor position="808" topLine="96" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="20542" topLine="590" />
+		<Cursor position="19335" topLine="530" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="6524" topLine="218" />
+		<Cursor position="4349" topLine="188" />
 	</File>
 </CodeBlocks_layout_file>

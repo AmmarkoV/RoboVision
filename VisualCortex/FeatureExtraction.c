@@ -211,7 +211,7 @@ int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_
 
   free(corner_list);
 
-    fprintf(stderr,"Extract features returns %u corners \n",numcorners);
+  //  fprintf(stderr,"Extract features returns %u corners \n",numcorners);
     return numcorners;
 }
 

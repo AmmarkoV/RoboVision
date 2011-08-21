@@ -223,7 +223,7 @@ int MatchFeaturesPoints(unsigned int reg_new,unsigned int feature_num_new,unsign
   SetImageRegionFromFeatureNumber(&target_rgn,reg_new,feature_num_new);
   SetImageRegionFromFeatureNumber(&source_rgn,reg_old,feature_num_old);
 
-  if (FastDistanceBetween2Points(&target_rgn,&source_rgn)>20 ) { /* Points to far away filtering */ return 0; }
+  if (FastDistanceBetween2Points(&target_rgn,&source_rgn)>10 ) { /* Points to far away filtering */ return 0; }
 
   score = ComparePatches( &source_rgn , &target_rgn, video_register[reg_new].pixels,video_register[reg_old].pixels,
                            video_register[from_edges].pixels , video_register[to_edges].pixels ,
@@ -264,11 +264,10 @@ int TrackAllPointsOnRegisters(unsigned int reg_new , unsigned int reg_old , unsi
 
 
 
-        new_feature_iterator = 0;
+        old_feature_iterator = 0;
         while ( old_feature_iterator < video_register[reg_old].features->current_features)
           {
              new_feature_iterator = 0;
-
              while ( new_feature_iterator < video_register[reg_new].features->current_features)
              {
                MatchFeaturesPoints(reg_new,new_feature_iterator,reg_old,old_feature_iterator);
