@@ -187,7 +187,7 @@ int ExtractFeaturesMy(int rgb_reg,unsigned int edge_reg,unsigned int second_deri
 
 
 
-int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_reg,unsigned int max_features,unsigned int cam_num)
+int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_reg,unsigned int cam_num)
 {
    CopyRegister(rgb_reg,GENERAL_2);
    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2);

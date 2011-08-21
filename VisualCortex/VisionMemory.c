@@ -253,7 +253,7 @@ void DefaultSettings()
 
    settings[PASS_TO_WORLD_3D]=0; // FOR NOW ONLY PASSES TO 3D Visualization
 
-   settings[FEATURE_DETECTION_THRESHOLD]=30; // 30
+   settings[FEATURE_DETECTION_THRESHOLD]=40; // 30
 
    settings[DEPTHMAP_COMPARISON_ALSO_REVERSE_CHECK]=1;
 
@@ -297,7 +297,7 @@ void DefaultSettings()
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=10;
     settings[PATCH_HIST_THRESHOLD_R]=9; settings[PATCH_HIST_THRESHOLD_G]=9; settings[PATCH_HIST_THRESHOLD_B]=9;
 
-    settings[MAX_FEATURES]=500;
+    settings[MAX_FEATURES]=1000;
     settings[PATCH_TRACKING_WIDTH]=19;
     settings[PATCH_TRACKING_HEIGHT]=19;
 
@@ -479,7 +479,6 @@ void SwapInts(unsigned int * int1,unsigned int *int2)
 
 int SwapRegister(unsigned int source,unsigned int target)
 {
-
   register unsigned char *tmp_reg  = video_register[source].pixels;
   video_register[source].pixels = video_register[target].pixels;
   video_register[target].pixels = tmp_reg;

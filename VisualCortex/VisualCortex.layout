@@ -26,13 +26,13 @@
 		<Cursor position="78" topLine="0" />
 	</File>
 	<File name="FeatureLists.c" open="1" top="0" tabpos="38">
-		<Cursor position="1141" topLine="28" />
+		<Cursor position="2224" topLine="60" />
 	</File>
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
-		<Cursor position="720" topLine="4" />
+		<Cursor position="164" topLine="0" />
 	</File>
 	<File name="FeatureTracking.c" open="1" top="1" tabpos="20">
-		<Cursor position="7729" topLine="150" />
+		<Cursor position="10842" topLine="221" />
 	</File>
 	<File name="FeatureTracking.h" open="1" top="0" tabpos="29">
 		<Cursor position="489" topLine="0" />
@@ -104,7 +104,7 @@
 		<Cursor position="293" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="10211" topLine="240" />
+		<Cursor position="1713" topLine="17" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="712" topLine="0" />

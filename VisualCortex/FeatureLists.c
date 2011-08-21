@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 
+
 int ClearFeatureList(struct FeatureList * list)
 {
   list->reg_for_correspondance=0;
@@ -20,7 +21,6 @@ struct FeatureList * CreateFeatureList(unsigned int size , unsigned int def_patc
   new_fls->list = malloc ( sizeof(struct FeatureData) * size );
   new_fls->last_track_time = 0;
 
-  new_fls->correspondance = malloc ( sizeof(struct PointCorrespondence) * size );
 
   ClearFeatureList(new_fls);
   return new_fls;
@@ -28,10 +28,7 @@ struct FeatureList * CreateFeatureList(unsigned int size , unsigned int def_patc
 
 int DestroyFeatureList(struct FeatureList * list)
 {
-
   list->reg_for_correspondance=0;
-  free(list->correspondance);
-
 
   list->max_features = 0;
   free(list->list);
@@ -61,19 +58,17 @@ int CopyFeatureList(struct FeatureList * source,struct FeatureList * target)
       target->list[i].last_y = source->list[i].last_y;
       target->list[i].z = source->list[i].z;
       target->list[i].last_z = source->list[i].last_z;
+
+      target->list[i].patch_width = source->list[i].patch_width;
+      target->list[i].patch_height = source->list[i].patch_height;
+
+      target->list[i].correspondance_score = source->list[i].correspondance_score;
+
       target->list[i].mem = source->list[i].mem;
       target->list[i].group = source->list[i].group;
    }
 
   target->reg_for_correspondance = source->reg_for_correspondance;
-  for (i=0; i < target->current_features; i++)
-   {
-      target->correspondance[i].mapped_to = source->correspondance[i].mapped_to;
-      target->correspondance[i].patch_width = source->correspondance[i].patch_width;
-      target->correspondance[i].patch_height = source->correspondance[i].patch_height;
-      target->correspondance[i].score = source->correspondance[i].score;
-   }
-
 
    return 1;
 }
@@ -142,6 +137,7 @@ int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned in
       case FEATURE_LAST_Y : return list->list[point_num].last_y; break;
       case FEATURE_LAST_Z : return list->list[point_num].last_z; break;
       case PRINT_FEATURE_LIST : PrintFeatureListContents(list); break;
+      case FEATURE_IS_LOST : return list->list[point_num].lost; break;
       case MATCHED_WITH_REG : return 0; break;
     };
   return 0;

@@ -63,18 +63,6 @@ void ExecuteTrackPointBrute(unsigned int from,unsigned int to,unsigned int point
                                &from_edges,&from_derivatives,&from_movement,
                                &to_edges,&to_derivatives,&to_movement
                               );
-/*
-  if ((from==LEFT_EYE)||(to==LEFT_EYE))
-       {
-         from_edges=LAST_EDGES_LEFT; from_derivatives=LAST_SECOND_DERIVATIVE_LEFT; from_movement=LAST_MOVEMENT_LEFT;
-         to_edges=EDGES_LEFT; to_derivatives=SECOND_DERIVATIVE_LEFT; to_movement=MOVEMENT_LEFT;
-       }
-  if ((from==RIGHT_EYE)||(to==RIGHT_EYE))
-       {
-         from_edges=LAST_EDGES_RIGHT; from_derivatives=LAST_SECOND_DERIVATIVE_RIGHT; from_movement=LAST_MOVEMENT_RIGHT;
-         to_edges=EDGES_RIGHT; to_derivatives=SECOND_DERIVATIVE_RIGHT; to_movement=MOVEMENT_RIGHT;
-       }
-*/
 
 
   unsigned int min=0,size_x=metrics[RESOLUTION_X],size_y=metrics[RESOLUTION_Y];
@@ -181,40 +169,63 @@ void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num)
                               );
 }
 
-int SetImageRegionFromFeatureNumber( struct ImageRegion * last_ir, struct ImageRegion * ir ,unsigned int reg,unsigned int feature_num)
+int SetImageRegionFromFeatureNumber(struct ImageRegion * ir ,unsigned int reg,unsigned int feature_num)
 {
-   if ( ir == 0 ) { return 0; }
-   last_ir->x1=video_register[reg].features->list[feature_num].last_x;
-   last_ir->y1=video_register[reg].features->list[feature_num].last_y;
+   if  ( ir == 0 )  { return 0; }
    ir->x1=video_register[reg].features->list[feature_num].x;
    ir->y1=video_register[reg].features->list[feature_num].y;
 
-/*
-   last_ir->width = width;
-   last_ir->height = height;
-   ir->width = width;
-   ir->height = height;*/
+
+   ir->width = metrics[HORIZONTAL_BUFFER];
+   ir->height = metrics[VERTICAL_BUFFER];
+
    return 1;
 }
 
 
-int MatchFeaturesPoints(unsigned int reg_1,unsigned int feature_num_1,unsigned int reg_2,unsigned int feature_num_2)
+int LinkFeatures(unsigned int reg_new,unsigned int feature_num_new,unsigned int reg_old,unsigned int feature_num_old)
+{
+   video_register[reg_new].features->list[feature_num_new].last_x = video_register[reg_old].features->list[feature_num_old].x;
+   video_register[reg_new].features->list[feature_num_new].last_y = video_register[reg_old].features->list[feature_num_old].y;
+   video_register[reg_new].features->list[feature_num_new].last_z = video_register[reg_old].features->list[feature_num_old].z;
+   video_register[reg_new].features->list[feature_num_new].lost = 0;
+
+   return 1;
+}
+
+int FastDistanceBetween2Points(struct ImageRegion * ir1,struct ImageRegion * ir2)
+{
+  int total_length=0;
+   if ( ir1->x1 > ir2->x1 ) { total_length=ir1->x1 - ir2->x1; } else
+                            { total_length=ir2->x1 - ir1->x1; }
+
+   if ( ir1->y1 > ir2->y1 ) { total_length+=ir1->y1 - ir2->y1; } else
+                            { total_length+=ir2->y1 - ir1->y1; }
+
+
+   return total_length;
+}
+
+
+int MatchFeaturesPoints(unsigned int reg_new,unsigned int feature_num_new,unsigned int reg_old,unsigned int feature_num_old)
 {
   unsigned int size_x=metrics[RESOLUTION_X],size_y=metrics[RESOLUTION_Y];
   unsigned int from_edges,from_derivatives,from_movement;
   unsigned int to_edges,to_derivatives,to_movement;
     GetSecondaryRegisterNamesFromLastToNew
-                             ( reg_1,reg_2 ,
+                             ( reg_new,reg_old ,
                               &from_edges,&from_derivatives,&from_movement,
                               &to_edges,&to_derivatives,&to_movement
                               );
-  unsigned int best_score = video_register[reg_1].features->list[feature_num_1].correspondance_score;
+  unsigned int best_score = video_register[reg_new].features->list[feature_num_new].correspondance_score;
   unsigned int score;
   struct ImageRegion source_rgn={0},target_rgn={0};
-  SetImageRegionFromFeatureNumber(&source_rgn,&target_rgn,reg_1,feature_num_1);
-  SetImageRegionFromFeatureNumber(&source_rgn,&target_rgn,reg_2,feature_num_2);
+  SetImageRegionFromFeatureNumber(&target_rgn,reg_new,feature_num_new);
+  SetImageRegionFromFeatureNumber(&source_rgn,reg_old,feature_num_old);
 
-  score = ComparePatches( &source_rgn , &target_rgn, video_register[reg_1].pixels,video_register[reg_2].pixels,
+  if (FastDistanceBetween2Points(&target_rgn,&source_rgn)>20 ) { /* Points to far away filtering */ return 0; }
+
+  score = ComparePatches( &source_rgn , &target_rgn, video_register[reg_new].pixels,video_register[reg_old].pixels,
                            video_register[from_edges].pixels , video_register[to_edges].pixels ,
                            video_register[from_derivatives].pixels  , video_register[to_derivatives].pixels ,
                            video_register[from_movement].pixels  , video_register[to_movement].pixels ,
@@ -222,16 +233,15 @@ int MatchFeaturesPoints(unsigned int reg_1,unsigned int feature_num_1,unsigned i
                            size_x , size_y ,
                            best_score);
 
-  if ( (score < video_register[reg_1].features->list[feature_num_1].correspondance_score) &&
-       (score < video_register[reg_2].features->list[feature_num_2].correspondance_score)
-      )
+  if ( (score < video_register[reg_new].features->list[feature_num_new].correspondance_score) )
      {
-          video_register[reg_1].features->list[feature_num_1].correspondance_score = score;
-          video_register[reg_2].features->list[feature_num_2].correspondance_score = score;
+          video_register[reg_new].features->list[feature_num_new].correspondance_score = score;
+          LinkFeatures(reg_new,feature_num_new,reg_old,feature_num_old);
+          return 1;
      }
 
 
-  return 1;
+  return 0;
 }
 
 
@@ -239,22 +249,33 @@ int TrackAllPointsOnRegisters(unsigned int reg_new , unsigned int reg_old , unsi
 {
     if (   video_register[reg_old].features->last_track_time < settings[TIME_BETWEEN_TRACKING] + TIME_INC )
      {
-        RemoveTrackPointsIfTimedOut(video_register[reg_new].features,timeout);
+       // RemoveTrackPointsIfTimedOut(video_register[reg_new].features,timeout);
 
 
         int old_feature_iterator = 0;
         int new_feature_iterator = 0;
 
+        while ( new_feature_iterator < video_register[reg_new].features->current_features)
+             { // RESET SCORE AND MARK ALL NODES AS LOST
+                video_register[reg_new].features->list[new_feature_iterator].correspondance_score = 100000;
+                video_register[reg_new].features->list[new_feature_iterator].lost = 1;
+                ++new_feature_iterator;
+             }
+
+
+
+        new_feature_iterator = 0;
         while ( old_feature_iterator < video_register[reg_old].features->current_features)
           {
-             ++old_feature_iterator;
              new_feature_iterator = 0;
 
              while ( new_feature_iterator < video_register[reg_new].features->current_features)
              {
-               ++new_feature_iterator;
                MatchFeaturesPoints(reg_new,new_feature_iterator,reg_old,old_feature_iterator);
+               ++new_feature_iterator;
              }
+
+             ++old_feature_iterator;
           }
      }
 

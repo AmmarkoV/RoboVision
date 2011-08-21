@@ -460,6 +460,8 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
      {
         unsigned int i=0;
         wxPen marker(wxColour(255,255,0),1,wxSOLID);
+        wxPen red_marker(wxColour(255,0,0),1,wxSOLID);
+        wxPen green_marker(wxColour(255,0,0),1,wxSOLID);
         dc.SetPen(marker);
         dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
@@ -468,10 +470,14 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
        {
         for ( i=0; i<VisCortx_GetFeature(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS); i++ )
          {
-             dc.DrawRectangle(feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_Y),5,5);
+            if ( VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_IS_LOST) == 0 )
+            {
+             //  dc.SetPen(marker);
+             dc.DrawRectangle(feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_Y),3,3);
+             // dc.SetPen(red_marker);
              dc.DrawLine(feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_Y),
                          feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_LAST_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_LAST_Y));
-
+            }
          }
        }
 
@@ -479,9 +485,14 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
        {
         for ( i=0; i<VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS); i++ )
          {
-             dc.DrawRectangle(feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_Y),5,5);
+           if ( VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_IS_LOST) == 0 )
+            {
+           //  dc.SetPen(marker);
+             dc.DrawRectangle(feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_Y),3,3);
+           //  dc.SetPen(red_marker);
              dc.DrawLine(feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_Y),
                          feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_LAST_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_LAST_Y));
+            }
          }
        }
      }
@@ -526,18 +537,7 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
 
    wxStopWatch sw1;
    if ( SnapWebCams() == 1 )
-    {/*
-        Tracking is now handled by the VisCortexInternally
-      VisCortx_Movement_Detection(1,1);
-      VisCortx_RemoveTimedoutTrackPoints(0,8000);
-      VisCortx_RemoveTimedoutTrackPoints(1,8000);
-      VisCortx_CopyTrackPoints(LEFT_EYE,LAST_LEFT_EYE);
-      VisCortx_TrackPoints(LAST_LEFT_EYE,LEFT_EYE);
-      VisCortx_CopyTrackPoints(RIGHT_EYE,LAST_RIGHT_EYE);
-      VisCortx_TrackPoints(LAST_RIGHT_EYE,RIGHT_EYE);
-      VisCortx_RenewAllTrackPoints(LEFT_EYE);
-      VisCortx_RenewAllTrackPoints(RIGHT_EYE);*/
-    }
+    {/* Tracking is now handled by the VisCortexInternally */ }
    sw1.Pause();
 
    if ( sw1.Time() == 0 ) { frame_rate = 1000; } else

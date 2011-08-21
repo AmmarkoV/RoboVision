@@ -534,12 +534,12 @@ void  VisCortx_AutoAddTrackPoints(unsigned int cam)
  if (cam==0)
   {
       CopyFeatureList(video_register[CALIBRATED_LEFT_EYE].features,video_register[LAST_LEFT_EYE].features);
-      ExtractFeatures(CALIBRATED_LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,200,0);
+      ExtractFeatures(CALIBRATED_LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,0);
   } else
   if (cam==1)
   {
       CopyFeatureList(video_register[CALIBRATED_RIGHT_EYE].features,video_register[LAST_RIGHT_EYE].features);
-      ExtractFeatures(CALIBRATED_RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,200,1);
+      ExtractFeatures(CALIBRATED_RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,1);
   }
  return;
 }
