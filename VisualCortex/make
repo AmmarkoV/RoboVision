@@ -6,7 +6,7 @@ echo "Compiling files.."
 gcc  -Os -O3 -fexpensive-optimizations -c DisparityDepthMap.c -o DisparityDepthMap.o
 gcc  -Os -O3 -fexpensive-optimizations -c DisparityDepthMap_Heuristics.c -o DisparityDepthMap_Heuristics.o 
 gcc  -Os -O3 -fexpensive-optimizations -c MovementRegistration.c -o MovementRegistration.o
-gcc  -Os -O3 -fexpensive-optimizations -c FaceDetection.c -o FaceDetection.o 
+gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c FaceDetection.c -o FaceDetection.o 
 gcc  -Os -O3 -fexpensive-optimizations -c FeatureLists.c -o FeatureLists.o 
 gcc  -Os -O3 -fexpensive-optimizations -c FeatureExtraction.c -o FeatureExtraction.o 
 gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c FeatureTracking.c -o FeatureTracking.o
