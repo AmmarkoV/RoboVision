@@ -5,7 +5,9 @@
 #include "VisCortexFilters.h"
 #include "VisionMemory.h"
 #include "PatchComparison.h"
-
+#include <cv.h>
+#include <cxcore.h>
+#include <highgui.h>
 
 unsigned int PATCH_DISPLACEMENT=PATCH_SIZE/3; // PATCH_SIZE div 2 ( gia PATCH_SIZE=9 -> 4 )
 unsigned int PATCH_SIZE_MULT_3=PATCH_SIZE*3;
@@ -280,6 +282,17 @@ int TrackAllPointsOnRegisters(unsigned int reg_new , unsigned int reg_old , unsi
      }
 
     return 1;
+}
+
+
+int TrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int reg_old , unsigned int timeout)
+{
+	IplImage* imgA = cvLoadImage("image0.png", CV_LOAD_IMAGE_GRAYSCALE);
+	CvSize img_sz = cvGetSize( imgA );
+
+    	IplImage* eig_image = cvCreateImage( img_sz, IPL_DEPTH_32F, 1 );
+   	    IplImage* tmp_image = cvCreateImage( img_sz, IPL_DEPTH_32F, 1 );
+   	    return 0;
 }
 
 

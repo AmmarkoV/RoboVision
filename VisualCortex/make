@@ -3,25 +3,25 @@ echo "Hand made make script for VisualCortex - VisualCortex_Tester .."
 echo "Should provide libVisualCortex.a and VisCortx_Tester/bin/Release/VisCortx_Tester"
 echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
 echo "Compiling files.."
-gcc -Os -O3 -fexpensive-optimizations -c DisparityDepthMap.c -o DisparityDepthMap.o
-gcc -Os -O3 -fexpensive-optimizations -c DisparityDepthMap_Heuristics.c -o DisparityDepthMap_Heuristics.o 
-gcc -Os -O3 -fexpensive-optimizations -c MovementRegistration.c -o MovementRegistration.o
-gcc -Os -O3 -fexpensive-optimizations -c FaceDetection.c -o FaceDetection.o 
-gcc -Os -O3 -fexpensive-optimizations -c FeatureLists.c -o FeatureLists.o 
-gcc -Os -O3 -fexpensive-optimizations -c FeatureExtraction.c -o FeatureExtraction.o 
-gcc -Os -O3 -fexpensive-optimizations -c FeatureTracking.c -o FeatureTracking.o
-gcc -Os -O3 -fexpensive-optimizations -c IntegralImageConversion.c -o IntegralImageConversion.o
-gcc -Os -O3 -fexpensive-optimizations -c PatchComparison.c -o PatchComparison.o
-gcc -Os -O3 -fexpensive-optimizations -c PatternRecognition.c -o PatternRecognition.o
-gcc -Os -O3 -fexpensive-optimizations -c Precalculations.c -o Precalculations.o 
-gcc -Os -O3 -fexpensive-optimizations -c StateSetting.c -o StateSetting.o
-gcc -Os -O3 -fexpensive-optimizations -c VisCortexConvolutionFilters.c -o VisCortexConvolutionFilters.o
-gcc -Os -O3 -fexpensive-optimizations -c VisCortexFilters.c -o VisCortexFilters.o
-gcc -Os -O3 -fexpensive-optimizations -c VisCortexHeuristics.c -o VisCortexHeuristics.o 
-gcc -Os -O3 -fexpensive-optimizations -c VisionMemory.c -o VisionMemory.o
-gcc -Os -O3 -fexpensive-optimizations -c VideoInputAdapter.c -o VideoInputAdapter.o 
-gcc -Os -O3 -fexpensive-optimizations -c LinearAlgebra.c -o LinearAlgebra.o  
-gcc -Os -O3 -fexpensive-optimizations -c VisualCortex.c -o VisualCortex.o
+gcc  -Os -O3 -fexpensive-optimizations -c DisparityDepthMap.c -o DisparityDepthMap.o
+gcc  -Os -O3 -fexpensive-optimizations -c DisparityDepthMap_Heuristics.c -o DisparityDepthMap_Heuristics.o 
+gcc  -Os -O3 -fexpensive-optimizations -c MovementRegistration.c -o MovementRegistration.o
+gcc  -Os -O3 -fexpensive-optimizations -c FaceDetection.c -o FaceDetection.o 
+gcc  -Os -O3 -fexpensive-optimizations -c FeatureLists.c -o FeatureLists.o 
+gcc  -Os -O3 -fexpensive-optimizations -c FeatureExtraction.c -o FeatureExtraction.o 
+gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c FeatureTracking.c -o FeatureTracking.o
+gcc  -Os -O3 -fexpensive-optimizations -c IntegralImageConversion.c -o IntegralImageConversion.o
+gcc  -Os -O3 -fexpensive-optimizations -c PatchComparison.c -o PatchComparison.o
+gcc  -Os -O3 -fexpensive-optimizations -c PatternRecognition.c -o PatternRecognition.o
+gcc  -Os -O3 -fexpensive-optimizations -c Precalculations.c -o Precalculations.o 
+gcc  -Os -O3 -fexpensive-optimizations -c StateSetting.c -o StateSetting.o
+gcc  -Os -O3 -fexpensive-optimizations -c VisCortexConvolutionFilters.c -o VisCortexConvolutionFilters.o
+gcc  -Os -O3 -fexpensive-optimizations -c VisCortexFilters.c -o VisCortexFilters.o
+gcc  -Os -O3 -fexpensive-optimizations -c VisCortexHeuristics.c -o VisCortexHeuristics.o 
+gcc  -Os -O3 -fexpensive-optimizations -c VisionMemory.c -o VisionMemory.o
+gcc  -Os -O3 -fexpensive-optimizations -c VideoInputAdapter.c -o VideoInputAdapter.o 
+gcc  -Os -O3 -fexpensive-optimizations -c LinearAlgebra.c -o LinearAlgebra.o  
+gcc  -Os -O3 -fexpensive-optimizations -c VisualCortex.c -o VisualCortex.o
 
 
 echo "Linking files.."
