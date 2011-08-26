@@ -31,12 +31,16 @@
 					<Add option="-Os" />
 					<Add option="-O3" />
 					<Add option="-Wall" />
+					<Add option="`pkg-config opencv --cflags`" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
 				</Linker>
 			</Target>
 		</Build>
+		<Linker>
+			<Add option="`pkg-config --libs opencv`" />
+		</Linker>
 		<Unit filename="DisparityDepthMap.c">
 			<Option compilerVar="CC" />
 		</Unit>
