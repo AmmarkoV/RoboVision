@@ -84,8 +84,6 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
 
         // FOURTH TRACK ALL POINTS ON NEW FRAME FROM OLD FRAME
         VisCortx_Movement_Detection(0,1);
-        VisCortx_AutoAddTrackPoints(1);
-
         if ( GetFeatureData(video_register[CALIBRATED_LEFT_EYE].features,0,TOTAL_POINTS) < 30 )
           {
             VisCortx_AutoAddTrackPoints(1);
