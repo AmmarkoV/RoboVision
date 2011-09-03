@@ -189,27 +189,41 @@ int ExtractFeaturesMy(int rgb_reg,unsigned int edge_reg,unsigned int second_deri
 
 int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_reg,unsigned int cam_num)
 {
+   fprintf(stderr,"ExtractFeatures called \n");
    CopyRegister(rgb_reg,GENERAL_2);
+   fprintf(stderr,"CopyRegister called \n");
    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2);
+   fprintf(stderr,"ConvertRegisterFrom3ByteTo1Byte called \n");
    ClearFeatureList(video_register[rgb_reg].features);
+   fprintf(stderr,"ClearFeatureList called \n");
 
-   int numcorners;
+   int numcorners=0;
    struct xy_local * corner_list; //(struct xy * )
+   corner_list = 0;
    corner_list = (struct xy_local *) fast9_detect_nonmax ( video_register[GENERAL_2].pixels ,
                                                            metrics[RESOLUTION_X] , metrics[RESOLUTION_Y] ,
                                                            metrics[RESOLUTION_X] ,
                                                            settings[FEATURE_DETECTION_THRESHOLD] ,
                                                            &numcorners );
+  fprintf(stderr,"ExtractFeatures called \n");
+
+  if ( corner_list == 0 )
+    {
+        fprintf(stderr,"FAST Feature extractor returned null pointer .. assuming no memory leak and returning 0 \n");
+        return 0;
+    }
 
   int i=0 ;
-  for ( i=0; i < numcorners; i++ )
+  for ( i=0; i <numcorners; i++ )
     {
 
          AddToFeatureList(  video_register[rgb_reg].features  ,
                             corner_list[i].x , corner_list[i].y , 1);
     }
+  fprintf(stderr,"AddToFeatureList called %u times \n",numcorners);
 
   free(corner_list);
+  fprintf(stderr,"free called \n");
 
   //  fprintf(stderr,"Extract features returns %u corners \n",numcorners);
     return numcorners;

@@ -160,6 +160,7 @@ void ExecuteTrackPointBrute(unsigned int from,unsigned int to,unsigned int point
 
 int TrackAllPointsOnRegistersBrute(unsigned int reg_new , unsigned int reg_old , unsigned int timeout)
 {
+
     if (   video_register[reg_old].features->last_track_time < settings[TIME_BETWEEN_TRACKING] + TIME_INC )
      {
         RemoveTrackPointsIfTimedOut(video_register[reg_new].features,timeout);
@@ -289,6 +290,7 @@ int TrackAllPointsOnRegisters(unsigned int reg_new , unsigned int reg_old , unsi
 int TrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int reg_old , unsigned int timeout)
 {
     // Load two images and allocate other structures
+    /*
 	IplImage* imgA = cvLoadImage("image0.png", CV_LOAD_IMAGE_GRAYSCALE);
 	IplImage* imgB = cvLoadImage("image1.png", CV_LOAD_IMAGE_GRAYSCALE);
 
@@ -300,7 +302,7 @@ int TrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int reg_old 
 	// Get the features for tracking
 	IplImage* eig_image = cvCreateImage( img_sz, IPL_DEPTH_32F, 1 );
 	IplImage* tmp_image = cvCreateImage( img_sz, IPL_DEPTH_32F, 1 );
-/*
+
 	int corner_count = MAX_CORNERS;
 	CvPoint2D32f* cornersA = new CvPoint2D32f[ MAX_CORNERS ];
 
