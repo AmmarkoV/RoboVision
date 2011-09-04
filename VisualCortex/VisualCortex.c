@@ -496,6 +496,50 @@ int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam)
                         }
   return 1;
 }
+
+int VisCortx_Movement_At_Rectangle(unsigned int reg_num , unsigned int x, unsigned int y , unsigned int width , unsigned int height )
+{
+    if (  (reg_num==LEFT_EYE) || (reg_num==CALIBRATED_LEFT_EYE) ) {  return GetCompressedRegisterPatchSum(MOVEMENT_GROUPED_LEFT,x,y,width,height);  } else
+    if (  (reg_num==RIGHT_EYE) || (reg_num==CALIBRATED_RIGHT_EYE) ) {  return GetCompressedRegisterPatchSum(MOVEMENT_GROUPED_RIGHT,x,y,width,height);  } else
+    {
+        fprintf(stderr,"VisCortx_Movement_At_Rectangle called with unknown register ( returning zero ) \n");
+    }
+
+    return 0;
+}
+
+
+int VisCortx_Movement_At_Edge(unsigned int reg_num , unsigned int edge_enum)
+{
+    unsigned int dim_length = 0;
+
+    switch ( edge_enum )
+     {
+         case DIRECTION_UP  :
+             dim_length =  metrics[RESOLUTION_Y] / 4 ;
+             return VisCortx_Movement_At_Rectangle(reg_num,0,0,metrics[RESOLUTION_X],dim_length);
+         break;
+         case DIRECTION_DOWN  :
+             dim_length =  metrics[RESOLUTION_Y] / 4 ;
+             return VisCortx_Movement_At_Rectangle(reg_num,0,metrics[RESOLUTION_Y]-dim_length-1,metrics[RESOLUTION_X],dim_length);
+         break;
+         case DIRECTION_LEFT  :
+             dim_length = metrics[RESOLUTION_X] / 6 ;
+             return VisCortx_Movement_At_Rectangle(reg_num,0,0,dim_length,metrics[RESOLUTION_Y]);
+         break;
+         case DIRECTION_RIGHT  :
+             dim_length = metrics[RESOLUTION_X] / 6 ;
+             return VisCortx_Movement_At_Rectangle(reg_num,metrics[RESOLUTION_X]-dim_length-1,0,dim_length,metrics[RESOLUTION_Y]);
+         break;
+
+         default :
+
+     };
+
+
+    return 0;
+}
+
 /*
  ----------------- MOVEMENT REGISTRATION ----------------------
 */

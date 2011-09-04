@@ -227,6 +227,17 @@ enum FeatureTypeElements
     TOTAL_FEATURE_ELEMENTS
 };
 
+
+enum OrientationSettins
+{
+    DIRECTION_UP = 0,
+    DIRECTION_DOWN ,
+    DIRECTION_LEFT ,
+    DIRECTION_RIGHT ,
+    // ---------------
+    TOTAL_DIRECTIONS
+};
+
 char *  VisCortx_Version();
 void VisCortx_SetTime(unsigned int thetime);
 unsigned int VisCortx_GetTime();
@@ -267,6 +278,7 @@ unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int
  int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,signed int divisor,unsigned int table_size);
 
 int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam);
+int VisCortx_Movement_At_Rectangle(unsigned int reg_num , unsigned int x, unsigned int y , unsigned int width , unsigned int height );
 
 int VisCortxGetFundamentalMatrix(float * table,int size_of_table);
 
