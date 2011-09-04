@@ -6,20 +6,15 @@
 #include "FeatureLists.h"
 
 IplImage  *image;
+char * opencv_pointer_retainer; // This is a kind of an ugly hack ( see lines noted with UGLY HACK ) to minimize memcpying between my VisCortex and OpenCV , without disturbing OpenCV
 
 CvHaarClassifierCascade *cascade;
 CvMemStorage            *storage;
 
-void CloseFaceRecognition() // To kanei to VisionSubsystem me to init tou ousiastika
-{
-    cvReleaseHaarClassifierCascade( &cascade );
-    cvReleaseMemStorage( &storage );
-    cvReleaseImage(&image );
-}
 
 void InitFaceRecognition(unsigned int x,unsigned int y)
 {
-    char      *filename = "haarcascade_frontalface_alt.xml";
+    char *filename = "haarcascade_frontalface_alt.xml";
 
     /* load the classifier
        note that I put the file in the same directory with
@@ -30,14 +25,26 @@ void InitFaceRecognition(unsigned int x,unsigned int y)
     storage = cvCreateMemStorage( 0 );
 
     image = cvCreateImage( cvSize(x,y), IPL_DEPTH_8U, 3 );
+    opencv_pointer_retainer = image->imageData; // UGLY HACK
 }
+
+void CloseFaceRecognition()
+{
+    cvReleaseHaarClassifierCascade( &cascade );
+    cvReleaseMemStorage( &storage );
+
+    image->imageData = opencv_pointer_retainer; // UGLY HACK
+    cvReleaseImage(&image );
+}
+
 
 unsigned int RecognizeFaces(unsigned int vid_reg)
 {
     ClearFeatureList(video_register[vid_reg].faces);
 
     /* detect faces */
-    memcpy( image->imageData , video_register[vid_reg].pixels , metrics[RESOLUTION_MEMORY_LIMIT_3BYTE] );
+    image->imageData=(char*) video_register[vid_reg].pixels; // UGLY HACK
+
     CvSeq *faces = cvHaarDetectObjects
            (
             image,
@@ -51,30 +58,21 @@ unsigned int RecognizeFaces(unsigned int vid_reg)
             );
 
     /* for each face found, draw a red box */
+    int circle_size;
     int i;
     for( i = 0 ; i < ( faces ? faces->total : 0 ) ; i++ )
     {
         CvRect *r = ( CvRect* )cvGetSeqElem( faces, i );
 
+
+        circle_size = r->width;
+        if ( r->width > r->height ) {  circle_size = r->height; }
+
         AddToFeatureList(  video_register[vid_reg].faces  ,
                            r->x + (r->width/2), r->y + (r->height/2) ,
-                           +r->height);
-        /*
-        CvRect *r = ( CvRect* )cvGetSeqElem( faces, i );
+                           circle_size );
 
-        cvRectangle( image,
-                     cvPoint( r->x, r->y ),
-                     cvPoint( r->x + r->width, r->y + r->height ),
-                     CV_RGB( 255, 0, 0 ), 1, 8, 0 );
-            */
     }
 	return 0;
 }
 
-
-void GetFaceNumber(char num,unsigned int *pos_x,unsigned int *pos_y,unsigned int *total_size)
-{
-
-
-  return;
-}
