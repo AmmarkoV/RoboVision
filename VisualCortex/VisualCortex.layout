@@ -31,14 +31,14 @@
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
 		<Cursor position="1221" topLine="2" />
 	</File>
-	<File name="FeatureTracking.c" open="1" top="1" tabpos="20">
+	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
 		<Cursor position="3476" topLine="60" />
 	</File>
 	<File name="FeatureTracking.h" open="1" top="0" tabpos="29">
 		<Cursor position="784" topLine="0" />
 	</File>
 	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
-		<Cursor position="17143" topLine="559" />
+		<Cursor position="12221" topLine="382" />
 	</File>
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
 		<Cursor position="850" topLine="0" />
@@ -107,12 +107,12 @@
 		<Cursor position="10726" topLine="246" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="1598" topLine="99" />
+		<Cursor position="1598" topLine="0" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="20121" topLine="661" />
+	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+		<Cursor position="18823" topLine="503" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="334" topLine="0" />
+		<Cursor position="4562" topLine="198" />
 	</File>
 </CodeBlocks_layout_file>
