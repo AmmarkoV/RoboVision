@@ -551,6 +551,7 @@ void  VisCortx_RemoveTimedoutTrackPoints(unsigned int vid_reg,unsigned int timeo
 }
 
 
+
 unsigned int  VisCortx_GetFeature(unsigned int vid_reg,unsigned int point_num,unsigned int data_type)
 {
   return GetFeatureData(video_register[vid_reg].features,point_num,data_type);
@@ -642,14 +643,15 @@ int SobelNDerivative(int n)
 */
 unsigned int VisCortx_RecognizeFaces(unsigned int cam)
 {
-   if ( cam == 0 ) { return RecognizeFaces(video_register[LEFT_EYE].pixels); } else
-   if ( cam == 1 ) { return RecognizeFaces(video_register[RIGHT_EYE].pixels); }
+   if ( cam == 0 ) { return RecognizeFaces(CALIBRATED_LEFT_EYE); } else
+   if ( cam == 1 ) { return RecognizeFaces(CALIBRATED_RIGHT_EYE); }
    return 0;
 }
 
-void VisCortx_GetFaceNumber(char num,unsigned int *pos_x,unsigned int *pos_y,unsigned int *total_size)
+
+unsigned int  VisCortx_GetFaces(unsigned int vid_reg,unsigned int point_num,unsigned int data_type)
 {
-    GetFaceNumber(num,pos_x,pos_y,total_size);
+  return GetFeatureData(video_register[vid_reg].faces,point_num,data_type);
 }
 /*
  ----------------- LIDAR DEPTH DATA EMULATION ----------------------

@@ -459,13 +459,15 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
      if (  (VisCortx_GetFeature(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS)>0) || (VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS)>0) )
      {
         unsigned int i=0;
+        wxPen pink_marker(wxColour(255,20,147),1,wxSOLID);
         wxPen marker(wxColour(255,255,0),1,wxSOLID);
         wxPen red_marker(wxColour(255,0,0),1,wxSOLID);
         wxPen green_marker(wxColour(255,0,0),1,wxSOLID);
         dc.SetPen(marker);
         dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
-        /*We want to draw features on left eye*/
+        //------------------------------------ FEATURES ---------------------------------------------*/
+        /*We want to draw features on left eye ---------------------------------------------------------------------------------*/
        if (VisCortx_GetFeature(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS)>0  )
        {
         for ( i=0; i<VisCortx_GetFeature(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS); i++ )
@@ -481,6 +483,7 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
          }
        }
 
+       /*We want to draw features on right eye ---------------------------------------------------------------------------------*/
        if (VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS)>0  )
        {
         for ( i=0; i<VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS); i++ )
@@ -492,6 +495,36 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
               dc.SetPen(red_marker);
              dc.DrawLine(feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_Y),
                          feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_LAST_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_LAST_Y));
+            }
+         }
+       }
+
+
+
+
+       //------------------------------------ FACES ---------------------------------------------*/
+        /*We want to draw faces on left eye ---------------------------------------------------------------------------------*/
+       if (VisCortx_GetFaces(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS)>0  )
+       {
+         for ( i=0; i<VisCortx_GetFaces(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS); i++ )
+         {
+            if ( VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_IS_LOST) == 0 )
+            {
+               dc.SetPen(pink_marker);
+               dc.DrawCircle(feed_0_x+VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_Y),30);
+            }
+         }
+       }
+
+        /*We want to draw faces on left eye ---------------------------------------------------------------------------------*/
+       if (VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS)>0  )
+       {
+         for ( i=0; i<VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS); i++ )
+         {
+            if ( VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_IS_LOST) == 0 )
+            {
+               dc.SetPen(pink_marker);
+               dc.DrawCircle(feed_1_x+VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_Y),30);
             }
          }
        }

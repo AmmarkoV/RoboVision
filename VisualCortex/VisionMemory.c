@@ -82,6 +82,7 @@ int InitRegister( unsigned int reg_num, unsigned int res_x,unsigned int res_y,un
   video_register[reg_num].time = 0;
   video_register[reg_num].used = 0;
   video_register[reg_num].features =  CreateFeatureList(settings[MAX_FEATURES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
+  video_register[reg_num].faces = CreateFeatureList(settings[MAX_FACES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
 
   if ( video_register[reg_num].pixels == 0 ) { fprintf(stderr,"While Allocating Register : Unable to allocate video register %u memory !\n",reg_num);
                                                return 1; }
@@ -103,6 +104,7 @@ int InitLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned int res
   l_video_register[reg_num].time = 0;
   l_video_register[reg_num].used = 0;
   l_video_register[reg_num].features =  CreateFeatureList(settings[MAX_FEATURES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
+  l_video_register[reg_num].faces = CreateFeatureList(settings[MAX_FACES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
 
   if ( l_video_register[reg_num].pixels == 0 ) { fprintf(stderr,"While Allocating Large Register : Unable to allocate video register %u memory !\n",reg_num);
                                                  return 1; }
@@ -123,6 +125,7 @@ int InitExtraLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned in
   xl_video_register[reg_num].time = 0;
   xl_video_register[reg_num].used = 0;
   xl_video_register[reg_num].features =  CreateFeatureList(settings[MAX_FEATURES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
+  xl_video_register[reg_num].faces = CreateFeatureList(settings[MAX_FACES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
 
   if ( xl_video_register[reg_num].pixels == 0 ) { fprintf(stderr,"While Allocating Extra Large Register : Unable to allocate video register %u memory !\n",reg_num);
                                                  return 1; }
@@ -146,6 +149,8 @@ int ClearVideoRegister(unsigned int reg_num)
     video_register[reg_num].time = 0;
     video_register[reg_num].used = 0;
     ClearFeatureList(video_register[reg_num].features);
+    ClearFeatureList(video_register[reg_num].faces);
+
 
     return 1;
 
@@ -165,6 +170,7 @@ int ClearLargeVideoRegister(unsigned int reg_num)
     l_video_register[reg_num].time = 0;
     l_video_register[reg_num].used = 0;
     ClearFeatureList(l_video_register[reg_num].features);
+    ClearFeatureList(l_video_register[reg_num].faces);
 
     return 1;
 
@@ -184,6 +190,7 @@ int ClearExtraLargeVideoRegister(unsigned int reg_num)
     xl_video_register[reg_num].time = 0;
     xl_video_register[reg_num].used = 0;
     ClearFeatureList(xl_video_register[reg_num].features);
+    ClearFeatureList(xl_video_register[reg_num].faces);
 
     return 1;
 
@@ -201,6 +208,7 @@ int CloseRegister( unsigned int reg_num )
     video_register[reg_num].time = 0;
     video_register[reg_num].used = 0;
     DestroyFeatureList(video_register[reg_num].features);
+    DestroyFeatureList(video_register[reg_num].faces);
 
     return 0;
 }
@@ -220,6 +228,7 @@ int CloseLargeRegister( unsigned int reg_num )
     l_video_register[reg_num].time = 0;
     l_video_register[reg_num].used = 0;
     DestroyFeatureList(l_video_register[reg_num].features);
+    DestroyFeatureList(l_video_register[reg_num].faces);
 
     return 0;
 }
@@ -237,6 +246,7 @@ int CloseExtraLargeRegister( unsigned int reg_num )
     xl_video_register[reg_num].time = 0;
     xl_video_register[reg_num].used = 0;
     DestroyFeatureList(xl_video_register[reg_num].features);
+    DestroyFeatureList(xl_video_register[reg_num].faces);
 
 
     return 0;
@@ -252,6 +262,8 @@ void DefaultSettings()
     // TEST
 
    settings[PASS_TO_WORLD_3D]=0; // FOR NOW ONLY PASSES TO 3D Visualization
+   settings[PASS_TO_FACE_DETECTOR]=1;
+   settings[PASS_TO_FEATURE_DETECTOR]=1;
 
    settings[FEATURE_TRACKING_COMPARISON_THRESHOLD]=30000; /* FEATURE Tracking comparison threshold */
 
@@ -300,6 +312,8 @@ void DefaultSettings()
     settings[PATCH_HIST_THRESHOLD_R]=9; settings[PATCH_HIST_THRESHOLD_G]=9; settings[PATCH_HIST_THRESHOLD_B]=9;
 
     settings[MAX_FEATURES]=1000;
+    settings[MAX_FACES]=100;
+
     settings[PATCH_TRACKING_WIDTH]=19;
     settings[PATCH_TRACKING_HEIGHT]=19;
 
@@ -497,6 +511,10 @@ int SwapRegister(unsigned int source,unsigned int target)
   video_register[source].features = video_register[target].features;
   video_register[target].features = tmp_features;
 
+  tmp_features = video_register[source].faces;
+  video_register[source].faces = video_register[target].faces;
+  video_register[target].faces = tmp_features;
+
   return 1;
 }
 
@@ -530,6 +548,7 @@ int CopyRegister(unsigned int source,unsigned int target)
   video_register[target].used=video_register[source].used;
 
  // DO NOT AUTO COPY FEATURES :) CopyFeatureList(video_register[source].features,video_register[target].features);
+ // DO NOT AUTO COPY FEATURES :) CopyFeatureList(video_register[source].faces,video_register[target].faces);
 
   return 1;
 }

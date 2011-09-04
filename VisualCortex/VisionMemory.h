@@ -60,6 +60,7 @@ struct VideoRegister
   unsigned char * pixels;
 
   struct FeatureList * features;
+  struct FeatureList * faces;
 };
 
 struct LargeVideoRegister
@@ -75,6 +76,7 @@ struct LargeVideoRegister
 
   unsigned short * pixels;
   struct FeatureList * features;
+  struct FeatureList * faces;
 };
 
 struct ExtraLargeVideoRegister
@@ -90,6 +92,7 @@ struct ExtraLargeVideoRegister
 
   unsigned int * pixels;
   struct FeatureList * features;
+  struct FeatureList * faces;
 };
 
 extern unsigned int TIME_INC;

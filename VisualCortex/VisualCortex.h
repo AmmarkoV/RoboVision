@@ -19,6 +19,9 @@ enum VisCortxSettings
    INPUT_CALIBRATION,
 
    PASS_TO_WORLD_3D,
+   PASS_TO_FACE_DETECTOR,
+   PASS_TO_FEATURE_DETECTOR,
+
 
    DEPTHMAP_RGB_MULTIPLIER,
    DEPTHMAP_MOVEMENT_MULTIPLIER,
@@ -53,6 +56,7 @@ enum VisCortxSettings
    DEPTHMAP_IMPROVE_USING_EDGES,
    DEPTHMAP_END,
 
+
    FEATURE_TRACKING_COMPARISON_THRESHOLD,
 
    FEATURE_DETECTION_THRESHOLD,
@@ -72,6 +76,7 @@ enum VisCortxSettings
 
    TIME_BETWEEN_TRACKING ,
 
+   MAX_FACES,
    MAX_FEATURES,
 
    MOVEMENT_PATCH_SENSITIVITY,
@@ -287,8 +292,8 @@ int SobelNDerivative();
 void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,unsigned char howclose);
 
 unsigned int VisCortx_RecognizeFaces(unsigned int cam);
-void VisCortx_GetFaceNumber(char num,unsigned int *pos_x,unsigned int *pos_y,unsigned int *total_size);
 
+unsigned int  VisCortx_GetFaces(unsigned int vid_reg,unsigned int point_num,unsigned int data_type);
 
 float VisCortx_MinCameraHorizontalAngle();
 float VisCortx_MaxCameraHorizontalAngle();

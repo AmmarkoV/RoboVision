@@ -54,6 +54,7 @@ enum command_id_consts
   CMD_DEPTHMAP_TO_FILE,
   CMD_DEPTHMAP_IMPORT_TO_MAP,
   CMD_CONVOLUTION_FILTER,
+  CMD_FACE_DETECTION,
 
   CMD_SEARCH,
   CMD_TELL,
@@ -268,6 +269,12 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                     free(table);
                   }
      break;
+     case CMD_FACE_DETECTION :
+             sprintf(outptstr,"From %s : Face Detection! \n",from);
+             VisCortx_RecognizeFaces(0);
+             VisCortx_RecognizeFaces(1);
+
+     break;
      case CMD_FUNDAMENTAL_MATRIX :
             GetFundamentalMatrix();
      break;
@@ -339,6 +346,7 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"REMEMBER IMAGE",14)==1) { chosen_command=CMD_REMEMBER_IMAGE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"IDENTIFY IMAGE",14)==1) { chosen_command=CMD_IDENTIFY_IMAGE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"CONVOLUTION FILTER",18)==1) { chosen_command=CMD_CONVOLUTION_FILTER; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"FACE DETECTION",14)==1) { chosen_command=CMD_FACE_DETECTION; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FUNDAMENTAL MATRIX",18)==1) { chosen_command=CMD_FUNDAMENTAL_MATRIX; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"TELL",4)==1) { chosen_command=CMD_TELL; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"ASK",3)==1) { chosen_command=CMD_ASK; } else
