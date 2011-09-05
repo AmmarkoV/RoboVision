@@ -1,0 +1,3 @@
+#!/bin/bash
+g++  -s -O3 -o bin/Release/OptimizedCodeGenerator
+exit 0

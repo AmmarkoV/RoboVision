@@ -109,6 +109,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="VisCortexHeuristics.h" />
+		<Unit filename="VisCortexOptimizedConvolutionFilters.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="VisCortexOptimizedConvolutionFilters.h" />
 		<Unit filename="VisionMemory.c">
 			<Option compilerVar="CC" />
 		</Unit>

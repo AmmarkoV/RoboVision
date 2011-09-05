@@ -24,6 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "MovementRegistration.h"
 #include "VisCortexFilters.h"
 #include "VisCortexConvolutionFilters.h"
+#include "VisCortexOptimizedConvolutionFilters.h"
 #include "FeatureExtraction.h"
 #include "PatternRecognition.h"
 #include "FeatureTracking.h"
@@ -474,7 +475,7 @@ void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error)
     CopyRegister(reg_in,GENERAL_2);
     GaussianBlur(GENERAL_2,0);
     ConvertRegisterFrom3ByteTo1Byte(GENERAL_2);
-    ConvolutionFilter9_1Byte(GENERAL_2,reg_out,table,divisor);
+    ConvolutionFilter9_1ByteOptimized(GENERAL_2,reg_out,table,divisor);
     ConvertRegisterFrom1ByteTo3Byte(reg_out);
     return 1;
  }
@@ -533,7 +534,7 @@ int VisCortx_Movement_At_Edge(unsigned int reg_num , unsigned int edge_enum)
          break;
 
          default :
-
+         break;
      };
 
 

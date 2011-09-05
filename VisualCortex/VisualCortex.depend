@@ -20,7 +20,7 @@
 	<stdlib.h>
 	<string.h>
 
-1315096447 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1315132967 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
 1308751856 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.h
 
@@ -41,14 +41,15 @@
 	"VisCortexFilters.h"
 	"Precalculations.h"
 
-1315095979 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.c
+1315098760 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.c
 	"FaceDetection.h"
 	<stdio.h>
 	<stdlib.h>
 	"cv.h"
 	"VisionMemory.h"
+	"FeatureLists.h"
 
-1315096357 /home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.h
+1315098721 /home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.h
 
 1315058084 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureExtraction.c
 	"FeatureExtraction.h"
@@ -149,13 +150,13 @@
 1313925807 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexHeuristics.h
 	"VisCortexHeuristics.h"
 
-1315095500 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
+1315097155 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
 	"VisionMemory.h"
 	"Precalculations.h"
 	"VisCortexFilters.h"
 	"StateSetting.h"
 
-1315096368 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
+1315261238 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
 	"VisualCortex.h"
 	"VisionMemory.h"
 	"Precalculations.h"
@@ -164,6 +165,7 @@
 	"MovementRegistration.h"
 	"VisCortexFilters.h"
 	"VisCortexConvolutionFilters.h"
+	"VisCortexOptimizedConvolutionFilters.h"
 	"FeatureExtraction.h"
 	"PatternRecognition.h"
 	"FeatureTracking.h"
@@ -196,7 +198,7 @@
 
 1311412733 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/fast/fast.h
 
-1315059595 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
+1315097272 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
 	"VideoInputAdapter.h"
 	"VisualCortex.h"
 	"VisionMemory.h"
@@ -490,4 +492,15 @@
 1308662646 /usr/local/include/opencv2/highgui/highgui.hpp
 	"opencv2/core/core.hpp"
 	"opencv2/highgui/highgui_c.h"
+
+1315232949 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.c
+	"VisCortexConvolutionFilters.h"
+	"VisCortexFilters.h"
+	"Precalculations.h"
+	"FeatureTracking.h"
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1315261552 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
 

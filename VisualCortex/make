@@ -2,6 +2,17 @@
 echo "Hand made make script for VisualCortex - VisualCortex_Tester .."
 echo "Should provide libVisualCortex.a and VisCortx_Tester/bin/Release/VisCortx_Tester"
 echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
+
+
+
+echo "Compiling Optimized code files with loop unrolling etc.. .."
+cd OptimizedCodeGenerator
+./make
+cd ..
+
+OptimizedCodeGenerator/bin/Release/OptimizedCodeGenerator 
+
+ 
 echo "Compiling files.."
 gcc  -Os -O3 -fexpensive-optimizations -c DisparityDepthMap.c -o DisparityDepthMap.o
 gcc  -Os -O3 -fexpensive-optimizations -c DisparityDepthMap_Heuristics.c -o DisparityDepthMap_Heuristics.o 
