@@ -26,13 +26,13 @@
 		<Cursor position="162" topLine="0" />
 	</File>
 	<File name="FeatureLists.c" open="1" top="0" tabpos="38">
-		<Cursor position="3505" topLine="103" />
+		<Cursor position="3505" topLine="88" />
 	</File>
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
 		<Cursor position="1221" topLine="2" />
 	</File>
 	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
-		<Cursor position="3476" topLine="60" />
+		<Cursor position="9145" topLine="189" />
 	</File>
 	<File name="FeatureTracking.h" open="1" top="0" tabpos="29">
 		<Cursor position="784" topLine="0" />
@@ -79,17 +79,17 @@
 	<File name="StateSetting.h" open="1" top="0" tabpos="19">
 		<Cursor position="397" topLine="0" />
 	</File>
-	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="5138" topLine="69" />
+	<File name="VideoInputAdapter.c" open="1" top="1" tabpos="36">
+		<Cursor position="4502" topLine="72" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="91" topLine="0" />
 	</File>
 	<File name="VisCortexConvolutionFilters.c" open="1" top="0" tabpos="27">
-		<Cursor position="401" topLine="78" />
+		<Cursor position="392" topLine="4" />
 	</File>
 	<File name="VisCortexConvolutionFilters.h" open="1" top="0" tabpos="28">
-		<Cursor position="179" topLine="0" />
+		<Cursor position="250" topLine="0" />
 	</File>
 	<File name="VisCortexFilters.c" open="1" top="0" tabpos="3">
 		<Cursor position="18360" topLine="667" />
@@ -103,6 +103,18 @@
 	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="23">
 		<Cursor position="293" topLine="0" />
 	</File>
+	<File name="VisCortexOptimizedConvolutionFilters.c" open="1" top="0" tabpos="65">
+		<Cursor position="304" topLine="0" />
+	</File>
+	<File name="VisCortexOptimizedConvolutionFilters.h" open="1" top="0" tabpos="66">
+		<Cursor position="247" topLine="0" />
+	</File>
+	<File name="VisCortexTimer.c" open="1" top="0" tabpos="67">
+		<Cursor position="805" topLine="0" />
+	</File>
+	<File name="VisCortexTimer.h" open="1" top="0" tabpos="68">
+		<Cursor position="106" topLine="0" />
+	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
 		<Cursor position="10726" topLine="246" />
 	</File>
@@ -110,9 +122,9 @@
 		<Cursor position="1598" topLine="0" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="18823" topLine="503" />
+		<Cursor position="21797" topLine="707" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="4562" topLine="198" />
+		<Cursor position="2801" topLine="87" />
 	</File>
 </CodeBlocks_layout_file>

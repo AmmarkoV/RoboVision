@@ -749,6 +749,44 @@ int SaveRegisterToFile(char * filename,unsigned int reg_num)
   return 0;
 }
 
+int SaveRegisterPartToFile(char * filename,unsigned int reg_num,unsigned int x,unsigned int y ,unsigned int width,unsigned int height)
+{
+    FILE *fd=0;
+    fd = fopen(filename,"wb");
+
+    if (fd!=0)
+	{
+     unsigned int n;
+     unsigned int xptr=x,yptr=y;
+     unsigned int ptr=0;
+     unsigned char * pixels;
+     fprintf(fd, "P6\n%d %d\n255\n", width, height);
+
+     n = width;
+
+
+       yptr = y;
+       while (yptr<y+height)
+        {
+          xptr = x;
+          ptr= ( yptr * width * 3 ) + ( xptr * 3 );
+
+            while (xptr<x+width)
+             {
+              pixels = video_register[reg_num].pixels + ptr;
+              fwrite(pixels,3,n,fd);
+              ++xptr;
+             }
+          ++yptr;
+        }
+
+     fflush(fd);
+     fclose(fd);
+     return 1;
+	}
+  return 0;
+}
+
 int LoadRegisterFromFile(char * filename,unsigned int reg_num)
 {
 FILE *pf=0;

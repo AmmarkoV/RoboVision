@@ -125,6 +125,8 @@ int ClearExtraLargeVideoRegister(unsigned int reg_num);
 int InitVisionMemory(unsigned int res_x,unsigned int res_y);
 int CloseVisionMemory();
 
+
+
 void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y);
 int CopyRegister(unsigned int source,unsigned int target);
 int SwapRegister(unsigned int source,unsigned int target);
@@ -138,6 +140,7 @@ void ConvertRegisterFrom1ByteTo3Byte(int in_reg);
 int PrintRegister(char * filename,unsigned int reg_num);
 int PrintExtraLargeRegister(char * filename,unsigned int reg_num);
 int SaveRegisterToFile(char * filename,unsigned int reg_num);
+int SaveRegisterPartToFile(char * filename,unsigned int reg_num,unsigned int x,unsigned int y ,unsigned int width,unsigned int height);
 int LoadRegisterFromFile(char * filename,unsigned int reg_num);
 
 #endif // VISIONMEMORY_H_INCLUDED

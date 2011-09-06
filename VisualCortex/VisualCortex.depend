@@ -13,14 +13,14 @@
 1311668543 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.h
 	"VisionMemory.h"
 
-1315095155 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
+1315310447 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
 	"FeatureLists.h"
 	"VisualCortex.h"
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1315265692 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1315267138 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
 1308751856 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.h
 
@@ -41,7 +41,7 @@
 	"VisCortexFilters.h"
 	"Precalculations.h"
 
-1315098760 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.c
+1315310408 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.c
 	"FaceDetection.h"
 	<stdio.h>
 	<stdlib.h>
@@ -51,7 +51,7 @@
 
 1315098721 /home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.h
 
-1315058084 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureExtraction.c
+1315310392 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureExtraction.c
 	"FeatureExtraction.h"
 	"FeatureLists.h"
 	"VisCortexFilters.h"
@@ -113,7 +113,7 @@
 	<limits.h>
 	<math.h>
 
-1305794832 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.c
+1315308138 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.c
 	"StateSetting.h"
 	"VisionMemory.h"
 	"FaceDetection.h"
@@ -121,7 +121,7 @@
 	"FeatureLists.h"
 	<math.h>
 
-1304016573 /home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.h
+1315307856 /home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.h
 	"StateSetting.h"
 
 1304850248 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexConvolutionFilters.c
@@ -150,13 +150,13 @@
 1313925807 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexHeuristics.h
 	"VisCortexHeuristics.h"
 
-1315097155 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
+1315308539 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
 	"VisionMemory.h"
 	"Precalculations.h"
 	"VisCortexFilters.h"
 	"StateSetting.h"
 
-1315261238 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
+1315266479 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
 	"VisualCortex.h"
 	"VisionMemory.h"
 	"Precalculations.h"
@@ -198,7 +198,7 @@
 
 1311412733 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/fast/fast.h
 
-1315097272 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
+1315267469 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
 	"VideoInputAdapter.h"
 	"VisualCortex.h"
 	"VisionMemory.h"
@@ -212,6 +212,7 @@
 	"FaceDetection.h"
 	"StateSetting.h"
 	"IntegralImageConversion.h"
+	"VisCortexTimer.h"
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -493,7 +494,7 @@
 	"opencv2/core/core.hpp"
 	"opencv2/highgui/highgui_c.h"
 
-1315263215 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.c
+1315266735 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.c
 	"VisCortexOptimizedConvolutionFilters.h"
 	"VisCortexConvolutionFilters.h"
 	"VisCortexFilters.h"
@@ -503,9 +504,9 @@
 	<stdio.h>
 	<string.h>
 
-1315263215 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
+1315266735 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
 
-1315264722 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.c
+1315265398 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.c
 	"VisCortexTimer.h"
 	<sys/time.h>
 

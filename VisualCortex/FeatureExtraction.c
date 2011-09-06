@@ -189,13 +189,13 @@ int ExtractFeaturesMy(int rgb_reg,unsigned int edge_reg,unsigned int second_deri
 
 int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_reg,unsigned int cam_num)
 {
-   fprintf(stderr,"ExtractFeatures called \n");
+  // fprintf(stderr,"ExtractFeatures called \n");
    CopyRegister(rgb_reg,GENERAL_2);
-   fprintf(stderr,"CopyRegister called \n");
+  // fprintf(stderr,"CopyRegister called \n");
    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2);
-   fprintf(stderr,"ConvertRegisterFrom3ByteTo1Byte called \n");
+  // fprintf(stderr,"ConvertRegisterFrom3ByteTo1Byte called \n");
    ClearFeatureList(video_register[rgb_reg].features);
-   fprintf(stderr,"ClearFeatureList called \n");
+  // fprintf(stderr,"ClearFeatureList called \n");
 
    int numcorners=0;
    struct xy_local * corner_list; //(struct xy * )
@@ -205,7 +205,7 @@ int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_
                                                            metrics[RESOLUTION_X] ,
                                                            settings[FEATURE_DETECTION_THRESHOLD] ,
                                                            &numcorners );
-  fprintf(stderr,"ExtractFeatures called \n");
+  //fprintf(stderr,"ExtractFeatures called \n");
 
   if ( corner_list == 0 )
     {
@@ -220,10 +220,10 @@ int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_
          AddToFeatureList(  video_register[rgb_reg].features  ,
                             corner_list[i].x , corner_list[i].y , 1);
     }
-  fprintf(stderr,"AddToFeatureList called %u times \n",numcorners);
+//  fprintf(stderr,"AddToFeatureList called %u times \n",numcorners);
 
   free(corner_list);
-  fprintf(stderr,"free called \n");
+  //fprintf(stderr,"free called \n");
 
   //  fprintf(stderr,"Extract features returns %u corners \n",numcorners);
     return numcorners;

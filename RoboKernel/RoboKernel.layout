@@ -22,8 +22,8 @@
 	<File name="configuration.h" open="1" top="0" tabpos="10">
 		<Cursor position="390" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="2958" topLine="81" />
+	<File name="main.c" open="1" top="1" tabpos="1">
+		<Cursor position="908" topLine="8" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
 		<Cursor position="479" topLine="0" />
@@ -38,7 +38,7 @@
 		<Cursor position="68" topLine="0" />
 	</File>
 	<File name="visual_system.c" open="1" top="0" tabpos="5">
-		<Cursor position="4275" topLine="86" />
+		<Cursor position="4275" topLine="35" />
 	</File>
 	<File name="visual_system.h" open="1" top="0" tabpos="6">
 		<Cursor position="175" topLine="0" />

@@ -3,6 +3,7 @@
 #include "FaceDetection.h"
 #include "IntegralImageConversion.h"
 #include "FeatureLists.h"
+#include <unistd.h>
 #include <math.h>
 
 unsigned int SetCamerasGeometry(float distance_between_cameras,float diagonal_field_of_view,float horizontal_field_of_view,float vertical_field_of_view)
@@ -173,6 +174,20 @@ void SetTime(unsigned int thetime)
     if ( thetime<TIME_INC) { fprintf(stderr,"VisCortex Clock truncated"); }
 TIME_INC=thetime;
 }
+
+
+int GetANewSnapShotFileName(char * result,char * filename_base)
+{
+     strcpy(result,filename_base);
+     char timestamp[256]={0};
+     time_t t; struct tm *tmp;
+     t = time(0); tmp = localtime(&t);
+     if (tmp == 0) { fprintf(stderr,"Could not get time ( localtime() ) \n"); }
+     if (strftime(timestamp, sizeof(timestamp),"_%F_%T_",tmp) == 0) { fprintf(stderr, "strftime returned 0");  }
+     strcat(result,timestamp);
+  return 1;
+}
+
 
 unsigned int GetTime()
 {

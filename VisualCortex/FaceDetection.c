@@ -68,6 +68,11 @@ unsigned int RecognizeFaces(unsigned int vid_reg)
         circle_size = r->width;
         if ( r->width > r->height ) {  circle_size = r->height; }
 
+        char timestamped_filename[512]={0};
+
+       // GetANewSnapShotFileName(timestamped_filename,"memfs/faces/face_snap");
+        SaveRegisterPartToFile("memfs/faces/face_snap",vid_reg,r->x,r->y,r->width,r->height);
+
         AddToFeatureList(  video_register[vid_reg].faces  ,
                            r->x + (r->width/2), r->y + (r->height/2) ,
                            circle_size );
