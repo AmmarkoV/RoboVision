@@ -11,6 +11,7 @@
 #include "FaceDetection.h"
 #include "StateSetting.h"
 #include "IntegralImageConversion.h"
+#include "VisCortexTimer.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,6 +22,9 @@
 */
 unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
 {
+   StartTimer();
+
+
    if ( rgbdata == 0 ) { fprintf(stderr,"VisCortX_NewFrame given zero pointer"); return 0; }
    if ( input_img_regnum == LEFT_EYE )
     {
@@ -56,10 +60,10 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
 
         if ( settings[PASS_TO_FEATURE_DETECTOR] )
         {
-          if ( GetFeatureData(video_register[CALIBRATED_LEFT_EYE].features,0,TOTAL_POINTS) < 30 )
+          //if ( GetFeatureData(video_register[CALIBRATED_LEFT_EYE].features,0,TOTAL_POINTS) < 50 )
            {
             VisCortx_AutoAddTrackPoints(0);
-          }
+           }
          TrackAllPointsOnRegistersBrute(CALIBRATED_LEFT_EYE,LAST_CALIBRATED_LEFT_EYE,8000);
         }
 
@@ -95,7 +99,7 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
 
         if ( settings[PASS_TO_FEATURE_DETECTOR] )
         {
-        if ( GetFeatureData(video_register[CALIBRATED_RIGHT_EYE].features,0,TOTAL_POINTS) < 30 )
+       // if ( GetFeatureData(video_register[CALIBRATED_RIGHT_EYE].features,0,TOTAL_POINTS) < 50 )
           {
             VisCortx_AutoAddTrackPoints(1);
           }
@@ -106,8 +110,7 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
         video_register[input_img_regnum].lock=0;
     }
 
-
-
+  metrics[VIDEOINPUT_PROCESSING_DELAY_MICROSECONDS] = EndTimer();
 
  return 1;
 }

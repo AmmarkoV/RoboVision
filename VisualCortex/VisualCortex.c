@@ -612,7 +612,8 @@ void  VisCortx_CopyTrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg
 
 void  VisCortx_TrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg)
 {
-  fprintf(stderr,"VisCortx_TrackPoints apparently segfaults , so it is disabled (for now)\n");
+  //fprintf(stderr,"VisCortx_TrackPoints apparently segfaults , so it is disabled (for now)\n");
+  //TODO
   return;
 
   unsigned int i=0;

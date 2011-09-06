@@ -113,6 +113,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="VisCortexOptimizedConvolutionFilters.h" />
+		<Unit filename="VisCortexTimer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="VisCortexTimer.h" />
 		<Unit filename="VisionMemory.c">
 			<Option compilerVar="CC" />
 		</Unit>

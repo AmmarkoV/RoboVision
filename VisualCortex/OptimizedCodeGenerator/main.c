@@ -169,13 +169,13 @@ int main(int argc, char **argv)
           {
             if (strcmp(argv[1],"optimize")==0)
                               {
-                                 fprintf(stderr,"Optimizing Output..!\n");
+                                 fprintf(stderr,"OptimizedCodeGenerator producing Optimized Output..!\n");
                                  WriteHeader();
                                  OptimizedOutput(ofp);
                               } else
             if (strcmp(argv[1],"default")==0)
                               {
-                                 fprintf(stderr,"Default Output..!\n");
+                                 fprintf(stderr,"OptimizedCodeGenerator producing Default NonOptimized Output..!\n");
                                  WriteHeader();
                                  DefaultNotOptimizedOutput(ofp);
                               } else

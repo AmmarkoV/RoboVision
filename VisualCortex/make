@@ -9,8 +9,8 @@ echo "Compiling Optimized code files with loop unrolling etc.. .."
 cd OptimizedCodeGenerator
 ./make
 cd ..
-
-OptimizedCodeGenerator/bin/Release/OptimizedCodeGenerator 
+                                                         #default,optimize
+OptimizedCodeGenerator/bin/Release/OptimizedCodeGenerator default
 
  
 echo "Compiling files.."
@@ -27,6 +27,7 @@ gcc  -Os -O3 -fexpensive-optimizations -c PatternRecognition.c -o PatternRecogni
 gcc  -Os -O3 -fexpensive-optimizations -c Precalculations.c -o Precalculations.o 
 gcc  -Os -O3 -fexpensive-optimizations -c StateSetting.c -o StateSetting.o
 gcc  -Os -O3 -fexpensive-optimizations -c VisCortexConvolutionFilters.c -o VisCortexConvolutionFilters.o
+gcc  -Os -O3 -fexpensive-optimizations -c VisCortexOptimizedConvolutionFilters.c -o VisCortexOptimizedConvolutionFilters.o
 gcc  -Os -O3 -fexpensive-optimizations -c VisCortexFilters.c -o VisCortexFilters.o
 gcc  -Os -O3 -fexpensive-optimizations -c VisCortexHeuristics.c -o VisCortexHeuristics.o 
 gcc  -Os -O3 -fexpensive-optimizations -c VisionMemory.c -o VisionMemory.o
@@ -36,10 +37,10 @@ gcc  -Os -O3 -fexpensive-optimizations -c VisualCortex.c -o VisualCortex.o
 
 
 echo "Linking files.."
-ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
+ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
 
 echo "Cleaning compiled object files.."
-rm DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
+rm DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
 
 echo "Compiling Tester.."
 cd VisCortx_Tester

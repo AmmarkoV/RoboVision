@@ -546,7 +546,7 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
      msg.Printf( wxT("%u | %u ") , VisCortx_GetMetric(CHANGES_LEFT) , VisCortx_GetMetric(CHANGES_RIGHT) );
      Flow->SetLabel(msg);
 
-     msg.Clear() , msg.Printf( wxT("%u fps") , frame_rate );
+     msg.Clear() , msg.Printf( wxT("%u fps - %u ms ") , frame_rate , (unsigned int) (GetCortexMetric(VIDEOINPUT_PROCESSING_DELAY_MICROSECONDS)/1000) );
      FrameRate->SetLabel(msg);
 
      msg.Clear() , msg.Printf( wxT("%u ms") , uptimer->Time() );
