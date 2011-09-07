@@ -1,13 +1,18 @@
 #!/bin/bash
-echo "Hand made make script for RoboVisionX binary .."
-echo "Should provide bin/Release/RoboVisionX "
-echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
-echo "Compiling files.."
+echo "RoboVision WxWidgets GUI / Provides the main executable / Author : Ammar Qammaz"  
+
+
 g++ RoboVisionXApp.cpp RoboVisionXApp.h RoboVisionXMain.cpp RoboVisionXMain.h  FeedScreenMemory.cpp FeedScreenMemory.h CortexSettings.cpp CortexSettings.h  RememberImage.cpp RememberImage.h  ../RoboKernel/libRoboKernel.a ../VideoInput/libVideoInput.a ../VisualCortex/libVisualCortex.a ../InputParser/libInputParser_C.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/MD23/libMD23.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a ../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a ../RVKnowledgeBase/libRVKnowledgeBase.a ../3dpartylibs/fast/libFast.a `wx-config --libs` `wx-config --cxxflags` `pkg-config --cflags --libs opencv` -L. -pthread -lgsl -lgslcblas -lm -o bin/Release/RoboVisionX
 
 cd memfs/calibration
 ./make
 cd ../..
 
-echo "Done.."
+if [ -e bin/Release/RoboVisionX ]
+then
+  echo "Success.."
+else
+  echo "Failure.."
+fi
+
 exit 0

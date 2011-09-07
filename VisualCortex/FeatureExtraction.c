@@ -126,7 +126,7 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
 
          if ( PatchIsACorner(x,y,source_p,edge_reg,second_deriv_reg) )
            {
-             AddToFeatureList(video_register[edge_reg].features,x,y,1);
+             AddToFeatureList(video_register[edge_reg].features,x,y,1,0,0,0);
              ++total_features_added;
            }
 
@@ -218,7 +218,7 @@ int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_
     {
 
          AddToFeatureList(  video_register[rgb_reg].features  ,
-                            corner_list[i].x , corner_list[i].y , 1);
+                            corner_list[i].x , corner_list[i].y , 1 ,0,0,0);
     }
 //  fprintf(stderr,"AddToFeatureList called %u times \n",numcorners);
 

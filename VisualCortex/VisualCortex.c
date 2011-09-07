@@ -564,8 +564,8 @@ unsigned int  VisCortx_GetTrackedPoints(unsigned int cam)
 void  VisCortx_AddTrackPoint(unsigned int cam,unsigned int x,unsigned int y,unsigned int group)
 {
   fprintf(stderr,"VisCortx_AddTrackPoint %u %u,%u : %u\n",cam,x,y,group);
-   if (cam==0) { AddToFeatureList(video_register[CALIBRATED_LEFT_EYE].features,x,y,1); } else
-   if (cam==1) { AddToFeatureList(video_register[CALIBRATED_RIGHT_EYE].features,x,y,1); }
+   if (cam==0) { AddToFeatureList(video_register[CALIBRATED_LEFT_EYE].features,x,y,1,0,0,0); } else
+   if (cam==1) { AddToFeatureList(video_register[CALIBRATED_RIGHT_EYE].features,x,y,1,0,0,0); }
 }
 
 void VisCortxClearTrackPoints(unsigned int cam)

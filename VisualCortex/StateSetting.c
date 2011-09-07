@@ -3,7 +3,7 @@
 #include "FaceDetection.h"
 #include "IntegralImageConversion.h"
 #include "FeatureLists.h"
-#include <unistd.h>
+#include <time.h>
 #include <math.h>
 
 unsigned int SetCamerasGeometry(float distance_between_cameras,float diagonal_field_of_view,float horizontal_field_of_view,float vertical_field_of_view)
@@ -176,7 +176,7 @@ TIME_INC=thetime;
 }
 
 
-int GetANewSnapShotFileName(char * result,char * filename_base)
+int GetANewSnapShotFileName(char * result,char * filename_base,char * filename_extension)
 {
      strcpy(result,filename_base);
      char timestamp[256]={0};
@@ -185,6 +185,8 @@ int GetANewSnapShotFileName(char * result,char * filename_base)
      if (tmp == 0) { fprintf(stderr,"Could not get time ( localtime() ) \n"); }
      if (strftime(timestamp, sizeof(timestamp),"_%F_%T_",tmp) == 0) { fprintf(stderr, "strftime returned 0");  }
      strcat(result,timestamp);
+     strcat(result,filename_extension);
+
   return 1;
 }
 

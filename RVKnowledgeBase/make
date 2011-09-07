@@ -1,15 +1,21 @@
 #!/bin/bash
-echo "Hand made make script for RVKnowledgeBase placer .."
-echo "Should provide libRVKnowledgeBase.a"
-echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
-echo "Compiling files.."
+echo "RVKnowledgeBase and its tester / Provides libRVKnowledgeBase.a / Author : Ammar Qammaz"   
+
+rm libRVKnowledgeBase.a
+
 gcc -c RVKnowledgeBase.c -o RVKnowledgeBase.o 
 
-echo "Linking files.."
 ar  rcs libRVKnowledgeBase.a RVKnowledgeBase.o 
 
-echo "Cleaning compiled object files.."
+
 rm RVKnowledgeBase.o 
  
-echo "Done.."
+
+if [ -e libRVKnowledgeBase.a ]
+then
+  echo "Success.."
+else
+  echo "Failure.."
+fi
+
 exit 0

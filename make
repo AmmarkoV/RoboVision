@@ -1,4 +1,7 @@
 #!/bin/bash
+
+clear
+
 echo "Compiling The whole RoboVision Project :D"
 
 
@@ -82,6 +85,25 @@ cd RoboVisionX
 ./make
 cd ..
 
-notify-send "GuarddoG compilation is done.."
+if [ -e RoboVisionX/bin/Release/RoboVisionX ]
+then
+  echo "RoboVisionX Executable is OK .."
+  notify-send "RoboVisionX Executable is OK .."
+else
+  echo "RoboVisionX Executable FAILED !!!!!!!!!!"
+  notify-send "RoboVisionX Executable FAILED !!!!!!!!!!"
+fi
+
+if [ -e RoboVisionCLI/bin/Release/RoboVisionCLI ]
+then
+  echo "RoboVisionCLI Executable is OK .."
+  notify-send "RoboVisionCLI Executable is OK .."
+else
+  echo "RoboVisionCLI Executable FAILED !!!!!!!!!!"
+  notify-send "RoboVisionCLI Executable FAILED !!!!!!!!!!"
+fi
+
+
+notify-send "GuarddoG compilation script has now finished.."
 echo "Done.."
 exit 0

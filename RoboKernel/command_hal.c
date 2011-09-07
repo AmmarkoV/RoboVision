@@ -1,6 +1,7 @@
 #include "command_hal.h"
 #include "command_implementation.h"
 
+#include "../VideoInput/VideoInput.h"
 #include "../InputParser/InputParser_C.h"
 #include "../RVKnowledgeBase/RVKnowledgeBase.h"
 

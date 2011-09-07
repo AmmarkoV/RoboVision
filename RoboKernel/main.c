@@ -1,10 +1,12 @@
 #include <pthread.h>
 #include "RoboKernel.h"
 #include "command_hal.h"
+#include "command_implementation.h"
 #include "visual_system.h"
 #include "mapping_system.h"
 #include "motor_system.h"
 #include "webinterface.h"
+#include "configuration.h"
 #include <time.h>
 #include <unistd.h>
 
@@ -105,7 +107,8 @@ void * KernelLoop(void *ptr )
         PassVideoInputToCortex(clock_count);
 
         TakeCareOfNetworkInterface(clock_count);
-      //  if ( motion_lock_on == 1 ) { CheckAlarm(VisCortx_GetMetric(CHANGES_LEFT) , VisCortx_GetMetric(CHANGES_RIGHT)); }
+
+        if ( motion_lock_on == 1 ) { CheckAlarm(VisCortx_GetMetric(CHANGES_LEFT) , VisCortx_GetMetric(CHANGES_RIGHT)); }
 
         find_something_to_do(clock_count);
         do_something(clock_count);

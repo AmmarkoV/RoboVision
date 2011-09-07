@@ -265,6 +265,8 @@ void DefaultSettings()
    settings[PASS_TO_FACE_DETECTOR]=1;
    settings[PASS_TO_FEATURE_DETECTOR]=1;
 
+   settings[REMEMBER_FACES]=1;
+
    settings[FEATURE_TRACKING_COMPARISON_THRESHOLD]=30000; /* FEATURE Tracking comparison threshold */
 
    settings[FEATURE_DETECTION_THRESHOLD]=40; // 30
@@ -749,35 +751,27 @@ int SaveRegisterToFile(char * filename,unsigned int reg_num)
   return 0;
 }
 
-int SaveRegisterPartToFile(char * filename,unsigned int reg_num,unsigned int x,unsigned int y ,unsigned int width,unsigned int height)
+int SaveRegisterPartToFile(char * filename,unsigned int reg_num,unsigned int x_start,unsigned int y_start ,unsigned int width,unsigned int height)
 {
     FILE *fd=0;
     fd = fopen(filename,"wb");
 
     if (fd!=0)
 	{
-     unsigned int n;
-     unsigned int xptr=x,yptr=y;
-     unsigned int ptr=0;
-     unsigned char * pixels;
-     fprintf(fd, "P6\n%d %d\n255\n", width, height);
-
-     n = width;
+      unsigned int pixel_incrementation=video_register[reg_num].size_x * 3;
+      unsigned int x,y;
+      unsigned char * pixel_memory_end = video_register[reg_num].pixels + metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+      unsigned char * pixel_row;
+      fprintf(fd, "P6\n%d %d\n255\n", width, height);
 
 
-       yptr = y;
-       while (yptr<y+height)
+       x = x_start; y = y_start;
+       pixel_row = (unsigned char *) video_register[reg_num].pixels  +  (( y * width * 3 ) + ( x * 3 ));
+       while ( (y<y_start+height) && (pixel_row+width*3<pixel_memory_end) )
         {
-          xptr = x;
-          ptr= ( yptr * width * 3 ) + ( xptr * 3 );
-
-            while (xptr<x+width)
-             {
-              pixels = video_register[reg_num].pixels + ptr;
-              fwrite(pixels,3,n,fd);
-              ++xptr;
-             }
-          ++yptr;
+          fwrite(pixel_row,3,width,fd);
+          pixel_row += pixel_incrementation;
+          ++y;
         }
 
      fflush(fd);

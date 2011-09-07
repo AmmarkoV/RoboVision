@@ -4,6 +4,7 @@
 #include "cv.h"
 #include "VisionMemory.h"
 #include "FeatureLists.h"
+#include "StateSetting.h"
 
 IplImage  *image;
 char * opencv_pointer_retainer; // This is a kind of an ugly hack ( see lines noted with UGLY HACK ) to minimize memcpying between my VisCortex and OpenCV , without disturbing OpenCV
@@ -53,29 +54,28 @@ unsigned int RecognizeFaces(unsigned int vid_reg)
             1.1,
             3,
             0 /*CV_HAAR_DO_CANNY_PRUNNING*/
-            , cvSize( 40, 40 ) ,
-              cvSize( 50, 50 )
+            , cvSize( 40, 40 )
+            , cvSize( 50, 50 ) // <--- This might have to be commented out on older OpenCV versions where there is only a minimum Window!
             );
 
     /* for each face found, draw a red box */
-    int circle_size;
+    char timestamped_filename[512]={0};
     int i;
     for( i = 0 ; i < ( faces ? faces->total : 0 ) ; i++ )
     {
         CvRect *r = ( CvRect* )cvGetSeqElem( faces, i );
 
-
-        circle_size = r->width;
-        if ( r->width > r->height ) {  circle_size = r->height; }
-
-        char timestamped_filename[512]={0};
-
-       // GetANewSnapShotFileName(timestamped_filename,"memfs/faces/face_snap");
-        SaveRegisterPartToFile("memfs/faces/face_snap",vid_reg,r->x,r->y,r->width,r->height);
+        if ( settings[REMEMBER_FACES] )
+         {
+           timestamped_filename[0]=0; timestamped_filename[1]=0;
+           GetANewSnapShotFileName(timestamped_filename,"memfs/faces/face_snap",".ppm");
+           SaveRegisterPartToFile(timestamped_filename,vid_reg, r->x , r->y , r->width , r->height );
+         }
 
         AddToFeatureList(  video_register[vid_reg].faces  ,
-                           r->x + (r->width/2), r->y + (r->height/2) ,
-                           circle_size );
+                           r->x , r->y , 0 ,
+                           r->width , r->height , 0
+                         );
 
     }
 	return 0;

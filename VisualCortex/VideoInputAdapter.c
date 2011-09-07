@@ -10,6 +10,7 @@
 #include "FeatureTracking.h"
 #include "FaceDetection.h"
 #include "StateSetting.h"
+#include "VisCortexTimer.h"
 #include "IntegralImageConversion.h"
 #include "VisCortexTimer.h"
 #include <stdio.h>

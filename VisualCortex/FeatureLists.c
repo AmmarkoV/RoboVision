@@ -53,11 +53,17 @@ int CopyFeatureList(struct FeatureList * source,struct FeatureList * target)
       target->list[i].lost = source->list[i].lost;
       target->list[i].lost_since = source->list[i].lost_since;
       target->list[i].x = source->list[i].x;
+      target->list[i].dim_x = source->list[i].dim_x;
       target->list[i].last_x = source->list[i].last_x;
+      target->list[i].last_dim_x = source->list[i].last_dim_x;
       target->list[i].y = source->list[i].y;
+      target->list[i].dim_y = source->list[i].dim_y;
       target->list[i].last_y = source->list[i].last_y;
+      target->list[i].last_dim_y = source->list[i].last_dim_y;
       target->list[i].z = source->list[i].z;
+      target->list[i].dim_z = source->list[i].dim_z;
       target->list[i].last_z = source->list[i].last_z;
+      target->list[i].last_dim_z = source->list[i].last_dim_z;
 
       target->list[i].patch_width = source->list[i].patch_width;
       target->list[i].patch_height = source->list[i].patch_height;
@@ -81,11 +87,12 @@ int RenewTrackPoints(struct FeatureList * list,int point)
 
 
 // TODO ADD HERE COPYING OF THE FEATURE IMAGE PATCH , IT IS NEEDED FOR BETTER TRACKING..!
-int AddToFeatureList(struct FeatureList * list, int x, int y,int z)
+int AddToFeatureList(struct FeatureList * list, int x, int y,int z , int dim_x, int dim_y,int dim_z)
 {
    if ( list->current_features >= list->max_features-1 ) { fprintf(stderr,"Cannot add to feature list , feature list is full\n"); return 0; }
    unsigned int cur=list->current_features;
     list->list[cur].x=x; list->list[cur].y=y; list->list[cur].z=z;
+    list->list[cur].dim_x=dim_x; list->list[cur].dim_y=dim_y; list->list[cur].dim_z=dim_z;
     list->list[cur].last_x=x; list->list[cur].last_y=y; list->list[cur].last_z=z;
 
    ++list->current_features;
@@ -133,6 +140,9 @@ int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned in
       case FEATURE_X : return list->list[point_num].x; break;
       case FEATURE_Y : return list->list[point_num].y; break;
       case FEATURE_Z : return list->list[point_num].z; break;
+      case FEATURE_DIM_X : return list->list[point_num].dim_x; break;
+      case FEATURE_DIM_Y : return list->list[point_num].dim_y; break;
+      case FEATURE_DIM_Z : return list->list[point_num].dim_z; break;
       case FEATURE_LAST_X : return list->list[point_num].last_x; break;
       case FEATURE_LAST_Y : return list->list[point_num].last_y; break;
       case FEATURE_LAST_Z : return list->list[point_num].last_z; break;

@@ -1,4 +1,13 @@
 #!/bin/bash
+echo "ThreeDimensional OpenGL visualization  / Author : Ammar Qammaz"  
+
 g++ main.cpp world_map_adapter.cpp  world_map_adapter.h -lglut -lGL -lGLU -lXxf86vm -lopenal -lalut -L. -o bin/Release/ThreeDimensional
-echo "Done"
+
+if [ -e bin/Release/ThreeDimensional ]
+then
+  echo "Success.."
+else
+  echo "Failure.."
+fi
+
 exit 0

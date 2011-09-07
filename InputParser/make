@@ -1,15 +1,19 @@
 #!/bin/bash
-echo "Hand made make script for InputParser - InputParser_C_Tester .."
-echo "Should provide libInputParser.a  "
-echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
-echo "Compiling files.."  
+echo "InputParser and its tester / Provides libInputParser.a / Author : Ammar Qammaz" 
+
+rm libInputParser_C.a 
+
 gcc -c InputParser_C.c -o InputParser_C.o 
 
-echo "Linking files.." 
 ar  rcs libInputParser_C.a InputParser_C.o
 
-echo "Cleaning compiled object files.."
 rm InputParser_C.o 
 
-echo "Done.."
+if [ -e libInputParser_C.a ]
+then
+  echo "Success.."
+else
+  echo "Failure.."
+fi
+
 exit 0

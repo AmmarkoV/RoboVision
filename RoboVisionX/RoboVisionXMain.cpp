@@ -506,12 +506,16 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
         /*We want to draw faces on left eye ---------------------------------------------------------------------------------*/
        if (VisCortx_GetFaces(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS)>0  )
        {
+         unsigned int center_x,center_y,scale;
          for ( i=0; i<VisCortx_GetFaces(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS); i++ )
          {
             if ( VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_IS_LOST) == 0 )
             {
                dc.SetPen(pink_marker);
-               dc.DrawCircle(feed_0_x+VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_Y),VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_Z));
+               center_x=VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_X) + ( VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_DIM_X) / 2 ) ;
+               center_y=VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_Y) + ( VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_DIM_Y) / 2 ) ;
+               scale = ( ( VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_DIM_X) / 2 ) + ( VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_DIM_Y) / 2 ) ) / 2 ;
+               dc.DrawCircle( feed_0_x + center_x , feed_0_y + center_y , scale );
             }
          }
        }
@@ -519,12 +523,16 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
         /*We want to draw faces on left eye ---------------------------------------------------------------------------------*/
        if (VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS)>0  )
        {
+         unsigned int center_x,center_y,scale;
          for ( i=0; i<VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS); i++ )
          {
             if ( VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_IS_LOST) == 0 )
             {
                dc.SetPen(pink_marker);
-               dc.DrawCircle(feed_1_x+VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_Y),VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_Z));
+               center_x=VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_X) + ( VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_DIM_X) / 2 ) ;
+               center_y=VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_Y) + ( VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_DIM_Y) / 2 ) ;
+               scale = ( ( VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_DIM_X) / 2 ) + ( VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_DIM_Y) / 2 ) ) / 2;
+               dc.DrawCircle( feed_1_x + center_x , feed_1_y + center_y , scale);
             }
          }
        }
@@ -546,7 +554,13 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
      msg.Printf( wxT("%u | %u ") , VisCortx_GetMetric(CHANGES_LEFT) , VisCortx_GetMetric(CHANGES_RIGHT) );
      Flow->SetLabel(msg);
 
-     msg.Clear() , msg.Printf( wxT("%u fps - %u ms ") , frame_rate , (unsigned int) (GetCortexMetric(VIDEOINPUT_PROCESSING_DELAY_MICROSECONDS)/1000) );
+
+     unsigned int video_frame_rate = GetCortexMetric(VIDEOINPUT_PROCESSING_DELAY_MICROSECONDS) / 1000 ;
+     if ( video_frame_rate != 0 ) { video_frame_rate = 1000 / video_frame_rate; }
+
+     //TODO REMOVE frame_rate  , it does not reflect real performance , it is replaced with a new metric coming through the VisualCortex
+
+     msg.Clear() , msg.Printf( wxT("%u fps - %u ms ") , video_frame_rate , (unsigned int) (GetCortexMetric(VIDEOINPUT_PROCESSING_DELAY_MICROSECONDS)/1000) );
      FrameRate->SetLabel(msg);
 
      msg.Clear() , msg.Printf( wxT("%u ms") , uptimer->Time() );

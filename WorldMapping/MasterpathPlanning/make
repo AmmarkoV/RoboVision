@@ -1,8 +1,8 @@
 #!/bin/bash
-echo "Hand made make script for MasterPathPlanning lib -  and Tester .."
-echo "Should provide libVisualCortex.a and VisCortx_Tester/bin/Release/VisCortx_Tester"
-echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
-echo "Compiling files.."
+echo "MasterPathPlanning and its tester / Provides libMasterpathPlanning.a / Author : Ammar Qammaz"  
+
+rm libMasterpathPlanning.a 
+
 gcc -c main.c -o main.o
 gcc -c PathPlanningCore.c -o PathPlanningCore.o
 gcc -c PathPlanningHelper.c -o PathPlanningHelper.o
@@ -21,5 +21,12 @@ cd MasterpathPlanning_Tester
 ./make
 cd ..
 
-echo "Done.."
+if [ -e libMasterpathPlanning.a ]
+then
+  echo "Success.."
+else
+  echo "Failure.."
+fi
+
+
 exit 0

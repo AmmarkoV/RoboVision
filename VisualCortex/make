@@ -1,7 +1,5 @@
 #!/bin/bash
-echo "Hand made make script for VisualCortex - VisualCortex_Tester .."
-echo "Should provide libVisualCortex.a and VisCortx_Tester/bin/Release/VisCortx_Tester"
-echo "Written by Ammar Qammaz a.k.a AmmarkoV :) "
+echo "VisualCortex  / Provides libVisualCortex.a  / Author : Ammar Qammaz"    
 
 
 
@@ -12,8 +10,8 @@ cd ..
                                                          #default,optimize
 OptimizedCodeGenerator/bin/Release/OptimizedCodeGenerator default
 
- 
-echo "Compiling files.."
+rm libVisualCortex.a
+
 gcc  -Os -O3 -fexpensive-optimizations -c DisparityDepthMap.c -o DisparityDepthMap.o
 gcc  -Os -O3 -fexpensive-optimizations -c DisparityDepthMap_Heuristics.c -o DisparityDepthMap_Heuristics.o 
 gcc  -Os -O3 -fexpensive-optimizations -c MovementRegistration.c -o MovementRegistration.o
@@ -28,6 +26,7 @@ gcc  -Os -O3 -fexpensive-optimizations -c Precalculations.c -o Precalculations.o
 gcc  -Os -O3 -fexpensive-optimizations -c StateSetting.c -o StateSetting.o
 gcc  -Os -O3 -fexpensive-optimizations -c VisCortexConvolutionFilters.c -o VisCortexConvolutionFilters.o
 gcc  -Os -O3 -fexpensive-optimizations -c VisCortexOptimizedConvolutionFilters.c -o VisCortexOptimizedConvolutionFilters.o
+gcc  -Os -O3 -fexpensive-optimizations -c VisCortexTimer.c -o VisCortexTimer.o
 gcc  -Os -O3 -fexpensive-optimizations -c VisCortexFilters.c -o VisCortexFilters.o
 gcc  -Os -O3 -fexpensive-optimizations -c VisCortexHeuristics.c -o VisCortexHeuristics.o 
 gcc  -Os -O3 -fexpensive-optimizations -c VisionMemory.c -o VisionMemory.o
@@ -36,16 +35,22 @@ gcc  -Os -O3 -fexpensive-optimizations -c LinearAlgebra.c -o LinearAlgebra.o
 gcc  -Os -O3 -fexpensive-optimizations -c VisualCortex.c -o VisualCortex.o
 
 
-echo "Linking files.."
-ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
+ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
 
-echo "Cleaning compiled object files.."
-rm DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
 
-echo "Compiling Tester.."
+rm DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
+
+
 cd VisCortx_Tester
 ./make
 cd ..
 
-echo "Done.."
+
+if [ -e libVisualCortex.a ]
+then
+  echo "Success.."
+else
+  echo "Failure.."
+fi
+
 exit 0

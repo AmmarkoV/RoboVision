@@ -16,6 +16,6 @@ unsigned int GetMetric(unsigned int get_num);
 unsigned int GetVideoRegisterStats(unsigned int metric_num);
 void SetTime(unsigned int thetime);
 unsigned int GetTime();
-int GetANewSnapShotFileName(char * result,char * filename_base);
+int GetANewSnapShotFileName(char * result,char * filename_base,char * filename_extension);
 
 #endif // STATESETTING_H_INCLUDED

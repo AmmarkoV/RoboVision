@@ -140,7 +140,7 @@ void ConvertRegisterFrom1ByteTo3Byte(int in_reg);
 int PrintRegister(char * filename,unsigned int reg_num);
 int PrintExtraLargeRegister(char * filename,unsigned int reg_num);
 int SaveRegisterToFile(char * filename,unsigned int reg_num);
-int SaveRegisterPartToFile(char * filename,unsigned int reg_num,unsigned int x,unsigned int y ,unsigned int width,unsigned int height);
+int SaveRegisterPartToFile(char * filename,unsigned int reg_num,unsigned int x_start,unsigned int y_start ,unsigned int width,unsigned int height);
 int LoadRegisterFromFile(char * filename,unsigned int reg_num);
 
 #endif // VISIONMEMORY_H_INCLUDED
