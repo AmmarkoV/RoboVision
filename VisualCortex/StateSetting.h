@@ -13,7 +13,6 @@ void SetSetting(unsigned int set_num,unsigned int set_val);
 void SetDefaultSettings();
 unsigned int GetSetting(unsigned int get_num);
 unsigned int GetMetric(unsigned int get_num);
-unsigned int GetVideoRegisterStats(unsigned int metric_num);
 void SetTime(unsigned int thetime);
 unsigned int GetTime();
 int GetANewSnapShotFileName(char * result,char * filename_base,char * filename_extension);

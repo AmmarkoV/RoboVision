@@ -118,6 +118,7 @@ int ReallocEmptyFrame(unsigned int new_size_x,unsigned int new_size_y)
       {
           if ( empty_frame != 0 ) { free(empty_frame); }
           empty_frame=(unsigned char * ) malloc(largest_feed_x * largest_feed_y * 3 * sizeof ( unsigned char) );
+          if (empty_frame==0) { fprintf(stderr,"Error allocating memory for empty_frame structure"); return 0; }
 
           unsigned int i=0;
           for (i=0; i<largest_feed_x * largest_feed_y * 3; i++) { empty_frame[i]=0;}
@@ -173,17 +174,29 @@ int InitVideoInputs(int numofinputs)
     int i;
     for ( i=0; i<total_cameras; i++ )
       {  /*We mark each camera as dead , to preserve a clean state*/
+          camera_feeds[i].loop_thread = 0;
+
           camera_feeds[i].thread_alive_flag=0;
           camera_feeds[i].rec_video.pixels=0;
           camera_feeds[i].frame=0;
           camera_feeds[i].v4l2_intf=0;
           camera_feeds[i].fx=0,camera_feeds[i].fy=0,camera_feeds[i].cx=0,camera_feeds[i].cy=0;
           camera_feeds[i].k1=0,camera_feeds[i].k2=0,camera_feeds[i].p1=0,camera_feeds[i].p2=0,camera_feeds[i].k3=0;
+
+          //memset ((void*) camera_feeds[i],0,sizeof(struct Video));
       }
 
     /*Lets Refresh USB devices list :)*/
     int ret=system((const char * ) "lsusb");
     if ( ret == 0 ) { printf("Syscall USB list success\n"); }
+
+    ret=system((const char * ) "ls /dev/video*");
+    if ( ret == 0 ) { printf("These are the possible video devices .. \n"); }
+
+    ret=system((const char * ) "ls /dev/video* | wc -l");
+    if ( ret == 0 ) { printf("total video devices .. \n"); }
+
+
 
     printf("\nAvailiable Video Devices : \n");
     ret=system((const char * ) "ls /dev | grep video");
@@ -215,7 +228,12 @@ int CloseVideoInputs()
        {
         fprintf(stderr,"Video %u Stopping\n",i);
         camera_feeds[i].stop_snap_loop=1;
-        pthread_join( camera_feeds[i].loop_thread, NULL);
+
+        if ( pthread_join( camera_feeds[i].loop_thread, NULL) != 0 )
+          {
+              fprintf(stderr,"Error rejoining VideoInput thread \n");
+          }
+
         usleep(30);
         camera_feeds[i].v4l2_intf->stopCapture();
         usleep(30);
@@ -244,6 +262,13 @@ int CloseVideoInputs()
     fprintf(stderr,"Video Input successfully deallocated\n");
 
     return 1 ;
+}
+
+
+int CloseVideoFeed( int inpt )
+{
+    fprintf(stderr,"CloseVideoFeed Not implemented, it should close the feed thread with number %u , and completely free memory \n",inpt);
+    return 0;
 }
 
 
@@ -302,6 +327,7 @@ int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,char 
        {
           /*NEEDS TO DECODE TO RGB 24 , allocate memory*/
           camera_feeds[inpt].decoded_pixels = (char * ) malloc( (width*height*3) + 1);
+          if (camera_feeds[inpt].decoded_pixels ==0) { fprintf(stderr,"Error allocating memory for DECODER TO RGB 24 structure"); return 0; }
           memset(camera_feeds[inpt].decoded_pixels, '\0',width*height*3);
        }
 
@@ -330,6 +356,7 @@ int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,char 
    if ( snapshots_on == 1 )
     {
         camera_feeds[inpt].rec_video.pixels = (char * ) malloc(camera_feeds[inpt].rec_video.image_size + 1);
+        if (camera_feeds[inpt].rec_video.pixels == 0) { fprintf(stderr,"Error allocating memory for snapshot frame"); return 0; }
     }
     /* INIT MEMORY FOR SNAPSHOTS !*/
 
@@ -341,9 +368,14 @@ int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,char 
 
     struct ThreadPassParam param={0};
     param.feednum=inpt;
-    pthread_create( &camera_feeds[inpt].loop_thread, NULL,  SnapLoop ,(void*) &param);
+    if ( pthread_create( &camera_feeds[inpt].loop_thread, NULL,  SnapLoop ,(void*) &param) != 0 )
+         {
+             fprintf(stderr,"Could not create the camera receiving thread.. \n");
+             CloseVideoFeed(inpt);
+             return 0;
+         }
 
-    unsigned int waittime=0,MAX_WAIT=100,SLEEP_PER_LOOP_MILLI=50*/*Milliseconds*/1000;
+    unsigned int waittime=0,MAX_WAIT=100  , SLEEP_PER_LOOP_MILLI = 50 * /*Milliseconds*/ 1000;
     printf("Giving some time ( max =  %u ms ) for the receive threads to wake up ",MAX_WAIT*SLEEP_PER_LOOP_MILLI);
     while ( ( waittime<MAX_WAIT ) && (camera_feeds[inpt].thread_alive_flag==0) ) {
                                                                                    if (waittime%10==0) printf(".");

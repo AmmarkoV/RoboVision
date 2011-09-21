@@ -24,6 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "MovementRegistration.h"
 #include "Precalculations.h"
 #include "PatchComparison.h"
+#include "VisCortexTimer.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -75,6 +76,7 @@ int PrepareForDepthMapping(
         CompressRegister(SECOND_DERIVATIVE_LEFT,SECOND_DERIVATIVE_GROUPED_LEFT);
         CompressRegister(SECOND_DERIVATIVE_RIGHT,SECOND_DERIVATIVE_GROUPED_RIGHT);
         */
+
      }
   return 1;
 }
@@ -396,6 +398,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
 int ExecuteDisparityMappingPyramid()
 {
 
+  StartTimer(TIMER_DEPTH_MAP_DELAY);
+
   unsigned int edgepercent=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED],patch_x=metrics[HORIZONTAL_BUFFER],patch_y=metrics[VERTICAL_BUFFER];
    unsigned int originalthreshold=settings[DEPTHMAP_COMPARISON_THRESHOLD];
 
@@ -474,6 +478,13 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
        SaveRegisterToFile("DEPTH0",DEPTH_LEFT_VIDEO);
        SaveRegisterToFile("COLOR0",CALIBRATED_LEFT_EYE);
    }
+
+  video_register[DEPTH_LEFT].time = video_register[CALIBRATED_LEFT_EYE].time;
+  video_register[DEPTH_RIGHT].time = video_register[CALIBRATED_RIGHT_EYE].time;
+
+  metrics[DEPTHMAP_DELAY_MICROSECONDS] = EndTimer(TIMER_DEPTH_MAP_DELAY);
+  metrics[TOTAL_DEPTHMAP_DELAY_MICROSECONDS]+=metrics[DEPTHMAP_DELAY_MICROSECONDS] ;
+  ++metrics[TOTAL_DEPTHMAPS_PERFORMED];
 
 
 return 1;

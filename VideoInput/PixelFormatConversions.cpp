@@ -251,7 +251,7 @@ unsigned char *yuv420p_to_rgb24(int width, int height,
 
     const int numpix = width * height;
     const int bytes = 24 >> 3;
-    if (pOut0==NULL)
+    if (pOut0==0)
     {
       pOut0=(unsigned char *)malloc(numpix*3);
     }
@@ -298,7 +298,7 @@ unsigned char *yuv420_to_rgb24(int width, int height,
 {
     const int numpix = width * height;
     const int bytes = 24 >> 3;
-    if (pOut0==NULL)
+    if (pOut0==0)
     {
       pOut0=(unsigned char *)malloc(numpix*3);
     }
@@ -363,7 +363,7 @@ unsigned char *yuv411p_to_rgb24(int width, int height,
 {
     const int numpix = width * height;
     const int bytes = 24 >> 3;
-    if (pOut0==NULL)
+    if (pOut0==0)
     {
       pOut0=(unsigned char *)malloc(numpix*3);
     }

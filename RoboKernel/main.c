@@ -12,7 +12,7 @@
 
 struct ThreadPassParam { int feednum; };
 int go_to_sleep=0;
-pthread_t kernel_loop_id;
+pthread_t kernel_loop_id=0;
 void * KernelLoop(void *ptr );
 
 int IssueCommand(char * cmd,char * res,unsigned int resmaxsize,char * from)
@@ -47,13 +47,17 @@ unsigned int GetVideoData(unsigned int num)
 
 void InitSenses()
 {
+   LoadConfiguration(); // Set Correct values to VisCortx :P 2nd time but cannot make something better right now :P
+
    InitVisualSystem();
    InitMotorSystem();
+   OpenWebInterface();
    fprintf(stderr,"Senses initialized\n");
 }
 
 void CloseSenses()
 {
+   CloseWebInterface();
    CloseVisualSystem();
    CloseMotorSystem();
 }
@@ -79,11 +83,16 @@ void do_something(unsigned int clock_time)
 
 }
 
-void StartRoboKernel()
+int StartRoboKernel()
 {
     struct ThreadPassParam param={0};
     param.feednum=0;
-    pthread_create( &kernel_loop_id , NULL,  KernelLoop ,(void*) &param);
+    if ( pthread_create( &kernel_loop_id , NULL,  KernelLoop ,(void*) &param) != 0 )
+     {
+         fprintf(stderr,"Error creating kernel loop \n");
+         return 0;
+     }
+    return 1;
 }
 
 void * KernelLoop(void *ptr )
@@ -115,6 +124,12 @@ void * KernelLoop(void *ptr )
 
         //fprintf(stderr,"%u ms ( %u )\n",clock_count,clock_countbig);
         ++loopcount;
+        if ( motor_system_autonomous )
+         {
+             if ( loopcount % 5000 == 0 ) { RobotStartRotating(50,1); } else
+             if ( loopcount % 10000 == 0 ) { RobotStartRotating(50,-1); }
+
+         }
 
         if (loopcount%10000 == 0 )  { fprintf(stderr,"."); }
 
@@ -128,7 +143,7 @@ void * KernelLoop(void *ptr )
   return 0;
 }
 
-void StopRoboKernel()
+int StopRoboKernel()
 {
 
     fprintf(stderr,"NOTE : Flushing consoleout.dat to prevent it from beeing refreshed over and over on github.. :P\n");
@@ -136,6 +151,7 @@ void StopRoboKernel()
     if ( i!=0 ) { fprintf(stderr,"It failed.. well , no big deal \n"); }
 
   go_to_sleep=1;
+  return 1;
 }
 
 int RoboKernelAlive()

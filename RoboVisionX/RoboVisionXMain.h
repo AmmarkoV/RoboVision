@@ -3,7 +3,7 @@
  * Purpose:   Defines Application Frame
  * Author:    Ammar Qammaz (ammarkov@gmail.com)
  * Created:   2009-11-01
- * Copyright: Ammar Qammaz (http://62.103.22.50)
+ * Copyright: Ammar Qammaz (http://ammar.gr)
  * License:
  **************************************************************/
 
@@ -25,6 +25,7 @@
 #include <wx/timer.h>
 //*)
 #include <wx/sound.h>
+#include <wx/joystick.h>
 
 class RoboVisionXFrame: public wxFrame
 {
@@ -38,6 +39,8 @@ class RoboVisionXFrame: public wxFrame
 
         int feed_0_x,feed_0_y,feed_1_x,feed_1_y,feed_2_x,feed_2_y,feed_3_x,feed_3_y;
 
+        wxJoystick *joy_stick;
+
     private:
 
         //(*Handlers(RoboVisionXFrame)
@@ -47,6 +50,7 @@ class RoboVisionXFrame: public wxFrame
         void OnAbout(wxCommandEvent& event);
         void OnTimer1Trigger(wxTimerEvent& event);
         void OnButtonDepthMapClick(wxCommandEvent& event);
+        void OnJoystickEvent(wxJoystickEvent& event);
         void OnMotionAlarmButtonClick(wxCommandEvent& event);
         void OnSwapFeedsClick(wxCommandEvent& event);
         void OnRecordButtonClick(wxCommandEvent& event);
@@ -63,6 +67,7 @@ class RoboVisionXFrame: public wxFrame
         void OnMovementVerticalCmdScroll(wxScrollEvent& event);
         void OnMovementHorizontalCmdScroll(wxScrollEvent& event);
         void OnSaveSnapshotsClick(wxCommandEvent& event);
+        void OnAutonomousClick(wxCommandEvent& event);
         //*)
         void OnMotion(wxMouseEvent& event);
 
@@ -168,7 +173,6 @@ class RoboVisionXFrame: public wxFrame
         //*)
 
         wxStopWatch *uptimer;
-        wxSound *siren;
 
         unsigned int tick_count;
         unsigned int add_new_track_point;

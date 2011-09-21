@@ -4,10 +4,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+int ListIsOk(struct FeatureList * list)
+{
+    if ( list == 0 ) {  return 0; }
+    return 1;
+}
 
 int ClearFeatureList(struct FeatureList * list)
 {
+  if  (!ListIsOk(list)) { fprintf(stderr,"ClearFeatureList called with a zero list \n");  return 0; }
   list->reg_for_correspondance=0;
   list->current_features = 0;
   return 1;
@@ -19,6 +24,7 @@ struct FeatureList * CreateFeatureList(unsigned int size , unsigned int def_patc
   struct FeatureList * new_fls =  malloc( sizeof(struct FeatureList) );
   new_fls->max_features = size;
   new_fls->list = malloc ( sizeof(struct FeatureData) * size );
+  if (new_fls->list==0) { fprintf(stderr,"Error allocating memory for feature list structure\n"); return 0; }
   new_fls->last_track_time = 0;
 
 
@@ -28,6 +34,7 @@ struct FeatureList * CreateFeatureList(unsigned int size , unsigned int def_patc
 
 int DestroyFeatureList(struct FeatureList * list)
 {
+  if  (!ListIsOk(list)) { fprintf(stderr,"DestroyFeatureList called with a zero list \n");  return 0; }
   list->reg_for_correspondance=0;
 
   list->max_features = 0;
@@ -39,7 +46,20 @@ int DestroyFeatureList(struct FeatureList * list)
 
 int CopyFeatureList(struct FeatureList * source,struct FeatureList * target)
 {
-  if ( source->max_features > target->max_features ) { fprintf(stderr,"Cannot copy to smaller target \n"); }
+  if  (!ListIsOk(source)) { fprintf(stderr,"CopyFeatureList arg 1 a zero list \n");  return 0; }
+  if  (!ListIsOk(target)) { fprintf(stderr,"CopyFeatureList arg 2 a zero list \n");  return 0; }
+
+
+  if ( source->max_features > target->max_features )
+    {
+      fprintf(stderr,"Cannot copy to smaller target \n"); /*TODO One solution here is realloc with different size*/
+    }
+  if ( source->current_features >= target->max_features )
+    {
+      source->current_features = target->max_features;
+      if ( source->current_features  > 0  ) { --source->current_features; }
+    }
+
 
   target->current_features = source->current_features;
 
@@ -48,7 +68,7 @@ int CopyFeatureList(struct FeatureList * source,struct FeatureList * target)
   target->last_track_time = source->last_track_time;
 
   int i=0;
-  for (i=0; i < target->current_features; i++)
+  for (i=0; i < source->current_features; i++)
    {
       target->list[i].lost = source->list[i].lost;
       target->list[i].lost_since = source->list[i].lost_since;
@@ -81,6 +101,7 @@ int CopyFeatureList(struct FeatureList * source,struct FeatureList * target)
 
 int RenewTrackPoints(struct FeatureList * list,int point)
 {
+    if  (!ListIsOk(list)) { fprintf(stderr,"RenewTrackPoints called with a zero list \n");  return 0; }
     list->list[point].lost_since = 0;
     return 1;
 }
@@ -89,11 +110,14 @@ int RenewTrackPoints(struct FeatureList * list,int point)
 // TODO ADD HERE COPYING OF THE FEATURE IMAGE PATCH , IT IS NEEDED FOR BETTER TRACKING..!
 int AddToFeatureList(struct FeatureList * list, int x, int y,int z , int dim_x, int dim_y,int dim_z)
 {
+   if  (!ListIsOk(list)) { fprintf(stderr,"AddToFeatureList called with a zero list \n");  return 0; }
    if ( list->current_features >= list->max_features-1 ) { fprintf(stderr,"Cannot add to feature list , feature list is full\n"); return 0; }
    unsigned int cur=list->current_features;
     list->list[cur].x=x; list->list[cur].y=y; list->list[cur].z=z;
     list->list[cur].dim_x=dim_x; list->list[cur].dim_y=dim_y; list->list[cur].dim_z=dim_z;
     list->list[cur].last_x=x; list->list[cur].last_y=y; list->list[cur].last_z=z;
+
+    list->list[cur].lost=0;
 
    ++list->current_features;
  return 1;
@@ -115,6 +139,7 @@ int RemoveFromFeatureList(struct FeatureList * list, int point)
 
 void RemoveTrackPointsIfTimedOut(struct FeatureList * list,unsigned int timeout)
 {
+    if  (!ListIsOk(list)) { fprintf(stderr,"RemoveTrackPointsIfTimedOut called with a zero list \n");  return 0; }
 	int i=0;
 	while ( i < list->current_features )
     {
@@ -134,6 +159,8 @@ void RemoveTrackPointsIfTimedOut(struct FeatureList * list,unsigned int timeout)
 
 int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned int data_type)
 {
+    if  (!ListIsOk(list)) { fprintf(stderr,"GetFeatureData called with a zero list \n");  return 0; }
+    if  (point_num >= list->current_features ) { return 0; }
     switch (data_type)
     {
       case TOTAL_POINTS : return list->current_features; break;
@@ -148,6 +175,7 @@ int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned in
       case FEATURE_LAST_Z : return list->list[point_num].last_z; break;
       case PRINT_FEATURE_LIST : PrintFeatureListContents(list); break;
       case FEATURE_IS_LOST : return list->list[point_num].lost; break;
+      case FEATURE_LAST_TRACK_TIME: return list->last_track_time; break;
       case MATCHED_WITH_REG : return 0; break;
     };
   return 0;
@@ -156,6 +184,7 @@ int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned in
 
 int PrintFeatureListContents(struct FeatureList * list)
 {
+    if  (!ListIsOk(list)) { fprintf(stderr,"PrintFeatureListContents called with a zero list \n");  return 0; }
     fprintf(stderr,"Feature list total points : %u \n ",list->current_features);
     int i=0;
     for (i=0; i<list->current_features; i++)

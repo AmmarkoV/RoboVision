@@ -3,6 +3,7 @@
 
 int Say(char * what2say);
 int PlaySound(char * sndname);
+int StopAllSounds();
 
 void CalibratedView();
 void FullDepthMap(unsigned char write_to_file);

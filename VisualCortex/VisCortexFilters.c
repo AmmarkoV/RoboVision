@@ -354,9 +354,10 @@ int  Sobel(unsigned int image_reg)
 
   if (image==0) { return(0); }
 
-  unsigned char *proc_image;
+  unsigned char *proc_image=0;
   //proc_image = new unsigned char [ image_x * image_y * 3 ];
   proc_image = ( unsigned char * ) malloc ( sizeof(unsigned char) * image_x * image_y * 3 );
+  if (proc_image==0) { fprintf(stderr,"Error allocating memory for proc_image\n"); return 0; }
 
   BYTE *px;
 
@@ -530,8 +531,9 @@ int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int m
 
   if ( (target==0) || (source==0) ) {return(0);}
 
-  unsigned char *proc_image;
+  unsigned char *proc_image=0;
   proc_image = (unsigned char *) malloc( sizeof(unsigned char) * image_x * image_y * 3);
+  if (proc_image==0) { fprintf(stderr,"Error allocating memory for proc_image \n"); return 0; }
 
   BYTE *px,*px2;
   BYTE *r,*r2;
@@ -663,7 +665,7 @@ void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigne
 	Sobel(target_sobel_image_reg);
 	KillPixelsBetween(target_sobel_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
 
-    CopyRegister(rgb_image_reg,GENERAL_3);
+    CopyRegister(rgb_image_reg,GENERAL_3,0,0);
     ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
 	SecondDerivativeIntensitiesFromSource(GENERAL_3,target_derivative_image_reg);
 
@@ -677,7 +679,9 @@ int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned i
     /* TODO , For now the full register is returned!*/
        if ( settings[INPUT_CALIBRATION]==0 )
          {
-           return CopyRegister(rgb_image,rgb_calibrated);
+           int i = CopyRegister(rgb_image,rgb_calibrated,1,1);
+           video_register[rgb_calibrated].time = video_register[rgb_image].time;
+           return i;
          }
     /*The array M is the array calculated from Precalculations.c to speed up things*/
 
@@ -704,7 +708,7 @@ int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned i
          ++ptr;
      }
 
-
+   video_register[rgb_calibrated].time = video_register[rgb_image].time;
     //return CopyRegister(rgb_image,rgb_calibrated);
    return 1;
 }

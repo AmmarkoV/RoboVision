@@ -98,6 +98,7 @@ struct ExtraLargeVideoRegister
 extern unsigned int TIME_INC;
 extern unsigned int COLD_START;
 
+extern unsigned int state[STATE_COUNT];
 extern unsigned int settings[SETTINGS_COUNT];
 extern unsigned int metrics[METRICS_COUNT];
 extern struct VideoRegister video_register[REGISTERS_COUNT];
@@ -128,7 +129,7 @@ int CloseVisionMemory();
 
 
 void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y);
-int CopyRegister(unsigned int source,unsigned int target);
+int CopyRegister(unsigned int source,unsigned int target,unsigned int copy_features,unsigned int copy_faces);
 int SwapRegister(unsigned int source,unsigned int target);
 
 int ThisIsA3ByteRegister(int reg);
@@ -142,5 +143,8 @@ int PrintExtraLargeRegister(char * filename,unsigned int reg_num);
 int SaveRegisterToFile(char * filename,unsigned int reg_num);
 int SaveRegisterPartToFile(char * filename,unsigned int reg_num,unsigned int x_start,unsigned int y_start ,unsigned int width,unsigned int height);
 int LoadRegisterFromFile(char * filename,unsigned int reg_num);
+
+unsigned int GetTempRegister();
+unsigned int StopUsingVideoRegister(unsigned int thereg);
 
 #endif // VISIONMEMORY_H_INCLUDED

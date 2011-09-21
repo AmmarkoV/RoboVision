@@ -8,6 +8,11 @@
 #include <string.h>
 #include "../3dpartylibs/fast/fast.h"
 
+
+/*
+  MEMO ( 12 / 9 / 2012 ) , I think i need to rewrite RoboVisionX  :P
+*/
+
 struct xy_local
 {
  int x, y;
@@ -162,25 +167,10 @@ int ExtractFeaturesOpenSURF()
 
 int ExtractFeaturesMy(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_reg,unsigned int target_reg,unsigned int max_features,unsigned int cam_num)
 {
-    /*
-    CopyRegister(rgb_reg,GENERAL_2);
-    GaussianBlur(GENERAL_2,0);
-    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2);
-    SecondDerivativeIntensitiesFromSource(GENERAL_2,GENERAL_3);
-    ExtractFeatures_MyAlgorithm(max_features,GENERAL_3,GENERAL_3,target_reg,cam_num);
-    ConvertRegisterFrom1ByteTo3Byte(target_reg);
-    CopyFeatureList(video_register[GENERAL_3].features,video_register[rgb_reg].features);
-*/
 
     ExtractFeatures_MyAlgorithm(max_features,edge_reg,second_deriv_reg,target_reg,cam_num);
     ConvertRegisterFrom1ByteTo3Byte(target_reg);
     CopyFeatureList(video_register[edge_reg].features,video_register[rgb_reg].features);
-
-/*
-  THIS CODE OUTPUTS SECOND DERIVATIVE TO THE RIGHT OPERATION SCREEN
-  //  CopyRegister(GENERAL_3,LAST_RIGHT_OPERATION);
-  //  ConvertRegisterFrom1ByteTo3Byte(LAST_RIGHT_OPERATION,image_x,image_y);
-*/
 
     return 1;
 }
@@ -190,22 +180,29 @@ int ExtractFeaturesMy(int rgb_reg,unsigned int edge_reg,unsigned int second_deri
 int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_reg,unsigned int cam_num)
 {
   // fprintf(stderr,"ExtractFeatures called \n");
-   CopyRegister(rgb_reg,GENERAL_2);
+  unsigned int TMP_REGISTER = GetTempRegister();
+  if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register\n"); }
+
+   CopyRegister(rgb_reg,TMP_REGISTER,1,0);
   // fprintf(stderr,"CopyRegister called \n");
-   ConvertRegisterFrom3ByteTo1Byte(GENERAL_2);
+   ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
   // fprintf(stderr,"ConvertRegisterFrom3ByteTo1Byte called \n");
    ClearFeatureList(video_register[rgb_reg].features);
+
   // fprintf(stderr,"ClearFeatureList called \n");
 
    int numcorners=0;
    struct xy_local * corner_list; //(struct xy * )
    corner_list = 0;
-   corner_list = (struct xy_local *) fast9_detect_nonmax ( video_register[GENERAL_2].pixels ,
+   corner_list = (struct xy_local *) fast9_detect_nonmax ( video_register[TMP_REGISTER].pixels ,
                                                            metrics[RESOLUTION_X] , metrics[RESOLUTION_Y] ,
                                                            metrics[RESOLUTION_X] ,
                                                            settings[FEATURE_DETECTION_THRESHOLD] ,
                                                            &numcorners );
-  //fprintf(stderr,"ExtractFeatures called \n");
+
+
+   video_register[rgb_reg].features->last_track_time  = video_register[rgb_reg].time; // AFTER the procedure , the feature list is up to date
+   StopUsingVideoRegister(TMP_REGISTER);
 
   if ( corner_list == 0 )
     {
@@ -220,13 +217,10 @@ int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_
          AddToFeatureList(  video_register[rgb_reg].features  ,
                             corner_list[i].x , corner_list[i].y , 1 ,0,0,0);
     }
-//  fprintf(stderr,"AddToFeatureList called %u times \n",numcorners);
 
   free(corner_list);
-  //fprintf(stderr,"free called \n");
 
-  //  fprintf(stderr,"Extract features returns %u corners \n",numcorners);
-    return numcorners;
+  return numcorners;
 }
 
 

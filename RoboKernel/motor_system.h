@@ -4,6 +4,9 @@
 
 #include "../MotorFoundation/MotorHAL.h"
 
+extern int motor_system_autonomous;
+
+
 int InitMotorSystem();
 int CloseMotorSystem();
 

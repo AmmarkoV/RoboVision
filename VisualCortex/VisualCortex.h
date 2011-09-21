@@ -12,6 +12,17 @@ struct PatchSignature
    unsigned int segment[MAX_SEGMENTS_SIGNATURE];
 };
 
+enum VisCortxState
+{
+   READY_FOR_DEPTH_MAP_AT_TIME = 0,
+   DEPTH_MAP_EXCUTED_AT_TIME,
+   LEFT_FRAME_PROCESSED,
+   RIGHT_FRAME_PROCESSED,
+
+   STATE_COUNT
+};
+
+
 enum VisCortxSettings
 {
    EMPTY = 0,
@@ -119,7 +130,11 @@ enum VisCortxMetrics
    COMPAREPATCH_ALGORITHM_DENIES,
    COMPAREPATCH_TOTAL_CALLS,
 
+   //PERFORMANCE
    VIDEOINPUT_PROCESSING_DELAY_MICROSECONDS,
+   DEPTHMAP_DELAY_MICROSECONDS,
+   TOTAL_DEPTHMAP_DELAY_MICROSECONDS,
+   TOTAL_DEPTHMAPS_PERFORMED,
 
    METRICS_COUNT
 
@@ -176,11 +191,12 @@ enum VisCortxRegisters
    LAST_MOVEMENT_LEFT,
    LAST_MOVEMENT_RIGHT,
 
-
+  // GENERAL REGISTERS MUST BE AT THE END FOR THE GetTempRegister() FUNCTION TO WORK
    GENERAL_1,
    GENERAL_2,
    GENERAL_3,
    GENERAL_4,
+   GENERAL_5,
 
    REGISTERS_COUNT
 };
@@ -207,6 +223,7 @@ enum VisCortxExtraLargeRegisters
     EDGES_GROUPED_LEFT,
     EDGES_GROUPED_RIGHT,
     EDGES_PRESENCE_GROUPED_LEFT,
+    EDGES_PRESENCE_GROUPED_RIGHT,
     SECOND_DERIVATIVE_GROUPED_LEFT,
     SECOND_DERIVATIVE_GROUPED_RIGHT,
     EXTRA_LARGE_REGISTERS_COUNT
@@ -228,6 +245,7 @@ enum FeatureTypeElements
     PRINT_FEATURE_LIST,
     MATCHED_WITH_REG ,
     FEATURE_IS_LOST,
+    FEATURE_LAST_TRACK_TIME,
 
     // ---------------
     TOTAL_FEATURE_ELEMENTS
@@ -258,12 +276,13 @@ unsigned int VisCortx_GetSetting(unsigned int get_num);
 unsigned int VisCortx_GetMetric(unsigned int get_num);
 void VisCortx_SetMetric(unsigned int set_num,unsigned int set_val);
 void VisCortx_CameraParameters(int right_cam,double fx,double fy,double cx,double cy,double k1,double k2,double p1,double p2,double k3);
-unsigned int VisCortx_GetVideoRegisterStats(unsigned int metric_num);
+unsigned int VisCortx_GetVideoRegisterData(unsigned int input_img_regnum,unsigned int metric_num);
+unsigned int VisCortx_VideoRegistersSynced(unsigned int img_regnum1,unsigned int img_regnum2);
 
 unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata);
 unsigned int VisCortX_ClearVideoRegister(unsigned int input_img_regnum);
 unsigned int VisCortX_SwapVideoRegisters(unsigned int input_img_regnum,unsigned int output_img_regnum);
-unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum);
+unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum,unsigned int copy_features,unsigned int copy_faces);
 unsigned int VisCortX_CopyFromVideoToVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum);
 unsigned int VisCortX_BitBltVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y);
 unsigned int VisCortx_WriteToVideoRegister(unsigned int reg_num,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata);
@@ -293,7 +312,7 @@ int VisCortxGetFundamentalMatrix(float * table,int size_of_table);
 // ------------------------------------------------------------------------------------------
 unsigned int  VisCortx_GetTrackedPoints(unsigned int cam);
 void  VisCortx_AddTrackPoint(unsigned int cam,unsigned int x,unsigned int y,unsigned int group);
-void VisCortxClearTrackPoints(unsigned int cam);
+void VisCortx_ClearTrackPoints(unsigned int cam);
 void  VisCortx_AutoAddTrackPoints(unsigned int cam);
 void  VisCortx_RemoveTimedoutTrackPoints(unsigned int vid_reg,unsigned int timeout);
 unsigned int  VisCortx_GetFeature(unsigned int vid_reg,unsigned int point_num,unsigned int data_type);
@@ -307,7 +326,7 @@ void  VisCortx_RenewAllTrackPoints(unsigned int vid_reg);
 
 
 int SobelNDerivative();
-void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,unsigned char howclose);
+void KeepOnlyPixelsClosetoColor(unsigned int src_reg, unsigned int target_reg , unsigned char R,unsigned char G,unsigned char B,unsigned char howclose);
 
 unsigned int VisCortx_RecognizeFaces(unsigned int cam);
 

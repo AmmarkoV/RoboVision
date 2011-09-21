@@ -3,7 +3,7 @@
  * Purpose:   Defines Application Class
  * Author:    Ammar Qammaz (ammarkov@gmail.com)
  * Created:   2009-11-01
- * Copyright: Ammar Qammaz (http://62.103.22.50)
+ * Copyright: Ammar Qammaz (http://ammar.gr)
  * License:
  **************************************************************/
 

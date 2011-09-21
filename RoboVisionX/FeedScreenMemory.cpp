@@ -10,8 +10,8 @@
 #include <linux/videodev2.h>
 
 wxMouseState mouse;
-wxBitmap *default_feed;
-wxBitmap *default_patch;
+wxBitmap *default_feed=0;
+wxBitmap *default_patch=0;
 
 
 struct feed live_feeds[4]={{0},{0},{0},{0}};
@@ -67,7 +67,10 @@ void InitFeeds()
            live_feeds[1].frame = malloc(GetCortexMetric(RESOLUTION_X)*GetCortexMetric(RESOLUTION_Y)*3*sizeof (unsigned char) );
            live_feeds[2].frame = malloc(GetCortexMetric(RESOLUTION_X)*GetCortexMetric(RESOLUTION_Y)*3*sizeof (unsigned char) );
            live_feeds[3].frame = malloc(GetCortexMetric(RESOLUTION_X)*GetCortexMetric(RESOLUTION_Y)*3*sizeof (unsigned char) );
-
+           if ( (live_feeds[0].frame==0)||
+                (live_feeds[1].frame==0)||
+                (live_feeds[2].frame==0)||
+                (live_feeds[3].frame==0) ) { fprintf(stderr,"Error allocating memory for feeds\n"); return; }
 
     StartRoboKernel();
 
@@ -127,10 +130,11 @@ void CheckMousePosition()
 
 void PassVideoRegisterToFeed(unsigned int feednum,void * framedata,unsigned int bitsperpixel)
 {
- void *frame=0;
+  void *frame=0;
 
- if ( live_feeds[feednum].bmp_allocated ) { delete live_feeds[feednum].bmp; live_feeds[feednum].bmp_allocated = false; }
- frame = framedata;
+  if ( live_feeds[feednum].bmp == 0 ) {  return;  } else
+  if ( live_feeds[feednum].bmp_allocated ) { delete live_feeds[feednum].bmp; live_feeds[feednum].bmp_allocated = false; }
+  frame = framedata;
 
  if ( frame != 0)
  {
@@ -151,25 +155,32 @@ int SnapWebCams()
 
  if (has_init==0) { fprintf(stderr,"!"); VideoFeedsNotAccessible=1; return 0; }
 
+ if ( (!VisCortx_VideoRegistersSynced(LEFT_EYE,CALIBRATED_LEFT_EYE)) ||
+      (!VisCortx_VideoRegistersSynced(RIGHT_EYE,CALIBRATED_RIGHT_EYE))
+     )
+  {
+       fprintf(stderr,"Feeds not synchronized , not drawing frame \n");
+       return 0;
+  }
 
  if (last_viscrtx_pass==VisCortx_GetTime()) { return 0; }
  last_viscrtx_pass=VisCortx_GetTime();
 
  VideoFeedsNotAccessible=0;
 
- if ( live_feeds[0].bmp_allocated ) { delete live_feeds[0].bmp; live_feeds[0].bmp_allocated = false; }
- if ( live_feeds[1].bmp_allocated ) { delete live_feeds[1].bmp; live_feeds[1].bmp_allocated = false; }
+ if ( live_feeds[0].bmp_allocated ) { live_feeds[0].bmp_allocated = false; delete live_feeds[0].bmp;  live_feeds[0].bmp=0; }
+ if ( live_feeds[1].bmp_allocated ) { live_feeds[1].bmp_allocated = false; delete live_feeds[1].bmp;  live_feeds[1].bmp=0; }
 
- void *frame=0 ,*frame2 = 0;
+ void *frame = 0 , *frame2 = 0;
 
  // GET INPUT  ( SWAPED OR NOT! )
- frame=GetVideoRegister(LEFT_EYE); frame2=GetVideoRegister(RIGHT_EYE);
+ frame=GetVideoRegister(CALIBRATED_LEFT_EYE); frame2=GetVideoRegister(CALIBRATED_RIGHT_EYE);
  // GET INPUT  ( SWAPED OR NOT! )
 
 
  if ( frame != 0)
  {                                                //
-    live_feeds[0].img.SetData(GetVideoRegister(LEFT_EYE),GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),true);
+    live_feeds[0].img.SetData(GetVideoRegister(CALIBRATED_LEFT_EYE),GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),true);
     if ( resc_width != GetCortexMetric(RESOLUTION_X) ) { live_feeds[0].img.Rescale(resc_width,resc_height); }
     live_feeds[0].bmp= new wxBitmap(live_feeds[0].img);
     live_feeds[0].bmp_allocated = true;
@@ -177,7 +188,7 @@ int SnapWebCams()
 
  if ( frame2 != 0)
  {                                               //
-  live_feeds[1].img.SetData(GetVideoRegister(RIGHT_EYE),GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),true);
+  live_feeds[1].img.SetData(GetVideoRegister(CALIBRATED_RIGHT_EYE),GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),true);
   if ( resc_width != GetCortexMetric(RESOLUTION_X) ) { live_feeds[1].img.Rescale(resc_width,resc_height); }
   live_feeds[1].bmp= new wxBitmap(live_feeds[1].img);
   live_feeds[1].bmp_allocated = true;
@@ -209,13 +220,6 @@ void GUI_FullDepthMap(unsigned char write_to_file)
 void GUI_DrawMovement()
 {
  IssueCommand((char *)"DRAW MOVEMENT",0,0,(char *)"GUI");
- PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
- PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_RIGHT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
-}
-
-void GUI_DrawNewPalette(char R,char G,char B,char threshold)
-{
- KeepOnlyPixelsClosetoColor(R,G,B,threshold);
  PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
  PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_RIGHT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
 }

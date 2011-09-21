@@ -26,7 +26,7 @@ int wait_for_cameras_to_init()
 int InitVisualSystem()
 {
 
-    LoadConfiguration(); // Pull Devices :P
+    //LoadConfiguration(); // Pull Devices :P
 
     InitVideoInputs(2);
     int camerasok=0;
@@ -37,7 +37,7 @@ int InitVisualSystem()
 
     camerasok+=InitVideoFeed(0,video_device_1,acquire_width,acquire_height,24,1,feedsettings);
     camerasok+=InitVideoFeed(1,video_device_2,acquire_width,acquire_height,24,1,feedsettings);
-    usleep(100);
+    usleep(200);
 
     if ( (camerasok==2) )
       {
@@ -77,9 +77,9 @@ int InitVisualSystem()
      */
 
 
-    VisCortx_SetCamerasGeometry(6.0,72.0,0.0,0.0);
+    VisCortx_SetCamerasGeometry(6.5,72.0,0.0,0.0);
 
-    OpenWebInterface();
+
 
     has_init=1;
     return 1;
@@ -91,13 +91,8 @@ int PassVideoInputToCortex(unsigned int clock_time)
 
 
  // GET INPUT  ( SWAPED OR NOT! )
- if ( swap_inputs == 0 )
- {
-    frame1=GetFrame(0); frame2=GetFrame(1);
- } else
- {
-    frame1=GetFrame(1); frame2=GetFrame(0);
- }
+ if ( swap_inputs == 0 ) { frame1=GetFrame(0); frame2=GetFrame(1); } else
+                         { frame1=GetFrame(1); frame2=GetFrame(0); }
 
  VisCortx_SetTime(clock_time);
 
@@ -134,7 +129,6 @@ int PassVideoInputToCortex(unsigned int clock_time)
 
 int CloseVisualSystem()
 {
-    CloseWebInterface();
 
     CloseVideoInputs();
     VisCortx_Stop();

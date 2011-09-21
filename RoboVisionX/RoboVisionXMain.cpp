@@ -3,21 +3,19 @@
  * Purpose:   Code for Application Frame
  * Author:    Ammar Qammaz (ammarkov@gmail.com)
  * Created:   2009-11-01
- * Copyright: Ammar Qammaz (http://62.103.22.50)
+ * Copyright: Ammar Qammaz (http://ammar.gr)
  * License:
  **************************************************************/
-
-char * ROBOGUI_VERSION=(char *) "0.39";
-
-int position = 0;
-
 #include "RoboVisionXMain.h"
 #include "FeedScreenMemory.h"
 #include "CortexSettings.h"
 #include "RememberImage.h"
+#include "version.h"
+
 
 #include "../MotorFoundation/MotorHAL.h"
 #include "../RoboKernel/RoboKernel.h"
+
 
 #include <wx/msgdlg.h>
 #include <wx/wx.h>
@@ -114,7 +112,14 @@ BEGIN_EVENT_TABLE(RoboVisionXFrame,wxFrame)
     EVT_TIMER(-1,RoboVisionXFrame::OnTimerEvent)
     EVT_PAINT(RoboVisionXFrame::OnPaint)
     EVT_MOTION(RoboVisionXFrame::OnMotion)
+    EVT_JOYSTICK_EVENTS(RoboVisionXFrame::OnJoystickEvent)
+
 END_EVENT_TABLE()
+
+unsigned int WAIT_TIME_REDRAW = 200; // WAIT TIME PER FRAME
+unsigned int WAIT_TIME_STARTUP = 5000;
+int position = 0;
+char * version_code_name = (char *) " -  Luben ";
 
 inline wxString _U(const char String[] = "")
 {
@@ -257,6 +262,7 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RoboVisionXFrame::OnPlayButtonClick);
     Connect(ID_BUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RoboVisionXFrame::OnLiveButtonClick);
     Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RoboVisionXFrame::OnAddTrackPointClick);
+    Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&RoboVisionXFrame::OnAutonomousClick);
     Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RoboVisionXFrame::OnConfigurationButtonClick);
     Connect(ID_BUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RoboVisionXFrame::OnLeftButtonClick);
     Connect(ID_BUTTON11,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RoboVisionXFrame::OnRightButtonClick);
@@ -286,14 +292,11 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
 
     wxString WindowTitle; WindowTitle.Clear();
     WindowTitle << wxT("RoboVision X ");
-    WindowTitle << _U(ROBOGUI_VERSION);
-    WindowTitle << wxT(" / VideoInput ");
-    WindowTitle << _U(VideoInput_Version());
+    WindowTitle << _U(FULLVERSION_STRING);
     WindowTitle << wxT(" / VisualCortex ");
     WindowTitle << _U(VisCortx_Version());
+    WindowTitle << _U(version_code_name);
     SetTitle(WindowTitle);
-
-    siren = new wxSound(wxT("Sounds/alarm.wav"),false);
 
     uptimer = new wxStopWatch();
 
@@ -304,30 +307,40 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     shutdown=0;
     add_new_track_point=0;
     tick_count=0; // INTERNAL TIMER
+    frame_rate = 1000;
+    last_draw=0;
+    mouse_x=0,mouse_y=0;
+    dpth_x=0,dpth_y=0;
+    dpth_on=0;
 
     DrawFeeds->SetValue(false); fprintf(stderr,"Switching off Video Drawing\n");
-    Timer1.Start(120, false);  //No fps limit
+    Timer1.Start(WAIT_TIME_REDRAW, false);  //No fps limit
 
 
-    // CONFIGURATION HAS BEEN READ SO , APPLY IT!
-/*    if ( fps == 0 ) Timer1.Start(120, false); else //No fps limit
-    if ( fps == 1 ) Timer1.Start(3000, false); else // 1 = Very low fps 0.3 fps
-                    Timer1.Start(1000/fps, false);
-
-    if ( draw_on == 0 ) { DrawFeeds->SetValue(false); fprintf(stderr,"Switching off Video Drawing\n"); } else
-                        { DrawFeeds->SetValue(true);  fprintf(stderr,"Switching on Video Drawing\n"); }
-*/
     feed_0_x=10;
     feed_0_y=15;
 
     feed_1_x=feed_0_x+default_feed->GetWidth()+10;
-    feed_1_y=15;
+    feed_1_y=feed_0_y;
 
     feed_2_x=feed_0_x;
     feed_2_y=feed_0_y+default_feed->GetHeight()+10;
 
     feed_3_x=feed_1_x;
     feed_3_y=feed_2_y;
+
+
+  fprintf(stderr,"Trying to get joystick\n");
+  joy_stick = new wxJoystick(wxJOYSTICK1);
+  if ( joy_stick != 0 )
+  {
+   if ( joy_stick->IsOk() )
+   {
+     joy_stick->SetCapture(this,0);
+   } else IssueCommand((char *)"Say(Could not detect a joystick)",0,0,(char *)"GUI");
+   wxMilliSleep(100);
+  }
+
 
     IssueCommand((char *)"Say(Robo Vision X started!)",0,0,(char *)"GUI");
 }
@@ -350,6 +363,9 @@ RoboVisionXFrame::~RoboVisionXFrame()
 void RoboVisionXFrame::OnQuit(wxCommandEvent& event)
 {
     shutdown=1;
+    if (joy_stick!=0) { delete joy_stick; }
+
+    wxMilliSleep(500);
     Close();
 }
 
@@ -360,48 +376,96 @@ void RoboVisionXFrame::OnTimerEvent(wxTimerEvent &event)
 
 
 
+int FeaturesAquired(unsigned int video_reg_num)
+{
+ unsigned int wait_time = 0 , max_wait_time = 1000;
+     while ( (wait_time<max_wait_time) && ( VisCortx_GetFeature(video_reg_num,0,FEATURE_LAST_TRACK_TIME ) != VisCortx_GetVideoRegisterData(video_reg_num,0 /*TODO ADD AN ENUM*/) ) )
+      {
+         ++wait_time;
+         wxMilliSleep(1);
+      }
+      if (wait_time>=max_wait_time)
+      {
+            fprintf(stderr,"Features for video_register ( %u ) timedOut , will not be drawn \n",video_reg_num);
+            return 0;
+      }
+  return 1;
+}
+
+int DrawFeaturesAtFeed(wxPaintDC & dc , unsigned int x , unsigned int y , unsigned int video_reg_num , unsigned int point , unsigned int line)
+{
+if  (VisCortx_GetFeature(video_reg_num,0,TOTAL_POINTS)>0)
+      {
+        //------------------------------------ FEATURES ---------------------------------------------*/
+        /*We want to draw features on left eye ---------------------------------------------------------------------------------*/
+       if (VisCortx_GetFeature(video_reg_num,0,TOTAL_POINTS)>0  )
+       {
+        unsigned int i;
+        for ( i=0; i<VisCortx_GetFeature(video_reg_num,0,TOTAL_POINTS); i++ )
+         {
+            if ( VisCortx_GetFeature(video_reg_num,i,FEATURE_IS_LOST ) == 0 )
+            {
+             if (point)
+               {
+                 dc.DrawRectangle(x+VisCortx_GetFeature(video_reg_num,i,FEATURE_X),y+VisCortx_GetFeature(video_reg_num,i,FEATURE_Y),3,3);
+               }
+              if (line)
+               {
+                 dc.DrawLine(x+VisCortx_GetFeature(video_reg_num,i,FEATURE_X),y+VisCortx_GetFeature(video_reg_num,i,FEATURE_Y),
+                             x+VisCortx_GetFeature(video_reg_num,i,FEATURE_LAST_X),y+VisCortx_GetFeature(video_reg_num,i,FEATURE_LAST_Y));
+               }
+            }
+         }
+       }
+     }
+  return 1;
+}
+
+
+
+int DrawFacesAtFeed(wxPaintDC & dc , unsigned int x , unsigned int y , unsigned int video_reg_num )
+{
+       if (VisCortx_GetFaces(video_reg_num,0,TOTAL_POINTS)>0  )
+       {
+         unsigned int center_x,center_y,scale,i;
+         for ( i=0; i<VisCortx_GetFaces(video_reg_num,0,TOTAL_POINTS); i++ )
+         {
+            if ( VisCortx_GetFaces(video_reg_num,i,FEATURE_IS_LOST) == 0 )
+            {
+               center_x=VisCortx_GetFaces(video_reg_num,i,FEATURE_X) + ( VisCortx_GetFaces(video_reg_num,i,FEATURE_DIM_X) / 2 ) ;
+               center_y=VisCortx_GetFaces(video_reg_num,i,FEATURE_Y) + ( VisCortx_GetFaces(video_reg_num,i,FEATURE_DIM_Y) / 2 ) ;
+               scale = ( ( VisCortx_GetFaces(video_reg_num,i,FEATURE_DIM_X) / 2 ) + ( VisCortx_GetFaces(video_reg_num,i,FEATURE_DIM_Y) / 2 ) ) / 2 ;
+               dc.DrawCircle( x + center_x , y + center_y , scale );
+
+            }
+         }
+         return 1;
+       }
+   return 0;
+}
+
+
 void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
 {
- //   if ( has_init == 0 ) { return; }
- //   if ( shutdown == 1 ) { return ; }
-    if ( !RoboKernelAlive() ) { fprintf(stderr,"Robo Kernel died\n"); return; }
- //   if ( VideoFeedsNotAccessible== 1 ) { return; }
+    wxPaintDC dc(this); // OnPaint events should always create a wxPaintDC
 
-    if ( uptimer->Time() < 3000 ) { return ; }
+    if ( !RoboKernelAlive() ) { fprintf(stderr,"Robo Kernel died , window paint message dismissed\n"); return; }
+    //if ( VideoFeedsNotAccessible== 1 ) { return; }
 
-
+     if ( uptimer->Time() < WAIT_TIME_STARTUP ) { /*Wait for warmup :P */ return ; }
      if ( !DrawFeeds->IsChecked() ) { return ; }
-    wxPaintDC dc(this);
 
-    // int x=10;
-     //int y=15;
-     //FEED 1
-     dc.DrawBitmap(*live_feeds[0].bmp,feed_0_x,feed_0_y,true);
+     dc.DrawBitmap(*live_feeds[0].bmp,feed_0_x,feed_0_y,true); //FEED 1
+     dc.DrawBitmap(*live_feeds[1].bmp,feed_1_x,feed_1_y,true); //FEED 2
+     dc.DrawBitmap(*live_feeds[2].bmp,feed_2_x,feed_2_y,true); //FEED 3
+     dc.DrawBitmap(*live_feeds[3].bmp,feed_3_x,feed_3_y,true); //FEED 4
 
-
-     //x+=default_feed->GetWidth()+10;
-     //FEED 2
-     dc.DrawBitmap(*live_feeds[1].bmp,feed_1_x,feed_1_y,true);
-
-
-     //x=10;
-     //y+=default_feed->GetHeight()+10;
-     //FEED 3
-     dc.DrawBitmap(*live_feeds[2].bmp,feed_2_x,feed_2_y,true);
-
-
-     //x+=default_feed->GetWidth()+10;
-     //FEED 4
-     dc.DrawBitmap(*live_feeds[3].bmp,feed_3_x,feed_3_y,true);
 
      if ( dpth_on == 1 )
      {
        unsigned int x1,y1,sizex,sizey;
-       x1 = DepthMap ( 4 , dpth_x , dpth_y );
-       y1 = DepthMap ( 5 , dpth_x , dpth_y );
-       sizex = DepthMap ( 8 , dpth_x , dpth_y );
-       sizey = DepthMap ( 9 , dpth_x , dpth_y );
-
+       x1 = DepthMap ( 4 , dpth_x , dpth_y );    y1 = DepthMap ( 5 , dpth_x , dpth_y );
+       sizex = DepthMap ( 8 , dpth_x , dpth_y ); sizey = DepthMap ( 9 , dpth_x , dpth_y );
 
        wxPen red(wxColour(255,0,0),1,wxSOLID);
        dc.SetPen(red);
@@ -411,8 +475,7 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
        dc.DrawRectangle(mouse_x,mouse_y,3,3);
 
 
-       x1 = DepthMap ( 6 , dpth_x , dpth_y );
-       y1 = DepthMap ( 7 , dpth_x , dpth_y );
+       x1 = DepthMap ( 6 , dpth_x , dpth_y ); y1 = DepthMap ( 7 , dpth_x , dpth_y );
        dc.DrawRectangle(feed_1_x+x1,feed_1_y+y1,sizex,sizey);
 
        wxString msg; msg.clear();
@@ -456,9 +519,9 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
      }
 
 
-     if (  (VisCortx_GetFeature(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS)>0) || (VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS)>0) )
-     {
-        unsigned int i=0;
+
+
+
         wxPen pink_marker(wxColour(255,20,147),1,wxSOLID);
         wxPen marker(wxColour(255,255,0),1,wxSOLID);
         wxPen red_marker(wxColour(255,0,0),1,wxSOLID);
@@ -466,80 +529,48 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
         dc.SetPen(marker);
         dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
-        //------------------------------------ FEATURES ---------------------------------------------*/
-        /*We want to draw features on left eye ---------------------------------------------------------------------------------*/
-       if (VisCortx_GetFeature(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS)>0  )
+
+          // THE CODE IS SEGMENTED IN A WAY TO MINIMIE DC.SETPEN CALLS , THEY WINDOW SYSTEM SEEMS TO HANG
+          // FOR MORE THAN 100 FEATURES * 4 * 2 :P
+
+       if ( FeaturesAquired(CALIBRATED_LEFT_EYE) )
        {
-        for ( i=0; i<VisCortx_GetFeature(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS); i++ )
-         {
-            if ( VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_IS_LOST) == 0 )
-            {
-               dc.SetPen(marker);
-             dc.DrawRectangle(feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_Y),3,3);
-              dc.SetPen(red_marker);
-             dc.DrawLine(feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_Y),
-                         feed_0_x+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_LAST_X),feed_0_y+VisCortx_GetFeature(CALIBRATED_LEFT_EYE,i,FEATURE_LAST_Y));
-            }
-         }
+         dc.SetPen(marker);
+        DrawFeaturesAtFeed( dc , feed_0_x , feed_0_y , CALIBRATED_LEFT_EYE , 1 ,0 ); // DRAW TRACK POINTS ON LEFT EYE
+
+         dc.SetPen(red_marker);
+        DrawFeaturesAtFeed( dc , feed_0_x , feed_0_y , CALIBRATED_LEFT_EYE , 0 ,1 ); // DRAW TRACK LINES ON LEFT EYE
        }
 
-       /*We want to draw features on right eye ---------------------------------------------------------------------------------*/
-       if (VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS)>0  )
+       if ( FeaturesAquired(CALIBRATED_RIGHT_EYE) )
        {
-        for ( i=0; i<VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS); i++ )
-         {
-           if ( VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_IS_LOST) == 0 )
-            {
-              dc.SetPen(marker);
-             dc.DrawRectangle(feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_Y),3,3);
-              dc.SetPen(red_marker);
-             dc.DrawLine(feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_Y),
-                         feed_1_x+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_LAST_X),feed_1_y+VisCortx_GetFeature(CALIBRATED_RIGHT_EYE,i,FEATURE_LAST_Y));
-            }
-         }
+         dc.SetPen(marker);
+        DrawFeaturesAtFeed( dc , feed_1_x , feed_1_y , CALIBRATED_RIGHT_EYE , 1 ,0 ); // DRAW TRACK POINTS ON RIGHT EYE
+
+         dc.SetPen(red_marker);
+        DrawFeaturesAtFeed( dc , feed_1_x , feed_1_y , CALIBRATED_RIGHT_EYE , 0 ,1 ); // DRAW TRACK LINES ON RIGHT EYE
        }
-
-
 
 
        //------------------------------------ FACES ---------------------------------------------*/
         /*We want to draw faces on left eye ---------------------------------------------------------------------------------*/
-       if (VisCortx_GetFaces(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS)>0  )
-       {
-         unsigned int center_x,center_y,scale;
-         for ( i=0; i<VisCortx_GetFaces(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS); i++ )
-         {
-            if ( VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_IS_LOST) == 0 )
-            {
-               dc.SetPen(pink_marker);
-               center_x=VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_X) + ( VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_DIM_X) / 2 ) ;
-               center_y=VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_Y) + ( VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_DIM_Y) / 2 ) ;
-               scale = ( ( VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_DIM_X) / 2 ) + ( VisCortx_GetFaces(CALIBRATED_LEFT_EYE,i,FEATURE_DIM_Y) / 2 ) ) / 2 ;
-               dc.DrawCircle( feed_0_x + center_x , feed_0_y + center_y , scale );
-            }
-         }
-       }
 
-        /*We want to draw faces on left eye ---------------------------------------------------------------------------------*/
-       if (VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS)>0  )
-       {
-         unsigned int center_x,center_y,scale;
-         for ( i=0; i<VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS); i++ )
-         {
-            if ( VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_IS_LOST) == 0 )
-            {
-               dc.SetPen(pink_marker);
-               center_x=VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_X) + ( VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_DIM_X) / 2 ) ;
-               center_y=VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_Y) + ( VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_DIM_Y) / 2 ) ;
-               scale = ( ( VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_DIM_X) / 2 ) + ( VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,i,FEATURE_DIM_Y) / 2 ) ) / 2;
-               dc.DrawCircle( feed_1_x + center_x , feed_1_y + center_y , scale);
-            }
-         }
-       }
+       dc.SetPen(pink_marker);
+        DrawFacesAtFeed( dc , feed_0_x , feed_0_y , CALIBRATED_LEFT_EYE ); // DRAW FACES ON LEFT EYE
+        DrawFacesAtFeed( dc , feed_1_x , feed_1_y , CALIBRATED_RIGHT_EYE ); // DRAW FACES ON RIGHT EYE
 
+
+
+       if ( Autonomous->IsChecked() )
+          {
+             if ( (VisCortx_GetFaces(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS)>0) || (VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS)>0) )
+             {
+               //IssueCommand((char *) "PLAYSOUND(alarm)",0,0,(char *)"GUI");
+             }
+          }
 
       dc.SetPen(marker);
-     }
+
 
 
      if ( uptimer->Time() - last_draw < 4500 ) { return; }
@@ -583,14 +614,15 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
    if ( shutdown == 1 ) { return ; }
    if ( !RoboKernelAlive() ) { fprintf(stderr,"Robo Kernel died\n"); return; }
    // DEN XREIAZETAI GIATI XEIRIZETAI TO SNAPWEBCAMS TO EVENT! -> TO AFINW SAN REMINDR OTI DEN XREIAZETAI if ( VideoFeedsNotAccessible== 1 ) { return; }
+   if ( uptimer->Time() < WAIT_TIME_STARTUP ) { /*Wait for warmup :P */ return ; }
 
    wxStopWatch sw1;
-   if ( SnapWebCams() == 1 )
-    {/* Tracking is now handled by the VisCortexInternally */ }
+   if ( SnapWebCams() == 1 ) {/* Tracking is now handled by the VisCortexInternally */ } else
+                             {  sw1.Pause(); return; }
    sw1.Pause();
 
    if ( sw1.Time() == 0 ) { frame_rate = 1000; } else
-                         { frame_rate = 1000 / sw1.Time(); }
+                          { frame_rate = 1000 / sw1.Time(); }
 
 
     ++tick_count;
@@ -600,40 +632,40 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
        {
         if ( ( VisCortx_GetMetric(CHANGES_LEFT) >2000 ) || ( VisCortx_GetMetric(CHANGES_RIGHT)>2000 ) )
         {
+           if ( 0 )
+            {
+               wxStopWatch sw2;
+               GUI_FullDepthMap(0);
+               sw2.Pause();
 
-         wxStopWatch sw2;
-          GUI_FullDepthMap(0);
-         sw2.Pause();
+               wxString msg;
+               msg.Printf( wxT("Full DepthMap ( %u ms )\n") , sw2.Time() );
+               Status->AppendText( msg );
 
-         wxString msg;
-         msg.Printf( wxT("Full DepthMap ( %u ms )\n") , sw2.Time() );
-         Status->AppendText( msg );
+               IssueCommand((char *) "DEPTH MAP",0,0,(char *)"GUI");
+            }
 
-         IssueCommand((char *) "DEPTH MAP",0,0,(char *)"GUI");
+           if (!lowcpuusage->IsChecked())
+            {
+               IssueCommand((char *) "PLAYSOUND(alarm)",0,0,(char *)"GUI");
+               // DEMO MOVEMENT
+               ++position;
+               if ( position <= 2 ) { IssueCommand((char *) "LEFT",0,0,(char *)"GUI"); } else
+               if ( position <= 4 ) { IssueCommand((char *) "RIGHT",0,0,(char *)"GUI"); } else
+                                    {position=0;}
+            }
 
-/*
-         if (!lowcpuusage->IsChecked())
-         {
-          IssueCommand((char *) "PLAYSOUND(alarm)",0,0,(char *)"GUI");
-          // DEMO MOVEMENT
-          ++position;
-          if ( position <= 2 ) { IssueCommand((char *) "LEFT",0,0,(char *)"GUI"); } else
-          if ( position <= 4 ) { IssueCommand((char *) "RIGHT",0,0,(char *)"GUI"); } else
-                               {position=0;}
 
-         }
-*/
-
-        Refresh();
         }
        }
     }
 
-  if ( uptimer->Time() < 5000 ) { return ; }
+  if ( uptimer->Time() < WAIT_TIME_STARTUP ) { return ; }
 
   if ( !DrawFeeds->IsChecked() ) { return ; }
 
-  RedrawWindow();
+ Refresh();
+ // RedrawWindow();
 }
 
 
@@ -645,8 +677,14 @@ void RoboVisionXFrame::OnButtonDepthMapClick(wxCommandEvent& event)
     GUI_FullDepthMap(write_to_file);
     sw.Pause();
 
+
+    unsigned int dpthmap_ms = VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS)/1000 ;
+    unsigned int dpthmap_total = VisCortx_GetMetric(TOTAL_DEPTHMAPS_PERFORMED) ;
+    unsigned int avg_ms = VisCortx_GetMetric(TOTAL_DEPTHMAP_DELAY_MICROSECONDS)/1000 ;
+    if (dpthmap_total != 0 ) { avg_ms = avg_ms / dpthmap_total; }
+
     wxString msg;
-    msg.Printf( wxT("Full DepthMap ( %u ms )\n") , sw.Time() );
+    msg.Printf( wxT("DepthMap(%u ms,avrg. %u ms,gui %u ms)\n") ,   dpthmap_ms , avg_ms, sw.Time() );
     Status->AppendText( msg );
     Refresh();
 
@@ -674,10 +712,13 @@ void RoboVisionXFrame::DrawPatchComp(unsigned int basedon,unsigned int x,unsigne
 }
 
 
+
+
 void RoboVisionXFrame::OnMotion(wxMouseEvent& event)
 {
   //if ( shutdown == 1 ) { return ; }
   if ( !RoboKernelAlive() ) { fprintf(stderr,"Robo Kernel died\n"); return; }
+  if ( uptimer->Time() < WAIT_TIME_STARTUP ) { /*Wait for warmup :P */ return ; }
 
   wxSleep(0.01);
   int x=event.GetX();
@@ -703,9 +744,6 @@ void RoboVisionXFrame::OnMotion(wxMouseEvent& event)
 
    if ( event.LeftIsDown()==1 )
    {
-
-
-
       if ( XYOverRect(x,y,fd_rx1,fd_ry1,fd_rx2,fd_ry2)==1 )
        {
            fprintf(stderr,"Opening Remember Image segment dialog\n");
@@ -819,7 +857,7 @@ void RoboVisionXFrame::OnOkClick(wxCommandEvent& event)
 {
     //CommandBox
     wxString wxscommand=CommandBox->GetValue();
-    char cstring[1024];
+    char cstring[1024]={0};
     strncpy(cstring, (const char*)wxscommand.mb_str(wxConvUTF8), 1023);
 
     if ( IssueCommand(cstring,0,0,(char *)"GUI")==0 )
@@ -835,6 +873,113 @@ void RoboVisionXFrame::OnOkClick(wxCommandEvent& event)
       GUI_DrawOPFeeds();
     }
 }
+
+
+
+
+
+void CalibrateJoystickPos(wxJoystick * joy , wxPoint &pos,unsigned int MAX_POWER)
+{
+ if ( joy == 0 ) { return; }
+
+ if ( ( joy->GetXMin()==0 ) | ( joy->GetXMax()==0 ) | ( joy->GetYMin()==0 ) | ( joy->GetYMax()==0 ) ) { return; }
+
+ if  ( pos.x < 0 ) { pos.x = -(signed int)MAX_POWER * pos.x / joy->GetXMin(); } else
+ if  ( pos.x > 0 ) { pos.x = MAX_POWER * pos.x / joy->GetXMax(); }
+
+ if  ( pos.y < 0 ) { pos.y = -(signed int)MAX_POWER * pos.y / joy->GetYMin(); } else
+ if  ( pos.y > 0 ) { pos.y = MAX_POWER * pos.y / joy->GetYMax(); }
+
+ return;
+}
+
+
+void RoboVisionXFrame::OnJoystickEvent(wxJoystickEvent& event)
+{
+   if ( joy_stick == 0 ) {return;}
+   if ( joy_stick->IsOk() )
+   {
+     wxPoint pos=joy_stick->GetPosition();
+     printf("Joystick Position is now %d,%d\n", pos.x ,  pos.y);
+
+
+     if ( event.ButtonDown(wxJOY_BUTTON1) )
+         {
+           fprintf(stderr," Joystick BUTTON 1 ( joy label 2 ) \n");
+         } else
+     if ( event.ButtonDown(wxJOY_BUTTON2) )
+         {
+          fprintf(stderr," Joystick BUTTON 2  ( joy label 3 ) \n");
+
+         } else
+     if ( event.ButtonDown(wxJOY_BUTTON3) )
+         {
+           fprintf(stderr," Joystick BUTTON 3 ( joy label 5 L1 ) \n");
+           IssueCommand((char *) "PLAYSOUND(alarm)",0,0,(char *)"JOYSTICK");
+         } else
+     if ( event.ButtonDown(wxJOY_BUTTON4) )
+         {
+           fprintf(stderr," Joystick BUTTON 4  ( joy label 9 SELECT ) \n");
+           // This could directly interface the RoboKernel , but we want to update the wxwidgets button :P
+           wxCommandEvent null_event;
+           if ( Autonomous->IsChecked() ) { Autonomous->SetValue(0);
+                                            RoboVisionXFrame::OnAutonomousClick(null_event);
+                                          } else
+                                          { Autonomous->SetValue(1);
+                                            RoboVisionXFrame::OnAutonomousClick(null_event);
+                                          }
+         } else
+     if ( event.ButtonDown(wxJOY_BUTTON4+1) )
+         {
+           fprintf(stderr," Joystick BUTTON 5  ( joy label 10 START ) \n");
+           wxCommandEvent null_event;
+           RoboVisionXFrame::OnOkClick(null_event);
+         } else
+     if ( event.ButtonDown(wxJOY_BUTTON1+1) ) { fprintf(stderr," Joystick BUTTON 6 \n"); } else
+
+     if ( event.ButtonDown(wxJOY_BUTTON2+1) )
+        {
+           fprintf(stderr," Joystick BUTTON 7 ( joy label 4 ) \n");
+        } else
+     if ( event.ButtonDown(wxJOY_BUTTON3+1) )
+        {
+           fprintf(stderr," Joystick BUTTON 8 ( joy label 6 R1 ) \n");
+           IssueCommand((char *) "PLAYSOUND(kleftis_itan_o_pateras_sou)",0,0,(char *)"JOYSTICK");
+        } else
+     if ( event.ButtonDown(wxJOY_BUTTON4+2) ) { fprintf(stderr," Joystick BUTTON 9 \n"); } else
+     if ( event.ButtonDown(wxJOY_BUTTON1+2) ) { fprintf(stderr," Joystick BUTTON 10 \n"); } else
+     if ( event.ButtonDown(wxJOY_BUTTON2+2) ) { fprintf(stderr," Joystick BUTTON 11 \n"); } else
+     if ( event.ButtonDown(wxJOY_BUTTON3+2) )
+        {
+          fprintf(stderr," Joystick BUTTON 12 ( label 7 L2 ) \n");
+          IssueCommand((char *) "STOP SOUNDS",0,0,(char *)"JOYSTICK");
+        } else
+     if ( event.ButtonDown(wxJOY_BUTTON4+3) ) { fprintf(stderr," Joystick BUTTON 13 \n"); } else
+     if ( event.ButtonDown(wxJOY_BUTTON1+3) ) { fprintf(stderr," Joystick BUTTON 14 \n"); } else
+     if ( event.ButtonDown(wxJOY_BUTTON2+3) ) { fprintf(stderr," Joystick BUTTON 15 \n"); } else
+     if ( event.ButtonDown(wxJOY_BUTTON3+3) )
+        {
+          fprintf(stderr," Joystick BUTTON 16 ( label 8 R2 \n");
+           IssueCommand((char *) "PLAYSOUND(whistle_at_girl)",0,0,(char *)"JOYSTICK");
+        } else
+     if ( event.ButtonDown(wxJOY_BUTTON4+3) ) { fprintf(stderr," Joystick BUTTON 17 \n"); }
+
+
+     if ( ( pos.x == 0 ) && ( pos.y == 0 ) )
+      {
+
+      } else
+      {
+        CalibrateJoystickPos(joy_stick,pos,255);
+        printf("GoJoystick %d,%d\n", pos.x ,  pos.y);
+
+        char inptstr[512]={0};
+        sprintf(inptstr , (char *) "JOYSTICK INPUT(%u,%u)",pos.x,pos.y);
+        IssueCommand(inptstr,0,0,(char *)"GUI");
+      }
+   }
+}
+
 
 /*
  *
@@ -895,7 +1040,7 @@ void RoboVisionXFrame::OnMovementVerticalCmdScroll(wxScrollEvent& event)
 void RoboVisionXFrame::OnMovementHorizontalCmdScroll(wxScrollEvent& event)
 {
     signed int startpos=MovementHorizontal->GetValue();
-    signed int pos;
+    signed int pos=0;
     if ( startpos <8 )
       {
          pos=8-startpos;
@@ -926,4 +1071,9 @@ void RoboVisionXFrame::OnSaveSnapshotsClick(wxCommandEvent& event)
        IssueCommand((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",0,0,(char *)"GUI");
     }
 */
+}
+
+void RoboVisionXFrame::OnAutonomousClick(wxCommandEvent& event)
+{
+    IssueCommand((char *) "AUTONOMOUS MODE",0,0,(char *)"GUI");
 }

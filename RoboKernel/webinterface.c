@@ -17,7 +17,7 @@ int OpenWebInterface()
 
    FILE * pFile=0;
    pFile = fopen ("memfs/public_html/commands.dat","w");
-   if (pFile!=NULL ) { fclose(pFile); return 1; }
+   if (pFile!=0 ) { fclose(pFile); return 1; }
    return 0;
 }
 
@@ -43,7 +43,7 @@ int WebIntNeedsNewSnapshot()
 
   FILE * pFile=0;
   pFile = fopen ("memfs/public_html/viewers.dat","r");
-  if (pFile!=NULL )
+  if (pFile!=0 )
     {
      fclose(pFile);
       if( remove( "memfs/public_html/viewers.dat" ) != 0 )
@@ -69,7 +69,7 @@ int WebIntHasNewCommand()
   char from_string[512]={0};
   unsigned int words_count=0;
 
-  if (pFile!=NULL )
+  if (pFile!=0 )
     {
 
       /*
@@ -106,7 +106,7 @@ int UpdateSensorsOnNetworkInterface()
 {
   FILE * pFile=0;
   pFile = fopen ("memfs/public_html/sensors.dat","w");
-  if (pFile!=NULL )
+  if (pFile!=0 )
   {
     fprintf(pFile,"%u\n",RobotGetUltrasonic(0));
     fprintf(pFile,"%u\n",RobotGetUltrasonic(1));
@@ -163,7 +163,7 @@ int EraseConsoleOutput()
 {
   FILE * pFile=0;
   pFile = fopen ("memfs/public_html/consoleout.dat","w");
-  if (pFile!=NULL )
+  if (pFile!=0 )
   {
     fclose(pFile);
     return 1;
@@ -175,7 +175,7 @@ int WriteConsoleOutput(char * outstr)
 {
   FILE * pFile=0;
   pFile = fopen ("memfs/public_html/consoleout.dat","a");
-  if (pFile!=NULL )
+  if (pFile!=0 )
   {
     printf("%s\n",outstr);
     fprintf(pFile,"%s\n",outstr);

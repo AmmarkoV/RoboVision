@@ -38,12 +38,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.598";
+char * VISCORTEX_VER = "0.599";
 
 /*
 
                  TODO LIST , BULETTIN BOARD
   TODO STUFF
+   - Fix Syncing code between 2 frames coming via USB
    - I Have the parameters of my cameras , I must add calibration/rectification/Camera resectioning code for the frames , there is no excuse :P
    - I Currently have 2 Histogram block generators , the one specific and one generic , I should only use the generic one :P
    - I have to make an algorithm that identifies lines
@@ -177,9 +178,16 @@ unsigned int VisCortx_GetMetric(unsigned int get_num)
 }
 
 
-unsigned int VisCortx_GetVideoRegisterStats(unsigned int metric_num)
+unsigned int VisCortx_GetVideoRegisterData(unsigned int input_img_regnum,unsigned int metric_num)
 {
-   return GetVideoRegisterStats(metric_num);
+   return video_register[input_img_regnum].time;
+}
+
+
+
+unsigned int VisCortx_VideoRegistersSynced(unsigned int img_regnum1,unsigned int img_regnum2)
+{
+   return ( video_register[img_regnum1].time == video_register[img_regnum2].time );
 }
 
 /*
@@ -205,13 +213,15 @@ void VisCortx_CameraParameters(int right_cam,double fx,double fy,double cx,doubl
 */
 unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
 {
-    if ( video_register[input_img_regnum].lock )
-         {
-            // We do not want the frame to be rewritten while an operation is pending on last frame so we return a failure..
-             return 0;
-         }
+
+    while ( !VisCortx_OperationLockFramesLeftRight() ) { fprintf(stderr,"*"); }
+
+    //if ( wait_time>=max_wait_time  ) {  fprintf(stderr,"VisCortX_NewFrame timed out because of a locked frame\n"); return 0; }
+
     unsigned int retres = PassNewFrameFromVideoInput(input_img_regnum,size_x,size_y,depth,rgbdata);
-    video_register[input_img_regnum].lock=0;
+
+
+    VisCortx_OperationUnLockFramesLeftRight();
     return retres;
 }
 
@@ -221,9 +231,9 @@ unsigned int VisCortX_ClearVideoRegister(unsigned int input_img_regnum)
     return ClearVideoRegister(input_img_regnum);
 }
 
-unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum)
+unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum,unsigned int copy_features,unsigned int copy_faces)
 {
-    return CopyRegister(input_img_regnum,output_img_regnum);
+    return CopyRegister(input_img_regnum,output_img_regnum,copy_features,copy_faces);
 }
 
 unsigned int VisCortX_SwapVideoRegisters(unsigned int input_img_regnum,unsigned int output_img_regnum)
@@ -320,8 +330,8 @@ unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int
 
 int VisCortx_OperationLockFramesLeftRight()
 {
- int waiting_counter = 0;
- while ( ( video_register[LEFT_EYE].lock ) && ( waiting_counter < 10000 ) )    { ++waiting_counter; usleep(1); }
+ int waiting_counter = 0 , max_waiting = 10000;
+ while ( ( video_register[LEFT_EYE].lock ) && ( waiting_counter < max_waiting ) )    { ++waiting_counter; usleep(1); }
  if ( !video_register[LEFT_EYE].lock )
    {
      video_register[LEFT_EYE].lock=1;
@@ -329,7 +339,7 @@ int VisCortx_OperationLockFramesLeftRight()
 
 
  waiting_counter = 0;
- while ( ( video_register[RIGHT_EYE].lock ) && ( waiting_counter < 10000 ) )    { ++waiting_counter; usleep(1); }
+ while ( ( video_register[RIGHT_EYE].lock ) && ( waiting_counter < max_waiting ) )    { ++waiting_counter; usleep(1); }
 
  if ( !video_register[RIGHT_EYE].lock )
    {
@@ -358,7 +368,10 @@ void  VisCortx_FullDepthMap()
     The register CALIBRATED_LEFT_EYE , CALIBRATED_RIGHT_EYE IS CONSTANTLY UPDATED , SO WE CANNOT OUTPUT A STEADY RESULT IF WHILE CALCULATING THE IMAGE CHANGES ..!
     Thats why we copy to LEFT_EYE_NOT_LIVE and RIGHT_EYE_NOT_LIVE , which are in turn passed for disparity mapping
  */
-   if (!VisCortx_OperationLockFramesLeftRight()) { fprintf(stderr,"Cannot Lock Video Input\n"); }
+   while ( (!VisCortx_OperationLockFramesLeftRight())  &&
+           (VisCortx_VideoRegistersSynced(LEFT_EYE,RIGHT_EYE))  &&
+           (VisCortx_VideoRegistersSynced(CALIBRATED_LEFT_EYE,LEFT_EYE))
+         ) { fprintf(stderr,"*"); }
 
      ExecuteDisparityMappingPyramid();
 
@@ -472,10 +485,16 @@ void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error)
     //CONVOLUTION FILTER(9,1,-1,0,1,0,0,0,1,0,-1)
     //CONVOLUTION FILTER(9,1,1,1,1,1,5,1,1,1,1)
     /*Testing*/
-    CopyRegister(reg_in,GENERAL_2);
-    GaussianBlur(GENERAL_2,0);
-    ConvertRegisterFrom3ByteTo1Byte(GENERAL_2);
-    ConvolutionFilter9_1ByteOptimized(GENERAL_2,reg_out,table,divisor);
+     unsigned int TMP_REGISTER = GetTempRegister();
+     if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( VisCortx_ConvolutionFilter )\n"); }
+
+    CopyRegister(reg_in,TMP_REGISTER,0,0);
+    GaussianBlur(TMP_REGISTER,0);
+    ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
+    ConvolutionFilter9_1ByteOptimized(TMP_REGISTER,reg_out,table,divisor);
+
+    StopUsingVideoRegister(TMP_REGISTER);
+
     ConvertRegisterFrom1ByteTo3Byte(reg_out);
     return 1;
  }
@@ -568,10 +587,18 @@ void  VisCortx_AddTrackPoint(unsigned int cam,unsigned int x,unsigned int y,unsi
    if (cam==1) { AddToFeatureList(video_register[CALIBRATED_RIGHT_EYE].features,x,y,1,0,0,0); }
 }
 
-void VisCortxClearTrackPoints(unsigned int cam)
+void VisCortx_ClearTrackPoints(unsigned int cam)
 {
-   if (cam==0) { ClearFeatureList(video_register[CALIBRATED_LEFT_EYE].features); } else
-   if (cam==1) { ClearFeatureList(video_register[CALIBRATED_RIGHT_EYE].features); }
+   if (cam==0)
+     {
+       ClearFeatureList(video_register[CALIBRATED_LEFT_EYE].features); // This is the main carrier of features
+       ClearFeatureList(video_register[LEFT_EYE].features);
+     } else
+   if (cam==1)
+     {
+       ClearFeatureList(video_register[CALIBRATED_RIGHT_EYE].features); // This is the main carrier of features
+       ClearFeatureList(video_register[RIGHT_EYE].features);
+     }
 }
 
 void  VisCortx_AutoAddTrackPoints(unsigned int cam)
@@ -651,11 +678,10 @@ void  VisCortx_RenewAllTrackPoints(unsigned int vid_reg)
 /*
  ----------------- IMAGE PROCESSING ----------------------
 */
-void KeepOnlyPixelsClosetoColor(unsigned char R,unsigned char G,unsigned char B,unsigned char howclose)
+void KeepOnlyPixelsClosetoColor(unsigned int src_reg, unsigned int target_reg , unsigned char R,unsigned char G,unsigned char B,unsigned char howclose)
 {
- //   VisCortX_BitBltVideoRegister(LEFT_EYE,GENERAL_1,0,0,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-    memcpy(video_register[GENERAL_1].pixels,video_register[LEFT_EYE].pixels,metrics[RESOLUTION_X]*metrics[RESOLUTION_Y]*3*sizeof(BYTE));
-    KillDifferentPixels(video_register[GENERAL_1].pixels ,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],R,G,B,howclose);
+    memcpy(video_register[target_reg].pixels,video_register[src_reg].pixels,metrics[RESOLUTION_X]*metrics[RESOLUTION_Y]*3*sizeof(BYTE));
+    KillDifferentPixels(video_register[target_reg].pixels ,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],R,G,B,howclose);
 }
 
 int SobelNDerivative(int n)
@@ -667,12 +693,12 @@ int SobelNDerivative(int n)
                     ConvertRegisterFrom1ByteTo3Byte(LAST_RIGHT_OPERATION);
                   } else
     if ( n == 2 ) {
-                    CopyRegister(CALIBRATED_LEFT_EYE,GENERAL_3);
+                    CopyRegister(CALIBRATED_LEFT_EYE,GENERAL_3,0,0);
                     ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
                     SecondDerivativeIntensitiesFromSource(GENERAL_3,LAST_LEFT_OPERATION);
                     ConvertRegisterFrom1ByteTo3Byte(LAST_LEFT_OPERATION);
 
-                    CopyRegister(CALIBRATED_RIGHT_EYE,GENERAL_3);
+                    CopyRegister(CALIBRATED_RIGHT_EYE,GENERAL_3,0,0);
                     ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
                     SecondDerivativeIntensitiesFromSource(GENERAL_3,LAST_RIGHT_OPERATION);
                     ConvertRegisterFrom1ByteTo3Byte(LAST_RIGHT_OPERATION);

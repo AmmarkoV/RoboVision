@@ -13,8 +13,8 @@ unsigned int GetCortexSetting(unsigned int option);
 void SetCortexSetting(unsigned int option,unsigned int value);
 unsigned int GetCortexMetric(unsigned int option);
 
-void StartRoboKernel();
-void StopRoboKernel();
+int StartRoboKernel();
+int StopRoboKernel();
 
 int RoboKernelAlive();
 

@@ -161,14 +161,6 @@ unsigned int GetMetric(unsigned int get_num)
 }
 
 
-unsigned int GetVideoRegisterStats(unsigned int metric_num)
-{
-   if (metric_num>=METRICS_COUNT) { fprintf(stderr,"Metric does not exist! \n "); return 0; }
-
-   return metrics[metric_num];
-
-}
-
 void SetTime(unsigned int thetime)
 {
     if ( thetime<TIME_INC) { fprintf(stderr,"VisCortex Clock truncated"); }

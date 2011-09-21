@@ -34,6 +34,7 @@ enum command_id_consts
   CMD_FIND_FEATURES,
   CMD_CLEAR_FEATURES,
   CMD_PLAYSOUND,
+  CMD_STOPSOUNDS,
   CMD_SAY,
   CMD_AUTOCALIBRATE,
   CMD_DEPTHMAP,
@@ -56,6 +57,8 @@ enum command_id_consts
   CMD_DEPTHMAP_IMPORT_TO_MAP,
   CMD_CONVOLUTION_FILTER,
   CMD_FACE_DETECTION,
+  CMD_JOYSTICK_INPUT,
+  CMD_AUTONOMOUS,
 
   CMD_SEARCH,
   CMD_TELL,
@@ -138,6 +141,10 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      case CMD_PLAYSOUND :
                  sprintf(outptstr,"From %s : Command Parser Playing sound : %s\n",from,cmds_1);
                  PlaySound(cmds_1);
+     break;
+     case CMD_STOPSOUNDS :
+                 sprintf(outptstr,"From %s : Command Parser Stopping all sound : \n",from);
+                 StopAllSounds();
      break;
      case CMD_SAY :
                  sprintf(outptstr,"From %s : Command Parser TTS Saying : %s\n",from,cmds_1);
@@ -276,6 +283,23 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
              VisCortx_RecognizeFaces(1);
 
      break;
+     case CMD_JOYSTICK_INPUT :
+     {
+
+             signed int joy_x = InputParser_GetWordInt(ipc,1);
+             signed int joy_y = InputParser_GetWordInt(ipc,2);
+             sprintf(outptstr,"From %s :Joystick Input ( %i , %i ) ! \n",from,joy_x,joy_y);
+             RobotMoveJoystick(joy_x,joy_y);
+
+     }
+     break;
+     case CMD_AUTONOMOUS :
+     {
+            sprintf(outptstr,"From %s : Toggling Autonomous mode ! \n",from);
+            if (motor_system_autonomous)  { motor_system_autonomous  = 0; } else
+                                          { motor_system_autonomous  = 1; }
+     }
+     break;
      case CMD_FUNDAMENTAL_MATRIX :
             GetFundamentalMatrix();
      break;
@@ -326,6 +350,7 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FIND FEATURES",13)==1) { chosen_command=CMD_FIND_FEATURES; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"CLEAR FEATURES",14)==1) { chosen_command=CMD_CLEAR_FEATURES; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"PLAYSOUND",9)==1) { chosen_command=CMD_PLAYSOUND; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"STOP SOUNDS",11)==1) { chosen_command=CMD_STOPSOUNDS; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SAY",3)==1) { chosen_command=CMD_SAY;} else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"AUTO CALIBRATE",14)==1) { chosen_command=CMD_AUTOCALIBRATE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP",9)==1) { chosen_command=CMD_DEPTHMAP; } else
@@ -348,6 +373,8 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"IDENTIFY IMAGE",14)==1) { chosen_command=CMD_IDENTIFY_IMAGE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"CONVOLUTION FILTER",18)==1) { chosen_command=CMD_CONVOLUTION_FILTER; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FACE DETECTION",14)==1) { chosen_command=CMD_FACE_DETECTION; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"JOYSTICK INPUT",14)==1) { chosen_command=CMD_JOYSTICK_INPUT; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"AUTONOMOUS MODE",15)==1) { chosen_command=CMD_AUTONOMOUS ; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FUNDAMENTAL MATRIX",18)==1) { chosen_command=CMD_FUNDAMENTAL_MATRIX; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"TELL",4)==1) { chosen_command=CMD_TELL; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"ASK",3)==1) { chosen_command=CMD_ASK; } else

@@ -20,6 +20,15 @@ int PlaySound(char * sndname)
 {
   char command_s[1024]={0};
   sprintf(command_s,"paplay Sounds/%s.wav&",sndname);
+  fprintf(stderr," %s \n ",command_s);
+  int i=system((const char * ) command_s);
+  return i;
+}
+
+int StopAllSounds()
+{
+  char command_s[1024]={0};
+  sprintf(command_s,"killall paplay");
   int i=system((const char * ) command_s);
   return i;
 }
@@ -51,15 +60,14 @@ void DrawMovement()
 
 void DrawNewPalette(char R,char G,char B,char threshold)
 {
- KeepOnlyPixelsClosetoColor(R,G,B,threshold);
- VisCortX_CopyFromVideoToVideoRegister(GENERAL_1,LAST_LEFT_OPERATION);
- VisCortX_CopyFromVideoToVideoRegister(GENERAL_2,LAST_RIGHT_OPERATION);
+// KeepOnlyPixelsClosetoColor(R,G,B,threshold);
+// VisCortX_CopyFromVideoToVideoRegister(GENERAL_1,LAST_LEFT_OPERATION);
+// VisCortX_CopyFromVideoToVideoRegister(GENERAL_2,LAST_RIGHT_OPERATION);
 }
 
 void ConvolutionFilter(signed char * table,signed int divisor,unsigned int table_size)
 {
-  VisCortx_ConvolutionFilter(LEFT_EYE,LAST_LEFT_OPERATION,table,divisor,table_size);
-  //VisCortX_CopyFromVideoToVideoRegister(GENERAL_2,LAST_LEFT_OPERATION);
+  VisCortx_ConvolutionFilter(CALIBRATED_LEFT_EYE,LAST_LEFT_OPERATION,table,divisor,table_size); //CHECK
 }
 
 void SobelNDerivative_in(int n)
@@ -71,26 +79,26 @@ void SobelNDerivative_in(int n)
 void FindFeatures()
 {
   //VisCortx_RemoveTimedoutTrackPoints(0,1);
-  VisCortxClearTrackPoints(0);
-  VisCortxClearTrackPoints(1);
+  VisCortx_ClearTrackPoints(0);
+  VisCortx_ClearTrackPoints(1);
   VisCortx_AutoAddTrackPoints(0);
   VisCortx_AutoAddTrackPoints(1);
-  //VisCortX_CopyFromVideoToVideoRegister(GENERAL_1,LAST_LEFT_OPERATION);
   fprintf(stderr," FindFeatures() ok \n");
 }
 
 
 void ClearFeatures()
 {
-  VisCortxClearTrackPoints(0);
-  VisCortxClearTrackPoints(1);
+  VisCortx_ClearTrackPoints(0);
+  VisCortx_ClearTrackPoints(1);
   fprintf(stderr," ClearFeatures() ok \n");
 }
 
 void GetFundamentalMatrix()
 {
-    float * table;
+    float * table=0;
     table = (float *) malloc(9 * sizeof(float));
+    if (table==0) { fprintf(stderr,"Error allocating memory for FundamentalMatrix structure"); return; }
     VisCortxGetFundamentalMatrix(table,9);
     free(table);
 }

@@ -1,11 +1,21 @@
 #include "VisCortexTimer.h"
 #include <sys/time.h>
 
-struct timeval starttime,endtime,timediff;
+
+struct TimerArrItem
+{
+   struct timeval starttime;
+   struct timeval endtime;
+   struct timeval timediff;
+};
+
+
+struct TimerArrItem timers_array[TOTAL_TIMERS];
 
 
 long timeval_diff ( struct timeval *difference, struct timeval *end_time, struct timeval *start_time )
 {
+
    struct timeval temp_diff;
 
    if(difference==0) { difference=&temp_diff; }
@@ -25,13 +35,13 @@ long timeval_diff ( struct timeval *difference, struct timeval *end_time, struct
 
 }
 
-void StartTimer()
+void StartTimer( unsigned int timer_num )
 {
-  gettimeofday(&starttime,0x0);
+  gettimeofday(&timers_array[timer_num].starttime,0x0);
 }
 
-int EndTimer()
+int EndTimer( unsigned int timer_num )
 {
-  gettimeofday(&endtime,0x0);
-  return timeval_diff(&timediff,&endtime,&starttime);
+  gettimeofday(&timers_array[timer_num].endtime,0x0);
+  return timeval_diff(&timers_array[timer_num].timediff,&timers_array[timer_num].endtime,&timers_array[timer_num].starttime);
 }

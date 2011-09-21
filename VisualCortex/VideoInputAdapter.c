@@ -21,97 +21,184 @@
 /*
  THIS FUNCTION IS CALLED EVERY TIME A NEW FRAME IS READY FOR STEREO VISION
 */
-unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
+
+
+
+inline unsigned int FrameProcessing
+   (
+
+     unsigned int REG_EYE,
+     unsigned int REG_CALIBRATED_EYE,
+     unsigned int REG_EDGES,
+     unsigned int REG_SECOND_DERIVATIVE,
+     unsigned int REG_MOVEMENT,
+     unsigned int REG_HISTOGRAM,
+
+     unsigned int * REG_CALIBRATION_PRECALCULATION,
+
+     unsigned int REG_LAST_EYE,
+     unsigned int REG_LAST_CALIBRATED_EYE,
+     unsigned int REG_LAST_EDGES,
+     unsigned int REG_LAST_SECOND_DERIVATIVE,
+     unsigned int REG_LAST_MOVEMENT,
+
+     unsigned int REG_GROUP_MOVEMENT,
+     unsigned int REG_GROUP_EDGES,
+     unsigned int REG_GROUP_EDGES_PRESENCE,
+     unsigned int REG_GROUP_SECOND_DERIVATIVE,
+
+     // Switches ..
+     unsigned int ADD_EDGES_PRESENCE_SWITCH ,
+     unsigned int left_right_switch,
+
+     // RAW IMAGE
+     unsigned int size_x,unsigned int size_y,unsigned int depth,
+     unsigned char * rgbdata
+
+   )
 {
-   StartTimer();
+       video_register[REG_EYE].lock=1;
 
-
-   if ( rgbdata == 0 ) { fprintf(stderr,"VisCortX_NewFrame given zero pointer"); return 0; }
-   if ( input_img_regnum == LEFT_EYE )
-    {
-
-       video_register[input_img_regnum].lock=1;
        // FIRST STORE OLD REGISTERS
-       SwapRegister(LEFT_EYE,LAST_LEFT_EYE);
-       SwapRegister(CALIBRATED_LEFT_EYE,LAST_CALIBRATED_LEFT_EYE);//VisCortX_CopyVideoRegister(LEFT_EYE,LAST_LEFT_EYE);
-       SwapRegister(EDGES_LEFT,LAST_EDGES_LEFT);//VisCortX_CopyVideoRegister(EDGES_LEFT,LAST_EDGES_LEFT);
-       SwapRegister(SECOND_DERIVATIVE_LEFT,LAST_SECOND_DERIVATIVE_LEFT);//VisCortX_CopyVideoRegister(SECOND_DERIVATIVE_LEFT,LAST_SECOND_DERIVATIVE_LEFT);
-       SwapRegister(MOVEMENT_LEFT,LAST_MOVEMENT_LEFT);//VisCortX_CopyVideoRegister(MOVEMENT_LEFT,LAST_MOVEMENT_LEFT);
+       SwapRegister(REG_EYE,REG_LAST_EYE);
+       SwapRegister(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE);
+       SwapRegister(REG_EDGES,REG_LAST_EDGES);
+       SwapRegister(REG_SECOND_DERIVATIVE,REG_LAST_SECOND_DERIVATIVE);
+       SwapRegister(REG_MOVEMENT,REG_LAST_MOVEMENT);
 
        // SECOND PASS NEW IMAGE
-       VisCortx_WriteToVideoRegister(LEFT_EYE,size_x,size_y,depth,rgbdata);
-       CalibrateImage(LEFT_EYE,CALIBRATED_LEFT_EYE,resection_left_precalc);
+       VisCortx_WriteToVideoRegister(REG_EYE,size_x,size_y,depth,rgbdata);
+       video_register[REG_EYE].time=TIME_INC;
+       CalibrateImage(REG_EYE,REG_CALIBRATED_EYE,REG_CALIBRATION_PRECALCULATION);
 
        // THIRD PROCESS NEW IMAGE  ( COMPRESSION )
-       PrepareCleanSobeledGaussianAndDerivative(CALIBRATED_LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
-       GenerateCompressHistogramOfImage(video_register[CALIBRATED_LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+       PrepareCleanSobeledGaussianAndDerivative
+         (   REG_CALIBRATED_EYE,
+             REG_EDGES,
+             REG_SECOND_DERIVATIVE,
+             settings[DEPTHMAP_EDGE_LOW_STRICTNESS],
+             settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]
+         );
 
-        CopyRegister(EDGES_LEFT,GENERAL_3);
-        PixelsOverThresholdSetAsOne(GENERAL_3,1);
-        CompressRegister(GENERAL_3,EDGES_PRESENCE_GROUPED_LEFT);
+       GenerateCompressHistogramOfImage
+         ( video_register[REG_CALIBRATED_EYE].pixels,
+           l_video_register[REG_HISTOGRAM].pixels,
+           metrics[HORIZONTAL_BUFFER],
+           metrics[VERTICAL_BUFFER]
+         );
 
-        CompressRegister(MOVEMENT_LEFT,MOVEMENT_GROUPED_LEFT);
-        CompressRegister(EDGES_LEFT,EDGES_GROUPED_LEFT);
-        CompressRegister(SECOND_DERIVATIVE_LEFT,SECOND_DERIVATIVE_GROUPED_LEFT);
+      if ( ADD_EDGES_PRESENCE_SWITCH )
+       {
+           unsigned int TMP_REGISTER = GetTempRegister();
+           if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( PassNewFrameFromVideoInput ) \n"); }
+           CopyRegister(REG_EDGES,TMP_REGISTER,0,0);
+           PixelsOverThresholdSetAsOne(TMP_REGISTER,1);
+           CompressRegister(TMP_REGISTER,REG_GROUP_EDGES_PRESENCE);
+           StopUsingVideoRegister(TMP_REGISTER);
+       }
+
+        CompressRegister(REG_MOVEMENT,REG_GROUP_MOVEMENT);
+        CompressRegister(REG_EDGES,REG_GROUP_EDGES);
+        CompressRegister(REG_SECOND_DERIVATIVE,REG_GROUP_SECOND_DERIVATIVE);
 
         // FOURTH TRACK ALL POINTS ON NEW FRAME FROM OLD FRAME
-        VisCortx_Movement_Detection(1,0);
+        VisCortx_Movement_Detection((left_right_switch==1),(left_right_switch==1));
 
-        if ( settings[PASS_TO_FACE_DETECTOR] ) { RecognizeFaces(CALIBRATED_LEFT_EYE); }
+        if ( settings[PASS_TO_FACE_DETECTOR] ) { RecognizeFaces(REG_CALIBRATED_EYE); }
 
         if ( settings[PASS_TO_FEATURE_DETECTOR] )
         {
-          //if ( GetFeatureData(video_register[CALIBRATED_LEFT_EYE].features,0,TOTAL_POINTS) < 50 )
+          //if ( GetFeatureData(video_register[REG_CALIBRATED_EYE].features,0,TOTAL_POINTS) < 50 )
            {
-            VisCortx_AutoAddTrackPoints(0);
+            VisCortx_AutoAddTrackPoints(left_right_switch);
            }
-         TrackAllPointsOnRegistersBrute(CALIBRATED_LEFT_EYE,LAST_CALIBRATED_LEFT_EYE,8000);
+         TrackAllPointsOnRegistersBrute(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,8000);
         }
 
-        video_register[input_img_regnum].lock=0;
+        video_register[REG_EYE].time=TIME_INC;
+        video_register[REG_EYE].lock=0;
+
+        return 1;
+}
+
+
+
+
+
+
+
+unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
+{
+   StartTimer(TIMER_PROCESSING_DELAY);
+
+   if ( rgbdata == 0 ) { fprintf(stderr,"VisCortX_NewFrame given zero pointer"); return 0; }
+
+   int retres = 0;
+   if ( input_img_regnum == LEFT_EYE )
+    {
+      retres = FrameProcessing
+                    ( LEFT_EYE,
+                      CALIBRATED_LEFT_EYE,
+                      EDGES_LEFT,
+                      SECOND_DERIVATIVE_LEFT,
+                      MOVEMENT_LEFT,
+                      HISTOGRAM_COMPRESSED_LEFT,
+
+                      resection_left_precalc,
+
+                      LAST_LEFT_EYE,
+                      LAST_CALIBRATED_LEFT_EYE,
+                      LAST_EDGES_LEFT,
+                      LAST_SECOND_DERIVATIVE_LEFT,
+                      LAST_MOVEMENT_LEFT,
+
+                      MOVEMENT_GROUPED_LEFT,
+                      EDGES_GROUPED_LEFT,
+                      EDGES_PRESENCE_GROUPED_LEFT,
+                      SECOND_DERIVATIVE_GROUPED_LEFT,
+
+                      1 , // ACTIVATE PRSENCE GROUPED
+                      0 ,
+
+                      size_x,size_y,depth,
+                      rgbdata
+                    );
+
     } else
     if ( input_img_regnum == RIGHT_EYE )
     {
+      retres = FrameProcessing
+                    ( RIGHT_EYE,
+                      CALIBRATED_RIGHT_EYE,
+                      EDGES_RIGHT,
+                      SECOND_DERIVATIVE_RIGHT,
+                      MOVEMENT_RIGHT,
+                      HISTOGRAM_COMPRESSED_RIGHT,
 
-       video_register[input_img_regnum].lock=1;
-       // FIRST STORE OLD REGISTERS
-       SwapRegister(RIGHT_EYE,LAST_RIGHT_EYE);// VisCortX_CopyVideoRegister(RIGHT_EYE,LAST_RIGHT_EYE);
-       SwapRegister(CALIBRATED_RIGHT_EYE,LAST_CALIBRATED_RIGHT_EYE);// VisCortX_CopyVideoRegister(RIGHT_EYE,LAST_RIGHT_EYE);
-       SwapRegister(EDGES_RIGHT,LAST_EDGES_RIGHT);//VisCortX_CopyVideoRegister(EDGES_RIGHT,LAST_EDGES_RIGHT);
-       SwapRegister(SECOND_DERIVATIVE_RIGHT,LAST_SECOND_DERIVATIVE_RIGHT);//VisCortX_CopyVideoRegister(SECOND_DERIVATIVE_RIGHT,LAST_SECOND_DERIVATIVE_RIGHT);
-       SwapRegister(MOVEMENT_RIGHT,LAST_MOVEMENT_RIGHT);//VisCortX_CopyVideoRegister(MOVEMENT_RIGHT,LAST_MOVEMENT_RIGHT);
+                      resection_right_precalc,
 
-       // SECOND PASS NEW IMAGE
-       VisCortx_WriteToVideoRegister(RIGHT_EYE,size_x,size_y,depth,rgbdata);
-       CalibrateImage(RIGHT_EYE,CALIBRATED_RIGHT_EYE,resection_right_precalc);
+                      LAST_RIGHT_EYE,
+                      LAST_CALIBRATED_RIGHT_EYE,
+                      LAST_EDGES_RIGHT,
+                      LAST_SECOND_DERIVATIVE_RIGHT,
+                      LAST_MOVEMENT_RIGHT,
 
-       // THIRD PROCESS NEW IMAGE ( COMPRESSION )
-       PrepareCleanSobeledGaussianAndDerivative(CALIBRATED_RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
-       GenerateCompressHistogramOfImage(video_register[CALIBRATED_RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
+                      MOVEMENT_GROUPED_RIGHT,
+                      EDGES_GROUPED_RIGHT,
+                      EDGES_PRESENCE_GROUPED_RIGHT,
+                      SECOND_DERIVATIVE_GROUPED_RIGHT,
 
-        CompressRegister(MOVEMENT_RIGHT,MOVEMENT_GROUPED_RIGHT);
-        CompressRegister(EDGES_RIGHT,EDGES_GROUPED_RIGHT);
-        CompressRegister(SECOND_DERIVATIVE_RIGHT,SECOND_DERIVATIVE_GROUPED_RIGHT);
+                      0 , // ACTIVATE PRSENCE GROUPED
+                      1 ,
 
-        // FOURTH TRACK ALL POINTS ON NEW FRAME FROM OLD FRAME
-        VisCortx_Movement_Detection(0,1);
-
-        if ( settings[PASS_TO_FACE_DETECTOR] ) { RecognizeFaces(CALIBRATED_RIGHT_EYE); }
-
-        if ( settings[PASS_TO_FEATURE_DETECTOR] )
-        {
-       // if ( GetFeatureData(video_register[CALIBRATED_RIGHT_EYE].features,0,TOTAL_POINTS) < 50 )
-          {
-            VisCortx_AutoAddTrackPoints(1);
-          }
-        TrackAllPointsOnRegistersBrute(CALIBRATED_RIGHT_EYE,LAST_CALIBRATED_RIGHT_EYE,8000);
-        }
-
-
-        video_register[input_img_regnum].lock=0;
+                      size_x,size_y,depth,
+                      rgbdata
+                    );
     }
 
-  metrics[VIDEOINPUT_PROCESSING_DELAY_MICROSECONDS] = EndTimer();
+  metrics[VIDEOINPUT_PROCESSING_DELAY_MICROSECONDS] = EndTimer(TIMER_PROCESSING_DELAY);
 
- return 1;
+ return retres ;
 }
+
+

@@ -213,6 +213,7 @@ void ParseConfigString(char * inpt)
                 camera_params_1[8]=k3;
                 camera_params_1[9]=p1;
                 camera_params_1[10]=p2;
+                //VisCortx_SetDistortionParemeters(LEFT_EYE,k1,k2,p1,p2,k3);
             } else
            if (VReg==1)
             {
@@ -221,18 +222,25 @@ void ParseConfigString(char * inpt)
                 camera_params_2[8]=k3;
                 camera_params_2[9]=p1;
                 camera_params_2[10]=p2;
+                //VisCortx_SetDistortionParemeters(RIGHT_EYE,k1,k2,p1,p2,k3);
             }
+
         }
-
-
-void VisCortx_SetDistortionParemeters(unsigned int reg_cam,double k1,double k2,double p1,double p2,double k3);
 
     }
 
     InputParser_Destroy(ipc);
 }
 
+int RefreshDeviceNumbering()
+{
+    /* TODO */
+    //VIDEO
 
+    //TTYUSB
+
+    return 1;
+}
 
 void LoadConfiguration()
 {
@@ -240,7 +248,7 @@ void LoadConfiguration()
   int line_length=0;
   FILE * pFile;
   pFile = fopen ("guard.ini","r");
-  if (pFile!=NULL )
+  if (pFile!=0 )
     {
       int c=0;
       do
@@ -264,7 +272,7 @@ void LoadConfiguration()
     }
   else
     {
-//      wxMessageBox(wxT("Δεν ήταν δυνατή η ανάκτηση των ρυθμίσεων του προγράμματος"),wxT("ClinicDB"));
+      fprintf(stderr,"Cannot open guard.ini \n");
     }
 
 

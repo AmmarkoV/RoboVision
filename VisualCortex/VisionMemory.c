@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 unsigned int TIME_INC=0;
 unsigned int COLD_START=1;
 
+unsigned int state[STATE_COUNT]={0};
 unsigned int settings[SETTINGS_COUNT]={0};
 unsigned int metrics[METRICS_COUNT]={0};
 struct VideoRegister video_register[REGISTERS_COUNT]={{0},{0},{0},{0},{0},{0}};
@@ -76,6 +77,7 @@ int InitRegister( unsigned int reg_num, unsigned int res_x,unsigned int res_y,un
                                            video_register[reg_num].pixels=0; }
 
   video_register[reg_num].pixels = (unsigned char * ) malloc( sizeof(unsigned char) * res_x * res_y * depth);
+  if (video_register[reg_num].pixels==0) { fprintf(stderr,"Error allocating memory for video register\n"); return 0; }
   video_register[reg_num].size_x = res_x;
   video_register[reg_num].size_y = res_y;
   video_register[reg_num].depth = depth;
@@ -98,6 +100,7 @@ int InitLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned int res
                                              l_video_register[reg_num].pixels=0; }
 
   l_video_register[reg_num].pixels = (unsigned short * ) malloc( res_x * res_y * depth * sizeof(unsigned short) );
+  if (l_video_register[reg_num].pixels ==0) { fprintf(stderr,"Error allocating memory for large video register\n"); return 0; }
   l_video_register[reg_num].size_x = res_x;
   l_video_register[reg_num].size_y = res_y;
   l_video_register[reg_num].depth = depth;
@@ -119,6 +122,7 @@ int InitExtraLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned in
                                              xl_video_register[reg_num].pixels=0; }
 
   xl_video_register[reg_num].pixels = (unsigned int * ) malloc( res_x * res_y * depth * sizeof(unsigned int) );
+  if (xl_video_register[reg_num].pixels==0) { fprintf(stderr,"Error allocating memory for extra large video register\n"); return 0; }
   xl_video_register[reg_num].size_x = res_x;
   xl_video_register[reg_num].size_y = res_y;
   xl_video_register[reg_num].depth = depth;
@@ -267,7 +271,7 @@ void DefaultSettings()
 
    settings[REMEMBER_FACES]=1;
 
-   settings[FEATURE_TRACKING_COMPARISON_THRESHOLD]=30000; /* FEATURE Tracking comparison threshold */
+   settings[FEATURE_TRACKING_COMPARISON_THRESHOLD]=35000; /* FEATURE Tracking comparison threshold */
 
    settings[FEATURE_DETECTION_THRESHOLD]=40; // 30
 
@@ -382,6 +386,7 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     unsigned int MEM1BIT = (res_x+1)*(res_y+1);
 
     depth_data_array = ( struct DepthData * ) malloc ( sizeof(struct DepthData) * MEM1BIT );
+    if (depth_data_array==0) { fprintf(stderr,"Error allocating depth_data_array memory \n"); return 1; }
 
 
     Precalculations();
@@ -521,7 +526,7 @@ int SwapRegister(unsigned int source,unsigned int target)
 }
 
 
-int CopyRegister(unsigned int source,unsigned int target)
+int CopyRegister(unsigned int source,unsigned int target,unsigned int copy_features,unsigned int copy_faces)
 {
   unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
   if ( video_register[source].depth == 1 ) { image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]; } else
@@ -549,8 +554,8 @@ int CopyRegister(unsigned int source,unsigned int target)
   video_register[target].time=video_register[source].time;
   video_register[target].used=video_register[source].used;
 
- // DO NOT AUTO COPY FEATURES :) CopyFeatureList(video_register[source].features,video_register[target].features);
- // DO NOT AUTO COPY FEATURES :) CopyFeatureList(video_register[source].faces,video_register[target].faces);
+  if (copy_features) { CopyFeatureList(video_register[source].features,video_register[target].features); }
+  if (copy_faces) { CopyFeatureList(video_register[source].faces,video_register[target].faces); }
 
   return 1;
 }
@@ -764,10 +769,10 @@ int SaveRegisterPartToFile(char * filename,unsigned int reg_num,unsigned int x_s
       unsigned char * pixel_row;
       fprintf(fd, "P6\n%d %d\n255\n", width, height);
 
-
+       //fprintf(stderr,"SaveRegister(%u) Part (%u,%u -> %u,%u ) \n",reg_num,x_start,y_start,x_start+width,y_start+height);
        x = x_start; y = y_start;
-       pixel_row = (unsigned char *) video_register[reg_num].pixels  +  (( y * width * 3 ) + ( x * 3 ));
-       while ( (y<y_start+height) && (pixel_row+width*3<pixel_memory_end) )
+       pixel_row = (unsigned char *) video_register[reg_num].pixels  +  (( y * video_register[reg_num].size_x * 3 ) + ( x * 3 ));
+       while ( (y<y_start+height) && (pixel_row+video_register[reg_num].size_x*3<pixel_memory_end) )
         {
           fwrite(pixel_row,3,width,fd);
           pixel_row += pixel_incrementation;
@@ -830,5 +835,25 @@ FILE *pf=0;
       fclose(pf);
     }
   return 0;
+}
+
+unsigned int GetTempRegister()
+{
+    int res_reg = GENERAL_1;
+    while ( (video_register[res_reg].used) && (res_reg < REGISTERS_COUNT) )
+     {
+         ++res_reg;
+     }
+
+    if (res_reg >= REGISTERS_COUNT) { return 0; }
+    video_register[res_reg].used=1;
+
+    return res_reg;
+}
+
+unsigned int StopUsingVideoRegister(unsigned int thereg)
+{
+    video_register[thereg].used=0;
+    return 1;
 }
 

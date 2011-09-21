@@ -1,6 +1,5 @@
 #ifndef FEEDSCREENMEMORY_H_INCLUDED
 #define FEEDSCREENMEMORY_H_INCLUDED
-#include "../VideoInput/VideoInput.h"
 #include "../VisualCortex/VisualCortex.h"
  //#include "../VisionSubsystem/VisionSubsystem.h"
 #include <wx/wx.h>
