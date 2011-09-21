@@ -636,9 +636,9 @@
 
 1302101441 /usr/include/wx-2.8/wx/gtk/textctrl.h
 
-1315265692 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1316506312 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
-1308776048 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/FeedScreenMemory.cpp
+1316423434 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/FeedScreenMemory.cpp
 	"FeedScreenMemory.h"
 	"RoboVisionXMain.h"
 	<wx/wx.h>
@@ -648,8 +648,7 @@
 	"../RoboKernel/RoboKernel.h"
 	<linux/videodev2.h>
 
-1277584620 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/FeedScreenMemory.h
-	"../VideoInput/VideoInput.h"
+1316425191 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/FeedScreenMemory.h
 	"../VisualCortex/VisualCortex.h"
 	<wx/wx.h>
 
@@ -1485,7 +1484,7 @@
 1302101441 /usr/include/wx-2.8/wx/gtk/filedlg.h
 	"wx/generic/filedlgg.h"
 
-1305706744 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.h
+1316425829 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.h
 	<wx/gauge.h>
 	<wx/checkbox.h>
 	<wx/button.h>
@@ -1499,6 +1498,7 @@
 	<wx/choice.h>
 	<wx/timer.h>
 	<wx/sound.h>
+	<wx/joystick.h>
 
 1302101441 /usr/include/wx-2.8/wx/sound.h
 	"wx/defs.h"
@@ -1513,13 +1513,13 @@
 	"wx/defs.h"
 	"wx/object.h"
 
-1289312029 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
+1315524574 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
 	"../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
 
 1289554847 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
 	<stdio.h>
 
-1277561336 /home/ammar/Documents/Programming/RoboVision/RoboKernel/RoboKernel.h
+1316162192 /home/ammar/Documents/Programming/RoboVision/RoboKernel/RoboKernel.h
 
 1303475277 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RememberImage.cpp
 	"RememberImage.h"
@@ -1534,19 +1534,20 @@
 	<wx/stattext.h>
 	<wx/textctrl.h>
 
-1257547258 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXApp.cpp
+1316163260 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXApp.cpp
 	"RoboVisionXApp.h"
 	"RoboVisionXMain.h"
 	<wx/image.h>
 
-1257029488 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXApp.h
+1316163470 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXApp.h
 	<wx/app.h>
 
-1307813674 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.cpp
+1316507086 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.cpp
 	"RoboVisionXMain.h"
 	"FeedScreenMemory.h"
 	"CortexSettings.h"
 	"RememberImage.h"
+	"version.h"
 	"../MotorFoundation/MotorHAL.h"
 	"../RoboKernel/RoboKernel.h"
 	<wx/msgdlg.h>
@@ -1570,4 +1571,20 @@
 
 1302101441 /usr/include/wx-2.8/wx/gtk/statline.h
 	"wx/defs.h"
+
+1302101441 /usr/include/wx-2.8/wx/joystick.h
+	"wx/defs.h"
+	"wx/msw/joystick.h"
+	"wx/unix/joystick.h"
+	"wx/unix/joystick.h"
+	"wx/unix/joystick.h"
+	"wx/mac/corefoundation/joystick.h"
+	"wx/mac/joystick.h"
+	"wx/os2/joystick.h"
+
+1302101441 /usr/include/wx-2.8/wx/unix/joystick.h
+	"wx/event.h"
+	"wx/thread.h"
+
+1315518373 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/version.h
 

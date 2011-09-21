@@ -9,7 +9,7 @@
 
 struct md23_device * guard_base=0;
 
-pthread_t monitor_thread_id;
+pthread_t monitor_thread_id=0;
 
 unsigned int AutoMapping=1;
 unsigned int StopMonitorThread=0;
@@ -36,6 +36,13 @@ signed int DistanceToWheelDegreesTurn(signed int dist)
 
 unsigned int RobotInit(char * md23_device_id,char * arduino_device_id)
 {
+
+    int  ret=system((const char * ) "ls /dev/ttyUSB*");
+    if ( ret == 0 ) { printf("These are the possible usb ports.. \n"); }
+
+    ret=system((const char * ) "ls /dev/ttyUSB* | wc -l");
+    if ( ret == 0 ) { printf("total usb ports devices .. \n"); }
+
     printf("MD23 Code Version %s !\n",MD23_GetVersion());
     guard_base=MD23_Init(md23_device_id,1);
     fprintf(stderr,"MD23 Inited\n");
@@ -52,9 +59,13 @@ unsigned int RobotInit(char * md23_device_id,char * arduino_device_id)
        SetAgentLocation(worldmap,0,250,250);
      }
 
-    pthread_create(&monitor_thread_id, NULL,  HAL_Monitor ,0);
+    if ( pthread_create(&monitor_thread_id, NULL,  HAL_Monitor ,0) != 0 )
+      {
+          fprintf(stderr,"Could not create monitor thread for Motor HAL \n");
+          return 0;
+      }
 
-return 0;
+return 1;
 }
 
 
@@ -84,8 +95,75 @@ void RobotWait(unsigned int msecs)
 /*    -------------------------------------------------
     ~~~~~~~~~~~~~~~~~~MOVEMENT CONTROL ~~~~~~~~~~~~~~~~~~
       -------------------------------------------------*/
+inline unsigned int _abs1(signed int num)
+{
+  if ( num < 0 ) return 0-num;
+  return num;
+}
+
+// WE EXPECT VALUES FROM -255 TO 255 IN VARIABLE LEFT_RIGHT SIGNALING FULL LEFT  (-255) TO FULL RIGHT (255)
+// WE EXPECT VALUES FROM -255 TO 255 IN VARIABLE FRONT_REAR SIGNALING FULL FRONT (-255) TO FULL REAR  (255)
+unsigned int RobotMoveJoystick(signed int joy_x,signed int joy_y)
+{
+  unsigned int MAX_POWER=123,BASE=100;
+  unsigned int powerleft=_abs1(joy_y) , powerright=_abs1(joy_y);
+  signed int degrees_left=0,degrees_right=0,lr_powercross=0;
+
+  lr_powercross = ( _abs1(joy_x) * _abs1(joy_y) / 255);
+
+  if ( joy_y < 0 )
+    {
+      degrees_left = BASE , degrees_right = BASE;
+      if ( joy_x > 0 )
+        {
+          powerleft  += lr_powercross , powerright -= lr_powercross;
+        }
+      else
+        if ( joy_x < 0 )
+          {
+            powerleft  -= lr_powercross , powerright += lr_powercross;
+          }
+    }
+  else
+    if ( joy_y > 0 )
+      {
+        degrees_left = -BASE , degrees_right = -BASE;
+        if ( joy_x > 0 )
+          {
+            powerleft  += lr_powercross , powerright -= lr_powercross;
+          }
+        else
+          if ( joy_x < 0 )
+            {
+              powerleft  -= lr_powercross , powerright += lr_powercross;
+            }
+      }
+
+  printf("With Joystick Balance %d , %d i give signal 0( %d,%d ) 1( %d,%d )\n",joy_x,joy_y,powerleft,degrees_left,powerright,degrees_right);
+  if ( powerleft > MAX_POWER ) powerleft = MAX_POWER;
+  if ( powerright > MAX_POWER ) powerright = MAX_POWER;
+  printf("With Enforced limits %d , %d i give signal 0( %d,%d ) 1( %d,%d )\n",joy_x,joy_y,powerleft,degrees_left,powerright,degrees_right);
+
+  //MD23_MoveMotors(guard_base,0,powerleft,degrees_left);
+  //MD23_MoveMotors(guard_base,1,powerright,degrees_right);
+
+  MD23_MoveMotorsDegrees(guard_base,0,powerleft,(signed int) DistanceToWheelDegreesTurn(degrees_left*100));
+  MD23_MoveMotorsDegrees(guard_base,1,powerright,(signed int) DistanceToWheelDegreesTurn(degrees_right*100));
+
+  return 0;
+}
+
+
+unsigned int RobotBaseOk()
+{
+  if ( guard_base == 0) { return 0; }
+  return 1;
+}
+
 unsigned int RobotStartRotating(unsigned char power,signed int direction)
 {
+ if (!RobotBaseOk()) { return 0;}
+
  signed int direct=0;
  if ( direction > 0 ) direct=1; else
  if ( direction < 0 ) direct=-1;
@@ -98,6 +176,8 @@ unsigned int RobotStartRotating(unsigned char power,signed int direction)
 
 unsigned int RobotRotate(unsigned char power,signed int degrees)
 {
+ if (!RobotBaseOk()) { return 0;}
+
  signed int dist_to_travel = (degrees * pi * motors_distance) / 180 ;
  fprintf(stderr,"Distance to turn %u \n",dist_to_travel);
  MD23_MoveBothMotorsDifferentDegrees(guard_base,power,(signed int) -DistanceToWheelDegreesTurn(dist_to_travel),power,(signed int) DistanceToWheelDegreesTurn(dist_to_travel));
@@ -106,18 +186,24 @@ unsigned int RobotRotate(unsigned char power,signed int degrees)
 
 unsigned int RobotMove(unsigned char power,signed int distance)
 {
+   if (!RobotBaseOk()) { return 0;}
+
    fprintf(stderr,"RobotMove %u %d ( in degrees %d ) \n",power,distance,DistanceToWheelDegreesTurn(distance));
    return  MD23_MoveMotorsDegrees(guard_base,2,power,(signed int) DistanceToWheelDegreesTurn(distance));
 }
 
 unsigned int RobotStartMoving(unsigned char power,signed int direction)
 {
-fprintf(stderr,"MD23_MoveMotors %u %d \n",power,direction);
-return MD23_MoveMotors(guard_base,2,power,direction);
+  if (!RobotBaseOk()) { return 0;}
+
+  fprintf(stderr,"MD23_MoveMotors %u %d \n",power,direction);
+  return MD23_MoveMotors(guard_base,2,power,direction);
 }
 
 unsigned int RobotGetEncoders(signed int * left_encoder,signed int * right_encoder)
 {
+  if (!RobotBaseOk()) { return 0;}
+
   *left_encoder =(signed int ) MD23_GetEncoder(guard_base,0); //guard_base->motors[0].encoder;
   *right_encoder =(signed int ) MD23_GetEncoder(guard_base,0); //guard_base->motors[1].encoder;
   return 1;
@@ -125,6 +211,8 @@ unsigned int RobotGetEncoders(signed int * left_encoder,signed int * right_encod
 
 unsigned int RobotManoeuvresPending()
 {
+  if (!RobotBaseOk()) { return 0;}
+
   unsigned int man_flag=0;
   if ( MD23_MovementDone(guard_base)==0 ) man_flag=1;
   return  man_flag;
@@ -132,17 +220,23 @@ unsigned int RobotManoeuvresPending()
 
 void RobotStopMovement()
 {
- MD23_MoveMotors(guard_base,2,0,0);
+  if (!RobotBaseOk()) { return;}
+
+  MD23_MoveMotors(guard_base,2,0,0);
 }
 
 int RobotCanRotate(unsigned char power,signed int degrees)
 {
+  if (!RobotBaseOk()) { return 0;}
+
   fprintf(stderr,"Stub called CanRobotRotate not implemented yet\n");
   return 1;
 }
 
 int RobotCanMove(unsigned char power,signed int distance)
 {
+  if (!RobotBaseOk()) { return 0;}
+
   fprintf(stderr,"Stub called CanRobotMove not implemented yet\n");
   return 1;
 }
@@ -153,21 +247,29 @@ int RobotCanMove(unsigned char power,signed int distance)
       -------------------------------------------------*/
 int RobotGetUltrasonic(unsigned int dev)
 {
+  if (!RobotBaseOk()) { return 0;}
+
   return GetUltrasonicValue(dev);
 }
 
 int RobotGetAccelerometerX(unsigned int dev)
 {
+  if (!RobotBaseOk()) { return 0;}
+
   return GetAccelerometerX(dev);
 }
 
 int RobotGetAccelerometerY(unsigned int dev)
 {
+  if (!RobotBaseOk()) { return 0;}
+
   return GetAccelerometerY(dev);
 }
 
 int RobotSetHeadlightsState(unsigned int scale_1_on,unsigned int scale_2_on,unsigned int scale_3_on)
 {
+  if (!RobotBaseOk()) { return 0;}
+
   if ((scale_1_on)||(scale_2_on)||(scale_3_on))
     {
        fprintf(stderr,"Stub called SetHeadLights not implemented yet\n");
@@ -177,6 +279,8 @@ int RobotSetHeadlightsState(unsigned int scale_1_on,unsigned int scale_2_on,unsi
 
 int RobotIRTransmit(char * code,unsigned int code_size)
 {
+  if (!RobotBaseOk()) { return 0;}
+
   if ((code==0)||(code_size==0)) { return 0; }
   fprintf(stderr,"Stub called SetHeadLights not implemented yet\n");
 
@@ -189,6 +293,8 @@ int RobotIRTransmit(char * code,unsigned int code_size)
       -------------------------------------------------*/
 unsigned int RobotPrintPosition()
 {
+ if (!RobotBaseOk()) { return 0;}
+
  if (AutoMapping) {
                      if (worldmap!=0)
                      {
@@ -217,6 +323,8 @@ inline int AbsDifferenceHigherThan(signed int difference,unsigned int low)
 
 inline unsigned int GetTickCount()
 {
+  if (!RobotBaseOk()) { return 0;}
+
   struct timespec clock_count_ts;
   unsigned int clock_count=0;
   unsigned long nano_convert=1000000,clock_countbig=0;

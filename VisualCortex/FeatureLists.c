@@ -139,7 +139,7 @@ int RemoveFromFeatureList(struct FeatureList * list, int point)
 
 void RemoveTrackPointsIfTimedOut(struct FeatureList * list,unsigned int timeout)
 {
-    if  (!ListIsOk(list)) { fprintf(stderr,"RemoveTrackPointsIfTimedOut called with a zero list \n");  return 0; }
+    if  (!ListIsOk(list)) { fprintf(stderr,"RemoveTrackPointsIfTimedOut called with a zero list \n");  return; }
 	int i=0;
 	while ( i < list->current_features )
     {

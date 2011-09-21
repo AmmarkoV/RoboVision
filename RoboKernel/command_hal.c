@@ -4,6 +4,7 @@
 #include "../VideoInput/VideoInput.h"
 #include "../InputParser/InputParser_C.h"
 #include "../RVKnowledgeBase/RVKnowledgeBase.h"
+#include "../MotorFoundation/MotorHAL.h"
 
 #include "visual_system.h"
 #include "motor_system.h"

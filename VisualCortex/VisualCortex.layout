@@ -14,19 +14,19 @@
 		<Cursor position="1276" topLine="0" />
 	</File>
 	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
-		<Cursor position="1548" topLine="35" />
+		<Cursor position="1595" topLine="36" />
 	</File>
 	<File name="FaceDetection.h" open="1" top="0" tabpos="13">
 		<Cursor position="209" topLine="0" />
 	</File>
 	<File name="FeatureExtraction.c" open="1" top="0" tabpos="14">
-		<Cursor position="6274" topLine="191" />
+		<Cursor position="6085" topLine="185" />
 	</File>
 	<File name="FeatureExtraction.h" open="1" top="0" tabpos="15">
 		<Cursor position="162" topLine="0" />
 	</File>
-	<File name="FeatureLists.c" open="1" top="0" tabpos="38">
-		<Cursor position="4088" topLine="117" />
+	<File name="FeatureLists.c" open="1" top="1" tabpos="38">
+		<Cursor position="4633" topLine="119" />
 	</File>
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
 		<Cursor position="1164" topLine="6" />
@@ -77,7 +77,7 @@
 		<Cursor position="1967" topLine="0" />
 	</File>
 	<File name="StateSetting.h" open="1" top="0" tabpos="19">
-		<Cursor position="820" topLine="0" />
+		<Cursor position="799" topLine="0" />
 	</File>
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
 		<Cursor position="386" topLine="0" />
@@ -110,7 +110,7 @@
 		<Cursor position="247" topLine="0" />
 	</File>
 	<File name="VisCortexTimer.c" open="1" top="0" tabpos="41">
-		<Cursor position="718" topLine="0" />
+		<Cursor position="397" topLine="3" />
 	</File>
 	<File name="VisCortexTimer.h" open="1" top="0" tabpos="42">
 		<Cursor position="106" topLine="0" />

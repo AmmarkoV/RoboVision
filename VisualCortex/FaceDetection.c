@@ -55,7 +55,7 @@ unsigned int RecognizeFaces(unsigned int vid_reg)
             3,
             0 /*CV_HAAR_DO_CANNY_PRUNNING*/
             , cvSize( 40, 40 )
-            //, cvSize( 50, 50 ) // <--- This might have to be commented out on older OpenCV versions where there is only a minimum Window!
+            , cvSize( 50, 50 ) // <--- This might have to be commented out on older OpenCV versions where there is only a minimum Window!
             );
 
     /* for each face found, draw a red box */
