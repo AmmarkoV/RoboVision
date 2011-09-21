@@ -98,7 +98,7 @@ struct ExtraLargeVideoRegister
 extern unsigned int TIME_INC;
 extern unsigned int COLD_START;
 
-extern unsigned int state[STATE_COUNT];
+extern unsigned int pipeline_switches[PIPELINE_SWITCH_COUNT];
 extern unsigned int settings[SETTINGS_COUNT];
 extern unsigned int metrics[METRICS_COUNT];
 extern struct VideoRegister video_register[REGISTERS_COUNT];
@@ -146,5 +146,7 @@ int LoadRegisterFromFile(char * filename,unsigned int reg_num);
 
 unsigned int GetTempRegister();
 unsigned int StopUsingVideoRegister(unsigned int thereg);
+
+unsigned int MarkVideoRegistersAsUnsynced(unsigned int unsync_reg , unsigned int other_reg);
 
 #endif // VISIONMEMORY_H_INCLUDED

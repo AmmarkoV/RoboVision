@@ -167,6 +167,17 @@ unsigned int VisCortx_GetSetting(unsigned int get_num)
 }
 
 
+void VisCortx_SetPipelineSwitch(unsigned int set_num,unsigned int set_val)
+{
+  pipeline_switches[set_num]=set_val;
+}
+
+unsigned int VisCortx_GetPipelineSwitch(unsigned int set_num)
+{
+  return pipeline_switches[set_num];
+}
+
+
 void VisCortx_SetMetric(unsigned int set_num,unsigned int set_val)
 {
   metrics[set_num]=set_val;
@@ -364,6 +375,19 @@ int VisCortx_OperationUnLockFramesLeftRight()
 
 void  VisCortx_FullDepthMap()
 {
+
+   VisCortx_SetPipelineSwitch(EXECUTE_DEPTHMAP,1);
+
+  while
+    (
+     ( video_register[DEPTH_LEFT].time != video_register[CALIBRATED_LEFT_EYE].time ) ||
+     ( video_register[DEPTH_RIGHT].time != video_register[CALIBRATED_RIGHT_EYE].time )
+    )
+    {
+            //Here we wait..
+    }
+
+
  /*
     The register CALIBRATED_LEFT_EYE , CALIBRATED_RIGHT_EYE IS CONSTANTLY UPDATED , SO WE CANNOT OUTPUT A STEADY RESULT IF WHILE CALCULATING THE IMAGE CHANGES ..!
     Thats why we copy to LEFT_EYE_NOT_LIVE and RIGHT_EYE_NOT_LIVE , which are in turn passed for disparity mapping

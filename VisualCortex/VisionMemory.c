@@ -25,7 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 unsigned int TIME_INC=0;
 unsigned int COLD_START=1;
 
-unsigned int state[STATE_COUNT]={0};
+unsigned int pipeline_switches[PIPELINE_SWITCH_COUNT]={0};
 unsigned int settings[SETTINGS_COUNT]={0};
 unsigned int metrics[METRICS_COUNT]={0};
 struct VideoRegister video_register[REGISTERS_COUNT]={{0},{0},{0},{0},{0},{0}};
@@ -857,3 +857,8 @@ unsigned int StopUsingVideoRegister(unsigned int thereg)
     return 1;
 }
 
+unsigned int MarkVideoRegistersAsUnsynced(unsigned int unsync_reg , unsigned int other_reg)
+{
+   video_register[unsync_reg].time = video_register[other_reg].time + 1 ;
+   return 1;
+}

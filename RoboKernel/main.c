@@ -20,6 +20,7 @@ int IssueCommand(char * cmd,char * res,unsigned int resmaxsize,char * from)
  return IssueCommandInternal((char *) cmd,(char *) from);
 }
 
+
 unsigned char * GetVideoRegister(unsigned int num)
 {
     return VisCortx_ReadFromVideoRegister(num,VisCortx_GetMetric(RESOLUTION_X),VisCortx_GetMetric(RESOLUTION_Y),VisCortx_GetMetric(RESOLUTION_DEPTH));

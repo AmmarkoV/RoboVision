@@ -178,7 +178,7 @@ class RoboVisionXFrame: public wxFrame
         unsigned int add_new_track_point;
         unsigned int last_draw;
         unsigned int mouse_x,mouse_y;
-        unsigned int shutdown,dpth_x,dpth_y,dpth_on,frame_rate;
+        unsigned int GUI_Shutdown,dpth_x,dpth_y,dpth_on;
 
         DECLARE_EVENT_TABLE()
 };

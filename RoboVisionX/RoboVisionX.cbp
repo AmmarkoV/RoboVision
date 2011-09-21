@@ -61,6 +61,8 @@
 		<Unit filename="CortexSettings.h" />
 		<Unit filename="FeedScreenMemory.cpp" />
 		<Unit filename="FeedScreenMemory.h" />
+		<Unit filename="FramesOSD.cpp" />
+		<Unit filename="FramesOSD.h" />
 		<Unit filename="RememberImage.cpp" />
 		<Unit filename="RememberImage.h" />
 		<Unit filename="RoboVisionXApp.cpp" />

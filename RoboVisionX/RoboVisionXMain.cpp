@@ -10,6 +10,8 @@
 #include "FeedScreenMemory.h"
 #include "CortexSettings.h"
 #include "RememberImage.h"
+
+#include "FramesOSD.h"
 #include "version.h"
 
 
@@ -304,10 +306,9 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     Status->AppendText(wxT("RoboVision GUI ok..\n"));
     Battery->SetValue(100);
     RedrawWindow();
-    shutdown=0;
+    GUI_Shutdown=0;
     add_new_track_point=0;
     tick_count=0; // INTERNAL TIMER
-    frame_rate = 1000;
     last_draw=0;
     mouse_x=0,mouse_y=0;
     dpth_x=0,dpth_y=0;
@@ -362,7 +363,7 @@ RoboVisionXFrame::~RoboVisionXFrame()
 
 void RoboVisionXFrame::OnQuit(wxCommandEvent& event)
 {
-    shutdown=1;
+    GUI_Shutdown=1;
     if (joy_stick!=0) { delete joy_stick; }
 
     wxMilliSleep(500);
@@ -376,75 +377,6 @@ void RoboVisionXFrame::OnTimerEvent(wxTimerEvent &event)
 
 
 
-int FeaturesAquired(unsigned int video_reg_num)
-{
- unsigned int wait_time = 0 , max_wait_time = 1000;
-     while ( (wait_time<max_wait_time) && ( VisCortx_GetFeature(video_reg_num,0,FEATURE_LAST_TRACK_TIME ) != VisCortx_GetVideoRegisterData(video_reg_num,0 /*TODO ADD AN ENUM*/) ) )
-      {
-         ++wait_time;
-         wxMilliSleep(1);
-      }
-      if (wait_time>=max_wait_time)
-      {
-            fprintf(stderr,"Features for video_register ( %u ) timedOut , will not be drawn \n",video_reg_num);
-            return 0;
-      }
-  return 1;
-}
-
-int DrawFeaturesAtFeed(wxPaintDC & dc , unsigned int x , unsigned int y , unsigned int video_reg_num , unsigned int point , unsigned int line)
-{
-if  (VisCortx_GetFeature(video_reg_num,0,TOTAL_POINTS)>0)
-      {
-        //------------------------------------ FEATURES ---------------------------------------------*/
-        /*We want to draw features on left eye ---------------------------------------------------------------------------------*/
-       if (VisCortx_GetFeature(video_reg_num,0,TOTAL_POINTS)>0  )
-       {
-        unsigned int i;
-        for ( i=0; i<VisCortx_GetFeature(video_reg_num,0,TOTAL_POINTS); i++ )
-         {
-            if ( VisCortx_GetFeature(video_reg_num,i,FEATURE_IS_LOST ) == 0 )
-            {
-             if (point)
-               {
-                 dc.DrawRectangle(x+VisCortx_GetFeature(video_reg_num,i,FEATURE_X),y+VisCortx_GetFeature(video_reg_num,i,FEATURE_Y),3,3);
-               }
-              if (line)
-               {
-                 dc.DrawLine(x+VisCortx_GetFeature(video_reg_num,i,FEATURE_X),y+VisCortx_GetFeature(video_reg_num,i,FEATURE_Y),
-                             x+VisCortx_GetFeature(video_reg_num,i,FEATURE_LAST_X),y+VisCortx_GetFeature(video_reg_num,i,FEATURE_LAST_Y));
-               }
-            }
-         }
-       }
-     }
-  return 1;
-}
-
-
-
-int DrawFacesAtFeed(wxPaintDC & dc , unsigned int x , unsigned int y , unsigned int video_reg_num )
-{
-       if (VisCortx_GetFaces(video_reg_num,0,TOTAL_POINTS)>0  )
-       {
-         unsigned int center_x,center_y,scale,i;
-         for ( i=0; i<VisCortx_GetFaces(video_reg_num,0,TOTAL_POINTS); i++ )
-         {
-            if ( VisCortx_GetFaces(video_reg_num,i,FEATURE_IS_LOST) == 0 )
-            {
-               center_x=VisCortx_GetFaces(video_reg_num,i,FEATURE_X) + ( VisCortx_GetFaces(video_reg_num,i,FEATURE_DIM_X) / 2 ) ;
-               center_y=VisCortx_GetFaces(video_reg_num,i,FEATURE_Y) + ( VisCortx_GetFaces(video_reg_num,i,FEATURE_DIM_Y) / 2 ) ;
-               scale = ( ( VisCortx_GetFaces(video_reg_num,i,FEATURE_DIM_X) / 2 ) + ( VisCortx_GetFaces(video_reg_num,i,FEATURE_DIM_Y) / 2 ) ) / 2 ;
-               dc.DrawCircle( x + center_x , y + center_y , scale );
-
-            }
-         }
-         return 1;
-       }
-   return 0;
-}
-
-
 void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
 {
     wxPaintDC dc(this); // OnPaint events should always create a wxPaintDC
@@ -455,10 +387,10 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
      if ( uptimer->Time() < WAIT_TIME_STARTUP ) { /*Wait for warmup :P */ return ; }
      if ( !DrawFeeds->IsChecked() ) { return ; }
 
-     dc.DrawBitmap(*live_feeds[0].bmp,feed_0_x,feed_0_y,true); //FEED 1
-     dc.DrawBitmap(*live_feeds[1].bmp,feed_1_x,feed_1_y,true); //FEED 2
-     dc.DrawBitmap(*live_feeds[2].bmp,feed_2_x,feed_2_y,true); //FEED 3
-     dc.DrawBitmap(*live_feeds[3].bmp,feed_3_x,feed_3_y,true); //FEED 4
+     dc.DrawBitmap(*live_feeds[0].bmp,feed_0_x,feed_0_y,0); //FEED 1
+     dc.DrawBitmap(*live_feeds[1].bmp,feed_1_x,feed_1_y,0); //FEED 2
+     dc.DrawBitmap(*live_feeds[2].bmp,feed_2_x,feed_2_y,0); //FEED 3
+     dc.DrawBitmap(*live_feeds[3].bmp,feed_3_x,feed_3_y,0); //FEED 4
 
 
      if ( dpth_on == 1 )
@@ -610,61 +542,24 @@ void RoboVisionXFrame::OnAbout(wxCommandEvent& event)
 
 void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
 {
-
-   if ( shutdown == 1 ) { return ; }
+   if ( GUI_Shutdown == 1 ) { return ; }
    if ( !RoboKernelAlive() ) { fprintf(stderr,"Robo Kernel died\n"); return; }
    // DEN XREIAZETAI GIATI XEIRIZETAI TO SNAPWEBCAMS TO EVENT! -> TO AFINW SAN REMINDR OTI DEN XREIAZETAI if ( VideoFeedsNotAccessible== 1 ) { return; }
    if ( uptimer->Time() < WAIT_TIME_STARTUP ) { /*Wait for warmup :P */ return ; }
 
-   wxStopWatch sw1;
-   if ( SnapWebCams() == 1 ) {/* Tracking is now handled by the VisCortexInternally */ } else
-                             {  sw1.Pause(); return; }
-   sw1.Pause();
 
-   if ( sw1.Time() == 0 ) { frame_rate = 1000; } else
-                          { frame_rate = 1000 / sw1.Time(); }
+   if ( SnapWebCams() == 1 ) {/* Tracking is now handled by the VisCortexInternally */ } else
+                             { return; }
+
 
 
     ++tick_count;
-    if ( tick_count%2 == 0 )
-    {
-      if ( Autonomous->IsChecked() )
-       {
-        if ( ( VisCortx_GetMetric(CHANGES_LEFT) >2000 ) || ( VisCortx_GetMetric(CHANGES_RIGHT)>2000 ) )
-        {
-           if ( 0 )
-            {
-               wxStopWatch sw2;
-               GUI_FullDepthMap(0);
-               sw2.Pause();
-
-               wxString msg;
-               msg.Printf( wxT("Full DepthMap ( %u ms )\n") , sw2.Time() );
-               Status->AppendText( msg );
-
-               IssueCommand((char *) "DEPTH MAP",0,0,(char *)"GUI");
-            }
-
-           if (!lowcpuusage->IsChecked())
-            {
-               IssueCommand((char *) "PLAYSOUND(alarm)",0,0,(char *)"GUI");
-               // DEMO MOVEMENT
-               ++position;
-               if ( position <= 2 ) { IssueCommand((char *) "LEFT",0,0,(char *)"GUI"); } else
-               if ( position <= 4 ) { IssueCommand((char *) "RIGHT",0,0,(char *)"GUI"); } else
-                                    {position=0;}
-            }
-
-
-        }
-       }
-    }
 
   if ( uptimer->Time() < WAIT_TIME_STARTUP ) { return ; }
 
   if ( !DrawFeeds->IsChecked() ) { return ; }
 
- Refresh();
+  Refresh(); // <- This draws the window!
  // RedrawWindow();
 }
 
@@ -716,7 +611,7 @@ void RoboVisionXFrame::DrawPatchComp(unsigned int basedon,unsigned int x,unsigne
 
 void RoboVisionXFrame::OnMotion(wxMouseEvent& event)
 {
-  //if ( shutdown == 1 ) { return ; }
+  if ( GUI_Shutdown == 1 ) { return ; }
   if ( !RoboKernelAlive() ) { fprintf(stderr,"Robo Kernel died\n"); return; }
   if ( uptimer->Time() < WAIT_TIME_STARTUP ) { /*Wait for warmup :P */ return ; }
 
@@ -876,7 +771,31 @@ void RoboVisionXFrame::OnOkClick(wxCommandEvent& event)
 
 
 
+void RoboVisionXFrame::OnSaveSnapshotsClick(wxCommandEvent& event)
+{
+    /*
+   if (SaveLoadStreamOfSnapshots->IsChecked())
+    {
+       IssueCommand((char *) "TOGGLE AUTO RECORD SNAPSHOTS(500)",0,0,(char *)"GUI");
+    } else
+   if (!SaveLoadStreamOfSnapshots->IsChecked())
+    {
+       IssueCommand((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",0,0,(char *)"GUI");
+    }
+*/
+}
 
+void RoboVisionXFrame::OnAutonomousClick(wxCommandEvent& event)
+{
+    IssueCommand((char *) "AUTONOMOUS MODE",0,0,(char *)"GUI");
+}
+
+
+/*
+ *
+ *      ROBOT  WX WIDGETS JOYSTICK!
+ *
+ */
 
 void CalibrateJoystickPos(wxJoystick * joy , wxPoint &pos,unsigned int MAX_POWER)
 {
@@ -899,6 +818,9 @@ void RoboVisionXFrame::OnJoystickEvent(wxJoystickEvent& event)
    if ( joy_stick == 0 ) {return;}
    if ( joy_stick->IsOk() )
    {
+
+     char inptstr[512]={0};
+
      wxPoint pos=joy_stick->GetPosition();
      printf("Joystick Position is now %d,%d\n", pos.x ,  pos.y);
 
@@ -973,7 +895,6 @@ void RoboVisionXFrame::OnJoystickEvent(wxJoystickEvent& event)
         CalibrateJoystickPos(joy_stick,pos,255);
         printf("GoJoystick %d,%d\n", pos.x ,  pos.y);
 
-        char inptstr[512]={0};
         sprintf(inptstr , (char *) "JOYSTICK INPUT(%u,%u)",pos.x,pos.y);
         IssueCommand(inptstr,0,0,(char *)"GUI");
       }
@@ -1057,23 +978,4 @@ void RoboVisionXFrame::OnMovementHorizontalCmdScroll(wxScrollEvent& event)
          RobotStopMovement();
          MovementHorizontal->SetValue(10);
       }
-}
-
-void RoboVisionXFrame::OnSaveSnapshotsClick(wxCommandEvent& event)
-{
-    /*
-   if (SaveLoadStreamOfSnapshots->IsChecked())
-    {
-       IssueCommand((char *) "TOGGLE AUTO RECORD SNAPSHOTS(500)",0,0,(char *)"GUI");
-    } else
-   if (!SaveLoadStreamOfSnapshots->IsChecked())
-    {
-       IssueCommand((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",0,0,(char *)"GUI");
-    }
-*/
-}
-
-void RoboVisionXFrame::OnAutonomousClick(wxCommandEvent& event)
-{
-    IssueCommand((char *) "AUTONOMOUS MODE",0,0,(char *)"GUI");
 }

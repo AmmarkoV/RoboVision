@@ -1,6 +1,7 @@
 #include "VideoInputAdapter.h"
 #include "VisualCortex.h"
 #include "VisionMemory.h"
+#include "DisparityDepthMap.h"
 #include "Precalculations.h"
 #include "MovementRegistration.h"
 #include "VisCortexFilters.h"
@@ -115,6 +116,7 @@ inline unsigned int FrameProcessing
          TrackAllPointsOnRegistersBrute(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,8000);
         }
 
+
         video_register[REG_EYE].time=TIME_INC;
         video_register[REG_EYE].lock=0;
 
@@ -124,7 +126,17 @@ inline unsigned int FrameProcessing
 
 
 
+unsigned int Pipeline_Stereo_Frames_Collected_Actions()
+{
+  if ( pipeline_switches[EXECUTE_DEPTHMAP]  )
+   {
+      ExecuteDisparityMappingPyramid();
+      pipeline_switches[EXECUTE_DEPTHMAP]=0;
+   }
 
+
+  return 1;
+}
 
 
 unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
@@ -195,6 +207,11 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
                       rgbdata
                     );
     }
+
+  if ( video_register[CALIBRATED_LEFT_EYE].time == video_register[CALIBRATED_RIGHT_EYE].time )
+   {
+     Pipeline_Stereo_Frames_Collected_Actions(); // <- Activate things in pipe line that need to be done when both frames are collected!
+   }
 
   metrics[VIDEOINPUT_PROCESSING_DELAY_MICROSECONDS] = EndTimer(TIMER_PROCESSING_DELAY);
 

@@ -12,14 +12,13 @@ struct PatchSignature
    unsigned int segment[MAX_SEGMENTS_SIGNATURE];
 };
 
-enum VisCortxState
-{
-   READY_FOR_DEPTH_MAP_AT_TIME = 0,
-   DEPTH_MAP_EXCUTED_AT_TIME,
-   LEFT_FRAME_PROCESSED,
-   RIGHT_FRAME_PROCESSED,
 
-   STATE_COUNT
+enum VisCortxPipelineLabels
+{
+   EXECUTE_DEPTHMAP = 0 ,
+
+
+   PIPELINE_SWITCH_COUNT
 };
 
 
@@ -274,6 +273,8 @@ void VisCortx_SetSetting(unsigned int set_num,unsigned int set_val);
 void VisCortx_SetDefaultSettings();
 unsigned int VisCortx_GetSetting(unsigned int get_num);
 unsigned int VisCortx_GetMetric(unsigned int get_num);
+void VisCortx_SetPipelineSwitch(unsigned int set_num,unsigned int set_val);
+unsigned int VisCortx_GetPipelineSwitch(unsigned int set_num);
 void VisCortx_SetMetric(unsigned int set_num,unsigned int set_val);
 void VisCortx_CameraParameters(int right_cam,double fx,double fy,double cx,double cy,double k1,double k2,double p1,double p2,double k3);
 unsigned int VisCortx_GetVideoRegisterData(unsigned int input_img_regnum,unsigned int metric_num);

@@ -636,7 +636,7 @@
 
 1302101441 /usr/include/wx-2.8/wx/gtk/textctrl.h
 
-1316506312 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1316621742 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
 1316423434 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/FeedScreenMemory.cpp
 	"FeedScreenMemory.h"
@@ -1484,7 +1484,7 @@
 1302101441 /usr/include/wx-2.8/wx/gtk/filedlg.h
 	"wx/generic/filedlgg.h"
 
-1316425829 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.h
+1316631812 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.h
 	<wx/gauge.h>
 	<wx/checkbox.h>
 	<wx/button.h>
@@ -1519,7 +1519,7 @@
 1289554847 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
 	<stdio.h>
 
-1316162192 /home/ammar/Documents/Programming/RoboVision/RoboKernel/RoboKernel.h
+1316630434 /home/ammar/Documents/Programming/RoboVision/RoboKernel/RoboKernel.h
 
 1303475277 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RememberImage.cpp
 	"RememberImage.h"
@@ -1542,11 +1542,12 @@
 1316163470 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXApp.h
 	<wx/app.h>
 
-1316507086 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.cpp
+1316636662 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.cpp
 	"RoboVisionXMain.h"
 	"FeedScreenMemory.h"
 	"CortexSettings.h"
 	"RememberImage.h"
+	"FramesOSD.h"
 	"version.h"
 	"../MotorFoundation/MotorHAL.h"
 	"../RoboKernel/RoboKernel.h"
@@ -1587,4 +1588,12 @@
 	"wx/thread.h"
 
 1315518373 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/version.h
+
+1316632144 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/FramesOSD.cpp
+	"FramesOSD.h"
+
+1316632194 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/FramesOSD.h
+	<wx/wx.h>
+	<wx/dc.h>
+	"../VisualCortex/VisualCortex.h"
 

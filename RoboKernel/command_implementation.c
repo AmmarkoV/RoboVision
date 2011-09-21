@@ -42,6 +42,7 @@ void CalibratedView()
 
 void FullDepthMap(unsigned char write_to_file)
 {
+
   VisCortx_FullDepthMap();
   VisCortX_CopyFromVideoToVideoRegister(DEPTH_LEFT_VIDEO,LAST_LEFT_OPERATION);
   VisCortX_CopyFromVideoToVideoRegister(EDGES_LEFT,LAST_RIGHT_OPERATION);

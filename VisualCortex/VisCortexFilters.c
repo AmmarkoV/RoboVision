@@ -675,6 +675,8 @@ void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigne
 
 int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned int * M)
 {
+   MarkVideoRegistersAsUnsynced(rgb_calibrated , rgb_image);
+
 
     /* TODO , For now the full register is returned!*/
        if ( settings[INPUT_CALIBRATION]==0 )

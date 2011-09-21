@@ -2,16 +2,16 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="RoboKernel.h" open="1" top="0" tabpos="2">
-		<Cursor position="495" topLine="0" />
+		<Cursor position="180" topLine="0" />
 	</File>
 	<File name="command_hal.c" open="1" top="0" tabpos="3">
-		<Cursor position="11843" topLine="270" />
+		<Cursor position="12362" topLine="21" />
 	</File>
 	<File name="command_hal.h" open="1" top="0" tabpos="4">
 		<Cursor position="175" topLine="0" />
 	</File>
 	<File name="command_implementation.c" open="1" top="0" tabpos="11">
-		<Cursor position="5372" topLine="152" />
+		<Cursor position="987" topLine="25" />
 	</File>
 	<File name="command_implementation.h" open="1" top="0" tabpos="12">
 		<Cursor position="150" topLine="0" />
@@ -23,7 +23,7 @@
 		<Cursor position="528" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="364" topLine="0" />
+		<Cursor position="537" topLine="9" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
 		<Cursor position="479" topLine="0" />
@@ -38,7 +38,7 @@
 		<Cursor position="68" topLine="0" />
 	</File>
 	<File name="visual_system.c" open="1" top="0" tabpos="5">
-		<Cursor position="4275" topLine="92" />
+		<Cursor position="3772" topLine="80" />
 	</File>
 	<File name="visual_system.h" open="1" top="0" tabpos="6">
 		<Cursor position="175" topLine="0" />

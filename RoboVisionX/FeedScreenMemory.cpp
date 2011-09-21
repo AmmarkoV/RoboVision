@@ -13,7 +13,6 @@ wxMouseState mouse;
 wxBitmap *default_feed=0;
 wxBitmap *default_patch=0;
 
-
 struct feed live_feeds[4]={{0},{0},{0},{0}};
 
 
@@ -49,6 +48,25 @@ void memcpy_1bit_2_3bit(unsigned char * dest,unsigned char * src,unsigned int le
    }
 }
 
+
+void PassVideoRegisterToFeed(unsigned int feednum,void * framedata,unsigned int bitsperpixel)
+{
+  void *frame=0;
+
+  if ( live_feeds[feednum].bmp == 0 ) {  return;  } else
+  if ( live_feeds[feednum].bmp_allocated ) { delete live_feeds[feednum].bmp; live_feeds[feednum].bmp_allocated = false; }
+  frame = framedata;
+
+ if ( frame != 0)
+ {
+    live_feeds[feednum].img.SetData((unsigned char *)framedata,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),true);
+    if ( resc_width != GetCortexMetric(RESOLUTION_X) ) { live_feeds[feednum].img.Rescale(resc_width,resc_height); }
+    live_feeds[feednum].bmp= new wxBitmap(live_feeds[feednum].img);
+    live_feeds[feednum].bmp_allocated = true;
+ }
+}
+
+
 void InitFeeds()
 {
     default_feed=new wxBitmap(wxT("feed.bmp"),wxBITMAP_TYPE_BMP);
@@ -74,9 +92,8 @@ void InitFeeds()
 
     StartRoboKernel();
 
-       VideoFeedsNotAccessible=1;
-       has_init=1;
-
+    VideoFeedsNotAccessible=1;
+    has_init=1;
 }
 
 void CloseFeeds()
@@ -128,23 +145,6 @@ void CheckMousePosition()
 }
 
 
-void PassVideoRegisterToFeed(unsigned int feednum,void * framedata,unsigned int bitsperpixel)
-{
-  void *frame=0;
-
-  if ( live_feeds[feednum].bmp == 0 ) {  return;  } else
-  if ( live_feeds[feednum].bmp_allocated ) { delete live_feeds[feednum].bmp; live_feeds[feednum].bmp_allocated = false; }
-  frame = framedata;
-
- if ( frame != 0)
- {
-    live_feeds[feednum].img.SetData((unsigned char *)framedata,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),true);
-    if ( resc_width != GetCortexMetric(RESOLUTION_X) ) { live_feeds[feednum].img.Rescale(resc_width,resc_height); }
-    live_feeds[feednum].bmp= new wxBitmap(live_feeds[feednum].img);
-    live_feeds[feednum].bmp_allocated = true;
- }
-}
-
 int SaveRegisterToFile(char * filename , unsigned int reg_num)
 {
    return VisCortX_SaveVideoRegisterToFile(reg_num,filename);
@@ -171,14 +171,8 @@ int SnapWebCams()
  if ( live_feeds[0].bmp_allocated ) { live_feeds[0].bmp_allocated = false; delete live_feeds[0].bmp;  live_feeds[0].bmp=0; }
  if ( live_feeds[1].bmp_allocated ) { live_feeds[1].bmp_allocated = false; delete live_feeds[1].bmp;  live_feeds[1].bmp=0; }
 
- void *frame = 0 , *frame2 = 0;
 
- // GET INPUT  ( SWAPED OR NOT! )
- frame=GetVideoRegister(CALIBRATED_LEFT_EYE); frame2=GetVideoRegister(CALIBRATED_RIGHT_EYE);
- // GET INPUT  ( SWAPED OR NOT! )
-
-
- if ( frame != 0)
+ if ( GetVideoRegister(CALIBRATED_LEFT_EYE) != 0)
  {                                                //
     live_feeds[0].img.SetData(GetVideoRegister(CALIBRATED_LEFT_EYE),GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),true);
     if ( resc_width != GetCortexMetric(RESOLUTION_X) ) { live_feeds[0].img.Rescale(resc_width,resc_height); }
@@ -186,13 +180,14 @@ int SnapWebCams()
     live_feeds[0].bmp_allocated = true;
  }
 
- if ( frame2 != 0)
+ if ( GetVideoRegister(CALIBRATED_RIGHT_EYE) != 0)
  {                                               //
   live_feeds[1].img.SetData(GetVideoRegister(CALIBRATED_RIGHT_EYE),GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),true);
   if ( resc_width != GetCortexMetric(RESOLUTION_X) ) { live_feeds[1].img.Rescale(resc_width,resc_height); }
   live_feeds[1].bmp= new wxBitmap(live_feeds[1].img);
   live_feeds[1].bmp_allocated = true;
  }
+
 
   return 1 ;
 }
