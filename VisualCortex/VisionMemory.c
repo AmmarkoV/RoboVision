@@ -317,7 +317,7 @@ void DefaultSettings()
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=10;
     settings[PATCH_HIST_THRESHOLD_R]=9; settings[PATCH_HIST_THRESHOLD_G]=9; settings[PATCH_HIST_THRESHOLD_B]=9;
 
-    settings[MAX_FEATURES]=1000;
+    settings[MAX_FEATURES]=2000;
     settings[MAX_FACES]=100;
 
     settings[PATCH_TRACKING_WIDTH]=19;
@@ -361,7 +361,7 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
 
     DefaultSettings(); //Settings must be set after metrics because they take them into account
 
-   fprintf(stderr,"Initializing %u  Video Registers\n",REGISTERS_COUNT+LARGE_REGISTERS_COUNT);
+    fprintf(stderr,"Initializing %u  Video Registers\n",REGISTERS_COUNT+LARGE_REGISTERS_COUNT);
 
     for ( i=0; i<REGISTERS_COUNT; i++)
      {
@@ -390,6 +390,9 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
 
 
     Precalculations();
+
+    SetGuardBytes(); // Preferably after everything settings..!
+
 
   return 0; // 0 Means Success!
 }

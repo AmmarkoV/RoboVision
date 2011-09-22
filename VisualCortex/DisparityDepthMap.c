@@ -397,12 +397,17 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
 int ExecuteDisparityMappingPyramid()
 {
+  if ( ( video_register[DEPTH_LEFT].lock ) || ( video_register[DEPTH_RIGHT].lock ) )
+   {
+     fprintf(stderr,"ExecuteDisparityMappingPyramid while another disparity map is pending..! \n"); //return 0;
+   }
+  video_register[DEPTH_RIGHT].lock=1; video_register[DEPTH_LEFT].lock=1;
+
 
   StartTimer(TIMER_DEPTH_MAP_DELAY);
 
   unsigned int edgepercent=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED],patch_x=metrics[HORIZONTAL_BUFFER],patch_y=metrics[VERTICAL_BUFFER];
    unsigned int originalthreshold=settings[DEPTHMAP_COMPARISON_THRESHOLD];
-
   /*
      WE COMPARE PATCHES ON 3 DIFFERENT LEVELS , EXTRA LARGE PATCHES , LARGE PATCHES , NORMAL PATCHES
    */
@@ -411,20 +416,19 @@ int ExecuteDisparityMappingPyramid()
    */
 
    unsigned int default_detail =  settings[DEPTHMAP_DETAIL];
-
    settings[DEPTHMAP_DETAIL]=settings[DEPTHMAP_DETAIL]/2;
 
-  settings[DEPTHMAP_COMPARISON_THRESHOLD]=settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH];
-  settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH];
-  metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_EXTRALARGE];
-  metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_EXTRALARGE];
+   settings[DEPTHMAP_COMPARISON_THRESHOLD]=settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH];
+   settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH];
+   metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_EXTRALARGE];
+   metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_EXTRALARGE];
 
-  DepthMapFull( CALIBRATED_LEFT_EYE,
-                CALIBRATED_RIGHT_EYE,
-                DEPTH_LEFT,
-                DEPTH_RIGHT,
-                1
-             );
+   DepthMapFull( CALIBRATED_LEFT_EYE,
+                 CALIBRATED_RIGHT_EYE,
+                 DEPTH_LEFT,
+                 DEPTH_RIGHT,
+                 1
+               );
 
   /*
     CALCULATION OF LARGE PATCHES FOLLOWS
@@ -486,7 +490,8 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
   metrics[TOTAL_DEPTHMAP_DELAY_MICROSECONDS]+=metrics[DEPTHMAP_DELAY_MICROSECONDS] ;
   ++metrics[TOTAL_DEPTHMAPS_PERFORMED];
 
-
+  video_register[DEPTH_RIGHT].lock=0;
+  video_register[DEPTH_LEFT].lock=0;
 return 1;
 }
 

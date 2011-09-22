@@ -15,5 +15,6 @@ enum VisCortTimerList
 
 void StartTimer( unsigned int timer_num );
 int EndTimer( unsigned int timer_num );
+void VisCortxSleep(unsigned int milliseconds);
 
 #endif // VISCORTEXTIMER_H_INCLUDED

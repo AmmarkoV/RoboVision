@@ -36,27 +36,30 @@ int StopAllSounds()
 
 void CalibratedView()
 {
-  VisCortX_CopyFromVideoToVideoRegister(CALIBRATED_LEFT_EYE,LAST_LEFT_OPERATION);
-  VisCortX_CopyFromVideoToVideoRegister(CALIBRATED_RIGHT_EYE,LAST_RIGHT_OPERATION);
+  VisCortX_CopyVideoRegister(CALIBRATED_LEFT_EYE,LAST_LEFT_OPERATION,1,1);
+  VisCortX_CopyVideoRegister(CALIBRATED_RIGHT_EYE,LAST_RIGHT_OPERATION,1,1);
 }
 
 void FullDepthMap(unsigned char write_to_file)
 {
 
   VisCortx_FullDepthMap();
-  VisCortX_CopyFromVideoToVideoRegister(DEPTH_LEFT_VIDEO,LAST_LEFT_OPERATION);
-  VisCortX_CopyFromVideoToVideoRegister(EDGES_LEFT,LAST_RIGHT_OPERATION);
+  VisCortX_CopyVideoRegister(DEPTH_LEFT_VIDEO,LAST_LEFT_OPERATION,1,1);
+  VisCortX_ConvertVideoRegisterToColorDepth(LAST_LEFT_OPERATION,3);
+
+  VisCortX_CopyVideoRegister(EDGES_LEFT,LAST_RIGHT_OPERATION,1,1);
+  VisCortX_ConvertVideoRegisterToColorDepth(LAST_RIGHT_OPERATION,3);
+
 //  if ( write_to_file == 1 ) DepthMapToFile(0);
 }
 
 void DrawMovement()
 {
-//  VisCortX_CopyFromVideoToVideoRegister(MOVEMENT_LEFT,LAST_LEFT_OPERATION); /* CONVERTING 1 bit to 3bit :P*/
-//  VisCortX_CopyFromVideoToVideoRegister(MOVEMENT_RIGHT,LAST_RIGHT_OPERATION); /* CONVERTING 1 bit to 3bit :P*/
+   VisCortX_CopyVideoRegister(MOVEMENT_LEFT,LAST_LEFT_OPERATION,1,1); /* CONVERTING 1 bit to 3bit :P*/
+   VisCortX_ConvertVideoRegisterToColorDepth(LAST_LEFT_OPERATION,3);
 
-   VisCortX_CopyFromVideoToVideoRegister(MOVEMENT_LEFT,LAST_LEFT_OPERATION); /* CONVERTING 1 bit to 3bit :P*/
-   VisCortX_CopyFromVideoToVideoRegister(MOVEMENT_RIGHT,LAST_RIGHT_OPERATION); /* CONVERTING 1 bit to 3bit :P*/
-
+   VisCortX_CopyVideoRegister(MOVEMENT_RIGHT,LAST_RIGHT_OPERATION,1,1);
+   VisCortX_ConvertVideoRegisterToColorDepth(LAST_RIGHT_OPERATION,3); /* CONVERTING 1 bit to 3bit :P*/
 }
 
 void DrawNewPalette(char R,char G,char B,char threshold)

@@ -31,6 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "FaceDetection.h"
 #include "StateSetting.h"
 #include "IntegralImageConversion.h"
+#include "VisCortexTimer.h"
 #include "LinearAlgebra.h"
 #include "VideoInputAdapter.h"
 #include <stdio.h>
@@ -252,35 +253,12 @@ unsigned int VisCortX_SwapVideoRegisters(unsigned int input_img_regnum,unsigned 
     return SwapRegister(input_img_regnum,output_img_regnum);
 }
 
-unsigned int VisCortX_CopyFromVideoToVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum)
+unsigned int VisCortX_ConvertVideoRegisterToColorDepth(unsigned int input_img_regnum,unsigned int new_color_depth)
 {
-  unsigned long syst_mem_end=metrics[RESOLUTION_X]*metrics[RESOLUTION_Y]*3;
-  if ( video_register[output_img_regnum].depth != video_register[input_img_regnum].depth )
-    {
-        if ( ( video_register[input_img_regnum].depth == 1 ) && ( video_register[output_img_regnum].depth == 3) )
-          {
-            //fprintf(stderr,"Kind of unsafe conversion from 1bit to 3bit ;P \n");
-            unsigned char * src=video_register[input_img_regnum].pixels;
-            unsigned char  * target=video_register[output_img_regnum].pixels;
-            int i=0;
-            while ( i < syst_mem_end )
-             {
-                *target = *src; target++;
-                *target = *src; target++;
-                *target = *src; target++;
-                src++;
-
-                i++;
-             }
-          } else
-          {
-              fprintf(stderr,"VisCortX_CopyFromVideoToVideoRegister from %u bit to %u bit not implemented\n",video_register[input_img_regnum].depth,video_register[output_img_regnum].depth);
-              return 0;
-          }
-    }  else
-    {
-      memcpy(video_register[output_img_regnum].pixels,video_register[input_img_regnum].pixels,syst_mem_end);
-    }
+  if ( video_register[input_img_regnum].depth == new_color_depth ) { return 1;}
+  if ( ( video_register[input_img_regnum].depth == 1 )&& ( new_color_depth == 3 ) ) { ConvertRegisterFrom1ByteTo3Byte(input_img_regnum); return 1; } else
+  if ( ( video_register[input_img_regnum].depth == 3 )&& ( new_color_depth == 1 ) ) { ConvertRegisterFrom3ByteTo1Byte(input_img_regnum); return 1; } else
+                                                                          {  fprintf(stderr,"Don`t know what to do for conversion of register %u from color depth %u to %u\n",input_img_regnum,video_register[input_img_regnum].depth,new_color_depth); }
 
   return 1;
 }
@@ -378,29 +356,15 @@ void  VisCortx_FullDepthMap()
 
    VisCortx_SetPipelineSwitch(EXECUTE_DEPTHMAP,1);
 
+
   while
-    (
-     ( video_register[DEPTH_LEFT].time != video_register[CALIBRATED_LEFT_EYE].time ) ||
-     ( video_register[DEPTH_RIGHT].time != video_register[CALIBRATED_RIGHT_EYE].time )
-    )
+    ( VisCortx_GetPipelineSwitch(EXECUTE_DEPTHMAP) != 0  )
     {
-            //Here we wait..
+              //Here we wait for the InputAdapter to process request and then set the switch back to 0..
+              VisCortxSleep(5);
     }
 
-
- /*
-    The register CALIBRATED_LEFT_EYE , CALIBRATED_RIGHT_EYE IS CONSTANTLY UPDATED , SO WE CANNOT OUTPUT A STEADY RESULT IF WHILE CALCULATING THE IMAGE CHANGES ..!
-    Thats why we copy to LEFT_EYE_NOT_LIVE and RIGHT_EYE_NOT_LIVE , which are in turn passed for disparity mapping
- */
-   while ( (!VisCortx_OperationLockFramesLeftRight())  &&
-           (VisCortx_VideoRegistersSynced(LEFT_EYE,RIGHT_EYE))  &&
-           (VisCortx_VideoRegistersSynced(CALIBRATED_LEFT_EYE,LEFT_EYE))
-         ) { fprintf(stderr,"*"); }
-
-     ExecuteDisparityMappingPyramid();
-
-   VisCortx_OperationUnLockFramesLeftRight();
-
+   return;
 }
 
 unsigned int  VisCortx_Get_DepthMapData(unsigned int typeofdata,unsigned int px,unsigned int py)

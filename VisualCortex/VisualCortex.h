@@ -34,6 +34,8 @@ enum VisCortxSettings
 
    REMEMBER_FACES,
 
+   SETTINGS_GUARD_BYTES_0 , // --------------------------------------- //
+
    DEPTHMAP_RGB_MULTIPLIER,
    DEPTHMAP_MOVEMENT_MULTIPLIER,
    DEPTHMAP_SOBEL_MULTIPLIER,
@@ -42,6 +44,9 @@ enum VisCortxSettings
 
    DEPTHMAP_START,
    DEPTHMAP_STARTLEFT_X,
+
+   SETTINGS_GUARD_BYTES_1 , // --------------------------------------- //
+
    DEPTHMAP_DETAIL,
    DEPTHMAP_EDGE_LOW_STRICTNESS,
    DEPTHMAP_EDGE_HIGH_STRICTNESS,
@@ -68,6 +73,8 @@ enum VisCortxSettings
    DEPTHMAP_END,
 
 
+   SETTINGS_GUARD_BYTES_2 , // --------------------------------------- //
+
    FEATURE_TRACKING_COMPARISON_THRESHOLD,
 
    FEATURE_DETECTION_THRESHOLD,
@@ -84,6 +91,9 @@ enum VisCortxSettings
 
    PATCH_TRACKING_WIDTH,
    PATCH_TRACKING_HEIGHT,
+
+
+   SETTINGS_GUARD_BYTES_3 , // --------------------------------------- //
 
    TIME_BETWEEN_TRACKING ,
 
@@ -143,9 +153,6 @@ enum VisCortxRegisters
 {
    LEFT_EYE = 0,
    RIGHT_EYE,
-
-   LEFT_EYE_NOT_LIVE,
-   RIGHT_EYE_NOT_LIVE,
 
    LAST_LEFT_OPERATION,
    LAST_RIGHT_OPERATION,
@@ -284,7 +291,7 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
 unsigned int VisCortX_ClearVideoRegister(unsigned int input_img_regnum);
 unsigned int VisCortX_SwapVideoRegisters(unsigned int input_img_regnum,unsigned int output_img_regnum);
 unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum,unsigned int copy_features,unsigned int copy_faces);
-unsigned int VisCortX_CopyFromVideoToVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum);
+unsigned int VisCortX_ConvertVideoRegisterToColorDepth(unsigned int input_img_regnum,unsigned int new_color_depth);
 unsigned int VisCortX_BitBltVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y);
 unsigned int VisCortx_WriteToVideoRegister(unsigned int reg_num,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata);
 unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int size_x,unsigned int size_y,unsigned int depth);

@@ -6,6 +6,39 @@
 #include <time.h>
 #include <math.h>
 
+
+void SetGuardBytes()
+{
+    settings[SETTINGS_GUARD_BYTES_0]=123;
+    settings[SETTINGS_GUARD_BYTES_1]=123;
+    settings[SETTINGS_GUARD_BYTES_2]=123;
+    settings[SETTINGS_GUARD_BYTES_3]=123;
+}
+
+
+
+int GuardBytesOk()
+{
+    if ( settings[SETTINGS_GUARD_BYTES_0]!=123 ) { return 0; }
+    if ( settings[SETTINGS_GUARD_BYTES_1]!=123 ) { return 0; }
+    if ( settings[SETTINGS_GUARD_BYTES_2]!=123 ) { return 0; }
+    if ( settings[SETTINGS_GUARD_BYTES_3]!=123 ) { return 0; }
+
+    return 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 unsigned int SetCamerasGeometry(float distance_between_cameras,float diagonal_field_of_view,float horizontal_field_of_view,float vertical_field_of_view)
 {
   if ( ( metrics[RESOLUTION_X]==0 ) || ( metrics[RESOLUTION_Y]==0 ) )

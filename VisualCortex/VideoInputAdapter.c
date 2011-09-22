@@ -128,8 +128,9 @@ inline unsigned int FrameProcessing
 
 unsigned int Pipeline_Stereo_Frames_Collected_Actions()
 {
-  if ( pipeline_switches[EXECUTE_DEPTHMAP]  )
+  if ( pipeline_switches[EXECUTE_DEPTHMAP]==1  )
    {
+      pipeline_switches[EXECUTE_DEPTHMAP]=2;
       ExecuteDisparityMappingPyramid();
       pipeline_switches[EXECUTE_DEPTHMAP]=0;
    }
@@ -214,6 +215,15 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
    }
 
   metrics[VIDEOINPUT_PROCESSING_DELAY_MICROSECONDS] = EndTimer(TIMER_PROCESSING_DELAY);
+
+
+  if (!GuardBytesOk())
+    {
+        fprintf(stderr,"\n\n\n\n !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+        fprintf(stderr,"GUARD BYTES CORRUPTED , SOMETHING IS OVERWRITING MEMORY .. \n");
+        fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n ");
+    }
+
 
  return retres ;
 }

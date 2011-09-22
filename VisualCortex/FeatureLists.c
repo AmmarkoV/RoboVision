@@ -52,10 +52,11 @@ int CopyFeatureList(struct FeatureList * source,struct FeatureList * target)
 
   if ( source->max_features > target->max_features )
     {
-      fprintf(stderr,"Cannot copy to smaller target \n"); /*TODO One solution here is realloc with different size*/
+       /*TODO One solution here is realloc with different size*/
     }
   if ( source->current_features >= target->max_features )
     {
+      fprintf(stderr,"Some features will be lost becaus target is smaller \n");
       source->current_features = target->max_features;
       if ( source->current_features  > 0  ) { --source->current_features; }
     }
