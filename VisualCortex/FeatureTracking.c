@@ -13,6 +13,19 @@ unsigned int PATCH_DISPLACEMENT=PATCH_SIZE/3; // PATCH_SIZE div 2 ( gia PATCH_SI
 unsigned int PATCH_SIZE_MULT_3=PATCH_SIZE*3;
 // MEMORY
 
+#define MAX_CORNERS 500
+IplImage  *eig_image;
+IplImage  *tmp_image;
+
+CvPoint2D32f* cornersA;
+CvPoint2D32f* cornersB;
+
+IplImage  *image_1;
+char * opencv_pointer_retainer_1; // This is a kind of an ugly hack ( see lines noted with UGLY HACK ) to minimize memcpying between my VisCortex and OpenCV , without disturbing OpenCV
+IplImage  *image_2;
+char * opencv_pointer_retainer_2; // This is a kind of an ugly hack ( see lines noted with UGLY HACK ) to minimize memcpying between my VisCortex and OpenCV , without disturbing OpenCV
+
+
 
 inline void PointGoUpLeft(unsigned int *x,unsigned int *y,unsigned int *x_subtract,unsigned int *y_subtract,unsigned int *x_min,unsigned int *y_min)
 {
@@ -285,60 +298,124 @@ int TrackAllPointsOnRegisters(unsigned int reg_new , unsigned int reg_old , unsi
     return 1;
 }
 
-#define MAX_CORNERS 500
 
-int TrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int reg_old , unsigned int timeout)
+int InitFeatureTracking()
+{
+    image_1 = cvCreateImage( cvSize(metrics[RESOLUTION_X],metrics[RESOLUTION_Y]), IPL_DEPTH_8U, 1 );
+    opencv_pointer_retainer_1 = image_1->imageData; // UGLY HACK
+
+    image_2 = cvCreateImage( cvSize(metrics[RESOLUTION_X],metrics[RESOLUTION_Y]), IPL_DEPTH_8U, 1 );
+    opencv_pointer_retainer_2 = image_2->imageData; // UGLY HACK
+
+
+	CvSize img_sz = cvGetSize( image_1 );
+    eig_image = cvCreateImage( img_sz, IPL_DEPTH_32F, 1 );
+	tmp_image = cvCreateImage( img_sz, IPL_DEPTH_32F, 1 );
+
+	cornersA = malloc ( sizeof(CvPoint2D32f) *  (MAX_CORNERS+1)  ) ;
+	cornersB = malloc ( sizeof(CvPoint2D32f) *  (MAX_CORNERS+1)  ) ;
+
+    return 1;
+}
+
+int CloseFeatureTracking()
+{
+    image_1->imageData = opencv_pointer_retainer_1; // UGLY HACK
+    cvReleaseImage(&image_1);
+
+    image_2->imageData = opencv_pointer_retainer_2; // UGLY HACK
+    cvReleaseImage(&image_2);
+
+
+   cvReleaseImage(&eig_image);
+   cvReleaseImage(&tmp_image);
+
+
+   free(cornersA);
+   free(cornersB);
+
+    return 1;
+}
+
+
+
+
+
+int FindAndTrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int reg_old , unsigned int timeout)
 {
     // Load two images and allocate other structures
-    /*
-	IplImage* imgA = cvLoadImage("image0.png", CV_LOAD_IMAGE_GRAYSCALE);
-	IplImage* imgB = cvLoadImage("image1.png", CV_LOAD_IMAGE_GRAYSCALE);
+    unsigned int MONOCHROME_TMP_REGISTER_OLD = GetTempRegister();
+    if (MONOCHROME_TMP_REGISTER_OLD == 0 ) { fprintf(stderr," Error Getting the first temporary Video Register ( TrackAllPointsOnRegistersOpenCV ) \n"); }
 
-	CvSize img_sz = cvGetSize( imgA );
+    unsigned int MONOCHROME_TMP_REGISTER_NEW = GetTempRegister();
+    if (MONOCHROME_TMP_REGISTER_NEW == 0 ) { fprintf(stderr," Error Getting the second temporary Video Register ( TrackAllPointsOnRegistersOpenCV ) \n"); }
+
+    CopyRegister(reg_new,MONOCHROME_TMP_REGISTER_NEW,0,0);
+    ConvertRegisterFrom3ByteTo1Byte(MONOCHROME_TMP_REGISTER_NEW);
+
+    CopyRegister(reg_old,MONOCHROME_TMP_REGISTER_OLD,0,0);
+    ConvertRegisterFrom3ByteTo1Byte(MONOCHROME_TMP_REGISTER_OLD);
+
+    image_1->imageData=(char*) video_register[MONOCHROME_TMP_REGISTER_OLD].pixels; // UGLY HACK
+    image_2->imageData=(char*) video_register[MONOCHROME_TMP_REGISTER_NEW].pixels; // UGLY HACK
+
+
+
 	int win_size = 15;
 
-	IplImage* imgC = cvLoadImage("OpticalFlow1.png", CV_LOAD_IMAGE_UNCHANGED);
 
 	// Get the features for tracking
-	IplImage* eig_image = cvCreateImage( img_sz, IPL_DEPTH_32F, 1 );
-	IplImage* tmp_image = cvCreateImage( img_sz, IPL_DEPTH_32F, 1 );
 
 	int corner_count = MAX_CORNERS;
-	CvPoint2D32f* cornersA = new CvPoint2D32f[ MAX_CORNERS ];
 
-	cvGoodFeaturesToTrack( imgA, eig_image, tmp_image, cornersA, &corner_count,
-		0.05, 5.0, 0, 3, 0, 0.04 );
 
-	cvFindCornerSubPix( imgA, cornersA, corner_count, cvSize( win_size, win_size ),
+	cvGoodFeaturesToTrack( image_1, eig_image, tmp_image, cornersA, &corner_count, 0.05, 5.0, 0, 3, 0, 0.04 );
+
+	cvFindCornerSubPix( image_1, cornersA, corner_count, cvSize( win_size, win_size ),
 		cvSize( -1, -1 ), cvTermCriteria( CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.03 ) );
 
 	// Call Lucas Kanade algorithm
 	char features_found[ MAX_CORNERS ];
 	float feature_errors[ MAX_CORNERS ];
 
-	CvSize pyr_sz = cvSize( imgA->width+8, imgB->height/3 );
+	CvSize pyr_sz = cvSize( image_1->width+8, image_2->height/3 );
 
 	IplImage* pyrA = cvCreateImage( pyr_sz, IPL_DEPTH_32F, 1 );
 	IplImage* pyrB = cvCreateImage( pyr_sz, IPL_DEPTH_32F, 1 );
 
-	CvPoint2D32f* cornersB = new CvPoint2D32f[ MAX_CORNERS ];
 
-	cvCalcOpticalFlowPyrLK( imgA, imgB, pyrA, pyrB, cornersA, cornersB, corner_count,
+	cvCalcOpticalFlowPyrLK( image_1, image_2, pyrA, pyrB, cornersA, cornersB, corner_count,
 		cvSize( win_size, win_size ), 5, features_found, feature_errors,
 		 cvTermCriteria( CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.3 ), 0 );
 
-	// Make an image of the results
 
-	for( int i=0; i 550 ){
-			printf("Error is %f/n", feature_errors[i]);
-			continue;
-		}
-		printf("Got it/n");
-		CvPoint p0 = cvPoint( cvRound( cornersA[i].x ), cvRound( cornersA[i].y ) );
-		CvPoint p1 = cvPoint( cvRound( cornersB[i].x ), cvRound( cornersB[i].y ) );
-		cvLine( imgC, p0, p1, CV_RGB(255,0,0), 2 );
-	}
-*/
+
+
+
+   ClearFeatureList(video_register[reg_new].features);
+   video_register[reg_new].features->last_track_time  = video_register[reg_new].time; // AFTER the procedure , the feature list is up to date
+
+   int i=0 ;
+   for ( i=0; i <corner_count; i++ )
+    {
+
+         AddToFeatureList(  video_register[reg_new].features  ,
+                            cornersB[i].x , cornersB[i].y , 1 ,0,0,0);
+
+         video_register[reg_new].features->list[i].last_x = cornersA[i].x;
+         video_register[reg_new].features->list[i].last_y = cornersA[i].y;
+    }
+
+
+
+
+   cvReleaseImage(&pyrA);
+   cvReleaseImage(&pyrB);
+
+
+   StopUsingVideoRegister(MONOCHROME_TMP_REGISTER_NEW);
+   StopUsingVideoRegister(MONOCHROME_TMP_REGISTER_OLD);
+
 
    	    return 0;
 }

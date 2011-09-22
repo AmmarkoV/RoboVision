@@ -35,7 +35,7 @@ void CloseFaceRecognition()
     cvReleaseMemStorage( &storage );
 
     image->imageData = opencv_pointer_retainer; // UGLY HACK
-    cvReleaseImage(&image );
+    cvReleaseImage( &image );
 }
 
 

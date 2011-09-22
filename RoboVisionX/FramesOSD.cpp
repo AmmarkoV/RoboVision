@@ -3,7 +3,7 @@
 
 int FeaturesAquired(unsigned int video_reg_num)
 {
- unsigned int wait_time = 0 , max_wait_time = 1000;
+ unsigned int wait_time = 0 , max_wait_time = 800;
      while ( (wait_time<max_wait_time) && ( VisCortx_GetFeature(video_reg_num,0,FEATURE_LAST_TRACK_TIME ) != VisCortx_GetVideoRegisterData(video_reg_num,0 /*TODO ADD AN ENUM*/) ) )
       {
          ++wait_time;

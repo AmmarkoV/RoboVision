@@ -1,6 +1,7 @@
 #include "StateSetting.h"
 #include "VisionMemory.h"
 #include "FaceDetection.h"
+#include "FeatureTracking.h"
 #include "IntegralImageConversion.h"
 #include "FeatureLists.h"
 #include <time.h>
@@ -101,7 +102,7 @@ unsigned int InitializeEverything(unsigned int res_x,unsigned int res_y)
 
    InitFaceRecognition(res_x,res_y);
     int i= InitVisionMemory(res_x,res_y);
-
+   InitFeatureTracking();
 
     VisCortx_SelfCheck();
     return  i;
@@ -109,6 +110,7 @@ unsigned int InitializeEverything(unsigned int res_x,unsigned int res_y)
 
 unsigned int CloseEverything()
 {
+   CloseFeatureTracking();
    CloseFaceRecognition();
    return  CloseVisionMemory();
 }

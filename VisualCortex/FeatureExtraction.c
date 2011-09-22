@@ -179,30 +179,26 @@ int ExtractFeaturesMy(int rgb_reg,unsigned int edge_reg,unsigned int second_deri
 
 int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_reg,unsigned int cam_num)
 {
-  // fprintf(stderr,"ExtractFeatures called \n");
-  unsigned int TMP_REGISTER = GetTempRegister();
-  if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register\n"); }
-
-   CopyRegister(rgb_reg,TMP_REGISTER,1,0);
-  // fprintf(stderr,"CopyRegister called \n");
-   ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
-  // fprintf(stderr,"ConvertRegisterFrom3ByteTo1Byte called \n");
-   ClearFeatureList(video_register[rgb_reg].features);
-
-  // fprintf(stderr,"ClearFeatureList called \n");
-
    int numcorners=0;
    struct xy_local * corner_list; //(struct xy * )
    corner_list = 0;
+
+
+   unsigned int TMP_REGISTER = GetTempRegister();
+   if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register\n"); }
+   CopyRegister(rgb_reg,TMP_REGISTER,1,0);
+   ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
    corner_list = (struct xy_local *) fast9_detect_nonmax ( video_register[TMP_REGISTER].pixels ,
                                                            metrics[RESOLUTION_X] , metrics[RESOLUTION_Y] ,
                                                            metrics[RESOLUTION_X] ,
                                                            settings[FEATURE_DETECTION_THRESHOLD] ,
                                                            &numcorners );
-
-
-   video_register[rgb_reg].features->last_track_time  = video_register[rgb_reg].time; // AFTER the procedure , the feature list is up to date
    StopUsingVideoRegister(TMP_REGISTER);
+
+
+   ClearFeatureList(video_register[rgb_reg].features);
+   video_register[rgb_reg].features->last_track_time  = video_register[rgb_reg].time; // AFTER the procedure , the feature list is up to date
+
 
   if ( corner_list == 0 )
     {

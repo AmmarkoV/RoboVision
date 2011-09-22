@@ -15,5 +15,8 @@ void ExecuteTrackPointBrute(unsigned int from,unsigned int to,unsigned int point
 void ExecuteTrackPoint(unsigned int from,unsigned int to,unsigned int point_num);
 int TrackAllPointsOnRegistersBrute(unsigned int reg_new , unsigned int reg_old , unsigned int timeout);
 int TrackAllPointsOnRegisters(unsigned int reg_new , unsigned int reg_old , unsigned int timeout);
+int FindAndTrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int reg_old , unsigned int timeout);
 
+int InitFeatureTracking();
+int CloseFeatureTracking();
 #endif

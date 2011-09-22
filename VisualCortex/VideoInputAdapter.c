@@ -109,11 +109,10 @@ inline unsigned int FrameProcessing
 
         if ( settings[PASS_TO_FEATURE_DETECTOR] )
         {
-          //if ( GetFeatureData(video_register[REG_CALIBRATED_EYE].features,0,TOTAL_POINTS) < 50 )
-           {
-            VisCortx_AutoAddTrackPoints(left_right_switch);
-           }
-         TrackAllPointsOnRegistersBrute(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,8000);
+
+            FindAndTrackAllPointsOnRegistersOpenCV(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,1000);
+            //VisCortx_AutoAddTrackPoints(left_right_switch);
+            //TrackAllPointsOnRegistersBrute(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,8000);
         }
 
 

@@ -39,7 +39,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.599";
+char * VISCORTEX_VER = "0.601";
 
 /*
 
@@ -629,6 +629,9 @@ void  VisCortx_TrackPoints(unsigned int from_vid_reg,unsigned int to_vid_reg)
 {
   //fprintf(stderr,"VisCortx_TrackPoints apparently segfaults , so it is disabled (for now)\n");
   //TODO
+
+
+  FindAndTrackAllPointsOnRegistersOpenCV(to_vid_reg,from_vid_reg,1200);
   return;
 
   unsigned int i=0;
