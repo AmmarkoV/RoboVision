@@ -46,7 +46,7 @@ int GetCameraCoords_From_Angle(float horizontal_angle,float vertical_angle,unsig
 
 
 
-
+/*
 
 
 int ComputeFundamentalMatrix(void)
@@ -82,6 +82,7 @@ int ComputeFundamentalMatrix(void)
        gsl_vector_free (x);
        return 0;
 }
+*/
 
 
 int ComputeFundamentalMatrixFromPointCorrespondance(struct FeatureList * list,struct FundamentalMatrix * E)
@@ -91,13 +92,41 @@ int ComputeFundamentalMatrixFromPointCorrespondance(struct FeatureList * list,st
                            1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
                            1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
                            1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
+                           1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
+                           1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
+                           1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
+                           1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
                            1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9
                          };
 
        double b_data[] = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0  };
+       unsigned int array_offset=0;
+       unsigned int array_row=0;
+       unsigned int feature_num=0;
+
+   int i=0;
+     while ( i < 9 )
+      {
+
+       array_offset =  9 * array_row;
+       a_data[array_offset + 0] = list->list[feature_num].x * list->list[feature_num].last_x;
+       a_data[array_offset + 1] = list->list[feature_num].x * list->list[feature_num].last_x;
+       a_data[array_offset + 2] = list->list[feature_num].x;
+       a_data[array_offset + 3] = list->list[feature_num].y * list->list[feature_num].last_x;
+       a_data[array_offset + 4] = list->list[feature_num].y * list->list[feature_num].last_y;
+       a_data[array_offset + 5] = list->list[feature_num].y;
+       a_data[array_offset + 6] = list->list[feature_num].last_x;
+       a_data[array_offset + 7] = list->list[feature_num].last_y;
+       a_data[array_offset + 8] = 1;
+
+       ++i;
+       ++array_row;
+       ++feature_num;
+      }
+
 
        gsl_matrix_view m
-         = gsl_matrix_view_array (a_data, 9, 5);
+         = gsl_matrix_view_array (a_data, 9, 9);
 
        gsl_vector_view b
          = gsl_vector_view_array (b_data, 9);
@@ -106,14 +135,27 @@ int ComputeFundamentalMatrixFromPointCorrespondance(struct FeatureList * list,st
 
        int s;
 
-       gsl_permutation * p = gsl_permutation_alloc (4);
+       gsl_permutation * p = gsl_permutation_alloc (9);
 
-       gsl_linalg_LU_decomp (&m.matrix, p, &s);
+       if ( gsl_linalg_LU_decomp (&m.matrix, p, &s) )
+       {
+         gsl_linalg_LU_solve (&m.matrix, p, &b.vector, x);
 
-       gsl_linalg_LU_solve (&m.matrix, p, &b.vector, x);
 
-       printf ("x = \n");
-       gsl_vector_fprintf (stdout, x, "%g");
+
+         E->item[0] = gsl_vector_get ( x , 0); // e11
+         E->item[1] = gsl_vector_get ( x , 1); // e12
+         E->item[2] = gsl_vector_get ( x , 2); // e13
+         E->item[3] = gsl_vector_get ( x , 3); // e21
+         E->item[4] = gsl_vector_get ( x , 4); // e22
+         E->item[5] = gsl_vector_get ( x , 5); // e23
+         E->item[6] = gsl_vector_get ( x , 6); // e31
+         E->item[7] = gsl_vector_get ( x , 7); // e32
+         E->item[8] = gsl_vector_get ( x , 8); // e33
+
+         printf ("x = \n");
+         gsl_vector_fprintf (stdout, x, "%g");
+       }
 
        gsl_permutation_free (p);
        gsl_vector_free (x);

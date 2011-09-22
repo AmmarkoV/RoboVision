@@ -71,7 +71,7 @@
 1316710396 /home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureTracking.h
 	"VisionMemory.h"
 
-1316710382 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureTracking.c
+1316711217 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureTracking.c
 	"FeatureTracking.h"
 	"FeatureLists.h"
 	"Precalculations.h"
@@ -87,13 +87,14 @@
 	"IntegralImageConversion.h"
 	"Precalculations.h"
 
-1308405133 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.c
+1316731867 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.c
 	"LinearAlgebra.h"
 	"VisionMemory.h"
 	<stdio.h>
 	<gsl/gsl_linalg.h>
 
-1305748537 /home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.h
+1316731912 /home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.h
+	"VisionMemory.h"
 
 1310122934 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/MovementRegistration.c
 	"MovementRegistration.h"
@@ -203,7 +204,7 @@
 
 1311412733 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/fast/fast.h
 
-1316710475 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
+1316731385 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
 	"VideoInputAdapter.h"
 	"VisualCortex.h"
 	"VisionMemory.h"
@@ -220,6 +221,7 @@
 	"VisCortexTimer.h"
 	"IntegralImageConversion.h"
 	"VisCortexTimer.h"
+	"LinearAlgebra.h"
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="1948" topLine="37" />
+	<File name="DisparityDepthMap.c" open="1" top="1" tabpos="7">
+		<Cursor position="21507" topLine="453" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="583" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
-		<Cursor position="8275" topLine="200" />
+		<Cursor position="9764" topLine="237" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
 		<Cursor position="1276" topLine="0" />
 	</File>
 	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
-		<Cursor position="1595" topLine="36" />
+		<Cursor position="1289" topLine="39" />
 	</File>
 	<File name="FaceDetection.h" open="1" top="0" tabpos="13">
 		<Cursor position="209" topLine="0" />
 	</File>
 	<File name="FeatureExtraction.c" open="1" top="0" tabpos="14">
-		<Cursor position="6085" topLine="185" />
+		<Cursor position="5302" topLine="175" />
 	</File>
 	<File name="FeatureExtraction.h" open="1" top="0" tabpos="15">
 		<Cursor position="162" topLine="0" />
 	</File>
 	<File name="FeatureLists.c" open="1" top="0" tabpos="38">
-		<Cursor position="4633" topLine="119" />
+		<Cursor position="2315" topLine="36" />
 	</File>
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
 		<Cursor position="1164" topLine="6" />
 	</File>
 	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
-		<Cursor position="9145" topLine="0" />
+		<Cursor position="15914" topLine="369" />
 	</File>
 	<File name="FeatureTracking.h" open="1" top="0" tabpos="29">
-		<Cursor position="784" topLine="0" />
+		<Cursor position="778" topLine="0" />
 	</File>
 	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
 		<Cursor position="12221" topLine="382" />
@@ -74,13 +74,13 @@
 		<Cursor position="185" topLine="0" />
 	</File>
 	<File name="StateSetting.c" open="1" top="0" tabpos="18">
-		<Cursor position="1967" topLine="0" />
+		<Cursor position="104" topLine="184" />
 	</File>
 	<File name="StateSetting.h" open="1" top="0" tabpos="19">
-		<Cursor position="799" topLine="0" />
+		<Cursor position="100" topLine="0" />
 	</File>
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="4225" topLine="98" />
+		<Cursor position="824" topLine="90" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="91" topLine="0" />
@@ -110,21 +110,21 @@
 		<Cursor position="247" topLine="0" />
 	</File>
 	<File name="VisCortexTimer.c" open="1" top="0" tabpos="41">
-		<Cursor position="69" topLine="0" />
+		<Cursor position="1112" topLine="9" />
 	</File>
 	<File name="VisCortexTimer.h" open="1" top="0" tabpos="42">
-		<Cursor position="106" topLine="0" />
+		<Cursor position="384" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="32592" topLine="820" />
+		<Cursor position="23524" topLine="562" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="4236" topLine="106" />
+		<Cursor position="4236" topLine="108" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="26266" topLine="175" />
+		<Cursor position="21675" topLine="601" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="301" topLine="0" />
+		<Cursor position="829" topLine="123" />
 	</File>
 </CodeBlocks_layout_file>

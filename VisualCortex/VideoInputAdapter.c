@@ -14,6 +14,7 @@
 #include "VisCortexTimer.h"
 #include "IntegralImageConversion.h"
 #include "VisCortexTimer.h"
+#include "LinearAlgebra.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -113,6 +114,13 @@ inline unsigned int FrameProcessing
             FindAndTrackAllPointsOnRegistersOpenCV(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,1000);
             //VisCortx_AutoAddTrackPoints(left_right_switch);
             //TrackAllPointsOnRegistersBrute(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,8000);
+
+            if ( settings[CALCULATE_MOVEMENT_MATRIX] )
+             {
+              struct FundamentalMatrix E;
+              ComputeFundamentalMatrixFromPointCorrespondance(video_register[REG_CALIBRATED_EYE].features,&E);
+             }
+
         }
 
 

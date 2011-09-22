@@ -557,7 +557,8 @@ int VisCortx_Movement_At_Edge(unsigned int reg_num , unsigned int edge_enum)
 */
 int VisCortxGetFundamentalMatrix(float * table,int size_of_table)
 {
-    return ComputeFundamentalMatrix();
+   return 0;
+   // return ComputeFundamentalMatrix();
 }
 
 

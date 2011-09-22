@@ -268,6 +268,7 @@ void DefaultSettings()
    settings[PASS_TO_WORLD_3D]=0; // FOR NOW ONLY PASSES TO 3D Visualization
    settings[PASS_TO_FACE_DETECTOR]=1;
    settings[PASS_TO_FEATURE_DETECTOR]=1;
+   settings[CALCULATE_MOVEMENT_MATRIX]=1;
 
    settings[REMEMBER_FACES]=1;
 
