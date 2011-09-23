@@ -1,6 +1,7 @@
 #include "LinearAlgebra.h"
 #include "VisionMemory.h"
 #include <stdio.h>
+#include "cv.h"
 #include <gsl/gsl_linalg.h>
 
 int GetCameraCoords_From_Angle(float horizontal_angle,float vertical_angle,unsigned int * uint_pixel_x,unsigned int * uint_pixel_y)
