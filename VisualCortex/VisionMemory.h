@@ -32,7 +32,7 @@ struct ImageRegion{
         unsigned int height;
 };
 
-struct FundamentalMatrix
+struct TransformationMatrix
 {
     float item[9];
 };
@@ -109,6 +109,10 @@ extern float camera_distance;
 extern float camera_diagonal_field_of_view,camera_horizontal_field_of_view,camera_vertical_field_of_view;
 
 extern float depth_units_in_cm[256];
+
+
+extern struct TransformationMatrix left_transformation;
+extern struct TransformationMatrix right_transformation;
 
 
 int SetImageRegion( struct ImageRegion * ir , unsigned int x1,unsigned int y1,unsigned int width,unsigned int height);

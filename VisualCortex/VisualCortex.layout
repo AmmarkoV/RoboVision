@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="DisparityDepthMap.c" open="1" top="1" tabpos="7">
+	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
 		<Cursor position="21507" topLine="453" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
@@ -29,10 +29,10 @@
 		<Cursor position="2315" topLine="36" />
 	</File>
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
-		<Cursor position="1164" topLine="6" />
+		<Cursor position="599" topLine="0" />
 	</File>
 	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
-		<Cursor position="15914" topLine="369" />
+		<Cursor position="16392" topLine="369" />
 	</File>
 	<File name="FeatureTracking.h" open="1" top="0" tabpos="29">
 		<Cursor position="778" topLine="0" />
@@ -44,10 +44,10 @@
 		<Cursor position="850" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
-		<Cursor position="1848" topLine="0" />
+		<Cursor position="3470" topLine="68" />
 	</File>
 	<File name="LinearAlgebra.h" open="1" top="0" tabpos="31">
-		<Cursor position="240" topLine="0" />
+		<Cursor position="468" topLine="0" />
 	</File>
 	<File name="MovementRegistration.c" open="1" top="0" tabpos="9">
 		<Cursor position="1938" topLine="40" />
@@ -80,7 +80,7 @@
 		<Cursor position="100" topLine="0" />
 	</File>
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="824" topLine="90" />
+		<Cursor position="4088" topLine="97" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="91" topLine="0" />
@@ -116,15 +116,15 @@
 		<Cursor position="384" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="23524" topLine="562" />
+		<Cursor position="1464" topLine="12" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="4236" topLine="108" />
+		<Cursor position="2490" topLine="87" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="21675" topLine="601" />
+		<Cursor position="19280" topLine="537" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="829" topLine="123" />
+		<Cursor position="506" topLine="9" />
 	</File>
 </CodeBlocks_layout_file>

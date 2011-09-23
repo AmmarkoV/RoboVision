@@ -117,8 +117,14 @@ inline unsigned int FrameProcessing
 
             if ( settings[CALCULATE_MOVEMENT_MATRIX] )
              {
-              struct FundamentalMatrix E;
-              ComputeFundamentalMatrixFromPointCorrespondance(video_register[REG_CALIBRATED_EYE].features,&E);
+               if (REG_EYE == LEFT_EYE )
+                {
+                  ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,&left_transformation);
+                } else
+               if (REG_EYE == RIGHT_EYE )
+                {
+                  ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,&right_transformation);
+                }
              }
 
         }

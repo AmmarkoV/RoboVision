@@ -85,8 +85,47 @@ int ComputeFundamentalMatrix(void)
 */
 
 
-int ComputeFundamentalMatrixFromPointCorrespondance(struct FeatureList * list,struct FundamentalMatrix * E)
+int ComputeHomographyFromPointCorrespondanceOpenCV(struct FeatureList * source,struct TransformationMatrix * E)
 {
+   if ( source->current_features == 0 ) { return 0; }
+   int i=0;
+
+   CvMat* srcPoints = cvCreateMat(2,source->current_features,CV_32FC1);
+    for ( i=0; i<source->current_features; i++ )
+     {   cvmSet(srcPoints,0,i,source->list[i].last_x);
+         cvmSet(srcPoints,1,i,source->list[i].last_y); }
+
+   CvMat* dstPoints = cvCreateMat(2,source->current_features,CV_32FC1);
+    for ( i=0; i<source->current_features; i++ )
+     {   cvmSet(srcPoints,0,i,source->list[i].x);
+         cvmSet(srcPoints,1,i,source->list[i].y); }
+
+   CvMat* H =  cvCreateMat(3,3,CV_32FC1);
+   int res = cvFindHomography(srcPoints,dstPoints,H,CV_RANSAC,5,0);
+
+   i=0;
+   int x,y;
+    for(y=0; y<3; y++)
+     {
+       for(x=0; x<3; x++)
+       {
+         //fprintf(stderr, "%f ",cvmGet(H,x,y));
+         E->item[i++]=cvmGet(H,x,y);
+       }
+       //fprintf(stderr, "\n");
+     }
+
+   cvReleaseMat(&srcPoints);
+   cvReleaseMat(&dstPoints);
+   cvReleaseMat(&H);
+
+   return res;
+}
+
+int ComputeFundamentalMatrixFromPointCorrespondance(struct FeatureList * list,struct TransformationMatrix * E)
+{
+
+    // TODO TODO TODO TODO
     //The following program solves the linear system A x = b. The system to be solved is, and the solution is found using LU decomposition of the matrix A.
        double a_data[] = { 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
                            1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,

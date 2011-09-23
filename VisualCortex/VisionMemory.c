@@ -33,6 +33,9 @@ struct LargeVideoRegister l_video_register[LARGE_REGISTERS_COUNT]={{0},{0},{0},{
 struct ExtraLargeVideoRegister xl_video_register[EXTRA_LARGE_REGISTERS_COUNT]={{0},{0},{0},{0}};
 struct DepthData * depth_data_array=0;
 
+struct TransformationMatrix left_transformation;
+struct TransformationMatrix right_transformation;
+
 float camera_distance=0;
 float camera_diagonal_field_of_view=0,camera_horizontal_field_of_view=0,camera_vertical_field_of_view=0;
 

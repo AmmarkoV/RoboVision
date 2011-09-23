@@ -31,7 +31,7 @@ gcc  -Os -O3 -fexpensive-optimizations -c VisCortexFilters.c -o VisCortexFilters
 gcc  -Os -O3 -fexpensive-optimizations -c VisCortexHeuristics.c -o VisCortexHeuristics.o 
 gcc  -Os -O3 -fexpensive-optimizations -c VisionMemory.c -o VisionMemory.o
 gcc  -Os -O3 -fexpensive-optimizations -c VideoInputAdapter.c -o VideoInputAdapter.o 
-gcc  -Os -O3 -fexpensive-optimizations -c LinearAlgebra.c -o LinearAlgebra.o  
+gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c LinearAlgebra.c -o LinearAlgebra.o  
 gcc  -Os -O3 -fexpensive-optimizations -c VisualCortex.c -o VisualCortex.o
 
 
