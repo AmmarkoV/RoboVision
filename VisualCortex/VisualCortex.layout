@@ -8,7 +8,7 @@
 		<Cursor position="583" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
-		<Cursor position="9764" topLine="237" />
+		<Cursor position="9746" topLine="237" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
 		<Cursor position="1276" topLine="0" />
@@ -103,7 +103,7 @@
 	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="23">
 		<Cursor position="293" topLine="0" />
 	</File>
-	<File name="VisCortexOptimizedConvolutionFilters.c" open="1" top="1" tabpos="39">
+	<File name="VisCortexOptimizedConvolutionFilters.c" open="1" top="0" tabpos="39">
 		<Cursor position="786" topLine="0" />
 	</File>
 	<File name="VisCortexOptimizedConvolutionFilters.h" open="1" top="0" tabpos="40">
@@ -121,7 +121,7 @@
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="2490" topLine="87" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
+	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
 		<Cursor position="19280" topLine="537" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">

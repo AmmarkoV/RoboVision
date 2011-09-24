@@ -33,14 +33,22 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Linker>
-			<Add option="-pthreads" />
-			<Add option="-lrt" />
+			<Add option="-pthread" />
+			<Add option="-lgsl" />
+			<Add option="-lgslcblas" />
+			<Add option="-lm" />
+			<Add option="`wx-config --libs`" />
+			<Add option="`pkg-config --libs opencv`" />
 			<Add library="../RoboKernel/libRoboKernel.a" />
 			<Add library="../VideoInput/libVideoInput.a" />
 			<Add library="../VisualCortex/libVisualCortex.a" />
 			<Add library="../../InputParser/libInputParser_C.a" />
 			<Add library="../MotorFoundation/libMotorHAL.a" />
 			<Add library="../MotorFoundation/MD23/libMD23.a" />
+			<Add library="../MotorFoundation/Arduino/libRoboVisionSensorLib.a" />
+			<Add library="../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a" />
+			<Add library="../RVKnowledgeBase/libRVKnowledgeBase.a" />
+			<Add library="../3dpartylibs/fast/libFast.a" />
 		</Linker>
 		<Unit filename="main.cpp" />
 		<Extensions>

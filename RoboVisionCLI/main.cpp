@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include "../RoboKernel/RoboKernel.h"
 #include <time.h>
+#include <string.h>
 
 using namespace std;
 
@@ -14,9 +15,19 @@ int main()
     printf("Starting RoboKernel!\n");
     StartRoboKernel();
 
-    char c;
-    printf("q quits robovision !!\n");
-    do { c=getchar(); } while ( (c != 'q')&&(RoboKernelAlive()==1) );
+    printf("Exit stops RoboVision !!\n");
+
+    char buffer[2048]={0};
+    char *cptr;
+    do {
+          printf("Enter command ( exit stops RoboVision ) :\n");
+          cptr = fgets(buffer,2048, stdin);
+          if ( cptr != 0 )
+           {
+             IssueCommand(cptr,0,0,(char *)"CLI");
+           }
+
+       } while ( (strncmp(cptr,"exit",4)!=0 ) && (RoboKernelAlive()==1) );
 
 
     printf("Stoping RoboKernel!\n");

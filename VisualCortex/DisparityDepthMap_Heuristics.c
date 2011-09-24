@@ -274,7 +274,7 @@ int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int dep
 
 
 
-       *r= val; *g= val; *b= 0 /*val*/ ;
+       *r= val; *g= 0; *b= val /*val*/ ;
    }
 
    return 1;
