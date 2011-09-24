@@ -14,9 +14,9 @@ int main()
 
     printf("Starting RoboKernel!\n");
     StartRoboKernel();
-
-    printf("Exit stops RoboVision !!\n");
-
+    
+    usleep( 5000 * 1000 ); /* Allow 5 seconds for guarddog scripts , etc. to startup*/ 
+    
     char buffer[2048]={0};
     char *cptr;
     do {

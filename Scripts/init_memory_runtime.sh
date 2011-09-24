@@ -1,4 +1,7 @@
 #!/bin/bash
+
+mount -t ramfs -o size=200m ramfs /home/guarddog/RoboVision/RoboVisionRuntime
+
 echo "Preparing Memory Runtime Space for program!"
 echo "Changing owner of Runtime to guarddog :) !"
  sudo chown guarddog:guarddog RoboVisionRuntime

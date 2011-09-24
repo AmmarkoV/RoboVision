@@ -1,0 +1,18 @@
+#!/bin/bash
+echo "Making executable scripts executable :P"
+chmod +x RoboVisionX_GUI
+chmod +x WorldMap_Testing_GUI
+
+chmod +x RoboVisionX/RoboVisionXCompatHighPriority
+chmod +x RoboVisionX/RoboVisionXCompat
+chmod +x RoboVisionX/GUARDDOG
+chmod +x RoboVisionX/bin/Release/RoboVisionX
+
+chmod +x RoboVisionX/scripts/*
+
+chmod +x RoboVisionCLI/RoboVisionCLICompat
+chmod +x RoboVisionCLI/bin/Release/RoboVisionCLI
+
+
+exit 0
+

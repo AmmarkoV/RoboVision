@@ -1,0 +1,5 @@
+#!/bin/bash
+cd RoboVisionX
+sudo ./RoboVisionXCompat
+cd ..
+exit 0

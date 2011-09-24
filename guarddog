@@ -1,8 +1,0 @@
-#!/bin/bash 
-echo "Copying RoboVision To Runtime Directory.."
-./prepare_memory_runtime.sh
-echo "Running RoboVision From Runtime Directory.."
-cd RoboVisionRuntime
-./RoboVisionCLICompat
-echo "Done.."
-exit 0

@@ -1,0 +1,19 @@
+#!/bin/bash
+echo "Compiling RoboKernel and RoboVisionCLI :D"
+ 
+echo "Compiling RoboKernel.."
+cd RoboKernel
+./make
+cd ..
+
+#COMPILE INTERFACES
+
+echo "Compiling RoboVision Console Front-end.."
+cd RoboVisionCLI
+./make
+cd ..
+ 
+
+
+echo "Done.."
+exit 0

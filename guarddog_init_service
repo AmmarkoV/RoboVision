@@ -1,0 +1,21 @@
+#!/bin/bash 
+echo "Copying RoboVision To Runtime Directory.."
+./Scripts/init_memory_runtime.sh
+echo "Running RoboVision From Runtime Directory.."
+
+touch RoboVisionRuntime/test_file
+if [ -e RoboVisionRuntime/test_file ]
+then
+  echo "RoboVisionRuntime Space is OK .."  
+else
+  echo "RoboVisionRuntime was not allocated by Scripts/init_memory_runtime.sh, everything will fail :P , check it" > error_message.txt 
+fi
+
+cd RoboVisionRuntime
+echo "Starting GuarddoG (TM ;P).."
+./RoboVisionCLICompat
+cd ..
+
+./Scripts/close_memory_runtime.sh
+echo "Done.."
+exit 0
