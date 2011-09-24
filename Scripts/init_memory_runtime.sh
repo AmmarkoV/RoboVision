@@ -1,30 +1,30 @@
 #!/bin/bash
 
-sudo mount -t ramfs -o size=200m ramfs /home/guarddog/RoboVision/RoboVisionRuntime
+sudo mount -t ramfs -o size=200m ramfs ../RoboVisionRuntime
 
 echo "Preparing Memory Runtime Space for program!"
 echo "Changing owner of Runtime to guarddog :) !"
- sudo chown guarddog:guarddog RoboVisionRuntime
+sudo chown guarddog:guarddog ../RoboVisionRuntime
 
 
 echo "Create Directory Structure!"
-mkdir RoboVisionRuntime/bin
-mkdir RoboVisionRuntime/bin/Release
-mkdir RoboVisionRuntime/scripts
-mkdir RoboVisionRuntime/Sounds
-mkdir RoboVisionRuntime/Stored
-mkdir RoboVisionRuntime/memfs
-mkdir RoboVisionRuntime/memfs/public_html
+mkdir ../RoboVisionRuntime/bin
+mkdir ../RoboVisionRuntime/bin/Release
+mkdir ../RoboVisionRuntime/scripts
+mkdir ../RoboVisionRuntime/Sounds
+mkdir ../RoboVisionRuntime/Stored
+mkdir ../RoboVisionRuntime/memfs
+mkdir ../RoboVisionRuntime/memfs/public_html
 
 
 echo "Copy Files to run!"
-cp RoboVisionCLI/empty.jpeg RoboVisionRuntime/empty.jpeg
-cp RoboVisionCLI/empty.ppm RoboVisionRuntime/empty.ppm
-cp RoboVisionCLI/guard.ini RoboVisionRuntime/guard.ini
-cp RoboVisionCLI/RoboVisionCLICompat RoboVisionRuntime/RoboVisionCLICompat
-cp RoboVisionCLI/bin/Release/RoboVisionCLI RoboVisionRuntime/bin/Release/RoboVisionCLI 
-cp RoboVisionCLI/scripts/* RoboVisionRuntime/scripts/
-cp RoboVisionCLI/Sounds/* RoboVisionRuntime/Sounds/
+cp ../RoboVisionCLI/empty.jpeg RoboVisionRuntime/empty.jpeg
+cp ../RoboVisionCLI/empty.ppm RoboVisionRuntime/empty.ppm
+cp ../RoboVisionCLI/guard.ini RoboVisionRuntime/guard.ini
+cp ../RoboVisionCLI/RoboVisionCLICompat RoboVisionRuntime/RoboVisionCLICompat
+cp ../RoboVisionCLI/bin/Release/RoboVisionCLI RoboVisionRuntime/bin/Release/RoboVisionCLI 
+cp ../RoboVisionCLI/scripts/* RoboVisionRuntime/scripts/
+cp ../RoboVisionCLI/Sounds/* RoboVisionRuntime/Sounds/
 
 echo "everything done!"
 
