@@ -343,6 +343,9 @@ int CloseFeatureTracking()
 
 int FindAndTrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int reg_old , unsigned int timeout)
 {
+
+    if  ( ( video_register[reg_new].pixels == 0 ) || ( video_register[reg_old].pixels == 0 ) ) { return 0; }
+
     // Load two images and allocate other structures
     unsigned int MONOCHROME_TMP_REGISTER_OLD = GetTempRegister();
     if (MONOCHROME_TMP_REGISTER_OLD == 0 ) { fprintf(stderr," Error Getting the first temporary Video Register ( TrackAllPointsOnRegistersOpenCV ) \n"); }

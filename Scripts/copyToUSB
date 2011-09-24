@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "Copying .."
+sudo dd if=/home/ammar/VirtualMachines/GUARDDOG_FS.img of=/dev/sdk
+exit 0 

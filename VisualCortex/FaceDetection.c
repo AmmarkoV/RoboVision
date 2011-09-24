@@ -41,7 +41,10 @@ void CloseFaceRecognition()
 
 unsigned int RecognizeFaces(unsigned int vid_reg)
 {
+
     ClearFeatureList(video_register[vid_reg].faces);
+
+    if  (  video_register[vid_reg].pixels == 0 )  { return 0; }
 
     /* detect faces */
     image->imageData=(char*) video_register[vid_reg].pixels; // UGLY HACK
