@@ -32,7 +32,7 @@
 		<Cursor position="599" topLine="0" />
 	</File>
 	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
-		<Cursor position="16392" topLine="369" />
+		<Cursor position="16392" topLine="380" />
 	</File>
 	<File name="FeatureTracking.h" open="1" top="0" tabpos="29">
 		<Cursor position="778" topLine="0" />
@@ -44,10 +44,10 @@
 		<Cursor position="850" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
-		<Cursor position="3470" topLine="68" />
+		<Cursor position="997" topLine="3" />
 	</File>
 	<File name="LinearAlgebra.h" open="1" top="0" tabpos="31">
-		<Cursor position="468" topLine="0" />
+		<Cursor position="69" topLine="0" />
 	</File>
 	<File name="MovementRegistration.c" open="1" top="0" tabpos="9">
 		<Cursor position="1938" topLine="40" />
@@ -80,7 +80,7 @@
 		<Cursor position="100" topLine="0" />
 	</File>
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="4088" topLine="97" />
+		<Cursor position="4544" topLine="157" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="91" topLine="0" />
@@ -103,8 +103,8 @@
 	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="23">
 		<Cursor position="293" topLine="0" />
 	</File>
-	<File name="VisCortexOptimizedConvolutionFilters.c" open="1" top="0" tabpos="39">
-		<Cursor position="619" topLine="0" />
+	<File name="VisCortexOptimizedConvolutionFilters.c" open="1" top="1" tabpos="39">
+		<Cursor position="786" topLine="0" />
 	</File>
 	<File name="VisCortexOptimizedConvolutionFilters.h" open="1" top="0" tabpos="40">
 		<Cursor position="247" topLine="0" />
@@ -116,7 +116,7 @@
 		<Cursor position="384" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="1464" topLine="12" />
+		<Cursor position="1412" topLine="3" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="2490" topLine="87" />

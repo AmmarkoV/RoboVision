@@ -111,19 +111,25 @@ inline unsigned int FrameProcessing
         if ( settings[PASS_TO_FEATURE_DETECTOR] )
         {
 
-            FindAndTrackAllPointsOnRegistersOpenCV(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,1000);
-            //VisCortx_AutoAddTrackPoints(left_right_switch);
-            //TrackAllPointsOnRegistersBrute(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,8000);
+            if ( settings[USE_OPENCV] )
+              {
+                  FindAndTrackAllPointsOnRegistersOpenCV(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,1000);
+              } else
+              {
+                  VisCortx_AutoAddTrackPoints(left_right_switch);
+                  TrackAllPointsOnRegistersBrute(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,8000);
+              }
+
 
             if ( settings[CALCULATE_MOVEMENT_MATRIX] )
              {
                if (REG_EYE == LEFT_EYE )
                 {
-                  ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,&left_transformation);
+                  if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,&left_transformation); }
                 } else
                if (REG_EYE == RIGHT_EYE )
                 {
-                  ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,&right_transformation);
+                  if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,&right_transformation); }
                 }
              }
 
@@ -228,6 +234,10 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
    }
 
   metrics[VIDEOINPUT_PROCESSING_DELAY_MICROSECONDS] = EndTimer(TIMER_PROCESSING_DELAY);
+
+
+
+
 
 
   if (!GuardBytesOk())

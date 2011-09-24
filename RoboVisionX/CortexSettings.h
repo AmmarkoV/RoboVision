@@ -44,6 +44,7 @@ class CortexSettings: public wxDialog
 		wxStaticText* StaticText28;
 		wxTextCtrl* ComparisonThresholdMedium;
 		wxButton* SaveButton;
+		wxCheckBox* FaceDetection;
 		wxCheckBox* DoNotProcessCloserThanPreviousSizeResult;
 		wxTextCtrl* PatchMinB;
 		wxTextCtrl* ComparisonExpectedThreshold;
@@ -57,10 +58,12 @@ class CortexSettings: public wxDialog
 		wxTextCtrl* PatchSizeXLarge;
 		wxStaticText* StaticText16;
 		wxTextCtrl* EdgeStrictness;
+		wxCheckBox* Map3D;
 		wxCheckBox* DoNotProcessFar;
 		wxStaticBox* StaticBox2;
 		wxTextCtrl* PatchesEdgesPerCent;
 		wxTextCtrl* MinR;
+		wxCheckBox* TrackCameraMovement;
 		wxStaticText* StaticText3;
 		wxTextCtrl* InstantQuality;
 		wxTextCtrl* EdgeStrictnessHigh;
@@ -78,11 +81,13 @@ class CortexSettings: public wxDialog
 		wxStaticText* StaticText12;
 		wxStaticText* StaticText38;
 		wxCheckBox* ImproveEdges;
+		wxCheckBox* FaceDetectionStorage;
 		wxTextCtrl* MoveMultiplier;
 		wxTextCtrl* PatchesEdgesPercentLarge;
 		wxStaticBox* StaticBox1;
 		wxStaticText* StaticText7;
 		wxTextCtrl* MaxR;
+		wxCheckBox* UseOpenCV;
 		wxTextCtrl* ShiftDown;
 		wxStaticText* StaticText4;
 		wxTextCtrl* SecondDerMultiplier;
@@ -101,8 +106,8 @@ class CortexSettings: public wxDialog
 		wxStaticText* StaticText19;
 		wxStaticText* StaticText29;
 		wxTextCtrl* PatchSizeXMedium;
-		wxStaticText* StaticText9;
 		wxTextCtrl* OffsetDown;
+		wxCheckBox* FeatureDetection;
 		wxStaticText* StaticText33;
 		wxStaticText* StaticText31;
 		wxTextCtrl* PatchSizeXSmall;
@@ -137,7 +142,6 @@ class CortexSettings: public wxDialog
 		static const long ID_TEXTCTRL8;
 		static const long ID_STATICTEXT8;
 		static const long ID_TEXTCTRL9;
-		static const long ID_STATICTEXT9;
 		static const long ID_TEXTCTRL10;
 		static const long ID_STATICTEXT10;
 		static const long ID_CHECKBOX1;
@@ -206,6 +210,12 @@ class CortexSettings: public wxDialog
 		static const long ID_CHECKBOX7;
 		static const long ID_STATICTEXT38;
 		static const long ID_TEXTCTRL39;
+		static const long ID_CHECKBOX8;
+		static const long ID_CHECKBOX9;
+		static const long ID_CHECKBOX10;
+		static const long ID_CHECKBOX11;
+		static const long ID_CHECKBOX12;
+		static const long ID_CHECKBOX13;
 		//*)
 
 	private:

@@ -29,7 +29,6 @@ const long CortexSettings::ID_STATICTEXT7 = wxNewId();
 const long CortexSettings::ID_TEXTCTRL8 = wxNewId();
 const long CortexSettings::ID_STATICTEXT8 = wxNewId();
 const long CortexSettings::ID_TEXTCTRL9 = wxNewId();
-const long CortexSettings::ID_STATICTEXT9 = wxNewId();
 const long CortexSettings::ID_TEXTCTRL10 = wxNewId();
 const long CortexSettings::ID_STATICTEXT10 = wxNewId();
 const long CortexSettings::ID_CHECKBOX1 = wxNewId();
@@ -98,6 +97,12 @@ const long CortexSettings::ID_STATICTEXT37 = wxNewId();
 const long CortexSettings::ID_CHECKBOX7 = wxNewId();
 const long CortexSettings::ID_STATICTEXT38 = wxNewId();
 const long CortexSettings::ID_TEXTCTRL39 = wxNewId();
+const long CortexSettings::ID_CHECKBOX8 = wxNewId();
+const long CortexSettings::ID_CHECKBOX9 = wxNewId();
+const long CortexSettings::ID_CHECKBOX10 = wxNewId();
+const long CortexSettings::ID_CHECKBOX11 = wxNewId();
+const long CortexSettings::ID_CHECKBOX12 = wxNewId();
+const long CortexSettings::ID_CHECKBOX13 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CortexSettings,wxDialog)
@@ -133,7 +138,6 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	ComparisonMinScore = new wxTextCtrl(this, ID_TEXTCTRL8, _("30000"), wxPoint(352,320), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
 	StaticText8 = new wxStaticText(this, ID_STATICTEXT8, _("Closest Depth Plane"), wxPoint(40,400), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
 	ClosestDepth = new wxTextCtrl(this, ID_TEXTCTRL9, _("90"), wxPoint(192,392), wxSize(48,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
-	StaticText9 = new wxStaticText(this, ID_STATICTEXT9, _("Comparison EdgesPerCent Required"), wxPoint(360,448), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
 	PatchesEdgesPerCent = new wxTextCtrl(this, ID_TEXTCTRL10, _("15"), wxPoint(392,232), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL10"));
 	StaticText10 = new wxStaticText(this, ID_STATICTEXT10, _("%"), wxPoint(440,240), wxDefaultSize, 0, _T("ID_STATICTEXT10"));
 	FillHoles = new wxCheckBox(this, ID_CHECKBOX1, _("Fill Holes"), wxPoint(224,528), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
@@ -215,8 +219,20 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	StaticText37->SetFont(StaticText37Font);
 	DepthMapReverseCheck = new wxCheckBox(this, ID_CHECKBOX7, _("Reverese check patches right to left "), wxPoint(32,368), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX7"));
 	DepthMapReverseCheck->SetValue(false);
-	StaticText38 = new wxStaticText(this, ID_STATICTEXT38, _("Feature Detection Threshold"), wxPoint(552,232), wxDefaultSize, 0, _T("ID_STATICTEXT38"));
-	FeatureDetectionThreshold = new wxTextCtrl(this, ID_TEXTCTRL39, _("30"), wxPoint(640,256), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL39"));
+	StaticText38 = new wxStaticText(this, ID_STATICTEXT38, _("Feature Detection Threshold"), wxPoint(512,328), wxDefaultSize, 0, _T("ID_STATICTEXT38"));
+	FeatureDetectionThreshold = new wxTextCtrl(this, ID_TEXTCTRL39, _("30"), wxPoint(728,320), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL39"));
+	FaceDetection = new wxCheckBox(this, ID_CHECKBOX8, _("Face Detection"), wxPoint(568,240), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX8"));
+	FaceDetection->SetValue(false);
+	FaceDetectionStorage = new wxCheckBox(this, ID_CHECKBOX9, _("Face Detection Storage"), wxPoint(568,264), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX9"));
+	FaceDetectionStorage->SetValue(false);
+	FeatureDetection = new wxCheckBox(this, ID_CHECKBOX10, _("Feature Detection"), wxPoint(568,296), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX10"));
+	FeatureDetection->SetValue(false);
+	TrackCameraMovement = new wxCheckBox(this, ID_CHECKBOX11, _("Track Camera Movement"), wxPoint(568,360), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX11"));
+	TrackCameraMovement->SetValue(false);
+	Map3D = new wxCheckBox(this, ID_CHECKBOX12, _("Map 3D"), wxPoint(568,392), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX12"));
+	Map3D->SetValue(false);
+	UseOpenCV = new wxCheckBox(this, ID_CHECKBOX13, _("Use OpenCV"), wxPoint(568,488), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX13"));
+	UseOpenCV->SetValue(false);
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnSaveButtonClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnCancelButtonClick);
@@ -344,6 +360,28 @@ void CortexSettings::PullSettingsFromCortex()
                                                                { ImproveUsingHistogram->SetValue(0); }
 
 
+ if (VisCortx_GetSetting(PASS_TO_FACE_DETECTOR)==1) { FaceDetection->SetValue(1); } else
+                                                    { FaceDetection->SetValue(0); }
+
+
+ if (VisCortx_GetSetting(REMEMBER_FACES)==1)        { FaceDetectionStorage->SetValue(1); } else
+                                                    { FaceDetectionStorage->SetValue(0); }
+
+
+ if (VisCortx_GetSetting(PASS_TO_FEATURE_DETECTOR)==1) { FeatureDetection->SetValue(1); } else
+                                                       { FeatureDetection->SetValue(0); }
+
+
+ if (VisCortx_GetSetting(CALCULATE_MOVEMENT_MATRIX)==1) { TrackCameraMovement->SetValue(1); } else
+                                                        { TrackCameraMovement->SetValue(0); }
+
+
+ if (VisCortx_GetSetting(PASS_TO_WORLD_3D)==1) { Map3D->SetValue(1); } else
+                                               { Map3D->SetValue(0); }
+
+ if (VisCortx_GetSetting(USE_OPENCV)==1) { UseOpenCV->SetValue(1); } else
+                                         { UseOpenCV->SetValue(0); }
+
 
   val.Clear(); val<<VisCortx_GetSetting(FEATURE_DETECTION_THRESHOLD);
   FeatureDetectionThreshold->SetValue(val);
@@ -467,6 +505,27 @@ void CortexSettings::PushSettingsToCortex()
 
   if ( ImproveUsingHistogram->IsChecked() ) { VisCortx_SetSetting(DEPTHMAP_IMPROVE_USING_HISTOGRAM,1); } else
                                             { VisCortx_SetSetting(DEPTHMAP_IMPROVE_USING_HISTOGRAM,0); }
+
+
+  if ( FaceDetection->IsChecked() ) { VisCortx_SetSetting(PASS_TO_FACE_DETECTOR,1); } else
+                                            { VisCortx_SetSetting(PASS_TO_FACE_DETECTOR,0); }
+
+  if ( FaceDetectionStorage->IsChecked() ) { VisCortx_SetSetting(REMEMBER_FACES,1); } else
+                                            { VisCortx_SetSetting(REMEMBER_FACES,0); }
+
+  if ( FeatureDetection->IsChecked() ) { VisCortx_SetSetting(PASS_TO_FEATURE_DETECTOR,1); } else
+                                            { VisCortx_SetSetting(PASS_TO_FEATURE_DETECTOR,0); }
+
+  if ( TrackCameraMovement->IsChecked() ) { VisCortx_SetSetting(CALCULATE_MOVEMENT_MATRIX,1); } else
+                                          { VisCortx_SetSetting(CALCULATE_MOVEMENT_MATRIX,0); }
+
+  if ( Map3D->IsChecked() ) { VisCortx_SetSetting(PASS_TO_WORLD_3D,1); } else
+                           { VisCortx_SetSetting(PASS_TO_WORLD_3D,0); }
+
+
+
+  if ( UseOpenCV->IsChecked() ) { VisCortx_SetSetting(USE_OPENCV,1); } else
+                                { VisCortx_SetSetting(USE_OPENCV,0); }
 
 
 

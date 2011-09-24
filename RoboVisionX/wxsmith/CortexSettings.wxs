@@ -103,10 +103,6 @@
 			<pos>192,392</pos>
 			<size>48,27</size>
 		</object>
-		<object class="wxStaticText" name="ID_STATICTEXT9" variable="StaticText9" member="yes">
-			<label>Comparison EdgesPerCent Required</label>
-			<pos>360,448</pos>
-		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL10" variable="PatchesEdgesPerCent" member="yes">
 			<value>15</value>
 			<pos>392,232</pos>
@@ -436,12 +432,36 @@
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT38" variable="StaticText38" member="yes">
 			<label>Feature Detection Threshold</label>
-			<pos>552,232</pos>
+			<pos>512,328</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL39" variable="FeatureDetectionThreshold" member="yes">
 			<value>30</value>
-			<pos>640,256</pos>
+			<pos>728,320</pos>
 			<size>40,27</size>
+		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX8" variable="FaceDetection" member="yes">
+			<label>Face Detection</label>
+			<pos>568,240</pos>
+		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX9" variable="FaceDetectionStorage" member="yes">
+			<label>Face Detection Storage</label>
+			<pos>568,264</pos>
+		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX10" variable="FeatureDetection" member="yes">
+			<label>Feature Detection</label>
+			<pos>568,296</pos>
+		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX11" variable="TrackCameraMovement" member="yes">
+			<label>Track Camera Movement</label>
+			<pos>568,360</pos>
+		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX12" variable="Map3D" member="yes">
+			<label>Map 3D</label>
+			<pos>568,392</pos>
+		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX13" variable="UseOpenCV" member="yes">
+			<label>Use OpenCV</label>
+			<pos>568,488</pos>
 		</object>
 	</object>
 </wxsmith>

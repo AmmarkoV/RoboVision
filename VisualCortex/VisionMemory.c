@@ -263,10 +263,13 @@ int CloseExtraLargeRegister( unsigned int reg_num )
 void DefaultSettings()
 {
 
+    settings[USE_OPENCV]=1;
+
 
     // Initialize all variables used by Visual Cortex
     settings[INPUT_CALIBRATION]=0; // DEACTIVATED UNTIL FIX :P
     // TEST
+
 
    settings[PASS_TO_WORLD_3D]=0; // FOR NOW ONLY PASSES TO 3D Visualization
    settings[PASS_TO_FACE_DETECTOR]=1;
