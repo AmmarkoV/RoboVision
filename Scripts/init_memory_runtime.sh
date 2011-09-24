@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo mount -t ramfs -o size=200m ramfs RoboVisionRuntime
+sudo mount -t ramfs -o size=100m ramfs RoboVisionRuntime/
 
 echo "Preparing Memory Runtime Space for program!"
 echo "Changing owner of Runtime to guarddog :) !"
