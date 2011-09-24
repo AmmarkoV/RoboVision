@@ -1,6 +1,10 @@
 #!/bin/bash 
 echo "Copying RoboVision To Runtime Directory.."
 ./Scripts/init_memory_runtime.sh
+
+echo "Copying Things inside runtime Directory.."
+./Scripts/memoryfs_prepare.sh
+
 echo "Running RoboVision From Runtime Directory.."
 
 touch RoboVisionRuntime/test_file

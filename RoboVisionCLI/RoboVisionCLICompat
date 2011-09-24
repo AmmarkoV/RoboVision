@@ -1,6 +1,4 @@
-#!/bin/sh
-sudo ./scripts/device_prepare.sh
-./scripts/memoryfs_prepare.sh
+#!/bin/sh  
 LD_PRELOAD=/usr/lib/libv4l/v4l2convert.so  ./bin/Release/RoboVisionCLI
 exit 0
 
