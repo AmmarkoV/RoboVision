@@ -37,7 +37,7 @@
 	<string.h>
 	<ctype.h>
 
-1316955821 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
+1316956321 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
 	<pthread.h>
 	"RoboKernel.h"
 	"command_hal.h"
@@ -88,7 +88,9 @@
 	"webinterface.h"
 	<linux/videodev2.h>
 
-1315826500 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/webinterface.c
+1316955867 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/webinterface.c
+	"RoboKernel.h"
+	<pthread.h>
 	"webinterface.h"
 	"command_hal.h"
 	"visual_system.h"

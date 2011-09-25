@@ -13,7 +13,7 @@
 struct ThreadPassParam { int feednum; };
 int go_to_sleep=0;
 
-extern unsigned int clock_count=0;
+unsigned int clock_count=0;
 
 pthread_t kernel_loop_id=0;
 void * KernelLoop(void *ptr );
@@ -89,6 +89,7 @@ void do_something(unsigned int clock_time)
 
 int StartRoboKernel()
 {
+    clock_count = 0;
     struct ThreadPassParam param={0};
     param.feednum=0;
     if ( pthread_create( &kernel_loop_id , NULL,  KernelLoop ,(void*) &param) != 0 )
