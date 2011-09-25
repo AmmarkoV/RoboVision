@@ -329,7 +329,7 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
 
 int IssueCommandInternal(char * command,char * from)
 {
-  //fprintf(stderr,"Processing command %s \n",command);
+  fprintf(stderr,"Processing command %s , from %s \n",command,from);
   struct InputParserC * ipc=0;
   ipc = InputParser_Create(512,5);
 
@@ -343,6 +343,9 @@ int IssueCommandInternal(char * command,char * from)
   unsigned int chosen_command=CMD_UNKNOWN;
 
   unsigned int words_count = InputParser_SeperateWords(ipc,command,0);
+
+  fprintf(stderr,"Seperated words produced %u words \n",words_count);
+
     if ( words_count > 0 )
     {
       /* NEEDS CARE BECAUSE ITS STRING , MUST HAVE ITS LENGTH AS A PARAMETER :P*/

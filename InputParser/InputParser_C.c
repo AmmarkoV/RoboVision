@@ -413,6 +413,7 @@ int InputParser_SeperateWords(struct InputParserC * ipc,char * inpt,char keepcop
 
   if (CheckIPCOk(ipc)==0) { return 0; }
   if  ( inpt == 0 ) return 0; /* NULL INPUT -> NULL OUTPUT*/
+ /* if  ( strlen(inpt) == 1 ) return 0; <-- TODO FIX THEESE KIND OF INPUTS!*/
 
   unsigned int   STRING_END = strlen(inpt) ;
   int WORDS_SEPERATED = 0 , NEXT_SHOULD_NOT_BE_A_DELIMITER=1 , FOUND_DELIMETER ; /* Ignores starting ,,,,,string,etc*/
