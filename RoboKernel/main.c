@@ -12,6 +12,9 @@
 
 struct ThreadPassParam { int feednum; };
 int go_to_sleep=0;
+
+extern unsigned int clock_count=0;
+
 pthread_t kernel_loop_id=0;
 void * KernelLoop(void *ptr );
 
@@ -100,7 +103,7 @@ void * KernelLoop(void *ptr )
 {
   InitSenses();
   struct timespec clock_count_ts;
-  unsigned int clock_count=0,loopcount=0;
+  unsigned int  loopcount=0;
   unsigned long nano_convert=1000000,clock_countbig=0;
 
    while ( go_to_sleep == 0 )
@@ -116,7 +119,7 @@ void * KernelLoop(void *ptr )
         /* PASS VIDEO REFERENCES AROUND MEMORY */
         PassVideoInputToCortex(clock_count);
 
-        TakeCareOfNetworkInterface(clock_count);
+        //TakeCareOfNetworkInterface(clock_count);
 
         if ( motion_lock_on == 1 ) { CheckAlarm(VisCortx_GetMetric(CHANGES_LEFT) , VisCortx_GetMetric(CHANGES_RIGHT)); }
 

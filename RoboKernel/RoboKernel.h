@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+extern unsigned int clock_count;
 
 int IssueCommand(char * cmd,char * res,unsigned int resmaxsize,char * from);
 

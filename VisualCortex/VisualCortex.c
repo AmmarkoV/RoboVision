@@ -356,12 +356,13 @@ void  VisCortx_FullDepthMap()
 
    VisCortx_SetPipelineSwitch(EXECUTE_DEPTHMAP,1);
 
-
+  unsigned int wait_time = 0, max_wait_time = 2000; // 2 sec max wait time , after this we declare the effort failed :P
   while
-    ( VisCortx_GetPipelineSwitch(EXECUTE_DEPTHMAP) != 0  )
+     ( ( VisCortx_GetPipelineSwitch(EXECUTE_DEPTHMAP) != 0  ) && ( wait_time<max_wait_time ) )
     {
               //Here we wait for the InputAdapter to process request and then set the switch back to 0..
               VisCortxSleep(5);
+              ++wait_time;
     }
 
    return;

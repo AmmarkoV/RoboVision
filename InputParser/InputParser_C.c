@@ -303,12 +303,17 @@ unsigned int InputParser_GetWord(struct InputParserC * ipc,unsigned int num,char
 */
 unsigned char InputParser_WordCompareNoCase(struct InputParserC * ipc,unsigned int num,char * word,unsigned int wordsize)
 {
+    //fprintf(stderr,"InputParser_WordCompareNoCase( %u , %s , %u )",num,word,wordsize);
     if ( wordsize != InputParser_GetWordLength(ipc,num) ) { return 0; }
+    //if (  ipc->str_length <= ipc->tokenlist[num].token_start+wordsize ) { fprintf(stderr,"Erroneous input on InputParser_WordCompareNoCase leads out of array \n"); return 0; }
+
     int i=0;
     for ( i=0; i<wordsize; i++ )
     {
-      if (toupper(ipc->str[ipc->tokenlist[num].token_start+i])!=toupper(word[i])) {  return 0; }
+      if (toupper(ipc->str[ipc->tokenlist[num].token_start+i])!=toupper(word[i])) { /*fprintf(stderr," returning fail ");*/  return 0; }
     }
+
+    //fprintf(stderr," returning success ");
     return 1;
 }
 
@@ -320,6 +325,7 @@ unsigned char InputParser_WordCompareNoCase(struct InputParserC * ipc,unsigned i
 unsigned char InputParser_WordCompare(struct InputParserC * ipc,unsigned int num,char * word,unsigned int wordsize)
 {
     if ( wordsize != InputParser_GetWordLength(ipc,num) ) { return 0; }
+    //if (  ipc->str_length <= ipc->tokenlist[num].token_start+wordsize ) { fprintf(stderr,"Erroneous input on InputParser_WordCompare leads out of array \n"); return 0; }
 
     int i=0;
     for ( i=0; i<wordsize; i++ )

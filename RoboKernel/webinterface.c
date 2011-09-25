@@ -1,3 +1,5 @@
+#include "RoboKernel.h"
+#include <pthread.h>
 #include "webinterface.h"
 #include "command_hal.h"
 #include "visual_system.h"
@@ -6,8 +8,14 @@
 #include "../MotorFoundation/MotorHAL.h"
 #include <unistd.h>
 
+int web_interface_thread_stop = 0;
 int last_snapshot=0;
 int count_snapshot=0;
+
+
+
+pthread_t webinterface_loop_id=0;
+void * WebInterfaceLoop(void *ptr );
 
 int OpenWebInterface()
 {
@@ -17,13 +25,27 @@ int OpenWebInterface()
 
    FILE * pFile=0;
    pFile = fopen ("memfs/public_html/commands.dat","w");
-   if (pFile!=0 ) { fclose(pFile); return 1; }
+   if (pFile!=0 )
+      {
+        fclose(pFile);
+
+            if ( pthread_create( &webinterface_loop_id , NULL,  WebInterfaceLoop ,0) != 0 )
+                {
+                      fprintf(stderr,"Error creating web interface loop \n");
+                      return 0;
+                }
+
+
+        return 1;
+       }
    return 0;
 }
 
 
 int CloseWebInterface()
 {
+ web_interface_thread_stop = 1;
+
  int i=0;
  i=system((const char *)"cp empty.jpeg memfs/public_html/feed0.jpeg");
  if ( i != 0 ) fprintf(stderr,"Error cleaning web interface :P \n");
@@ -186,3 +208,16 @@ int WriteConsoleOutput(char * outstr)
   return 0;
 }
 
+
+void * WebInterfaceLoop(void *ptr )
+{
+
+    while ( web_interface_thread_stop == 0)
+     {
+        usleep(10000);
+        TakeCareOfNetworkInterface(clock_count);
+     }
+
+  web_interface_thread_stop=2;
+  return 0;
+}

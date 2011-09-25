@@ -73,6 +73,7 @@ enum command_id_consts
 
 int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct InputParserC * ipc,char * from)
 {
+  fprintf(stderr,"ExecuteCommandinternal  %u called from %s \n",opcode , from );
   if ( ( opcode == CMD_UNKNOWN ) || (opcode >= CMD_TOTAL_CONSTS) ) { return 0;}
 
   char outptstr[512]={0};
@@ -85,6 +86,7 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
   if ( words_count > 3 ) InputParser_GetWord(ipc,4,cmds_4,512); cmdi_4=InputParser_GetWordInt(ipc,4);
   if ( words_count > 4 ) InputParser_GetWord(ipc,5,cmds_5,512); cmdi_5=InputParser_GetWordInt(ipc,5);
 
+  fprintf(stderr,"Reached Switch  \n" );
 
   switch (opcode)
    { case CMD_UNKNOWN :
@@ -157,7 +159,9 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  VisCorteX_DisparityMapAutoCalibrate(cmdi_1);
      break;
      case CMD_DEPTHMAP :
+                 fprintf(stderr,"Reached DEPTH MAP CODE!\n");
                  sprintf(outptstr,"From %s : Command Parser , Performing DepthMap \n",from);
+                 fprintf(stderr,"FROM IS NOT THE PROBLEM!!\n");
                  FullDepthMap(0);
      break;
      case CMD_FORWARD :

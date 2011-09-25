@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+extern int web_interface_thread_stop;
+
 int OpenWebInterface();
 int CloseWebInterface();
 int WebIntNeedsNewSnapshot();
