@@ -333,6 +333,13 @@ int IssueCommandInternal(char * command,char * from)
   struct InputParserC * ipc=0;
   ipc = InputParser_Create(512,5);
 
+  InputParser_SetDelimeter(ipc,0,',');
+  InputParser_SetDelimeter(ipc,1,(char) 10);
+  InputParser_SetDelimeter(ipc,2,(char) 13);
+  InputParser_SetDelimeter(ipc,3,'(');
+  InputParser_SetDelimeter(ipc,4,')');
+
+
   unsigned int chosen_command=CMD_UNKNOWN;
 
   unsigned int words_count = InputParser_SeperateWords(ipc,command,0);
