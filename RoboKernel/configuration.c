@@ -14,6 +14,10 @@ char user[MAX_STR]="guarddog";
 char group[MAX_STR]="guarddog";
 char parentdir[MAX_STR]="/home/guarddog/RoboVisionRuntime/";
 
+char sound_play_command[MAX_STR]="paplay";
+char tts_command[MAX_STR]="festival --tts";
+
+
 double camera_params_1[12]={0};
 double camera_params_2[12]={0};
 
@@ -183,6 +187,14 @@ void ParseConfigString(char * inpt)
                 camera_params_2[4]=cx;
                 camera_params_2[5]=cy;
             }
+        }else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"SOUND_PLAY_COMMAND",6)==1)
+        {
+           if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,sound_play_command,MAX_STR);
+        }else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"TTS_COMMAND",6)==1)
+        {
+           if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,tts_command,MAX_STR);
         }
       else
       if ( (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO1_DISTORTION_PARAMETERS",28)==1) || (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO2_DISTORTION_PARAMETERS",28)==1) )

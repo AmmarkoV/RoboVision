@@ -9,8 +9,8 @@ int ConnectRoboVisionSensors(char * devname)
     kickstart_arduino_thread(devname);
 
     fprintf(stderr,"Waiting for Arduino to transmit something meaningfull \n");
-    unsigned int tries=0;
-    while ( (!RoboVisionSensorsOK())&&(tries<100) ) { fprintf(stderr,"."); usleep(100000); ++tries; } fprintf(stderr,"\n\n");
+    unsigned int tries=0 , max_tries = 30;
+    while ( (!RoboVisionSensorsOK())&&(tries<max_tries) ) { fprintf(stderr,"."); usleep(100000); ++tries; } fprintf(stderr,"\n\n");
     if ( !RoboVisionSensorsOK() ) { fprintf(stderr,"Could not get any data off arduino check , port / connections \n"); return 0;  }
 
 

@@ -3,14 +3,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include "command_hal.h"
+#include "configuration.h"
 #include "command_implementation.h"
 #include "visual_system.h"
 #include <unistd.h>
 
+
+
+
 int Say(char * what2say)
 {
  char command_s[1024]={0};
- sprintf(command_s,"echo \"%s\" | festival --tts&",what2say);
+ sprintf(command_s,"echo \"%s\" | %s&",what2say,tts_command);
  int i=system((const char * ) command_s);
  return i;
 }
@@ -19,7 +23,7 @@ int Say(char * what2say)
 int PlaySound(char * sndname)
 {
   char command_s[1024]={0};
-  sprintf(command_s,"paplay Sounds/%s.wav&",sndname);
+  sprintf(command_s,"%s Sounds/%s.wav&",sound_play_command,sndname);
   fprintf(stderr," %s \n ",command_s);
   int i=system((const char * ) command_s);
   return i;
@@ -28,7 +32,7 @@ int PlaySound(char * sndname)
 int StopAllSounds()
 {
   char command_s[1024]={0};
-  sprintf(command_s,"killall paplay");
+  sprintf(command_s,"killall %s",sound_play_command);
   int i=system((const char * ) command_s);
   return i;
 }
