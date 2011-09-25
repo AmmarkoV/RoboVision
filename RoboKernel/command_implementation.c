@@ -29,7 +29,7 @@ int Say(char * what2say)
 int PlaySound(char * sndname)
 {
   char command_s[1024]={0};
-  sprintf(command_s,"%s Sounds/%s.wav&",sound_play_command,sndname);
+  sprintf(command_s,"%s ../DataSets/Sounds/%s.wav&",sound_play_command,sndname);
   fprintf(stderr," %s \n ",command_s);
   int i=system((const char * ) command_s);
   return i;

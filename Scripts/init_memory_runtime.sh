@@ -26,7 +26,7 @@ cp RoboVisionCLI/guard.ini RoboVisionRuntime/guard.ini
 cp RoboVisionCLI/RoboVisionCLICompat RoboVisionRuntime/RoboVisionCLICompat
 cp RoboVisionCLI/bin/Release/RoboVisionCLI RoboVisionRuntime/bin/Release/RoboVisionCLI 
 cp RoboVisionCLI/scripts/* RoboVisionRuntime/scripts/
-cp RoboVisionCLI/Sounds/* RoboVisionRuntime/Sounds/
+cp DataSets/Sounds/* RoboVisionRuntime/Sounds/
 
 echo "everything done!"
 
