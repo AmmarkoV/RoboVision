@@ -7,8 +7,11 @@
 #include "motor_system.h"
 #include "webinterface.h"
 #include "configuration.h"
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
+
+#include "../MotorFoundation/MotorHAL.h"
 
 struct ThreadPassParam { int feednum; };
 int go_to_sleep=0;
@@ -97,8 +100,39 @@ int StartRoboKernel()
          fprintf(stderr,"Error creating kernel loop \n");
          return 0;
      }
+
     return 1;
 }
+
+
+unsigned int SanityCheck()
+{
+  char message[1024]={0};
+  if (  GetEmptyFrame() ==  GetFrame(0)) { strcat(message,"Camera 0 is dead."); }
+  if (  GetEmptyFrame() ==  GetFrame(1)) { strcat(message,"Camera 1 is dead."); }
+  if (  (GetEmptyFrame() ==  GetFrame(1)) && (GetEmptyFrame() ==  GetFrame(0)) ) { strcat(message,"I cannot see anything."); }
+
+  if (  !RobotBaseOk() ) {  strcat(message,"I Cannot move."); }
+
+  if (strlen(message)>0)
+   {
+     strcat(message,"Robovision started.");
+     char final_message[1200]={0};
+     sprintf(final_message,"SAY(%s)",message);
+     IssueCommand(final_message,0,0,"RoboKernel");
+
+     return 0;
+   } else
+   {
+     strcat(message,"Robovision started.");
+     char final_message[1200]={0};
+     sprintf(final_message,"SAY(%s)",message);
+     IssueCommand(final_message,0,0,"RoboKernel");
+   }
+  return 1;
+}
+
+
 
 void * KernelLoop(void *ptr )
 {
@@ -106,6 +140,9 @@ void * KernelLoop(void *ptr )
   struct timespec clock_count_ts;
   unsigned int  loopcount=0;
   unsigned long nano_convert=1000000,clock_countbig=0;
+
+
+  SanityCheck();
 
    while ( go_to_sleep == 0 )
     {
@@ -141,6 +178,7 @@ void * KernelLoop(void *ptr )
         usleep(1000);
     }
 
+  IssueCommand("SAY(Robovision closing)",0,0,"RoboKernel");
 
   CloseSenses();
 

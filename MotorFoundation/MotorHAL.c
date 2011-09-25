@@ -157,6 +157,7 @@ unsigned int RobotMoveJoystick(signed int joy_x,signed int joy_y)
 unsigned int RobotBaseOk()
 {
   if ( guard_base == 0) { return 0; }
+  if ( !MD23_ok(guard_base) ) { return 0; }
   return 1;
 }
 

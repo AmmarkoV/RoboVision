@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1316699520 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_implementation.c
+1316990030 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_implementation.c
 	<time.h>
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"command_hal.h"
+	"configuration.h"
 	"command_implementation.h"
 	"visual_system.h"
 	<unistd.h>
@@ -21,7 +22,7 @@
 
 1316852907 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
-1316113350 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.c
+1316989653 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.c
 	"configuration.h"
 	<stdio.h>
 	<stdlib.h>
@@ -29,7 +30,7 @@
 	"../VisualCortex/VisualCortex.h"
 	"../VideoInput/VideoInput.h"
 
-1316974409 /home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.h
+1316990096 /home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.h
 
 1282907255 /home/ammar/Documents/Programming/RoboVision/InputParser/InputParser_C.h
 	<stdlib.h>
@@ -37,7 +38,7 @@
 	<string.h>
 	<ctype.h>
 
-1316956321 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
+1316992113 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
 	<pthread.h>
 	"RoboKernel.h"
 	"command_hal.h"
@@ -47,8 +48,10 @@
 	"motor_system.h"
 	"webinterface.h"
 	"configuration.h"
+	<string.h>
 	<time.h>
 	<unistd.h>
+	"../MotorFoundation/MotorHAL.h"
 
 1316955426 /home/ammar/Documents/Programming/RoboVision/RoboKernel/RoboKernel.h
 
@@ -57,7 +60,7 @@
 1315640890 /home/ammar/Documents/Programming/RoboVision/RoboKernel/motor_system.h
 	"../MotorFoundation/MotorHAL.h"
 
-1315524574 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
+1316992275 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
 	"../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
 
 1289554847 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h

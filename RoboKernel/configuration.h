@@ -16,7 +16,7 @@ extern double camera_params_2[12];
 
 extern char sound_play_command[MAX_STR];
 extern char tts_command[MAX_STR];
-
+extern char tts_command_parameter[MAX_STR];
 
 extern unsigned int fps;
 extern unsigned int draw_on;

@@ -14,8 +14,14 @@
 int Say(char * what2say)
 {
  char command_s[1024]={0};
- sprintf(command_s,"echo \"%s\" | %s&",what2say,tts_command);
+
+ sprintf(command_s,"killall %s&",tts_command); // Clear all running tts instances ( could also add a script that waits for them to end here )
  int i=system((const char * ) command_s);
+ fprintf(stderr,"%s " , command_s);
+
+
+ sprintf(command_s,"echo \"%s\" | %s %s&",what2say,tts_command,tts_command_parameter);
+ i=system((const char * ) command_s);
  return i;
 }
 

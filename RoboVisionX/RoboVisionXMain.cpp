@@ -342,7 +342,7 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
   }
 
 
-    IssueCommand((char *)"Say(Robo Vision X started!)",0,0,(char *)"GUI");
+    //This is done inside RoboKernel now :P IssueCommand((char *)"Say(Robo Vision X started!)",0,0,(char *)"GUI");
 }
 
 

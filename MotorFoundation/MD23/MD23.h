@@ -44,6 +44,8 @@ char * MD23_GetVersion();
 struct md23_device * MD23_Init(char * dev_name,unsigned int threading_on);
 void MD23_Close(struct md23_device * dev);
 
+int MD23_ok(struct md23_device * dev);
+
 int MD23_MoveMotors(struct md23_device * dev,int motornum,unsigned char power,signed int direction);
 int MD23_MoveMotorsDegrees(struct md23_device * dev,int motornum,unsigned char power,signed int degrees);
 int MD23_MoveBothMotorsDifferentDegrees(struct md23_device * dev,unsigned char power1,signed int degrees1 , unsigned char power2,signed int degrees2);
