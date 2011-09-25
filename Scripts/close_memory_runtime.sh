@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo unmount  ../RoboVisionRuntime
+sudo umount  RoboVisionRuntime/
  
 echo "Done"
 exit 0

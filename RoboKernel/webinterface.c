@@ -79,10 +79,11 @@ int WebIntHasNewCommand()
          while( fgets(line,sizeof(line),pFile) )
          {
             words_count = InputParser_SeperateWords(ipc,line,0);
-            if ( words_count>0 ) InputParser_GetWord(ipc,words_count-1,from_string,512); else
-                                 strcpy(from_string,"unknown");
+            if ( words_count>0 ) { InputParser_GetWord(ipc,words_count-1,from_string,256); } else
+                                 { strcpy(from_string,"unknown"); }
             fprintf(stderr,"Command Received : %s\n",line);
             IssueCommandInternal(line,from_string);
+            fprintf(stderr,"Command %s has now returned from processing \n",line);
          }
       /*
          READ COMMANDS HERE!

@@ -1,6 +1,6 @@
 #!/bin/bash 
 echo "Copying RoboVision To Runtime Directory.."
-./Scripts/init_memory_runtime.sh
+sudo ./Scripts/init_memory_runtime.sh
 
 echo "Copying Things inside runtime Directory.."
 ./Scripts/memoryfs_prepare.sh
@@ -17,9 +17,9 @@ fi
 
 cd RoboVisionRuntime
 echo "Starting GuarddoG (TM ;P).."
-./RoboVisionCLICompat
+sudo ./RoboVisionCLICompat
 cd ..
 
-./Scripts/close_memory_runtime.sh
+sudo ./Scripts/close_memory_runtime.sh
 echo "Done.."
 exit 0
