@@ -108,15 +108,15 @@ int StartRoboKernel()
 unsigned int SanityCheck()
 {
   char message[1024]={0};
-  if (  GetEmptyFrame() ==  GetFrame(0)) { strcat(message,"Camera 0 is dead."); }
-  if (  GetEmptyFrame() ==  GetFrame(1)) { strcat(message,"Camera 1 is dead."); }
-  if (  (GetEmptyFrame() ==  GetFrame(1)) && (GetEmptyFrame() ==  GetFrame(0)) ) { strcat(message,"I cannot see anything."); }
+  if (  GetEmptyFrame() ==  GetFrame(0)) { strcat(message," Camera 0 is dead."); }
+  if (  GetEmptyFrame() ==  GetFrame(1)) { strcat(message," Camera 1 is dead."); }
+  if (  (GetEmptyFrame() ==  GetFrame(1)) && (GetEmptyFrame() ==  GetFrame(0)) ) { strcat(message," I cannot see anything."); }
 
-  if (  !RobotBaseOk() ) {  strcat(message,"I Cannot move."); }
+  if (  !RobotBaseOk() ) {  strcat(message," I Cannot move."); }
 
   if (strlen(message)>0)
    {
-     strcat(message,"Robovision started.");
+     strcat(message," Robovision started.");
      char final_message[1200]={0};
      sprintf(final_message,"SAY(%s)",message);
      IssueCommand(final_message,0,0,"RoboKernel");
@@ -124,7 +124,7 @@ unsigned int SanityCheck()
      return 0;
    } else
    {
-     strcat(message,"Robovision started.");
+     strcat(message," Robovision started.");
      char final_message[1200]={0};
      sprintf(final_message,"SAY(%s)",message);
      IssueCommand(final_message,0,0,"RoboKernel");

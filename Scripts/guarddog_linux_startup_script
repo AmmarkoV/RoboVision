@@ -1,0 +1,27 @@
+#! /bin/sh
+# /etc/init.d/blah
+#
+
+# Some things that run always
+# i.e. touch /var/lock/blah
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+  start)
+    echo "Starting GuarddoG script "
+      cd /home/guarddog/RoboVision/
+      sudo ./guarddog_init_service&
+    ;;
+  stop)
+    echo "Stopping script blah"
+       killall guarddog_init_service
+       killall RoboVisionCLI
+       killall RoboVisionX
+    ;;
+  *)
+    echo "Usage: /etc/init.d/guarddog_linux_startup_script {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0 

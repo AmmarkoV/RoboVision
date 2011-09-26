@@ -11,7 +11,8 @@ then exit 0;
 fi
 
 sudo usermod -a -G audio guarddog 
-sudo cp Scripts/guarddog_linux_startup_script.sh /etc/init.d/guarddog_linux_startup_script.sh
-sudo chmod +X /etc/init.d/guarddog_linux_startup_script.sh
-sudo update-rc.d guarddog_linux_startup_script.sh defaults 
+sudo cp Scripts/guarddog_linux_startup_script /etc/init.d/guarddog_linux_startup_script
+sudo chmod 755 /etc/init.d/guarddog_linux_startup_script
+sudo chmod +x /etc/init.d/guarddog_linux_startup_script
+sudo update-rc.d guarddog_linux_startup_script defaults 
 exit 0
