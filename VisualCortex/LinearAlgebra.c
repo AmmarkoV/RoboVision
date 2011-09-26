@@ -104,6 +104,7 @@ int ComputeHomographyFromPointCorrespondanceOpenCV(struct FeatureList * source,s
    CvMat* H =  cvCreateMat(3,3,CV_32FC1);
    int res = cvFindHomography(srcPoints,dstPoints,H,CV_RANSAC,5,0);
 
+
    i=0;
    int x,y;
     for(y=0; y<3; y++)

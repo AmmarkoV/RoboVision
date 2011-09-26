@@ -167,6 +167,29 @@ void glColorRGB(unsigned char R,unsigned char G,unsigned char B)
 
 
 
+void DrawAxis()
+{
+
+    glBegin(GL_LINES);
+      //glLineStipple(1, 0xF00F);
+      glLineWidth(15.0);
+      glColor3f(1.0f, 0.0f, 0.0f);
+      glVertex3f(-1000,0,0);
+      glVertex3f(1000,0,0);
+
+
+      glColor3f(0.0f, 1.0f, 0.0f);
+      glVertex3f(0,-1000,0);
+      glVertex3f(0,1000,0);
+
+      glColor3f(0.0f, 0.0f, 1.0f);
+      glVertex3f(0,0,-1000);
+      glVertex3f(0,0,1000);
+    glEnd();
+
+   glLineWidth(1.0);
+}
+
 void DrawDepthMap(int num,float transx,float transy,float transz,float rotx,float roty, float rotz)
 {
   int x,y,memplace=0;
@@ -174,17 +197,31 @@ void DrawDepthMap(int num,float transx,float transy,float transz,float rotx,floa
   glLoadIdentity();
 
 
-           glRotatef( roty, 0.0, 1.0, 0.0 );
-           glRotatef( rot, 0.0, 1.0, 0.0 );
-           glTranslated(vx,vy,vz);
-           glMultMatrixf(left_transformation);
+    glRotatef( roty, 0.0, 1.0, 0.0 );
+    glRotatef( rot, 0.0, 1.0, 0.0 );
+    glTranslated(vx,vy,vz);
 
-           glBegin(GL_QUADS);
-            for (y=0; y<240; y++)
+
+
+    DrawAxis();
+
+               glBegin(GL_QUADS);
+                 glColor3f(1.0f, 0.0f, 0.0f);
+                 glVertex3f(0,0,1);
+                 glVertex3f(320,0,1);
+                 glVertex3f(320,240,1);
+                 glVertex3f(0,240,1);
+               glEnd();
+
+
+    glPushMatrix();
+     glLoadIdentity();
+     glMultMatrixf(left_transformation);
+      glBegin(GL_QUADS);
+       for (y=0; y<240; y++)
          { for (x=0; x<320; x++)
            {
-            //if ( video_depth[memplace]==0 ) glColor3f(0.0f, 0.0f, 0.0f); else
-                                              glColorRGB(video_color[memplace],video_color[memplace+1],video_color[memplace+2]);
+             glColorRGB(video_color[memplace],video_color[memplace+1],video_color[memplace+2]);
 
             // ACTUAL VOXEL
             glVertex3f(x-1,-(y-1),2*video_depth[memplace]);
@@ -207,8 +244,11 @@ void DrawDepthMap(int num,float transx,float transy,float transz,float rotx,floa
             memplace+=3;
            }
          }
-           glEnd();
-          glPopMatrix();
+      glEnd();
+     glPopMatrix();
+
+
+  glPopMatrix();
 
 }
 
