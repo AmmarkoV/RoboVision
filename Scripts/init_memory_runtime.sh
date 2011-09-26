@@ -8,20 +8,13 @@ sudo chown guarddog:guarddog RoboVisionRuntime
 
 
 echo "Create Directory Structure!"
-mkdir RoboVisionRuntime/bin
-sudo chown guarddog:guarddog RoboVisionRuntime/bin
-mkdir RoboVisionRuntime/bin/Release
-sudo chown guarddog:guarddog RoboVisionRuntime/bin/Release
-mkdir RoboVisionRuntime/scripts
-sudo chown guarddog:guarddog RoboVisionRuntime/scripts
-mkdir RoboVisionRuntime/Sounds
-sudo chown guarddog:guarddog RoboVisionRuntime/Sounds
-mkdir RoboVisionRuntime/Stored
-sudo chown guarddog:guarddog RoboVisionRuntime/Stored
-mkdir RoboVisionRuntime/memfs
-sudo chown guarddog:guarddog RoboVisionRuntime/memfs
-mkdir RoboVisionRuntime/memfs/public_html
-sudo chown guarddog:guarddog RoboVisionRuntime/memfs/public_html
+mkdir RoboVisionRuntime/bin 
+mkdir RoboVisionRuntime/bin/Release 
+mkdir RoboVisionRuntime/scripts 
+mkdir RoboVisionRuntime/Sounds 
+mkdir RoboVisionRuntime/Stored 
+mkdir RoboVisionRuntime/memfs 
+mkdir RoboVisionRuntime/memfs/public_html 
 
 
 echo "Copy Files to run!"

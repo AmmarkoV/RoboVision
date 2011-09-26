@@ -95,6 +95,7 @@ unsigned int DropRootUID()
 {
    fprintf(stderr,"Not Dropping Root UID , until I fix permissions on audio devices and other things \n ");
    // return setuid(1001); // Non Root UID :-P
+   return 0;
 }
 
 int StartRoboKernel()

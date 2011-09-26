@@ -30,12 +30,14 @@ cp RoboVisionRuntime/empty.ppm RoboVisionRuntime/memfs/public_html/feed2.ppm
 cp RoboVisionRuntime/empty.ppm RoboVisionRuntime/memfs/public_html/feed3.ppm
 sudo /etc/init.d/apache2 start
 
+echo "Setting image permissions to current user !"
 sudo chown guarddog:guarddog RoboVisionRuntime/memfs/public_html/*
 sudo chown guarddog:guarddog RoboVisionRuntime/memfs/*
 sudo chown guarddog:guarddog RoboVisionRuntime/*
-sudo chown guarddog:guarddog RoboVisionRuntime/scripts*
-sudo chown guarddog:guarddog RoboVisionRuntime/Sounds*
-
+sudo chown guarddog:guarddog RoboVisionRuntime/scripts/*
+sudo chown guarddog:guarddog RoboVisionRuntime/Sounds/*
+sudo chown guarddog:guarddog RoboVisionRuntime/bin/*
+sudo chown guarddog:guarddog RoboVisionRuntime/bin/Release/*
 
 echo "Done"
 exit 0
