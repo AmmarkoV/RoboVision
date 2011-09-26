@@ -35,11 +35,31 @@ int PlaySound(char * sndname)
   return i;
 }
 
+int RecordSound(char * sndname, unsigned int delay)
+{
+     char command_s[1024]={0};
+    if ( delay != 0 )
+     {
+         sprintf(command_s,"%s -d %u %s memfs/public_html/%s.ogg&",sound_record_command,delay,sound_record_parameter,sndname);
+     } else
+     {
+         sprintf(command_s,"%s %s memfs/public_html/%s.ogg&",sound_record_command,sound_record_parameter,sndname);
+     }
+
+    fprintf(stderr," %s \n ",command_s);
+    int i=system((const char * ) command_s);
+    return i;
+}
+
 int StopAllSounds()
 {
   char command_s[1024]={0};
   sprintf(command_s,"killall %s",sound_play_command);
   int i=system((const char * ) command_s);
+
+  sprintf(command_s,"killall %s",sound_record_command);
+  i=system((const char * ) command_s);
+
   return i;
 }
 

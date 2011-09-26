@@ -3,6 +3,7 @@
 
 int Say(char * what2say);
 int PlaySound(char * sndname);
+int RecordSound(char * sndname, unsigned int delay);
 int StopAllSounds();
 
 void CalibratedView();

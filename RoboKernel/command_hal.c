@@ -35,6 +35,7 @@ enum command_id_consts
   CMD_FIND_FEATURES,
   CMD_CLEAR_FEATURES,
   CMD_PLAYSOUND,
+  CMD_RECORDSOUND,
   CMD_STOPSOUNDS,
   CMD_SAY,
   CMD_AUTOCALIBRATE,
@@ -145,6 +146,11 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  sprintf(outptstr,"From %s : Command Parser Playing sound : %s\n",from,cmds_1);
                  PlaySound(cmds_1);
      break;
+     case CMD_RECORDSOUND :
+                 sprintf(outptstr,"From %s : Command Parser Recording sound : %s duration %u ( call STOP SOUNDS to force stop )\n",from,cmds_1,cmdi_2);
+                 RecordSound(cmds_1,cmdi_2);
+     break;
+
      case CMD_STOPSOUNDS :
                  sprintf(outptstr,"From %s : Command Parser Stopping all sound : \n",from);
                  StopAllSounds();
@@ -365,6 +371,7 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FIND FEATURES",13)==1) { chosen_command=CMD_FIND_FEATURES; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"CLEAR FEATURES",14)==1) { chosen_command=CMD_CLEAR_FEATURES; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"PLAYSOUND",9)==1) { chosen_command=CMD_PLAYSOUND; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"RECORDSOUND",11)==1) { chosen_command=CMD_RECORDSOUND; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"STOP SOUNDS",11)==1) { chosen_command=CMD_STOPSOUNDS; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SAY",3)==1) { chosen_command=CMD_SAY;} else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"AUTO CALIBRATE",14)==1) { chosen_command=CMD_AUTOCALIBRATE; } else
