@@ -1,9 +1,15 @@
 #!/bin/bash
 echo "This script is supposed to download all dependencies , for building RoboVision ( guarddog ) "
 echo "This script supposes a Debian/Ubuntu distro with apt-get as a package manager!"
-echo "If you dont like that press Ctrl+C in the next 10seconds :P !"
 
-sleep +10s
+echo
+echo -n "                Do you want to proceed (Y/N)?"
+read answer
+if test "$answer" != "Y" -a "$answer" != "y";
+then exit 0;
+fi
+
+
 echo "Starting downloads "
 echo "What is basically needed is GCC and libs , WxWidgets , LibV4L development headers , OpenAL , OpenGL/GLUT , Festival (TTS) , OpenCV "
 
