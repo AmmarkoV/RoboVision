@@ -481,6 +481,9 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
        fprintf(stderr,"Registers DEPTH0 and COLOR0 are written to filesystem\n");
        SaveRegisterToFile("DEPTH0",DEPTH_LEFT_VIDEO);
        SaveRegisterToFile("COLOR0",CALIBRATED_LEFT_EYE);
+       SaveTransformationMatrixToFile("LEFT_TRANSFORMATION0",&left_transformation,3,3);
+       SaveTransformationMatrixToFile("RIGHT_TRANSFORMATION0",&right_transformation,3,3);
+
    }
 
   video_register[DEPTH_LEFT].time = video_register[CALIBRATED_LEFT_EYE].time;

@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="21507" topLine="453" />
+		<Cursor position="21381" topLine="456" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="583" topLine="0" />
@@ -14,7 +14,7 @@
 		<Cursor position="1276" topLine="0" />
 	</File>
 	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
-		<Cursor position="1292" topLine="36" />
+		<Cursor position="1787" topLine="36" />
 	</File>
 	<File name="FaceDetection.h" open="1" top="0" tabpos="13">
 		<Cursor position="209" topLine="0" />
@@ -44,7 +44,7 @@
 		<Cursor position="850" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
-		<Cursor position="997" topLine="3" />
+		<Cursor position="997" topLine="81" />
 	</File>
 	<File name="LinearAlgebra.h" open="1" top="0" tabpos="31">
 		<Cursor position="69" topLine="0" />
@@ -115,13 +115,13 @@
 	<File name="VisCortexTimer.h" open="1" top="0" tabpos="42">
 		<Cursor position="384" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="1412" topLine="3" />
+	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
+		<Cursor position="29845" topLine="751" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="2490" topLine="87" />
+		<Cursor position="886" topLine="12" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
 		<Cursor position="11734" topLine="338" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">

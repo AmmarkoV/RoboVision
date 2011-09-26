@@ -38,6 +38,10 @@
 				</Linker>
 			</Target>
 		</Build>
+		<Compiler>
+			<Add option="-march=core2" />
+			<Add option="-Wall" />
+		</Compiler>
 		<Linker>
 			<Add option="`pkg-config --libs opencv`" />
 		</Linker>

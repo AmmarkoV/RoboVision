@@ -766,6 +766,25 @@ int SaveRegisterToFile(char * filename,unsigned int reg_num)
   return 0;
 }
 
+int SaveTransformationMatrixToFile(char * filename,struct TransformationMatrix * matrix,unsigned int cols,unsigned int rows)
+{
+    FILE *fd=0;
+    fd = fopen(filename,"w");
+
+    if (fd!=0)
+	{
+      unsigned int i=0;
+       for ( i=0; i< cols * rows ; i ++ )
+        {
+          fprintf(fd,"%f\n",matrix->item[i]);
+        }
+
+	  fclose(fd);
+	  return 1;
+	}
+  return 0;
+}
+
 int SaveRegisterPartToFile(char * filename,unsigned int reg_num,unsigned int x_start,unsigned int y_start ,unsigned int width,unsigned int height)
 {
     FILE *fd=0;

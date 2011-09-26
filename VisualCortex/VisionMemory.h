@@ -148,6 +148,8 @@ int SaveRegisterToFile(char * filename,unsigned int reg_num);
 int SaveRegisterPartToFile(char * filename,unsigned int reg_num,unsigned int x_start,unsigned int y_start ,unsigned int width,unsigned int height);
 int LoadRegisterFromFile(char * filename,unsigned int reg_num);
 
+int SaveTransformationMatrixToFile(char * filename,struct TransformationMatrix * matrix,unsigned int cols,unsigned int rows);
+
 unsigned int GetTempRegister();
 unsigned int StopUsingVideoRegister(unsigned int thereg);
 
