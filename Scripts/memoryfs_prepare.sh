@@ -1,8 +1,7 @@
 #!/bin/bash
 echo "Prepare Apache Log directory , because it has been mounted on memory and it does not exist!"
 mkdir /var/log/apache2
-touch /var/log/apache2/error.log
-mkdir RoboVisionRuntime/memfs/public_html
+touch /var/log/apache2/error.log 
 echo "Copy Web interface to the new partition!"
 cp RoboVisionRuntime/scripts/webinterface.php RoboVisionRuntime/memfs/public_html/index.php
 cp RoboVisionRuntime/scripts/host.php RoboVisionRuntime/memfs/public_html/host.php
@@ -29,7 +28,14 @@ cp RoboVisionRuntime/empty.ppm RoboVisionRuntime/memfs/public_html/feed0.ppm
 cp RoboVisionRuntime/empty.ppm RoboVisionRuntime/memfs/public_html/feed1.ppm
 cp RoboVisionRuntime/empty.ppm RoboVisionRuntime/memfs/public_html/feed2.ppm
 cp RoboVisionRuntime/empty.ppm RoboVisionRuntime/memfs/public_html/feed3.ppm
-/etc/init.d/apache2 start
+sudo /etc/init.d/apache2 start
+
+sudo chown guarddog:guarddog RoboVisionRuntime/memfs/public_html/*
+sudo chown guarddog:guarddog RoboVisionRuntime/memfs/*
+sudo chown guarddog:guarddog RoboVisionRuntime/*
+sudo chown guarddog:guarddog RoboVisionRuntime/scripts*
+sudo chown guarddog:guarddog RoboVisionRuntime/Sounds*
+
 
 echo "Done"
 exit 0

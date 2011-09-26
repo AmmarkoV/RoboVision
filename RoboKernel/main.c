@@ -93,7 +93,8 @@ void do_something(unsigned int clock_time)
 
 unsigned int DropRootUID()
 {
-    return setuid(1001); // Non Root UID :-P
+   fprintf(stderr,"Not Dropping Root UID , until I fix permissions on audio devices and other things \n ");
+   // return setuid(1001); // Non Root UID :-P
 }
 
 int StartRoboKernel()
