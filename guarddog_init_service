@@ -20,6 +20,11 @@ echo "Starting GuarddoG (TM ;P).."
 sudo ./RoboVisionCLICompat
 cd ..
 
+killall RoboVisionCLI
+killall RoboVisionCLICompat
+
+sleep 5
+
 sudo ./Scripts/close_memory_runtime.sh
 echo "Done.."
 exit 0

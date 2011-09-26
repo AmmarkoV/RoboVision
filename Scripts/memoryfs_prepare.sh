@@ -5,6 +5,10 @@ touch /var/log/apache2/error.log
 mkdir RoboVisionRuntime/memfs/public_html
 echo "Copy Web interface to the new partition!"
 cp RoboVisionRuntime/scripts/webinterface.php RoboVisionRuntime/memfs/public_html/index.php
+cp RoboVisionRuntime/scripts/host.php RoboVisionRuntime/memfs/public_html/host.php
+cp RoboVisionRuntime/scripts/sensor_data RoboVisionRuntime/memfs/public_html/sensor_data
+
+cp RoboVisionRuntime/scripts/webinterface.php RoboVisionRuntime/memfs/public_html/index.php
 cp RoboVisionRuntime/scripts/execute.php RoboVisionRuntime/memfs/public_html/execute.php
 cp RoboVisionRuntime/scripts/video_feeds.html RoboVisionRuntime/memfs/public_html/video_feeds.html
 cp RoboVisionRuntime/scripts/controls.html RoboVisionRuntime/memfs/public_html/controls.html

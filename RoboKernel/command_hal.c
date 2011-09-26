@@ -165,9 +165,7 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  VisCorteX_DisparityMapAutoCalibrate(cmdi_1);
      break;
      case CMD_DEPTHMAP :
-                 fprintf(stderr,"Reached DEPTH MAP CODE!\n");
                  sprintf(outptstr,"From %s : Command Parser , Performing DepthMap \n",from);
-                 fprintf(stderr,"FROM IS NOT THE PROBLEM!!\n");
                  FullDepthMap(0);
      break;
      case CMD_FORWARD :

@@ -1,8 +1,11 @@
 #!/bin/bash
 
+killall festival 
+
+sleep 1 
+
 sudo umount  RoboVisionRuntime/
  
-killall festival 
 
 echo "Done"
 exit 0

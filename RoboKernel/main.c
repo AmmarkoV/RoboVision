@@ -90,6 +90,12 @@ void do_something(unsigned int clock_time)
 
 }
 
+
+unsigned int DropRootUID()
+{
+    return setuid(1001); // Non Root UID :-P
+}
+
 int StartRoboKernel()
 {
     clock_count = 0;
@@ -98,9 +104,11 @@ int StartRoboKernel()
     if ( pthread_create( &kernel_loop_id , NULL,  KernelLoop ,(void*) &param) != 0 )
      {
          fprintf(stderr,"Error creating kernel loop \n");
+         DropRootUID();
          return 0;
      }
 
+    DropRootUID();
     return 1;
 }
 
@@ -133,7 +141,6 @@ unsigned int SanityCheck()
 }
 
 
-
 void * KernelLoop(void *ptr )
 {
   InitSenses();
@@ -143,6 +150,9 @@ void * KernelLoop(void *ptr )
 
 
   SanityCheck();
+
+  DropRootUID();
+
 
    while ( go_to_sleep == 0 )
     {
