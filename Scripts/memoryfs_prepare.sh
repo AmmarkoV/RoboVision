@@ -39,5 +39,5 @@ sudo chown guarddog:guarddog RoboVisionRuntime/Sounds/*
 sudo chown guarddog:guarddog RoboVisionRuntime/bin/*
 sudo chown guarddog:guarddog RoboVisionRuntime/bin/Release/*
 
-echo "Done"
+echo "MemoryFS Prepare Done"
 exit 0

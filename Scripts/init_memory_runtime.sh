@@ -38,5 +38,5 @@ cp DataSets/Sounds/* RoboVisionRuntime/Sounds/
 
 echo "everything done!"
 
-echo "Done"
+echo "Init Memory Runtime Done"
 exit 0

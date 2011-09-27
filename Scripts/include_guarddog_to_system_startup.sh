@@ -9,8 +9,8 @@ read answer
 if test "$answer" != "Y" -a "$answer" != "y";
 then exit 0;
 fi
-
-sudo usermod -a -G audio guarddog 
+ 
+sudo usermod -a -G audio,video guarddog 
 sudo cp Scripts/guarddog_linux_startup_script /etc/init.d/guarddog_linux_startup_script
 sudo chmod 755 /etc/init.d/guarddog_linux_startup_script
 sudo chmod +x /etc/init.d/guarddog_linux_startup_script

@@ -7,5 +7,5 @@ sleep 1
 sudo umount  RoboVisionRuntime/
  
 
-echo "Done"
+echo "Close Memory Runtime Done"
 exit 0

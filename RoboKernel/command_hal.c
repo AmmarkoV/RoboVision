@@ -74,7 +74,7 @@ enum command_id_consts
 
 int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct InputParserC * ipc,char * from)
 {
-  fprintf(stderr,"ExecuteCommandinternal  %u called from %s \n",opcode , from );
+  //fprintf(stderr,"ExecuteCommandinternal  %u called from %s \n",opcode , from );
   if ( ( opcode == CMD_UNKNOWN ) || (opcode >= CMD_TOTAL_CONSTS) ) { return 0;}
 
   char outptstr[512]={0};
@@ -87,7 +87,7 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
   if ( words_count > 3 ) InputParser_GetWord(ipc,4,cmds_4,512); cmdi_4=InputParser_GetWordInt(ipc,4);
   if ( words_count > 4 ) InputParser_GetWord(ipc,5,cmds_5,512); cmdi_5=InputParser_GetWordInt(ipc,5);
 
-  fprintf(stderr,"Reached Switch  \n" );
+
 
   switch (opcode)
    { case CMD_UNKNOWN :
@@ -337,7 +337,7 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
 
 int IssueCommandInternal(char * command,char * from)
 {
-  fprintf(stderr,"Processing command %s , from %s \n",command,from);
+  //fprintf(stderr,"Processing command %s , from %s \n",command,from);
   struct InputParserC * ipc=0;
   ipc = InputParser_Create(512,5);
 
@@ -352,7 +352,7 @@ int IssueCommandInternal(char * command,char * from)
 
   unsigned int words_count = InputParser_SeperateWords(ipc,command,0);
 
-  fprintf(stderr,"Seperated words produced %u words \n",words_count);
+  //fprintf(stderr,"Seperated words produced %u words \n",words_count);
 
     if ( words_count > 0 )
     {

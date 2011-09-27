@@ -43,7 +43,7 @@
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
 		<Cursor position="850" topLine="0" />
 	</File>
-	<File name="LinearAlgebra.c" open="1" top="1" tabpos="25">
+	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
 		<Cursor position="1640" topLine="9" />
 	</File>
 	<File name="LinearAlgebra.h" open="1" top="0" tabpos="31">
@@ -121,7 +121,7 @@
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="886" topLine="12" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
+	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
 		<Cursor position="11734" topLine="338" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
