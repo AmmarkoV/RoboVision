@@ -18,7 +18,7 @@ fi
 
 cd RoboVisionRuntime
 echo "Starting GuarddoG (TM ;P).."
-sudo ./RoboVisionCLICompat
+sudo ./RoboVisionCLICompat noinput
 echo "GuarddoG has stopped , cleaning up .."
 cd ..
 
