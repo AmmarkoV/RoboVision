@@ -30,6 +30,8 @@ unsigned long precalc_memplace_3byte[641][481];
 unsigned long precalc_memplace_1byte[641][481];
 
 
+struct CameraCalibrationData left_calibration_data;
+struct CameraCalibrationData right_calibration_data;
 
 inline unsigned char AbsUCharVDiff(unsigned char param1,unsigned char param2)
 {

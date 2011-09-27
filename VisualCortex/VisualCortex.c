@@ -210,8 +210,62 @@ unsigned int VisCortx_VideoRegistersSynced(unsigned int img_regnum1,unsigned int
 */
 void VisCortx_CameraParameters(int right_cam,double fx,double fy,double cx,double cy,double k1,double k2,double p1,double p2,double k3)
 {
-   if ( right_cam == 0 )  { PrecalcResectioning(resection_left_precalc,fx,fy,cx,cy,k1,k2,p1,p2,k3); } else
-   if ( right_cam == 1 )  { PrecalcResectioning(resection_right_precalc,fx,fy,cx,cy,k1,k2,p1,p2,k3); }
+   if ( right_cam == 0 )
+        {
+           left_calibration_data.fx = fx ;
+           left_calibration_data.fy = fy ;
+
+           left_calibration_data.cx = cx ;
+           left_calibration_data.cy = cy ;
+
+           left_calibration_data.intrinsic_parameters_array[0]=fx;
+           left_calibration_data.intrinsic_parameters_array[1]=0;
+           left_calibration_data.intrinsic_parameters_array[2]=cx;
+
+           left_calibration_data.intrinsic_parameters_array[3]=0;
+           left_calibration_data.intrinsic_parameters_array[4]=fy;
+           left_calibration_data.intrinsic_parameters_array[5]=cy;
+
+           left_calibration_data.intrinsic_parameters_array[6]=0;
+           left_calibration_data.intrinsic_parameters_array[7]=0;
+           left_calibration_data.intrinsic_parameters_array[8]=1;
+
+           left_calibration_data.k1 = k1 ;
+           left_calibration_data.k2 = k2 ;
+           left_calibration_data.p1 = p1 ;
+           left_calibration_data.p2 = p2 ;
+           left_calibration_data.k3 = k3 ;
+
+           PrecalcResectioning(resection_left_precalc,fx,fy,cx,cy,k1,k2,p1,p2,k3);
+        } else
+   if ( right_cam == 1 )
+        {
+           right_calibration_data.fx = fx ;
+           right_calibration_data.fy = fy ;
+
+           right_calibration_data.cx = cx ;
+           right_calibration_data.cy = cy ;
+
+           right_calibration_data.intrinsic_parameters_array[0]=fx;
+           right_calibration_data.intrinsic_parameters_array[1]=0;
+           right_calibration_data.intrinsic_parameters_array[2]=cx;
+
+           right_calibration_data.intrinsic_parameters_array[3]=0;
+           right_calibration_data.intrinsic_parameters_array[4]=fy;
+           right_calibration_data.intrinsic_parameters_array[5]=cy;
+
+           right_calibration_data.intrinsic_parameters_array[6]=0;
+           right_calibration_data.intrinsic_parameters_array[7]=0;
+           right_calibration_data.intrinsic_parameters_array[8]=1;
+
+           right_calibration_data.k1 = k1 ;
+           right_calibration_data.k2 = k2 ;
+           right_calibration_data.p1 = p1 ;
+           right_calibration_data.p2 = p2 ;
+           right_calibration_data.k3 = k3 ;
+
+           PrecalcResectioning(resection_right_precalc,fx,fy,cx,cy,k1,k2,p1,p2,k3);
+        }
 }
 
 

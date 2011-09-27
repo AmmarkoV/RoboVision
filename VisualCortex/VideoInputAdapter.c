@@ -125,11 +125,11 @@ inline unsigned int FrameProcessing
              {
                if (REG_EYE == LEFT_EYE )
                 {
-                  if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,&left_transformation); }
+                  if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,&left_calibration_data,&left_transformation); }
                 } else
                if (REG_EYE == RIGHT_EYE )
                 {
-                  if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,&right_transformation); }
+                  if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,&right_calibration_data,&right_transformation); }
                 }
              }
 

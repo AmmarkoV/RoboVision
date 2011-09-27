@@ -99,7 +99,7 @@ CvMat* CreateHomographyRotationTranslationMatrix( CvMat* m_homography,CvMat* m_i
 
     int i;
     // Vectors holding columns of H and R:
-    //得到Homography的三列,其实可以直接用cvGetCol().
+    //Homography cvGetCol().
     double a_H1[3];
     CvMat  m_H1 = cvMat( 3, 1, CV_64FC1, a_H1 );
     for( i = 0; i < 3; i++ ) cvmSet( &m_H1, i, 0, cvmGet( m_homography, i, 0 ) );
@@ -134,7 +134,7 @@ CvMat* CreateHomographyRotationTranslationMatrix( CvMat* m_homography,CvMat* m_i
 
     ////////////////////////////////////////////////////////
     // Create inverse calibration matrix:
-    CvMat* m_Cinv = inverseCalibrationMatrix( m_intric);//应该是内参数阵求逆.
+    CvMat* m_Cinv = inverseCalibrationMatrix( m_intric);// .
 
     // Create norming factor lambda:
     cvGEMM( m_Cinv, &m_H1, 1, NULL, 0, &m_CinvH1, 0 );
@@ -179,7 +179,7 @@ CvMat* CreateHomographyRotationTranslationMatrix( CvMat* m_homography,CvMat* m_i
 
 
 
-int ComputeHomographyFromPointCorrespondanceOpenCV(struct FeatureList * source,struct TransformationMatrix * E)
+int ComputeHomographyFromPointCorrespondanceOpenCV(struct FeatureList * source,struct CameraCalibrationData * calibration,struct TransformationMatrix * E)
 {
    if ( source->current_features == 0 ) { return 0; }
    int i=0;
@@ -211,19 +211,25 @@ int ComputeHomographyFromPointCorrespondanceOpenCV(struct FeatureList * source,s
      }
 
    // transformed output image
- /*
-   IplImage  * image = cvCreateImage( cvSize(320,240), IPL_DEPTH_8U, 3 );
-   memcpy(image->imageData , video_register[CALIBRATED_LEFT_EYE].pixels , metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
-   IplImage  * dstImg = cvCloneImage(image);
-   cvWarpPerspective(image, dstImg, H , 0 , cvScalarAll(0) );
-   memcpy( video_register[CALIBRATED_LEFT_EYE].pixels , dstImg->imageData , metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
-   cvReleaseImage( &image );
-   cvReleaseImage( &dstImg );
- */
+   CvMat*  intriMat=cvCreateMat(3,3,CV_64F); //cvMat(3,3,CV_64F,calibration->intrinsic_parameters_array);
+           cvmSet(intriMat,0,0,calibration->intrinsic_parameters_array[0]);
+           cvmSet(intriMat,0,1,calibration->intrinsic_parameters_array[1]);
+           cvmSet(intriMat,0,2,calibration->intrinsic_parameters_array[2]);
+           cvmSet(intriMat,1,0,calibration->intrinsic_parameters_array[3]);
+           cvmSet(intriMat,1,1,calibration->intrinsic_parameters_array[4]);
+           cvmSet(intriMat,1,2,calibration->intrinsic_parameters_array[5]);
+           cvmSet(intriMat,2,0,calibration->intrinsic_parameters_array[6]);
+           cvmSet(intriMat,2,1,calibration->intrinsic_parameters_array[7]);
+           cvmSet(intriMat,2,2,calibration->intrinsic_parameters_array[8]);
+
+   CvMat*  homography_decomposition_to_translation_and_rotation = CreateHomographyRotationTranslationMatrix(H,intriMat);
+
+     /* TODO ADD CODE HERE */
 
    cvReleaseMat(&srcPoints);
    cvReleaseMat(&dstPoints);
    cvReleaseMat(&H);
+   cvReleaseMat(&homography_decomposition_to_translation_and_rotation);
 
    return res;
 }
