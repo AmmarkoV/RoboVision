@@ -6,11 +6,11 @@
 #include "FeatureLists.h"
 #include "StateSetting.h"
 
-IplImage  *image;
-char * opencv_pointer_retainer; // This is a kind of an ugly hack ( see lines noted with UGLY HACK ) to minimize memcpying between my VisCortex and OpenCV , without disturbing OpenCV
+IplImage  *image=0;
+char * opencv_pointer_retainer=0; // This is a kind of an ugly hack ( see lines noted with UGLY HACK ) to minimize memcpying between my VisCortex and OpenCV , without disturbing OpenCV
 
-CvHaarClassifierCascade *cascade;
-CvMemStorage            *storage;
+CvHaarClassifierCascade *cascade=0;
+CvMemStorage            *storage=0;
 
 
 void InitFaceRecognition(unsigned int x,unsigned int y)

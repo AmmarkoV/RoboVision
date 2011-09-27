@@ -14,16 +14,16 @@ unsigned int PATCH_SIZE_MULT_3=PATCH_SIZE*3;
 // MEMORY
 
 #define MAX_CORNERS 500
-IplImage  *eig_image;
-IplImage  *tmp_image;
+IplImage  *eig_image=0;
+IplImage  *tmp_image=0;
 
-CvPoint2D32f* cornersA;
-CvPoint2D32f* cornersB;
+CvPoint2D32f* cornersA=0;
+CvPoint2D32f* cornersB=0;
 
-IplImage  *image_1;
-char * opencv_pointer_retainer_1; // This is a kind of an ugly hack ( see lines noted with UGLY HACK ) to minimize memcpying between my VisCortex and OpenCV , without disturbing OpenCV
-IplImage  *image_2;
-char * opencv_pointer_retainer_2; // This is a kind of an ugly hack ( see lines noted with UGLY HACK ) to minimize memcpying between my VisCortex and OpenCV , without disturbing OpenCV
+IplImage  *image_1=0;
+char * opencv_pointer_retainer_1=0; // This is a kind of an ugly hack ( see lines noted with UGLY HACK ) to minimize memcpying between my VisCortex and OpenCV , without disturbing OpenCV
+IplImage  *image_2=0;
+char * opencv_pointer_retainer_2=0; // This is a kind of an ugly hack ( see lines noted with UGLY HACK ) to minimize memcpying between my VisCortex and OpenCV , without disturbing OpenCV
 
 
 

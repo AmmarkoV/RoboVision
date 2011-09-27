@@ -216,7 +216,10 @@ void DrawDepthMap(int num,float transx,float transy,float transz,float rotx,floa
 
     glPushMatrix();
      glLoadIdentity();
-     glMultMatrixf(left_transformation);
+      glRotatef( roty, 0.0, 1.0, 0.0 );
+      glRotatef( rot, 0.0, 1.0, 0.0 );
+      glTranslated(vx,vy,vz);
+    // glMultMatrixf(left_transformation);
       glBegin(GL_QUADS);
        for (y=0; y<240; y++)
          { for (x=0; x<320; x++)

@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include "cv.h"
 #include <gsl/gsl_linalg.h>
+#include <cv.h>
+#include <highgui.h>
+#include <ctype.h>
 
 int GetCameraCoords_From_Angle(float horizontal_angle,float vertical_angle,unsigned int * uint_pixel_x,unsigned int * uint_pixel_y)
 {
@@ -47,43 +50,133 @@ int GetCameraCoords_From_Angle(float horizontal_angle,float vertical_angle,unsig
 
 
 
-/*
 
 
-int ComputeFundamentalMatrix(void)
-{
-    //The following program solves the linear system A x = b. The system to be solved is, and the solution is found using LU decomposition of the matrix A.
-       double a_data[] = { 0.18, 0.60, 0.57, 0.96,
-                           0.41, 0.24, 0.99, 0.58,
-                           0.14, 0.30, 0.97, 0.66,
-                           0.51, 0.13, 0.19, 0.85 };
+ CvMat * inverseCalibrationMatrix( CvMat *in )
+ {
+    //http://forum.openframeworks.cc/index.php?topic=2313.0
 
-       double b_data[] = { 1.0, 2.0, 3.0, 4.0 };
-
-       gsl_matrix_view m
-         = gsl_matrix_view_array (a_data, 4, 4);
-
-       gsl_vector_view b
-         = gsl_vector_view_array (b_data, 4);
-
-       gsl_vector *x = gsl_vector_alloc (4);
-
-       int s;
-
-       gsl_permutation * p = gsl_permutation_alloc (4);
-
-       gsl_linalg_LU_decomp (&m.matrix, p, &s);
-
-       gsl_linalg_LU_solve (&m.matrix, p, &b.vector, x);
-
-       printf ("x = \n");
-       gsl_vector_fprintf (stdout, x, "%g");
-
-       gsl_permutation_free (p);
-       gsl_vector_free (x);
-       return 0;
+    if( cvmGet( in, 1, 1 ) != 0 ){
+        CvMat* out  = cvCreateMat( 3, 3, CV_64FC1 );
+        double tau  = cvmGet( in, 0, 0 )/cvmGet( in, 1, 1 );
+        double f    = cvmGet( in, 1, 1 );
+        double u0   = cvmGet( in, 0, 2 );
+        double v0   = cvmGet( in, 1, 2 );
+        cvmSet( out, 0, 0, 1.00/(tau*f)     );
+        cvmSet( out, 0, 1, 0.00             );
+        cvmSet( out, 0, 2, -(u0)/(tau*f)    );
+        cvmSet( out, 1, 0, 0.00             );
+        cvmSet( out, 1, 1, 1.00/f           );
+        cvmSet( out, 1, 2, -(v0)/f          );
+        cvmSet( out, 2, 0, 0.00             );
+        cvmSet( out, 2, 1, 0.00             );
+        cvmSet( out, 2, 2, 1.00             );
+        return out;
+    } else
+        return NULL;
 }
-*/
+
+void ComposeRotationTranslationTo3x4Matrix( CvMat* RotTrans , CvMat* Rot, CvMat*Trans )
+{
+    cvmSet( RotTrans, 0, 0, cvmGet( Rot, 0, 0 ) );
+    cvmSet( RotTrans, 0, 1, cvmGet( Rot, 0, 1 ) );
+    cvmSet( RotTrans, 0, 2, cvmGet( Rot, 0, 2 ) );
+    cvmSet( RotTrans, 1, 0, cvmGet( Rot, 1, 0 ) );
+    cvmSet( RotTrans, 1, 1, cvmGet( Rot, 1, 1 ) );
+    cvmSet( RotTrans, 1, 2, cvmGet( Rot, 1, 2 ) );
+    cvmSet( RotTrans, 2, 0, cvmGet( Rot, 2, 0 ) );
+    cvmSet( RotTrans, 2, 1, cvmGet( Rot, 2, 1 ) );
+    cvmSet( RotTrans, 2, 2, cvmGet( Rot, 2, 2 ) );
+    cvmSet( RotTrans, 0, 3, -cvmGet( Trans, 0, 0 ) );
+    cvmSet( RotTrans, 1, 3, -cvmGet( Trans, 1, 0 ) );
+    cvmSet( RotTrans, 2, 3, -cvmGet( Trans, 2, 0 ) );
+}
+
+CvMat* CreateHomographyRotationTranslationMatrix( CvMat* m_homography,CvMat* m_intric )
+{
+   //http://forum.openframeworks.cc/index.php?topic=2313.0
+
+
+    int i;
+    // Vectors holding columns of H and R:
+    //得到Homography的三列,其实可以直接用cvGetCol().
+    double a_H1[3];
+    CvMat  m_H1 = cvMat( 3, 1, CV_64FC1, a_H1 );
+    for( i = 0; i < 3; i++ ) cvmSet( &m_H1, i, 0, cvmGet( m_homography, i, 0 ) );
+
+    double a_H2[3];
+    CvMat  m_H2 = cvMat( 3, 1, CV_64FC1, a_H2 );
+    for( i = 0; i < 3; i++ ) cvmSet( &m_H2, i, 0, cvmGet( m_homography, i, 1 ) );
+
+    double a_H3[3];
+    CvMat  m_H3 = cvMat( 3, 1, CV_64FC1, a_H3 );
+    for( i = 0; i < 3; i++ ) cvmSet( &m_H3, i, 0, cvmGet( m_homography, i, 2 ) );
+
+    double a_CinvH1[3];
+    CvMat  m_CinvH1 = cvMat( 3, 1, CV_64FC1, a_CinvH1 );
+
+    double a_R1[3];
+    CvMat  m_R1 = cvMat( 3, 1, CV_64FC1, a_R1 );
+
+    double a_R2[3];
+    CvMat  m_R2 = cvMat( 3, 1, CV_64FC1, a_R2 );
+
+    double a_R3[3];
+    CvMat  m_R3 = cvMat( 3, 1, CV_64FC1, a_R3 );
+
+    // The rotation matrix:
+    double a_R[9];
+    CvMat  m_R = cvMat( 3, 3, CV_64FC1, a_R );
+
+    // The translation vector:
+    double a_T[3];
+    CvMat  m_T = cvMat( 3, 1, CV_64FC1, a_T );
+
+    ////////////////////////////////////////////////////////
+    // Create inverse calibration matrix:
+    CvMat* m_Cinv = inverseCalibrationMatrix( m_intric);//应该是内参数阵求逆.
+
+    // Create norming factor lambda:
+    cvGEMM( m_Cinv, &m_H1, 1, NULL, 0, &m_CinvH1, 0 );
+
+    // Search next orthonormal matrix:
+    if( cvNorm( &m_CinvH1, NULL, CV_L2, NULL ) != 0 )
+    {
+        double lambda = 1.00/cvNorm( &m_CinvH1, NULL, CV_L2, NULL );
+
+        // Create normalized R1 & R2:
+        cvGEMM( m_Cinv, &m_H1, lambda, NULL, 0, &m_R1, 0 );
+        cvGEMM( m_Cinv, &m_H2, lambda, NULL, 0, &m_R2, 0 );
+
+        // Get R3 orthonormal to R1 and R2:
+        cvCrossProduct( &m_R1, &m_R2, &m_R3 );
+
+        // Put the rotation column vectors in the rotation matrix:
+        for( i = 0; i < 3; i++ ){
+            cvmSet( &m_R, i, 0,  cvmGet( &m_R1, i, 0 ) );
+            cvmSet( &m_R, i, 1,  cvmGet( &m_R2, i, 0 ) );
+            cvmSet( &m_R, i, 2,  cvmGet( &m_R3, i, 0 ) );
+        }
+
+        // Calculate Translation Vector T (- because of its definition):
+        cvGEMM( m_Cinv, &m_H3, -lambda, NULL, 0, &m_T, 0 );
+
+        // Transformation of R into - in Frobenius sense - next orthonormal matrix:
+        double a_W[9];  CvMat  m_W  = cvMat( 3, 3, CV_64FC1, a_W  );
+        double a_U[9];  CvMat  m_U  = cvMat( 3, 3, CV_64FC1, a_U  );
+        double a_Vt[9]; CvMat  m_Vt = cvMat( 3, 3, CV_64FC1, a_Vt );
+        cvSVD( &m_R, &m_W, &m_U, &m_Vt, CV_SVD_MODIFY_A | CV_SVD_V_T );
+        cvMatMul( &m_U, &m_Vt, &m_R );
+        // Put the rotation matrix and the translation vector together:
+        CvMat*  m_view_to_cam = cvCreateMat( 3, 4, CV_64FC1 );
+        ComposeRotationTranslationTo3x4Matrix( m_view_to_cam, &m_R, &m_T );
+        return m_view_to_cam;
+    }
+   return 0;
+}
+
+
+
 
 
 int ComputeHomographyFromPointCorrespondanceOpenCV(struct FeatureList * source,struct TransformationMatrix * E)
@@ -117,12 +210,25 @@ int ComputeHomographyFromPointCorrespondanceOpenCV(struct FeatureList * source,s
        //fprintf(stderr, "\n");
      }
 
+   // transformed output image
+ /*
+   IplImage  * image = cvCreateImage( cvSize(320,240), IPL_DEPTH_8U, 3 );
+   memcpy(image->imageData , video_register[CALIBRATED_LEFT_EYE].pixels , metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
+   IplImage  * dstImg = cvCloneImage(image);
+   cvWarpPerspective(image, dstImg, H , 0 , cvScalarAll(0) );
+   memcpy( video_register[CALIBRATED_LEFT_EYE].pixels , dstImg->imageData , metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
+   cvReleaseImage( &image );
+   cvReleaseImage( &dstImg );
+ */
+
    cvReleaseMat(&srcPoints);
    cvReleaseMat(&dstPoints);
    cvReleaseMat(&H);
 
    return res;
 }
+
+
 
 int ComputeFundamentalMatrixFromPointCorrespondance(struct FeatureList * list,struct TransformationMatrix * E)
 {
