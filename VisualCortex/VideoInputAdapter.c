@@ -125,11 +125,23 @@ inline unsigned int FrameProcessing
              {
                if (REG_EYE == LEFT_EYE )
                 {
-                  if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,&left_calibration_data,&left_transformation); }
+                  if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,
+                                                                                              &left_calibration_data,
+                                                                                              &left_rotation_transformation,
+                                                                                              &left_translation_transformation,
+                                                                                              &left_rotation_and_translation_matrix,
+                                                                                              &left_homography);
+                                              }
                 } else
                if (REG_EYE == RIGHT_EYE )
                 {
-                  if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,&right_calibration_data,&right_transformation); }
+                  if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,
+                                                                                               &right_calibration_data,
+                                                                                               &right_rotation_transformation,
+                                                                                               &right_translation_transformation,
+                                                                                               &right_rotation_and_translation_matrix,
+                                                                                               &right_homography);
+                                              }
                 }
              }
 

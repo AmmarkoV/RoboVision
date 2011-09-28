@@ -33,8 +33,19 @@ struct LargeVideoRegister l_video_register[LARGE_REGISTERS_COUNT]={{0},{0},{0},{
 struct ExtraLargeVideoRegister xl_video_register[EXTRA_LARGE_REGISTERS_COUNT]={{0},{0},{0},{0}};
 struct DepthData * depth_data_array=0;
 
-struct TransformationMatrix left_transformation;
-struct TransformationMatrix right_transformation;
+struct TransformationMatrix left_homography;
+struct TransformationMatrix right_homography;
+
+struct TransformationMatrix left_rotation_transformation;
+struct TransformationMatrix right_rotation_transformation;
+
+
+struct TransformationMatrix left_translation_transformation;
+struct TransformationMatrix right_translation_transformation;
+
+struct TransformationMatrix left_rotation_and_translation_matrix;
+struct TransformationMatrix right_rotation_and_translation_matrix;
+
 
 float camera_distance=0;
 float camera_diagonal_field_of_view=0,camera_horizontal_field_of_view=0,camera_vertical_field_of_view=0;
@@ -141,6 +152,15 @@ int InitExtraLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned in
 }
 
 
+int ClearTransformationMatrix(struct TransformationMatrix * matrix)
+{
+   if ( matrix== 0 ) { return 0; }
+   matrix->columns=0;
+   matrix->rows=0;
+   int i=0;
+   for ( i=0; i<16; i++ ) { matrix->item[i]=0.0; }
+   return 1;
+}
 
 int ClearVideoRegister(unsigned int reg_num)
 {
@@ -766,7 +786,8 @@ int SaveRegisterToFile(char * filename,unsigned int reg_num)
   return 0;
 }
 
-int SaveTransformationMatrixToFile(char * filename,struct TransformationMatrix * matrix,unsigned int cols,unsigned int rows)
+
+int SaveTransformationMatrixToFile(char * filename,struct TransformationMatrix * matrix)
 {
     FILE *fd=0;
     fd = fopen(filename,"w");
@@ -774,7 +795,7 @@ int SaveTransformationMatrixToFile(char * filename,struct TransformationMatrix *
     if (fd!=0)
 	{
       unsigned int i=0;
-       for ( i=0; i< cols * rows ; i ++ )
+       for ( i=0; i< matrix->columns*matrix->rows; i++ )
         {
           fprintf(fd,"%f\n",matrix->item[i]);
         }

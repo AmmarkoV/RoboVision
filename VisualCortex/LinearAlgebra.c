@@ -96,6 +96,10 @@ CvMat* CreateHomographyRotationTranslationMatrix( CvMat* m_homography,CvMat* m_i
 {
    //http://forum.openframeworks.cc/index.php?topic=2313.0
 
+    //This produces Relative Rotation
+    // Suppose you are at a some position P(X,Y,Z), and you are looking off in some direction D. Your position is represented by the translation matrix T, and the direction of your view is represented by the rotation matrix R. The combined information is held in the translation matrix Tr. We saw this at the beginning of the presentation:
+
+
 
     int i;
     // Vectors holding columns of H and R:
@@ -179,7 +183,12 @@ CvMat* CreateHomographyRotationTranslationMatrix( CvMat* m_homography,CvMat* m_i
 
 
 
-int ComputeHomographyFromPointCorrespondanceOpenCV(struct FeatureList * source,struct CameraCalibrationData * calibration,struct TransformationMatrix * E)
+int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source,
+                                                     struct CameraCalibrationData * calibration,
+                                                     struct TransformationMatrix * rotation_matrix,
+                                                     struct TransformationMatrix * translation_matrix,
+                                                     struct TransformationMatrix * rotation_and_translation_matrix,
+                                                     struct TransformationMatrix * homography_matrix)
 {
    if ( source->current_features == 0 ) { return 0; }
    int i=0;
@@ -199,37 +208,78 @@ int ComputeHomographyFromPointCorrespondanceOpenCV(struct FeatureList * source,s
 
 
    i=0;
-   int x,y;
-    for(y=0; y<3; y++)
-     {
-       for(x=0; x<3; x++)
+   int mem=0,j=0;
+   homography_matrix->rows=3;
+   homography_matrix->columns=3;
+    for(i=0; i<3; i++)
+     { for(j=0; j<3; j++)
        {
-         //fprintf(stderr, "%f ",cvmGet(H,x,y));
-         E->item[i++]=cvmGet(H,x,y);
+         homography_matrix->item[mem++]=cvmGet(H,i,j);
        }
-       //fprintf(stderr, "\n");
      }
 
    // transformed output image
    CvMat*  intriMat=cvCreateMat(3,3,CV_64F); //cvMat(3,3,CV_64F,calibration->intrinsic_parameters_array);
-           cvmSet(intriMat,0,0,calibration->intrinsic_parameters_array[0]);
-           cvmSet(intriMat,0,1,calibration->intrinsic_parameters_array[1]);
-           cvmSet(intriMat,0,2,calibration->intrinsic_parameters_array[2]);
-           cvmSet(intriMat,1,0,calibration->intrinsic_parameters_array[3]);
-           cvmSet(intriMat,1,1,calibration->intrinsic_parameters_array[4]);
-           cvmSet(intriMat,1,2,calibration->intrinsic_parameters_array[5]);
-           cvmSet(intriMat,2,0,calibration->intrinsic_parameters_array[6]);
-           cvmSet(intriMat,2,1,calibration->intrinsic_parameters_array[7]);
-           cvmSet(intriMat,2,2,calibration->intrinsic_parameters_array[8]);
+           cvmSet(intriMat,0,0,calibration->intrinsic_parameters_array[0]); cvmSet(intriMat,0,1,calibration->intrinsic_parameters_array[1]); cvmSet(intriMat,0,2,calibration->intrinsic_parameters_array[2]);
+           cvmSet(intriMat,1,0,calibration->intrinsic_parameters_array[3]); cvmSet(intriMat,1,1,calibration->intrinsic_parameters_array[4]); cvmSet(intriMat,1,2,calibration->intrinsic_parameters_array[5]);
+           cvmSet(intriMat,2,0,calibration->intrinsic_parameters_array[6]); cvmSet(intriMat,2,1,calibration->intrinsic_parameters_array[7]); cvmSet(intriMat,2,2,calibration->intrinsic_parameters_array[8]);
 
    CvMat*  homography_decomposition_to_translation_and_rotation = CreateHomographyRotationTranslationMatrix(H,intriMat);
 
-     /* TODO ADD CODE HERE */
+
+
+    ClearTransformationMatrix(rotation_matrix);
+    rotation_matrix->rows=3;
+    rotation_matrix->columns=3;
+    rotation_matrix->item[0]=cvmGet(homography_decomposition_to_translation_and_rotation,0,0);
+    rotation_matrix->item[1]=cvmGet(homography_decomposition_to_translation_and_rotation,0,1);
+    rotation_matrix->item[2]=cvmGet(homography_decomposition_to_translation_and_rotation,0,2);
+    rotation_matrix->item[3]=cvmGet(homography_decomposition_to_translation_and_rotation,1,0);
+    rotation_matrix->item[4]=cvmGet(homography_decomposition_to_translation_and_rotation,1,1);
+    rotation_matrix->item[5]=cvmGet(homography_decomposition_to_translation_and_rotation,1,2);
+    rotation_matrix->item[6]=cvmGet(homography_decomposition_to_translation_and_rotation,2,0);
+    rotation_matrix->item[7]=cvmGet(homography_decomposition_to_translation_and_rotation,2,1);
+    rotation_matrix->item[8]=cvmGet(homography_decomposition_to_translation_and_rotation,2,2);
+
+
+    ClearTransformationMatrix(translation_matrix);
+    translation_matrix->rows=1;
+    translation_matrix->columns=4;
+    translation_matrix->item[0]=cvmGet(homography_decomposition_to_translation_and_rotation,0,3);
+    translation_matrix->item[1]=cvmGet(homography_decomposition_to_translation_and_rotation,1,3);
+    translation_matrix->item[2]=cvmGet(homography_decomposition_to_translation_and_rotation,2,3);
+    translation_matrix->item[3]=1;
+
+
+    ClearTransformationMatrix(rotation_and_translation_matrix);
+    rotation_and_translation_matrix->rows=4;
+    rotation_and_translation_matrix->columns=4;
+    rotation_and_translation_matrix->item[0]=cvmGet(homography_decomposition_to_translation_and_rotation,0,0);
+    rotation_and_translation_matrix->item[1]=cvmGet(homography_decomposition_to_translation_and_rotation,0,1);
+    rotation_and_translation_matrix->item[2]=cvmGet(homography_decomposition_to_translation_and_rotation,0,2);
+
+    rotation_and_translation_matrix->item[4]=cvmGet(homography_decomposition_to_translation_and_rotation,1,0);
+    rotation_and_translation_matrix->item[5]=cvmGet(homography_decomposition_to_translation_and_rotation,1,1);
+    rotation_and_translation_matrix->item[6]=cvmGet(homography_decomposition_to_translation_and_rotation,1,2);
+
+    rotation_and_translation_matrix->item[8]=cvmGet(homography_decomposition_to_translation_and_rotation,2,0);
+    rotation_and_translation_matrix->item[9]=cvmGet(homography_decomposition_to_translation_and_rotation,2,1);
+    rotation_and_translation_matrix->item[10]=cvmGet(homography_decomposition_to_translation_and_rotation,2,2);
+
+    rotation_and_translation_matrix->item[3]=cvmGet(homography_decomposition_to_translation_and_rotation,0,3);
+    rotation_and_translation_matrix->item[7]=cvmGet(homography_decomposition_to_translation_and_rotation,1,3);
+    rotation_and_translation_matrix->item[11]=cvmGet(homography_decomposition_to_translation_and_rotation,2,3);
+
+    rotation_and_translation_matrix->item[12]=0.0;
+    rotation_and_translation_matrix->item[13]=0.0;
+    rotation_and_translation_matrix->item[14]=0.0;
+    rotation_and_translation_matrix->item[15]=1.0;
 
    cvReleaseMat(&srcPoints);
    cvReleaseMat(&dstPoints);
    cvReleaseMat(&H);
    cvReleaseMat(&homography_decomposition_to_translation_and_rotation);
+   cvReleaseMat(&intriMat);
 
    return res;
 }

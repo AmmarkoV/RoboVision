@@ -34,7 +34,9 @@ struct ImageRegion{
 
 struct TransformationMatrix
 {
-    float item[9];
+    unsigned int rows;
+    unsigned int columns;
+    float item[17];
 };
 
 struct Histogram
@@ -110,9 +112,18 @@ extern float camera_diagonal_field_of_view,camera_horizontal_field_of_view,camer
 
 extern float depth_units_in_cm[256];
 
+extern struct TransformationMatrix left_homography;
+extern struct TransformationMatrix right_homography;
 
-extern struct TransformationMatrix left_transformation;
-extern struct TransformationMatrix right_transformation;
+extern struct TransformationMatrix left_rotation_transformation;
+extern struct TransformationMatrix right_rotation_transformation;
+
+
+extern struct TransformationMatrix left_translation_transformation;
+extern struct TransformationMatrix right_translation_transformation;
+
+extern struct TransformationMatrix left_rotation_and_translation_matrix;
+extern struct TransformationMatrix right_rotation_and_translation_matrix;
 
 
 int SetImageRegion( struct ImageRegion * ir , unsigned int x1,unsigned int y1,unsigned int width,unsigned int height);
@@ -123,6 +134,7 @@ int LargeVideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsig
 int ExtraLargeVideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsigned int res_y,unsigned int depth);
 void DefaultSettings();
 
+int ClearTransformationMatrix(struct TransformationMatrix * matrix);
 int ClearVideoRegister(unsigned int reg_num);
 int ClearLargeVideoRegister(unsigned int reg_num);
 int ClearExtraLargeVideoRegister(unsigned int reg_num);
@@ -148,7 +160,7 @@ int SaveRegisterToFile(char * filename,unsigned int reg_num);
 int SaveRegisterPartToFile(char * filename,unsigned int reg_num,unsigned int x_start,unsigned int y_start ,unsigned int width,unsigned int height);
 int LoadRegisterFromFile(char * filename,unsigned int reg_num);
 
-int SaveTransformationMatrixToFile(char * filename,struct TransformationMatrix * matrix,unsigned int cols,unsigned int rows);
+int SaveTransformationMatrixToFile(char * filename,struct TransformationMatrix * matrix);
 
 unsigned int GetTempRegister();
 unsigned int StopUsingVideoRegister(unsigned int thereg);

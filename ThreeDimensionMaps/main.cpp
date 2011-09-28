@@ -44,7 +44,7 @@ static void resize(int width, int height)
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-ar, ar, -1.0, 1.0, 2.0, 800.0);
+    glFrustum(-ar, ar, -1.0, 1.0, 2.0, 5800.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity() ;
@@ -54,7 +54,7 @@ static void resize(int width, int height)
 void LoadDepth(int snap)
 {
    char filename[60]={0};
-   sprintf(filename,"DEPTH%u",snap);
+   sprintf(filename,"memfs/DEPTH%u",snap);
 
    FILE * fp;
    fp = fopen(filename,"rb");
@@ -64,7 +64,7 @@ void LoadDepth(int snap)
    fread (video_depth , 1 , ptrlim , fp );
    fclose(fp);
 
-   sprintf(filename,"COLOR%u",snap);
+   sprintf(filename,"memfs/COLOR%u",snap);
    fp = fopen(filename,"rb");
    if (fp == 0) return;
 
@@ -96,64 +96,60 @@ int SaveTransformationMatrixToFile(char * filename,GLfloat * matrix,unsigned int
 void LoadTransformation(int snap)
 {
    char filename[60]={0};
-   sprintf(filename,"RIGHT_TRANSFORMATION%u",snap);
+   sprintf(filename,"memfs/LEFT_ROTATION_AND_TRANSLATION%u",snap);
 
    FILE * fp;
-   fp = fopen(filename,"r");
-   if (fp == 0) return;
-
-    fscanf(fp,"%f",&right_transformation[0]);
-    fscanf(fp,"%f",&right_transformation[1]);
-    fscanf(fp,"%f",&right_transformation[2]);
-
-    right_transformation[3]=0.0;
-
-    fscanf(fp,"%f",&right_transformation[4]);
-    fscanf(fp,"%f",&right_transformation[5]);
-    fscanf(fp,"%f",&right_transformation[6]);
-
-    right_transformation[7]=0.0;
-
-    fscanf(fp,"%f",&right_transformation[8]);
-    fscanf(fp,"%f",&right_transformation[9]);
-    fscanf(fp,"%f",&right_transformation[10]);
-
-    right_transformation[11]=0.0;
-
-    right_transformation[12]=0.0;
-    right_transformation[13]=0.0;
-    right_transformation[14]=0.0;
-    right_transformation[15]=1.0;
-
-    fclose(fp);
-    //SaveTransformationMatrixToFile((char* )"RIGHT_TRANSFORMATION_OGL0",right_transformation,4,4); This for debugging
-
-   sprintf(filename,"LEFT_TRANSFORMATION%u",snap);
    fp = fopen(filename,"r");
    if (fp == 0) return;
 
     fscanf(fp,"%f",&left_transformation[0]);
     fscanf(fp,"%f",&left_transformation[1]);
     fscanf(fp,"%f",&left_transformation[2]);
-
-    left_transformation[3]=0.0;
+    fscanf(fp,"%f",&left_transformation[3]);
 
     fscanf(fp,"%f",&left_transformation[4]);
     fscanf(fp,"%f",&left_transformation[5]);
     fscanf(fp,"%f",&left_transformation[6]);
-
-    left_transformation[7]=0.0;
+    fscanf(fp,"%f",&left_transformation[7]);
 
     fscanf(fp,"%f",&left_transformation[8]);
     fscanf(fp,"%f",&left_transformation[9]);
     fscanf(fp,"%f",&left_transformation[10]);
-
-    left_transformation[11]=0.0;
+    fscanf(fp,"%f",&left_transformation[11]);
 
     left_transformation[12]=0.0;
     left_transformation[13]=0.0;
     left_transformation[14]=0.0;
     left_transformation[15]=1.0;
+
+
+    fclose(fp);
+    //SaveTransformationMatrixToFile((char* )"RIGHT_TRANSFORMATION_OGL0",right_transformation,4,4); This for debugging
+
+   sprintf(filename,"memfs/RIGHT_ROTATION_AND_TRANSLATION%u",snap);
+   fp = fopen(filename,"r");
+   if (fp == 0) return;
+
+    fscanf(fp,"%f",&right_transformation[0]);
+    fscanf(fp,"%f",&right_transformation[1]);
+    fscanf(fp,"%f",&right_transformation[2]);
+    fscanf(fp,"%f",&right_transformation[3]);
+
+    fscanf(fp,"%f",&right_transformation[4]);
+    fscanf(fp,"%f",&right_transformation[5]);
+    fscanf(fp,"%f",&right_transformation[6]);
+    fscanf(fp,"%f",&right_transformation[7]);
+
+    fscanf(fp,"%f",&right_transformation[8]);
+    fscanf(fp,"%f",&right_transformation[9]);
+    fscanf(fp,"%f",&right_transformation[10]);
+    fscanf(fp,"%f",&right_transformation[11]);
+
+    right_transformation[12]=0.0;
+    right_transformation[13]=0.0;
+    right_transformation[14]=0.0;
+    right_transformation[15]=1.0;
+
 
    fclose(fp);
     //SaveTransformationMatrixToFile((char *)"LEFT_TRANSFORMATION_OGL0",left_transformation,4,4); This for debugging
@@ -216,10 +212,10 @@ void DrawDepthMap(int num,float transx,float transy,float transz,float rotx,floa
 
     glPushMatrix();
      glLoadIdentity();
-      glRotatef( roty, 0.0, 1.0, 0.0 );
-      glRotatef( rot, 0.0, 1.0, 0.0 );
-      glTranslated(vx,vy,vz);
-    // glMultMatrixf(left_transformation);
+      //glRotatef( roty, 0.0, 1.0, 0.0 );
+     // glRotatef( rot, 0.0, 1.0, 0.0 );
+     // glTranslated(vx,vy,vz);
+       glMultMatrixf(left_transformation);
       glBegin(GL_QUADS);
        for (y=0; y<240; y++)
          { for (x=0; x<320; x++)
@@ -354,6 +350,8 @@ const GLfloat high_shininess[] = { 100.0f };
 
 int main(int argc, char *argv[])
 {
+
+    fprintf(stderr,"Running from %s ",argv[0]);
     glutInit(&argc, argv);
     glutInitWindowSize(800,600);
     glutInitWindowPosition(10,10);

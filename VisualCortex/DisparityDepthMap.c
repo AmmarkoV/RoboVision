@@ -479,11 +479,19 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
    {
        //(unsigned char *)
        fprintf(stderr,"Registers DEPTH0 and COLOR0 are written to filesystem\n");
-       SaveRegisterToFile("DEPTH0",DEPTH_LEFT_VIDEO);
-       SaveRegisterToFile("COLOR0",CALIBRATED_LEFT_EYE);
-       SaveTransformationMatrixToFile("LEFT_TRANSFORMATION0",&left_transformation,3,3);
-       SaveTransformationMatrixToFile("RIGHT_TRANSFORMATION0",&right_transformation,3,3);
+       SaveRegisterToFile("memfs/DEPTH0",DEPTH_LEFT_VIDEO);
+       SaveRegisterToFile("memfs/COLOR0",CALIBRATED_LEFT_EYE);
+       SaveTransformationMatrixToFile("memfs/LEFT_HOMOGRAPHY0",&left_homography);
+       SaveTransformationMatrixToFile("memfs/RIGHT_HOMOGRAPHY0",&right_homography);
 
+       SaveTransformationMatrixToFile("memfs/LEFT_ROTATION0",&left_rotation_transformation);
+       SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION0",&right_rotation_transformation);
+
+       SaveTransformationMatrixToFile("memfs/LEFT_TRANSLATION0",&left_translation_transformation);
+       SaveTransformationMatrixToFile("memfs/RIGHT_TRANSLATION0",&right_translation_transformation);
+
+       SaveTransformationMatrixToFile("memfs/LEFT_ROTATION_AND_TRANSLATION0",&left_rotation_and_translation_matrix);
+       SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION_AND_TRANSLATION0",&right_rotation_and_translation_matrix);
    }
 
   video_register[DEPTH_LEFT].time = video_register[CALIBRATED_LEFT_EYE].time;
