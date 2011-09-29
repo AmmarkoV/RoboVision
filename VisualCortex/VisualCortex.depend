@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1317163771 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
+1317314971 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
 	"DisparityDepthMap.h"
 	"DisparityDepthMap_Heuristics.h"
 	"VisCortexFilters.h"
@@ -11,17 +11,17 @@
 	<stdio.h>
 	<string.h>
 
-1311668543 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.h
+1317325059 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.h
 	"VisionMemory.h"
 
-1317165648 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
+1317168426 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
 	"FeatureLists.h"
 	"VisualCortex.h"
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1316852907 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1317316079 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
 1308751856 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.h
 
@@ -37,7 +37,7 @@
 
 1317156363 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.h
 
-1316874962 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.c
+1317291829 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.c
 	"DisparityDepthMap_Heuristics.h"
 	"VisCortexFilters.h"
 	"Precalculations.h"
@@ -87,7 +87,7 @@
 	"IntegralImageConversion.h"
 	"Precalculations.h"
 
-1317165692 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.c
+1317322380 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.c
 	"LinearAlgebra.h"
 	"VisionMemory.h"
 	<stdio.h>
@@ -97,7 +97,7 @@
 	<highgui.h>
 	<ctype.h>
 
-1317161954 /home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.h
+1317167898 /home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.h
 	"VisionMemory.h"
 	"Precalculations.h"
 
@@ -160,13 +160,13 @@
 1313925807 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexHeuristics.h
 	"VisCortexHeuristics.h"
 
-1317161256 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
+1317293900 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
 	"VisionMemory.h"
 	"Precalculations.h"
 	"VisCortexFilters.h"
 	"StateSetting.h"
 
-1317156709 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
+1317314558 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
 	"VisualCortex.h"
 	"VisionMemory.h"
 	"Precalculations.h"
@@ -209,7 +209,7 @@
 
 1311412733 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/fast/fast.h
 
-1317162034 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
+1317325856 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
 	"VideoInputAdapter.h"
 	"VisualCortex.h"
 	"VisionMemory.h"
@@ -234,7 +234,7 @@
 
 1313926286 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.h
 
-1308662649 /usr/local/include/opencv/cv.h
+1315851265 /usr/local/include/opencv/cv.h
 	"opencv2/core/core_c.h"
 	"opencv2/core/core.hpp"
 	"opencv2/imgproc/imgproc_c.h"
@@ -247,10 +247,10 @@
 	"opencv2/legacy/compat.hpp"
 	"opencv2/core/internal.hpp"
 
-1308662647 /usr/local/include/opencv2/core/core_c.h
+1315852903 /usr/local/include/opencv2/core/core_c.h
 	"opencv2/core/types_c.h"
 
-1308662647 /usr/local/include/opencv2/core/types_c.h
+1315852903 /usr/local/include/opencv2/core/types_c.h
 	<assert.h>
 	<stdlib.h>
 	<string.h>
@@ -263,7 +263,7 @@
 	<ipl.h>
 	<ipl/ipl.h>
 
-1308662647 /usr/local/include/opencv2/core/core.hpp
+1315852903 /usr/local/include/opencv2/core/core.hpp
 	"opencv2/core/types_c.h"
 	"opencv2/core/version.hpp"
 	<limits.h>
@@ -278,9 +278,9 @@
 	"opencv2/core/operations.hpp"
 	"opencv2/core/mat.hpp"
 
-1308662648 /usr/local/include/opencv2/core/version.hpp
+1315852903 /usr/local/include/opencv2/core/version.hpp
 
-1308662647 /usr/local/include/opencv2/core/operations.hpp
+1315852903 /usr/local/include/opencv2/core/operations.hpp
 	<string.h>
 	<limits.h>
 	<ext/atomicity.h>
@@ -288,188 +288,213 @@
 	<intrin.h>
 	<limits>
 
-1308662647 /usr/local/include/opencv2/core/mat.hpp
+1315852903 /usr/local/include/opencv2/core/mat.hpp
 	<limits.h>
 	<string.h>
 
-1308662645 /usr/local/include/opencv2/imgproc/imgproc_c.h
+1315852958 /usr/local/include/opencv2/imgproc/imgproc_c.h
 	"opencv2/core/core_c.h"
 	"opencv2/imgproc/types_c.h"
 
-1308662645 /usr/local/include/opencv2/imgproc/types_c.h
+1315852958 /usr/local/include/opencv2/imgproc/types_c.h
 	"opencv2/core/core_c.h"
 	"opencv2/imgproc/types_c.h"
 
-1308662645 /usr/local/include/opencv2/imgproc/imgproc.hpp
+1315852958 /usr/local/include/opencv2/imgproc/imgproc.hpp
 	"opencv2/core/core.hpp"
 	"opencv2/imgproc/types_c.h"
 
-1308662645 /usr/local/include/opencv2/video/tracking.hpp
+1315853030 /usr/local/include/opencv2/video/tracking.hpp
 	"opencv2/core/core.hpp"
 	"opencv2/imgproc/imgproc_c.h"
 
-1308662645 /usr/local/include/opencv2/features2d/features2d.hpp
+1315853022 /usr/local/include/opencv2/features2d/features2d.hpp
 	"opencv2/core/core.hpp"
-	"opencv2/flann/flann.hpp"
+	"opencv2/flann/miniflann.hpp"
 	<limits>
 
-1308662648 /usr/local/include/opencv2/flann/flann.hpp
+1315852947 /usr/local/include/opencv2/flann/flann.hpp
+	"opencv2/core/types_c.h"
+	"opencv2/core/core.hpp"
 	"opencv2/flann/flann_base.hpp"
+	"opencv2/flann/miniflann.hpp"
 
-1308662648 /usr/local/include/opencv2/flann/flann_base.hpp
+1315852947 /usr/local/include/opencv2/flann/flann_base.hpp
 	<vector>
 	<string>
 	<cassert>
 	<cstdio>
-	"opencv2/flann/general.h"
-	"opencv2/flann/matrix.h"
-	"opencv2/flann/result_set.h"
-	"opencv2/flann/index_testing.h"
-	"opencv2/flann/object_factory.h"
-	"opencv2/flann/saving.h"
-	"opencv2/flann/all_indices.h"
+	"general.h"
+	"matrix.h"
+	"params.h"
+	"saving.h"
+	"all_indices.h"
 
-1308662648 /usr/local/include/opencv2/flann/general.h
+1315852947 /usr/local/include/opencv2/flann/general.h
+	"defines.h"
 	<stdexcept>
 	<cassert>
-	"opencv2/flann/object_factory.h"
-	"opencv2/flann/logger.h"
 
 1308662648 /usr/local/include/opencv2/flann/object_factory.h
 	"opencv2/core/types_c.h"
 	<map>
 
-1308662648 /usr/local/include/opencv2/flann/logger.h
-	<cstdio>
-	<stdarg.h>
-
-1308662648 /usr/local/include/opencv2/flann/matrix.h
+1315852947 /usr/local/include/opencv2/flann/logger.h
 	<stdio.h>
-	"opencv2/flann/general.h"
+	<stdarg.h>
+	"defines.h"
 
-1308662648 /usr/local/include/opencv2/flann/result_set.h
+1315852947 /usr/local/include/opencv2/flann/matrix.h
+	<stdio.h>
+	"general.h"
+
+1315852947 /usr/local/include/opencv2/flann/result_set.h
 	<algorithm>
+	<cstring>
+	<iostream>
 	<limits>
+	<set>
 	<vector>
-	"opencv2/flann/dist.h"
 
-1308662648 /usr/local/include/opencv2/flann/dist.h
+1315852947 /usr/local/include/opencv2/flann/dist.h
 	<cmath>
-	"opencv2/flann/general.h"
+	<cstdlib>
+	<string.h>
+	<stdint.h>
+	"defines.h"
 
-1308662648 /usr/local/include/opencv2/flann/index_testing.h
+1315852947 /usr/local/include/opencv2/flann/index_testing.h
 	<cstring>
 	<cassert>
-	"opencv2/flann/matrix.h"
-	"opencv2/flann/nn_index.h"
-	"opencv2/flann/result_set.h"
-	"opencv2/flann/logger.h"
-	"opencv2/flann/timer.h"
+	<cmath>
+	"matrix.h"
+	"nn_index.h"
+	"result_set.h"
+	"logger.h"
+	"timer.h"
 
-1308662648 /usr/local/include/opencv2/flann/nn_index.h
+1315852947 /usr/local/include/opencv2/flann/nn_index.h
 	<string>
-	"opencv2/flann/general.h"
-	"opencv2/flann/matrix.h"
+	"general.h"
+	"matrix.h"
+	"result_set.h"
+	"params.h"
 
-1308662648 /usr/local/include/opencv2/flann/timer.h
+1315852947 /usr/local/include/opencv2/flann/timer.h
 	<time.h>
 
-1308662648 /usr/local/include/opencv2/flann/saving.h
-	"opencv2/flann/general.h"
-	"opencv2/flann/nn_index.h"
-	<cstdio>
+1315852947 /usr/local/include/opencv2/flann/saving.h
 	<cstring>
+	<vector>
+	"general.h"
+	"nn_index.h"
 
-1308662648 /usr/local/include/opencv2/flann/all_indices.h
-	"opencv2/flann/general.h"
-	"opencv2/flann/nn_index.h"
-	"opencv2/flann/kdtree_index.h"
-	"opencv2/flann/kmeans_index.h"
-	"opencv2/flann/composite_index.h"
-	"opencv2/flann/linear_index.h"
-	"opencv2/flann/autotuned_index.h"
+1315852947 /usr/local/include/opencv2/flann/all_indices.h
+	"general.h"
+	"nn_index.h"
+	"kdtree_index.h"
+	"kdtree_single_index.h"
+	"kmeans_index.h"
+	"composite_index.h"
+	"linear_index.h"
+	"hierarchical_clustering_index.h"
+	"lsh_index.h"
+	"autotuned_index.h"
 
-1308662648 /usr/local/include/opencv2/flann/kdtree_index.h
+1315852947 /usr/local/include/opencv2/flann/kdtree_index.h
 	<algorithm>
 	<map>
 	<cassert>
 	<cstring>
-	"opencv2/flann/general.h"
-	"opencv2/flann/nn_index.h"
-	"opencv2/flann/matrix.h"
-	"opencv2/flann/result_set.h"
-	"opencv2/flann/heap.h"
-	"opencv2/flann/allocator.h"
-	"opencv2/flann/random.h"
-	"opencv2/flann/saving.h"
+	"general.h"
+	"nn_index.h"
+	"dynamic_bitset.h"
+	"matrix.h"
+	"result_set.h"
+	"heap.h"
+	"allocator.h"
+	"random.h"
+	"saving.h"
 
-1308662648 /usr/local/include/opencv2/flann/heap.h
+1315852947 /usr/local/include/opencv2/flann/heap.h
 	<algorithm>
+	<vector>
 
-1308662648 /usr/local/include/opencv2/flann/allocator.h
+1315852947 /usr/local/include/opencv2/flann/allocator.h
 	<stdlib.h>
 	<stdio.h>
 
-1308662648 /usr/local/include/opencv2/flann/random.h
+1315852947 /usr/local/include/opencv2/flann/random.h
 	<algorithm>
 	<cstdlib>
-	<cassert>
+	<vector>
+	"general.h"
 
-1308662648 /usr/local/include/opencv2/flann/kmeans_index.h
+1315852947 /usr/local/include/opencv2/flann/kmeans_index.h
 	<algorithm>
 	<string>
 	<map>
 	<cassert>
 	<limits>
 	<cmath>
-	"opencv2/flann/general.h"
-	"opencv2/flann/nn_index.h"
-	"opencv2/flann/matrix.h"
-	"opencv2/flann/result_set.h"
-	"opencv2/flann/heap.h"
-	"opencv2/flann/allocator.h"
-	"opencv2/flann/random.h"
+	"general.h"
+	"nn_index.h"
+	"dist.h"
+	"matrix.h"
+	"result_set.h"
+	"heap.h"
+	"allocator.h"
+	"random.h"
+	"saving.h"
+	"logger.h"
 
-1308662648 /usr/local/include/opencv2/flann/composite_index.h
-	"opencv2/flann/general.h"
-	"opencv2/flann/nn_index.h"
+1315852947 /usr/local/include/opencv2/flann/composite_index.h
+	"general.h"
+	"nn_index.h"
+	"kdtree_index.h"
+	"kmeans_index.h"
 
-1308662648 /usr/local/include/opencv2/flann/linear_index.h
-	"opencv2/flann/general.h"
-	"opencv2/flann/nn_index.h"
+1315852947 /usr/local/include/opencv2/flann/linear_index.h
+	"general.h"
+	"nn_index.h"
 
-1308662648 /usr/local/include/opencv2/flann/autotuned_index.h
-	"opencv2/flann/general.h"
-	"opencv2/flann/nn_index.h"
-	"opencv2/flann/ground_truth.h"
-	"opencv2/flann/index_testing.h"
-	"opencv2/flann/sampling.h"
-	"opencv2/flann/all_indices.h"
+1315852947 /usr/local/include/opencv2/flann/autotuned_index.h
+	"general.h"
+	"nn_index.h"
+	"ground_truth.h"
+	"index_testing.h"
+	"sampling.h"
+	"kdtree_index.h"
+	"kdtree_single_index.h"
+	"kmeans_index.h"
+	"composite_index.h"
+	"linear_index.h"
+	"logger.h"
 
-1308662648 /usr/local/include/opencv2/flann/ground_truth.h
-	"opencv2/flann/dist.h"
-	"opencv2/flann/matrix.h"
+1315852947 /usr/local/include/opencv2/flann/ground_truth.h
+	"dist.h"
+	"matrix.h"
 
-1308662648 /usr/local/include/opencv2/flann/sampling.h
-	"opencv2/flann/matrix.h"
-	"opencv2/flann/random.h"
+1315852947 /usr/local/include/opencv2/flann/sampling.h
+	"matrix.h"
+	"random.h"
 
-1308662645 /usr/local/include/opencv2/calib3d/calib3d.hpp
+1315852987 /usr/local/include/opencv2/calib3d/calib3d.hpp
 	"opencv2/core/core.hpp"
 	"opencv2/features2d/features2d.hpp"
 
-1308662648 /usr/local/include/opencv2/objdetect/objdetect.hpp
+1315852996 /usr/local/include/opencv2/objdetect/objdetect.hpp
 	"opencv2/core/core.hpp"
 	"opencv2/features2d/features2d.hpp"
 	<deque>
 
-1308662646 /usr/local/include/opencv2/legacy/compat.hpp
+1315853002 /usr/local/include/opencv2/legacy/compat.hpp
 	"opencv2/core/core_c.h"
 	"opencv2/imgproc/types_c.h"
 	<math.h>
 	<string.h>
 
-1308662647 /usr/local/include/opencv2/core/internal.hpp
+1315852903 /usr/local/include/opencv2/core/internal.hpp
 	<vector>
 	<windows.h>
 	<pthread.h>
@@ -488,23 +513,23 @@
 	<alloca.h>
 	<stdlib.h>
 
-1308662647 /usr/local/include/opencv2/core/eigen.hpp
+1315852903 /usr/local/include/opencv2/core/eigen.hpp
 	"cxcore.h"
 
-1308662649 /usr/local/include/opencv/cxcore.h
+1315851265 /usr/local/include/opencv/cxcore.h
 	"opencv2/core/core_c.h"
 	"opencv2/core/core.hpp"
 
-1308662649 /usr/local/include/opencv/highgui.h
+1315851265 /usr/local/include/opencv/highgui.h
 	"opencv2/core/core_c.h"
 	"opencv2/core/core.hpp"
 	"opencv2/highgui/highgui_c.h"
 	"opencv2/highgui/highgui.hpp"
 
-1308662646 /usr/local/include/opencv2/highgui/highgui_c.h
+1315852831 /usr/local/include/opencv2/highgui/highgui_c.h
 	"opencv2/core/core_c.h"
 
-1308662646 /usr/local/include/opencv2/highgui/highgui.hpp
+1315852831 /usr/local/include/opencv2/highgui/highgui.hpp
 	"opencv2/core/core.hpp"
 	"opencv2/highgui/highgui_c.h"
 
@@ -520,10 +545,94 @@
 
 1316816488 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
 
-1316622801 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.c
+1317290384 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.c
 	"VisCortexTimer.h"
 	<sys/time.h>
 	<unistd.h>
 
-1316703998 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.h
+1317290397 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.h
+
+1315852947 /usr/local/include/opencv2/flann/miniflann.hpp
+	"opencv2/core/core.hpp"
+	"opencv2/flann/defines.h"
+
+1315852947 /usr/local/include/opencv2/flann/defines.h
+	"config.h"
+
+1315852947 /usr/local/include/opencv2/flann/config.h
+
+1315852947 /usr/local/include/opencv2/flann/params.h
+	"any.h"
+	"general.h"
+	<iostream>
+	<map>
+
+1315852947 /usr/local/include/opencv2/flann/any.h
+	<stdexcept>
+	<ostream>
+	<typeinfo>
+
+1315852947 /usr/local/include/opencv2/flann/dynamic_bitset.h
+	<boost/dynamic_bitset.hpp>
+	<limits.h>
+	"dist.h"
+
+1315852947 /usr/local/include/opencv2/flann/kdtree_single_index.h
+	<algorithm>
+	<map>
+	<cassert>
+	<cstring>
+	"general.h"
+	"nn_index.h"
+	"matrix.h"
+	"result_set.h"
+	"heap.h"
+	"allocator.h"
+	"random.h"
+	"saving.h"
+
+1315852947 /usr/local/include/opencv2/flann/hierarchical_clustering_index.h
+	<algorithm>
+	<string>
+	<map>
+	<cassert>
+	<limits>
+	<cmath>
+	"general.h"
+	"nn_index.h"
+	"dist.h"
+	"matrix.h"
+	"result_set.h"
+	"heap.h"
+	"allocator.h"
+	"random.h"
+	"saving.h"
+
+1315852947 /usr/local/include/opencv2/flann/lsh_index.h
+	<algorithm>
+	<cassert>
+	<cstring>
+	<map>
+	<vector>
+	"general.h"
+	"nn_index.h"
+	"matrix.h"
+	"result_set.h"
+	"heap.h"
+	"lsh_table.h"
+	"allocator.h"
+	"random.h"
+	"saving.h"
+
+1315852947 /usr/local/include/opencv2/flann/lsh_table.h
+	<algorithm>
+	<iostream>
+	<iomanip>
+	<limits.h>
+	<unordered_map>
+	<map>
+	<math.h>
+	<stddef.h>
+	"dynamic_bitset.h"
+	"matrix.h"
 

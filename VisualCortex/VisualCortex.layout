@@ -44,7 +44,7 @@
 		<Cursor position="850" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
-		<Cursor position="1640" topLine="9" />
+		<Cursor position="8102" topLine="171" />
 	</File>
 	<File name="LinearAlgebra.h" open="1" top="0" tabpos="31">
 		<Cursor position="69" topLine="0" />
@@ -79,8 +79,8 @@
 	<File name="StateSetting.h" open="1" top="0" tabpos="19">
 		<Cursor position="100" topLine="0" />
 	</File>
-	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="4544" topLine="157" />
+	<File name="VideoInputAdapter.c" open="1" top="1" tabpos="36">
+		<Cursor position="8809" topLine="223" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="91" topLine="0" />
@@ -122,7 +122,7 @@
 		<Cursor position="886" topLine="12" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="11734" topLine="338" />
+		<Cursor position="13722" topLine="383" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
 		<Cursor position="506" topLine="9" />

@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "Precalculations.h"
 #include "PatchComparison.h"
 #include "VisCortexTimer.h"
+#include "cv.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -324,6 +325,22 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
     PrepareForDepthMapping( left_depth_reg , right_depth_reg , clear_and_calculate);
 
+
+
+  if ( settings[DEPTHMAP_DEBUG] )
+    {  //DEBUG THINGS ON HDD
+         // WILL BE REMOVED ENTIRELY WHEN LOCKING PROBLEMS ARE SOLVED..
+        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_LEFT.ppm",CALIBRATED_LEFT_EYE,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_RIGHT.ppm",CALIBRATED_RIGHT_EYE,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_EDGES_LEFT.ppm",EDGES_LEFT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_EDGES_RIGHT.ppm",EDGES_RIGHT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_SECOND_DERIVATIVE_LEFT.ppm",SECOND_DERIVATIVE_LEFT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_SECOND_DERIVATIVE_RIGHT.ppm",SECOND_DERIVATIVE_RIGHT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_MOVEMENT_LEFT.ppm",MOVEMENT_LEFT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_MOVEMENT_RIGHT.ppm",MOVEMENT_RIGHT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+
+    }
+
     metrics[HISTOGRAM_DENIES]=0;
     metrics[COMPAREPATCH_ALGORITHM_DENIES]=0;
 
@@ -386,6 +403,8 @@ void DepthMapFull  ( unsigned int left_view_reg,
          left_rgn.y1+=y_vima;
        }
 
+   video_register[left_depth_reg].time = video_register[left_view_reg].time;
+   video_register[right_depth_reg].time = video_register[right_view_reg].time;
   fprintf(stderr,"Depth Map did a total of %u Patch Comparisons , %u reverse , %u immediate \n",metrics[COMPAREPATCH_TOTAL_CALLS] , metrics[COMPAREPATCH_REVERSE_ACCEPTS] , metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS]);
 
   if ( settings[DEPTHMAP_IMPROVE_FILLING_HOLES]!=0 )  EnhanceDepthMapFillHoles(video_register[LEFT_EYE].pixels, l_video_register[left_depth_reg].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
@@ -475,6 +494,7 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
     CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
    */
   DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1);
+  DepthMapToVideo(DEPTH_RIGHT,DEPTH_RIGHT_VIDEO,1);
   if (settings[PASS_TO_WORLD_3D])
    {
        //(unsigned char *)
@@ -504,5 +524,44 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
   video_register[DEPTH_RIGHT].lock=0;
   video_register[DEPTH_LEFT].lock=0;
 return 1;
+}
+
+
+unsigned int ExecuteDisparityMappingOpenCV()
+{
+  IplImage* srcLeft = cvCreateImage(cvGetSize(srcLeft), IPL_DEPTH_8U, 3);
+  IplImage* srcRight = cvCreateImage(cvGetSize(srcRight), IPL_DEPTH_8U, 3);
+  IplImage* leftImage = cvCreateImage(cvGetSize(leftImage), IPL_DEPTH_8U, 1);
+  IplImage* rightImage = cvCreateImage(cvGetSize(rightImage), IPL_DEPTH_8U, 1);
+  IplImage* depthImage = cvCreateImage(cvGetSize(srcRight), IPL_DEPTH_8U, 1);
+
+
+  char * srcLeftPointer=0;
+  char * srcRightPointer=0;
+
+  srcLeftPointer = srcLeft->imageData; // UGLY HACK
+  srcRightPointer = srcRight->imageData; // UGLY HACK
+
+  srcLeft->imageData = (char *) video_register[DEPTH_LEFT_VIDEO].pixels;
+  srcRight->imageData = (char *) video_register[DEPTH_RIGHT_VIDEO].pixels;
+
+  cvCvtColor(srcLeft, leftImage, CV_BGR2GRAY);
+  cvCvtColor(srcRight, rightImage, CV_BGR2GRAY);
+
+   //cvFindStereoCorrespondence( leftImage, rightImage, 0, depthImage, 50, 15, 3, 6, 8, 15 );
+
+  memcpy(video_register[DEPTH_LEFT_VIDEO].pixels,depthImage->imageData,metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]);
+
+  srcLeft->imageData = (char *)  srcLeftPointer; // UGLY HACK
+  srcRight->imageData = (char *)  srcRightPointer; // UGLY HACK
+
+  cvReleaseImage(&srcLeft);
+  cvReleaseImage(&srcRight);
+
+  cvReleaseImage(&leftImage);
+  cvReleaseImage(&rightImage);
+  cvReleaseImage(&depthImage);
+
+  return 1;
 }
 

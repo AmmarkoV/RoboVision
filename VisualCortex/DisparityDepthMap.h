@@ -12,4 +12,5 @@ void DepthMapFull  ( unsigned int left_view_reg,
                     );
 
 int ExecuteDisparityMappingPyramid();
+unsigned int ExecuteDisparityMappingOpenCV();
 #endif

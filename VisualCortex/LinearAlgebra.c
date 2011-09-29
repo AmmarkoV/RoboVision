@@ -99,8 +99,6 @@ CvMat* CreateHomographyRotationTranslationMatrix( CvMat* m_homography,CvMat* m_i
     //This produces Relative Rotation
     // Suppose you are at a some position P(X,Y,Z), and you are looking off in some direction D. Your position is represented by the translation matrix T, and the direction of your view is represented by the rotation matrix R. The combined information is held in the translation matrix Tr. We saw this at the beginning of the presentation:
 
-
-
     int i;
     // Vectors holding columns of H and R:
     //Homography cvGetCol().
@@ -191,17 +189,26 @@ int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source
                                                      struct TransformationMatrix * homography_matrix)
 {
    if ( source->current_features == 0 ) { return 0; }
+   if ( source->current_features < 8 ) { return 0; }
+
+
    int i=0;
 
    CvMat* srcPoints = cvCreateMat(2,source->current_features,CV_32FC1);
+   if ( srcPoints != 0 )
+   {
     for ( i=0; i<source->current_features; i++ )
      {   cvmSet(srcPoints,0,i,source->list[i].last_x);
          cvmSet(srcPoints,1,i,source->list[i].last_y); }
+   }
 
    CvMat* dstPoints = cvCreateMat(2,source->current_features,CV_32FC1);
+   if ( dstPoints != 0 )
+   {
     for ( i=0; i<source->current_features; i++ )
      {   cvmSet(srcPoints,0,i,source->list[i].x);
          cvmSet(srcPoints,1,i,source->list[i].y); }
+   }
 
    CvMat* H =  cvCreateMat(3,3,CV_32FC1);
    int res = cvFindHomography(srcPoints,dstPoints,H,CV_RANSAC,5,0);
@@ -227,7 +234,8 @@ int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source
    CvMat*  homography_decomposition_to_translation_and_rotation = CreateHomographyRotationTranslationMatrix(H,intriMat);
 
 
-
+   if ( homography_decomposition_to_translation_and_rotation != 0 )
+   {
     ClearTransformationMatrix(rotation_matrix);
     rotation_matrix->rows=3;
     rotation_matrix->columns=3;
@@ -274,12 +282,13 @@ int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source
     rotation_and_translation_matrix->item[13]=0.0;
     rotation_and_translation_matrix->item[14]=0.0;
     rotation_and_translation_matrix->item[15]=1.0;
+   }
 
-   cvReleaseMat(&srcPoints);
-   cvReleaseMat(&dstPoints);
-   cvReleaseMat(&H);
-   cvReleaseMat(&homography_decomposition_to_translation_and_rotation);
-   cvReleaseMat(&intriMat);
+   if ( srcPoints != 0 ) { cvReleaseMat(&srcPoints); }
+   if ( dstPoints != 0 ) { cvReleaseMat(&dstPoints); }
+   if ( H != 0 ) { cvReleaseMat(&H); }
+   if ( homography_decomposition_to_translation_and_rotation != 0 ) { cvReleaseMat(&homography_decomposition_to_translation_and_rotation); }
+   if ( intriMat != 0 ) { cvReleaseMat(&intriMat); }
 
    return res;
 }
@@ -288,7 +297,8 @@ int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source
 
 int ComputeFundamentalMatrixFromPointCorrespondance(struct FeatureList * list,struct TransformationMatrix * E)
 {
-
+    return 0;
+/*
     // TODO TODO TODO TODO
     //The following program solves the linear system A x = b. The system to be solved is, and the solution is found using LU decomposition of the matrix A.
        double a_data[] = { 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 ,
@@ -362,7 +372,8 @@ int ComputeFundamentalMatrixFromPointCorrespondance(struct FeatureList * list,st
 
        gsl_permutation_free (p);
        gsl_vector_free (x);
-       return 0;
+       */
+       return 1;
 }
 
 

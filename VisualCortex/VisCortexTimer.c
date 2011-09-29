@@ -47,7 +47,12 @@ int EndTimer( unsigned int timer_num )
   return timeval_diff(&timers_array[timer_num].timediff,&timers_array[timer_num].endtime,&timers_array[timer_num].starttime);
 }
 
-void VisCortxSleep(unsigned int milliseconds)
+void VisCortxMillisecondsSleep(unsigned int milliseconds)
 {
-    usleep(milliseconds);
+    usleep(milliseconds*1000);
+}
+
+void VisCortxMicrosecondsSleep(unsigned int microseconds)
+{
+    usleep(microseconds);
 }

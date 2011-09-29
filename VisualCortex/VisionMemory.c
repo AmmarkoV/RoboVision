@@ -302,6 +302,8 @@ void DefaultSettings()
 
    settings[FEATURE_DETECTION_THRESHOLD]=40; // 30
 
+   settings[DEPTHMAP_DEBUG]=0; // <-- THIS IS VEEEEEEEEERY SLOW :P
+
    settings[DEPTHMAP_COMPARISON_ALSO_REVERSE_CHECK]=1;
 
    settings[DEPTHMAP_RGB_MULTIPLIER]=1;
@@ -315,7 +317,7 @@ void DefaultSettings()
     settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=45;
     settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=255; // 255
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
-    settings[DEPTHMAP_VERT_SHIFT_UP]=5;
+    settings[DEPTHMAP_VERT_SHIFT_UP]=0;
     settings[DEPTHMAP_VERT_SHIFT_DOWN]=0;
     settings[DEPTHMAP_VERT_OFFSET_UP]=0;
     settings[DEPTHMAP_VERT_OFFSET_DOWN]=0;

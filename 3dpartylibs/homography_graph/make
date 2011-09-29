@@ -1,0 +1,4 @@
+#!/bin/bash
+
+g++ homography_pose.h homography_pose.cpp mainFunc.cpp `pkg-config --cflags --libs opencv` -L. -lglut -lGL -lGLU -lXxf86vm -pthread -lm -o homographyTest
+exit 0

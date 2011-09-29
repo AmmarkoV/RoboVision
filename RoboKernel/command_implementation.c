@@ -77,7 +77,7 @@ void FullDepthMap(unsigned char write_to_file)
   VisCortX_CopyVideoRegister(DEPTH_LEFT_VIDEO,LAST_LEFT_OPERATION,1,1);
   VisCortX_ConvertVideoRegisterToColorDepth(LAST_LEFT_OPERATION,3);
 
-  VisCortX_CopyVideoRegister(EDGES_LEFT,LAST_RIGHT_OPERATION,1,1);
+  VisCortX_CopyVideoRegister(DEPTH_RIGHT_VIDEO,LAST_RIGHT_OPERATION,1,1);
   VisCortX_ConvertVideoRegisterToColorDepth(LAST_RIGHT_OPERATION,3);
 
 //  if ( write_to_file == 1 ) DepthMapToFile(0);

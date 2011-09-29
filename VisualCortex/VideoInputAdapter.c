@@ -23,10 +23,7 @@
 /*
  THIS FUNCTION IS CALLED EVERY TIME A NEW FRAME IS READY FOR STEREO VISION
 */
-
-
-
-inline unsigned int FrameProcessing
+inline unsigned int FrameAcquisition
    (
 
      unsigned int REG_EYE,
@@ -44,23 +41,12 @@ inline unsigned int FrameProcessing
      unsigned int REG_LAST_SECOND_DERIVATIVE,
      unsigned int REG_LAST_MOVEMENT,
 
-     unsigned int REG_GROUP_MOVEMENT,
-     unsigned int REG_GROUP_EDGES,
-     unsigned int REG_GROUP_EDGES_PRESENCE,
-     unsigned int REG_GROUP_SECOND_DERIVATIVE,
-
-     // Switches ..
-     unsigned int ADD_EDGES_PRESENCE_SWITCH ,
-     unsigned int left_right_switch,
-
-     // RAW IMAGE
+          // RAW IMAGE
      unsigned int size_x,unsigned int size_y,unsigned int depth,
      unsigned char * rgbdata
-
    )
-{
-       video_register[REG_EYE].lock=1;
 
+ {
        // FIRST STORE OLD REGISTERS
        SwapRegister(REG_EYE,REG_LAST_EYE);
        SwapRegister(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE);
@@ -73,6 +59,36 @@ inline unsigned int FrameProcessing
        video_register[REG_EYE].time=TIME_INC;
        CalibrateImage(REG_EYE,REG_CALIBRATED_EYE,REG_CALIBRATION_PRECALCULATION);
 
+   return 1;
+ }
+
+inline unsigned int FrameProcessing
+   (
+
+     unsigned int REG_EYE,
+     unsigned int REG_CALIBRATED_EYE,
+     unsigned int REG_EDGES,
+     unsigned int REG_SECOND_DERIVATIVE,
+     unsigned int REG_MOVEMENT,
+     unsigned int REG_HISTOGRAM,
+
+     unsigned int REG_GROUP_MOVEMENT,
+     unsigned int REG_GROUP_EDGES,
+     unsigned int REG_GROUP_EDGES_PRESENCE,
+     unsigned int REG_GROUP_SECOND_DERIVATIVE,
+
+     unsigned int REG_LAST_CALIBRATED_EYE,
+
+     // Switches ..
+     unsigned int ADD_EDGES_PRESENCE_SWITCH ,
+     unsigned int left_right_switch
+
+     // RAW IMAGE
+    // unsigned int size_x,unsigned int size_y,unsigned int depth,
+    // unsigned char * rgbdata
+
+   )
+{
        // THIRD PROCESS NEW IMAGE  ( COMPRESSION )
        PrepareCleanSobeledGaussianAndDerivative
          (   REG_CALIBRATED_EYE,
@@ -148,8 +164,6 @@ inline unsigned int FrameProcessing
         }
 
 
-        video_register[REG_EYE].time=TIME_INC;
-        video_register[REG_EYE].lock=0;
 
         return 1;
 }
@@ -159,10 +173,15 @@ inline unsigned int FrameProcessing
 
 unsigned int Pipeline_Stereo_Frames_Collected_Actions()
 {
+
+  // THESE GET EXECUTED WHEN WE HAVE A PROCESSED STEREO PAIR :P
+
   if ( pipeline_switches[EXECUTE_DEPTHMAP]==1  )
    {
       pipeline_switches[EXECUTE_DEPTHMAP]=2;
       ExecuteDisparityMappingPyramid();
+       //ExecuteDisparityMappingOpenCV();
+      VisCortxMillisecondsSleep(1);
       pipeline_switches[EXECUTE_DEPTHMAP]=0;
    }
 
@@ -177,10 +196,13 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
 
    if ( rgbdata == 0 ) { fprintf(stderr,"VisCortX_NewFrame given zero pointer"); return 0; }
 
+
+    video_register[input_img_regnum].lock=1;
+
    int retres = 0;
    if ( input_img_regnum == LEFT_EYE )
     {
-      retres = FrameProcessing
+          retres += FrameAcquisition
                     ( LEFT_EYE,
                       CALIBRATED_LEFT_EYE,
                       EDGES_LEFT,
@@ -196,23 +218,35 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
                       LAST_SECOND_DERIVATIVE_LEFT,
                       LAST_MOVEMENT_LEFT,
 
+                      size_x,size_y,depth,
+                      rgbdata);
+
+           retres += FrameProcessing
+                    ( LEFT_EYE,
+                      CALIBRATED_LEFT_EYE,
+                      EDGES_LEFT,
+                      SECOND_DERIVATIVE_LEFT,
+                      MOVEMENT_LEFT,
+                      HISTOGRAM_COMPRESSED_LEFT,
+
+
                       MOVEMENT_GROUPED_LEFT,
                       EDGES_GROUPED_LEFT,
                       EDGES_PRESENCE_GROUPED_LEFT,
                       SECOND_DERIVATIVE_GROUPED_LEFT,
 
-                      1 , // ACTIVATE PRSENCE GROUPED
-                      0 ,
+                      LAST_CALIBRATED_LEFT_EYE,
 
-                      size_x,size_y,depth,
-                      rgbdata
+                      1 , // ACTIVATE PRSENCE GROUPED
+                      0
                     );
+
 
     } else
     if ( input_img_regnum == RIGHT_EYE )
     {
-      retres = FrameProcessing
-                    ( RIGHT_EYE,
+         retres += FrameAcquisition
+                    (  RIGHT_EYE,
                       CALIBRATED_RIGHT_EYE,
                       EDGES_RIGHT,
                       SECOND_DERIVATIVE_RIGHT,
@@ -227,24 +261,49 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
                       LAST_SECOND_DERIVATIVE_RIGHT,
                       LAST_MOVEMENT_RIGHT,
 
+                      size_x,size_y,depth,
+                      rgbdata);
+
+
+
+      retres += FrameProcessing
+                    ( RIGHT_EYE,
+                      CALIBRATED_RIGHT_EYE,
+                      EDGES_RIGHT,
+                      SECOND_DERIVATIVE_RIGHT,
+                      MOVEMENT_RIGHT,
+                      HISTOGRAM_COMPRESSED_RIGHT,
+
+
                       MOVEMENT_GROUPED_RIGHT,
                       EDGES_GROUPED_RIGHT,
                       EDGES_PRESENCE_GROUPED_RIGHT,
                       SECOND_DERIVATIVE_GROUPED_RIGHT,
 
-                      0 , // ACTIVATE PRSENCE GROUPED
-                      1 ,
+                      LAST_CALIBRATED_RIGHT_EYE,
 
-                      size_x,size_y,depth,
-                      rgbdata
+                      0 , // ACTIVATE PRSENCE GROUPED
+                      1
                     );
+
+
     }
 
-  if ( video_register[CALIBRATED_LEFT_EYE].time == video_register[CALIBRATED_RIGHT_EYE].time )
+   ++metrics[FRAMES_PROCESSED];
+
+  // if ( video_register[LEFT_EYE].time == video_register[RIGHT_EYE].time ) /*This should be the criteria to mark a stereo pair collected */
+   if (metrics[FRAMES_PROCESSED]%2==0)
    {
      Pipeline_Stereo_Frames_Collected_Actions(); // <- Activate things in pipe line that need to be done when both frames are collected!
+   } else
+   {
+       //THIS SHOWS THE TIMES OF FRAMES CAPTURED
+       //fprintf(stderr,"LEFT_EYE=%u RIGHT_EYE=%u\n",video_register[LEFT_EYE].time,video_register[RIGHT_EYE].time);
    }
 
+
+
+  video_register[input_img_regnum].lock=0;
   metrics[VIDEOINPUT_PROCESSING_DELAY_MICROSECONDS] = EndTimer(TIMER_PROCESSING_DELAY);
 
 
@@ -257,9 +316,11 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
         fprintf(stderr,"\n\n\n\n !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
         fprintf(stderr,"GUARD BYTES CORRUPTED , SOMETHING IS OVERWRITING MEMORY .. \n");
         fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n ");
+        return 0;
     }
 
-
+ if ( retres == 2 ) { retres = 1; } else
+                    { retres =0;  }
  return retres ;
 }
 
