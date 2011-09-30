@@ -33,7 +33,10 @@ enum VisCortxSettings
    PASS_TO_WORLD_3D,
    PASS_TO_FACE_DETECTOR,
    PASS_TO_FEATURE_DETECTOR,
+
+
    CALCULATE_MOVEMENT_MATRIX,
+   CALCULATE_MOVEMENT_FLOW ,
 
    REMEMBER_FACES,
 
@@ -309,7 +312,9 @@ unsigned int VisCortX_SaveVideoRegisterToFile(unsigned int reg_num,char * filena
 int VisCortx_OperationLockFramesLeftRight();
 int VisCortx_OperationUnLockFramesLeftRight();
 
-void  VisCortx_FullDepthMap();
+void ExecutePipeline();
+
+void  VisCortx_FullDepthMap(unsigned int max_milliseconds);
 void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error);
 unsigned int  VisCortx_Get_DepthMapData(unsigned int typeofdata,unsigned int px,unsigned int py);
 unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int x,unsigned int y,unsigned int patch_x,unsigned int patch_y,struct PatchSignature * result);

@@ -1,0 +1,15 @@
+#!/bin/bash
+echo "Trying to Compile LibElas http://www.rainsoft.de/software/libelas.html "
+echo "Author: Andreas Geiger"
+
+mkdir build
+echo "Cleaning everything"
+rm -fr build/*
+
+echo "Recompiling.."
+cd build
+cmake ..
+make
+cd ..
+echo "Done"
+exit 0

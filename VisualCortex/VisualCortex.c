@@ -404,13 +404,18 @@ int VisCortx_OperationUnLockFramesLeftRight()
  ----------------- DEPTH MAPPING FUNCTIONS ----------------------
 */
 
+void ExecutePipeline()
+{
+    Pipeline_Stereo_Frames_Collected_Actions();
+}
 
-void  VisCortx_FullDepthMap()
+
+void  VisCortx_FullDepthMap(unsigned int max_milliseconds)
 {
 
    VisCortx_SetPipelineSwitch(EXECUTE_DEPTHMAP,1);
 
-  unsigned int sleepy_time = 10 , wait_time = 0, max_wait_time = 5000 /*milliseconds*/  / sleepy_time; // 2 sec max wait time , after this we declare the effort failed :P
+  unsigned int sleepy_time = 10 , wait_time = 0, max_wait_time = max_milliseconds /*milliseconds*/  / sleepy_time; // 2 sec max wait time , after this we declare the effort failed :P
   while
      ( ( VisCortx_GetPipelineSwitch(EXECUTE_DEPTHMAP) != 0  ) && ( wait_time<max_wait_time ) )
     {
@@ -480,7 +485,7 @@ void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error)
    while ( up_deviation>0 )
      {
          settings[DEPTHMAP_VERT_SHIFT_UP]=up_deviation;
-         VisCortx_FullDepthMap();
+         VisCortx_FullDepthMap(3000);
          if ( metrics[COMPAREPATCH_TOTAL_CALLS]<best_result )
             {
                 best_result=metrics[COMPAREPATCH_TOTAL_CALLS];
@@ -495,7 +500,7 @@ void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error)
    while ( down_deviation<max_vertical_error )
      {
          settings[DEPTHMAP_VERT_SHIFT_DOWN]=down_deviation;
-         VisCortx_FullDepthMap();
+         VisCortx_FullDepthMap(3000);
          if ( metrics[COMPAREPATCH_TOTAL_CALLS]<best_result )
             {
                 best_result=metrics[COMPAREPATCH_TOTAL_CALLS];

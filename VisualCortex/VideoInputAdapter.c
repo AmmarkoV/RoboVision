@@ -120,7 +120,10 @@ inline unsigned int FrameProcessing
         CompressRegister(REG_SECOND_DERIVATIVE,REG_GROUP_SECOND_DERIVATIVE);
 
         // FOURTH TRACK ALL POINTS ON NEW FRAME FROM OLD FRAME
-        VisCortx_Movement_Detection((left_right_switch==1),(left_right_switch==1));
+        if ( settings[CALCULATE_MOVEMENT_FLOW ] )
+         {
+           VisCortx_Movement_Detection((left_right_switch==1),(left_right_switch==1));
+         }
 
         if ( settings[PASS_TO_FACE_DETECTOR] ) { RecognizeFaces(REG_CALIBRATED_EYE); }
 
@@ -173,9 +176,7 @@ inline unsigned int FrameProcessing
 
 unsigned int Pipeline_Stereo_Frames_Collected_Actions()
 {
-
   // THESE GET EXECUTED WHEN WE HAVE A PROCESSED STEREO PAIR :P
-
   if ( pipeline_switches[EXECUTE_DEPTHMAP]==1  )
    {
       pipeline_switches[EXECUTE_DEPTHMAP]=2;

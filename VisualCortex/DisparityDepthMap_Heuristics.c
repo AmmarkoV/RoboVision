@@ -257,6 +257,12 @@ int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int dep
   unsigned char val;
   px = (BYTE *)  vid_depth_map;
 
+  unsigned int boost_depth=0;
+  if ( metrics[RESOLUTION_X]-settings[DEPTHMAP_CLOSEST_DEPTH]+settings[DEPTHMAP_STARTLEFT_X] < 255 )
+     {
+         boost_depth = 255 - metrics[RESOLUTION_X]-settings[DEPTHMAP_CLOSEST_DEPTH]+settings[DEPTHMAP_STARTLEFT_X];
+     }
+
   unsigned int ptr,dpth_lim=image_x*image_y;
   for ( ptr = 0; ptr < dpth_lim; ptr++)
    {
@@ -274,7 +280,7 @@ int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int dep
 
 
 
-       *r= val; *g= 0; *b= val /*val*/ ;
+       *r= val+boost_depth; *g=val+boost_depth; *b= val+boost_depth;
    }
 
    video_register[vid_reg].time = video_register[depth_reg].time;

@@ -295,6 +295,7 @@ void DefaultSettings()
    settings[PASS_TO_FACE_DETECTOR]=1;
    settings[PASS_TO_FEATURE_DETECTOR]=1;
    settings[CALCULATE_MOVEMENT_MATRIX]=1;
+   settings[CALCULATE_MOVEMENT_FLOW]=1;
 
    settings[REMEMBER_FACES]=1;
 
@@ -312,7 +313,7 @@ void DefaultSettings()
    settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER]=39;
 
 
-    settings[DEPTHMAP_STARTLEFT_X]=15;
+    settings[DEPTHMAP_STARTLEFT_X]=16;
     settings[DEPTHMAP_DETAIL]=5;
     settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=45;
     settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=255; // 255
@@ -851,7 +852,7 @@ FILE *pf=0;
     {
         char buf[PPMREADBUFLEN], *t;
         unsigned int w=0, h=0, d=0;
-        int r=0;
+        int z=0;
 
         t = fgets(buf, PPMREADBUFLEN, pf);
         if ( (t == 0) || ( strncmp(buf, "P6\n", 3) != 0 ) ) { fclose(pf); return 0; }
@@ -860,12 +861,12 @@ FILE *pf=0;
            t = fgets(buf, PPMREADBUFLEN, pf);
            if ( t == 0 ) { fclose(pf); return 0; }
         } while ( strncmp(buf, "#", 1) == 0 );
-        r = sscanf(buf, "%u %u", &w, &h);
-        if ( r < 2 ) { fclose(pf); return 0; }
+        z = sscanf(buf, "%u %u", &w, &h);
+        if ( z < 2 ) { fclose(pf); return 0; }
         // The program fails if the first byte of the image is equal to 32. because
         // the fscanf eats the space and the image is read with some bit less
-        r = fscanf(pf, "%u\n", &d);
-        if ( (r < 1) || ( d != 255 ) ) { fclose(pf); return 0; }
+        z = fscanf(pf, "%u\n", &d);
+        if ( (z < 1) || ( d != 255 ) ) { fclose(pf); return 0; }
 
         if ( (w!=video_register[reg_num].size_x) || (h!=video_register[reg_num].size_y) )
            {
