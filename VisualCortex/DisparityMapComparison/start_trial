@@ -2,22 +2,28 @@
 
 ./stereo_disparity_my_tester 320 240 flowerpots_snapshot0.ppm flowerpots_snapshot1.ppm 0depth_my.ppm
 ./stereo_disparity_opencv_tester flowerpots_snapshot0.ppm flowerpots_snapshot1.ppm --no-display=1 -o 0depth_opencv.ppm
+./elas flowerpots_snapshot0.ppm flowerpots_snapshot1.ppm
 
 ./stereo_disparity_my_tester 320 240 gddg_snapshot0.ppm gddg_snapshot1.ppm 1depth_my.ppm
 ./stereo_disparity_opencv_tester gddg_snapshot0.ppm gddg_snapshot1.ppm --no-display=1 -o 1depth_opencv.ppm
+./elas gddg_snapshot0.ppm gddg_snapshot1.ppm
  
 
 ./stereo_disparity_my_tester 320 240 scene_l.ppm scene_r.ppm 2depth_my.ppm
 ./stereo_disparity_opencv_tester scene_l.ppm scene_r.ppm --no-display=1 -o 2depth_opencv.ppm
+./elas scene_l.ppm scene_r.ppm
 
 
 ./stereo_disparity_my_tester 320 240 snapshot0.ppm snapshot1.ppm 3depth_my.ppm
 ./stereo_disparity_opencv_tester snapshot0.ppm snapshot1.ppm --no-display=1 -o 3depth_opencv.ppm
+./elas snapshot0.ppm snapshot1.ppm
 
 ./stereo_disparity_my_tester 320 240 cloth0.ppm cloth1.ppm 4depth_my.ppm
 ./stereo_disparity_opencv_tester cloth0.ppm cloth1.ppm --no-display=1 -o 4depth_opencv.ppm
+./elas cloth0.ppm cloth1.ppm
 
 ./stereo_disparity_my_tester 320 240 bowling0.ppm bowling1.ppm 4depth_my.ppm
 ./stereo_disparity_opencv_tester bowling0.ppm bowling1.ppm --no-display=1 -o 4depth_opencv.ppm
+./elas bowling0.ppm bowling1.ppm
 
 exit 0
