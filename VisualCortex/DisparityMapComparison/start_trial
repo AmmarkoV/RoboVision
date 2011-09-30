@@ -26,4 +26,17 @@
 ./stereo_disparity_opencv_tester bowling0.ppm bowling1.ppm --no-display=1 -o 4depth_opencv.ppm
 ./elas bowling0.ppm bowling1.ppm
 
+./stereo_disparity_my_tester 320 240 lampshade0.ppm lampshade1.ppm 5depth_my.ppm
+./stereo_disparity_opencv_tester lampshade0.ppm lampshade1.ppm --no-display=1 -o 5depth_opencv.ppm
+./elas lampshade0.ppm lampshade1.ppm
+
+./stereo_disparity_my_tester 320 240 wood0.ppm wood1.ppm 6depth_my.ppm
+./stereo_disparity_opencv_tester wood0.ppm wood1.ppm --no-display=1 -o 6depth_opencv.ppm
+./elas wood0.ppm wood1.ppm
+
+./stereo_disparity_my_tester 320 240 aloe0.ppm aloe1.ppm 7depth_my.ppm
+./stereo_disparity_opencv_tester aloe0.ppm aloe1.ppm --no-display=1 -o 7depth_opencv.ppm
+./elas aloe0.ppm aloe1.ppm
+ 
+
 exit 0
