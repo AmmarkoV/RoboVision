@@ -508,6 +508,8 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
        SaveTransformationMatrixToFile("memfs/LEFT_HOMOGRAPHY0",&left_homography);
        SaveTransformationMatrixToFile("memfs/RIGHT_HOMOGRAPHY0",&right_homography);
 
+       SaveFeatureListContents(video_register[CALIBRATED_LEFT_EYE].features,"memfs/POINTS_FOR_HOMOGRAPHY0");
+     /*
        SaveTransformationMatrixToFile("memfs/LEFT_ROTATION0",&left_rotation_transformation);
        SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION0",&right_rotation_transformation);
 
@@ -516,6 +518,7 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
 
        SaveTransformationMatrixToFile("memfs/LEFT_ROTATION_AND_TRANSLATION0",&left_rotation_and_translation_matrix);
        SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION_AND_TRANSLATION0",&right_rotation_and_translation_matrix);
+       */
    }
 
 

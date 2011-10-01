@@ -208,7 +208,7 @@ unsigned int RemoveTrackPointsIfMovementMoreThan(struct FeatureList * list,unsig
 
 	   if ( total_length > movement_max*movement_max )
 	    {
-	      fprintf(stderr,"Removing point %u that went from %f,%f to %f,%f \n",i,list->list[i].x,list->list[i].y,list->list[i].last_x,list->list[i].last_y);
+	      //fprintf(stderr,"Removing point %u that went from %f,%f to %f,%f \n",i,list->list[i].x,list->list[i].y,list->list[i].last_x,list->list[i].last_y);
 	      RemoveFromFeatureList(list,i);
 	      ++total_removed;
 	    }
@@ -242,7 +242,7 @@ unsigned int Remove2DTrackPointsIfOutOfBounds(struct FeatureList * list,unsigned
 
 	   if ( drop_point )
 	    {
-	      fprintf(stderr,"Removing point %u that went from %f,%f to %f,%f \n",i,list->list[i].x,list->list[i].y,list->list[i].last_x,list->list[i].last_y);
+	      //fprintf(stderr,"Removing point %u that went from %f,%f to %f,%f \n",i,list->list[i].x,list->list[i].y,list->list[i].last_x,list->list[i].last_y);
 	      RemoveFromFeatureList(list,i);
 	      ++total_removed;
 	    }
@@ -291,4 +291,29 @@ int PrintFeatureListContents(struct FeatureList * list)
          // fprintf(stderr,"Point %u : x,y,z ( %u ,%u , %u ) \n ",i,list->list[i].x,list->list[i].y,list->list[i].z);
      }
    return 1;
+}
+
+int SaveFeatureListContents(struct FeatureList * list,char * filename)
+{
+    if  (!ListIsOk(list)) { fprintf(stderr,"SaveFeatureListContents called with a zero list \n");  return 0; }
+
+
+    FILE *fd=0;
+    fd = fopen(filename,"w");
+
+    if (fd!=0)
+	{
+      fprintf(fd,"Total points : %u \n ",list->current_features);
+
+      int i=0;
+      for (i=0; i<list->current_features; i++)
+      {
+        fprintf(fd,"%f,%f -> %f,%f\n",list->list[i].x,list->list[i].y,list->list[i].last_x,list->list[i].last_y);
+      }
+
+     fclose(fd);
+     return 1;
+	}
+
+   return 0;
 }

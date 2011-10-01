@@ -50,4 +50,5 @@ unsigned int RemoveTrackPointsIfMovementMoreThan(struct FeatureList * list,unsig
 unsigned int Remove2DTrackPointsIfOutOfBounds(struct FeatureList * list,unsigned int x,unsigned int y ,unsigned int width , unsigned int height);
 int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned int data_type);
 int PrintFeatureListContents(struct FeatureList * list);
+int SaveFeatureListContents(struct FeatureList * list,char * filename);
 #endif // FEATURELISTS_H_INCLUDED
