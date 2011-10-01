@@ -198,15 +198,17 @@ int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source
    {
     for ( i=0; i<points_limit;  i++ )
      {   cvmSet(srcPoints,0,i,(float) source->list[i].last_x);
-         cvmSet(srcPoints,1,i,(float) source->list[i].last_y); }
+         cvmSet(srcPoints,1,i,(float) source->list[i].last_y);
+     }
    }
 
    CvMat* dstPoints = cvCreateMat(2,points_limit,CV_32FC1);
    if ( dstPoints != 0 )
    {
     for ( i=0; i<points_limit; i++ )
-     {   cvmSet(srcPoints,0,i,(float) source->list[i].x);
-         cvmSet(srcPoints,1,i,(float) source->list[i].y); }
+     {   cvmSet(dstPoints,0,i,(float) source->list[i].x);
+         cvmSet(dstPoints,1,i,(float) source->list[i].y);
+     }
    }
 
 
