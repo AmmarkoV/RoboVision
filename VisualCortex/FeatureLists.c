@@ -130,9 +130,34 @@ int AssociatePointWithPoint(struct FeatureList * list,int point,int x, int y,int
  return 0;
 }
 
+int SwapPointsAtFeatureList(struct FeatureList * list, int pointA , int pointB )
+{
+   if  (!ListIsOk(list)) { fprintf(stderr,"SwapPointsAtFeatureList called with a zero list \n");  return 0; }
+   if ( list->current_features == 0 ) { fprintf(stderr,"Cannot swap from empty feature list\n"); return 0; }
+
+   if ( (pointA>=list->current_features)||(pointB>=list->current_features) )
+     {  fprintf(stderr,"Points %u and %u are out of bounds ( %u ) \n",pointA,pointB,list->current_features);
+        return 0; }
+
+   struct FeatureData tmp=list->list[pointA];
+   list->list[pointA]=list->list[pointB];
+   list->list[pointB]=tmp;
+
+ return 1;
+}
 
 int RemoveFromFeatureList(struct FeatureList * list, int point)
 {
+   if  (!ListIsOk(list)) { fprintf(stderr,"RemoveFromFeatureList called with a zero list \n");  return 0; }
+   if ( list->current_features == 0 ) { fprintf(stderr,"Cannot remove from feature list , feature list is empty\n"); return 0; }
+   if ( list->current_features == 1 ) { list->current_features=0; return 1; }
+
+   if ( SwapPointsAtFeatureList(list,point,list->current_features-1) )
+     {
+       --list->current_features;
+       return 1;
+     }
+
  return 0;
 }
 
@@ -141,8 +166,10 @@ int RemoveFromFeatureList(struct FeatureList * list, int point)
 void RemoveTrackPointsIfTimedOut(struct FeatureList * list,unsigned int timeout)
 {
     if  (!ListIsOk(list)) { fprintf(stderr,"RemoveTrackPointsIfTimedOut called with a zero list \n");  return; }
-	int i=0;
-	while ( i < list->current_features )
+    if ( list->current_features == 0 ) { fprintf(stderr,"Cannot RemoveTrackPointsIfTimedOut from feature list , feature list is empty\n"); return; }
+
+	int i=list->current_features-1;
+	while ( i >= 0 )
     {
      if (list->list[i].lost==1)
 	 {
@@ -151,10 +178,81 @@ void RemoveTrackPointsIfTimedOut(struct FeatureList * list,unsigned int timeout)
 	       RemoveFromFeatureList(list,i);
 	   }
 	 }
-	   ++i;
+
+       if ( i==0 ) {  break; }  else
+                   {  --i;   }
     }
 }
 
+unsigned int RemoveTrackPointsIfMovementMoreThan(struct FeatureList * list,unsigned int movement_max)
+{
+    if  (!ListIsOk(list)) { fprintf(stderr,"RemoveTrackPointsIfMovementMoreThan called with a zero list \n");  return 0; }
+    if ( list->current_features == 0 ) { fprintf(stderr,"Cannot RemoveTrackPointsIfMovementMoreThan from feature list , feature list is empty\n"); return 0; }
+
+	int total_removed=0,i=list->current_features-1;
+	while ( i >= 0 )
+    {
+	  unsigned int total_length=0 , dim_length=0;
+	  if ( list->list[i].x >= list->list[i].last_x )  { dim_length=list->list[i].x-list->list[i].last_x; } else
+	  if ( list->list[i].x <  list->list[i].last_x )  { dim_length=list->list[i].last_x-list->list[i].x; }
+      total_length += dim_length*dim_length;
+
+      if ( list->list[i].y >= list->list[i].last_y )  { dim_length=list->list[i].y-list->list[i].last_y; } else
+	  if ( list->list[i].y <  list->list[i].last_y )  { dim_length=list->list[i].last_y-list->list[i].y; }
+      total_length += dim_length*dim_length;
+
+      if ( list->list[i].z >= list->list[i].last_z )  { dim_length=list->list[i].z-list->list[i].last_z; } else
+	  if ( list->list[i].z <  list->list[i].last_z )  { dim_length=list->list[i].last_z-list->list[i].z; }
+      total_length += dim_length*dim_length;
+
+
+	   if ( total_length > movement_max*movement_max )
+	    {
+	      fprintf(stderr,"Removing point %u that went from %f,%f to %f,%f \n",i,list->list[i].x,list->list[i].y,list->list[i].last_x,list->list[i].last_y);
+	      RemoveFromFeatureList(list,i);
+	      ++total_removed;
+	    }
+
+       if ( i==0 ) {  break; }  else
+                   {  --i;   }
+    }
+
+  return total_removed;
+}
+
+
+
+unsigned int Remove2DTrackPointsIfOutOfBounds(struct FeatureList * list,unsigned int x,unsigned int y ,unsigned int width , unsigned int height)
+{
+    if  (!ListIsOk(list)) { fprintf(stderr,"Remove2DTrackPointsIfOutOfBounds called with a zero list \n");  return 0; }
+    if ( list->current_features == 0 ) { fprintf(stderr,"Cannot Remove2DTrackPointsIfOutOfBounds from feature list , feature list is empty\n"); return 0; }
+
+	unsigned int total_removed=0,drop_point =0 ;
+    unsigned int x2 = x+width,y2 = y+height ;
+
+    int i=list->current_features-1;
+	while ( i >= 0 )
+    {
+      drop_point=0;
+
+      if (  list->list[i].x < x )  { drop_point=1; } else
+      if (  list->list[i].x > x2 )  { drop_point=1; } else
+      if (  list->list[i].y < y )   { drop_point=1; } else
+      if (  list->list[i].y > y2 )   { drop_point=1; }
+
+	   if ( drop_point )
+	    {
+	      fprintf(stderr,"Removing point %u that went from %f,%f to %f,%f \n",i,list->list[i].x,list->list[i].y,list->list[i].last_x,list->list[i].last_y);
+	      RemoveFromFeatureList(list,i);
+	      ++total_removed;
+	    }
+
+       if ( i==0 ) {  break; }  else
+                   {  --i;   }
+    }
+
+   return total_removed;
+}
 
 
 

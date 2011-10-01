@@ -299,6 +299,7 @@ void DefaultSettings()
 
    settings[REMEMBER_FACES]=1;
 
+   settings[FEATURE_TRACKING_MAX_MOVEMENT_THRESHOLD]=120; /* FEATURE Tracking comparison threshold */
    settings[FEATURE_TRACKING_COMPARISON_THRESHOLD]=35000; /* FEATURE Tracking comparison threshold */
 
    settings[FEATURE_DETECTION_THRESHOLD]=40; // 30

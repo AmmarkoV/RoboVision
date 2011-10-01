@@ -179,8 +179,6 @@ CvMat* CreateHomographyRotationTranslationMatrix( CvMat* m_homography,CvMat* m_i
 
 
 
-
-
 int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source,
                                                      struct CameraCalibrationData * calibration,
                                                      struct TransformationMatrix * rotation_matrix,
@@ -189,23 +187,24 @@ int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source
                                                      struct TransformationMatrix * homography_matrix)
 {
    if ( source->current_features == 0 ) { return 0; }
-   if ( source->current_features < 8 ) { return 0; }
+   if ( source->current_features < 4) { return 0; }
 
+   int i=0 , res = 1;
+   unsigned int points_limit = source->current_features;
+   //points_limit  = 4; // If we want just a perspective Transform and not a Homography
 
-   int i=0;
-
-   CvMat* srcPoints = cvCreateMat(2,source->current_features,CV_32FC1);
+   CvMat* srcPoints = cvCreateMat(2,points_limit,CV_32FC1);
    if ( srcPoints != 0 )
    {
-    for ( i=0; i<source->current_features; i++ )
+    for ( i=0; i<points_limit;  i++ )
      {   cvmSet(srcPoints,0,i,(float) source->list[i].last_x);
          cvmSet(srcPoints,1,i,(float) source->list[i].last_y); }
    }
 
-   CvMat* dstPoints = cvCreateMat(2,source->current_features,CV_32FC1);
+   CvMat* dstPoints = cvCreateMat(2,points_limit,CV_32FC1);
    if ( dstPoints != 0 )
    {
-    for ( i=0; i<source->current_features; i++ )
+    for ( i=0; i<points_limit; i++ )
      {   cvmSet(srcPoints,0,i,(float) source->list[i].x);
          cvmSet(srcPoints,1,i,(float) source->list[i].y); }
    }
@@ -215,7 +214,8 @@ int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source
    CvMat* H =  cvCreateMat(3,3,CV_64F);
    cvZero(H);
 
-   int res = cvFindHomography(srcPoints,dstPoints,H,CV_RANSAC,2.5,status);
+    res = cvFindHomography(srcPoints,dstPoints,H,CV_RANSAC,2.5,status);
+    //cvPerspectiveTransform(srcPoints,dstPoints, H);
 
 
    i=0;
@@ -232,7 +232,9 @@ int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source
    IplImage  * image = cvCreateImage( cvSize(320,240), IPL_DEPTH_8U, 3 );
    memcpy(image->imageData , video_register[CALIBRATED_LEFT_EYE].pixels , metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
    IplImage  * dstImg = cvCloneImage(image);
-   cvWarpPerspective(image, dstImg, H , CV_INTER_CUBIC , cvScalarAll(0) );
+
+   cvWarpPerspective(image, dstImg, H , CV_INTER_CUBIC | CV_WARP_FILL_OUTLIERS, cvScalarAll(0) );
+
    memcpy( video_register[LAST_LEFT_OPERATION].pixels , dstImg->imageData , metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
    video_register[LAST_LEFT_OPERATION].time = video_register[CALIBRATED_LEFT_EYE].time;
    cvReleaseImage( &image );

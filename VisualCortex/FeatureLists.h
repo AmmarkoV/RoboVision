@@ -44,7 +44,10 @@ int CopyFeatureList(struct FeatureList * source,struct FeatureList * target);
 int ClearFeatureList(struct FeatureList * list);
 int RenewTrackPoints(struct FeatureList * list,int point);
 int AddToFeatureList(struct FeatureList * list, float x, float y,float z , int dim_x, int dim_y,int dim_z);
+int SwapPointsAtFeatureList(struct FeatureList * list, int pointA , int pointB );
 void RemoveTrackPointsIfTimedOut(struct FeatureList * list,unsigned int timeout);
+unsigned int RemoveTrackPointsIfMovementMoreThan(struct FeatureList * list,unsigned int movement_max);
+unsigned int Remove2DTrackPointsIfOutOfBounds(struct FeatureList * list,unsigned int x,unsigned int y ,unsigned int width , unsigned int height);
 int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned int data_type);
 int PrintFeatureListContents(struct FeatureList * list);
 #endif // FEATURELISTS_H_INCLUDED

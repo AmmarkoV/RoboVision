@@ -410,7 +410,17 @@ int FindAndTrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int r
     }
 
 
-
+   unsigned int filtered_out = RemoveTrackPointsIfMovementMoreThan(video_register[reg_new].features,settings[FEATURE_TRACKING_MAX_MOVEMENT_THRESHOLD]);
+   if ( filtered_out > 0 )
+     {
+       // fprintf(stderr,"Filtered %u points due to movement\n", filtered_out  );
+     }
+   unsigned int outside_zone = 8;
+   filtered_out = Remove2DTrackPointsIfOutOfBounds(video_register[reg_new].features,outside_zone,outside_zone,metrics[RESOLUTION_X]-outside_zone,metrics[RESOLUTION_Y]-outside_zone);
+   if ( filtered_out > 0 )
+     {
+       // fprintf(stderr,"Filtered %u points due as out of bounds \n", filtered_out  );
+     }
 
    cvReleaseImage(&pyrA);
    cvReleaseImage(&pyrB);
@@ -420,7 +430,7 @@ int FindAndTrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int r
    StopUsingVideoRegister(MONOCHROME_TMP_REGISTER_OLD);
 
 
-   	    return 0;
+  return 0;
 }
 
 

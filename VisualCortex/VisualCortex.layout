@@ -2,13 +2,13 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="25429" topLine="523" />
+		<Cursor position="23354" topLine="487" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="630" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
-		<Cursor position="9022" topLine="245" />
+		<Cursor position="9983" topLine="242" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
 		<Cursor position="1276" topLine="0" />
@@ -26,10 +26,10 @@
 		<Cursor position="162" topLine="0" />
 	</File>
 	<File name="FeatureLists.c" open="1" top="0" tabpos="38">
-		<Cursor position="2315" topLine="36" />
+		<Cursor position="3579" topLine="95" />
 	</File>
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
-		<Cursor position="599" topLine="0" />
+		<Cursor position="1156" topLine="6" />
 	</File>
 	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
 		<Cursor position="13439" topLine="293" />
@@ -43,8 +43,8 @@
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
 		<Cursor position="850" topLine="0" />
 	</File>
-	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
-		<Cursor position="1159" topLine="336" />
+	<File name="LinearAlgebra.c" open="1" top="1" tabpos="25">
+		<Cursor position="9376" topLine="202" />
 	</File>
 	<File name="LinearAlgebra.h" open="1" top="0" tabpos="31">
 		<Cursor position="69" topLine="0" />
@@ -80,7 +80,7 @@
 		<Cursor position="100" topLine="0" />
 	</File>
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="4175" topLine="105" />
+		<Cursor position="4175" topLine="20" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="247" topLine="0" />
@@ -92,7 +92,7 @@
 		<Cursor position="250" topLine="0" />
 	</File>
 	<File name="VisCortexFilters.c" open="1" top="0" tabpos="3">
-		<Cursor position="18637" topLine="646" />
+		<Cursor position="19684" topLine="673" />
 	</File>
 	<File name="VisCortexFilters.h" open="1" top="0" tabpos="4">
 		<Cursor position="862" topLine="0" />
@@ -116,15 +116,15 @@
 		<Cursor position="329" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="1574" topLine="0" />
+		<Cursor position="11651" topLine="279" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="886" topLine="12" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
-		<Cursor position="16894" topLine="465" />
+	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
+		<Cursor position="9789" topLine="287" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="8152" topLine="279" />
+		<Cursor position="7198" topLine="280" />
 	</File>
 </CodeBlocks_layout_file>
