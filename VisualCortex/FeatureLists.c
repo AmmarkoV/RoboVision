@@ -109,7 +109,7 @@ int RenewTrackPoints(struct FeatureList * list,int point)
 
 
 // TODO ADD HERE COPYING OF THE FEATURE IMAGE PATCH , IT IS NEEDED FOR BETTER TRACKING..!
-int AddToFeatureList(struct FeatureList * list, int x, int y,int z , int dim_x, int dim_y,int dim_z)
+int AddToFeatureList(struct FeatureList * list, float x, float y,float z , int dim_x, int dim_y,int dim_z)
 {
    if  (!ListIsOk(list)) { fprintf(stderr,"AddToFeatureList called with a zero list \n");  return 0; }
    if ( list->current_features >= list->max_features-1 ) { fprintf(stderr,"Cannot add to feature list , feature list is full\n"); return 0; }
@@ -190,7 +190,7 @@ int PrintFeatureListContents(struct FeatureList * list)
     int i=0;
     for (i=0; i<list->current_features; i++)
      {
-          fprintf(stderr,"Point %u : x,y,z ( %u ,%u , %u ) \n ",i,list->list[i].x,list->list[i].y,list->list[i].z);
+         // fprintf(stderr,"Point %u : x,y,z ( %u ,%u , %u ) \n ",i,list->list[i].x,list->list[i].y,list->list[i].z);
      }
    return 1;
 }

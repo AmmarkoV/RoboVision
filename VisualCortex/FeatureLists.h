@@ -6,11 +6,11 @@ struct FeatureData
   char lost;
   char lost_since;
 
-  unsigned int x,y,z;
+  float x,y,z;
   unsigned int dim_x,dim_y,dim_z;
 
 
-  unsigned int last_x,last_y,last_z;
+  float last_x,last_y,last_z;
   unsigned int last_dim_x,last_dim_y,last_dim_z;
 
   unsigned int patch_width,patch_height;
@@ -43,7 +43,7 @@ int DestroyFeatureList(struct FeatureList * list);
 int CopyFeatureList(struct FeatureList * source,struct FeatureList * target);
 int ClearFeatureList(struct FeatureList * list);
 int RenewTrackPoints(struct FeatureList * list,int point);
-int AddToFeatureList(struct FeatureList * list, int x, int y,int z , int dim_x, int dim_y,int dim_z);
+int AddToFeatureList(struct FeatureList * list, float x, float y,float z , int dim_x, int dim_y,int dim_z);
 void RemoveTrackPointsIfTimedOut(struct FeatureList * list,unsigned int timeout);
 int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned int data_type);
 int PrintFeatureListContents(struct FeatureList * list);

@@ -490,6 +490,10 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
                 0
              );
 }
+ // THIS IS SET HERE IN ORDER TO BE PASSED TO Depth_Left_Video without problems
+  video_register[DEPTH_LEFT].time = video_register[CALIBRATED_LEFT_EYE].time;
+  video_register[DEPTH_RIGHT].time = video_register[CALIBRATED_RIGHT_EYE].time;
+
   /*
     CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
    */
@@ -514,8 +518,6 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
        SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION_AND_TRANSLATION0",&right_rotation_and_translation_matrix);
    }
 
-  video_register[DEPTH_LEFT].time = video_register[CALIBRATED_LEFT_EYE].time;
-  video_register[DEPTH_RIGHT].time = video_register[CALIBRATED_RIGHT_EYE].time;
 
   metrics[DEPTHMAP_DELAY_MICROSECONDS] = EndTimer(TIMER_DEPTH_MAP_DELAY);
   metrics[TOTAL_DEPTHMAP_DELAY_MICROSECONDS]+=metrics[DEPTHMAP_DELAY_MICROSECONDS] ;

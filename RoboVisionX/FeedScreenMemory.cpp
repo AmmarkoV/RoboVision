@@ -13,6 +13,9 @@ wxMouseState mouse;
 wxBitmap *default_feed=0;
 wxBitmap *default_patch=0;
 
+unsigned int last_time_of_left_operation=0;
+unsigned int last_time_of_right_operation=0;
+
 struct feed live_feeds[4]={{0},{0},{0},{0}};
 
 
@@ -188,6 +191,17 @@ int SnapWebCams()
   live_feeds[1].bmp_allocated = true;
  }
 
+  if ( last_time_of_left_operation != VisCortx_GetVideoRegisterData(LAST_LEFT_OPERATION,0) )
+    {
+         last_time_of_left_operation= VisCortx_GetVideoRegisterData(LAST_LEFT_OPERATION,0);
+         PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
+    }
+
+  if ( last_time_of_right_operation != VisCortx_GetVideoRegisterData(LAST_RIGHT_OPERATION,0) )
+    {
+         last_time_of_right_operation= VisCortx_GetVideoRegisterData(LAST_RIGHT_OPERATION,0);
+         PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_RIGHT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
+    }
 
   return 1 ;
 }
@@ -200,29 +214,29 @@ inline wxString _U(const char String[] = "")
 
 void GUI_DrawOPFeeds()
 {
-  PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
-  PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_RIGHT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
+  //PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
+  //PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_RIGHT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
 }
 
 void GUI_FullDepthMap(unsigned char write_to_file)
 {
   IssueCommand((char *)"DEPTH MAP",0,0,(char *)"GUI");
-  PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
-  PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_RIGHT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
+  //PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
+  //PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_RIGHT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
 }
 
 
 void GUI_DrawMovement()
 {
  IssueCommand((char *)"DRAW MOVEMENT",0,0,(char *)"GUI");
- PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
- PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_RIGHT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
+ //PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
+ //PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_RIGHT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
 }
 
 void GUI_FindFeatures()
 {
   VisCortx_RemoveTimedoutTrackPoints(0,1);
   VisCortx_AutoAddTrackPoints(0);
-  PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
+  //PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
   fprintf(stderr," FindFeatures() ok \n");
 }
