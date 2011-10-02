@@ -209,12 +209,28 @@ int ConvertMatrices( struct TransformationMatrix * rotation_matrix,
 
 
     ClearTransformationMatrix(translation_matrix);
-    translation_matrix->rows=1;
+    translation_matrix->rows=4;
     translation_matrix->columns=4;
-    translation_matrix->item[0]=cvmGet(homography_decomposition_to_translation_and_rotation,0,3);
-    translation_matrix->item[1]=cvmGet(homography_decomposition_to_translation_and_rotation,1,3);
-    translation_matrix->item[2]=cvmGet(homography_decomposition_to_translation_and_rotation,2,3);
-    translation_matrix->item[3]=1;
+
+    translation_matrix->item[0]=1;
+    translation_matrix->item[1]=0;
+    translation_matrix->item[2]=0;
+    translation_matrix->item[3]=cvmGet(homography_decomposition_to_translation_and_rotation,0,3);
+
+    translation_matrix->item[4]=0;
+    translation_matrix->item[5]=1;
+    translation_matrix->item[6]=0;
+    translation_matrix->item[7]=cvmGet(homography_decomposition_to_translation_and_rotation,1,3);
+
+    translation_matrix->item[8]=0;
+    translation_matrix->item[9]=0;
+    translation_matrix->item[10]=1;
+    translation_matrix->item[11]=cvmGet(homography_decomposition_to_translation_and_rotation,2,3);
+
+    translation_matrix->item[12]=0;
+    translation_matrix->item[13]=0;
+    translation_matrix->item[14]=0;
+    translation_matrix->item[15]=1;
 
 
     ClearTransformationMatrix(rotation_and_translation_matrix);

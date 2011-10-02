@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="DisparityDepthMap.c" open="1" top="1" tabpos="7">
-		<Cursor position="24880" topLine="493" />
+		<Cursor position="23568" topLine="493" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="630" topLine="0" />
@@ -44,7 +44,7 @@
 		<Cursor position="850" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
-		<Cursor position="8543" topLine="192" />
+		<Cursor position="9866" topLine="226" />
 	</File>
 	<File name="LinearAlgebra.h" open="1" top="0" tabpos="31">
 		<Cursor position="69" topLine="0" />
@@ -116,7 +116,7 @@
 		<Cursor position="329" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="31133" topLine="784" />
+		<Cursor position="31848" topLine="776" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="886" topLine="12" />

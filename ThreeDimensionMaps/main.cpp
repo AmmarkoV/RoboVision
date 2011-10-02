@@ -30,10 +30,12 @@ unsigned char video_depth[640*480*3]={0};
 float vx=-160.0,vy=120.0,vz=-270.0,rot=0.0;
 double last_load;
 
-GLfloat left_transformation[16]={0.0};
-GLfloat right_transformation[16]={0.0};
+GLfloat left_rotation[16]={0.0};
+GLfloat right_rotation[16]={0.0};
 
 
+GLfloat left_translation[16]={0.0};
+GLfloat right_translation[16]={0.0};
 
 /* GLUT callback Handlers */
 
@@ -93,119 +95,38 @@ int SaveTransformationMatrixToFile(char * filename,GLfloat * matrix,unsigned int
 }
 
 
-void LoadHomography(int snap)
+
+
+void LoadMatrix4x4(char * filename,int snap,GLfloat * transformation)
 {
-   char filename[60]={0};
-   sprintf(filename,"memfs/LEFT_HOMOGRAPHY%u",snap);
+   char filename_full[128]={0};
+   sprintf(filename_full,"%s%u",filename,snap);
 
    FILE * fp;
-   fp = fopen(filename,"r");
+   fp = fopen(filename_full,"r");
    if (fp == 0) return;
 
-    fscanf(fp,"%f",&left_transformation[0]);
-    fscanf(fp,"%f",&left_transformation[1]);
-    fscanf(fp,"%f",&left_transformation[2]);
-    left_transformation[3]=0;
+    fscanf(fp,"%f",&transformation[0]);
+    fscanf(fp,"%f",&transformation[1]);
+    fscanf(fp,"%f",&transformation[2]);
+    fscanf(fp,"%f",&transformation[4]);
 
-    fscanf(fp,"%f",&left_transformation[4]);
-    fscanf(fp,"%f",&left_transformation[5]);
-    fscanf(fp,"%f",&left_transformation[6]);
-    left_transformation[7]=0;
+    fscanf(fp,"%f",&transformation[4]);
+    fscanf(fp,"%f",&transformation[5]);
+    fscanf(fp,"%f",&transformation[6]);
+    fscanf(fp,"%f",&transformation[7]);
 
-    fscanf(fp,"%f",&left_transformation[8]);
-    fscanf(fp,"%f",&left_transformation[9]);
-    fscanf(fp,"%f",&left_transformation[10]);
-    left_transformation[11]=0;
+    fscanf(fp,"%f",&transformation[8]);
+    fscanf(fp,"%f",&transformation[9]);
+    fscanf(fp,"%f",&transformation[10]);
+    fscanf(fp,"%f",&transformation[11]);
 
-    left_transformation[12]=0.0;
-    left_transformation[13]=0.0;
-    left_transformation[14]=0.0;
-    left_transformation[15]=1.0;
+    fscanf(fp,"%f",&transformation[12]);
+    fscanf(fp,"%f",&transformation[13]);
+    fscanf(fp,"%f",&transformation[14]);
+    fscanf(fp,"%f",&transformation[15]);
     fclose(fp);
 
-   sprintf(filename,"memfs/RIGHT_HOMOGRAPHY%u",snap);
-   fp = fopen(filename,"r");
-   if (fp == 0) return;
-
-    fscanf(fp,"%f",&right_transformation[0]);
-    fscanf(fp,"%f",&right_transformation[1]);
-    fscanf(fp,"%f",&right_transformation[2]);
-    right_transformation[3]=0;
-
-    fscanf(fp,"%f",&right_transformation[4]);
-    fscanf(fp,"%f",&right_transformation[5]);
-    fscanf(fp,"%f",&right_transformation[6]);
-    right_transformation[7]=0;
-
-    fscanf(fp,"%f",&right_transformation[8]);
-    fscanf(fp,"%f",&right_transformation[9]);
-    fscanf(fp,"%f",&right_transformation[10]);
-    right_transformation[11]=0;
-
-    right_transformation[12]=0.0;
-    right_transformation[13]=0.0;
-    right_transformation[14]=0.0;
-    right_transformation[15]=1.0;
-   fclose(fp);
-
-}
-
-
-void LoadTransformation(int snap)
-{
-   char filename[60]={0};
-   sprintf(filename,"memfs/LEFT_ROTATION%u",snap);
-
-   FILE * fp;
-   fp = fopen(filename,"r");
-   if (fp == 0) return;
-
-    fscanf(fp,"%f",&left_transformation[0]);
-    fscanf(fp,"%f",&left_transformation[1]);
-    fscanf(fp,"%f",&left_transformation[2]);
-    fscanf(fp,"%f",&left_transformation[4]);
-
-    fscanf(fp,"%f",&left_transformation[4]);
-    fscanf(fp,"%f",&left_transformation[5]);
-    fscanf(fp,"%f",&left_transformation[6]);
-    fscanf(fp,"%f",&left_transformation[7]);
-
-    fscanf(fp,"%f",&left_transformation[8]);
-    fscanf(fp,"%f",&left_transformation[9]);
-    fscanf(fp,"%f",&left_transformation[10]);
-    fscanf(fp,"%f",&left_transformation[11]);
-
-    fscanf(fp,"%f",&left_transformation[12]);
-    fscanf(fp,"%f",&left_transformation[13]);
-    fscanf(fp,"%f",&left_transformation[14]);
-    fscanf(fp,"%f",&left_transformation[15]);
-    fclose(fp);
-
-   sprintf(filename,"memfs/RIGHT_ROTATION%u",snap);
-   fp = fopen(filename,"r");
-   if (fp == 0) return;
-
-    fscanf(fp,"%f",&right_transformation[0]);
-    fscanf(fp,"%f",&right_transformation[1]);
-    fscanf(fp,"%f",&right_transformation[2]);
-    fscanf(fp,"%f",&right_transformation[3]);
-
-    fscanf(fp,"%f",&right_transformation[4]);
-    fscanf(fp,"%f",&right_transformation[5]);
-    fscanf(fp,"%f",&right_transformation[6]);
-    fscanf(fp,"%f",&right_transformation[7]);
-
-    fscanf(fp,"%f",&right_transformation[8]);
-    fscanf(fp,"%f",&right_transformation[9]);
-    fscanf(fp,"%f",&right_transformation[10]);
-    fscanf(fp,"%f",&right_transformation[11]);
-
-    fscanf(fp,"%f",&right_transformation[12]);
-    fscanf(fp,"%f",&right_transformation[13]);
-    fscanf(fp,"%f",&right_transformation[14]);
-    fscanf(fp,"%f",&right_transformation[15]);
-
-   fclose(fp);
 
 }
 
@@ -269,7 +190,10 @@ void DrawDepthMap(int num,float transx,float transy,float transz,float rotx,floa
       //glRotatef( roty, 0.0, 1.0, 0.0 );
      // glRotatef( rot, 0.0, 1.0, 0.0 );
      // glTranslated(vx,vy,vz);
-       glMultMatrixf(left_transformation);
+
+    // glMultMatrixf(left_translation);
+      glMultMatrixf(left_rotation);
+
       glBegin(GL_QUADS);
        for (y=0; y<240; y++)
          { for (x=0; x<320; x++)
@@ -329,7 +253,12 @@ static void display(void)
       //for (i=0; i<8; i++)
        {
          LoadDepth(i);
-         LoadTransformation(i);
+         LoadMatrix4x4((char*)"memfs/LEFT_ROTATION",0,left_rotation);
+         LoadMatrix4x4((char*)"memfs/RIGHT_ROTATION",0,right_rotation);
+
+         LoadMatrix4x4((char*)"memfs/LEFT_TRANSLATION",0,left_translation);
+         LoadMatrix4x4((char*)"memfs/RIGHT_TRANSLATION",0,right_translation);
+
          DrawDepthMap(0,0,0,0,0,angle,0);
          angle+=20;
        }
