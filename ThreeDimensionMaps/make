@@ -6,7 +6,7 @@ g++ main.cpp world_map_adapter.cpp  world_map_adapter.h -lglut -lGL -lGLU -lXxf8
 if [ -e bin/Release/ThreeDimensional ]
 then
   echo "Success.."
-  cp /bin/Release/ThreeDimensional ../RoboVisionX/ThreeDimensional
+  cp bin/Release/ThreeDimensional ../RoboVisionX/ThreeDimensional
 else
   echo "Failure.."
 fi

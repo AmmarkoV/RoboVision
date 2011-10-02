@@ -804,9 +804,19 @@ int SaveTransformationMatrixToFile(char * filename,struct TransformationMatrix *
           fprintf(fd,"%f\n",matrix->item[i]);
         }
 
-        fprintf(fd,"m1=[%f,%f,%f;%f,%f,%f;%f,%f,%f];\n",matrix->item[0] , matrix->item[1] , matrix->item[2]
+       if( (matrix->columns == 3 ) &&  (matrix->rows==3 ) )
+        {
+         fprintf(fd,"m1=[%f,%f,%f;%f,%f,%f;%f,%f,%f];\n",matrix->item[0] , matrix->item[1] , matrix->item[2]
                                                         ,matrix->item[3] , matrix->item[4] , matrix->item[5]
-                                                         ,matrix->item[6] , matrix->item[7] , matrix->item[8]  );
+                                                        ,matrix->item[6] , matrix->item[7] , matrix->item[8]  );
+        } else
+       if( (matrix->columns == 4 ) &&  (matrix->rows==4 ) )
+        {
+          fprintf(fd,"m1=[%f,%f,%f,%f;%f,%f,%f,%f;%f,%f,%f,%f;%f,%f,%f,%f];\n",matrix->item[0] , matrix->item[1] , matrix->item[2] , matrix->item[3] ,
+                                                                               matrix->item[4] , matrix->item[5] , matrix->item[6] , matrix->item[7] ,
+                                                                               matrix->item[8] , matrix->item[9] , matrix->item[10] , matrix->item[11] ,
+                                                                               matrix->item[12] , matrix->item[13] , matrix->item[14] , matrix->item[15] );
+        }
 
 	  fclose(fd);
 	  return 1;

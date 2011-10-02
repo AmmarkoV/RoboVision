@@ -93,10 +93,10 @@ int SaveTransformationMatrixToFile(char * filename,GLfloat * matrix,unsigned int
 }
 
 
-void LoadTransformation(int snap)
+void LoadHomography(int snap)
 {
    char filename[60]={0};
-   sprintf(filename,"memfs/LEFT_ROTATION_AND_TRANSLATION%u",snap);
+   sprintf(filename,"memfs/LEFT_HOMOGRAPHY%u",snap);
 
    FILE * fp;
    fp = fopen(filename,"r");
@@ -105,7 +105,65 @@ void LoadTransformation(int snap)
     fscanf(fp,"%f",&left_transformation[0]);
     fscanf(fp,"%f",&left_transformation[1]);
     fscanf(fp,"%f",&left_transformation[2]);
-    fscanf(fp,"%f",&left_transformation[3]);
+    left_transformation[3]=0;
+
+    fscanf(fp,"%f",&left_transformation[4]);
+    fscanf(fp,"%f",&left_transformation[5]);
+    fscanf(fp,"%f",&left_transformation[6]);
+    left_transformation[7]=0;
+
+    fscanf(fp,"%f",&left_transformation[8]);
+    fscanf(fp,"%f",&left_transformation[9]);
+    fscanf(fp,"%f",&left_transformation[10]);
+    left_transformation[11]=0;
+
+    left_transformation[12]=0.0;
+    left_transformation[13]=0.0;
+    left_transformation[14]=0.0;
+    left_transformation[15]=1.0;
+    fclose(fp);
+
+   sprintf(filename,"memfs/RIGHT_HOMOGRAPHY%u",snap);
+   fp = fopen(filename,"r");
+   if (fp == 0) return;
+
+    fscanf(fp,"%f",&right_transformation[0]);
+    fscanf(fp,"%f",&right_transformation[1]);
+    fscanf(fp,"%f",&right_transformation[2]);
+    right_transformation[3]=0;
+
+    fscanf(fp,"%f",&right_transformation[4]);
+    fscanf(fp,"%f",&right_transformation[5]);
+    fscanf(fp,"%f",&right_transformation[6]);
+    right_transformation[7]=0;
+
+    fscanf(fp,"%f",&right_transformation[8]);
+    fscanf(fp,"%f",&right_transformation[9]);
+    fscanf(fp,"%f",&right_transformation[10]);
+    right_transformation[11]=0;
+
+    right_transformation[12]=0.0;
+    right_transformation[13]=0.0;
+    right_transformation[14]=0.0;
+    right_transformation[15]=1.0;
+   fclose(fp);
+
+}
+
+
+void LoadTransformation(int snap)
+{
+   char filename[60]={0};
+   sprintf(filename,"memfs/LEFT_ROTATION%u",snap);
+
+   FILE * fp;
+   fp = fopen(filename,"r");
+   if (fp == 0) return;
+
+    fscanf(fp,"%f",&left_transformation[0]);
+    fscanf(fp,"%f",&left_transformation[1]);
+    fscanf(fp,"%f",&left_transformation[2]);
+    fscanf(fp,"%f",&left_transformation[4]);
 
     fscanf(fp,"%f",&left_transformation[4]);
     fscanf(fp,"%f",&left_transformation[5]);
@@ -117,16 +175,13 @@ void LoadTransformation(int snap)
     fscanf(fp,"%f",&left_transformation[10]);
     fscanf(fp,"%f",&left_transformation[11]);
 
-    left_transformation[12]=0.0;
-    left_transformation[13]=0.0;
-    left_transformation[14]=0.0;
-    left_transformation[15]=1.0;
-
-
+    fscanf(fp,"%f",&left_transformation[12]);
+    fscanf(fp,"%f",&left_transformation[13]);
+    fscanf(fp,"%f",&left_transformation[14]);
+    fscanf(fp,"%f",&left_transformation[15]);
     fclose(fp);
-    //SaveTransformationMatrixToFile((char* )"RIGHT_TRANSFORMATION_OGL0",right_transformation,4,4); This for debugging
 
-   sprintf(filename,"memfs/RIGHT_ROTATION_AND_TRANSLATION%u",snap);
+   sprintf(filename,"memfs/RIGHT_ROTATION%u",snap);
    fp = fopen(filename,"r");
    if (fp == 0) return;
 
@@ -145,16 +200,15 @@ void LoadTransformation(int snap)
     fscanf(fp,"%f",&right_transformation[10]);
     fscanf(fp,"%f",&right_transformation[11]);
 
-    right_transformation[12]=0.0;
-    right_transformation[13]=0.0;
-    right_transformation[14]=0.0;
-    right_transformation[15]=1.0;
-
+    fscanf(fp,"%f",&right_transformation[12]);
+    fscanf(fp,"%f",&right_transformation[13]);
+    fscanf(fp,"%f",&right_transformation[14]);
+    fscanf(fp,"%f",&right_transformation[15]);
 
    fclose(fp);
-    //SaveTransformationMatrixToFile((char *)"LEFT_TRANSFORMATION_OGL0",left_transformation,4,4); This for debugging
 
 }
+
 
 void glColorRGB(unsigned char R,unsigned char G,unsigned char B)
 {
@@ -193,7 +247,7 @@ void DrawDepthMap(int num,float transx,float transy,float transz,float rotx,floa
   glLoadIdentity();
 
 
-    glRotatef( roty, 0.0, 1.0, 0.0 );
+   glRotatef( roty, 0.0, 1.0, 0.0 );
     glRotatef( rot, 0.0, 1.0, 0.0 );
     glTranslated(vx,vy,vz);
 
@@ -210,8 +264,8 @@ void DrawDepthMap(int num,float transx,float transy,float transz,float rotx,floa
                glEnd();
 
 
-    glPushMatrix();
-     glLoadIdentity();
+   // glPushMatrix();
+    // glLoadIdentity();
       //glRotatef( roty, 0.0, 1.0, 0.0 );
      // glRotatef( rot, 0.0, 1.0, 0.0 );
      // glTranslated(vx,vy,vz);
@@ -244,7 +298,7 @@ void DrawDepthMap(int num,float transx,float transy,float transz,float rotx,floa
            }
          }
       glEnd();
-     glPopMatrix();
+   //  glPopMatrix();
 
 
   glPopMatrix();
