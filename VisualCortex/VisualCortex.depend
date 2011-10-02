@@ -88,7 +88,7 @@
 	"IntegralImageConversion.h"
 	"Precalculations.h"
 
-1317476994 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.c
+1317584519 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.c
 	"LinearAlgebra.h"
 	"VisionMemory.h"
 	<stdio.h>
@@ -198,7 +198,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1317493202 /home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureLists.h
+1317599098 /home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureLists.h
 
 1310120656 /home/ammar/Documents/Programming/RoboVision/VisualCortex/PatchComparison.h
 	"VisionMemory.h"
@@ -534,7 +534,7 @@
 	"opencv2/core/core.hpp"
 	"opencv2/highgui/highgui_c.h"
 
-1316816488 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.c
+1317598095 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.c
 	"VisCortexOptimizedConvolutionFilters.h"
 	"VisCortexConvolutionFilters.h"
 	"VisCortexFilters.h"
@@ -544,7 +544,7 @@
 	<stdio.h>
 	<string.h>
 
-1316816488 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
+1317598095 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
 
 1317290384 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.c
 	"VisCortexTimer.h"
@@ -636,4 +636,11 @@
 	<stddef.h>
 	"dynamic_bitset.h"
 	"matrix.h"
+
+1317599075 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Points3d.c
+	"Points3d.h"
+
+1317598160 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Points3d.h
+	"VisionMemory.h"
+	"FeatureLists.h"
 

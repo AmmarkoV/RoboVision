@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int ListIsOk(struct FeatureList * list)
+int FeatureListIsOk(struct FeatureList * list)
 {
     if ( list == 0 ) {  return 0; }
     return 1;
@@ -12,7 +12,7 @@ int ListIsOk(struct FeatureList * list)
 
 int ClearFeatureList(struct FeatureList * list)
 {
-  if  (!ListIsOk(list)) { fprintf(stderr,"ClearFeatureList called with a zero list \n");  return 0; }
+  if  (!FeatureListIsOk(list)) { fprintf(stderr,"ClearFeatureList called with a zero list \n");  return 0; }
   list->reg_for_correspondance=0;
   list->current_features = 0;
   return 1;
@@ -34,7 +34,7 @@ struct FeatureList * CreateFeatureList(unsigned int size , unsigned int def_patc
 
 int DestroyFeatureList(struct FeatureList * list)
 {
-  if  (!ListIsOk(list)) { fprintf(stderr,"DestroyFeatureList called with a zero list \n");  return 0; }
+  if  (!FeatureListIsOk(list)) { fprintf(stderr,"DestroyFeatureList called with a zero list \n");  return 0; }
   list->reg_for_correspondance=0;
 
   list->max_features = 0;
@@ -46,8 +46,8 @@ int DestroyFeatureList(struct FeatureList * list)
 
 int CopyFeatureList(struct FeatureList * source,struct FeatureList * target)
 {
-  if  (!ListIsOk(source)) { fprintf(stderr,"CopyFeatureList arg 1 a zero list \n");  return 0; }
-  if  (!ListIsOk(target)) { fprintf(stderr,"CopyFeatureList arg 2 a zero list \n");  return 0; }
+  if  (!FeatureListIsOk(source)) { fprintf(stderr,"CopyFeatureList arg 1 a zero list \n");  return 0; }
+  if  (!FeatureListIsOk(target)) { fprintf(stderr,"CopyFeatureList arg 2 a zero list \n");  return 0; }
 
 
   if ( source->max_features > target->max_features )
@@ -102,7 +102,7 @@ int CopyFeatureList(struct FeatureList * source,struct FeatureList * target)
 
 int RenewTrackPoints(struct FeatureList * list,int point)
 {
-    if  (!ListIsOk(list)) { fprintf(stderr,"RenewTrackPoints called with a zero list \n");  return 0; }
+    if  (!FeatureListIsOk(list)) { fprintf(stderr,"RenewTrackPoints called with a zero list \n");  return 0; }
     list->list[point].lost_since = 0;
     return 1;
 }
@@ -111,7 +111,7 @@ int RenewTrackPoints(struct FeatureList * list,int point)
 // TODO ADD HERE COPYING OF THE FEATURE IMAGE PATCH , IT IS NEEDED FOR BETTER TRACKING..!
 int AddToFeatureList(struct FeatureList * list, float x, float y,float z , int dim_x, int dim_y,int dim_z)
 {
-   if  (!ListIsOk(list)) { fprintf(stderr,"AddToFeatureList called with a zero list \n");  return 0; }
+   if  (!FeatureListIsOk(list)) { fprintf(stderr,"AddToFeatureList called with a zero list \n");  return 0; }
    if ( list->current_features >= list->max_features-1 ) { fprintf(stderr,"Cannot add to feature list , feature list is full\n"); return 0; }
    unsigned int cur=list->current_features;
     list->list[cur].x=x; list->list[cur].y=y; list->list[cur].z=z;
@@ -132,7 +132,7 @@ int AssociatePointWithPoint(struct FeatureList * list,int point,int x, int y,int
 
 int SwapPointsAtFeatureList(struct FeatureList * list, int pointA , int pointB )
 {
-   if  (!ListIsOk(list)) { fprintf(stderr,"SwapPointsAtFeatureList called with a zero list \n");  return 0; }
+   if  (!FeatureListIsOk(list)) { fprintf(stderr,"SwapPointsAtFeatureList called with a zero list \n");  return 0; }
    if ( list->current_features == 0 ) { fprintf(stderr,"Cannot swap from empty feature list\n"); return 0; }
 
    if ( (pointA>=list->current_features)||(pointB>=list->current_features) )
@@ -148,7 +148,7 @@ int SwapPointsAtFeatureList(struct FeatureList * list, int pointA , int pointB )
 
 int RemoveFromFeatureList(struct FeatureList * list, int point)
 {
-   if  (!ListIsOk(list)) { fprintf(stderr,"RemoveFromFeatureList called with a zero list \n");  return 0; }
+   if  (!FeatureListIsOk(list)) { fprintf(stderr,"RemoveFromFeatureList called with a zero list \n");  return 0; }
    if ( list->current_features == 0 ) { fprintf(stderr,"Cannot remove from feature list , feature list is empty\n"); return 0; }
    if ( list->current_features == 1 ) { list->current_features=0; return 1; }
 
@@ -165,7 +165,7 @@ int RemoveFromFeatureList(struct FeatureList * list, int point)
 
 void RemoveTrackPointsIfTimedOut(struct FeatureList * list,unsigned int timeout)
 {
-    if  (!ListIsOk(list)) { fprintf(stderr,"RemoveTrackPointsIfTimedOut called with a zero list \n");  return; }
+    if  (!FeatureListIsOk(list)) { fprintf(stderr,"RemoveTrackPointsIfTimedOut called with a zero list \n");  return; }
     if ( list->current_features == 0 ) { fprintf(stderr,"Cannot RemoveTrackPointsIfTimedOut from feature list , feature list is empty\n"); return; }
 
 	int i=list->current_features-1;
@@ -186,7 +186,7 @@ void RemoveTrackPointsIfTimedOut(struct FeatureList * list,unsigned int timeout)
 
 unsigned int RemoveTrackPointsIfMovementMoreThan(struct FeatureList * list,unsigned int movement_max)
 {
-    if  (!ListIsOk(list)) { fprintf(stderr,"RemoveTrackPointsIfMovementMoreThan called with a zero list \n");  return 0; }
+    if  (!FeatureListIsOk(list)) { fprintf(stderr,"RemoveTrackPointsIfMovementMoreThan called with a zero list \n");  return 0; }
     if ( list->current_features == 0 ) { fprintf(stderr,"Cannot RemoveTrackPointsIfMovementMoreThan from feature list , feature list is empty\n"); return 0; }
 
 	int total_removed=0,i=list->current_features-1;
@@ -224,7 +224,7 @@ unsigned int RemoveTrackPointsIfMovementMoreThan(struct FeatureList * list,unsig
 
 unsigned int Remove2DTrackPointsIfOutOfBounds(struct FeatureList * list,unsigned int x,unsigned int y ,unsigned int width , unsigned int height)
 {
-    if  (!ListIsOk(list)) { fprintf(stderr,"Remove2DTrackPointsIfOutOfBounds called with a zero list \n");  return 0; }
+    if  (!FeatureListIsOk(list)) { fprintf(stderr,"Remove2DTrackPointsIfOutOfBounds called with a zero list \n");  return 0; }
     if ( list->current_features == 0 ) { fprintf(stderr,"Cannot Remove2DTrackPointsIfOutOfBounds from feature list , feature list is empty\n"); return 0; }
 
 	unsigned int total_removed=0,drop_point =0 ;
@@ -258,7 +258,7 @@ unsigned int Remove2DTrackPointsIfOutOfBounds(struct FeatureList * list,unsigned
 
 int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned int data_type)
 {
-    if  (!ListIsOk(list)) { fprintf(stderr,"GetFeatureData called with a zero list \n");  return 0; }
+    if  (!FeatureListIsOk(list)) { fprintf(stderr,"GetFeatureData called with a zero list \n");  return 0; }
     if  (point_num >= list->current_features ) { return 0; }
     switch (data_type)
     {
@@ -283,7 +283,7 @@ int GetFeatureData(struct FeatureList * list, unsigned int point_num,unsigned in
 
 int PrintFeatureListContents(struct FeatureList * list)
 {
-    if  (!ListIsOk(list)) { fprintf(stderr,"PrintFeatureListContents called with a zero list \n");  return 0; }
+    if  (!FeatureListIsOk(list)) { fprintf(stderr,"PrintFeatureListContents called with a zero list \n");  return 0; }
     fprintf(stderr,"Feature list total points : %u \n ",list->current_features);
     int i=0;
     for (i=0; i<list->current_features; i++)
@@ -295,7 +295,7 @@ int PrintFeatureListContents(struct FeatureList * list)
 
 int SaveFeatureListContents(struct FeatureList * list,char * filename)
 {
-    if  (!ListIsOk(list)) { fprintf(stderr,"SaveFeatureListContents called with a zero list \n");  return 0; }
+    if  (!FeatureListIsOk(list)) { fprintf(stderr,"SaveFeatureListContents called with a zero list \n");  return 0; }
 
 
     FILE *fd=0;

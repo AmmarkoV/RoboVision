@@ -37,7 +37,7 @@ struct FeatureList
   unsigned int reg_for_correspondance;
 };
 
-
+int FeatureListIsOk(struct FeatureList * list);
 struct FeatureList * CreateFeatureList(unsigned int size , unsigned int def_patch_width,unsigned int def_patch_height);
 int DestroyFeatureList(struct FeatureList * list);
 int CopyFeatureList(struct FeatureList * source,struct FeatureList * target);

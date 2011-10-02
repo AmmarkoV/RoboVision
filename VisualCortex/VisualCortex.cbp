@@ -129,6 +129,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="VisualCortex.h" />
+		<Unit filename="points_3d.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="points_3d.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

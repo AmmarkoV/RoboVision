@@ -239,17 +239,16 @@ int ConvertMatrices( struct TransformationMatrix * rotation_matrix,
     rotation_and_translation_matrix->item[0]=cvmGet(homography_decomposition_to_translation_and_rotation,0,0);
     rotation_and_translation_matrix->item[1]=cvmGet(homography_decomposition_to_translation_and_rotation,0,1);
     rotation_and_translation_matrix->item[2]=cvmGet(homography_decomposition_to_translation_and_rotation,0,2);
+    rotation_and_translation_matrix->item[3]=cvmGet(homography_decomposition_to_translation_and_rotation,0,3);
 
     rotation_and_translation_matrix->item[4]=cvmGet(homography_decomposition_to_translation_and_rotation,1,0);
     rotation_and_translation_matrix->item[5]=cvmGet(homography_decomposition_to_translation_and_rotation,1,1);
     rotation_and_translation_matrix->item[6]=cvmGet(homography_decomposition_to_translation_and_rotation,1,2);
+    rotation_and_translation_matrix->item[7]=cvmGet(homography_decomposition_to_translation_and_rotation,1,3);
 
     rotation_and_translation_matrix->item[8]=cvmGet(homography_decomposition_to_translation_and_rotation,2,0);
     rotation_and_translation_matrix->item[9]=cvmGet(homography_decomposition_to_translation_and_rotation,2,1);
     rotation_and_translation_matrix->item[10]=cvmGet(homography_decomposition_to_translation_and_rotation,2,2);
-
-    rotation_and_translation_matrix->item[3]=cvmGet(homography_decomposition_to_translation_and_rotation,0,3);
-    rotation_and_translation_matrix->item[7]=cvmGet(homography_decomposition_to_translation_and_rotation,1,3);
     rotation_and_translation_matrix->item[11]=cvmGet(homography_decomposition_to_translation_and_rotation,2,3);
 
     rotation_and_translation_matrix->item[12]=0.0;
