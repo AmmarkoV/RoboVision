@@ -9,6 +9,7 @@
 #include "FeatureExtraction.h"
 #include "PatternRecognition.h"
 #include "FeatureTracking.h"
+#include "CameraPose.h"
 #include "Points3d.h"
 #include "FaceDetection.h"
 #include "StateSetting.h"

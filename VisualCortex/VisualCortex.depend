@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1317651586 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
+1317662883 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
 	"DisparityDepthMap.h"
 	"DisparityDepthMap_Heuristics.h"
 	"VisCortexFilters.h"
@@ -8,6 +8,8 @@
 	"Precalculations.h"
 	"PatchComparison.h"
 	"VisCortexTimer.h"
+	"CameraPose.h"
+	"Points3d.h"
 	"cv.h"
 	<stdio.h>
 	<string.h>
@@ -123,13 +125,14 @@
 	<limits.h>
 	<math.h>
 
-1317658163 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.c
+1317658246 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.c
 	"StateSetting.h"
 	"VisionMemory.h"
 	"FaceDetection.h"
 	"FeatureTracking.h"
 	"IntegralImageConversion.h"
 	"FeatureLists.h"
+	"Points3d.h"
 	<time.h>
 	<math.h>
 
@@ -162,7 +165,7 @@
 1313925807 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexHeuristics.h
 	"VisCortexHeuristics.h"
 
-1317657955 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
+1317658214 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
 	"VisionMemory.h"
 	"Precalculations.h"
 	"VisCortexFilters.h"
@@ -639,10 +642,17 @@
 	"dynamic_bitset.h"
 	"matrix.h"
 
-1317657955 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Points3d.c
+1317662815 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Points3d.c
 	"Points3d.h"
+	"CameraPose.h"
 
-1317658214 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Points3d.h
+1317662815 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Points3d.h
 	"VisionMemory.h"
 	"FeatureLists.h"
+
+1317662815 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.c
+	"CameraPose.h"
+
+1317662854 /home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.h
+	"VisionMemory.h"
 

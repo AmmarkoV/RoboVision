@@ -45,6 +45,10 @@
 		<Linker>
 			<Add option="`pkg-config --libs opencv`" />
 		</Linker>
+		<Unit filename="CameraPose.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="CameraPose.h" />
 		<Unit filename="DisparityDepthMap.c">
 			<Option compilerVar="CC" />
 		</Unit>
