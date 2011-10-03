@@ -4,6 +4,7 @@
 #include "FeatureTracking.h"
 #include "IntegralImageConversion.h"
 #include "FeatureLists.h"
+#include "Points3d.h"
 #include <time.h>
 #include <math.h>
 
@@ -103,6 +104,8 @@ unsigned int InitializeEverything(unsigned int res_x,unsigned int res_y)
    InitFaceRecognition(res_x,res_y);
     int i= InitVisionMemory(res_x,res_y);
    InitFeatureTracking();
+
+   InitCameraPose();
 
     VisCortx_SelfCheck();
     return  i;

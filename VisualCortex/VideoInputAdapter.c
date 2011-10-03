@@ -9,6 +9,7 @@
 #include "FeatureExtraction.h"
 #include "PatternRecognition.h"
 #include "FeatureTracking.h"
+#include "Points3d.h"
 #include "FaceDetection.h"
 #include "StateSetting.h"
 #include "VisCortexTimer.h"
@@ -146,21 +147,30 @@ inline unsigned int FrameProcessing
                 {
                   if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,
                                                                                               &left_calibration_data,
-                                                                                              &left_rotation_transformation,
-                                                                                              &left_translation_transformation,
-                                                                                              &left_rotation_and_translation_matrix,
+                                                                                              &left_rotation,
+                                                                                              &left_translation,
+                                                                                              &left_rotation_and_translation,
                                                                                               &left_homography);
                                               }
+
+
+                 struct TransformationMatrix tmp_matrix;
+                 CopyMatrixToMatrix(&tmp_matrix,&total_left_rotation);
+                 Multiply4x4Matrices(&total_left_rotation,&left_rotation,&tmp_matrix);
                 } else
                if (REG_EYE == RIGHT_EYE )
                 {
                   if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,
                                                                                                &right_calibration_data,
-                                                                                               &right_rotation_transformation,
-                                                                                               &right_translation_transformation,
-                                                                                               &right_rotation_and_translation_matrix,
+                                                                                               &right_rotation,
+                                                                                               &right_translation,
+                                                                                               &right_rotation_and_translation,
                                                                                                &right_homography);
                                               }
+
+                 struct TransformationMatrix tmp_matrix;
+                 CopyMatrixToMatrix(&tmp_matrix,&total_right_rotation);
+                 Multiply4x4Matrices(&total_right_rotation,&right_rotation,&tmp_matrix);
                 }
              }
 

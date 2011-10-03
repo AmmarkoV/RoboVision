@@ -253,11 +253,14 @@ static void display(void)
       //for (i=0; i<8; i++)
        {
          LoadDepth(i);
-         LoadMatrix4x4((char*)"memfs/LEFT_ROTATION",0,left_rotation);
-         LoadMatrix4x4((char*)"memfs/RIGHT_ROTATION",0,right_rotation);
+        LoadMatrix4x4((char*)"memfs/TOTAL_LEFT_ROTATION",0,left_rotation);
+        LoadMatrix4x4((char*)"memfs/TOTAL_RIGHT_ROTATION",0,right_rotation);
 
-         LoadMatrix4x4((char*)"memfs/LEFT_TRANSLATION",0,left_translation);
-         LoadMatrix4x4((char*)"memfs/RIGHT_TRANSLATION",0,right_translation);
+       //  LoadMatrix4x4((char*)"memfs/LEFT_ROTATION",0,left_rotation);
+       //  LoadMatrix4x4((char*)"memfs/RIGHT_ROTATION",0,right_rotation);
+
+        // LoadMatrix4x4((char*)"memfs/LEFT_TRANSLATION",0,left_translation);
+        // LoadMatrix4x4((char*)"memfs/RIGHT_TRANSLATION",0,right_translation);
 
          DrawDepthMap(0,0,0,0,0,angle,0);
          angle+=20;

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1317509188 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
+1317651586 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
 	"DisparityDepthMap.h"
 	"DisparityDepthMap_Heuristics.h"
 	"VisCortexFilters.h"
@@ -15,7 +15,7 @@
 1317325059 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.h
 	"VisionMemory.h"
 
-1317168426 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
+1317658206 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
 	"FeatureLists.h"
 	"VisualCortex.h"
 	<stdio.h>
@@ -88,9 +88,10 @@
 	"IntegralImageConversion.h"
 	"Precalculations.h"
 
-1317584519 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.c
+1317657988 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.c
 	"LinearAlgebra.h"
 	"VisionMemory.h"
+	"Points3d.h"
 	<stdio.h>
 	"cv.h"
 	<gsl/gsl_linalg.h>
@@ -122,7 +123,7 @@
 	<limits.h>
 	<math.h>
 
-1316708301 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.c
+1317658163 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.c
 	"StateSetting.h"
 	"VisionMemory.h"
 	"FaceDetection.h"
@@ -161,7 +162,7 @@
 1313925807 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexHeuristics.h
 	"VisCortexHeuristics.h"
 
-1317565472 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
+1317657955 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
 	"VisionMemory.h"
 	"Precalculations.h"
 	"VisCortexFilters.h"
@@ -210,7 +211,7 @@
 
 1311412733 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/fast/fast.h
 
-1317364320 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
+1317657695 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
 	"VideoInputAdapter.h"
 	"VisualCortex.h"
 	"VisionMemory.h"
@@ -222,6 +223,7 @@
 	"FeatureExtraction.h"
 	"PatternRecognition.h"
 	"FeatureTracking.h"
+	"Points3d.h"
 	"FaceDetection.h"
 	"StateSetting.h"
 	"VisCortexTimer.h"
@@ -637,10 +639,10 @@
 	"dynamic_bitset.h"
 	"matrix.h"
 
-1317599075 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Points3d.c
+1317657955 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Points3d.c
 	"Points3d.h"
 
-1317598160 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Points3d.h
+1317658214 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Points3d.h
 	"VisionMemory.h"
 	"FeatureLists.h"
 

@@ -1,15 +1,99 @@
 #include "Points3d.h"
 
 
+
+struct TransformationMatrix left_homography;
+struct TransformationMatrix right_homography;
+
+struct TransformationMatrix total_left_rotation;
+struct TransformationMatrix total_right_rotation;
+
+struct TransformationMatrix left_rotation;
+struct TransformationMatrix right_rotation;
+
+
+struct TransformationMatrix left_translation;
+struct TransformationMatrix right_translation;
+
+struct TransformationMatrix left_rotation_and_translation;
+struct TransformationMatrix right_rotation_and_translation;
+
+struct TransformationMatrix total_left_rotation_and_translation;
+struct TransformationMatrix total_right_rotation_and_translation;
+
+int CopyMatrixToMatrix(struct TransformationMatrix * target_matrix,struct TransformationMatrix * matrix)
+{
+    target_matrix->rows = matrix->rows;
+    target_matrix->columns = matrix->columns;
+
+    int i=0;
+    for (i=0; i<matrix->rows*matrix->columns; i++) { target_matrix->item[i]=matrix->item[i]; }
+    return 1;
+}
+
+
+int SaveTransformationMatrixToFile(char * filename,struct TransformationMatrix * matrix)
+{
+    FILE *fd=0;
+    fd = fopen(filename,"w");
+
+    if (fd!=0)
+	{
+      unsigned int i=0;
+       for ( i=0; i< matrix->columns*matrix->rows; i++ )
+        {
+          fprintf(fd,"%f\n",matrix->item[i]);
+        }
+
+       if( (matrix->columns == 3 ) &&  (matrix->rows==3 ) )
+        {
+         fprintf(fd,"m1=[%f,%f,%f;%f,%f,%f;%f,%f,%f];\n",matrix->item[0] , matrix->item[1] , matrix->item[2]
+                                                        ,matrix->item[3] , matrix->item[4] , matrix->item[5]
+                                                        ,matrix->item[6] , matrix->item[7] , matrix->item[8]  );
+        } else
+       if( (matrix->columns == 4 ) &&  (matrix->rows==4 ) )
+        {
+          fprintf(fd,"m1=[%f,%f,%f,%f;%f,%f,%f,%f;%f,%f,%f,%f;%f,%f,%f,%f];\n",matrix->item[0] , matrix->item[1] , matrix->item[2] , matrix->item[3] ,
+                                                                               matrix->item[4] , matrix->item[5] , matrix->item[6] , matrix->item[7] ,
+                                                                               matrix->item[8] , matrix->item[9] , matrix->item[10] , matrix->item[11] ,
+                                                                               matrix->item[12] , matrix->item[13] , matrix->item[14] , matrix->item[15] );
+        }
+
+	  fclose(fd);
+	  return 1;
+	}
+  return 0;
+}
+
+
+
+int ClearTransformationMatrix(struct TransformationMatrix * matrix)
+{
+   if ( matrix== 0 ) { return 0; }
+   matrix->columns=0;
+   matrix->rows=0;
+   int i=0;
+   for ( i=0; i<16; i++ ) { matrix->item[i]=0.0; }
+   return 1;
+}
+
+
+
 int Multiply4x4Matrices(struct TransformationMatrix * target_matrix,struct TransformationMatrix * mult_1,struct TransformationMatrix * mult_2)
 {
     if ( ( mult_1->columns != 4 ) ||
-         ( mult_1->rows != 4 ) ||
+         ( mult_1->rows != 4 ) )
+       {
+            fprintf(stderr,"Multiply4x4Matrices : Input matrix 1 is not 4x4  but %ux%u \n",mult_1->rows,mult_1->columns);
+            return 0;
+       }
+
+    if (
          ( mult_2->columns != 4 ) ||
          ( mult_2->rows != 4 )
        )
        {
-            fprintf(stderr,"Input matrices are not 4x4 \n");
+            fprintf(stderr,"Multiply4x4Matrices : Input matrix 2 is not 4x4 but %ux%u \n",mult_2->rows,mult_2->columns);
             return 0;
        }
 
@@ -24,7 +108,7 @@ int Multiply4x4Matrices(struct TransformationMatrix * target_matrix,struct Trans
 */
 
 target_matrix->rows=4;
-target_matrix->cols=4;
+target_matrix->columns=4;
 
 //    Q = a*A + b*E + c*I + d*M
  target_matrix->item[0]= mult_1->item[0] * mult_2->item[0] + mult_1->item[1] * mult_2->item[4] + mult_1->item[2] * mult_2->item[8] + mult_1->item[3] * mult_2->item[12];
@@ -62,7 +146,7 @@ target_matrix->cols=4;
 //    ^ = m*D + n*H + o*L + p*P
  target_matrix->item[15]= mult_1->item[12] * mult_2->item[3] + mult_1->item[13] * mult_2->item[7] + mult_1->item[14] * mult_2->item[11] + mult_1->item[15] * mult_2->item[15];
 
-
+return 1;
 }
 
 
@@ -132,4 +216,24 @@ int Multiply3DPointsWithMatrix(struct FeatureList * list,struct TransformationMa
 
 
    return 1;
+}
+
+
+int InitCameraPose()
+{
+ ClearTransformationMatrix(&total_left_rotation);
+ total_left_rotation.rows=4 , total_left_rotation.columns=4;
+ total_left_rotation.item[0]=1.0;
+ total_left_rotation.item[5]=1.0;
+ total_left_rotation.item[10]=1.0;
+ total_left_rotation.item[15]=1.0;
+
+ ClearTransformationMatrix(&total_right_rotation);
+ total_right_rotation.rows=4 , total_right_rotation.columns=4;
+ total_right_rotation.item[0]=1.0;
+ total_right_rotation.item[5]=1.0;
+ total_right_rotation.item[10]=1.0;
+ total_right_rotation.item[15]=1.0;
+
+ return 1;
 }

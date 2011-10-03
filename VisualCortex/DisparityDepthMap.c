@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "Precalculations.h"
 #include "PatchComparison.h"
 #include "VisCortexTimer.h"
+#include "Points3d.h"
 #include "cv.h"
 
 #include <stdio.h>
@@ -511,14 +512,17 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
        SaveFeatureListContents(video_register[CALIBRATED_LEFT_EYE].features,"memfs/POINTS_FOR_LEFT_HOMOGRAPHY0");
        SaveFeatureListContents(video_register[CALIBRATED_RIGHT_EYE].features,"memfs/POINTS_FOR_RIGHT_HOMOGRAPHY0");
 
-       SaveTransformationMatrixToFile("memfs/LEFT_ROTATION0",&left_rotation_transformation);
-       SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION0",&right_rotation_transformation);
+       SaveTransformationMatrixToFile("memfs/LEFT_ROTATION0",&left_rotation);
+       SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION0",&right_rotation);
 
-       SaveTransformationMatrixToFile("memfs/LEFT_TRANSLATION0",&left_translation_transformation);
-       SaveTransformationMatrixToFile("memfs/RIGHT_TRANSLATION0",&right_translation_transformation);
+       SaveTransformationMatrixToFile("memfs/TOTAL_LEFT_ROTATION0",&total_left_rotation);
+       SaveTransformationMatrixToFile("memfs/TOTAL_RIGHT_ROTATION0",&total_right_rotation);
 
-       SaveTransformationMatrixToFile("memfs/LEFT_ROTATION_AND_TRANSLATION0",&left_rotation_and_translation_matrix);
-       SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION_AND_TRANSLATION0",&right_rotation_and_translation_matrix);
+       SaveTransformationMatrixToFile("memfs/LEFT_TRANSLATION0",&left_translation);
+       SaveTransformationMatrixToFile("memfs/RIGHT_TRANSLATION0",&right_translation);
+
+       SaveTransformationMatrixToFile("memfs/LEFT_ROTATION_AND_TRANSLATION0",&left_rotation_and_translation);
+       SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION_AND_TRANSLATION0",&right_rotation_and_translation);
 
    }
 

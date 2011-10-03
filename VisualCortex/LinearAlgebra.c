@@ -1,5 +1,6 @@
 #include "LinearAlgebra.h"
 #include "VisionMemory.h"
+#include "Points3d.h"
 #include <stdio.h>
 #include "cv.h"
 #include <gsl/gsl_linalg.h>
