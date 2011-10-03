@@ -315,14 +315,15 @@ int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source
        }
      }
 
+
+   //  THIS OVERLAYS WARPED IMAGE OF LAST VIEW
    IplImage  * image = cvCreateImage( cvSize(320,240), IPL_DEPTH_8U, 3 );
    memcpy(image->imageData , video_register[CALIBRATED_LEFT_EYE].pixels , metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
    IplImage  * dstImg = cvCloneImage(image);
 
    cvWarpPerspective(image, dstImg, H , CV_INTER_CUBIC | CV_WARP_FILL_OUTLIERS, cvScalarAll(0) );
-
-   memcpy( video_register[LAST_LEFT_OPERATION].pixels , dstImg->imageData , metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
-   video_register[LAST_LEFT_OPERATION].time = video_register[CALIBRATED_LEFT_EYE].time;
+   memcpy( video_register[LAST_RIGHT_OPERATION].pixels , dstImg->imageData , metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
+   video_register[LAST_RIGHT_OPERATION].time = video_register[CALIBRATED_LEFT_EYE].time;
    cvReleaseImage( &image );
    cvReleaseImage( &dstImg );
 

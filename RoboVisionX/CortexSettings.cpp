@@ -103,6 +103,7 @@ const long CortexSettings::ID_CHECKBOX10 = wxNewId();
 const long CortexSettings::ID_CHECKBOX11 = wxNewId();
 const long CortexSettings::ID_CHECKBOX12 = wxNewId();
 const long CortexSettings::ID_CHECKBOX13 = wxNewId();
+const long CortexSettings::ID_CHECKBOX14 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CortexSettings,wxDialog)
@@ -233,6 +234,8 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	Map3D->SetValue(false);
 	UseOpenCV = new wxCheckBox(this, ID_CHECKBOX13, _("Use OpenCV"), wxPoint(568,488), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX13"));
 	UseOpenCV->SetValue(false);
+	RectifyVideoInput = new wxCheckBox(this, ID_CHECKBOX14, _("Rectify Video Input"), wxPoint(568,216), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX14"));
+	RectifyVideoInput->SetValue(false);
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnSaveButtonClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnCancelButtonClick);
@@ -379,6 +382,10 @@ void CortexSettings::PullSettingsFromCortex()
  if (VisCortx_GetSetting(PASS_TO_WORLD_3D)==1) { Map3D->SetValue(1); } else
                                                { Map3D->SetValue(0); }
 
+ if (VisCortx_GetSetting(INPUT_CALIBRATION)==1) { RectifyVideoInput->SetValue(1); } else
+                                                { RectifyVideoInput->SetValue(0); }
+
+
  if (VisCortx_GetSetting(USE_OPENCV)==1) { UseOpenCV->SetValue(1); } else
                                          { UseOpenCV->SetValue(0); }
 
@@ -522,7 +529,8 @@ void CortexSettings::PushSettingsToCortex()
   if ( Map3D->IsChecked() ) { VisCortx_SetSetting(PASS_TO_WORLD_3D,1); } else
                            { VisCortx_SetSetting(PASS_TO_WORLD_3D,0); }
 
-
+  if ( RectifyVideoInput->IsChecked() ) { VisCortx_SetSetting(INPUT_CALIBRATION,1); } else
+                                        { VisCortx_SetSetting(INPUT_CALIBRATION,0); }
 
   if ( UseOpenCV->IsChecked() ) { VisCortx_SetSetting(USE_OPENCV,1); } else
                                 { VisCortx_SetSetting(USE_OPENCV,0); }

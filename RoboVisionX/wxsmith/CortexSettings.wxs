@@ -463,5 +463,9 @@
 			<label>Use OpenCV</label>
 			<pos>568,488</pos>
 		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX14" variable="RectifyVideoInput" member="yes">
+			<label>Rectify Video Input</label>
+			<pos>568,216</pos>
+		</object>
 	</object>
 </wxsmith>

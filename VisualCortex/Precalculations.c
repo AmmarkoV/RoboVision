@@ -67,11 +67,14 @@ inline unsigned int AbsUIntDiff(unsigned int num1,unsigned int num2)
 unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , double cx,double cy ,
                                                          double k1,double k2 , double p1,double p2 , double k3   )
 {
+ /*   ALLOW PRECALCULATIONS FOR RESECTIONING , BECAUSE IT MAY BE ENABLED LATER
   if ( settings[INPUT_CALIBRATION]==0)
     {
         fprintf(stderr,"Calibration is disabled , please set settings[INPUT_CALIBRATION]=1");
         return 0;
     }
+*/
+
 
   fprintf(stderr,"Calibrating fx=%f fy=%f cx=%f cy=%f\n",fx,fy,cx,cy);
   fprintf(stderr,"k1=%f k2=%f p1=%f p2=%f k3=%f \n",k1,k2,p1,p2,k3);

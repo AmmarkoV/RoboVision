@@ -63,6 +63,7 @@ class CortexSettings: public wxDialog
 		wxStaticBox* StaticBox2;
 		wxTextCtrl* PatchesEdgesPerCent;
 		wxTextCtrl* MinR;
+		wxCheckBox* RectifyVideoInput;
 		wxCheckBox* TrackCameraMovement;
 		wxStaticText* StaticText3;
 		wxTextCtrl* InstantQuality;
@@ -216,6 +217,7 @@ class CortexSettings: public wxDialog
 		static const long ID_CHECKBOX11;
 		static const long ID_CHECKBOX12;
 		static const long ID_CHECKBOX13;
+		static const long ID_CHECKBOX14;
 		//*)
 
 	private:

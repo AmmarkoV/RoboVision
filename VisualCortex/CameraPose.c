@@ -44,3 +44,9 @@ struct TransformationMatrix total_right_rotation_and_translation;
 
 
 */
+
+
+int UpdateCameraPose()
+{
+  return 1;
+}
