@@ -89,6 +89,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="PatternRecognition.h" />
+		<Unit filename="Points3d.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Points3d.h" />
 		<Unit filename="Precalculations.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -129,10 +133,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="VisualCortex.h" />
-		<Unit filename="points_3d.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="points_3d.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

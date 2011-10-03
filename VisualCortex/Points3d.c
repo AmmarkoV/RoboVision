@@ -1,6 +1,71 @@
 #include "Points3d.h"
 
 
+int Multiply4x4Matrices(struct TransformationMatrix * target_matrix,struct TransformationMatrix * mult_1,struct TransformationMatrix * mult_2)
+{
+    if ( ( mult_1->columns != 4 ) ||
+         ( mult_1->rows != 4 ) ||
+         ( mult_2->columns != 4 ) ||
+         ( mult_2->rows != 4 )
+       )
+       {
+            fprintf(stderr,"Input matrices are not 4x4 \n");
+            return 0;
+       }
+
+
+    /*        4x4          *        4*4         =               4*4
+     _______________
+    | a   b   c   d |       | A   B   C   D |         | Q   R   S   T |
+    | e   f   g   h |       | E   F   G   H |         | U   V   W   X |
+    | i   j   k   l |   *   | I   J   K   L |   =     | Y   Z   !   @ |
+    | m   n   o   p |       | M   N   O   P |         | #   $   %   ^ |
+     ---------------
+*/
+
+target_matrix->rows=4;
+target_matrix->cols=4;
+
+//    Q = a*A + b*E + c*I + d*M
+ target_matrix->item[0]= mult_1->item[0] * mult_2->item[0] + mult_1->item[1] * mult_2->item[4] + mult_1->item[2] * mult_2->item[8] + mult_1->item[3] * mult_2->item[12];
+//    R = a*B + b*F + c*J + d*N
+ target_matrix->item[1]= mult_1->item[0] * mult_2->item[1] + mult_1->item[1] * mult_2->item[5] + mult_1->item[2] * mult_2->item[9] + mult_1->item[3] * mult_2->item[13];
+//    S = a*C + b*G + c*K + d*O
+ target_matrix->item[2]= mult_1->item[0] * mult_2->item[2] + mult_1->item[1] * mult_2->item[6] + mult_1->item[2] * mult_2->item[10] + mult_1->item[3] * mult_2->item[14];
+//    T = a*D + b*H + c*L + d*P
+ target_matrix->item[3]= mult_1->item[0] * mult_2->item[3] + mult_1->item[1] * mult_2->item[7] + mult_1->item[2] * mult_2->item[11] + mult_1->item[3] * mult_2->item[15];
+
+//    U = e*A + f*E + g*I + h*M
+ target_matrix->item[4]= mult_1->item[4] * mult_2->item[0] + mult_1->item[5] * mult_2->item[4] + mult_1->item[6] * mult_2->item[8] + mult_1->item[7] * mult_2->item[12];
+//    V = e*B + f*F + g*J + h*N
+ target_matrix->item[5]= mult_1->item[4] * mult_2->item[1] + mult_1->item[5] * mult_2->item[5] + mult_1->item[6] * mult_2->item[9] + mult_1->item[7] * mult_2->item[13];
+//    W = e*C + f*G + g*K + h*O
+ target_matrix->item[6]= mult_1->item[4] * mult_2->item[2] + mult_1->item[5] * mult_2->item[6] + mult_1->item[6] * mult_2->item[10] + mult_1->item[7] * mult_2->item[14];
+//    X = e*D + f*H + g*L + h*P
+ target_matrix->item[7]= mult_1->item[4] * mult_2->item[3] + mult_1->item[5] * mult_2->item[7] + mult_1->item[6] * mult_2->item[11] + mult_1->item[7] * mult_2->item[15];
+
+//    Y = i*A + j*E + k*I + l*M
+ target_matrix->item[8]= mult_1->item[8] * mult_2->item[0] + mult_1->item[9] * mult_2->item[4] + mult_1->item[10] * mult_2->item[8] + mult_1->item[11] * mult_2->item[12];
+//    Z = i*B + j*F + k*J + l*N
+ target_matrix->item[9]= mult_1->item[8] * mult_2->item[1] + mult_1->item[9] * mult_2->item[5] + mult_1->item[10] * mult_2->item[9] + mult_1->item[11] * mult_2->item[13];
+//    ! = i*C + j*G + k*K + l*O
+ target_matrix->item[10]= mult_1->item[8] * mult_2->item[2] + mult_1->item[9] * mult_2->item[6] + mult_1->item[10] * mult_2->item[10] + mult_1->item[11] * mult_2->item[14];
+//    @ = i*D + j*H + k*L + l*P
+ target_matrix->item[11]= mult_1->item[8] * mult_2->item[3] + mult_1->item[9] * mult_2->item[7] + mult_1->item[10] * mult_2->item[11] + mult_1->item[11] * mult_2->item[15];
+
+//    # = m*A + n*E + o*I + p*M
+ target_matrix->item[12]= mult_1->item[12] * mult_2->item[0] + mult_1->item[13] * mult_2->item[4] + mult_1->item[14] * mult_2->item[8] + mult_1->item[15] * mult_2->item[12];
+//    $ = m*B + n*F + o*J + p*N
+ target_matrix->item[13]= mult_1->item[12] * mult_2->item[1] + mult_1->item[13] * mult_2->item[5] + mult_1->item[14] * mult_2->item[9] + mult_1->item[15] * mult_2->item[13];
+//    % = m*C + n*G + o*K + p*O
+ target_matrix->item[14]= mult_1->item[12] * mult_2->item[2] + mult_1->item[13] * mult_2->item[6] + mult_1->item[14] * mult_2->item[10] + mult_1->item[15] * mult_2->item[14];
+//    ^ = m*D + n*H + o*L + p*P
+ target_matrix->item[15]= mult_1->item[12] * mult_2->item[3] + mult_1->item[13] * mult_2->item[7] + mult_1->item[14] * mult_2->item[11] + mult_1->item[15] * mult_2->item[15];
+
+
+}
+
+
 int Multiply3DPointsWithMatrix(struct FeatureList * list,struct TransformationMatrix * rotation_and_translation_matrix)
 {
     if  (!FeatureListIsOk(list)) { fprintf(stderr,"Multiply3DPointsWithMatrix called with a zero list \n");  return 0; }
@@ -18,21 +83,50 @@ int Multiply3DPointsWithMatrix(struct FeatureList * list,struct TransformationMa
     | i   j   k   l |   *   | z |   =      | new_x  new_y new_z new_i |
     | m   n   o   p |       | 1 |
      ---------------
+
+     _______________
+    | 0   1   2   3 |       | .x |
+    | 4   5   6   7 |       | .y |
+    | 8   9   10  11|   *   | .z |   =      | new_x  new_y new_z new_i |
+    | 12  13  14  15|       |  1 |
+     ---------------
+
+
+     new_x  =  a*x + b*y + c*z + d*1
+     new_y  =  e*x + f*y + g*z + h*1
+     new_z  =  i*x + j*y + k*z + l*1
+     new_i  =  m*x + n*y + o*z + p*1
 */
 
 
+   struct TransformationMatrix * M = rotation_and_translation_matrix;
 
 
    int i=0;
+   float old_x,old_y,old_z;
    float new_x,new_y,new_z,new_i;
    while ( i < list->current_features )
      {
+        old_x=list->list[i].x;
+        old_y=list->list[i].y;
+        old_z=list->list[i].z;
 
-        new_x=
-        new_y=
-        new_z=
-        new_i=
+        new_i=M->item[12]*old_x  + M->item[13]*old_y + M->item[14]*old_z + M->item[15];
+        if ( (new_i==0.0) || (new_i==1.0) )
+         {
+          new_x=(M->item[0]*old_x  + M->item[1]*old_y + M->item[2]*old_z + M->item[3]);
+          new_y=(M->item[4]*old_x  + M->item[5]*old_y + M->item[6]*old_z + M->item[7]);
+          new_z=(M->item[8]*old_x  + M->item[9]*old_y + M->item[10]*old_z + M->item[11]);
+         }   else
+         {
+          new_x=(M->item[0]*old_x  + M->item[1]*old_y + M->item[2]*old_z + M->item[3])/new_i;
+          new_y=(M->item[4]*old_x  + M->item[5]*old_y + M->item[6]*old_z + M->item[7])/new_i;
+          new_z=(M->item[8]*old_x  + M->item[9]*old_y + M->item[10]*old_z + M->item[11])/new_i;
+         }
 
+        list->list[i].x=new_x;
+        list->list[i].y=new_y;
+        list->list[i].z=new_z;
         ++i;
      }
 
