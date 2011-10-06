@@ -87,6 +87,7 @@ int InitVisualSystem()
 
 int PassVideoInputToCortex(unsigned int clock_time)
 {
+  int frames_processed_this_loop = 0;
   void *frame1=0 ,*frame2 = 0;
 
 
@@ -100,7 +101,7 @@ int PassVideoInputToCortex(unsigned int clock_time)
    {
       if ( frame1 != 0 )
        {
-         if ( VisCortX_NewFrame(LEFT_EYE,width,height,3,(unsigned char *)frame1) ) { SignalFrameProcessed(0); }
+         if ( VisCortX_NewFrame(LEFT_EYE,width,height,3,(unsigned char *)frame1) ) { SignalFrameProcessed(0); ++frames_processed_this_loop; }
        } else
        {
           /* FRAME1 IS DEAD*/
@@ -111,7 +112,7 @@ int PassVideoInputToCortex(unsigned int clock_time)
   {
        if ( frame2 != 0 )
        {
-        if ( VisCortX_NewFrame(RIGHT_EYE,width,height,3,(unsigned char *)frame2) ) { SignalFrameProcessed(1); }
+        if ( VisCortX_NewFrame(RIGHT_EYE,width,height,3,(unsigned char *)frame2) ) { SignalFrameProcessed(1); ++frames_processed_this_loop; }
        } else
        {
           /* FRAME2 IS DEAD*/
@@ -122,6 +123,11 @@ int PassVideoInputToCortex(unsigned int clock_time)
   * Frames should be signaled processed AFTER they have been passed to Visual Cortex :P
   */
 
+ /*
+ if (frames_processed_this_loop == 2 ) { fprintf(stderr,"2 FRAMES\n"); } else
+ if (frames_processed_this_loop < 2 ) { fprintf(stderr,"NOT 2 FRAMES\n"); } else
+ if (frames_processed_this_loop < 1 ) { fprintf(stderr,"NOT 1 FRAMES\n"); }
+*/
 
  return 1;
 }

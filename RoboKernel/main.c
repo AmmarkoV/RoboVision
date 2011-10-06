@@ -184,8 +184,7 @@ void * KernelLoop(void *ptr )
              if ( loopcount % 10000 == 0 ) { RobotStartRotating(50,-1); }
 
          }
-
-        if (loopcount%10000 == 0 )  { fprintf(stderr,"."); }
+        if (loopcount%20000 == 0 )  { fprintf(stderr,"."); }
 
         usleep(1000);
     }

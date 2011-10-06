@@ -40,6 +40,8 @@
 		</Build>
 		<Compiler>
 			<Add option="-march=core2" />
+			<Add option="-fexpensive-optimizations" />
+			<Add option="-O3" />
 			<Add option="-Wall" />
 		</Compiler>
 		<Linker>

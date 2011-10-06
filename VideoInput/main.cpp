@@ -37,7 +37,6 @@
 #define WORKING 5
 #define NO_VIDEO_AVAILIABLE 6
 
-#define THREAD_SLEEP_TIME_NANOSECONDS 15000
 
 char * VIDEOINPT_VERSION=(char *) "0.247 RGB24/YUYV compatible";
 int do_not_return_zero_pointers=1;
@@ -50,6 +49,8 @@ struct Video
   char * videoinp;
   unsigned int height;
   unsigned int width;
+  unsigned int frame_rate;
+  unsigned int sleep_time_per_frame_microseconds;
   unsigned int frame_already_passed;
 
   /* VIDEO 4 LINUX DATA */
@@ -264,6 +265,15 @@ int CloseVideoInputs()
     return 1 ;
 }
 
+int ChooseDifferentSoftFramerate(int inpt,unsigned int new_framerate_per_second)
+{
+    if ( new_framerate_per_second == 0 ) { return 0; }
+    camera_feeds[inpt].frame_rate=new_framerate_per_second;
+    camera_feeds[inpt].sleep_time_per_frame_microseconds = (unsigned int ) 10000 / new_framerate_per_second;
+    camera_feeds[inpt].sleep_time_per_frame_microseconds = camera_feeds[inpt].sleep_time_per_frame_microseconds * 100;
+    return 1;
+}
+
 
 int CloseVideoFeed( int inpt )
 {
@@ -365,6 +375,9 @@ int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,char 
     camera_feeds[inpt].thread_alive_flag=0; /* <- This will be set to 1 when child process will start :)*/
     camera_feeds[inpt].stop_snap_loop=0;
     camera_feeds[inpt].loop_thread=0;
+
+    ChooseDifferentSoftFramerate(inpt,25); // Go for a good old solid PAL 25 fps , ( the PS3 cameras may be snapping at 120fps , but VisualCortex without
+                                           // hardware acceleration can`t go more than 6-8 fps )
 
     struct ThreadPassParam param={0};
     param.feednum=inpt;
@@ -668,7 +681,7 @@ void * SnapLoop( void * ptr)
 
    while ( camera_feeds[feed_num].stop_snap_loop == 0 )
     {
-       usleep(THREAD_SLEEP_TIME_NANOSECONDS); /* sleep ( wait ) time per sample , defined in this file*/
+       usleep(camera_feeds[feed_num].sleep_time_per_frame_microseconds); /* sleep ( wait ) time per sample , defined in this file*/
 
        if ( camera_feeds[feed_num].snap_lock == 0 )
        { /* WE DONT NEED THE SNAPSHOT TO BE LOCKED!*/
