@@ -305,8 +305,14 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      case CMD_AUTONOMOUS :
      {
             sprintf(outptstr,"From %s : Toggling Autonomous mode ! \n",from);
-            if (motor_system_autonomous)  { motor_system_autonomous  = 0; } else
-                                          { motor_system_autonomous  = 1; }
+            if (cmdi_1==0)  {
+                              motor_system_autonomous  = 0;
+                              VisCortx_SetPipelineSwitch(VISCORTX_AUTONOMOUS,0);
+                            } else
+                            {
+                              motor_system_autonomous  = 1;
+                              VisCortx_SetPipelineSwitch(VISCORTX_AUTONOMOUS,1);
+                            }
      }
      break;
      case CMD_FUNDAMENTAL_MATRIX :

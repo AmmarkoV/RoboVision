@@ -14,12 +14,15 @@ struct CameraCalibrationData
   double intrinsic_parameters_array[9];
 };
 
+#define ABSOLUTE_MAX_WIDTH 320
+#define ABSOLUTE_MAX_HEIGHT 240
+
 extern unsigned int resection_left_precalc[321*241*3];
 extern unsigned int resection_right_precalc[321*241*3];
 
-extern unsigned int precalc_group_block_belong[641][481];
-extern unsigned long precalc_memplace_3byte[641][481];
-extern unsigned long precalc_memplace_1byte[641][481];
+extern unsigned int precalc_group_block_belong[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
+extern unsigned long precalc_memplace_3byte[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
+extern unsigned long precalc_memplace_1byte[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
 
 inline unsigned char AbsUCharVDiff(unsigned char param1,unsigned char param2);
 inline unsigned char AbsUCharDiff(unsigned char * param1,unsigned char * param2);

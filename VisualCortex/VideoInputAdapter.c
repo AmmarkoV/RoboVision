@@ -10,7 +10,7 @@
 #include "PatternRecognition.h"
 #include "FeatureTracking.h"
 #include "CameraPose.h"
-#include "Points3d.h"
+#include "Matrix.h"
 #include "FaceDetection.h"
 #include "StateSetting.h"
 #include "VisCortexTimer.h"
@@ -144,35 +144,7 @@ inline unsigned int FrameProcessing
 
             if ( settings[CALCULATE_MOVEMENT_MATRIX] )
              {
-               if (REG_EYE == LEFT_EYE )
-                {
-                  if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,
-                                                                                              &left_calibration_data,
-                                                                                              &left_rotation,
-                                                                                              &left_translation,
-                                                                                              &left_rotation_and_translation,
-                                                                                              &left_homography);
-                                              }
-
-
-                 struct TransformationMatrix tmp_matrix;
-                 CopyMatrixToMatrix(&tmp_matrix,&total_left_rotation);
-                 Multiply4x4Matrices(&total_left_rotation,&left_rotation,&tmp_matrix);
-                } else
-               if (REG_EYE == RIGHT_EYE )
-                {
-                  if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[REG_CALIBRATED_EYE].features,
-                                                                                               &right_calibration_data,
-                                                                                               &right_rotation,
-                                                                                               &right_translation,
-                                                                                               &right_rotation_and_translation,
-                                                                                               &right_homography);
-                                              }
-
-                 struct TransformationMatrix tmp_matrix;
-                 CopyMatrixToMatrix(&tmp_matrix,&total_right_rotation);
-                 Multiply4x4Matrices(&total_right_rotation,&right_rotation,&tmp_matrix);
-                }
+                UpdateCameraPose(REG_CALIBRATED_EYE);
              }
 
         }
@@ -200,6 +172,35 @@ unsigned int Pipeline_Stereo_Frames_Collected_Actions()
 
   return 1;
 }
+
+
+unsigned int Auto_Set_Pipeline_Switches()
+{
+  if ( pipeline_switches[EXECUTE_DEPTHMAP]==0  )
+   {
+      // FOR NOW THIS JUST STUPIDLY CALLS FOR A DEPTH MAP EVERY 12 FRAMES
+      // THIS WILL HAVE TO MONITOR THE WHOLE CONDITION OF THE VISUAL CORTEX
+      // AND HOW MUCH EACH CALL TAKES , FOR NOW ONLY A STUPID THROTTLER IS APPLIED WHEN THERE IS NO MOVEMENT :P
+     int should_execute_depth_map = 0;
+
+     if ( ( !settings[CALCULATE_MOVEMENT_FLOW] ) && (metrics[FRAMES_PROCESSED]%6==0) )
+          {
+           should_execute_depth_map = 1;
+          } else
+     if  ( (settings[CALCULATE_MOVEMENT_FLOW]) && ( ( metrics[CHANGES_LEFT]>100)||( metrics[CHANGES_RIGHT]>100) ) &&
+            (metrics[FRAMES_PROCESSED]%6==0) )
+           {
+           should_execute_depth_map = 1;
+          }
+
+      if (should_execute_depth_map)
+            {
+              pipeline_switches[EXECUTE_DEPTHMAP]=1;
+            }
+   }
+ return 1;
+}
+
 
 
 unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
@@ -302,6 +303,14 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
     }
 
    ++metrics[FRAMES_PROCESSED];
+
+
+   if ( pipeline_switches[VISCORTX_AUTONOMOUS] )
+    {
+        /*This function auto allocates time for depth maps in order to achieve best possible tracking without delays*/
+        Auto_Set_Pipeline_Switches();
+    }
+
 
   // if ( video_register[LEFT_EYE].time == video_register[RIGHT_EYE].time ) /*This should be the criteria to mark a stereo pair collected */
    if (metrics[FRAMES_PROCESSED]%2==0)

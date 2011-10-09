@@ -130,6 +130,7 @@
 		<object class="wxCheckBox" name="ID_CHECKBOX1" variable="Autonomous" member="yes">
 			<label>Auto</label>
 			<pos>680,440</pos>
+			<handler function="OnAutonomousClick1" entry="EVT_CHECKBOX" />
 		</object>
 		<object class="wxChoice" name="ID_CHOICE1" variable="Choice1" member="yes">
 			<content>

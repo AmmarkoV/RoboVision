@@ -83,6 +83,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="LinearAlgebra.h" />
+		<Unit filename="Matrix.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Matrix.h" />
 		<Unit filename="MovementRegistration.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -95,10 +99,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="PatternRecognition.h" />
-		<Unit filename="Points3d.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Points3d.h" />
 		<Unit filename="Precalculations.c">
 			<Option compilerVar="CC" />
 		</Unit>

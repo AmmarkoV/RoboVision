@@ -26,7 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "PatchComparison.h"
 #include "VisCortexTimer.h"
 #include "CameraPose.h"
-#include "Points3d.h"
+#include "Matrix.h"
 #include "cv.h"
 
 #include <stdio.h>

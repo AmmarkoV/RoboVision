@@ -13,6 +13,9 @@ wxMouseState mouse;
 wxBitmap *default_feed=0;
 wxBitmap *default_patch=0;
 
+unsigned int last_time_of_left_depth_map=0;
+unsigned int last_time_of_right_depth_map=0;
+
 unsigned int last_time_of_left_operation=0;
 unsigned int last_time_of_right_operation=0;
 
@@ -191,17 +194,32 @@ int SnapWebCams()
   live_feeds[1].bmp_allocated = true;
  }
 
-  if ( last_time_of_left_operation != VisCortx_GetVideoRegisterData(LAST_LEFT_OPERATION,0) )
+
+
+
+if ( last_time_of_left_operation != VisCortx_GetVideoRegisterData(LAST_LEFT_OPERATION,0) )
     {
          last_time_of_left_operation= VisCortx_GetVideoRegisterData(LAST_LEFT_OPERATION,0);
          PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(LAST_LEFT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
+    } else
+  if ( last_time_of_left_depth_map != VisCortx_GetVideoRegisterData(DEPTH_LEFT_VIDEO,0) )
+    {
+         last_time_of_left_depth_map= VisCortx_GetVideoRegisterData(DEPTH_LEFT_VIDEO,0);
+         PassVideoRegisterToFeed ( 2 , VisCortx_ReadFromVideoRegister(DEPTH_LEFT_VIDEO,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
     }
+
 
   if ( last_time_of_right_operation != VisCortx_GetVideoRegisterData(LAST_RIGHT_OPERATION,0) )
     {
          last_time_of_right_operation= VisCortx_GetVideoRegisterData(LAST_RIGHT_OPERATION,0);
          PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(LAST_RIGHT_OPERATION,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
+    } else
+    if ( last_time_of_right_depth_map != VisCortx_GetVideoRegisterData(DEPTH_RIGHT_VIDEO,0) )
+    {
+         last_time_of_right_depth_map= VisCortx_GetVideoRegisterData(DEPTH_RIGHT_VIDEO,0);
+         PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(DEPTH_RIGHT_VIDEO,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
     }
+
 
   return 1 ;
 }

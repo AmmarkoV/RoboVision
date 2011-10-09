@@ -26,6 +26,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned int x , unsigned int y,unsigned int size_x , unsigned int size_y,unsigned char * edge_array)
 {
+    /*
+                THIS CAN BE DONE MUCH FASTER , SEE IntegralImageConversion.c
+              THIS FUNCTION IS DEPRECIATED , USED ONLY FOR DEBUGGING THE NEW ONES
+    */
    unsigned int counted_edges=0;
    unsigned int x_c=x ,  y_c=y;
    register BYTE *px;
@@ -66,7 +70,7 @@ unsigned int HistogramPatch(struct Histogram *hist_data,unsigned char *img,unsig
 {
     /*
       THERE ALSO EXISTS A COMPRESSED HISTOGRAM PATCH ( MUCH FASTER , SEE IntegralImageConversion.c
-                                THIS FUNCTION IS DEPRECIATED
+              THIS FUNCTION IS DEPRECIATED , USED ONLY FOR DEBUGGING THE NEW ONES
     */
     register BYTE *image_px,*image_stopx;
     register BYTE *r,*g,*b;

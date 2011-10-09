@@ -22,12 +22,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <limits.h>
 #include <math.h>
 
+
 unsigned int resection_left_precalc[321*241*3];
 unsigned int resection_right_precalc[321*241*3];
 
-unsigned int precalc_group_block_belong[641][481];
-unsigned long precalc_memplace_3byte[641][481];
-unsigned long precalc_memplace_1byte[641][481];
+unsigned int precalc_group_block_belong[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
+unsigned long precalc_memplace_3byte[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
+unsigned long precalc_memplace_1byte[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
 
 
 struct CameraCalibrationData left_calibration_data;
@@ -272,8 +273,8 @@ void Precalculations()
 
    unsigned int x,y;
 
-   for (x=0; x<=640; x++)
-   { for (y=0; y<=480; y++)
+   for (x=0; x<=ABSOLUTE_MAX_WIDTH; x++)
+   { for (y=0; y<=ABSOLUTE_MAX_HEIGHT; y++)
      {
 		  precalc_group_block_belong[x][y]= (unsigned int) (       (  ( y/metrics[VERTICAL_BUFFER] ) * total_blocks_x    ) + (x/metrics[HORIZONTAL_BUFFER])   );
 		  precalc_memplace_3byte[x][y] = (unsigned long) ( y * ( metrics[RESOLUTION_X] * 3 ) + x*3 ) ;

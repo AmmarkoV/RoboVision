@@ -23,7 +23,7 @@ gcc  -Os -O3 -fexpensive-optimizations -c IntegralImageConversion.c -o IntegralI
 gcc  -Os -O3 -fexpensive-optimizations -c PatchComparison.c -o PatchComparison.o
 gcc  -Os -O3 -fexpensive-optimizations -c PatternRecognition.c -o PatternRecognition.o
 gcc  -Os -O3 -fexpensive-optimizations -c Precalculations.c -o Precalculations.o 
-gcc  -Os -O3 -fexpensive-optimizations -c Points3d.c -o Points3d.o 
+gcc  -Os -O3 -fexpensive-optimizations -c Matrix.c -o Matrix.o 
 gcc  -Os -O3 -fexpensive-optimizations -c CameraPose3d.c -o CameraPose3d.o 
 gcc  -Os -O3 -fexpensive-optimizations -c StateSetting.c -o StateSetting.o
 gcc  -Os -O3 -fexpensive-optimizations -c VisCortexConvolutionFilters.c -o VisCortexConvolutionFilters.o
@@ -37,10 +37,10 @@ gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive
 gcc  -Os -O3 -fexpensive-optimizations -c VisualCortex.c -o VisualCortex.o
 
 
-ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o CameraPose3d.o Points3d.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
+ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o CameraPose3d.o Matrix.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
 
 
-rm DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o CameraPose3d.o Points3d.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
+rm DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o CameraPose3d.o Matrix.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
 
 
 cd VisCortx_Tester

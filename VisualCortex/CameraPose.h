@@ -23,5 +23,6 @@ extern struct TransformationMatrix right_rotation_and_translation;
 extern struct TransformationMatrix total_left_rotation_and_translation;
 extern struct TransformationMatrix total_right_rotation_and_translation;
 
+int UpdateCameraPose(unsigned int reg_num);
 
 #endif // CAMERAPOSE_H_INCLUDED

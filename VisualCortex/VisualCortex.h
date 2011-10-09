@@ -16,6 +16,7 @@ struct PatchSignature
 enum VisCortxPipelineLabels
 {
    EXECUTE_DEPTHMAP = 0 ,
+   VISCORTX_AUTONOMOUS  ,
 
 
    PIPELINE_SWITCH_COUNT
