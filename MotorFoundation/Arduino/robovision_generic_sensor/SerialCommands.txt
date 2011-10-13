@@ -1,0 +1,26 @@
+//ROBOVISION ARDUINO SERIAL INTERFACE
+//COMMANDS AND PAYLOADS 
+
+// COMMAND  //   PAYLOAD  //  DESCRIPTION
+     M         0-2  , BYTE     Servo Move , BYTE is degrees 0-180   
+     HS            0-2         Servo Halt   
+
+     LA            0-1         Led Light Activate   
+     LD            0-1         Led Light Deactivate   
+
+     IR         XBYTES         IR Code transmit , this has a string following of XBYTES size   
+
+     UG            0-1         Get Last sampled Ultrasonic Value    
+     UT            0-1         Trigger Ultrasonic Sample and get it    
+
+     AX            0           Get accelerometer X axis value    
+     AY            0           Get accelerometer Y axis value    
+     AZ            0           Get accelerometer Z axis value    
+
+     PI           0-2          Proximity IR Sensor Value   
+
+     CHK                       Check Arduino sensor condition   
+     ZZZ                       Reset Arduino    
+
+     SAS                       Start Auto Sample Mode (Arduino will sample and transmit as it sees fit)
+     EAS                       Exit  Auto Sample Mode
