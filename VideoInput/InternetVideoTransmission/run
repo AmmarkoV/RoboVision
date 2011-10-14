@@ -1,0 +1,4 @@
+#!/bin/sh
+bin/Release/InternetVideoTransmission
+exit 0
+ 
