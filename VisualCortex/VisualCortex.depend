@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1317662883 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
+1318113325 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
 	"DisparityDepthMap.h"
 	"DisparityDepthMap_Heuristics.h"
 	"VisCortexFilters.h"
@@ -9,7 +9,7 @@
 	"PatchComparison.h"
 	"VisCortexTimer.h"
 	"CameraPose.h"
-	"Points3d.h"
+	"Matrix.h"
 	"cv.h"
 	<stdio.h>
 	<string.h>
@@ -24,7 +24,7 @@
 	<stdlib.h>
 	<string.h>
 
-1317486398 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1318114721 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
 1308751856 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.h
 
@@ -38,7 +38,7 @@
 1303863831 /home/ammar/Documents/Programming/RoboVision/VisualCortex/MovementRegistration.h
 	"VisionMemory.h"
 
-1317156363 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.h
+1318113742 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.h
 
 1317366278 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.c
 	"DisparityDepthMap_Heuristics.h"
@@ -90,10 +90,10 @@
 	"IntegralImageConversion.h"
 	"Precalculations.h"
 
-1317679341 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.c
+1318113342 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/LinearAlgebra.c
 	"LinearAlgebra.h"
 	"VisionMemory.h"
-	"Points3d.h"
+	"Matrix.h"
 	<stdio.h>
 	"cv.h"
 	<gsl/gsl_linalg.h>
@@ -119,20 +119,20 @@
 1302903855 /home/ammar/Documents/Programming/RoboVision/VisualCortex/PatternRecognition.h
 	"VisualCortex.h"
 
-1317680849 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.c
+1318113745 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.c
 	"Precalculations.h"
 	"VisionMemory.h"
 	<limits.h>
 	<math.h>
 
-1317658246 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.c
+1318113342 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.c
 	"StateSetting.h"
 	"VisionMemory.h"
 	"FaceDetection.h"
 	"FeatureTracking.h"
 	"IntegralImageConversion.h"
 	"FeatureLists.h"
-	"Points3d.h"
+	"Matrix.h"
 	<time.h>
 	<math.h>
 
@@ -148,7 +148,7 @@
 	<stdio.h>
 	<string.h>
 
-1316628758 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexFilters.c
+1318114123 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexFilters.c
 	"VisCortexFilters.h"
 	"VisCortexConvolutionFilters.h"
 	"Precalculations.h"
@@ -171,7 +171,7 @@
 	"VisCortexFilters.h"
 	"StateSetting.h"
 
-1317424511 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
+1318114730 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
 	"VisualCortex.h"
 	"VisionMemory.h"
 	"Precalculations.h"
@@ -214,7 +214,7 @@
 
 1311412733 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/fast/fast.h
 
-1317662893 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
+1318120037 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
 	"VideoInputAdapter.h"
 	"VisualCortex.h"
 	"VisionMemory.h"
@@ -227,7 +227,7 @@
 	"PatternRecognition.h"
 	"FeatureTracking.h"
 	"CameraPose.h"
-	"Points3d.h"
+	"Matrix.h"
 	"FaceDetection.h"
 	"StateSetting.h"
 	"VisCortexTimer.h"
@@ -651,9 +651,20 @@
 	"VisionMemory.h"
 	"FeatureLists.h"
 
-1317662815 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.c
+1318113338 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.c
 	"CameraPose.h"
+	"Precalculations.h"
+	"Matrix.h"
+	"LinearAlgebra.h"
 
-1317662854 /home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.h
+1318112233 /home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.h
 	"VisionMemory.h"
+
+1318113237 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Matrix.h
+	"VisionMemory.h"
+	"FeatureLists.h"
+
+1318113247 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Matrix.c
+	"Matrix.h"
+	"CameraPose.h"
 

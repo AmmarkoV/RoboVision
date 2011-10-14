@@ -9,6 +9,7 @@
 #include <fcntl.h>
 #include <pthread.h>
 #include <sys/signal.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 
 #define BAUDRATE B38400
@@ -107,6 +108,36 @@ int AnalyzeArduinoInput(struct InputParserC * ipc,char * arduinostring,unsigned 
  return 0;
 }
 
+int ArduinoCodeStartup(int fd)
+{
+    fprintf(stderr,"Arduino Code startup running \n");
+    int res = write(fd,"CHK",3);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
+
+
+    if (res<0) { fprintf(stderr,"Cannot write to arduino\n"); return 0; }
+    if (res!=3) {  fprintf(stderr,"Could not send all 3 bytes to arduino\n"); return 0;  }
+    usleep(10000);
+    res = write(fd,"CHK",3);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
+
+    char buf[256]={0};
+    fprintf(stderr,"Receiving..\n");
+    res = read(fd,buf,254);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
+    fprintf(stderr,"Got back %s \n",buf);
+
+    if ( strncmp(buf,"ARDUINO",7)==0 )
+      {
+      fprintf(stderr,"Got back answer \n"); WORKS=1;
+      }
+    res = write(fd,"LA0",3);   /* Flash LED */
+    usleep(1000);
+    res = write(fd,"LD0",3);   /* Flash LED */
+    res = write(fd,"BAS",3);   /* Startup arduino automatic sending*/
+
+    fprintf(stderr,"Arduino Code success\n");
+    return 1;
+}
+
+
 void * Arduino_Thread(void * ptr)
 {
 
@@ -127,6 +158,7 @@ char clear_packet[512];
 
 unsigned int terminal_symbol_position=0;
 
+fprintf(stderr,"Trying to open arduino @ %s \n",arduinodevice_name);
 fd = open(arduinodevice_name, O_RDWR | O_NOCTTY );
 if (fd <0) { perror(arduinodevice_name); FAILED=1; return(0); }
 
@@ -145,6 +177,14 @@ newtio.c_cc[VMIN]     = 50;   /* blocking read until 5 chars received */
 
 tcflush(fd, TCIFLUSH);
 tcsetattr(fd,TCSANOW,&newtio);
+
+usleep (1000);
+
+if (!ArduinoCodeStartup(fd))
+ {
+     STOP=1;
+     FAILED=1;
+ }
 
 
 while (STOP==0)     {
@@ -209,6 +249,9 @@ while (STOP==0)     {
                        }
                     }
 
+ res=write(fd,"EAS",3);
+ close(fd);
+
  tcsetattr(fd,TCSANOW,&oldtio);
  InputParser_Destroy(ipc);
  return 0;
@@ -223,8 +266,16 @@ int kickstart_arduino_thread(char * devname)
  arduino_tickcount=0;
  arduinothread_id=0;
  strcpy(arduinodevice_name,devname);
- pthread_create((pthread_t *) &arduinothread_id, NULL,Arduino_Thread,0);
- return 0;
+
+ struct stat st;
+ if(stat(arduinodevice_name,&st) == 0) { printf(" Arduino device is present\n");  } else
+                                       { printf(" Arduino device is not present\n"); FAILED=1;  return 0; }
+
+ int res=pthread_create((pthread_t *) &arduinothread_id, NULL,Arduino_Thread,0);
+ if ( res != 0 ) { printf(" Arduino thread did not start\n"); FAILED=1;  }
+ usleep(100000);
+
+ return (res==0);
 }
 
 int arduino_ok()

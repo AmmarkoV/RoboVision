@@ -56,8 +56,8 @@ void InitSenses()
 {
    LoadConfiguration(); // Set Correct values to VisCortx :P 2nd time but cannot make something better right now :P
 
-   InitVisualSystem();
    InitMotorSystem();
+   InitVisualSystem();
    OpenWebInterface();
    fprintf(stderr,"Senses initialized\n");
 }
@@ -65,8 +65,9 @@ void InitSenses()
 void CloseSenses()
 {
    CloseWebInterface();
-   CloseVisualSystem();
    CloseMotorSystem();
+   CloseVisualSystem();
+
 }
 
 

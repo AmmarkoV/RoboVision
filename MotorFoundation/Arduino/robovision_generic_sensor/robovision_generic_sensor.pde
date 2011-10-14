@@ -30,7 +30,7 @@ void setup(void)
   servo1.write(90);
   
   pinMode(ledPins[0], OUTPUT);
-  Serial.println("Waiting for Input!");
+  //Serial.println("Waiting for Input!");
 }
 
 
@@ -58,6 +58,12 @@ int MoveServo(unsigned int servo_number,int rot_degrees)
   return 0;  
 }
 
+void SendEmptyBytes(int number)
+{
+  for (int i=0; i<number-3; i++) { Serial.print(" "); }
+  Serial.print("\n#\n");             
+}
+
 int SerialInputReceiver()
 {
          byte inB1 = Serial.read();
@@ -71,7 +77,7 @@ int SerialInputReceiver()
               MoveServo(inB2-'0',inB3);
            } else
          if ( ( inB1 == 'S')&&( inB2 == 'S') ) 
-           { // Servo Stop
+           { // Servo Stop 
            } else
          
          
@@ -124,9 +130,13 @@ int SerialInputReceiver()
          // CONTROLLER STATE  -----------------------    
          if ( ( inB1 == 'C')&&( inB2 == 'H') ) 
            { // Check Arduino State
+             Serial.println("ARDUINO\n");
+             SendEmptyBytes(42);
+             return 1;
            } else
          if ( ( inB1 == 'Z')&&( inB2 == 'Z') ) 
            { // Reset Arduino
+             Serial.println("RESET\n");
              resetFunc();  //call reset 
            } else
          if ( ( inB1 == 'E')&&( inB2 == 'A') ) 
@@ -156,8 +166,8 @@ void loop(void)
    {   
      transmitDummyAccelerometerStatus();
      transmitDummyUltrasonicStatus();
-     Serial.println("#"); /*MARK THE END OF TRANSMISSION*/ 
+     
    }
-   
+   Serial.println("#"); /*MARK THE END OF TRANSMISSION , AND THAT ARDUINO IS ALIVE */
    delay(100);                                   // wait 100 milli seconds before looping again
 }

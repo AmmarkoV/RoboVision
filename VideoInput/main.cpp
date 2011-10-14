@@ -142,7 +142,7 @@ char * VideoInput_Version()
 
 char FileExists(char * filename)
 {
-FILE *fp = fopen(filename,"r");
+ FILE *fp = fopen(filename,"r");
  if( fp ) { /* exists */
             fclose(fp);
             return 1;
