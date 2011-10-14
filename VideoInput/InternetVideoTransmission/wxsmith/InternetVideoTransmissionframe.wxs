@@ -27,5 +27,9 @@
 			<widths>-1</widths>
 			<styles>wxSB_NORMAL</styles>
 		</object>
+		<object class="wxTimer" name="ID_TIMER1" variable="Timer1" member="yes">
+			<interval>25</interval>
+			<handler function="OnTimer1Trigger" entry="EVT_TIMER" />
+		</object>
 	</object>
 </wxsmith>
