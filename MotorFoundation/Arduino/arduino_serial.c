@@ -42,6 +42,13 @@ int InternalGetAccelerometerY(int dev)
   return accelerometerY;
 }
 
+int MoveServo(int dev, int servo_num , int degrees)
+{
+  // THIS MUST TRANSMIT
+  // M(servo_num)(degrees) TODO
+  return 0;
+}
+
 
 int AnalyzeArduinoInput(struct InputParserC * ipc,char * arduinostring,unsigned int length)
 {

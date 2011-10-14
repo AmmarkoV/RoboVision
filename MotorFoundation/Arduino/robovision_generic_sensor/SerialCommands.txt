@@ -24,3 +24,9 @@
 
      SAS                       Start Auto Sample Mode (Arduino will sample and transmit as it sees fit)
      EAS                       Exit  Auto Sample Mode
+
+//EXAMPLES 
+LA0 will light up the LED 0
+UG0 will get back ultrasonic value of Ultrasonic 0
+AX0 will get back the accelerometer X axis value
+M0[122] Will move the Servo 0 to 122 degrees [122] is the byte 122

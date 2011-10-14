@@ -1,4 +1,9 @@
+#include <Servo.h>
+
 #define TOTAL_LED_PINS 2
+#define TOTAL_SERVOS 2 
+
+Servo servo1;
 int ledPins[TOTAL_LED_PINS];
 
 void(* resetFunc) (void) = 0; //declare reset function @ address 0
@@ -9,6 +14,14 @@ void setup(void)
  
   ledPins[0]=13; // THERE ARE 2 LED PINS ON GUARDDOG
   ledPins[1]=13; // THERE ARE 2 LED PINS ON GUARDDOG
+  
+  servo1.attach(14); //analog pin 0
+  delay(200);
+  servo1.write(30);
+  delay(1000);
+  servo1.write(120);
+  delay(1000);
+  servo1.write(90);
   
   pinMode(ledPins[0], OUTPUT);
   Serial.println("Waiting for Input!");
@@ -23,17 +36,33 @@ int LightControl(unsigned int light_number,int state)
 }
 
 
-
+int MoveServo(unsigned int servo_number,int rot_degrees)
+{
+  if (servo_number>=TOTAL_SERVOS) { return 0; }
+  switch (servo_number)
+  {
+   case 1 : 
+     
+     servo1.write(rot_degrees);
+     break;
+     
+   default :
+   break;
+  }
+  return 0;  
+}
 
 int SerialInputReceiver()
 {
          byte inB1 = Serial.read();
          byte inB2 = Serial.read();
+         byte inB3 = Serial.read();
          
          //This will become a switch statement :P
          // SERVO CONTROLS ----------------------
-         if ( ( inB1 == 'S')&&( inB2 == 'M') ) 
+         if ( inB1 == 'M' ) 
            { // Servo Move
+              MoveServo(inB2-'0',inB3);
            } else
          if ( ( inB1 == 'S')&&( inB2 == 'S') ) 
            { // Servo Stop
@@ -43,62 +72,62 @@ int SerialInputReceiver()
          // LIGHT CONTROLS -----------------------
          if ( ( inB1 == 'L')&&( inB2 == 'A') ) 
            { // Light Activate 
-             unsigned int light_number = Serial.read()-'0';  
+             unsigned int light_number = inB3-'0';  
              return LightControl(light_number,1);
            } else
          if ( ( inB1 == 'L')&&( inB2 == 'D') ) 
            { // Light Deactivate
-             unsigned int light_number = Serial.read()-'0';  
+             unsigned int light_number = inB3-'0';  
              return LightControl(light_number,0);
            } else
          
          
          // INFRARED TRANSMIT -----------------------    
          if ( ( inB1 == 'I')&&( inB2 == 'R') ) 
-           { // Servo Move
+           { // IR tranmission 
            } else
            
            
          // ULTRASONIC CONTROL -----------------------    
          if ( ( inB1 == 'U')&&( inB2 == 'G') ) 
-           { // Servo Move
+           { // Ultrasonic last sample get
            } else
          if ( ( inB1 == 'U')&&( inB2 == 'T') ) 
-           { // Servo Move
+           { // Ultrasonic grab a new sample and return it
            } else
            
                      
          // ACCELEROMETER CONTROL -----------------------    
          if ( ( inB1 == 'A')&&( inB2 == 'X') ) 
-           { // Servo Move
+           { // Get accelerometer X axis
            } else
          if ( ( inB1 == 'A')&&( inB2 == 'Y') ) 
-           { // Servo Move
+           { // Get accelerometer Y axis
            } else
          if ( ( inB1 == 'A')&&( inB2 == 'Z') ) 
-           { // Servo Move
+           { // Get accelerometer Z axis
            }  
            
          // PROXIMITY IR CONTROL -----------------------    
          if ( ( inB1 == 'P')&&( inB2 == 'I') ) 
-           { // Servo Move
+           { // Proximity Control
            } else
            
            
            
          // CONTROLLER STATE  -----------------------    
          if ( ( inB1 == 'C')&&( inB2 == 'H') ) 
-           { // Servo Move
+           { // Check Arduino State
            } else
          if ( ( inB1 == 'Z')&&( inB2 == 'Z') ) 
            { // Reset Arduino
              resetFunc();  //call reset 
            } else
          if ( ( inB1 == 'E')&&( inB2 == 'A') ) 
-           { // Servo Move
+           { // Exit Autonomous reporting mode 
            }  else
          if ( ( inB1 == 'S')&&( inB2 == 'A') ) 
-           { // Servo Move
+           { // Start Autonomous reporting mode
            }   
  return 0;
 }
@@ -114,7 +143,6 @@ void loop(void)
       }
   
      
-  
-  
+  delay(50);  
   
 }
