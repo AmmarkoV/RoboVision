@@ -24,7 +24,7 @@ void setup(void)
   servo1.attach(14); //analog pin 0
   delay(200);
   servo1.write(30);
-  delay(1000);
+  delay(200);
   servo1.write(120);
   delay(1000);
   servo1.write(90);
@@ -128,23 +128,23 @@ int SerialInputReceiver()
            
            
          // CONTROLLER STATE  -----------------------    
-         if ( ( inB1 == 'C')&&( inB2 == 'H') ) 
+         if ( ( inB1 == 'C')&&( inB2 == 'H') &&( inB3 == 'K') ) 
            { // Check Arduino State
              Serial.println("ARDUINO\n");
              SendEmptyBytes(42);
              return 1;
            } else
-         if ( ( inB1 == 'Z')&&( inB2 == 'Z') ) 
+         if ( ( inB1 == 'Z')&&( inB2 == 'Z') &&( inB3 == 'Z')) 
            { // Reset Arduino
              Serial.println("RESET\n");
              resetFunc();  //call reset 
            } else
-         if ( ( inB1 == 'E')&&( inB2 == 'A') ) 
+         if ( ( inB1 == 'E')&&( inB2 == 'A') &&( inB3 == 'S') ) 
            { // End Autonomous reporting mode 
               autonomous_mode = 0;
               return 1;
            }  else
-         if ( ( inB1 == 'B')&&( inB2 == 'A') ) 
+         if ( ( inB1 == 'B')&&( inB2 == 'A')&&( inB3 == 'S')  ) 
            { // Begin Autonomous reporting mode
              autonomous_mode = 1;
              return 1;
@@ -156,18 +156,20 @@ void loop(void)
   
   if (Serial.available() >= 3) 
        { 
+          LightControl(0,1);
 	  if ( SerialInputReceiver() ) { Serial.println("OK\n"); } else
                                        { Serial.println("FAIL\n"); }   
            
-          
+          LightControl(0,0); 
       }
    
    if ( autonomous_mode )
    {   
      transmitDummyAccelerometerStatus();
      transmitDummyUltrasonicStatus();
-     
+     Serial.println("#"); /*MARK THE END OF TRANSMISSION , AND THAT ARDUINO IS ALIVE */
    }
-   Serial.println("#"); /*MARK THE END OF TRANSMISSION , AND THAT ARDUINO IS ALIVE */
+   
+   
    delay(100);                                   // wait 100 milli seconds before looping again
 }

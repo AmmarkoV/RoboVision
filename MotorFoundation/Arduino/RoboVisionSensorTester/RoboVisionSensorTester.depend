@@ -1,9 +1,17 @@
 # depslib dependency file v1.0
-1285807745 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/RoboVisionSensorTester/main.c
+1318620257 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/RoboVisionSensorTester/main.c
 	<stdio.h>
 	<stdlib.h>
+	<termios.h>
+	<stdio.h>
+	<string.h>
+	<fcntl.h>
+	<pthread.h>
+	<sys/signal.h>
+	<sys/stat.h>
+	<sys/types.h>
 	"../RoboVisionSensorLib.h"
 	<unistd.h>
 
-1285778431 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/RoboVisionSensorLib.h
+1285810186 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/RoboVisionSensorLib.h
 

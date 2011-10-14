@@ -2,12 +2,12 @@
 #define ARDUINO_SERIAL_H_INCLUDED
 
 
-int InternalGetUltrasonicValue(int dev);
-int InternalGetAccelerometerX(int dev);
-int InternalGetAccelerometerY(int dev);
+int ArduinoInternalGetUltrasonicValue(int dev);
+int ArduinoInternalGetAccelerometerX(int dev);
+int ArduinoInternalGetAccelerometerY(int dev);
 
-int arduino_ok();
-int kickstart_arduino_thread(char * devname);
-int kill_arduino_thread();
+int ArduinoOk();
+int ArduinoThreadStart(char * devname);
+int ArduinoStopThread();
 
 #endif // ARDUINO_SERIAL_H_INCLUDED

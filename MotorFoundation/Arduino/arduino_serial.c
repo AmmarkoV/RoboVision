@@ -1,7 +1,5 @@
 #include "arduino_serial.h"
 #include "../../InputParser/InputParser_C.h"
-
-
 #include <termios.h>
 #include <stdio.h>
 #include <string.h>
@@ -24,7 +22,7 @@ int arduinothread_id=0;
 
 unsigned int ultrasonic1=0,ultrasonic2=0,accelerometerX=0,accelerometerY=0,arduino_tickcount=0;
 
-int InternalGetUltrasonicValue(int dev)
+int ArduinoInternalGetUltrasonicValue(int dev)
 {
   if (dev==0 ) return ultrasonic1; else
   if (dev==1 ) return ultrasonic2;
@@ -32,18 +30,18 @@ int InternalGetUltrasonicValue(int dev)
   return 0;
 }
 
-int InternalGetAccelerometerX(int dev)
+int ArduinoInternalGetAccelerometerX(int dev)
 {
   return accelerometerX;
 }
 
 
-int InternalGetAccelerometerY(int dev)
+int ArduinoInternalGetAccelerometerY(int dev)
 {
   return accelerometerY;
 }
 
-int MoveServo(int dev, int servo_num , int degrees)
+int ArduinoMoveServo(int dev, int servo_num , int degrees)
 {
   // THIS MUST TRANSMIT
   // M(servo_num)(degrees) TODO
@@ -111,18 +109,25 @@ int AnalyzeArduinoInput(struct InputParserC * ipc,char * arduinostring,unsigned 
 int ArduinoCodeStartup(int fd)
 {
     fprintf(stderr,"Arduino Code startup running \n");
-    int res = write(fd,"CHK",3);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
-
-
+    int res = write(fd,(unsigned char *) "CHK",3);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
     if (res<0) { fprintf(stderr,"Cannot write to arduino\n"); return 0; }
     if (res!=3) {  fprintf(stderr,"Could not send all 3 bytes to arduino\n"); return 0;  }
-    usleep(10000);
-    res = write(fd,"CHK",3);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
+
+    usleep(100000);
 
     char buf[256]={0};
     fprintf(stderr,"Receiving..\n");
-    res = read(fd,buf,254);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
-    fprintf(stderr,"Got back %s \n",buf);
+    int chk_acknowledged = 0;
+    while ( !chk_acknowledged  )
+     {
+       res = write(fd,(unsigned char *) "CHK",3);
+       res = read(fd,buf,8);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
+       //if (res == 0 )                     { fprintf(stderr," "); }
+       if ( strncmp(buf,"ARDUINO",7)==0 ) { chk_acknowledged=1; } else
+                                          {
+                                            fprintf(stderr,"%s",buf);
+                                          }
+     }
 
     if ( strncmp(buf,"ARDUINO",7)==0 )
       {
@@ -141,17 +146,9 @@ int ArduinoCodeStartup(int fd)
 void * Arduino_Thread(void * ptr)
 {
 
-struct InputParserC * ipc=0;
-ipc = InputParser_Create(512,5);
-
 int fd,res;
 struct termios oldtio,newtio;
 
-unsigned int overflow_buf_size=0;
-char overflow_buf[255];
-
-unsigned int buf_size=0;
-char buf[255];
 
 unsigned int clear_packet_size=0;
 char clear_packet[512];
@@ -159,33 +156,66 @@ char clear_packet[512];
 unsigned int terminal_symbol_position=0;
 
 fprintf(stderr,"Trying to open arduino @ %s \n",arduinodevice_name);
-fd = open(arduinodevice_name, O_RDWR | O_NOCTTY );
+fd = open(arduinodevice_name, O_RDWR | O_NOCTTY  ); // | O_NDELAY
 if (fd <0) { perror(arduinodevice_name); FAILED=1; return(0); }
 
 tcgetattr(fd,&oldtio); /* save current port settings */
 
 bzero(&newtio, sizeof(newtio));
+/*
 newtio.c_cflag = BAUDRATE | CRTSCTS | CS8 | CLOCAL | CREAD;
-newtio.c_iflag = IGNPAR;
-newtio.c_oflag = 0;
+newtio.c_iflag = IGNPAR; //IXON | IXOFF | IXANY;//
+newtio.c_oflag = 0; //OPOST; //0
 
-/* set input mode (non-canonical, no echo,...) */
-newtio.c_lflag = 0;
+// set input mode (non-canonical, no echo,...)
+newtio.c_lflag = 0; // ICANON | ECHO | ECHOE | ISIG; // 0
 
-newtio.c_cc[VTIME]    = 0;   /* inter-character timer unused */
-newtio.c_cc[VMIN]     = 50;   /* blocking read until 5 chars received */
+newtio.c_cc[VTIME]    = 0;   // inter-character timer unused
+newtio.c_cc[VMIN]     = 0;   // blocking read until 5 chars received
+*/
+    // 8N1
+    newtio.c_cflag &= ~PARENB;
+    newtio.c_cflag &= ~CSTOPB;
+    newtio.c_cflag &= ~CSIZE;
+    newtio.c_cflag |= CS8;
+    newtio.c_cflag |= BAUDRATE;
+
+    // no flow control
+    newtio.c_cflag &= ~CRTSCTS;
+
+    newtio.c_cflag |= CREAD | CLOCAL;  // turn on READ & ignore ctrl lines
+    newtio.c_iflag &= ~(IXON | IXOFF | IXANY); // turn off s/w flow ctrl
+
+    newtio.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG); // make raw
+    newtio.c_oflag &= ~OPOST; // make raw
+    // see: http://unixwiz.net/techtips/termios-vmin-vtime.html
+    newtio.c_cc[VMIN]  = 0;
+    newtio.c_cc[VTIME] = 20;
+
 
 tcflush(fd, TCIFLUSH);
 tcsetattr(fd,TCSANOW,&newtio);
 
-usleep (1000);
+usleep (10000);
 
 if (!ArduinoCodeStartup(fd))
  {
-     STOP=1;
-     FAILED=1;
+     STOP=1;  FAILED=1;
+ } else
+ {
+     WORKS=1;
  }
 
+
+
+struct InputParserC * ipc=0;
+ipc = InputParser_Create(512,5);
+
+unsigned int overflow_buf_size=0;
+char overflow_buf[255];
+
+unsigned int buf_size=0;
+char buf[255];
 
 while (STOP==0)     {
                        res = read(fd,buf,254);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
@@ -257,7 +287,7 @@ while (STOP==0)     {
  return 0;
 }
 
-int kickstart_arduino_thread(char * devname)
+int ArduinoThreadStart(char * devname)
 {
  ultrasonic1=0;
  ultrasonic2=0;
@@ -278,7 +308,8 @@ int kickstart_arduino_thread(char * devname)
  return (res==0);
 }
 
-int arduino_ok()
+
+int ArduinoOk()
 {
   if (FAILED) { return 0; }
   if (WORKS) { return 1; } else
@@ -286,9 +317,9 @@ int arduino_ok()
   return 1;
 }
 
-int kill_arduino_thread()
+int ArduinoStopThread()
 {
   STOP=1;
-  return 0;
+  return 1;
 }
 
