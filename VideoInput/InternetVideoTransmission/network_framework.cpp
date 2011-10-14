@@ -16,50 +16,25 @@
 #include "network_framework.h"
 #include "../VideoInput.h"
 
+char * peer_feed;
 
-pthread_t network_loop_id=0;
-void * NetworkLoop(void *ptr );
+int network_receive_stop=0;
+pthread_t network_receive_loop_id=0;
+void * NetworkReceiveLoop(void *ptr );
 
-void * KernelLoop(void *ptr )
+int network_transmit_stop=0;
+pthread_t network_transmit_loop_id=0;
+void * NetworkTransmitLoop(void *ptr );
+
+char peer_ip[200]={0};
+
+
+struct TransmitThreadPassParam
 {
+  char ip[123];
+  unsigned int port;
+};
 
-    int sockfd, newsockfd, portno, pid;
-     socklen_t clilen;
-     struct sockaddr_in serv_addr, cli_addr;
-
-     int PORT = 1010;
-
-     sockfd = socket(AF_INET, SOCK_STREAM, 0);
-     if (sockfd < 0) { return 0; /*error("ERROR opening socket");*/ }
-     bzero((char *) &serv_addr, sizeof(serv_addr));
-     portno = atoi(PORT);
-     serv_addr.sin_family = AF_INET;
-     serv_addr.sin_addr.s_addr = INADDR_ANY;
-     serv_addr.sin_port = htons(portno);
-     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) { return 0; /*error("ERROR on binding"); */ }
-     listen(sockfd,5);
-     clilen = sizeof(cli_addr);
-     while (1) {
-         newsockfd = accept(sockfd,
-               (struct sockaddr *) &cli_addr, &clilen);
-         if (newsockfd < 0) { return 0; /*error("ERROR on accept"); */ }
-
-         pid = fork();
-         if (pid < 0) { return 0; /*error("ERROR on fork");*/ }
-
-
-         if (pid == 0)
-         {
-             close(sockfd);
-             TransmitMyImage(newsockfd);
-             exit(0);
-         }
-         else close(newsockfd);
-     }
-     close(sockfd);
-
-
-}
 
 
 /******** TRANSMIT_MY_IMAGE() *********************
@@ -69,10 +44,50 @@ void * KernelLoop(void *ptr )
  *****************************************/
 void TransmitMyImage (int sock)
 {
-   while (1)
+
+   unsigned int remaining_file = 320*240*3;
+   void *frame=GetFrame(0);
+   while (!network_transmit_stop)
     {
-      int n = write(sock,GetFrame(0),320*240*3);
+      int n = write(sock,frame,remaining_file);
+      if ( n <0 )
+        {
+            fprintf(stderr,"Transmitting socket died apparently\n ");
+            return ;
+        } else
+      if ( frame+n >= GetFrame(0)+remaining_file )
+        {
+            frame=GetFrame(0);
+            remaining_file = 320*240*3;
+            sleep(100);
+        } else
+        {
+            frame+=n;
+            remaining_file-=n;
+        }
+
+    }
+
+
+}
+
+
+void ReceivePeerImage (int sock)
+{
+   unsigned int remaining_file = 320*240*3;
+   while (!network_receive_stop)
+    {
+      int n = read(sock,peer_feed,remaining_file);
       sleep(100);
+      if ( n <0 )
+        {
+          fprintf(stderr,"Transmitting socket died apparently\n ");
+          return ;
+        } else
+       if ( n < remaining_file )
+        {
+
+        }
     }
 
 
@@ -90,16 +105,127 @@ void TransmitMyImage (int sock)
 
 
 
-int StartupNetworkServer()
+void error(char * msg )
 {
-     if ( pthread_create( &network_loop_id , NULL,  NetworkLoop ,(void*) &param) != 0 )
+  fprintf(stderr,"%s\n",msg);
+}
+
+
+
+
+
+void * NetworkTransmitLoop(void *ptr )
+{
+    struct TransmitThreadPassParam *param;
+    param = (struct TransmitThreadPassParam *) ptr;
+
+
+    int sockfd, portno, n;
+    struct sockaddr_in serv_addr;
+    struct hostent *server;
+
+
+    portno = 1234;// (int) param->port;
+
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) { error("ERROR opening socket"); }
+
+    server = gethostbyname(peer_ip);
+    if (server == NULL) {
+                               fprintf(stderr,"ERROR, no such host (%s) \n",peer_ip);
+                               exit(0);
+                        }
+    bzero((char *) &serv_addr, sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr,
+         server->h_length);
+    serv_addr.sin_port = htons(portno);
+    if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0)
+     { error("ERROR connecting"); } else
      {
-         fprintf(stderr,"Error creating network loop \n");
-         return 0;
+        TransmitMyImage (sockfd);
      }
 
+    close(sockfd);
+   return 0;
+}
 
 
 
+
+
+void * NetworkReceiveLoop(void *ptr )
+{
+
+    int sockfd, newsockfd, portno, pid;
+     socklen_t clilen;
+     struct sockaddr_in serv_addr, cli_addr;
+
+     portno = 1234;
+
+     sockfd = socket(AF_INET, SOCK_STREAM, 0);
+     if (sockfd < 0) { return 0; error("ERROR opening socket"); }
+     bzero((char *) &serv_addr, sizeof(serv_addr));
+
+
+     serv_addr.sin_family = AF_INET;
+     serv_addr.sin_addr.s_addr = INADDR_ANY;
+     serv_addr.sin_port = htons(portno);
+     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) { return 0; error("ERROR on binding");  }
+     listen(sockfd,5);
+     clilen = sizeof(cli_addr);
+     while (1) {
+         newsockfd = accept(sockfd,
+               (struct sockaddr *) &cli_addr, &clilen);
+         if (newsockfd < 0) { return 0; error("ERROR on accept");  }
+
+         pid = fork();
+         if (pid < 0) { return 0; error("ERROR on fork"); }
+
+
+         if (pid == 0)
+         {
+             close(sockfd);
+             TransmitMyImage(newsockfd);
+             exit(0);
+         }
+         else close(newsockfd);
+     }
+     close(sockfd);
+
+return 0;
+}
+
+
+
+int StartupNetworkServer()
+{
+     network_receive_stop=0;
+     if ( pthread_create( &network_receive_loop_id , NULL,  NetworkReceiveLoop ,0) != 0 )
+     {
+         fprintf(stderr,"Error creating network receive loop \n");
+         return 0;
+     }
+     return 1;
+}
+
+
+
+int StartupNetworkClient(char * ip,unsigned int port)
+{
+     network_transmit_stop=0;
+
+     struct TransmitThreadPassParam param={0};
+     strcpy(param.ip,ip);
+     strcpy(peer_ip,ip);
+     param.port = port;
+
+     fprintf(stderr,"Starting NetClient %s:%u\n",ip,port);
+
+     if ( pthread_create( &network_transmit_loop_id , NULL,  NetworkTransmitLoop ,(void*) &param) != 0 )
+     {
+         fprintf(stderr,"Error creating network transmit loop \n");
+         return 0;
+     }
      return 1;
 }

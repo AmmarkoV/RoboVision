@@ -22,8 +22,8 @@
      CHK                       Check Arduino sensor condition   
      ZZZ                       Reset Arduino    
 
-     SAS                       Start Auto Sample Mode (Arduino will sample and transmit as it sees fit)
-     EAS                       Exit  Auto Sample Mode
+     BAS                       Begin Auto Sample Mode (Arduino will sample and transmit as it sees fit)
+     EAS                       End  Auto Sample Mode
 
 //EXAMPLES 
 LA0 will light up the LED 0

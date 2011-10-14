@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Debug" />
-	<File name="VideoInputGUITesterApp.cpp" open="1" top="0" tabpos="1">
+	<ActiveTarget name="Release" />
+	<File name="InternetVideoTransmissionApp.cpp" open="1" top="0" tabpos="4">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="VideoInputGUITesterMain.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="851" topLine="0" />
+	<File name="InternetVideoTransmissionMain.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="5933" topLine="171" />
 	</File>
-	<File name="network_framework.cpp" open="1" top="1" tabpos="4">
-		<Cursor position="1499" topLine="12" />
+	<File name="InternetVideoTransmissionMain.h" open="1" top="0" tabpos="2">
+		<Cursor position="772" topLine="0" />
+	</File>
+	<File name="network_framework.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="1856" topLine="148" />
+	</File>
+	<File name="network_framework.h" open="1" top="0" tabpos="5">
+		<Cursor position="297" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

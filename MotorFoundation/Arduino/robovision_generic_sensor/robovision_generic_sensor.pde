@@ -1,10 +1,16 @@
 #include <Servo.h>
+#include "Ultrasonic.h"
+#include "MemsicAccelerometer.h"
 
 #define TOTAL_LED_PINS 2
 #define TOTAL_SERVOS 2 
 
-Servo servo1;
+struct ultrasonic ultrasonicsensor1,ultrasonicsensor2;
+struct memsic2125 accelerometer;
 int ledPins[TOTAL_LED_PINS];
+Servo servo1,servo2,servo3;
+
+int autonomous_mode = 0;
 
 void(* resetFunc) (void) = 0; //declare reset function @ address 0
 
@@ -124,10 +130,14 @@ int SerialInputReceiver()
              resetFunc();  //call reset 
            } else
          if ( ( inB1 == 'E')&&( inB2 == 'A') ) 
-           { // Exit Autonomous reporting mode 
+           { // End Autonomous reporting mode 
+              autonomous_mode = 0;
+              return 1;
            }  else
-         if ( ( inB1 == 'S')&&( inB2 == 'A') ) 
-           { // Start Autonomous reporting mode
+         if ( ( inB1 == 'B')&&( inB2 == 'A') ) 
+           { // Begin Autonomous reporting mode
+             autonomous_mode = 1;
+             return 1;
            }   
  return 0;
 }
@@ -141,8 +151,13 @@ void loop(void)
            
           
       }
-  
-     
-  delay(50);  
-  
+   
+   if ( autonomous_mode )
+   {   
+     transmitDummyAccelerometerStatus();
+     transmitDummyUltrasonicStatus();
+     Serial.println("#"); /*MARK THE END OF TRANSMISSION*/ 
+   }
+   
+   delay(100);                                   // wait 100 milli seconds before looping again
 }

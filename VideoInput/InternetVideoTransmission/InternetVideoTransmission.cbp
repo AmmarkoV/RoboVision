@@ -31,16 +31,20 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="`wx-config --cflags`" />
 			<Add option="-Wall" />
+			<Add option="`wx-config --cflags`" />
 		</Compiler>
 		<Linker>
 			<Add option="`wx-config --libs`" />
+			<Add option="-pthreads" />
+			<Add library="../libVideoInput.a" />
 		</Linker>
 		<Unit filename="InternetVideoTransmissionApp.cpp" />
 		<Unit filename="InternetVideoTransmissionApp.h" />
 		<Unit filename="InternetVideoTransmissionMain.cpp" />
 		<Unit filename="InternetVideoTransmissionMain.h" />
+		<Unit filename="network_framework.cpp" />
+		<Unit filename="network_framework.h" />
 		<Unit filename="wxsmith/InternetVideoTransmissionframe.wxs" />
 		<Extensions>
 			<code_completion />
