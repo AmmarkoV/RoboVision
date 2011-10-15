@@ -32,22 +32,25 @@ int RoboVisionSensorsOK()
   return ArduinoOk();
 }
 
-
-
-int GetUltrasonicValue(int dev)
+int SetCameraPose(int heading,int pitch)
 {
-  return ArduinoInternalGetUltrasonicValue(dev);
+  return ArduinoInternalSetCameraPose(heading,pitch);
 }
 
-int GetAccelerometerX(int dev)
+int GetUltrasonicValue(int which_one)
+{
+  return ArduinoInternalGetUltrasonicValue(which_one);
+}
+
+int GetAccelerometerX()
 { /*Dev parameter is for future use , to use the same cheap dual axis sensor for more axis :P*/
-  return ArduinoInternalGetAccelerometerX(dev);
+  return ArduinoInternalGetAccelerometerX();
 }
 
-int GetAccelerometerY(int dev)
+int GetAccelerometerY()
 {
   /*Dev parameter is for future use , to use the same cheap dual axis sensor for more axis :P*/
-  return ArduinoInternalGetAccelerometerY(dev);
+  return ArduinoInternalGetAccelerometerY();
 }
 
 int SendIRCode(char * ircodes,unsigned int numberofcodes,unsigned int microsecondpause)

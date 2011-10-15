@@ -6,9 +6,10 @@ extern "C" {
 int ConnectRoboVisionSensors(char * devname);
 int DisconnectRoboVisionSensors();
 int RoboVisionSensorsOK();
-int GetUltrasonicValue(int dev);
-int GetAccelerometerX(int dev);
-int GetAccelerometerY(int dev);
+int SetCameraPose(int heading,int pitch);
+int GetUltrasonicValue(int which_one);
+int GetAccelerometerX();
+int GetAccelerometerY();
 int SendIRCode(char * ircodes,unsigned int numberofcodes,unsigned int microsecondpause);
 #ifdef __cplusplus
 }

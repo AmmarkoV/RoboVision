@@ -19,24 +19,35 @@ volatile int STOP=0;
 int wait_flag=1;  /* TRUE while no signal received */
 char arduinodevice_name[100]={0};
 int arduinothread_id=0;
+int fd=0;
 
 unsigned int ultrasonic1=0,ultrasonic2=0,accelerometerX=0,accelerometerY=0,arduino_tickcount=0;
+unsigned int last_camera_pose_pitch=0,last_camera_pose_heading=0;
+unsigned int camera_pose_pitch=0,camera_pose_heading=0;
 
-int ArduinoInternalGetUltrasonicValue(int dev)
+int ArduinoInternalGetUltrasonicValue(int which_one)
 {
-  if (dev==0 ) return ultrasonic1; else
-  if (dev==1 ) return ultrasonic2;
+  if (which_one==0 ) return ultrasonic1; else
+  if (which_one==1 ) return ultrasonic2;
 
   return 0;
 }
 
-int ArduinoInternalGetAccelerometerX(int dev)
+int ArduinoInternalGetAccelerometerX()
 {
   return accelerometerX;
 }
 
 
-int ArduinoInternalGetAccelerometerY(int dev)
+int ArduinoInternalSetCameraPose(int heading,int pitch)
+{
+  camera_pose_pitch=pitch;
+  camera_pose_heading=heading;
+  return 1;
+}
+
+
+int ArduinoInternalGetAccelerometerY()
 {
   return accelerometerY;
 }
@@ -45,7 +56,14 @@ int ArduinoMoveServo(int dev, int servo_num , int degrees)
 {
   // THIS MUST TRANSMIT
   // M(servo_num)(degrees) TODO
-  return 0;
+  char command[10]={"M00\0"};
+
+  command[1]=servo_num+'0';
+  command[2]=(char) degrees;
+
+  int res = write(fd,command,3);   /* Flash LED */
+  if (res<3) { return 0; }
+  return 1;
 }
 
 
@@ -109,7 +127,12 @@ int AnalyzeArduinoInput(struct InputParserC * ipc,char * arduinostring,unsigned 
 int ArduinoCodeStartup(int fd)
 {
     fprintf(stderr,"Arduino Code startup running \n");
-    int res = write(fd,(unsigned char *) "CHK",3);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
+
+    int res = write(fd,(unsigned char *) "EAS",3);   /* End autonomous state */
+
+
+
+    res = write(fd,(unsigned char *) "CHK",3);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
     if (res<0) { fprintf(stderr,"Cannot write to arduino\n"); return 0; }
     if (res!=3) {  fprintf(stderr,"Could not send all 3 bytes to arduino\n"); return 0;  }
 
@@ -146,7 +169,7 @@ int ArduinoCodeStartup(int fd)
 void * Arduino_Thread(void * ptr)
 {
 
-int fd,res;
+int res;
 struct termios oldtio,newtio;
 
 
@@ -162,35 +185,25 @@ if (fd <0) { perror(arduinodevice_name); FAILED=1; return(0); }
 tcgetattr(fd,&oldtio); /* save current port settings */
 
 bzero(&newtio, sizeof(newtio));
-/*
-newtio.c_cflag = BAUDRATE | CRTSCTS | CS8 | CLOCAL | CREAD;
-newtio.c_iflag = IGNPAR; //IXON | IXOFF | IXANY;//
-newtio.c_oflag = 0; //OPOST; //0
 
-// set input mode (non-canonical, no echo,...)
-newtio.c_lflag = 0; // ICANON | ECHO | ECHOE | ISIG; // 0
+ // 8N1
+ newtio.c_cflag &= ~PARENB;
+ newtio.c_cflag &= ~CSTOPB;
+ newtio.c_cflag &= ~CSIZE;
+ newtio.c_cflag |= CS8;
+ newtio.c_cflag |= BAUDRATE;
 
-newtio.c_cc[VTIME]    = 0;   // inter-character timer unused
-newtio.c_cc[VMIN]     = 0;   // blocking read until 5 chars received
-*/
-    // 8N1
-    newtio.c_cflag &= ~PARENB;
-    newtio.c_cflag &= ~CSTOPB;
-    newtio.c_cflag &= ~CSIZE;
-    newtio.c_cflag |= CS8;
-    newtio.c_cflag |= BAUDRATE;
+ // no flow control
+ newtio.c_cflag &= ~CRTSCTS;
 
-    // no flow control
-    newtio.c_cflag &= ~CRTSCTS;
+ newtio.c_cflag |= CREAD | CLOCAL;  // turn on READ & ignore ctrl lines
+ newtio.c_iflag &= ~(IXON | IXOFF | IXANY); // turn off s/w flow ctrl
 
-    newtio.c_cflag |= CREAD | CLOCAL;  // turn on READ & ignore ctrl lines
-    newtio.c_iflag &= ~(IXON | IXOFF | IXANY); // turn off s/w flow ctrl
-
-    newtio.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG); // make raw
-    newtio.c_oflag &= ~OPOST; // make raw
-    // see: http://unixwiz.net/techtips/termios-vmin-vtime.html
-    newtio.c_cc[VMIN]  = 0;
-    newtio.c_cc[VTIME] = 20;
+ newtio.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG); // make raw
+ newtio.c_oflag &= ~OPOST; // make raw
+ // see: http://unixwiz.net/techtips/termios-vmin-vtime.html
+ newtio.c_cc[VMIN]  = 0;
+ newtio.c_cc[VTIME] = 20;
 
 
 tcflush(fd, TCIFLUSH);
@@ -218,6 +231,14 @@ unsigned int buf_size=0;
 char buf[255];
 
 while (STOP==0)     {
+
+                       if ( last_camera_pose_pitch != camera_pose_pitch)
+                         {
+                               ArduinoMoveServo(fd,0,camera_pose_pitch);
+                               last_camera_pose_pitch=camera_pose_pitch;
+                         }
+
+
                        res = read(fd,buf,254);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
 
                        if (res==0) { /*QUIET :P */  } else

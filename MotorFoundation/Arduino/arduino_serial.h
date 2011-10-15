@@ -1,10 +1,13 @@
 #ifndef ARDUINO_SERIAL_H_INCLUDED
 #define ARDUINO_SERIAL_H_INCLUDED
 
+extern int fd;
 
-int ArduinoInternalGetUltrasonicValue(int dev);
-int ArduinoInternalGetAccelerometerX(int dev);
-int ArduinoInternalGetAccelerometerY(int dev);
+int ArduinoInternalGetUltrasonicValue(int which_one);
+int ArduinoInternalGetAccelerometerX();
+int ArduinoInternalGetAccelerometerY();
+
+int ArduinoInternalSetCameraPose(int heading,int pitch);
 
 int ArduinoOk();
 int ArduinoThreadStart(char * devname);

@@ -47,7 +47,7 @@ int MoveServo(unsigned int servo_number,int rot_degrees)
   if (servo_number>=TOTAL_SERVOS) { return 0; }
   switch (servo_number)
   {
-   case 1 : 
+   case 0 : 
      
      servo1.write(rot_degrees);
      break;

@@ -153,6 +153,11 @@ unsigned int RobotMoveJoystick(signed int joy_x,signed int joy_y)
   return 0;
 }
 
+unsigned int RobotHeadPose(unsigned int heading,unsigned int pitch)
+{
+    return SetCameraPose(heading,pitch);
+}
+
 
 unsigned int RobotBaseOk()
 {
@@ -246,25 +251,25 @@ int RobotCanMove(unsigned char power,signed int distance)
 /*    -------------------------------------------------
     ~~~~~~~~~~~~~~~~~~SENSOR CONTROL ~~~~~~~~~~~~~~~~~~
       -------------------------------------------------*/
-int RobotGetUltrasonic(unsigned int dev)
+int RobotGetUltrasonic(unsigned int which_one)
 {
   if (!RobotBaseOk()) { return 0;}
 
-  return GetUltrasonicValue(dev);
+  return GetUltrasonicValue(which_one);
 }
 
-int RobotGetAccelerometerX(unsigned int dev)
+int RobotGetAccelerometerX()
 {
   if (!RobotBaseOk()) { return 0;}
 
-  return GetAccelerometerX(dev);
+  return GetAccelerometerX();
 }
 
-int RobotGetAccelerometerY(unsigned int dev)
+int RobotGetAccelerometerY()
 {
   if (!RobotBaseOk()) { return 0;}
 
-  return GetAccelerometerY(dev);
+  return GetAccelerometerY();
 }
 
 int RobotSetHeadlightsState(unsigned int scale_1_on,unsigned int scale_2_on,unsigned int scale_3_on)
