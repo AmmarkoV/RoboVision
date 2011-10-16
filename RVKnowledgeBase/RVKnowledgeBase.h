@@ -162,6 +162,7 @@ boolean CloseKnowledgeBase(struct KnowledgeBase * kb);
 
 void PrintObjectsAtKnowledgeBase(struct KnowledgeBase * kb);
 
+char AskTheInternet(char * question,char * answer,unsigned int answer_length,char * website);
 char Ask(char * question);
 char Tell(char * info);
 char Search(char * what);

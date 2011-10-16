@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../InputParser/InputParser_C.h"
+ // #include <curl/curl.h>
 
 boolean KB_ok(struct KnowledgeBase * kb)
 {
@@ -248,6 +249,32 @@ char Transaction(char * question,char ask_true)
  return 0;
  */
 }
+
+
+/*
+function_pt(void *ptr, size_t size, size_t nmemb, void *stream)
+{
+    printf("%d", atoi(ptr));
+}
+*/
+
+char AskTheInternet(char * question,char * answer,unsigned int answer_length,char * website)
+{
+/*
+  CURL *curl;
+  CURLcode res;
+  curl = curl_easy_init();
+  if(curl) {
+    curl_easy_setopt(curl, CURLOPT_URL, "curl.haxx.se");
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, function_pt);
+    curl_easy_perform(curl);
+    curl_easy_cleanup(curl);
+            }*/
+   return 0;
+}
+
+
+
 
 char Ask(char * question)
 {

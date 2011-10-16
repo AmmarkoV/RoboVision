@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Debug" />
+	<ActiveTarget name="Release" />
 	<File name="RoboVisionSensorLib.h" open="1" top="0" tabpos="2">
-		<Cursor position="413" topLine="0" />
+		<Cursor position="267" topLine="0" />
 	</File>
 	<File name="arduino_serial.c" open="1" top="1" tabpos="3">
-		<Cursor position="2823" topLine="98" />
+		<Cursor position="4613" topLine="8" />
 	</File>
 	<File name="arduino_serial.h" open="1" top="0" tabpos="4">
-		<Cursor position="228" topLine="0" />
+		<Cursor position="276" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="917" topLine="0" />
+		<Cursor position="927" topLine="9" />
 	</File>
 </CodeBlocks_layout_file>
