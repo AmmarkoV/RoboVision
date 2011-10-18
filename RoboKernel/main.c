@@ -109,6 +109,7 @@ int StartRoboKernel()
     clock_count = 0;
     struct ThreadPassParam param={0};
     param.feednum=0;
+    EngageActivity(FACE_TRACKING);
     if ( pthread_create( &kernel_loop_id , NULL,  KernelLoop ,(void*) &param) != 0 )
      {
          fprintf(stderr,"Error creating kernel loop \n");

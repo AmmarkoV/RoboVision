@@ -2,15 +2,15 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="RoboVisionSensorLib.h" open="1" top="0" tabpos="2">
-		<Cursor position="232" topLine="0" />
+		<Cursor position="543" topLine="0" />
 	</File>
 	<File name="arduino_serial.c" open="1" top="0" tabpos="3">
-		<Cursor position="1742" topLine="45" />
+		<Cursor position="639" topLine="0" />
 	</File>
-	<File name="arduino_serial.h" open="1" top="0" tabpos="4">
-		<Cursor position="281" topLine="0" />
+	<File name="arduino_serial.h" open="1" top="1" tabpos="4">
+		<Cursor position="316" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="1013" topLine="16" />
+		<Cursor position="1084" topLine="16" />
 	</File>
 </CodeBlocks_layout_file>

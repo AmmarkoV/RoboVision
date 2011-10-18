@@ -5,7 +5,8 @@
 int current_activity=0;
 
 
-
+#define RESX 320
+#define RESY 240
 
 int TrackFace()
 {
@@ -15,13 +16,27 @@ int TrackFace()
 
   if  (  frame_to_use!=0 )
     {
-         unsigned int x = VisCortx_GetFaces(frame_to_use,0,FEATURE_X);
-         unsigned int y = VisCortx_GetFaces(frame_to_use,0,FEATURE_Y);
+         unsigned int x = VisCortx_GetFaces(frame_to_use,0,FEATURE_X) +  VisCortx_GetFaces(frame_to_use,0,FEATURE_DIM_X)  / 2;
+         unsigned int y = VisCortx_GetFaces(frame_to_use,0,FEATURE_Y) +  VisCortx_GetFaces(frame_to_use,0,FEATURE_DIM_Y) / 2;
 
 
          unsigned int  cam_rotation,cam_pitch;
          RobotGetHeadPose(&cam_rotation,&cam_pitch);
 
+         if ( y < (RESY/2)-4 )
+           {
+              --cam_pitch;
+              RobotSetHeadPose(cam_rotation,cam_pitch);
+           } else
+         if ( y > (RESY/2)+4 )
+           {
+              ++cam_pitch;
+              RobotSetHeadPose(cam_rotation,cam_pitch);
+           }
+
+    } else
+    {
+        RobotSetHeadPose(90,90);
     }
 
   return 1;

@@ -38,7 +38,7 @@ int SetCameraPose(int heading,int pitch)
 }
 
 
-int GetCameraPose(int * heading,int * pitch)
+int GetCameraPose(unsigned int * heading,unsigned int * pitch)
 {
   *heading=activated_state.camera_pose_heading;
   *pitch=activated_state.camera_pose_pitch;

@@ -38,7 +38,7 @@
 	<string.h>
 	<ctype.h>
 
-1318798032 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
+1318941370 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
 	<pthread.h>
 	"RoboKernel.h"
 	"command_hal.h"
@@ -121,4 +121,9 @@
 1265652107 /home/ammar/Documents/Programming/CStringOrganize/CStringOrganize.h
 
 1318798038 /home/ammar/Documents/Programming/RoboVision/RoboKernel/activity_coordination.h
+
+1318941860 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/activity_coordination.c
+	"activity_coordination.h"
+	"visual_system.h"
+	"../MotorFoundation/MotorHAL.h"
 

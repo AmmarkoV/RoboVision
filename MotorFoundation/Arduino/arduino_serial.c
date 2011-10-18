@@ -81,7 +81,7 @@ int ArduinoMoveServo(int dev, int servo_num , int degrees)
   command[1]=servo_num+'0';
   command[2]=(char) degrees;
 
-  fprintf(stderr,"Sending %s to arduino\n",command);
+  //fprintf(stderr,"Sending %s to arduino\n",command);
   int res = write(fd,command,3);
   if (res<3) { return 0; }
   return 1;
@@ -97,7 +97,7 @@ int ArduinoControlLights(int dev,int light_number,int light_state)
                     { command[1]='D'; }
   command[2]=light_number+'0';
 
-  fprintf(stderr,"Sending %s to arduino\n",command);
+  //fprintf(stderr,"Sending %s to arduino\n",command);
   int res = write(fd,command,3);   /* Flash LED */
   if (res<3) { return 0; }
   return 1;

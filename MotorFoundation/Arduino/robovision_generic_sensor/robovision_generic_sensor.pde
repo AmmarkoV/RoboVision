@@ -1,9 +1,13 @@
 #include <Servo.h>
-#include "Ultrasonic.h"
+#include "Ultrasonic.h" 
+#include "Infrared.h" 
 #include "MemsicAccelerometer.h"
 
 #define TOTAL_LED_PINS 2
 #define TOTAL_SERVOS 2 
+
+unsigned int IRReceiver=2; 
+unsigned int IRTransmitter=7; 
 
 struct ultrasonic ultrasonicsensor1,ultrasonicsensor2;
 struct memsic2125 accelerometer;
@@ -30,6 +34,8 @@ void setup(void)
   servo1.write(90);
   
   pinMode(ledPins[0], OUTPUT);
+  pinMode(IRTransmitter, OUTPUT);
+  //pinMode(IRReceiver, INPUT);
   //Serial.println("Waiting for Input!");
 }
 
@@ -94,9 +100,18 @@ int SerialInputReceiver()
            } else
          
          
+         // INFRARED Receive -----------------------    
+         if ( ( inB1 == 'I')&&( inB2 == 'R')&&( inB2 == 'R') ) 
+           { // IR receiver 
+             Serial.println("Listen for Infrared\n");
+             int numberpulses = listenForIR();
+             
+              printpulses();
+           } else
          // INFRARED TRANSMIT -----------------------    
-         if ( ( inB1 == 'I')&&( inB2 == 'R') ) 
+         if ( ( inB1 == 'I')&&( inB2 == 'R')&&( inB2 == 'T') ) 
            { // IR tranmission 
+             SendLastCode(); 
            } else
            
            

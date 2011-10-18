@@ -8,7 +8,8 @@
      LA            0-1         Led Light Activate   
      LD            0-1         Led Light Deactivate   
 
-     IR         XBYTES         IR Code transmit , this has a string following of XBYTES size   
+     IRR                       IR Code Receive     
+     IRT         XBYTES        IR Code transmit , this has a string following of XBYTES size   
 
      UG            0-1         Get Last sampled Ultrasonic Value    
      UT            0-1         Trigger Ultrasonic Sample and get it    
