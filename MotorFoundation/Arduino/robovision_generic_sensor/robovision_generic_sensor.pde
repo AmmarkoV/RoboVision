@@ -156,11 +156,11 @@ void loop(void)
   
   if (Serial.available() >= 3) 
        { 
-          LightControl(0,1);
+           
 	  if ( SerialInputReceiver() ) { Serial.println("OK\n"); } else
                                        { Serial.println("FAIL\n"); }   
            
-          LightControl(0,0); 
+         
       }
    
    if ( autonomous_mode )

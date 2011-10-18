@@ -38,7 +38,7 @@
 	<string.h>
 	<ctype.h>
 
-1317079664 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
+1318798032 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
 	<pthread.h>
 	"RoboKernel.h"
 	"command_hal.h"
@@ -48,6 +48,7 @@
 	"motor_system.h"
 	"webinterface.h"
 	"configuration.h"
+	"activity_coordination.h"
 	<string.h>
 	<time.h>
 	<unistd.h>
@@ -60,7 +61,7 @@
 1315640890 /home/ammar/Documents/Programming/RoboVision/RoboKernel/motor_system.h
 	"../MotorFoundation/MotorHAL.h"
 
-1316992275 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
+1318901237 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
 	"../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
 
 1289554847 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
@@ -102,7 +103,7 @@
 	"../MotorFoundation/MotorHAL.h"
 	<unistd.h>
 
-1318118227 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_hal.c
+1318789798 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_hal.c
 	"command_hal.h"
 	"command_implementation.h"
 	"../VideoInput/VideoInput.h"
@@ -115,7 +116,9 @@
 	"configuration.h"
 	"webinterface.h"
 
-1308000768 /home/ammar/Documents/Programming/RoboVision/RVKnowledgeBase/RVKnowledgeBase.h
+1318719362 /home/ammar/Documents/Programming/RoboVision/RVKnowledgeBase/RVKnowledgeBase.h
 
 1265652107 /home/ammar/Documents/Programming/CStringOrganize/CStringOrganize.h
+
+1318798038 /home/ammar/Documents/Programming/RoboVision/RoboKernel/activity_coordination.h
 

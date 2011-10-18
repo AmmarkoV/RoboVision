@@ -10,6 +10,7 @@ enum ActivityStatus
   RETURNING_TO_CHARGE_BAY,
   CHARGING,
 
+  FACE_TRACKING,
   TALKING_TO_PERSON,
   PLAYING_A_GAME,
 
@@ -18,7 +19,13 @@ enum ActivityStatus
   POSSIBLE_ACTIVITY_STATUSES
 };
 
+extern int current_activity;
 
+
+
+int EngageActivity(int activity_num);
+int StopCurrentActivity();
+int ActivityLoop();
 
 
 #endif // ACTIVITY_COORDINATION_H_INCLUDED

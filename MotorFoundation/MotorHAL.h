@@ -17,7 +17,8 @@ unsigned int RobotBaseOk();
 unsigned int RobotMoveJoystick(signed int joy_x,signed int joy_y);
 unsigned int RobotRotate(unsigned char power,signed int degrees);
 unsigned int RobotStartRotating(unsigned char power,signed int direction);
-unsigned int RobotHeadPose(unsigned int heading,unsigned int pitch);
+unsigned int RobotSetHeadPose(unsigned int heading,unsigned int pitch);
+unsigned int RobotGetHeadPose(unsigned int * heading,unsigned int * pitch);
 unsigned int RobotMove(unsigned char power,signed int distance);
 unsigned int RobotStartMoving(unsigned char power,signed int direction);
 unsigned int RobotManoeuvresPending();
@@ -26,7 +27,7 @@ void RobotStopMovement();
 int RobotGetUltrasonic(unsigned int which_one);
 int RobotGetAccelerometerX();
 int RobotGetAccelerometerY();
-int RobotSetHeadlightsState(unsigned int scale_1_on,unsigned int scale_2_on,unsigned int scale_3_on);
+int RobotSetLightsState(unsigned int light_num,unsigned int light_state);
 int RobotIRTransmit(char * code,unsigned int code_size);
 
 

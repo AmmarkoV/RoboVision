@@ -40,6 +40,7 @@ enum command_id_consts
   CMD_SAY,
   CMD_AUTOCALIBRATE,
   CMD_DEPTHMAP,
+  CMD_SET_LIGHT,
   CMD_HEAD_POSE,
   CMD_FORWARD,
   CMD_BACKWARD,
@@ -70,7 +71,6 @@ enum command_id_consts
  /* ------------------ */
   CMD_TOTAL_CONSTS
 };
-
 
 
 int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct InputParserC * ipc,char * from)
@@ -164,6 +164,10 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  sprintf(outptstr,"From %s : Command Parser AutoCalibrating : %u\n",from,cmdi_1);
                  if ( cmdi_1 == 0 ) { fprintf(stderr,"Setting Vertical shift to 12 , ( 0 has no meaning ) \n"); cmdi_1=12; }
                  VisCorteX_DisparityMapAutoCalibrate(cmdi_1);
+     break;
+     case CMD_SET_LIGHT :
+                 sprintf(outptstr,"From %s : Command Parser , Performing Set Light Operation \n",from);
+                 RobotSetLightsState(cmdi_1,cmdi_2);
      break;
      case CMD_HEAD_POSE :
                  sprintf(outptstr,"From %s : Command Parser , Performing Head Pose change \n",from);
@@ -386,6 +390,7 @@ int IssueCommandInternal(char * command,char * from)
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"AUTO CALIBRATE",14)==1) { chosen_command=CMD_AUTOCALIBRATE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DEPTH MAP",9)==1) { chosen_command=CMD_DEPTHMAP; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"HEAD POSE",9)==1) { chosen_command=CMD_HEAD_POSE; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"SET LIGHT",9)==1) { chosen_command=CMD_SET_LIGHT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FORWARD",7)==1) { chosen_command=CMD_FORWARD; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"BACKWARD",8)==1) { chosen_command=CMD_BACKWARD; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"LEFT",4)==1) { chosen_command=CMD_LEFT; } else

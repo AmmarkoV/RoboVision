@@ -44,6 +44,10 @@
 			<Add library="../MotorFoundation/MD23/libMD23.a" />
 		</Linker>
 		<Unit filename="RoboKernel.h" />
+		<Unit filename="activity_coordination.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="activity_coordination.h" />
 		<Unit filename="command_hal.c">
 			<Option compilerVar="CC" />
 		</Unit>

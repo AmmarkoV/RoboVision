@@ -153,9 +153,14 @@ unsigned int RobotMoveJoystick(signed int joy_x,signed int joy_y)
   return 0;
 }
 
-unsigned int RobotHeadPose(unsigned int heading,unsigned int pitch)
+unsigned int RobotSetHeadPose(unsigned int heading,unsigned int pitch)
 {
     return SetCameraPose(heading,pitch);
+}
+
+unsigned int RobotGetHeadPose(unsigned int * heading,unsigned int * pitch)
+{
+    return GetCameraPose(heading,pitch);
 }
 
 
@@ -272,16 +277,12 @@ int RobotGetAccelerometerY()
   return GetAccelerometerY();
 }
 
-int RobotSetHeadlightsState(unsigned int scale_1_on,unsigned int scale_2_on,unsigned int scale_3_on)
+int RobotSetLightsState(unsigned int light_num,unsigned int light_state)
 {
-  if (!RobotBaseOk()) { return 0;}
-
-  if ((scale_1_on)||(scale_2_on)||(scale_3_on))
-    {
-       fprintf(stderr,"Stub called SetHeadLights not implemented yet\n");
-    }
+  SetLights(light_num,light_state);
   return 0;
 }
+
 
 int RobotIRTransmit(char * code,unsigned int code_size)
 {

@@ -13,6 +13,7 @@
 #define BAUDRATE B38400
 #define _POSIX_SOURCE 1 /* POSIX compliant source */
 
+
 int WORKS=0;
 int FAILED=0;
 volatile int STOP=0;
@@ -21,46 +22,82 @@ char arduinodevice_name[100]={0};
 int arduinothread_id=0;
 int fd=0;
 
+int arduino_tickcount=0;
+
+struct arduino_connected_devices activated_state={0};
+struct arduino_connected_devices future_state={0};
+
+/*
 unsigned int ultrasonic1=0,ultrasonic2=0,accelerometerX=0,accelerometerY=0,arduino_tickcount=0;
 unsigned int last_camera_pose_pitch=0,last_camera_pose_heading=0;
 unsigned int camera_pose_pitch=0,camera_pose_heading=0;
+int last_lights[2]=0;
+int lights[2]=0;*/
 
 int ArduinoInternalGetUltrasonicValue(int which_one)
 {
-  if (which_one==0 ) return ultrasonic1; else
-  if (which_one==1 ) return ultrasonic2;
+  if (which_one==0 ) return activated_state.ultrasonic1; else
+  if (which_one==1 ) return activated_state.ultrasonic2;
 
   return 0;
 }
 
 int ArduinoInternalGetAccelerometerX()
 {
-  return accelerometerX;
-}
-
-
-int ArduinoInternalSetCameraPose(int heading,int pitch)
-{
-  camera_pose_pitch=pitch;
-  camera_pose_heading=heading;
-  return 1;
+  return activated_state.accelerometerX;
 }
 
 
 int ArduinoInternalGetAccelerometerY()
 {
-  return accelerometerY;
+  return activated_state.accelerometerY;
 }
+
+int ArduinoInternalSetCameraPose(int heading,int pitch)
+{
+  future_state.camera_pose_pitch=pitch;
+  future_state.camera_pose_heading=heading;
+  return 1;
+}
+
+
+int ArduinoInternalSetLights(int light_num,int light_state)
+{
+  fprintf(stderr,"ArduinoInternalSetLights(%u,%u) \n",light_num,light_state);
+  if( light_num>=TOTAL_ARDUINO_LIGHTS)  { return 0; }
+  fprintf(stderr,"SET IS DONE ArduinoInternalSetLights(%u,%u) \n",light_num,light_state);
+  future_state.lights[light_num]=light_state;
+  return 1;
+}
+
+
 
 int ArduinoMoveServo(int dev, int servo_num , int degrees)
 {
   // THIS MUST TRANSMIT
-  // M(servo_num)(degrees) TODO
+  // M(servo_num)(degrees)
   char command[10]={"M00\0"};
 
   command[1]=servo_num+'0';
   command[2]=(char) degrees;
 
+  fprintf(stderr,"Sending %s to arduino\n",command);
+  int res = write(fd,command,3);
+  if (res<3) { return 0; }
+  return 1;
+}
+
+int ArduinoControlLights(int dev,int light_number,int light_state)
+{
+  // THIS MUST TRANSMIT
+  // L(A or D)(1/0)
+  char command[10]={"LA0\0"};
+
+ if ( light_state ) { command[1]='A'; } else
+                    { command[1]='D'; }
+  command[2]=light_number+'0';
+
+  fprintf(stderr,"Sending %s to arduino\n",command);
   int res = write(fd,command,3);   /* Flash LED */
   if (res<3) { return 0; }
   return 1;
@@ -90,21 +127,21 @@ int AnalyzeArduinoInput(struct InputParserC * ipc,char * arduinostring,unsigned 
                   {
                       if ( InputParser_GetWordInt(ipc,1) == 1 )
                        {
-                           ultrasonic1=InputParser_GetWordInt(ipc,2);
+                           activated_state.ultrasonic1=InputParser_GetWordInt(ipc,2);
                            WORKS=1;
                        }
 
                       if ( InputParser_GetWordInt(ipc,1) == 2 )
                        {
-                           ultrasonic2=InputParser_GetWordInt(ipc,2);
+                           activated_state.ultrasonic2=InputParser_GetWordInt(ipc,2);
                            WORKS=1;
                        }
                   }
 
                  if (InputParser_WordCompare(ipc,0,"accelerometers",14) )
                   {
-                     accelerometerX=InputParser_GetWordInt(ipc,1);
-                     accelerometerY=InputParser_GetWordInt(ipc,2);
+                     activated_state.accelerometerX=InputParser_GetWordInt(ipc,1);
+                     activated_state.accelerometerY=InputParser_GetWordInt(ipc,2);
                      WORKS=1;
                   }
 
@@ -232,10 +269,16 @@ char buf[255];
 
 while (STOP==0)     {
 
-                       if ( last_camera_pose_pitch != camera_pose_pitch)
+                       if ( activated_state.camera_pose_pitch != future_state.camera_pose_pitch)
                          {
-                               ArduinoMoveServo(fd,0,camera_pose_pitch);
-                               last_camera_pose_pitch=camera_pose_pitch;
+                               ArduinoMoveServo(fd,0,future_state.camera_pose_pitch);
+                               activated_state.camera_pose_pitch=future_state.camera_pose_pitch;
+                         }
+
+                       if ( activated_state.lights[0] != future_state.lights[0])
+                         {
+                               ArduinoControlLights(fd,0,future_state.lights[0]);
+                               activated_state.lights[0]=future_state.lights[0];
                          }
 
 
@@ -310,10 +353,10 @@ while (STOP==0)     {
 
 int ArduinoThreadStart(char * devname)
 {
- ultrasonic1=0;
- ultrasonic2=0;
- accelerometerX=0;
- accelerometerY=0;
+ struct arduino_connected_devices empty_state={0};
+ activated_state=empty_state;
+ future_state=empty_state;
+
  arduino_tickcount=0;
  arduinothread_id=0;
  strcpy(arduinodevice_name,devname);

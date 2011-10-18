@@ -37,6 +37,22 @@ int SetCameraPose(int heading,int pitch)
   return ArduinoInternalSetCameraPose(heading,pitch);
 }
 
+
+int GetCameraPose(int * heading,int * pitch)
+{
+  *heading=activated_state.camera_pose_heading;
+  *pitch=activated_state.camera_pose_pitch;
+
+  return 1;
+}
+
+
+int SetLights(int light_num,int light_state)
+{
+  return ArduinoInternalSetLights(light_num,light_state);
+}
+
+
 int GetUltrasonicValue(int which_one)
 {
   return ArduinoInternalGetUltrasonicValue(which_one);

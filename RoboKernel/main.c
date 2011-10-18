@@ -7,6 +7,7 @@
 #include "motor_system.h"
 #include "webinterface.h"
 #include "configuration.h"
+#include "activity_coordination.h"
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
@@ -59,6 +60,9 @@ void InitSenses()
    InitMotorSystem();
    InitVisualSystem();
    OpenWebInterface();
+
+   EngageActivity(FACE_TRACKING);
+
    fprintf(stderr,"Senses initialized\n");
 }
 
@@ -74,6 +78,7 @@ void CloseSenses()
 void find_something_to_do(unsigned int clock_time)
 {
   /* THIS FUNCTION WILL CREATE A SCRIPT OF FUNCTIONS TO BE PASSED TO DO_SOMETHING */
+   ActivityLoop();
 }
 
 void do_something(unsigned int clock_time)
