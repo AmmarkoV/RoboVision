@@ -37,6 +37,9 @@ void setup(void)
   pinMode(IRTransmitter, OUTPUT);
   //pinMode(IRReceiver, INPUT);
   //Serial.println("Waiting for Input!");
+  
+  
+  setupAccelerometer(&accelerometer,6,5);
 }
 
 
@@ -101,7 +104,7 @@ int SerialInputReceiver()
          
          
          // INFRARED Receive -----------------------    
-         if ( ( inB1 == 'I')&&( inB2 == 'R')&&( inB2 == 'R') ) 
+         if ( ( inB1 == 'I')&&( inB2 == 'R')&&( inB3 == 'R') ) 
            { // IR receiver 
              Serial.println("Listen for Infrared\n");
              int numberpulses = listenForIR();
@@ -109,9 +112,12 @@ int SerialInputReceiver()
               printpulses();
            } else
          // INFRARED TRANSMIT -----------------------    
-         if ( ( inB1 == 'I')&&( inB2 == 'R')&&( inB2 == 'T') ) 
+         if ( ( inB1 == 'I')&&( inB2 == 'R')&&( inB3 == 'T') ) 
            { // IR tranmission 
+             Serial.println("Sending Last Infrared\n");
              SendLastCode(); 
+             Serial.println("done\n");
+             
            } else
            
            
@@ -180,7 +186,10 @@ void loop(void)
    
    if ( autonomous_mode )
    {   
-     transmitDummyAccelerometerStatus();
+     //transmitDummyAccelerometerStatus();
+     sampleAccelerometer(&accelerometer);
+     transmitAccelerometerStatus(&accelerometer);
+     
      transmitDummyUltrasonicStatus();
      Serial.println("#"); /*MARK THE END OF TRANSMISSION , AND THAT ARDUINO IS ALIVE */
    }

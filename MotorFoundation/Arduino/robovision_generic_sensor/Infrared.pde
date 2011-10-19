@@ -14,8 +14,7 @@ for more tutorials!
 // http://arduino.cc/en/Hacking/PinMapping168 for the 'raw' pin mapping
 #define IRpin_PIN PIND
 #define IRpin 2
-int IRledPin=7;
-int ledPin = 13; // LED PIN OUT  
+int IRledPin=7; 
 
 // the maximum pulse we'll listen for - 65 milliseconds is a long time
 #define MAXPULSE 65000
