@@ -1,6 +1,7 @@
 #include <Servo.h>
 #include "Ultrasonic.h" 
 #include "Infrared.h" 
+#include "ircodes.h" 
 #include "MemsicAccelerometer.h"
 
 #define TOTAL_LED_PINS 2
@@ -15,6 +16,8 @@ int ledPins[TOTAL_LED_PINS];
 Servo servo1,servo2,servo3;
 
 int autonomous_mode = 0;
+int time_to_power_down_servos = 0;
+
 
 void(* resetFunc) (void) = 0; //declare reset function @ address 0
 
@@ -26,12 +29,12 @@ void setup(void)
   ledPins[1]=13; // THERE ARE 2 LED PINS ON GUARDDOG
   
   servo1.attach(14); //analog pin 0
-  delay(200);
-  servo1.write(30);
-  delay(200);
-  servo1.write(120);
-  delay(1000);
+  delay(100);
+  servo1.write(70);
+  delay(200); 
   servo1.write(90);
+  delay(200);
+  servo1.detach();
   
   pinMode(ledPins[0], OUTPUT);
   pinMode(IRTransmitter, OUTPUT);
@@ -40,6 +43,8 @@ void setup(void)
   
   
   setupAccelerometer(&accelerometer,6,5);
+  
+  Serial.flush(); 
 }
 
 
@@ -58,7 +63,11 @@ int MoveServo(unsigned int servo_number,int rot_degrees)
   {
    case 0 : 
      
+     if (!servo1.attached() )
+              { servo1.attach(14); delay(45); }
+     
      servo1.write(rot_degrees);
+     time_to_power_down_servos=10;
      break;
      
    default :
@@ -83,7 +92,11 @@ int SerialInputReceiver()
          // SERVO CONTROLS ----------------------
          if ( inB1 == 'M' ) 
            { // Servo Move
-              MoveServo(inB2-'0',inB3);
+              int servo_num = inB2-'0'; 
+              if ( ( inB3>130 ) || ( inB3<40 ) ) {} else
+                                                 { MoveServo(servo_num,inB3); 
+                                                   return 1;
+                                                 } 
            } else
          if ( ( inB1 == 'S')&&( inB2 == 'S') ) 
            { // Servo Stop 
@@ -109,15 +122,28 @@ int SerialInputReceiver()
              Serial.println("Listen for Infrared\n");
              int numberpulses = listenForIR();
              
+             if ( IRcompare(numberpulses,AmmarAirCondition) )
+               { 
+                 Serial.println("This is the aircondition ON Off signal!\n");
+               } else
+             if ( IRcompare(numberpulses,Aircondition2) )
+               { 
+                 Serial.println("This is the 2 aircondition ON Off signal!\n");
+               }   
+             
               printpulses();
+              return 1;
            } else
          // INFRARED TRANSMIT -----------------------    
          if ( ( inB1 == 'I')&&( inB2 == 'R')&&( inB3 == 'T') ) 
            { // IR tranmission 
              Serial.println("Sending Last Infrared\n");
+             /*digitalWrite(IRTransmitter, HIGH );
+             delay(1000);
+             digitalWrite(IRTransmitter, LOW );*/
              SendLastCode(); 
              Serial.println("done\n");
-             
+             return 1;
            } else
            
            
@@ -140,13 +166,17 @@ int SerialInputReceiver()
          if ( ( inB1 == 'A')&&( inB2 == 'Z') ) 
            { // Get accelerometer Z axis
            }  
-           
+            else
+ 
          // PROXIMITY IR CONTROL -----------------------    
          if ( ( inB1 == 'P')&&( inB2 == 'I') ) 
            { // Proximity Control
            } else
            
-           
+         // PROXIMITY IR CONTROL -----------------------    
+         if ( ( inB1 == 'P')&&( inB2 == 'N')&&( inB3 == 'G')  ) 
+           { // Proximity Control
+           } else  
            
          // CONTROLLER STATE  -----------------------    
          if ( ( inB1 == 'C')&&( inB2 == 'H') &&( inB3 == 'K') ) 
@@ -169,7 +199,22 @@ int SerialInputReceiver()
            { // Begin Autonomous reporting mode
              autonomous_mode = 1;
              return 1;
-           }   
+           }  else
+           
+         // FLUSH INPUT WHEN RECEIVING FLU OR any X ( X XX XXX etc )---------------------    
+         if ( ( inB1 == 'F')&&( inB2 == 'L')&&( inB3 == 'U') ) 
+           { // Flush
+             Serial.flush();  
+             return 1;
+           } else
+         if ( ( inB1 == 'X')||( inB2 == 'X')||( inB3 == 'X') ) 
+           { // Flush
+             Serial.flush();  
+             return 1;
+           } else
+
+ 
+           
  return 0;
 }
 void loop(void) 
@@ -186,14 +231,22 @@ void loop(void)
    
    if ( autonomous_mode )
    {   
-     //transmitDummyAccelerometerStatus();
-     sampleAccelerometer(&accelerometer);
+     transmitDummyAccelerometerStatus();
+     //sampleAccelerometer(&accelerometer);
      transmitAccelerometerStatus(&accelerometer);
      
      transmitDummyUltrasonicStatus();
      Serial.println("#"); /*MARK THE END OF TRANSMISSION , AND THAT ARDUINO IS ALIVE */
    }
    
+   
+   
+   if ( (servo1.attached()) && ( time_to_power_down_servos == 1) )
+    {
+        servo1.detach();
+    }
+   if ( time_to_power_down_servos > 0 )
+     { --time_to_power_down_servos; }
    
    delay(100);                                   // wait 100 milli seconds before looping again
 }

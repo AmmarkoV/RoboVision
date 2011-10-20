@@ -7,8 +7,8 @@ int ArduinoInternalGetUltrasonicValue(int which_one);
 int ArduinoInternalGetAccelerometerX();
 int ArduinoInternalGetAccelerometerY();
 
-int ArduinoInternalSetLights(int light_num,int light_state);
-int ArduinoInternalSetCameraPose(int heading,int pitch);
+int ArduinoInternalSetLights(int light_num,int light_state,int wait_for_it);
+int ArduinoInternalSetCameraPose(int heading,int pitch,int wait_for_it);
 
 int ArduinoOk();
 int ArduinoThreadStart(char * devname);

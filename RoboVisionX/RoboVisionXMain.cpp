@@ -359,6 +359,8 @@ RoboVisionXFrame::~RoboVisionXFrame()
     //(*Destroy(RoboVisionXFrame)
     //*)
     CloseFeeds();
+    wxMilliSleep(1000);
+
 }
 
 void RoboVisionXFrame::OnQuit(wxCommandEvent& event)
@@ -366,7 +368,7 @@ void RoboVisionXFrame::OnQuit(wxCommandEvent& event)
     GUI_Shutdown=1;
     if (joy_stick!=0) { delete joy_stick; }
 
-    wxMilliSleep(500);
+    //wxMilliSleep(500);
     Close();
 }
 

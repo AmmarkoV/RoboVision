@@ -53,20 +53,48 @@ int ArduinoInternalGetAccelerometerY()
   return activated_state.accelerometerY;
 }
 
-int ArduinoInternalSetCameraPose(int heading,int pitch)
+int ArduinoInternalSetCameraPose(int heading,int pitch,int wait_for_it)
 {
   future_state.camera_pose_pitch=pitch;
-  future_state.camera_pose_heading=heading;
+  //future_state.camera_pose_heading=heading; HEADING SERVO NOT WORKING :P
+
+  if ( wait_for_it )
+    {
+      int max_time = 1000;
+      while ( ( max_time > 0 ) &&
+              ( (future_state.camera_pose_pitch != activated_state.camera_pose_pitch)
+                //|| (future_state.camera_pose_heading != activated_state.camera_pose_heading)
+              )
+            )
+               {
+                  --max_time;
+                  usleep(1000);
+               }
+    }
+
+
   return 1;
 }
 
 
-int ArduinoInternalSetLights(int light_num,int light_state)
+int ArduinoInternalSetLights(int light_num,int light_state,int wait_for_it)
 {
-  fprintf(stderr,"ArduinoInternalSetLights(%u,%u) \n",light_num,light_state);
+  //fprintf(stderr,"ArduinoInternalSetLights(%u,%u) \n",light_num,light_state);
   if( light_num>=TOTAL_ARDUINO_LIGHTS)  { return 0; }
-  fprintf(stderr,"SET IS DONE ArduinoInternalSetLights(%u,%u) \n",light_num,light_state);
+  //fprintf(stderr,"SET IS DONE ArduinoInternalSetLights(%u,%u) \n",light_num,light_state);
   future_state.lights[light_num]=light_state;
+
+    if ( wait_for_it )
+    {
+      int max_time = 1000;
+      while ( ( max_time > 0 ) &&
+              ( future_state.lights[light_num]!= activated_state.lights[light_num] ) )
+               {
+                  --max_time;
+                  usleep(1000);
+               }
+    }
+
   return 1;
 }
 
@@ -83,7 +111,8 @@ int ArduinoMoveServo(int dev, int servo_num , int degrees)
 
   //fprintf(stderr,"Sending %s to arduino\n",command);
   int res = write(fd,command,3);
-  if (res<3) { return 0; }
+  tcflush(fd, TCOFLUSH);
+  if (res<3) { /*fprintf(stderr,"Command Failed\n");*/ return 0; }
   return 1;
 }
 
@@ -99,6 +128,7 @@ int ArduinoControlLights(int dev,int light_number,int light_state)
 
   //fprintf(stderr,"Sending %s to arduino\n",command);
   int res = write(fd,command,3);   /* Flash LED */
+  tcflush(fd, TCOFLUSH);
   if (res<3) { return 0; }
   return 1;
 }
@@ -165,7 +195,10 @@ int ArduinoCodeStartup(int fd)
 {
     fprintf(stderr,"Arduino Code startup running \n");
 
-    int res = write(fd,(unsigned char *) "EAS",3);   /* End autonomous state */
+    int res = write(fd,(unsigned char *) "ZZZ",3);   /* Restart Arduino */
+    usleep(100*1000);
+    res = write(fd,(unsigned char *) "FLU",3);   /* Flush input again..*/
+    res = write(fd,(unsigned char *) "EAS",3);   /* End autonomous state.. */
 
 
 
@@ -173,7 +206,7 @@ int ArduinoCodeStartup(int fd)
     if (res<0) { fprintf(stderr,"Cannot write to arduino\n"); return 0; }
     if (res!=3) {  fprintf(stderr,"Could not send all 3 bytes to arduino\n"); return 0;  }
 
-    usleep(100000);
+    usleep(100*1000);
 
     char buf[256]={0};
     fprintf(stderr,"Receiving..\n");
@@ -196,7 +229,7 @@ int ArduinoCodeStartup(int fd)
     res = write(fd,"LA0",3);   /* Flash LED */
     usleep(1000);
     res = write(fd,"LD0",3);   /* Flash LED */
-    res = write(fd,"BAS",3);   /* Startup arduino automatic sending*/
+    //res = write(fd,"BAS",3);   /* Startup arduino automatic sending*/
 
     fprintf(stderr,"Arduino Code success\n");
     return 1;
@@ -240,13 +273,13 @@ bzero(&newtio, sizeof(newtio));
  newtio.c_oflag &= ~OPOST; // make raw
  // see: http://unixwiz.net/techtips/termios-vmin-vtime.html
  newtio.c_cc[VMIN]  = 0;
- newtio.c_cc[VTIME] = 20;
+ newtio.c_cc[VTIME] = 10;
 
 
 tcflush(fd, TCIFLUSH);
 tcsetattr(fd,TCSANOW,&newtio);
 
-usleep (10000);
+usleep (10*1000);
 
 if (!ArduinoCodeStartup(fd))
  {
@@ -256,7 +289,18 @@ if (!ArduinoCodeStartup(fd))
      WORKS=1;
  }
 
+/*
+       int tcflush( fd, queue_selector );
 
+  The queue_selector flags are:
+
+  o  TCIFLUSH  0  flush any data not yet read from the input buffer
+
+  o  TCOFLUSH  1  flush any data written to the output buffer but not
+     yet transmitted
+
+  o  TCIOFLUSH 2  flush both buffers
+*/
 
 struct InputParserC * ipc=0;
 ipc = InputParser_Create(512,5);
@@ -267,6 +311,8 @@ char overflow_buf[255];
 unsigned int buf_size=0;
 char buf[255];
 
+fprintf(stderr,"Arduino receive/send thread is now starting \n");
+int arduino_loop_tick_count = 0;
 while (STOP==0)     {
 
                        if ( activated_state.camera_pose_pitch != future_state.camera_pose_pitch)
@@ -281,44 +327,45 @@ while (STOP==0)     {
                                activated_state.lights[0]=future_state.lights[0];
                          }
 
-
-                       res = read(fd,buf,254);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
-
-                       if (res==0) { /*QUIET :P */  } else
+                  if (0)
+                    {
+                       res = read(fd,buf,254);   // returns after at least newtio.c_cc[VMIN] chars have been input
+                       if (res==0) { //QUIET :P
+                                    } else
                        if (res<0) { fprintf(stderr,"Error Reading Serial Stream \n"); WORKS=0;  } else
                        if (res>255) { fprintf(stderr,"Error , overflow Reading Serial Stream \n"); WORKS=0; } else
                        {
                           buf_size = res;
-                          buf[res]=0;       /* so we can printf... */
+                          buf[res]=0;       // so we can printf...
 
-                          /* START BUILDING THE ACTUAL FULL PACKET RECEIVED
-                             IT IS TERMINATED WITH A # SO WE ARE TRYING TO MAKE A COMPLETE PACKET
-                             FROM THE CHUNKS WE READ TIME AFTER TIME
-                          */
+                          // START BUILDING THE ACTUAL FULL PACKET RECEIVED
+                          // IT IS TERMINATED WITH A # SO WE ARE TRYING TO MAKE A COMPLETE PACKET
+                          // FROM THE CHUNKS WE READ TIME AFTER TIME
+                          //
 
                           clear_packet_size=0;
 
 
                           unsigned int i=0;
                           if (overflow_buf_size>0)
-                          { /* WE HAVE AN OVERFLOWED MESSAGE TO ADD BEFORE THE CURRENT BUFFER TO THE PACKET*/
+                          { // WE HAVE AN OVERFLOWED MESSAGE TO ADD BEFORE THE CURRENT BUFFER TO THE PACKET
                             for (i=0; i<overflow_buf_size; i++) { clear_packet[i]=overflow_buf[i]; }
                             clear_packet_size=overflow_buf_size;
-                          } /* CLEAR PACKET NOW CONTAINS ALL THE DATA THAT HAS BEEN OVERFLOWED FROM LAST TIME */
+                          } // CLEAR PACKET NOW CONTAINS ALL THE DATA THAT HAS BEEN OVERFLOWED FROM LAST TIME
 
 
-                          /*The character stream is not steady so we search for a # that marks the end of a "packet" */
+                          //The character stream is not steady so we search for a # that marks the end of a "packet"
                           terminal_symbol_position=0;
-                          for (i=0; i<buf_size; i++)
-                            {
-                              if (buf[i]=='#') {
-                                                 terminal_symbol_position=i;
-                                                 break;
-                                               }
-                            }
+                          i=buf_size-1;
+                          while ( ( i > 0 ) && (buf[i]!='#') )
+                           {
+                               --i;
+                           }
+                           if (buf[i]=='#') { terminal_symbol_position=i;  }
+
 
                           if ( terminal_symbol_position != 0 )
-                            { /* We have located a # , our packet is complete :D*/
+                            { // We have located a # , our packet is complete :D
                               for (i=0; i<terminal_symbol_position; i++) {  clear_packet[clear_packet_size++]=buf[i]; }
                               clear_packet[clear_packet_size]=0; /* for printf */
                               AnalyzeArduinoInput(ipc,clear_packet,clear_packet_size);
@@ -327,7 +374,7 @@ while (STOP==0)     {
                              // printf("END=====================\n");
                               overflow_buf_size=0;  // All older overflow has now been processed
                             } else
-                            { /* We still havent found a # so all current input goes all into overflow_buf for the next loop*/
+                            { //We still havent found a # so all current input goes all into overflow_buf for the next loop
                               for (i=0; i<clear_packet_size; i++) {  overflow_buf[i]=clear_packet[i]; }
                               overflow_buf_size=clear_packet_size;
                             }
@@ -341,9 +388,16 @@ while (STOP==0)     {
 
                           if (buf[0]=='z') STOP=1;
                        }
+                    }// DISABLED CODE
+
+                       if ( arduino_loop_tick_count%100 == 0 ) { write(fd,"XXX",3); /* TRY TO FLUSH EVERY 1 SEC*/ }
+                       usleep (50*1000);
+                       ++arduino_loop_tick_count;
                     }
 
  res=write(fd,"EAS",3);
+ fprintf(stderr,"Closing auto system \n");
+ usleep(10000);
  close(fd);
 
  tcsetattr(fd,TCSANOW,&oldtio);

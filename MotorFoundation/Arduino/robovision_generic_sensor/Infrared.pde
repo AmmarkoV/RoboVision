@@ -171,7 +171,8 @@ void loop(void)
   
 }*/
 
-boolean IRcompare(int numpulses, int Signal[]) {
+int IRcompare(int numpulses, int Signal[]) 
+{
   
   for (int i=0; i< numpulses-1; i++) {
     int oncode = pulses[i][1] * RESOLUTION / 10;
@@ -189,7 +190,7 @@ Serial.print(Signal[i*2 + 0]); // the ON signal we want
     } else {
       //Serial.print(" (x)");
       // we didn't match perfectly, return a false match
-      return false;
+      return 0;
     }
     
     /*
@@ -204,13 +205,13 @@ Serial.print(Signal[i*2 + 1]); // the OFF signal we want
     } else {
       //Serial.print(" (x)");
       // we didn't match perfectly, return a false match
-      return false;
+      return 0;
     }
     
     //Serial.println();
   }
   // Everything matched!
-  return true;
+  return 1;
 }
 
 int listenForIR(void) 

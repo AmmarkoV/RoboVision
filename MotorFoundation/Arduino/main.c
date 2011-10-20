@@ -34,7 +34,7 @@ int RoboVisionSensorsOK()
 
 int SetCameraPose(int heading,int pitch)
 {
-  return ArduinoInternalSetCameraPose(heading,pitch);
+  return ArduinoInternalSetCameraPose(heading,pitch,1);
 }
 
 
@@ -49,7 +49,7 @@ int GetCameraPose(unsigned int * heading,unsigned int * pitch)
 
 int SetLights(int light_num,int light_state)
 {
-  return ArduinoInternalSetLights(light_num,light_state);
+  return ArduinoInternalSetLights(light_num,light_state,0);
 }
 
 
