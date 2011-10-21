@@ -18,163 +18,33 @@ int IRledPin=7;
 
 // the maximum pulse we'll listen for - 65 milliseconds is a long time
 #define MAXPULSE 65000
+const uint8_t MAX_TOTAL_PULSES=130;
 
 // what our timing resolution should be, larger is better
 // as its more 'precise' - but too large and you wont get
-// accurate timing
-#define RESOLUTION 20
+// accurate timing default 20
+#define RESOLUTION 10
 
 // What percent we will allow in variation to match the same code
-#define FUZZINESS 20
+#define FUZZINESS 30
 
 // we will store up to 100 pulse pairs (this is -a lot-)
-uint16_t pulses[100][2]; // pair is high and low pulse
+//uint16_t pulses_high[MAX_TOTAL_PULSES]; //0
+//uint16_t pulses_low[MAX_TOTAL_PULSES];  //1
+
+
+uint16_t pulses[MAX_TOTAL_PULSES][2]; // pair is high and low pulse
 uint8_t currentpulse = 0; // index for pulses we're storing
 
 #include "ircodes.h"
-
-int IRsignal[] = {
-
-// ON, OFF (in 10's of microseconds)
-
-	886, 438,
-
-	58, 50,
-
-	60, 50,
-
-	60, 52,
-
-	58, 50,
-
-	60, 50,
-
-	60, 52,
-
-	58, 160,
-
-	62, 50,
-
-	58, 162,
-
-	60, 160,
-
-	60, 160,
-
-	58, 52,
-
-	60, 160,
-
-	60, 160,
-
-	60, 52,
-
-	58, 160,
-
-	60, 160,
-
-	60, 162,
-
-	58, 162,
-
-	60, 50,
-
-	58, 52,
-
-	60, 50,
-
-	60, 50,
-
-	58, 52,
-
-	60, 50,
-
-	60, 50,
-
-	58, 50,
-
-	62, 160,
-
-	60, 160,
-
-	60, 160,
-
-	60, 162,
-
-	58, 162,
-
-	60, 4020,
-
-	884, 216,
-
-	60, 2872,
-
-	884, 216,
-
-	60, 0};
-
-
-/*
-void setup(void) 
-{
-  Serial.begin(38400);
  
-  pinMode(ledPin, OUTPUT);
-  pinMode(IRledPin, OUTPUT);
-  Serial.println("Ready to decode IR!");
-}
-
-void loop(void) 
-{
-  int numberpulses;
-  
-  //numberpulses = listenForIR();
-  
-  if (Serial.available() > 0) 
-       { 
-	 byte incomingByte = Serial.read();
-         
-         if (incomingByte == 'r')
-           {
-             digitalWrite(ledPin, HIGH);    
-             Serial.print("Waiting signal!\n"); 
-             numberpulses = listenForIR();
-               
-             Serial.print("Heard ");
-             Serial.print(numberpulses);
-             Serial.println("-pulse long IR signal");
-  
-              printpulses();
-  
-             if (IRcompare(numberpulses, IRsignal)) { Serial.println("PLAY"); }  
-           } else
-         if (incomingByte == 'w')
-           {
-             digitalWrite(ledPin, HIGH);    
-             Serial.print("Trying to retransmit signal!\n"); 
-             SendLastCode(); 
-	     Serial.print("Done!\n"); 
-           } else 
-          if (incomingByte == 'h') 
-	   {
-            digitalWrite(IRledPin, HIGH);
-           } else 
-          if (incomingByte == 'l') 
-	   {
-            digitalWrite(IRledPin, LOW);  
-           }
-           
-           
-          Serial.println("\nWaiting for serial command");
-          digitalWrite(ledPin, LOW ); 
-      } 
-  
-}*/
+ 
 
 int IRcompare(int numpulses, int Signal[]) 
 {
   
-  for (int i=0; i< numpulses-1; i++) {
+  for (int i=0; i< numpulses-1; i++) 
+  {
     int oncode = pulses[i][1] * RESOLUTION / 10;
     int offcode = pulses[i+1][0] * RESOLUTION / 10;
     
@@ -222,18 +92,20 @@ int listenForIR(void)
     uint16_t highpulse, lowpulse; // temporary storage timing
     highpulse = lowpulse = 0; // start out with no pulse length
   
-// while (digitalRead(IRpin))  // this is too slow!
+    //while (digitalRead(IRpin))  // this is too slow!
     while (IRpin_PIN & (1 << IRpin)) 
     {
-       // pin is still HIGH 
-       // count off another few microseconds
+       // pin is still HIGH count off another few microseconds
        highpulse++;
        delayMicroseconds(RESOLUTION);
 
        // If the pulse is too long, we 'timed out' - either nothing
        // was received or the code is finished, so print what
        // we've grabbed so far, and then reset
-       if ((highpulse >= MAXPULSE) && (currentpulse != 0)) { return currentpulse; }
+       if ((highpulse >= MAXPULSE) && (currentpulse != 0)) 
+        { 
+          return currentpulse; 
+        }
     }
     // we didn't time out so lets stash the reading
     pulses[currentpulse][0] = highpulse;
@@ -241,40 +113,56 @@ int listenForIR(void)
     // same as above
     while (! (IRpin_PIN & _BV(IRpin))) 
       {
-       // pin is still LOW
-       lowpulse++;
-       delayMicroseconds(RESOLUTION);
-       if ((lowpulse >= MAXPULSE) && (currentpulse != 0)) { return currentpulse; }
+        // pin is still LOW
+        lowpulse++;
+        delayMicroseconds(RESOLUTION);
+        if ((lowpulse >= MAXPULSE) && (currentpulse != 0)) 
+        { 
+          return currentpulse; 
+        }
       }
     pulses[currentpulse][1] = lowpulse;
 
     // we read one high-low pulse successfully, continue!
     currentpulse++;
-  }
-}
-
-void printpulses(void) {
-  Serial.println("\n\r\n\rReceived: \n\rOFF \tON");
-  for (uint8_t i = 0; i < currentpulse; i++) {
-    Serial.print(pulses[i][0] * RESOLUTION, DEC);
-    Serial.print(" usec, ");
-    Serial.print(pulses[i][1] * RESOLUTION, DEC);
-    Serial.println(" usec");
+    if ( currentpulse >= MAX_TOTAL_PULSES )
+     {
+       Serial.println("We have read too many pulses , they cannot fit in stack , failing..");
+       return currentpulse;
+     }
   }
   
+ return currentpulse; 
+}
+
+void printpulses(void) 
+{
+  /*
+  Serial.println("\n\r\n\rReceived: \n\rOFF \tON");
+  for (uint8_t i = 0; i < currentpulse; i++) 
+   {
+     Serial.print(pulses[i][0] * RESOLUTION, DEC);
+     Serial.print(" usec, ");
+     Serial.print(pulses[i][1] * RESOLUTION, DEC);
+     Serial.println(" usec");
+   }*/
+  
   // print it in a 'array' format
-  Serial.println("int IRsignal[] = {");
+  
+  Serial.print("int IRsignal_pulses = ");
+  Serial.print((unsigned int) currentpulse);
+  Serial.println(";");
+  
+  Serial.print("int IRsignal[] = {");
   Serial.println("// ON, OFF (in 10's of microseconds)");
-  for (uint8_t i = 0; i < currentpulse-1; i++) {
-    //Serial.print("\t"); // tab
-    Serial.print(pulses[i][1] * RESOLUTION / 10, DEC);
-    Serial.print(", ");
-    Serial.print(pulses[i+1][0] * RESOLUTION / 10, DEC);
-    Serial.println(",");
-  }
-  Serial.print("\t"); // tab
+  for (uint8_t i = 0; i < currentpulse-1; i++) 
+   {
+     Serial.print(pulses[i][1] * RESOLUTION / 10, DEC); Serial.print(",");
+     Serial.print(pulses[i+1][0] * RESOLUTION / 10, DEC); Serial.println(",");
+   }
+  
   Serial.print(pulses[currentpulse-1][1] * RESOLUTION / 10, DEC);
-  Serial.print(", 0};");
+  Serial.println(",0};");
 }
 
 
@@ -317,4 +205,20 @@ void SendLastCode()
        delayMicroseconds(pulses[i][1]* RESOLUTION);   
      }
 }
+
+void SpamInfrared(unsigned int how_much_time) 
+{
+ 
+}
+
+void SendInfraredPreset(unsigned int preset) 
+{
+   switch (preset)
+    {
+      case 0 : SendCode(AirconditionOFF_pulses,AirConditionOFF); break;
+      case 1 : SendCode(AirconditionON_pulses,AirconditionON);   break;
+      default :   Serial.println("Not a valid preset ( SendInfraredPreset ) ");
+    }
+}
+
 

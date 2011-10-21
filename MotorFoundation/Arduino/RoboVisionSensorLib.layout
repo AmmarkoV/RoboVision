@@ -4,13 +4,13 @@
 	<File name="RoboVisionSensorLib.h" open="1" top="0" tabpos="2">
 		<Cursor position="543" topLine="0" />
 	</File>
-	<File name="arduino_serial.c" open="1" top="0" tabpos="3">
-		<Cursor position="639" topLine="0" />
+	<File name="arduino_serial.c" open="1" top="1" tabpos="3">
+		<Cursor position="12924" topLine="382" />
 	</File>
-	<File name="arduino_serial.h" open="1" top="1" tabpos="4">
-		<Cursor position="316" topLine="0" />
+	<File name="arduino_serial.h" open="1" top="0" tabpos="4">
+		<Cursor position="296" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="1084" topLine="16" />
+		<Cursor position="1105" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

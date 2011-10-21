@@ -396,6 +396,7 @@ while (STOP==0)     {
                     }
 
  res=write(fd,"EAS",3);
+ res=write(fd,"ZZZ",3);
  fprintf(stderr,"Closing auto system \n");
  usleep(10000);
  close(fd);
