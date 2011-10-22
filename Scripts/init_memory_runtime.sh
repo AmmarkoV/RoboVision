@@ -14,6 +14,8 @@ mkdir RoboVisionRuntime/scripts
 mkdir RoboVisionRuntime/Sounds 
 mkdir RoboVisionRuntime/Stored 
 mkdir RoboVisionRuntime/memfs 
+mkdir RoboVisionRuntime/memfs/SMS_Receive
+mkdir RoboVisionRuntime/memfs/SMS_Send
 mkdir RoboVisionRuntime/memfs/public_html 
 
 

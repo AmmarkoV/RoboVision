@@ -1,0 +1,5 @@
+#!/bin/bash
+echo "Starting SMS Receiver App at /dev/ttyUSB2"
+gsmsmsd -d /dev/ttyUSB2 --spool RoboVisionRuntime/memfs/SMS_Send -a "tee -a RoboVisionRuntime/memfs/SMS_Receive/Received" &
+echo "Done"
+exit 0

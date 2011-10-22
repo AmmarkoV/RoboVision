@@ -8,7 +8,7 @@
 #define TOTAL_SERVOS 2 
 
 unsigned int IRReceiver=2; 
-unsigned int IRTransmitter=7; 
+unsigned int IRTransmitter=9; 
 
 struct ultrasonic ultrasonicsensor1,ultrasonicsensor2;
 struct memsic2125 accelerometer;

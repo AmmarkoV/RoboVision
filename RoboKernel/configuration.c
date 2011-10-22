@@ -6,10 +6,14 @@
 #include "../VisualCortex/VisualCortex.h"
 #include "../VideoInput/VideoInput.h"
 
+#define MAX_LINE_SIZE 2048
+
+
 char video_device_1[MAX_STR]="/dev/video0";
 char video_device_2[MAX_STR]="/dev/video1";
-char rd01_device[MAX_STR]="/dev/ttyUSB0";
-char arduino_device[MAX_STR]="/dev/ttyUSB1";
+char gsm_modem[MAX_STR]="/dev/ttyUSB2";
+char arduino_device[MAX_STR]="/dev/ttyUSB3";
+char rd01_device[MAX_STR]="/dev/ttyUSB4";
 char user[MAX_STR]="guarddog";
 char group[MAX_STR]="guarddog";
 char parentdir[MAX_STR]="/home/guarddog/RoboVisionRuntime/";
@@ -273,16 +277,25 @@ int RefreshDeviceNumbering()
 
 void LoadConfiguration()
 {
-  char line[2048];
-  int line_length=0;
+  char line[MAX_LINE_SIZE];
+
   FILE * pFile;
   pFile = fopen ("guard.ini","r");
   if (pFile!=0 )
     {
+      int line_length=0;
       int c=0;
       do
         {
           c = getc (pFile);
+
+          if ( MAX_LINE_SIZE <= line_length )
+             {
+               fprintf(stderr,"Oveflow while loading configuration file \n");
+               line[MAX_LINE_SIZE-1]=0;
+               ParseConfigString(line);
+               line_length=0;
+             } else
           if (c == '\n')
             {
               line[line_length]=0;

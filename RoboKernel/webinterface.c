@@ -3,6 +3,7 @@
 #include "webinterface.h"
 #include "command_hal.h"
 #include "visual_system.h"
+#include "gsm_modem.h"
 #include "configuration.h"
 #include "../InputParser/InputParser_C.h"
 #include "../MotorFoundation/MotorHAL.h"
@@ -211,11 +212,17 @@ int WriteConsoleOutput(char * outstr)
 
 void * WebInterfaceLoop(void *ptr )
 {
+  /*SMS STUFF START*/
+    char number[20]={0};
+    char data[2000]={0};
+  /*SMS STUFF END*/
+
 
     while ( web_interface_thread_stop == 0)
      {
         usleep(10000);
         TakeCareOfNetworkInterface(clock_count);
+        ReceiveSMS(number,20,data,2000);
      }
 
   web_interface_thread_stop=2;
