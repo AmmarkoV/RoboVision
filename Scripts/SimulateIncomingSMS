@@ -1,0 +1,3 @@
+#!/bin/bash
+cp RoboVisionRuntime/memfs/SMS_Receive/ReceivedTemplate RoboVisionRuntime/memfs/SMS_Receive/Received
+exit 0

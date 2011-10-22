@@ -1,0 +1,3 @@
+#!/bin/bash
+cp ReceivedTemplate Received
+exit 0

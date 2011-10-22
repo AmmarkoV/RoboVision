@@ -5,6 +5,9 @@ sudo ./Scripts/init_memory_runtime.sh
 echo "Copying Things inside runtime Directory.."
 sudo ./Scripts/memoryfs_prepare.sh
 
+echo "Starting SMS Receiver.."
+sudo ./Scripts/startSMSReceiver
+
 echo "Running RoboVision From Runtime Directory.."
 
 touch RoboVisionRuntime/test_file
@@ -24,6 +27,7 @@ cd ..
 
 killall RoboVisionCLI
 killall RoboVisionCLICompat
+killall gsmsmsd
 
 sleep 5
 

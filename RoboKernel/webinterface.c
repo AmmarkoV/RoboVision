@@ -105,7 +105,8 @@ int WebIntHasNewCommand()
             if ( words_count>0 ) { InputParser_GetWord(ipc,words_count-1,from_string,256); } else
                                  { strcpy(from_string,"unknown"); }
             fprintf(stderr,"Command Received : %s\n",line);
-            IssueCommandInternal(line,from_string);
+            char output_string[512]={0};
+            IssueCommandInternal(line,from_string,output_string,512);
             fprintf(stderr,"Command %s has now returned from processing \n",line);
          }
       /*

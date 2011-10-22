@@ -1,4 +1,5 @@
 #include "gsm_modem.h"
+#include "command_hal.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "../InputParser/InputParser_C.h"
@@ -78,12 +79,27 @@ int ParseReceivedSMS(char * line)
         {
             if ( InputParser_GetWordLength(ipc,1)<MAX_DATA_TELEPHONE ) InputParser_GetWord(ipc,1,data,MAX_DATA_TELEPHONE);
             fprintf(stderr,"Data of message is %s\n",data);
+
+            char full_sender[256]={0};
+            strcpy(full_sender,"SMS(");
+            strcat(full_sender,sender);
+            strcat(full_sender,")");
+
+            char command_result[512]={0};
+            int i = IssueCommandInternal(data,full_sender,command_result,512);
+
+            fprintf(stderr,"Could answer to number %s that `%s`\n",sender,command_result);
         }
       pch = 0;
     }
 
  InputParser_Destroy(ipc);
  return 0;
+}
+
+int FlushReceivedSMS()
+{
+   return system("> ../RoboVisionRuntime/memfs/SMS_Receive/Received");
 }
 
 
@@ -121,6 +137,7 @@ int ReceiveSMS(char * number,unsigned int number_size,char * sms_message,int sms
       while (c != EOF);
 
     fclose (pFile);
+    FlushReceivedSMS();
     return 1;
   }
 

@@ -73,12 +73,11 @@ enum command_id_consts
 };
 
 
-int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct InputParserC * ipc,char * from)
+int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct InputParserC * ipc,char * from,char* outptstr,unsigned int output_length)
 {
   //fprintf(stderr,"ExecuteCommandinternal  %u called from %s \n",opcode , from );
   if ( ( opcode == CMD_UNKNOWN ) || (opcode >= CMD_TOTAL_CONSTS) ) { return 0;}
 
-  char outptstr[512]={0};
   char cmds_1[512]={0},cmds_2[512]={0},cmds_3[512]={0},cmds_4[512]={0},cmds_5[512]={0};
   unsigned int cmdi_1=0,cmdi_2=0,cmdi_3=0,cmdi_4=0,cmdi_5=0;
 
@@ -233,13 +232,13 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  }
      break;
      case CMD_PLAYBACK_SNAPSHOT :
-                 IssueCommandInternal((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",from); /*Internal message to stop recording of Streams*/
+                 IssueCommandInternal((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",from,outptstr,output_length); /*Internal message to stop recording of Streams*/
 
                  sprintf(outptstr,"From %s : PlayingBack VideoInput Snapshot \n",from);
                  Play((char *)"memfs/snapshot");
      break;
      case CMD_PLAYBACK_LIVE :
-                 IssueCommandInternal((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",from); /*Internal message to stop recording of Streams*/
+                 IssueCommandInternal((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",from,outptstr,output_length); /*Internal message to stop recording of Streams*/
 
                  sprintf(outptstr,"From %s : PlayingBack VideoInput Cam Input \n",from);
                  Stop();
@@ -350,7 +349,7 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
   return 1;
 }
 
-int IssueCommandInternal(char * command,char * from)
+int IssueCommandInternal(char * command,char * from,char* outptstr,unsigned int output_length)
 {
   //fprintf(stderr,"Processing command %s , from %s \n",command,from);
   struct InputParserC * ipc=0;
@@ -421,7 +420,6 @@ int IssueCommandInternal(char * command,char * from)
          * >>>>>>>>>>>>>>>>>>>>>>>>>>!!!WRONG COMMAND!!!<<<<<<<<<<<<<<<<<<<<<<<<
          */
         {
-           char outptstr[512]={0};
            char cmds_1[512]={0};
            InputParser_GetWord(ipc,1,cmds_1,512);
            sprintf(outptstr,"Wrong command from %s \n",from);
@@ -429,7 +427,7 @@ int IssueCommandInternal(char * command,char * from)
            return 0;
         }
     }
-    ExecuteCommandInternal(chosen_command,words_count,ipc,from);
+    ExecuteCommandInternal(chosen_command,words_count,ipc,from,outptstr,output_length);
     InputParser_Destroy(ipc);
 
 return 1;

@@ -163,18 +163,19 @@ void CheckAlarm(unsigned int flow1,unsigned int flow2)
 
 void Panoramic()
 {
+  char output_string[512]={0};
 
     int max=8;
     int i=0;
     //for (i=0; i<max; i++)
      {
-       IssueCommandInternal((char*)"LEFT",(char *)"GUI");
+       IssueCommandInternal((char*)"LEFT",(char *)"GUI",output_string,512);
        usleep(50000);
 
        //VisCortx_FullDepthMap();
-       IssueCommandInternal((char*)"DEPTHMAP",(char *)"GUI");
+       IssueCommandInternal((char*)"DEPTHMAP",(char *)"GUI",output_string,512);
 
-       IssueCommandInternal((char*)"DEPTHMAP TO FILE",(char *)"GUI");
+       IssueCommandInternal((char*)"DEPTHMAP TO FILE",(char *)"GUI",output_string,512);
 //DepthMapToFile(i);
 /*
        char filename[60]={0};
@@ -191,7 +192,7 @@ void Panoramic()
 
      for (i=0; i<max; i++)
      {
-       IssueCommandInternal((char*)"RIGHT",(char *)"GUI");
+       IssueCommandInternal((char*)"RIGHT",(char *)"GUI",output_string,512);
        usleep(50000);
      }
 }

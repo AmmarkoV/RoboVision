@@ -24,7 +24,8 @@ void * KernelLoop(void *ptr );
 
 int IssueCommand(char * cmd,char * res,unsigned int resmaxsize,char * from)
 {
- return IssueCommandInternal((char *) cmd,(char *) from);
+  char output_string[512]={0};
+ return IssueCommandInternal((char *) cmd,(char *) from,output_string,512);
 }
 
 
@@ -89,7 +90,8 @@ void do_something(unsigned int clock_time)
         if (clock_time<last_snapshot_activation ) { last_snapshot_activation = 0; } /* SLOPPY TRUNCATION :P */ else
         if (clock_time-last_snapshot_activation> snapshot_activation_interval )
          {
-              IssueCommandInternal("RECORD SNAPSHOT(1)","system");
+              char output_string[512];
+              IssueCommandInternal("RECORD SNAPSHOT(1)","system",output_string,512);
               last_snapshot_activation = clock_time;
          }
     }
