@@ -192,30 +192,32 @@ void DrawDepthMap(int num,float transx,float transy,float transz,float rotx,floa
      // glTranslated(vx,vy,vz);
 
     // glMultMatrixf(left_translation);
-      glMultMatrixf(left_rotation);
+
+     // glMultMatrixf(left_rotation);
 
       glBegin(GL_QUADS);
+      unsigned int scale_factor = 4;
        for (y=0; y<240; y++)
          { for (x=0; x<320; x++)
            {
              glColorRGB(video_color[memplace],video_color[memplace+1],video_color[memplace+2]);
 
             // ACTUAL VOXEL
-            glVertex3f(x-1,-(y-1),2*video_depth[memplace]);
-            glVertex3f(x+1,-(y-1),2*video_depth[memplace]);
-            glVertex3f(x+1,-(y+1),2*video_depth[memplace]);
-            glVertex3f(x-1,-(y+1),2*video_depth[memplace]);
+            glVertex3f(x-1,-(y-1),scale_factor*video_depth[memplace]);
+            glVertex3f(x+1,-(y-1),scale_factor*video_depth[memplace]);
+            glVertex3f(x+1,-(y+1),scale_factor*video_depth[memplace]);
+            glVertex3f(x-1,-(y+1),scale_factor*video_depth[memplace]);
 
             // ACTUAL TAIL
             glVertex3f(x-1,-(y-1),0);
             glVertex3f(x-1,-(y+1),0);
-            glVertex3f(x+1,-(y-1),2*video_depth[memplace]);
-            glVertex3f(x+1,-(y+1),2*video_depth[memplace]);
+            glVertex3f(x+1,-(y-1),scale_factor*video_depth[memplace]);
+            glVertex3f(x+1,-(y+1),scale_factor*video_depth[memplace]);
 
-            glVertex3f(x-1,-(y-1),2*video_depth[memplace]);
-            glVertex3f(x+1,-(y-1),2*video_depth[memplace]);
-            glVertex3f(x+1,-(y+1),2*video_depth[memplace]);
-            glVertex3f(x-1,-(y+1),2*video_depth[memplace]);
+            glVertex3f(x-1,-(y-1),scale_factor*video_depth[memplace]);
+            glVertex3f(x+1,-(y-1),scale_factor*video_depth[memplace]);
+            glVertex3f(x+1,-(y+1),scale_factor*video_depth[memplace]);
+            glVertex3f(x-1,-(y+1),scale_factor*video_depth[memplace]);
 
 
             memplace+=3;

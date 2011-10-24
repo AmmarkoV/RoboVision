@@ -257,30 +257,53 @@ int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int dep
   unsigned char val;
   px = (BYTE *)  vid_depth_map;
 
-  unsigned int boost_depth=0;
-  if ( metrics[RESOLUTION_X]-settings[DEPTHMAP_CLOSEST_DEPTH]+settings[DEPTHMAP_STARTLEFT_X] < 255 )
-     {
-         boost_depth = 255 - metrics[RESOLUTION_X]-settings[DEPTHMAP_CLOSEST_DEPTH]+settings[DEPTHMAP_STARTLEFT_X];
-     }
+
+/* Explained nicely here : http://www.societyofrobots.com/programming_computer_vision_tutorial_pt3.shtml#stereo_vision :P
+   Z_actual = (b * focal_length) / (x_camL - x_camR)
+   X_actual = x_camL * Z_actual / focal_length
+   Y_actual = y_camL * Z_actual / focal_length
+*/
+
+
+  float Baseline_MULT_FocalLength = 0.0;
+  if ( (CameraDistanceInMM != 0 ) && (left_calibration_data.focal_length != 0) )
+    {                                   /* MM to CM */
+       Baseline_MULT_FocalLength = (CameraDistanceInMM/10) * left_calibration_data.focal_length;
+    }
+
+  unsigned int tmp_val = 0;
+
 
   unsigned int ptr,dpth_lim=image_x*image_y;
   for ( ptr = 0; ptr < dpth_lim; ptr++)
    {
        r = px++; g = px++; b = px++;
 
-       if ( depth_scale == 1 )
-        {
-          if ( full_depth_map[ptr] >= 255 ) { val = 255; } else
-                                            { val = ( unsigned char ) (full_depth_map[ptr]); }
-        } else
-        { //AFTER REMOVING DEPTH_SCALE THIS WILL NOT BE NEEDED :P , ITS UGLY
-          if ( full_depth_map[ptr]*depth_scale >= 255 ) { val = 255; } else
-                                                        { val = ( unsigned char ) (full_depth_map[ptr]*depth_scale); }
-        }
 
+      /* Just convert it to RGB Code
+       if ( full_depth_map[ptr] >= 255 ) { val = 255; } else
+                                         { val = ( unsigned char ) (full_depth_map[ptr]); }
+       */
 
+       // Real calculation based on stereo rig
 
-       *r= val+boost_depth; *g=val+boost_depth; *b= val+boost_depth;
+     if (Baseline_MULT_FocalLength!=0.0)
+      {
+       if ( full_depth_map[ptr] != 0 )
+          {
+            tmp_val = (unsigned int ) Baseline_MULT_FocalLength / full_depth_map[ptr];
+          } else
+          {
+            tmp_val = 0;
+          }
+       val = (unsigned char) tmp_val;
+      } else
+      {
+        if (full_depth_map[ptr]>255) { val = 255; } else
+                                     { val = ( unsigned char ) full_depth_map[ptr]; }
+      }
+
+       *r= val; *g=val; *b= val;
    }
 
    video_register[vid_reg].time = video_register[depth_reg].time;

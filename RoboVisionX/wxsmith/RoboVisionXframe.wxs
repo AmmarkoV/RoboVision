@@ -6,8 +6,8 @@
 		<id_arg>0</id_arg>
 		<object class="wxStaticBox" name="ID_STATICBOX1" variable="StaticBox1" member="yes">
 			<label>Motor Status</label>
-			<pos>680,40</pos>
-			<size>232,192</size>
+			<pos>680,32</pos>
+			<size>232,200</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
 			<label>Dist. Traveled :</label>
@@ -252,21 +252,21 @@
 		</object>
 		<object class="wxGauge" name="ID_GAUGE2" variable="Ultrasonic1" member="yes">
 			<range>255</range>
-			<pos>696,120</pos>
+			<pos>696,104</pos>
 			<size>100,16</size>
 		</object>
 		<object class="wxGauge" name="ID_GAUGE3" variable="Ultrasonic2" member="yes">
 			<range>255</range>
-			<pos>696,136</pos>
+			<pos>696,120</pos>
 			<size>100,16</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT11" variable="StaticText7" member="yes">
 			<label>Ultrasonic</label>
-			<pos>688,104</pos>
+			<pos>688,88</pos>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT12" variable="DistanceTraveled" member="yes">
 			<label>0</label>
-			<pos>704,78</pos>
+			<pos>696,70</pos>
 			<font>
 				<size>13</size>
 				<style>normal</style>
@@ -278,20 +278,25 @@
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT13" variable="MeterComment" member="yes">
 			<label>Meters</label>
-			<pos>760,80</pos>
+			<pos>720,72</pos>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT14" variable="LeftUltrasonicLabel" member="yes">
 			<label>L</label>
-			<pos>684,120</pos>
+			<pos>688,104</pos>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT15" variable="RightUltrasonicLabel" member="yes">
 			<label>R</label>
-			<pos>684,136</pos>
+			<pos>688,120</pos>
 		</object>
 		<object class="wxCheckBox" name="ID_CHECKBOX4" variable="SaveLoadStreamOfSnapshots" member="yes">
 			<label>Rec/Play Stream of Snapshots</label>
 			<pos>680,464</pos>
 			<handler function="OnSaveSnapshotsClick" entry="EVT_CHECKBOX" />
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT16" variable="PoseString" member="yes">
+			<label>X:0.0   Y:0.0  Z:0.0  </label>
+			<pos>688,139</pos>
+			<size>128,17</size>
 		</object>
 		<object class="wxMenuBar" variable="MenuBar1" member="no">
 			<object class="wxMenu" variable="Menu1" member="no">

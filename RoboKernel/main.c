@@ -8,6 +8,7 @@
 #include "webinterface.h"
 #include "configuration.h"
 #include "activity_coordination.h"
+#include "script_runner.h"
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
@@ -62,6 +63,7 @@ void InitSenses()
    InitVisualSystem();
    OpenWebInterface();
 
+   StartScriptRunnerServer();
    EngageActivity(FACE_TRACKING);
 
    fprintf(stderr,"Senses initialized\n");
@@ -69,6 +71,8 @@ void InitSenses()
 
 void CloseSenses()
 {
+   StopScriptRunnerServer();
+
    CloseWebInterface();
    CloseMotorSystem();
    CloseVisualSystem();

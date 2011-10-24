@@ -60,6 +60,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="configuration.h" />
+		<Unit filename="gsm_modem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gsm_modem.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

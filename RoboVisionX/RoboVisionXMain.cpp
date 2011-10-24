@@ -100,6 +100,7 @@ const long RoboVisionXFrame::ID_STATICTEXT13 = wxNewId();
 const long RoboVisionXFrame::ID_STATICTEXT14 = wxNewId();
 const long RoboVisionXFrame::ID_STATICTEXT15 = wxNewId();
 const long RoboVisionXFrame::ID_CHECKBOX4 = wxNewId();
+const long RoboVisionXFrame::ID_STATICTEXT16 = wxNewId();
 const long RoboVisionXFrame::idMenuOpenSnapshots = wxNewId();
 const long RoboVisionXFrame::idMenuQuit = wxNewId();
 const long RoboVisionXFrame::idMenuAbout = wxNewId();
@@ -141,7 +142,7 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
 
     Create(parent, wxID_ANY, _("RoboVision X"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     SetClientSize(wxSize(924,584));
-    StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, _("Motor Status"), wxPoint(680,40), wxSize(232,192), 0, _T("ID_STATICBOX1"));
+    StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, _("Motor Status"), wxPoint(680,32), wxSize(232,200), 0, _T("ID_STATICBOX1"));
     StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Dist. Traveled :"), wxPoint(688,56), wxSize(128,17), 0, _T("ID_STATICTEXT1"));
     ButtonDepthMap = new wxButton(this, ID_BUTTON1, _("Depth Map"), wxPoint(680,392), wxSize(120,24), 0, wxDefaultValidator, _T("ID_BUTTON1"));
     StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Left Cam"), wxPoint(15,0), wxDefaultSize, 0, _T("ID_STATICTEXT2"));
@@ -224,17 +225,18 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     MovementVertical = new wxSlider(this, ID_SLIDER2, 10, 0, 20, wxPoint(816,56), wxSize(24,80), wxSL_VERTICAL, wxDefaultValidator, _T("ID_SLIDER2"));
     lowcpuusage = new wxCheckBox(this, ID_CHECKBOX3, _("Low CPU"), wxPoint(840,440), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX3"));
     lowcpuusage->SetValue(false);
-    Ultrasonic1 = new wxGauge(this, ID_GAUGE2, 255, wxPoint(696,120), wxSize(100,16), 0, wxDefaultValidator, _T("ID_GAUGE2"));
-    Ultrasonic2 = new wxGauge(this, ID_GAUGE3, 255, wxPoint(696,136), wxSize(100,16), 0, wxDefaultValidator, _T("ID_GAUGE3"));
-    StaticText7 = new wxStaticText(this, ID_STATICTEXT11, _("Ultrasonic"), wxPoint(688,104), wxDefaultSize, 0, _T("ID_STATICTEXT11"));
-    DistanceTraveled = new wxStaticText(this, ID_STATICTEXT12, _("0"), wxPoint(704,78), wxDefaultSize, 0, _T("ID_STATICTEXT12"));
+    Ultrasonic1 = new wxGauge(this, ID_GAUGE2, 255, wxPoint(696,104), wxSize(100,16), 0, wxDefaultValidator, _T("ID_GAUGE2"));
+    Ultrasonic2 = new wxGauge(this, ID_GAUGE3, 255, wxPoint(696,120), wxSize(100,16), 0, wxDefaultValidator, _T("ID_GAUGE3"));
+    StaticText7 = new wxStaticText(this, ID_STATICTEXT11, _("Ultrasonic"), wxPoint(688,88), wxDefaultSize, 0, _T("ID_STATICTEXT11"));
+    DistanceTraveled = new wxStaticText(this, ID_STATICTEXT12, _("0"), wxPoint(696,70), wxDefaultSize, 0, _T("ID_STATICTEXT12"));
     wxFont DistanceTraveledFont(13,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Sans"),wxFONTENCODING_DEFAULT);
     DistanceTraveled->SetFont(DistanceTraveledFont);
-    MeterComment = new wxStaticText(this, ID_STATICTEXT13, _("Meters"), wxPoint(760,80), wxDefaultSize, 0, _T("ID_STATICTEXT13"));
-    LeftUltrasonicLabel = new wxStaticText(this, ID_STATICTEXT14, _("L"), wxPoint(684,120), wxDefaultSize, 0, _T("ID_STATICTEXT14"));
-    RightUltrasonicLabel = new wxStaticText(this, ID_STATICTEXT15, _("R"), wxPoint(684,136), wxDefaultSize, 0, _T("ID_STATICTEXT15"));
+    MeterComment = new wxStaticText(this, ID_STATICTEXT13, _("Meters"), wxPoint(720,72), wxDefaultSize, 0, _T("ID_STATICTEXT13"));
+    LeftUltrasonicLabel = new wxStaticText(this, ID_STATICTEXT14, _("L"), wxPoint(688,104), wxDefaultSize, 0, _T("ID_STATICTEXT14"));
+    RightUltrasonicLabel = new wxStaticText(this, ID_STATICTEXT15, _("R"), wxPoint(688,120), wxDefaultSize, 0, _T("ID_STATICTEXT15"));
     SaveLoadStreamOfSnapshots = new wxCheckBox(this, ID_CHECKBOX4, _("Rec/Play Stream of Snapshots"), wxPoint(680,464), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
     SaveLoadStreamOfSnapshots->SetValue(false);
+    PoseString = new wxStaticText(this, ID_STATICTEXT16, _("X:0.0   Y:0.0  Z:0.0  "), wxPoint(688,139), wxSize(128,17), 0, _T("ID_STATICTEXT16"));
     MenuBar1 = new wxMenuBar();
     Menu1 = new wxMenu();
     MenuItem3 = new wxMenuItem(Menu1, idMenuOpenSnapshots, _("Open Snapshot\tF2"), _("Opens a recorded snapshot"), wxITEM_NORMAL);
@@ -532,6 +534,8 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
      Uptime->SetLabel(msg);
 
 
+     msg.Clear();
+     PoseString->SetLabel(msg);
 
      last_draw =  uptimer->Time();
 }

@@ -369,6 +369,8 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[VERTICAL_BUFFER_EXTRALARGE]=50; // 188
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
 
+
+
     DefaultSettings(); //Settings must be set after metrics because they take them into account
 
     fprintf(stderr,"Initializing %u  Video Registers\n",REGISTERS_COUNT+LARGE_REGISTERS_COUNT);

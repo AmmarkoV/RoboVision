@@ -1,0 +1,3 @@
+#!/bin/bash
+ffmpeg -r 15 -b 13600k -s 320x240 -i a-%d.jpg test1800.mp4
+exit 0

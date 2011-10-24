@@ -117,6 +117,7 @@ class RoboVisionXFrame: public wxFrame
         static const long ID_STATICTEXT14;
         static const long ID_STATICTEXT15;
         static const long ID_CHECKBOX4;
+        static const long ID_STATICTEXT16;
         static const long idMenuOpenSnapshots;
         static const long idMenuQuit;
         static const long idMenuAbout;
@@ -157,6 +158,7 @@ class RoboVisionXFrame: public wxFrame
         wxStaticText* StaticText7;
         wxStaticText* Flow;
         wxButton* DownButton;
+        wxStaticText* PoseString;
         wxStaticText* StaticText4;
         wxStaticText* StaticText5;
         wxStaticText* StaticText2;

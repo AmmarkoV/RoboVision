@@ -33,6 +33,9 @@ unsigned long precalc_memplace_1byte[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1
 
 struct CameraCalibrationData left_calibration_data;
 struct CameraCalibrationData right_calibration_data;
+unsigned int CameraDistanceInMM = 65;
+
+
 
 inline unsigned char AbsUCharVDiff(unsigned char param1,unsigned char param2)
 {

@@ -19,7 +19,7 @@ int TrackFace()
   if  (  frame_to_use!=0 )
     {
          center_of_attention_lost=0;
-         unsigned int x = VisCortx_GetFaces(frame_to_use,0,FEATURE_X) +  VisCortx_GetFaces(frame_to_use,0,FEATURE_DIM_X)  / 2;
+         unsigned int x = VisCortx_GetFaces(frame_to_use,0,FEATURE_X) +  VisCortx_GetFaces(frame_to_use,0,FEATURE_DIM_X) / 2;
          unsigned int y = VisCortx_GetFaces(frame_to_use,0,FEATURE_Y) +  VisCortx_GetFaces(frame_to_use,0,FEATURE_DIM_Y) / 2;
 
 

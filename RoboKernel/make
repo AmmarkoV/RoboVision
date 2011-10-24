@@ -13,10 +13,11 @@ gcc -c command_hal.c -o command_hal.o
 gcc -c command_implementation.c -o command_implementation.o 
 gcc -c gsm_modem.c -o gsm_modem.o 
 gcc -c activity_coordination.c -o activity_coordination.o 
+gcc -c script_runner.c -o script_runner.o 
 
-ar  rcs libRoboKernel.a main.o configuration.o webinterface.o visual_system.o motor_system.o mapping_system.o command_hal.o command_implementation.o gsm_modem.o activity_coordination.o 
+ar  rcs libRoboKernel.a main.o configuration.o webinterface.o visual_system.o motor_system.o mapping_system.o command_hal.o command_implementation.o gsm_modem.o activity_coordination.o script_runner.o
 
-rm main.o configuration.o webinterface.o visual_system.o motor_system.o mapping_system.o command_hal.o command_implementation.o gsm_modem.o activity_coordination.o  
+rm main.o configuration.o webinterface.o visual_system.o motor_system.o mapping_system.o command_hal.o command_implementation.o gsm_modem.o activity_coordination.o script_runner.o
 
 if [ -e libRoboKernel.a ]
 then

@@ -1,11 +1,13 @@
 #include "command_hal.h"
 #include "command_implementation.h"
+#include <unistd.h>
 
 #include "../VideoInput/VideoInput.h"
 #include "../InputParser/InputParser_C.h"
 #include "../RVKnowledgeBase/RVKnowledgeBase.h"
 #include "../MotorFoundation/MotorHAL.h"
 
+#include "script_runner.h"
 #include "visual_system.h"
 #include "motor_system.h"
 #include "mapping_system.h"
@@ -63,6 +65,9 @@ enum command_id_consts
   CMD_FACE_DETECTION,
   CMD_JOYSTICK_INPUT,
   CMD_AUTONOMOUS,
+  CMD_SCRIPT,
+  CMD_STOP_SCRIPT,
+  CMD_DELAY,
 
   CMD_SEARCH,
   CMD_TELL,
@@ -326,6 +331,20 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      case CMD_FUNDAMENTAL_MATRIX :
             GetFundamentalMatrix();
      break;
+     case CMD_SCRIPT:
+             sprintf(outptstr,"From %s : Starting Script %s ! \n",from,cmds_1);
+             StartScript(cmds_1,from,cmdi_2);
+     break;
+     case CMD_STOP_SCRIPT:
+             sprintf(outptstr,"From %s : Stopping Script %s ! \n",from,cmds_1);
+             StopScript(cmds_1);
+     break;
+
+
+     case CMD_DELAY:
+             sprintf(outptstr,"From %s : Delaying for %u ms ! \n",from,cmdi_1);
+             usleep(cmdi_1*1000);
+     break;
      case CMD_TELL :
           sprintf(outptstr,"From %s : Tell(%s) \n",from,cmds_1);
           Tell(cmds_1);
@@ -412,6 +431,13 @@ int IssueCommandInternal(char * command,char * from,char* outptstr,unsigned int 
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"JOYSTICK INPUT",14)==1) { chosen_command=CMD_JOYSTICK_INPUT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"AUTONOMOUS MODE",15)==1) { chosen_command=CMD_AUTONOMOUS ; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FUNDAMENTAL MATRIX",18)==1) { chosen_command=CMD_FUNDAMENTAL_MATRIX; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"SCRIPT",6)==1) { chosen_command=CMD_SCRIPT; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"STOP SCRIPT",11)==1) { chosen_command=CMD_STOP_SCRIPT; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"DELAY",5)==1) { chosen_command=CMD_DELAY; } else
+
+
+
+
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"TELL",4)==1) { chosen_command=CMD_TELL; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"ASK",3)==1) { chosen_command=CMD_ASK; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SEARCH",6)==1) { chosen_command=CMD_SEARCH; } else

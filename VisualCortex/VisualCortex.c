@@ -212,6 +212,11 @@ void VisCortx_CameraParameters(int right_cam,double fx,double fy,double cx,doubl
 {
    if ( right_cam == 0 )
         {
+
+           // focal_length = fx / mx and focal_length = fy / my
+           // SEE http://en.wikipedia.org/wiki/Camera_resectioning#Intrinsic_parameters
+           left_calibration_data.focal_length =  fx ; //TODO ADD Mx My Calculation
+
            left_calibration_data.fx = fx ;
            left_calibration_data.fy = fy ;
 
@@ -240,6 +245,10 @@ void VisCortx_CameraParameters(int right_cam,double fx,double fy,double cx,doubl
         } else
    if ( right_cam == 1 )
         {
+           // focal_length = fx / mx and focal_length = fy / my
+           // SEE http://en.wikipedia.org/wiki/Camera_resectioning#Intrinsic_parameters
+           right_calibration_data.focal_length =  fx ; //TODO ADD Mx My Calculation
+
            right_calibration_data.fx = fx ;
            right_calibration_data.fy = fy ;
 
