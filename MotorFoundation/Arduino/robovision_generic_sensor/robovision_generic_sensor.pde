@@ -95,6 +95,17 @@ int SerialInputReceiver()
                                                                 return 1; } 
                            }                                     
             break;
+            case 'N' :    //NOD USING SERVO
+                           {int servo_num = inB2-'0'; 
+                            if ( ( inB3>130 ) || ( inB3<40 ) ) {} else 
+                               { 
+                                 MoveServo(servo_num,inB3); 
+                                  delay(200);
+                                 MoveServo(servo_num,90); 
+                                 return 1; 
+                               } 
+                           }                                     
+            break;
             case 'S' :    //STOP SERVO
                                     if ( ( inB1 == 'S')&&( inB2 == 'S') ) 
                                                                { // Servo Stop 

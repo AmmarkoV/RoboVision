@@ -7,6 +7,7 @@ int ConnectRoboVisionSensors(char * devname);
 int DisconnectRoboVisionSensors();
 int RoboVisionSensorsOK();
 int SetLights(int light_num,int light_state);
+int SetCameraNod(int motor,int pitch);
 int SetCameraPose(int heading,int pitch);
 int GetCameraPose(unsigned int * heading,unsigned int * pitch);
 int GetUltrasonicValue(int which_one);

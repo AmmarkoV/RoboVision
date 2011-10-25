@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 
 
@@ -151,6 +152,23 @@ unsigned int RobotMoveJoystick(signed int joy_x,signed int joy_y)
   MD23_MoveMotorsDegrees(guard_base,1,powerright,(signed int) DistanceToWheelDegreesTurn(degrees_right*100));
 
   return 0;
+}
+
+
+unsigned int RobotSetHeadNod(char * pose_string)
+{
+  if ( strcmp(pose_string,"YES") == 0 )
+      {
+           SetCameraNod(0,110);
+           fprintf(stderr,"Nod yes\n");
+
+      } else
+  if ( strcmp(pose_string,"NO") == 0 )
+      {
+           SetCameraNod(0,50);
+           fprintf(stderr,"Nod no\n");
+      }
+  return 1;
 }
 
 unsigned int RobotSetHeadPose(unsigned int heading,unsigned int pitch)

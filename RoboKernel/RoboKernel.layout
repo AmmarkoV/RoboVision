@@ -34,7 +34,7 @@
 	<File name="gsm_modem.h" open="1" top="0" tabpos="20">
 		<Cursor position="275" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="1" tabpos="1">
+	<File name="main.c" open="1" top="0" tabpos="1">
 		<Cursor position="298" topLine="0" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
@@ -49,10 +49,10 @@
 	<File name="motor_system.h" open="1" top="0" tabpos="16">
 		<Cursor position="68" topLine="0" />
 	</File>
-	<File name="script_runner.c" open="1" top="0" tabpos="80">
+	<File name="script_runner.c" open="1" top="0" tabpos="21">
 		<Cursor position="2517" topLine="58" />
 	</File>
-	<File name="script_runner.h" open="1" top="0" tabpos="81">
+	<File name="script_runner.h" open="1" top="0" tabpos="22">
 		<Cursor position="156" topLine="0" />
 	</File>
 	<File name="visual_system.c" open="1" top="0" tabpos="5">

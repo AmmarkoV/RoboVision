@@ -32,6 +32,12 @@ int RoboVisionSensorsOK()
   return ArduinoOk();
 }
 
+
+int SetCameraNod(int motor,int pitch)
+{
+  return ArduinoInternalSetNod(motor,pitch,1);
+}
+
 int SetCameraPose(int heading,int pitch)
 {
   return ArduinoInternalSetCameraPose(heading,pitch,1);

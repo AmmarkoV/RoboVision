@@ -53,6 +53,30 @@ int ArduinoInternalGetAccelerometerY()
   return activated_state.accelerometerY;
 }
 
+
+int ArduinoInternalSetNod(int motor,int pitch,int wait_for_it)
+{
+  future_state.camera_nod_pitch=pitch;
+  //future_state.camera_nod_heading=heading; HEADING SERVO NOT WORKING :P
+
+  if ( wait_for_it )
+    {
+      int max_time = 1000;
+      while ( ( max_time > 0 ) &&
+              ( (future_state.camera_nod_pitch != activated_state.camera_nod_pitch)
+                //|| (future_state.camera_nod_heading != activated_state.camera_nod_heading)
+              )
+            )
+               {
+                  --max_time;
+                  usleep(1000);
+               }
+    }
+
+  return 1;
+}
+
+
 int ArduinoInternalSetCameraPose(int heading,int pitch,int wait_for_it)
 {
   future_state.camera_pose_pitch=pitch;
@@ -99,6 +123,21 @@ int ArduinoInternalSetLights(int light_num,int light_state,int wait_for_it)
 }
 
 
+int ArduinoNodServo(int dev, int servo_num , int degrees)
+{
+  // THIS MUST TRANSMIT
+  // M(servo_num)(degrees)
+  char command[10]={"N00\0"};
+
+  command[1]=servo_num+'0';
+  command[2]=(char) degrees;
+
+  //fprintf(stderr,"Sending %s to arduino\n",command);
+  int res = write(fd,command,3);
+  tcflush(fd, TCOFLUSH);
+  if (res<3) { /*fprintf(stderr,"Command Failed\n");*/ return 0; }
+  return 1;
+}
 
 int ArduinoMoveServo(int dev, int servo_num , int degrees)
 {
@@ -320,6 +359,13 @@ while (STOP==0)     {
                                ArduinoMoveServo(fd,0,future_state.camera_pose_pitch);
                                activated_state.camera_pose_pitch=future_state.camera_pose_pitch;
                          }
+
+                       if ( activated_state.camera_nod_pitch != future_state.camera_nod_pitch)
+                         {
+                               ArduinoNodServo(fd,0,future_state.camera_nod_pitch);
+                               activated_state.camera_nod_pitch=future_state.camera_nod_pitch;
+                         }
+
 
                        if ( activated_state.lights[0] != future_state.lights[0])
                          {

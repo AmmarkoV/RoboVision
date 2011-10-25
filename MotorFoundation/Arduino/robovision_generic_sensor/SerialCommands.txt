@@ -3,6 +3,7 @@
 
 // COMMAND  //   PAYLOAD  //  DESCRIPTION
      M         0-2  , BYTE     Servo Move , BYTE is degrees 0-180   
+     N         0-2  , BYTE     Servo Nod ,  BYTE is degrees 0-180 , the servo then returns to 90 degrees   
      HS            0-2         Servo Halt   
 
      LA            0-1         Led Light Activate   

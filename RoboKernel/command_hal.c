@@ -175,7 +175,13 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      break;
      case CMD_HEAD_POSE :
                  sprintf(outptstr,"From %s : Command Parser , Performing Head Pose change \n",from);
-                 RobotSetHeadPose(cmdi_1,cmdi_2);
+                 if (strlen(cmds_1)>=1)
+                   {
+                     RobotSetHeadNod(cmds_1);
+                   } else
+                   {
+                     RobotSetHeadPose(cmdi_1,cmdi_2);
+                   }
      break;
      case CMD_DEPTHMAP :
                  sprintf(outptstr,"From %s : Command Parser , Performing DepthMap \n",from);
