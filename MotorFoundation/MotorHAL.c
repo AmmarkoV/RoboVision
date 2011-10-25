@@ -26,6 +26,7 @@ float pi = 3.14159;
 
 signed int change_left_encoder=0,change_right_encoder=0,change_left_ultrasonic=0,change_right_ultrasonic=0,change_x_accelerometer=0,change_y_accelerometer=0;
 
+
 void * HAL_Monitor(void * ptr);
 
 signed int DistanceToWheelDegreesTurn(signed int dist)
@@ -165,7 +166,7 @@ unsigned int RobotSetHeadNod(char * pose_string)
       } else
   if ( strcmp(pose_string,"NO") == 0 )
       {
-           SetCameraNod(0,50);
+           SetCameraNod(0,70);
            fprintf(stderr,"Nod no\n");
       }
   return 1;

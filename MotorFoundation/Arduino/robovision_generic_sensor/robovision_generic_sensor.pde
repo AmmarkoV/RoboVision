@@ -95,12 +95,12 @@ int SerialInputReceiver()
                                                                 return 1; } 
                            }                                     
             break;
-            case 'N' :    //NOD USING SERVO
+            case 'N' :    //NOD USING SERVO ( UP DOWN MOTION OR LEFT RIGHT MOTION )
                            {int servo_num = inB2-'0'; 
                             if ( ( inB3>130 ) || ( inB3<40 ) ) {} else 
                                { 
                                  MoveServo(servo_num,inB3); 
-                                  delay(200);
+                                  delay(100);
                                  MoveServo(servo_num,90); 
                                  return 1; 
                                } 

@@ -439,7 +439,7 @@ while (STOP==0)     {
                     if ( arduino_loop_tick_count%100 == 0 )
                        {
                          int i=write(fd,"XXX",3); /* TRY TO FLUSH EVERY 1 SEC*/
-                         if (i!=0) { fprintf(stderr,"Error flushing arduino\n"); }
+                         if (i!=3) { fprintf(stderr,"Error flushing arduino\n"); }
                        }
 
                     usleep (50*1000);
