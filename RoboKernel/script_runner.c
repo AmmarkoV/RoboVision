@@ -57,22 +57,24 @@ int InternalRunScript(char * script_name , char * from, int recursion_level)
         {
           c = getc (pFile);
 
-          if ( MAX_LINE_SIZE <= line_length )
+          if ( MAX_LINE_SIZE-1 <= line_length )
              {
                if (strlen(running_script_name)==0) { return 0; } // THE SCRIPT HAS BEEN CANCELED
 
                fprintf(stderr,"Oveflow while loading configuration file \n");
                line[MAX_LINE_SIZE-1]=0;
+
+               fprintf(stderr,"SCRIPT RUNNER RUNNING \"%s\" \n",line);
                IssueCommandInternal(line,from,output_string,512);
 
-               line_length=0;
+               line[0]=0; line_length=0;
              } else
-          if (strcmp(line,"LOOP")==0)
+          if (strncmp(line,"LOOP",4)==0)
              {
               if (strlen(running_script_name)==0) { return 0; } // THE SCRIPT HAS BEEN CANCELED
 
                rewind (pFile);
-               line_length=0;
+               line[0]=0; line_length=0;
                fprintf(stderr,"Script %s looping \n",total_filename);
 
              }
@@ -80,15 +82,16 @@ int InternalRunScript(char * script_name , char * from, int recursion_level)
             {
               if (strlen(running_script_name)==0) { return 0; } // THE SCRIPT HAS BEEN CANCELED
 
-              line[line_length]=0;
-              ++line_length;
+              fprintf(stderr,"SCRIPT RUNNER RUNNING \"%s\" \n",line);
               IssueCommandInternal(line,from,output_string,512);
-              line_length=0;
+
+              line[0]=0; line_length=0;
             }
           else
             {
               line[line_length]=c;
               ++line_length;
+              line[line_length]=0; // always append null termination ;P
             }
         }
       while (c != EOF);

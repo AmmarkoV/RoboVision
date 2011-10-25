@@ -75,6 +75,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="motor_system.h" />
+		<Unit filename="script_runner.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="script_runner.h" />
 		<Unit filename="visual_system.c">
 			<Option compilerVar="CC" />
 		</Unit>

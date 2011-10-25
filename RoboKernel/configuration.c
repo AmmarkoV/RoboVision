@@ -289,7 +289,7 @@ void LoadConfiguration()
         {
           c = getc (pFile);
 
-          if ( MAX_LINE_SIZE <= line_length )
+          if ( MAX_LINE_SIZE-1 <= line_length )
              {
                fprintf(stderr,"Oveflow while loading configuration file \n");
                line[MAX_LINE_SIZE-1]=0;
@@ -298,8 +298,6 @@ void LoadConfiguration()
              } else
           if (c == '\n')
             {
-              line[line_length]=0;
-              ++line_length;
               ParseConfigString(line);
               line_length=0;
             }
@@ -307,6 +305,7 @@ void LoadConfiguration()
             {
               line[line_length]=c;
               ++line_length;
+              line[line_length]=0; // always append null termination ;P
             }
         }
       while (c != EOF);

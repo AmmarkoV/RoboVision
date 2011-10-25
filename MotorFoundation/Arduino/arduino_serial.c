@@ -390,9 +390,14 @@ while (STOP==0)     {
                        }
                     }// DISABLED CODE
 
-                       if ( arduino_loop_tick_count%100 == 0 ) { write(fd,"XXX",3); /* TRY TO FLUSH EVERY 1 SEC*/ }
-                       usleep (50*1000);
-                       ++arduino_loop_tick_count;
+                    if ( arduino_loop_tick_count%100 == 0 )
+                       {
+                         int i=write(fd,"XXX",3); /* TRY TO FLUSH EVERY 1 SEC*/
+                         if (i!=0) { fprintf(stderr,"Error flushing arduino\n"); }
+                       }
+
+                    usleep (50*1000);
+                    ++arduino_loop_tick_count;
                     }
 
  res=write(fd,"EAS",3);

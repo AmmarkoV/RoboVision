@@ -90,8 +90,8 @@ void inline FillDepthMemWithData(unsigned short * depth_data_raw_left,unsigned s
 {
 
 	 unsigned short far_away=0;
-     if (depth_data->x1_patch-depth_data->x2_patch>0) { far_away=depth_data->x1_patch-depth_data->x2_patch; } else
-                                                      { far_away=depth_data->x2_patch-depth_data->x1_patch; }
+     if ( depth_data->x1_patch > depth_data->x2_patch ) { far_away=depth_data->x1_patch-depth_data->x2_patch; } else
+                                                        { far_away=depth_data->x2_patch-depth_data->x1_patch; }
 
 	 unsigned int x=0;
 	 unsigned int y=0;

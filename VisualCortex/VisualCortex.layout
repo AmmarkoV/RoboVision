@@ -8,13 +8,13 @@
 		<Cursor position="808" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="1027" topLine="7" />
+		<Cursor position="3823" topLine="297" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="630" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
-		<Cursor position="9983" topLine="245" />
+		<Cursor position="10291" topLine="282" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
 		<Cursor position="1020" topLine="0" />
@@ -77,10 +77,10 @@
 		<Cursor position="299" topLine="0" />
 	</File>
 	<File name="Precalculations.c" open="1" top="0" tabpos="11">
-		<Cursor position="815" topLine="8" />
+		<Cursor position="2017" topLine="54" />
 	</File>
 	<File name="Precalculations.h" open="1" top="0" tabpos="35">
-		<Cursor position="682" topLine="0" />
+		<Cursor position="114" topLine="0" />
 	</File>
 	<File name="StateSetting.c" open="1" top="0" tabpos="18">
 		<Cursor position="187" topLine="0" />
@@ -125,15 +125,15 @@
 		<Cursor position="329" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="11322" topLine="255" />
+		<Cursor position="15594" topLine="309" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="2506" topLine="74" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="20652" topLine="551" />
+	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+		<Cursor position="22348" topLine="618" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="311" topLine="3" />
+		<Cursor position="3560" topLine="132" />
 	</File>
 </CodeBlocks_layout_file>

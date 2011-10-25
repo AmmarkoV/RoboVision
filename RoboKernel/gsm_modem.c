@@ -87,6 +87,7 @@ int ParseReceivedSMS(char * line)
 
             char command_result[512]={0};
             int i = IssueCommandInternal(data,full_sender,command_result,512);
+            if (i!=0) { fprintf(stderr,"SMS Command failed \n"); }
 
             fprintf(stderr,"Could answer to number %s that `%s`\n",sender,command_result);
         }
@@ -116,7 +117,7 @@ int ReceiveSMS(char * number,unsigned int number_size,char * sms_message,int sms
         {
           c = getc (pFile);
 
-          if ( MAX_LINE_SIZE <= line_length )
+          if ( MAX_LINE_SIZE-1 <= line_length )
              {
                line[MAX_LINE_SIZE-1]=0;
                ParseReceivedSMS(line);
@@ -124,7 +125,6 @@ int ReceiveSMS(char * number,unsigned int number_size,char * sms_message,int sms
              } else
           if (c == '\n')
             {
-              line[line_length]=0; ++line_length;
               ParseReceivedSMS(line);
               line_length=0;
             }
@@ -132,6 +132,7 @@ int ReceiveSMS(char * number,unsigned int number_size,char * sms_message,int sms
             {
               line[line_length]=c;
               ++line_length;
+              line[line_length]=0; // always append null termination ;P
             }
         }
       while (c != EOF);

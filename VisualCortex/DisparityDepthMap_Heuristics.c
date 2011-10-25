@@ -265,11 +265,23 @@ int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int dep
 */
 
 
+
+
+  unsigned int max_possible_depth = settings[DEPTHMAP_CLOSEST_DEPTH];
+
   float Baseline_MULT_FocalLength = 0.0;
+  /*
   if ( (CameraDistanceInMM != 0 ) && (left_calibration_data.focal_length != 0) )
-    {                                   /* MM to CM */
+    {                                   // MM to CM
        Baseline_MULT_FocalLength = (CameraDistanceInMM/10) * left_calibration_data.focal_length;
+
+       if (max_possible_depth!=0)
+         {
+           max_possible_depth = (unsigned int ) Baseline_MULT_FocalLength / max_possible_depth;
+         }
     }
+*/
+
 
   unsigned int tmp_val = 0;
 
@@ -292,13 +304,15 @@ int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int dep
        if ( full_depth_map[ptr] != 0 )
           {
             tmp_val = (unsigned int ) Baseline_MULT_FocalLength / full_depth_map[ptr];
+            if ( tmp_val > 255 ) { tmp_val = 255; }
+
           } else
           {
             tmp_val = 0;
           }
        val = (unsigned char) tmp_val;
       } else
-      {
+      { // NON LINEAR DEPTH SCALE
         if (full_depth_map[ptr]>255) { val = 255; } else
                                      { val = ( unsigned char ) full_depth_map[ptr]; }
       }
