@@ -1,0 +1,27 @@
+#!/bin/bash
+echo "MasterWorld and its tester / Provides libMasterWorld.a / Author : Ammar Qammaz"  
+
+rm libMasterWorld.a
+
+gcc -c main.c -o main.o 
+
+echo "Linking files.."
+ar  rcs libMasterWorld.a main.o main.o 
+
+echo "Cleaning compiled object files.."
+rm main.o  
+
+#echo "Compiling Tester.."
+#cd MasterWorld_Tester
+#./make
+#cd ..
+
+if [ -e libMasterWorld.a ]
+then
+  echo "Success.."
+else
+  echo "Failure.."
+fi
+
+
+exit 0

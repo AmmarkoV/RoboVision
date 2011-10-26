@@ -3,7 +3,7 @@ echo "RoboVisionCLI  / Provides Headless Lite Executable  / Author : Ammar Qamma
 
 rm bin/Release/RoboVisionCLI
 
-g++ main.cpp ../RoboKernel/libRoboKernel.a ../VideoInput/libVideoInput.a ../VisualCortex/libVisualCortex.a ../InputParser/libInputParser_C.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/MD23/libMD23.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a  ../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a ../RVKnowledgeBase/libRVKnowledgeBase.a ../3dpartylibs/fast/libFast.a -L. -pthread -lgsl -lgslcblas -lm -lrt `pkg-config --cflags --libs opencv` -o bin/Release/RoboVisionCLI
+g++ main.cpp ../RoboKernel/libRoboKernel.a ../VideoInput/libVideoInput.a ../VisualCortex/libVisualCortex.a ../InputParser/libInputParser_C.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/MD23/libMD23.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a  ../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a ../WorldMapping/MasterWorld/libMasterWorld.a ../RVKnowledgeBase/libRVKnowledgeBase.a ../3dpartylibs/fast/libFast.a -L. -pthread -lgsl -lgslcblas -lm -lrt `pkg-config --cflags --libs opencv` -o bin/Release/RoboVisionCLI
 
 
 if [ -e bin/Release/RoboVisionCLI ]

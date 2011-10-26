@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="4696" topLine="181" />
+	<File name="main.cpp" open="1" top="0" tabpos="118">
+		<Cursor position="4696" topLine="51" />
 	</File>
-	<File name="world_map_adapter.cpp" open="1" top="0" tabpos="2">
+	<File name="world_map_adapter.cpp" open="1" top="1" tabpos="119">
 		<Cursor position="0" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
