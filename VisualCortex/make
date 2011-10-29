@@ -13,7 +13,7 @@ OptimizedCodeGenerator/bin/Release/OptimizedCodeGenerator default
 rm libVisualCortex.a
 
 gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c DisparityDepthMap.c -o DisparityDepthMap.o
-gcc  -Os -O3 -fexpensive-optimizations -c DisparityDepthMap_Heuristics.c -o DisparityDepthMap_Heuristics.o 
+gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c DisparityDepthMap_Heuristics.c -o DisparityDepthMap_Heuristics.o 
 gcc  -Os -O3 -fexpensive-optimizations -c MovementRegistration.c -o MovementRegistration.o
 gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c FaceDetection.c -o FaceDetection.o 
 gcc  -Os -O3 -fexpensive-optimizations -c FeatureLists.c -o FeatureLists.o 
@@ -24,7 +24,7 @@ gcc  -Os -O3 -fexpensive-optimizations -c PatchComparison.c -o PatchComparison.o
 gcc  -Os -O3 -fexpensive-optimizations -c PatternRecognition.c -o PatternRecognition.o
 gcc  -Os -O3 -fexpensive-optimizations -c Precalculations.c -o Precalculations.o 
 gcc  -Os -O3 -fexpensive-optimizations -c Matrix.c -o Matrix.o 
-gcc  -Os -O3 -fexpensive-optimizations -c CameraPose3d.c -o CameraPose3d.o 
+gcc  -Os -O3 -fexpensive-optimizations -c CameraPose.c -o CameraPose.o 
 gcc  -Os -O3 -fexpensive-optimizations -c StateSetting.c -o StateSetting.o
 gcc  -Os -O3 -fexpensive-optimizations -c VisCortexConvolutionFilters.c -o VisCortexConvolutionFilters.o
 gcc  -Os -O3 -fexpensive-optimizations -c VisCortexOptimizedConvolutionFilters.c -o VisCortexOptimizedConvolutionFilters.o
@@ -37,10 +37,10 @@ gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive
 gcc  -Os -O3 -fexpensive-optimizations -c VisualCortex.c -o VisualCortex.o
 
 
-ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o CameraPose3d.o Matrix.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
+ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o CameraPose.o Matrix.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
 
 
-rm DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o CameraPose3d.o Matrix.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
+rm DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o CameraPose.o Matrix.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
 
 
 cd VisCortx_Tester

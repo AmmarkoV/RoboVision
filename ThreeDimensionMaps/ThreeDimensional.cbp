@@ -41,7 +41,13 @@
 			<Add library="Xxf86vm" />
 			<Add directory="/usr/lib" />
 		</Linker>
+		<Unit filename="camera.cpp" />
+		<Unit filename="camera.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="models.cpp" />
+		<Unit filename="models.h" />
+		<Unit filename="tools.cpp" />
+		<Unit filename="tools.h" />
 		<Unit filename="world_map_adapter.cpp" />
 		<Unit filename="world_map_adapter.h" />
 		<Extensions>

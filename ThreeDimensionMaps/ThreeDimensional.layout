@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="main.cpp" open="1" top="0" tabpos="118">
-		<Cursor position="4696" topLine="51" />
+	<File name="camera.cpp" open="1" top="0" tabpos="9">
+		<Cursor position="98" topLine="0" />
 	</File>
-	<File name="world_map_adapter.cpp" open="1" top="1" tabpos="119">
-		<Cursor position="0" topLine="0" />
+	<File name="camera.h" open="1" top="0" tabpos="8">
+		<Cursor position="76" topLine="0" />
+	</File>
+	<File name="main.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="1250" topLine="178" />
+	</File>
+	<File name="models.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="4158" topLine="96" />
+	</File>
+	<File name="models.h" open="1" top="0" tabpos="4">
+		<Cursor position="226" topLine="0" />
+	</File>
+	<File name="tools.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="102" topLine="0" />
+	</File>
+	<File name="tools.h" open="1" top="0" tabpos="6">
+		<Cursor position="51" topLine="0" />
+	</File>
+	<File name="world_map_adapter.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="333" topLine="0" />
+	</File>
+	<File name="world_map_adapter.h" open="1" top="0" tabpos="3">
+		<Cursor position="438" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

@@ -13,7 +13,9 @@ struct Points
 struct Agents
 {
    float x,y,z;
-   float heading , float pitch , float yaw;
+   float heading;
+   float pitch;
+   float yaw;
 };
 
 

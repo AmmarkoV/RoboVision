@@ -1,6 +1,25 @@
 #!/bin/sh  
 echo RoboVisionCLICompat parameter is $1
+
+
+
+if [ -e /usr/lib/libv4l/v4l2convert.so ]
+then
 sudo LD_PRELOAD=/usr/lib/libv4l/v4l2convert.so  ./bin/Release/RoboVisionCLI $1 
+fi
+
+if [ -e /usr/lib32/libv4l/v4l2convert.so ]
+then
+sudo LD_PRELOAD=/usr/lib32/libv4l/v4l2convert.so  ./bin/Release/RoboVisionCLI $1 
+fi
+
+
+if [ -e /usr/lib/i386-linux-gnu/libv4l/v4l2convert.so ]
+then
+sudo LD_PRELOAD=/usr/lib/i386-linux-gnu/libv4l/v4l2convert.so  ./bin/Release/RoboVisionCLI $1 
+fi
+
+
 exit 0
 
 #LD_PRELOAD=/usr/lib32/libv4l/v4l1compat.so

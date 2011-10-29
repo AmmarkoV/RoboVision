@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="MasterWorld.h" open="1" top="0" tabpos="60">
+	<File name="MasterWorld.h" open="1" top="0" tabpos="2">
 		<Cursor position="251" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="1" tabpos="59">
-		<Cursor position="621" topLine="0" />
+	<File name="main.c" open="1" top="1" tabpos="1">
+		<Cursor position="806" topLine="5" />
 	</File>
 </CodeBlocks_layout_file>

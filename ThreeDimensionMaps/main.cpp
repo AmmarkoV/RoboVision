@@ -26,7 +26,7 @@
 #include "camera.h"
 #include "tools.h"
 
-
+float robot_heading=0.0;
 
 /* GLUT callback Handlers */
 static void resize(int width, int height)
@@ -52,14 +52,23 @@ static void resize(int width, int height)
 
 static void display(void)
 {
-    const double t = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+  const double t = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+
+    if ( (int) t % 3 == 0 ) {
+                              if ( last_load != t )
+                                {
+                                  //robot_heading+=0.1;
+                                  //LoadDepth(0);
+                                  last_load = t;
+                                }
+                            }
 
   glPushMatrix();
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glColor3d(1,0,0);
+    glColor3d(0,0,0);
 
 
     glRotatef(angle_x,-1.0,0,0); // Peristrofi gyrw apo ton x
@@ -71,12 +80,7 @@ static void display(void)
    glTranslatef(-vx, -vy, -vz);
 
 /*
-    if ( (int) t % 3 == 0 ) { if ( last_load != t )
-                                {
-                                  LoadDepth(0);
-                                  last_load = t;
-                                }
-                            }
+
     //rot+=0.1;
 
 
@@ -99,7 +103,8 @@ static void display(void)
 */
     DrawAxis();
     DrawFloor();
-    DrawAgent(0,  0.0 , 10.0  , 0.0  , 0.0  , 0.0  , 0.0  );
+    DrawAgent(0,  0.0 , 0.0  , 0.0  , robot_heading  , 0.0  , 0.0  );
+    DrawEmptyDepthMap(0, 0.0 , 0.0 , 0.0 , robot_heading , 0.0 , 0.0 );
 
  glPopMatrix();
 
@@ -123,14 +128,14 @@ static void key(unsigned char key, int x, int y)
 {
     switch (key)
     {
-        case 'r': vz+=10; break;
-        case 'f': vz-=10; break;
-        case 'a': vx+=10; break;
-        case 'd': vx-=10; break;
-        case 's': vy+=10; break;
-        case 'w': vy-=10; break;
-        case 'z': angle_y-=0.5; break;
-        case 'c': angle_y+=0.5; break;
+        case 'f': vz+=10; break;
+        case 'r': vz-=10; break;
+        case 'd': vx+=10; break;
+        case 'a': vx-=10; break;
+        case 'w': vy+=10; break;
+        case 's': vy-=10; break;
+        case 'c': angle_y-=0.5; break;
+        case 'z': angle_y+=0.5; break;
 
         case 'l': LoadDepth(0); break;
         case 'q':
@@ -189,7 +194,7 @@ int main(int argc, char *argv[])
     glutKeyboardFunc(key);
     glutIdleFunc(idle);
 
-    glClearColor(1,1,1,1);
+    glClearColor(0,0,0,1);
     //glEnable(GL_CULL_FACE);
    // glCullFace(GL_BACK);
 
