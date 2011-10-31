@@ -1,5 +1,26 @@
-#!/bin/sh
-sudo LD_PRELOAD=/usr/lib/libv4l/v4l2convert.so  ./bin/Release/RoboVisionX
+#!/bin/sh 
+
+if [ -e /usr/lib/libv4l/v4l2convert.so ]
+then
+  sudo LD_PRELOAD=/usr/lib/libv4l/v4l2convert.so  ./bin/Release/RoboVisionX
+  exit 0
+fi
+
+if [ -e /usr/lib32/libv4l/v4l2convert.so ]
+then
+  sudo LD_PRELOAD=/usr/lib32/libv4l/v4l2convert.so  ./bin/Release/RoboVisionX
+  exit 0
+fi
+
+
+if [ -e /usr/lib/i386-linux-gnu/libv4l/v4l2convert.so ]
+then
+  sudo LD_PRELOAD=/usr/lib/i386-linux-gnu/libv4l/v4l2convert.so  ./bin/Release/RoboVisionX
+  exit 0
+fi
+
+echo "Cannot Find V4L1 Compatibility dynamic linking layer on your machine .. :S "
+
 exit 0
 
 #LD_PRELOAD=/usr/lib32/libv4l/v4l1compat.so

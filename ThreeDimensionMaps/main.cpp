@@ -104,7 +104,10 @@ static void display(void)
     DrawAxis();
     DrawFloor();
     DrawAgent(0,  0.0 , 0.0  , 0.0  , robot_heading  , 0.0  , 0.0  );
-    DrawEmptyDepthMap(0, 0.0 , 0.0 , 0.0 , robot_heading , 0.0 , 0.0 );
+
+    DrawDepthMap(0,  0.0 ,0.0 , 0.0 , robot_heading , 0.0 , 0.0 );
+    //DrawDepthMapOLD(0,  0.0 ,0.0 , 0.0 , robot_heading , 0.0 , 0.0 );
+    //DrawEmptyDepthMap(0, 0.0 , 0.0 , 0.0 , robot_heading , 0.0 , 0.0 );
 
  glPopMatrix();
 
@@ -215,6 +218,9 @@ int main(int argc, char *argv[])
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+
+
+    LoadDepth(0);
 
     glutMainLoop();
 

@@ -44,10 +44,11 @@ void DrawFloor()
     glBegin(GL_QUADS);
       glLineWidth(15.0);
       glColorRGB(87,7,7);
-      glVertex3f( 1000,-0.1,-1000);
-      glVertex3f( 1000,-0.1,1000);
-      glVertex3f(-1000,-0.1,1000);
-      glVertex3f(-1000,-0.1,-1000);
+      float dimension = 10000;
+      glVertex3f( dimension ,-0.01,-dimension );
+      glVertex3f( dimension ,-0.01, dimension );
+      glVertex3f(-dimension ,-0.01, dimension );
+      glVertex3f(-dimension ,-0.01,-dimension );
     glEnd();
   glPopMatrix();
 
@@ -141,6 +142,11 @@ glEnd();
    glPopMatrix();
 }
 
+
+
+
+
+
 void DrawAgent(unsigned int agent_num , float x , float y , float z , float heading , float pitch , float roll)
 {
    glPushMatrix();
@@ -217,14 +223,128 @@ void DrawEmptyDepthMap(int num,float transx,float transy,float transz,float head
 }
 
 
-void DrawDepthMap(int num,float transx,float transy,float transz,float rotx,float roty, float rotz)
+
+
+
+void DrawDepthMap(int num,float transx,float transy,float transz,float heading , float pitch , float roll)
+{
+  unsigned int x,y,memplace=0;
+  float rect_left_x = 0.0;
+  float rect_right_x = 0.0;
+  float rect_top_y = 0.0;
+  float rect_bottom_y = 0.0;
+
+  glPushMatrix();
+
+    glTranslated(transx,transy,transz);
+
+    glRotated(roll,0.0,0.0,1.0);
+    glRotated(heading,0.0,1.0,0.0);
+    glRotated(pitch,1.0,0.0,0.0);
+
+
+               glBegin(GL_QUADS);
+                 glColor3f(1.0f, 0.0f, 0.0f);
+                 glVertex3f(-160,-120,-85);
+                 glVertex3f(160,-120,-85);
+                 glVertex3f(160,120,-85);
+                 glVertex3f(-160,120,-85);
+               glEnd();
+
+               glBegin(GL_QUADS);
+                 glColor3f(1.0f, 0.0f, 0.0f);
+                 glVertex3f(-160,-120,-250);
+                 glVertex3f(160,-120,-250);
+                 glVertex3f(160,120,-250);
+                 glVertex3f(-160,120,-250);
+               glEnd();
+
+      glBegin(GL_QUADS);
+      unsigned int scale_factor = -1;
+
+
+      for (y=0; y<240; y++)
+         { for (x=0; x<320; x++)
+           {
+               video_color[memplace+0]=255;
+               video_color[memplace+1]=255;
+               video_color[memplace+2]=255;
+
+               video_depth[memplace]=123;
+               memplace+=3;
+           }
+         }
+       memplace=0;
+       for (y=0; y<240; y++)
+         { for (x=0; x<320; x++)
+           {
+             glColorRGB(video_color[memplace],video_color[memplace+1],video_color[memplace+2]);
+
+
+             rect_left_x = x;
+             rect_left_x -= 161;
+
+             rect_right_x = x;
+             rect_right_x += 161;
+
+             rect_top_y =(-1)*(y);
+             rect_top_y -= 121;
+
+             rect_bottom_y =(-1)*(y);
+             rect_bottom_y -= 121;
+
+            // ACTUAL VOXEL
+             glVertex3f(rect_left_x  ,  rect_top_y  ,  scale_factor*video_depth[memplace]);
+             glVertex3f(rect_right_x ,  rect_top_y  ,  scale_factor*video_depth[memplace]);
+             glVertex3f(rect_right_x ,rect_bottom_y ,  scale_factor*video_depth[memplace]);
+             glVertex3f(rect_left_x  ,rect_bottom_y ,  scale_factor*video_depth[memplace]);
+
+            // ACTUAL TAIL
+             glVertex3f(rect_left_x  ,  rect_top_y  , 0);
+             glVertex3f(rect_left_x  ,rect_bottom_y , 0);
+             glVertex3f(rect_right_x ,  rect_top_y  , scale_factor*video_depth[memplace]);
+             glVertex3f(rect_right_x ,rect_bottom_y ,  scale_factor*video_depth[memplace]);
+
+            glVertex3f(rect_left_x  ,  rect_top_y  ,  scale_factor*video_depth[memplace]);
+            glVertex3f(rect_right_x ,  rect_top_y  ,  scale_factor*video_depth[memplace]);
+            glVertex3f(rect_right_x ,rect_bottom_y ,  scale_factor*video_depth[memplace]);
+            glVertex3f(rect_left_x  ,rect_bottom_y ,  scale_factor*video_depth[memplace]);
+
+
+            memplace+=3;
+           }
+         }
+      glEnd();
+
+    glTranslated(-transx,-transy,-transz);
+
+  glPopMatrix();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void DrawDepthMapOLD(int num,float transx,float transy,float transz,float heading , float pitch , float roll)
 {
   int x,y,memplace=0;
   glPushMatrix();
   glLoadIdentity();
+    glTranslated(transx,transy,transz);
 
-  glRotatef( roty, 0.0, 1.0, 0.0 );
-    glTranslated(vx,vy,vz);
+    glRotated(roll,0.0,0.0,1.0);
+    glRotated(heading,0.0,1.0,0.0);
+    glRotated(pitch,1.0,0.0,0.0);
 
                glBegin(GL_QUADS);
                  glColor3f(1.0f, 0.0f, 0.0f);
@@ -266,6 +386,7 @@ void DrawDepthMap(int num,float transx,float transy,float transz,float rotx,floa
    //  glPopMatrix();
 
 
+    glTranslated(-transx,-transy,-transz);
   glPopMatrix();
 
 }
