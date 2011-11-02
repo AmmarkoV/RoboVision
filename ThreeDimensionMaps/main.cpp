@@ -105,7 +105,7 @@ static void display(void)
     DrawFloor();
     DrawAgent(0,  0.0 , 0.0  , 0.0  , robot_heading  , 0.0  , 0.0  );
 
-    DrawDepthMap(0,  0.0 ,0.0 , 0.0 , robot_heading , 0.0 , 0.0 );
+    DrawDepthMap(0,  0.0 , 0.0+45 , 0.0 , robot_heading , 0.0 , 0.0 );
     //DrawDepthMapOLD(0,  0.0 ,0.0 , 0.0 , robot_heading , 0.0 , 0.0 );
     //DrawEmptyDepthMap(0, 0.0 , 0.0 , 0.0 , robot_heading , 0.0 , 0.0 );
 
@@ -137,6 +137,8 @@ static void key(unsigned char key, int x, int y)
         case 'a': vx-=10; break;
         case 'w': vy+=10; break;
         case 's': vy-=10; break;
+        case 'g': angle_x-=0.5; break;
+        case 't': angle_x+=0.5; break;
         case 'c': angle_y-=0.5; break;
         case 'z': angle_y+=0.5; break;
 

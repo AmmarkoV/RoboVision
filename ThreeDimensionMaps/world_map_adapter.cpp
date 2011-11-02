@@ -24,7 +24,7 @@ void LoadDepth(int snap)
 
    FILE * fp;
    fp = fopen(filename,"rb");
-   if (fp == 0) return;
+   if (fp == 0) { fprintf(stderr,"Failed to load Depth data \n "); return; }
 
    unsigned int  ptrlim = 320*240*3;
    fread (video_depth , 1 , ptrlim , fp );
@@ -32,7 +32,7 @@ void LoadDepth(int snap)
 
    sprintf(filename,"memfs/COLOR%u",snap);
    fp = fopen(filename,"rb");
-   if (fp == 0) return;
+   if (fp == 0) { fprintf(stderr,"Failed to load Color data \n ");  return; }
 
    fread (video_color , 1 , ptrlim , fp );
    fclose(fp);
