@@ -361,7 +361,7 @@ RoboVisionXFrame::~RoboVisionXFrame()
     //(*Destroy(RoboVisionXFrame)
     //*)
     CloseFeeds();
-    wxMilliSleep(1000);
+    wxMilliSleep(2000);
 
 }
 

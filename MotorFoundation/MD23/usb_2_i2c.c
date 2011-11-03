@@ -12,7 +12,7 @@
 
 int ALERTNESS = 20000;
 
-int I2CLAG = 37000;
+int I2CLAG = 40000; //37000
 
 void i2c_delay()
 {

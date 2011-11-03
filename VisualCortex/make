@@ -10,7 +10,12 @@ cd ..
                                                          #default,optimize
 OptimizedCodeGenerator/bin/Release/OptimizedCodeGenerator default
 
-rm libVisualCortex.a
+
+if [ -e libVisualCortex.a ]
+then
+  rm libVisualCortex.a
+fi 
+ 
 
 gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c DisparityDepthMap.c -o DisparityDepthMap.o
 gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c DisparityDepthMap_Heuristics.c -o DisparityDepthMap_Heuristics.o 

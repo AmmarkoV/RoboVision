@@ -1,7 +1,10 @@
 #!/bin/bash
 echo "RoboKernel / Provides libRoboKernel.a the connecting layer for everything / Author : Ammar Qammaz"  
 
-rm libRoboKernel.a
+if [ -e libRoboKernel.a ]
+then
+  rm libRoboKernel.a
+fi   
 
 gcc -c main.c -o main.o
 gcc -c configuration.c -o configuration.o

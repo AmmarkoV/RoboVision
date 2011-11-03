@@ -1,7 +1,11 @@
 #!/bin/bash
 echo "RVKnowledgeBase and its tester / Provides libRVKnowledgeBase.a / Author : Ammar Qammaz"   
 
-rm libRVKnowledgeBase.a
+
+if [ -e libRVKnowledgeBase.a ]
+then
+  rm libRVKnowledgeBase.a
+fi  
 
 gcc -c RVKnowledgeBase.c -o RVKnowledgeBase.o 
 

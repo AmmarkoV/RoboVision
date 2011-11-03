@@ -157,7 +157,7 @@ void CheckAlarm(unsigned int flow1,unsigned int flow2)
 {
     if ( Flow_Sufficient_For_Movement(flow1,flow2)==1 )
      {
-        PlaySound((char *)"alarm.wav");
+        PlaySound((char *)"alarm");
      }
 }
 

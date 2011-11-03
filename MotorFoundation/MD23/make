@@ -1,7 +1,11 @@
 #!/bin/bash
 echo "MD23 Motors Lib  / Provides libMD23.a  / Author : Ammar Qammaz"   
 
-rm libMD23.a
+if [ -e libMD23.a ]
+then
+  rm libMD23.a
+fi  
+ 
 
 gcc -c MD23.c -o MD23.o 
 gcc -c MD23_commands.c -o MD23_commands.o 

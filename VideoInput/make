@@ -1,7 +1,11 @@
 #!/bin/bash
 echo "VideoInput and its testers / Provides libVideoInput.a / Author : Ammar Qammaz"  
 
-rm libVideoInput.a
+if [ -e libVideoInput.a ]
+then
+  rm libVideoInput.a
+fi 
+
 
 gcc -c main.cpp -o main.o
 gcc -c image_storage.cpp -o image_storage.o

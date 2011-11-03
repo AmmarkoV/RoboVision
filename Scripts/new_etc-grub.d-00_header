@@ -1,0 +1,24 @@
+The grub header script should be manually changed from  
+
+make_timeout ()
+{
+cat << EOF
+if [ "\${recordfail}" = 1 ]; then
+  set timeout=-1
+else
+  set timeout=${2}
+fi
+EOF
+}
+
+
+to 
+
+make_timeout()
+{
+cat << EOF
+set timeout=0
+EOF
+}
+
+This will disable changing the timeout after a failed boot that can lead to all the subsequent boots failing in a headless machine..! 

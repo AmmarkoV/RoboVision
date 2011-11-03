@@ -17,6 +17,13 @@ cd Arduino
 ./make
 cd ..
 
+
+if [ -e libMotorHAL.a ]
+then
+  rm libMotorHAL.a
+fi  
+
+
 gcc -c MotorHAL.c -o MotorHAL.o 
 
 ar  rcs libMotorHAL.a MotorHAL.o  

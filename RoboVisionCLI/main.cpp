@@ -101,8 +101,10 @@ int main(int argc, const char* argv[])
   printf("Waiting for de-initialization!\n");
   while ( RoboKernelAlive()==1 )
     {
-      usleep(100);
+      usleep(1000);
     }
+
+      usleep(2000*1000);
 
   clock_gettime(CLOCK_REALTIME,&end);
 

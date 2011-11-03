@@ -1,0 +1,4 @@
+#!/bin/bash
+gource -720x405 -s 0.2  --output-framerate 25 --output-ppm-stream - | ffmpeg -y -b 3000K -r 25 -f image2pipe -vcodec ppm -i - -vcodec mpeg4 gource.avi
+
+exit 0

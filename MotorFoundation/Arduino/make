@@ -1,7 +1,13 @@
 #!/bin/bash
 echo "Arduino ATMEL Library  / Provides libRoboVisionSensorLib.a  / Author : Ammar Qammaz"    
 
-rm libRoboVisionSensorLib.a
+
+if [ -e libRoboVisionSensorLib.a ]
+then
+  rm libRoboVisionSensorLib.a
+fi  
+
+rm .a
 
 gcc -c main.c -o main.o 
 gcc -c arduino_serial.c -o arduino_serial.o 
