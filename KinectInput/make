@@ -1,3 +1,0 @@
-#!/bin/bash
-gcc main.c libfreenect_sync.c ../3dpartylibs/OpenKinect/build/lib/libfreenect.a ../3dpartylibs/OpenKinect/build/lib/libfreenect_sync.a -lusb-1.0 -L. -pthread -lrt -o test
-exit 0
