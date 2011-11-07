@@ -141,7 +141,11 @@ void * ScriptKernelLoop(void *ptr )
             running_script_name[0]=0;
             running_script_name[1]=0;
           }
-       usleep(100);
+
+
+       if ( running_script_name[0] != 0 ) { usleep(100); } else
+                                          { usleep(100*1000); } //100 ms sleep time when not having a script loaded
+
      }
   return 0;
 }

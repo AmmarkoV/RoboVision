@@ -430,7 +430,7 @@ void * MD23_loop(void * ptr)
 
   struct  md23_device *loopdev = (struct md23_device *) ptr;
   if ( loopdev == 0 ) { fprintf(stderr,"MD23Loop Called with Invalid Pointer\n"); }
-  int lag = 4000;
+  unsigned int lag = 40000;
 
   loopdev->read_loop_active=1;
   printf("Started MD23 Loop\n");

@@ -386,7 +386,7 @@ void * HAL_Monitor(void * ptr)
         clock_count = clock_count - start_clock_count;
 
 
-     usleep(100000);
+     usleep(200 * 1000); // 100 ms
      RobotGetEncoders(&new_left_encoder,&new_right_encoder);
      new_left_ultrasonic=RobotGetUltrasonic(0);
      new_right_ultrasonic=RobotGetUltrasonic(1);

@@ -221,7 +221,7 @@ void * WebInterfaceLoop(void *ptr )
 
     while ( web_interface_thread_stop == 0)
      {
-        usleep(10000);
+        usleep(100 * 1000); // 100 ms
         TakeCareOfNetworkInterface(clock_count);
         ReceiveSMS(number,20,data,2000);
      }
