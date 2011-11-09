@@ -2,6 +2,7 @@
 #include "Precalculations.h"
 #include "Matrix.h"
 #include "LinearAlgebra.h"
+#include "../WorldMapping/MasterWorld/MasterWorld.h"
 
 struct TransformationMatrix left_homography;
 struct TransformationMatrix right_homography;
@@ -53,6 +54,16 @@ int UpdateCameraPose(unsigned int reg_num)
                  Multiply4x4Matrices(&total_left_rotation,&left_rotation,&tmp_matrix);
 
 
+                 PrintMatrix("Left rotation",&left_rotation);
+
+                 float  x , y , z , heading , pitch , yaw ;
+                 GetAgent(0,&x,&y,&z,&heading,&pitch,&yaw);
+                 fprintf(stderr,"Point was %0.2f , %0.2f , %0.2f  and now is ",x,y,z);
+                 Multiply3DPointWithMatrix(&x,&y,&z ,&left_rotation);
+                 fprintf(stderr," %0.2f , %0.2f , %0.2f  \n",x,y,z);
+                 SetAgent(0,x,y,z ,heading,pitch,yaw);
+
+
                 } else
                if (reg_num == CALIBRATED_RIGHT_EYE )
                 {
@@ -68,7 +79,39 @@ int UpdateCameraPose(unsigned int reg_num)
                  CopyMatrixToMatrix(&tmp_matrix,&total_right_rotation);
                  Multiply4x4Matrices(&total_right_rotation,&right_rotation,&tmp_matrix);
 
+                 PrintMatrix("Right rotation",&right_rotation);
+
+                 float  x , y , z , heading , pitch , yaw ;
+                 GetAgent(1,&x,&y,&z,&heading,&pitch,&yaw);
+                 Multiply3DPointWithMatrix(&x,&y,&z ,&left_rotation);
+                 SetAgent(1,x,y,z ,heading,pitch,yaw);
 
                 }
   return 1;
+}
+
+
+int InitCameraPose()
+{
+ ClearTransformationMatrix(&total_left_rotation);
+ total_left_rotation.rows=4 , total_left_rotation.columns=4;
+ total_left_rotation.item[0]=1.0;
+ total_left_rotation.item[5]=1.0;
+ total_left_rotation.item[10]=1.0;
+ total_left_rotation.item[15]=1.0;
+
+ SetAgent(0, 1.0,1.0,1.0 ,0.0,0.0,0.0);
+
+ ClearTransformationMatrix(&total_right_rotation);
+ total_right_rotation.rows=4 , total_right_rotation.columns=4;
+ total_right_rotation.item[0]=1.0;
+ total_right_rotation.item[5]=1.0;
+ total_right_rotation.item[10]=1.0;
+ total_right_rotation.item[15]=1.0;
+
+ SetAgent(1, 1.0,1.0,1.0 ,0.0,0.0,0.0);
+
+
+
+ return 1;
 }

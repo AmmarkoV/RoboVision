@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="CameraPose.c" open="1" top="0" tabpos="44">
-		<Cursor position="735" topLine="41" />
+	<File name="CameraPose.c" open="1" top="1" tabpos="44">
+		<Cursor position="4295" topLine="34" />
 	</File>
 	<File name="CameraPose.h" open="1" top="0" tabpos="43">
-		<Cursor position="808" topLine="0" />
+		<Cursor position="826" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
 		<Cursor position="3823" topLine="297" />
@@ -50,13 +50,16 @@
 		<Cursor position="850" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
-		<Cursor position="69" topLine="327" />
+		<Cursor position="11545" topLine="238" />
 	</File>
 	<File name="LinearAlgebra.h" open="1" top="0" tabpos="31">
-		<Cursor position="69" topLine="0" />
+		<Cursor position="261" topLine="0" />
 	</File>
 	<File name="Matrix.c" open="1" top="0" tabpos="45">
-		<Cursor position="8352" topLine="177" />
+		<Cursor position="250" topLine="0" />
+	</File>
+	<File name="Matrix.h" open="1" top="0" tabpos="60">
+		<Cursor position="141" topLine="0" />
 	</File>
 	<File name="MovementRegistration.c" open="1" top="0" tabpos="9">
 		<Cursor position="1233" topLine="40" />
@@ -83,7 +86,7 @@
 		<Cursor position="114" topLine="0" />
 	</File>
 	<File name="StateSetting.c" open="1" top="0" tabpos="18">
-		<Cursor position="187" topLine="0" />
+		<Cursor position="738" topLine="0" />
 	</File>
 	<File name="StateSetting.h" open="1" top="0" tabpos="19">
 		<Cursor position="100" topLine="0" />
@@ -130,10 +133,10 @@
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="2506" topLine="74" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
-		<Cursor position="22348" topLine="618" />
+	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
+		<Cursor position="4340" topLine="109" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="3560" topLine="132" />
+		<Cursor position="10761" topLine="279" />
 	</File>
 </CodeBlocks_layout_file>

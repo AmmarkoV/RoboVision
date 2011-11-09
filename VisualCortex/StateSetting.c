@@ -5,6 +5,7 @@
 #include "IntegralImageConversion.h"
 #include "FeatureLists.h"
 #include "Matrix.h"
+#include "CameraPose.h"
 #include <time.h>
 #include <math.h>
 

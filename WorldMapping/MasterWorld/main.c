@@ -1,7 +1,7 @@
 #include "MasterWorld.h"
 
 #define MAX_POINTS_ON_WORLD 4096
-#define MAX_AGENTS_ON_WORLD 2
+#define MAX_AGENTS_ON_WORLD 3
 
 struct Points voxels[MAX_POINTS_ON_WORLD]={0};
 struct Agents agent[MAX_AGENTS_ON_WORLD]={0};

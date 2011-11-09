@@ -3,6 +3,25 @@
 
 
 
+int PrintMatrix(char * name, struct TransformationMatrix * matrix)
+{
+    fprintf(stderr,"%s ------ %ux%u ----------\n",name,matrix->rows,matrix->columns);
+    fprintf(stderr,"--------------------------\n");
+
+    int row,column,element=0;
+    for (column=0; column<matrix->columns; column++)
+       {
+         fprintf(stderr,"|");
+         for (row=0; row<matrix->rows; row++)
+         {
+          fprintf(stderr,"%0.2f|",matrix->item[element]);
+          ++element;
+         }
+         fprintf(stderr,"\n");
+       }
+    fprintf(stderr,"--------------------------\n\n");
+    return 1;
+}
 
 int CopyMatrixToMatrix(struct TransformationMatrix * target_matrix,struct TransformationMatrix * matrix)
 {
@@ -133,6 +152,77 @@ return 1;
 }
 
 
+
+
+int Multiply3DPointWithMatrix(float * x, float * y , float * z ,struct TransformationMatrix * rotation_and_translation_matrix)
+{
+    if (( x == 0 )||( y == 0 )||( z == 0 )) { fprintf(stderr,"Cannot Multiply3DPointWithMatrix  input 3d point is empty\n"); return 0; }
+
+    // WITH HOMOGENOUS COORDINATES
+   //SUPPOSE 4x4 MATRIX
+
+
+
+/*        4x4          *    4*1     =               1*4
+     _______________
+    | a   b   c   d |       | x |
+    | e   f   g   h |       | y |
+    | i   j   k   l |   *   | z |   =      | new_x  new_y new_z new_i |
+    | m   n   o   p |       | 1 |
+     ---------------
+
+     _______________
+    | 0   1   2   3 |       | .x |
+    | 4   5   6   7 |       | .y |
+    | 8   9   10  11|   *   | .z |   =      | new_x  new_y new_z new_i |
+    | 12  13  14  15|       |  1 |
+     ---------------
+
+
+     new_x  =  a*x + b*y + c*z + d*1
+     new_y  =  e*x + f*y + g*z + h*1
+     new_z  =  i*x + j*y + k*z + l*1
+     new_i  =  m*x + n*y + o*z + p*1
+*/
+
+
+   struct TransformationMatrix * M = rotation_and_translation_matrix;
+
+
+   float old_x,old_y,old_z;
+   float new_x,new_y,new_z,new_i;
+
+        old_x=*x;
+        old_y=*y;
+        old_z=*z;
+
+        new_i=M->item[12]*old_x  + M->item[13]*old_y + M->item[14]*old_z + M->item[15];
+        if ( (new_i==0.0) || (new_i==1.0) )
+         {
+          new_x=(M->item[0]*old_x  + M->item[1]*old_y + M->item[2]*old_z + M->item[3]);
+          new_y=(M->item[4]*old_x  + M->item[5]*old_y + M->item[6]*old_z + M->item[7]);
+          new_z=(M->item[8]*old_x  + M->item[9]*old_y + M->item[10]*old_z + M->item[11]);
+         }   else
+         {
+          new_x=(M->item[0]*old_x  + M->item[1]*old_y + M->item[2]*old_z + M->item[3])/new_i;
+          new_y=(M->item[4]*old_x  + M->item[5]*old_y + M->item[6]*old_z + M->item[7])/new_i;
+          new_z=(M->item[8]*old_x  + M->item[9]*old_y + M->item[10]*old_z + M->item[11])/new_i;
+         }
+
+        *x=new_x;
+        *y=new_y;
+        *z=new_z;
+
+   return 1;
+}
+
+
+
+
+
+
+
+
 int Multiply3DPointsWithMatrix(struct FeatureList * list,struct TransformationMatrix * rotation_and_translation_matrix)
 {
     if  (!FeatureListIsOk(list)) { fprintf(stderr,"Multiply3DPointsWithMatrix called with a zero list \n");  return 0; }
@@ -201,22 +291,3 @@ int Multiply3DPointsWithMatrix(struct FeatureList * list,struct TransformationMa
    return 1;
 }
 
-
-int InitCameraPose()
-{
- ClearTransformationMatrix(&total_left_rotation);
- total_left_rotation.rows=4 , total_left_rotation.columns=4;
- total_left_rotation.item[0]=1.0;
- total_left_rotation.item[5]=1.0;
- total_left_rotation.item[10]=1.0;
- total_left_rotation.item[15]=1.0;
-
- ClearTransformationMatrix(&total_right_rotation);
- total_right_rotation.rows=4 , total_right_rotation.columns=4;
- total_right_rotation.item[0]=1.0;
- total_right_rotation.item[5]=1.0;
- total_right_rotation.item[10]=1.0;
- total_right_rotation.item[15]=1.0;
-
- return 1;
-}
