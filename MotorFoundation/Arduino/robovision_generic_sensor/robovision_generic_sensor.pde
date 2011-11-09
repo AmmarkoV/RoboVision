@@ -4,15 +4,16 @@
 #include "ircodes.h" 
 #include "MemsicAccelerometer.h"
 
-#define TOTAL_LED_PINS 2
+#define TOTAL_LED_PINS 3
 #define TOTAL_SERVOS 2 
 
 unsigned int IRReceiver=2; 
-unsigned int IRTransmitter=9; 
+unsigned int IRTransmitter=3; 
 
 struct ultrasonic ultrasonicsensor1,ultrasonicsensor2;
 struct memsic2125 accelerometer;
 int ledPins[TOTAL_LED_PINS];
+int ledPinsInvertedLogic[TOTAL_LED_PINS]={0};
 Servo servo1,servo2,servo3;
 
 int autonomous_mode = 0;
@@ -21,12 +22,30 @@ int time_to_power_down_servos = 0;
 
 void(* resetFunc) (void) = 0; //declare reset function @ address 0
 
+
+int LightControl(unsigned int light_number,int state)
+{
+  if (light_number>=TOTAL_LED_PINS) { Serial.println(light_number); return 0; }
+  if (state) { 
+               if ( ledPinsInvertedLogic[light_number] ) { digitalWrite(ledPins[light_number], LOW ); } else
+                                                         { digitalWrite(ledPins[light_number], HIGH ); }   
+               return 1;  
+             } else
+             { 
+               if ( ledPinsInvertedLogic[light_number] ) { digitalWrite(ledPins[light_number], HIGH ); } else
+                                                         { digitalWrite(ledPins[light_number], LOW ); }   
+               return 1;  
+             }
+}
+
 void setup(void) 
 {
   Serial.begin(38400);
- 
+  delay(2000);
+
   ledPins[0]=13; // THERE ARE 2 LED PINS ON GUARDDOG
-  ledPins[1]=13; // THERE ARE 2 LED PINS ON GUARDDOG
+  ledPins[1]=12; // THERE ARE 2 LED PINS ON GUARDDOG
+  ledPins[2]=4; // THERE ARE 2 LED PINS ON GUARDDOG
   
   servo1.attach(14); //analog pin 0
   delay(100); 
@@ -35,22 +54,26 @@ void setup(void)
   servo1.detach();
   
   pinMode(ledPins[0], OUTPUT);
+  pinMode(ledPins[1], OUTPUT);
+  pinMode(ledPins[2], OUTPUT);
+  ledPinsInvertedLogic[2]=1; // THE LASER MODULE IS INVERTED HIGH TURNS IT OFF
+  
+  
+  LightControl(0,0);
+  LightControl(1,0);
+  LightControl(2,0);
+  
+  
   pinMode(IRTransmitter, OUTPUT);
   //pinMode(IRReceiver, INPUT);
   //Serial.println("Waiting for Input!");
   
+  //setupUltrasonic(&ultrasonicsensor1,7,11);
+  //setupUltrasonic(&ultrasonicsensor2,6,10);
   
-  setupAccelerometer(&accelerometer,6,5);
+  setupAccelerometer(&accelerometer,9,8);
   
   Serial.flush(); 
-}
-
-
-int LightControl(unsigned int light_number,int state)
-{
-  if (light_number>=TOTAL_LED_PINS) { Serial.print(light_number); return 0; }
-  if (state) { digitalWrite(ledPins[light_number], HIGH ); return 1; } else
-             { digitalWrite(ledPins[light_number], LOW );  return 1; }
 }
 
 

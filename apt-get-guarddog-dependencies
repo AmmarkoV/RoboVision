@@ -13,11 +13,25 @@ fi
 echo "Starting downloads "
 echo "What is basically needed is GCC and libs , WxWidgets , LibV4L development headers , OpenAL , OpenGL/GLUT , Festival (TTS) , OpenCV "
 
-
+\
 sudo apt-get install build-essential cmake libv4l-dev festival wx-common g++ libwxgtk2.8-0 libwxgtk2.8-dev libalut0 libalut-dev freeglut3 freeglut3-dev glutg3 glutg3-dev libxxf86vm-dev libcv-dev libcvaux-dev libhighgui-dev opencv-doc imagemagick libusb-dev libusb-1.0-0-dev libgsl0-dev wget imagemagick libxmu-dev libxi-dev guvcview libxxf86vm-dev sysv-rc-conf libportaudio-dev vorbis-tools gsm-utils fortune pocketsphinx-utils pocketsphinx-hmm-wsj1 pocketsphinx-hmm-tidigits pocketsphinx-lm-wsj 
 
 #For Gnome messages while compiling libnotify-bin
 
 #For Speech Recognition libpocketsphinx1 libpocketsphinx-dev libsphinxbase1
+
+
+echo "Before we end , brltty should be removed because it can interfere with the Arduino UNO"
+echo "This script supposes a Debian/Ubuntu distro with apt-get as a package manager!"
+echo "BRLTTY is a background process (daemon) which provides access to the Linux/Unix console (when in text mode) for a blind person using a refreshable braille display. It drives the braille display, and provides complete screen review functionality. Some speech capability has also been incorporated. "
+
+echo
+echo -n "                Do you want to proceed REMOVING brltty (Y/N)?"
+read answer
+if test "$answer" != "Y" -a "$answer" != "y";
+then exit 0;
+fi
+
+sudo apt-get remove brltty  
 
 exit 0

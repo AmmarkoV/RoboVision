@@ -3,6 +3,45 @@
 
 
 
+int ClearTransformationMatrix(struct TransformationMatrix * matrix)
+{
+   if ( matrix== 0 ) { return 0; }
+   matrix->columns=0;
+   matrix->rows=0;
+   int i=0;
+   for ( i=0; i<16; i++ ) { matrix->item[i]=0.0; }
+   return 1;
+}
+
+
+
+int SetMatrixToIdentity(unsigned int columns,unsigned int rows,struct TransformationMatrix * matrix)
+{
+  if ( matrix== 0 ) { return 0; }
+
+  ClearTransformationMatrix(matrix);
+
+  if ( columns != rows )
+     {
+         fprintf(stderr,"Cannot set matrix to identity matrix is not square ( %u x %u )\n",columns,rows);
+         return 0;
+     }
+
+  matrix->columns = columns;
+  matrix->rows = rows;
+
+
+  int element=0;
+  while ( element < columns*rows )
+   {
+       matrix->item[element]=1.0;
+       element+=matrix->columns+1;
+   }
+
+    return 1;
+}
+
+
 int PrintMatrix(char * name, struct TransformationMatrix * matrix)
 {
     fprintf(stderr,"%s ------ %ux%u ----------\n",name,matrix->rows,matrix->columns);
@@ -65,18 +104,6 @@ int SaveTransformationMatrixToFile(char * filename,struct TransformationMatrix *
 	  return 1;
 	}
   return 0;
-}
-
-
-
-int ClearTransformationMatrix(struct TransformationMatrix * matrix)
-{
-   if ( matrix== 0 ) { return 0; }
-   matrix->columns=0;
-   matrix->rows=0;
-   int i=0;
-   for ( i=0; i<16; i++ ) { matrix->item[i]=0.0; }
-   return 1;
 }
 
 

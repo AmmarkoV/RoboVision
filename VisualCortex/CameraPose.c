@@ -93,21 +93,38 @@ int UpdateCameraPose(unsigned int reg_num)
 
 int InitCameraPose()
 {
+/*
  ClearTransformationMatrix(&total_left_rotation);
  total_left_rotation.rows=4 , total_left_rotation.columns=4;
  total_left_rotation.item[0]=1.0;
  total_left_rotation.item[5]=1.0;
  total_left_rotation.item[10]=1.0;
  total_left_rotation.item[15]=1.0;
+*/
+ SetMatrixToIdentity(4,4,&left_homography);
+ SetMatrixToIdentity(4,4,&total_left_rotation);
+ SetMatrixToIdentity(4,4,&left_rotation);
+ SetMatrixToIdentity(4,4,&left_translation);
+ SetMatrixToIdentity(4,4,&left_rotation_and_translation);
+ SetMatrixToIdentity(4,4,&total_left_rotation_and_translation);
 
  SetAgent(0, 1.0,1.0,1.0 ,0.0,0.0,0.0);
 
+/*
  ClearTransformationMatrix(&total_right_rotation);
  total_right_rotation.rows=4 , total_right_rotation.columns=4;
  total_right_rotation.item[0]=1.0;
  total_right_rotation.item[5]=1.0;
  total_right_rotation.item[10]=1.0;
- total_right_rotation.item[15]=1.0;
+ total_right_rotation.item[15]=1.0;*/
+ SetMatrixToIdentity(4,4,&right_homography);
+ SetMatrixToIdentity(4,4,&total_right_rotation);
+ SetMatrixToIdentity(4,4,&right_rotation);
+ SetMatrixToIdentity(4,4,&right_translation);
+ SetMatrixToIdentity(4,4,&right_rotation_and_translation);
+ SetMatrixToIdentity(4,4,&total_right_rotation_and_translation);
+
+
 
  SetAgent(1, 1.0,1.0,1.0 ,0.0,0.0,0.0);
 

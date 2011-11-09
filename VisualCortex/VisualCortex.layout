@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="CameraPose.c" open="1" top="1" tabpos="44">
+	<File name="CameraPose.c" open="1" top="0" tabpos="44">
 		<Cursor position="4295" topLine="34" />
 	</File>
 	<File name="CameraPose.h" open="1" top="0" tabpos="43">
@@ -58,7 +58,7 @@
 	<File name="Matrix.c" open="1" top="0" tabpos="45">
 		<Cursor position="250" topLine="0" />
 	</File>
-	<File name="Matrix.h" open="1" top="0" tabpos="60">
+	<File name="Matrix.h" open="1" top="0" tabpos="46">
 		<Cursor position="141" topLine="0" />
 	</File>
 	<File name="MovementRegistration.c" open="1" top="0" tabpos="9">
