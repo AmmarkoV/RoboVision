@@ -47,6 +47,7 @@
 			<Add library="../MotorFoundation/MD23/libMD23.a" />
 			<Add library="../MotorFoundation/Arduino/libRoboVisionSensorLib.a" />
 			<Add library="../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a" />
+			<Add library="../WorldMapping/MasterWorld/libMasterWorld.a" />
 			<Add library="../RVKnowledgeBase/libRVKnowledgeBase.a" />
 			<Add library="../3dpartylibs/fast/libFast.a" />
 		</Linker>

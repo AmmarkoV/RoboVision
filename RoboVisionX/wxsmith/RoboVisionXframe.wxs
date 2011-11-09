@@ -5,13 +5,13 @@
 		<size>924,584</size>
 		<id_arg>0</id_arg>
 		<object class="wxStaticBox" name="ID_STATICBOX1" variable="StaticBox1" member="yes">
-			<label>Motor Status</label>
+			<label>Position Status</label>
 			<pos>680,32</pos>
-			<size>232,200</size>
+			<size>232,168</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
 			<label>Dist. Traveled :</label>
-			<pos>688,56</pos>
+			<pos>688,54</pos>
 			<size>128,17</size>
 		</object>
 		<object class="wxButton" name="ID_BUTTON1" variable="ButtonDepthMap" member="yes">
@@ -36,30 +36,30 @@
 		</object>
 		<object class="wxStaticBox" name="ID_STATICBOX2" variable="StaticBox2" member="yes">
 			<label>General</label>
-			<pos>680,160</pos>
-			<size>232,152</size>
+			<pos>680,200</pos>
+			<size>232,72</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT4" variable="UptimeLabel" member="yes">
 			<label>Uptime :</label>
-			<pos>688,184</pos>
+			<pos>688,220</pos>
 			<size>72,17</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT5" variable="Uptime" member="yes">
 			<label>0</label>
-			<pos>760,184</pos>
+			<pos>760,220</pos>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText4" member="yes">
 			<label>Flow : </label>
-			<pos>688,200</pos>
+			<pos>688,235</pos>
 			<size>48,17</size>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT7" variable="Flow" member="yes">
 			<label>0</label>
-			<pos>736,200</pos>
+			<pos>736,235</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="Status" member="yes">
-			<pos>680,248</pos>
-			<size>232,88</size>
+			<pos>680,280</pos>
+			<size>232,56</size>
 			<style>wxTE_MULTILINE|wxTE_READONLY</style>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT8" variable="StaticText5" member="yes">
@@ -72,11 +72,11 @@
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT9" variable="StaticText6" member="yes">
 			<label>FrameRate :</label>
-			<pos>688,216</pos>
+			<pos>688,248</pos>
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT10" variable="FrameRate" member="yes">
 			<label>0</label>
-			<pos>776,216</pos>
+			<pos>776,248</pos>
 		</object>
 		<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="CommandBox" member="yes">
 			<pos>680,336</pos>
@@ -294,9 +294,9 @@
 			<handler function="OnSaveSnapshotsClick" entry="EVT_CHECKBOX" />
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT16" variable="PoseString" member="yes">
-			<label>X:0.0   Y:0.0  Z:0.0  </label>
-			<pos>688,139</pos>
-			<size>128,17</size>
+			<label>X:0.0   Y:0.0  Z:0.0  heading: 0.0 </label>
+			<pos>680,176</pos>
+			<size>232,17</size>
 		</object>
 		<object class="wxMenuBar" variable="MenuBar1" member="no">
 			<object class="wxMenu" variable="Menu1" member="no">

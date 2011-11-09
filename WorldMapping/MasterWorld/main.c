@@ -42,6 +42,21 @@ int SetAgent(unsigned int agent_num,float x,float y,float z , float heading , fl
   return 1;
 }
 
+
+
+int GetAgent(unsigned int agent_num,float * x,float * y,float * z , float * heading , float * pitch , float * yaw)
+{
+  agent[agent_num].x = *x;
+  agent[agent_num].y = *y;
+  agent[agent_num].z = *z;
+
+  agent[agent_num].heading = *heading;
+  agent[agent_num].pitch = *pitch;
+  agent[agent_num].yaw = *yaw;
+
+  return 1;
+}
+
 int RotateAgent(unsigned int agent_num, float degrees)
 {
    return 1;

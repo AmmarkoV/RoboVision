@@ -17,6 +17,7 @@
 
 #include "../MotorFoundation/MotorHAL.h"
 #include "../RoboKernel/RoboKernel.h"
+#include "../WorldMapping/MasterWorld/MasterWorld.h"
 
 
 #include <wx/msgdlg.h>
@@ -142,22 +143,22 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
 
     Create(parent, wxID_ANY, _("RoboVision X"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     SetClientSize(wxSize(924,584));
-    StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, _("Motor Status"), wxPoint(680,32), wxSize(232,200), 0, _T("ID_STATICBOX1"));
-    StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Dist. Traveled :"), wxPoint(688,56), wxSize(128,17), 0, _T("ID_STATICTEXT1"));
+    StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, _("Position Status"), wxPoint(680,32), wxSize(232,168), 0, _T("ID_STATICBOX1"));
+    StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Dist. Traveled :"), wxPoint(688,54), wxSize(128,17), 0, _T("ID_STATICTEXT1"));
     ButtonDepthMap = new wxButton(this, ID_BUTTON1, _("Depth Map"), wxPoint(680,392), wxSize(120,24), 0, wxDefaultValidator, _T("ID_BUTTON1"));
     StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Left Cam"), wxPoint(15,0), wxDefaultSize, 0, _T("ID_STATICTEXT2"));
     StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Right Cam"), wxPoint(340,0), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
     MotionAlarmButton = new wxButton(this, ID_BUTTON2, _("Motion Alarm"), wxPoint(808,392), wxSize(104,24), 0, wxDefaultValidator, _T("ID_BUTTON2"));
-    StaticBox2 = new wxStaticBox(this, ID_STATICBOX2, _("General"), wxPoint(680,160), wxSize(232,152), 0, _T("ID_STATICBOX2"));
-    UptimeLabel = new wxStaticText(this, ID_STATICTEXT4, _("Uptime :"), wxPoint(688,184), wxSize(72,17), 0, _T("ID_STATICTEXT4"));
-    Uptime = new wxStaticText(this, ID_STATICTEXT5, _("0"), wxPoint(760,184), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
-    StaticText4 = new wxStaticText(this, ID_STATICTEXT6, _("Flow : "), wxPoint(688,200), wxSize(48,17), 0, _T("ID_STATICTEXT6"));
-    Flow = new wxStaticText(this, ID_STATICTEXT7, _("0"), wxPoint(736,200), wxDefaultSize, 0, _T("ID_STATICTEXT7"));
-    Status = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxPoint(680,248), wxSize(232,88), wxTE_MULTILINE|wxTE_READONLY, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    StaticBox2 = new wxStaticBox(this, ID_STATICBOX2, _("General"), wxPoint(680,200), wxSize(232,72), 0, _T("ID_STATICBOX2"));
+    UptimeLabel = new wxStaticText(this, ID_STATICTEXT4, _("Uptime :"), wxPoint(688,220), wxSize(72,17), 0, _T("ID_STATICTEXT4"));
+    Uptime = new wxStaticText(this, ID_STATICTEXT5, _("0"), wxPoint(760,220), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+    StaticText4 = new wxStaticText(this, ID_STATICTEXT6, _("Flow : "), wxPoint(688,235), wxSize(48,17), 0, _T("ID_STATICTEXT6"));
+    Flow = new wxStaticText(this, ID_STATICTEXT7, _("0"), wxPoint(736,235), wxDefaultSize, 0, _T("ID_STATICTEXT7"));
+    Status = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxPoint(680,280), wxSize(232,56), wxTE_MULTILINE|wxTE_READONLY, wxDefaultValidator, _T("ID_TEXTCTRL1"));
     StaticText5 = new wxStaticText(this, ID_STATICTEXT8, _("Battery"), wxPoint(680,8), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
     Battery = new wxGauge(this, ID_GAUGE1, 100, wxPoint(736,8), wxSize(176,16), 0, wxDefaultValidator, _T("ID_GAUGE1"));
-    StaticText6 = new wxStaticText(this, ID_STATICTEXT9, _("FrameRate :"), wxPoint(688,216), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
-    FrameRate = new wxStaticText(this, ID_STATICTEXT10, _("0"), wxPoint(776,216), wxDefaultSize, 0, _T("ID_STATICTEXT10"));
+    StaticText6 = new wxStaticText(this, ID_STATICTEXT9, _("FrameRate :"), wxPoint(688,248), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
+    FrameRate = new wxStaticText(this, ID_STATICTEXT10, _("0"), wxPoint(776,248), wxDefaultSize, 0, _T("ID_STATICTEXT10"));
     CommandBox = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxPoint(680,336), wxSize(200,27), wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
     Ok = new wxButton(this, ID_BUTTON3, _("OK"), wxPoint(880,336), wxSize(32,24), 0, wxDefaultValidator, _T("ID_BUTTON3"));
     SwapFeeds = new wxButton(this, ID_BUTTON4, _("Swap Feeds"), wxPoint(744,368), wxSize(64,24), 0, wxDefaultValidator, _T("ID_BUTTON4"));
@@ -236,7 +237,7 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     RightUltrasonicLabel = new wxStaticText(this, ID_STATICTEXT15, _("R"), wxPoint(688,120), wxDefaultSize, 0, _T("ID_STATICTEXT15"));
     SaveLoadStreamOfSnapshots = new wxCheckBox(this, ID_CHECKBOX4, _("Rec/Play Stream of Snapshots"), wxPoint(680,464), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
     SaveLoadStreamOfSnapshots->SetValue(false);
-    PoseString = new wxStaticText(this, ID_STATICTEXT16, _("X:0.0   Y:0.0  Z:0.0  "), wxPoint(688,139), wxSize(128,17), 0, _T("ID_STATICTEXT16"));
+    PoseString = new wxStaticText(this, ID_STATICTEXT16, _("X:0.0   Y:0.0  Z:0.0  heading: 0.0 "), wxPoint(680,176), wxSize(232,17), 0, _T("ID_STATICTEXT16"));
     MenuBar1 = new wxMenuBar();
     Menu1 = new wxMenu();
     MenuItem3 = new wxMenuItem(Menu1, idMenuOpenSnapshots, _("Open Snapshot\tF2"), _("Opens a recorded snapshot"), wxITEM_NORMAL);
@@ -534,7 +535,9 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
      Uptime->SetLabel(msg);
 
 
-     msg.Clear();
+     float x,y,z,heading,pitch,yaw;
+     GetAgent(0,&x,&y,&z,&heading,&pitch,&yaw);
+     msg.Clear()  , msg.Printf( wxT("X:%.2f Y:%.2f Z:%.2f heading:%.2f") , x,y,z,heading );
      PoseString->SetLabel(msg);
 
      last_draw =  uptimer->Time();
