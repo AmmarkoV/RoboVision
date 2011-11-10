@@ -38,6 +38,8 @@ struct TransformationMatrix total_right_rotation_and_translation;
 int UpdateCameraPose(unsigned int reg_num)
 {
 
+   int PRINT_THINGS_DEBUG = 0;
+
               if (reg_num == CALIBRATED_LEFT_EYE )
                 {
                   if ( settings[USE_OPENCV] ) { ComputeHomographyFromPointCorrespondanceOpenCV(video_register[reg_num].features,
@@ -54,13 +56,13 @@ int UpdateCameraPose(unsigned int reg_num)
                  Multiply4x4Matrices(&total_left_rotation,&left_rotation,&tmp_matrix);
 
 
-                 PrintMatrix("Left rotation",&left_rotation);
+                 if (PRINT_THINGS_DEBUG) { PrintMatrix("Left rotation",&left_rotation); }
 
-                 float  x , y , z , heading , pitch , yaw ;
-                 GetAgent(0,&x,&y,&z,&heading,&pitch,&yaw);
-                 fprintf(stderr,"Point was %0.2f , %0.2f , %0.2f  and now is ",x,y,z);
+                 float  x = 1.0 , y = 1.0 , z = 1.0 , heading , pitch , yaw ;
+                // GetAgent(0,&x,&y,&z,&heading,&pitch,&yaw);
+                 if (PRINT_THINGS_DEBUG) { fprintf(stderr,"Point was %0.2f , %0.2f , %0.2f  and now is ",x,y,z); }
                  Multiply3DPointWithMatrix(&x,&y,&z ,&left_rotation);
-                 fprintf(stderr," %0.2f , %0.2f , %0.2f  \n",x,y,z);
+                 if (PRINT_THINGS_DEBUG) { fprintf(stderr," %0.2f , %0.2f , %0.2f  \n",x,y,z); }
                  SetAgent(0,x,y,z ,heading,pitch,yaw);
 
 
@@ -79,10 +81,10 @@ int UpdateCameraPose(unsigned int reg_num)
                  CopyMatrixToMatrix(&tmp_matrix,&total_right_rotation);
                  Multiply4x4Matrices(&total_right_rotation,&right_rotation,&tmp_matrix);
 
-                 PrintMatrix("Right rotation",&right_rotation);
+                 if (PRINT_THINGS_DEBUG) { PrintMatrix("Right rotation",&right_rotation); }
 
-                 float  x , y , z , heading , pitch , yaw ;
-                 GetAgent(1,&x,&y,&z,&heading,&pitch,&yaw);
+                 float  x = 1.0 , y = 1.0 , z = 1.0 , heading , pitch , yaw ;
+                // GetAgent(1,&x,&y,&z,&heading,&pitch,&yaw);
                  Multiply3DPointWithMatrix(&x,&y,&z ,&left_rotation);
                  SetAgent(1,x,y,z ,heading,pitch,yaw);
 
@@ -93,42 +95,23 @@ int UpdateCameraPose(unsigned int reg_num)
 
 int InitCameraPose()
 {
-/*
- ClearTransformationMatrix(&total_left_rotation);
- total_left_rotation.rows=4 , total_left_rotation.columns=4;
- total_left_rotation.item[0]=1.0;
- total_left_rotation.item[5]=1.0;
- total_left_rotation.item[10]=1.0;
- total_left_rotation.item[15]=1.0;
-*/
+ //LEFT CAMERA
  SetMatrixToIdentity(4,4,&left_homography);
  SetMatrixToIdentity(4,4,&total_left_rotation);
  SetMatrixToIdentity(4,4,&left_rotation);
  SetMatrixToIdentity(4,4,&left_translation);
  SetMatrixToIdentity(4,4,&left_rotation_and_translation);
  SetMatrixToIdentity(4,4,&total_left_rotation_and_translation);
-
  SetAgent(0, 1.0,1.0,1.0 ,0.0,0.0,0.0);
 
-/*
- ClearTransformationMatrix(&total_right_rotation);
- total_right_rotation.rows=4 , total_right_rotation.columns=4;
- total_right_rotation.item[0]=1.0;
- total_right_rotation.item[5]=1.0;
- total_right_rotation.item[10]=1.0;
- total_right_rotation.item[15]=1.0;*/
+ //RIGHT CAMERA
  SetMatrixToIdentity(4,4,&right_homography);
  SetMatrixToIdentity(4,4,&total_right_rotation);
  SetMatrixToIdentity(4,4,&right_rotation);
  SetMatrixToIdentity(4,4,&right_translation);
  SetMatrixToIdentity(4,4,&right_rotation_and_translation);
  SetMatrixToIdentity(4,4,&total_right_rotation_and_translation);
-
-
-
  SetAgent(1, 1.0,1.0,1.0 ,0.0,0.0,0.0);
-
-
 
  return 1;
 }

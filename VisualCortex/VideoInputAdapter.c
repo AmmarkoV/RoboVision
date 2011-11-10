@@ -131,20 +131,23 @@ inline unsigned int FrameProcessing
 
         if ( settings[PASS_TO_FEATURE_DETECTOR] )
         {
-
+          unsigned int corners_tracked = 0;
             if ( settings[USE_OPENCV] )
               {
-                  FindAndTrackAllPointsOnRegistersOpenCV(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,1000);
+                  corners_tracked = FindAndTrackAllPointsOnRegistersOpenCV(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,1000);
               } else
               {
                   VisCortx_AutoAddTrackPoints(left_right_switch);
-                  TrackAllPointsOnRegistersBrute(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,8000);
+                  corners_tracked = TrackAllPointsOnRegistersBrute(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE,8000);
               }
 
 
             if ( settings[CALCULATE_MOVEMENT_MATRIX] )
              {
-                UpdateCameraPose(REG_CALIBRATED_EYE);
+                if ( corners_tracked > 8 )
+                 { // WE HAVE ENOUGH CORNERS TRACKED TO CALCULATE THE CAMERA POSE
+                   UpdateCameraPose(REG_CALIBRATED_EYE);
+                 }
              }
 
         }

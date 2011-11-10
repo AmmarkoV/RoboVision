@@ -241,8 +241,92 @@ unsigned int EnhanceDepthMapFillHoles(unsigned char * rgb_image,unsigned short *
 }
 
 
-int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int depth_scale)
+
+
+
+
+
+
+
+
+int DepthMapToVideoSimple(unsigned int depth_reg,unsigned int vid_reg,unsigned int depth_scale)
 { // TODO depth_scale added as debugging visual aid
+  // Convert from the Large ( unsigned short ) to 3 bytes per pixel storage ( r,g,b ) needed for outputting video
+  unsigned short *full_depth_map=l_video_register[depth_reg].pixels;
+  unsigned char *vid_depth_map=video_register[vid_reg].pixels;
+  unsigned int image_x=video_register[vid_reg].size_x;
+  unsigned int image_y=video_register[vid_reg].size_y;
+
+
+  register BYTE *px;
+  register BYTE *r;
+  register BYTE *g;
+  register BYTE *b;
+  unsigned char val;
+  px = (BYTE *)  vid_depth_map;
+
+
+  unsigned int ptr,dpth_lim=image_x*image_y;
+  for ( ptr = 0; ptr < dpth_lim; ptr++)
+   {
+       r = px++; g = px++; b = px++;
+
+       //Just a convertion of the numbers to RGB
+       if ( full_depth_map[ptr] >= 255 ) { val = 255; } else
+                                         { val = ( unsigned char ) (full_depth_map[ptr]); }
+
+       *r= val; *g=val; *b= val;
+   }
+
+   video_register[vid_reg].time = video_register[depth_reg].time;
+   return 1;
+}
+
+
+
+
+
+
+int SaveDepthMapToFile(char * filename,unsigned int vid_reg)
+{
+  FILE *fd=0;
+    fd = fopen(filename,"w");
+
+    if (fd!=0)
+	{
+	  register BYTE *px , *r , *g , *b;
+      int i=0;
+
+      px = video_register[vid_reg].pixels;
+
+      for (i=0; i<metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]; i++)
+      {
+        r = px++; g = px++; b = px++;
+        if ( depth_data_array[i].Z != 0.0 )
+         {
+           fprintf(fd,"%f\n%f\n%f\n",depth_data_array[i].X,depth_data_array[i].Y,depth_data_array[i].Z);
+           fprintf(fd,"%u\n%u\n%u\n",*r,*g,*b);
+         }
+      }
+
+     fclose(fd);
+     return 1;
+	}
+
+   return 0;
+}
+
+
+
+
+int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int depth_scale)
+{
+  return DepthMapToVideoSimple(depth_reg,vid_reg,depth_scale);
+
+  //THIS FUNCTION IS KIND OF MEANINGLESS , SINCE THE VIDEO OUTPUT IS ONLY INTENDED FOR DEBUGGING PURPOSES
+  //AND REPERFORMING THE CALCULATIONS HERE IS REDUNDANT..
+
+  // TODO depth_scale added as debugging visual aid
   // Convert from the Large ( unsigned short ) to 3 bytes per pixel storage ( r,g,b ) needed for outputting video
   unsigned short *full_depth_map=l_video_register[depth_reg].pixels;
   unsigned char *vid_depth_map=video_register[vid_reg].pixels;
@@ -265,46 +349,47 @@ int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int dep
 */
 
 
-
-
   unsigned int max_possible_depth = settings[DEPTHMAP_CLOSEST_DEPTH];
-
   float Baseline_MULT_FocalLength = 0.0;
-  /*
-  if ( (CameraDistanceInMM != 0 ) && (left_calibration_data.focal_length != 0) )
+  float closest_number , furthest_number ;
+  if ( (CameraDistanceInMM != 0 ) && (left_calibration_data.fx != 0) )
     {                                   // MM to CM
-       Baseline_MULT_FocalLength = (CameraDistanceInMM/10) * left_calibration_data.focal_length;
+       Baseline_MULT_FocalLength = (float) CameraDistanceInMM/10;
+       Baseline_MULT_FocalLength *= left_calibration_data.fx;
 
        if (max_possible_depth!=0)
          {
            max_possible_depth = (unsigned int ) Baseline_MULT_FocalLength / max_possible_depth;
          }
     }
-*/
 
+  if (Baseline_MULT_FocalLength==0.0)
+      {  /*Fall back to classic Video Conversion */
+         return DepthMapToVideoSimple(depth_reg,vid_reg,depth_scale);
+      }
+
+  closest_number = Baseline_MULT_FocalLength / 255;
+  furthest_number = Baseline_MULT_FocalLength;
 
   unsigned int tmp_val = 0;
-
-
   unsigned int ptr,dpth_lim=image_x*image_y;
   for ( ptr = 0; ptr < dpth_lim; ptr++)
    {
        r = px++; g = px++; b = px++;
 
-
-      /* Just convert it to RGB Code
-       if ( full_depth_map[ptr] >= 255 ) { val = 255; } else
-                                         { val = ( unsigned char ) (full_depth_map[ptr]); }
-       */
-
-       // Real calculation based on stereo rig
-
+     // Real calculation based on stereo rig
      if (Baseline_MULT_FocalLength!=0.0)
       {
        if ( full_depth_map[ptr] != 0 )
           {
+            // As the depth map gives a larger number ( i.e. more disparity ) the division of Baseline * Focal Length / Disparity returns a smaller result
+            // we want the points close to the camera to be lit brightly and the points far from the camera to be dimmed down , so
+            // we subtract 255 from their value to invert their colour ..!
+
             tmp_val = (unsigned int ) Baseline_MULT_FocalLength / full_depth_map[ptr];
             if ( tmp_val > 255 ) { tmp_val = 255; }
+
+            tmp_val = 255-tmp_val;  // Inversion of colouring ..!
 
           } else
           {

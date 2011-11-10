@@ -213,9 +213,14 @@ void VisCortx_CameraParameters(int right_cam,double fx,double fy,double cx,doubl
    if ( right_cam == 0 )
         {
 
-           // focal_length = fx / mx and focal_length = fy / my
            // SEE http://en.wikipedia.org/wiki/Camera_resectioning#Intrinsic_parameters
-           left_calibration_data.focal_length =  fx ; //TODO ADD Mx My Calculation
+           // and http://opencv.willowgarage.com/documentation/camera_calibration_and_3d_reconstruction.html
+
+           if ( (CameraDistanceInMM != 0 ) && (fx != 0) )
+           {
+            left_calibration_data.CameraDistanceMultipliedByFocalLength = (double) CameraDistanceInMM/10;
+            left_calibration_data.CameraDistanceMultipliedByFocalLength *= fx;
+           }
 
            left_calibration_data.fx = fx ;
            left_calibration_data.fy = fy ;
@@ -245,9 +250,14 @@ void VisCortx_CameraParameters(int right_cam,double fx,double fy,double cx,doubl
         } else
    if ( right_cam == 1 )
         {
-           // focal_length = fx / mx and focal_length = fy / my
            // SEE http://en.wikipedia.org/wiki/Camera_resectioning#Intrinsic_parameters
-           right_calibration_data.focal_length =  fx ; //TODO ADD Mx My Calculation
+           // and http://opencv.willowgarage.com/documentation/camera_calibration_and_3d_reconstruction.html
+
+           if ( (CameraDistanceInMM != 0 ) && (fx != 0) )
+           {
+            right_calibration_data.CameraDistanceMultipliedByFocalLength = (double) CameraDistanceInMM/10;
+            right_calibration_data.CameraDistanceMultipliedByFocalLength *= fx;
+           }
 
            right_calibration_data.fx = fx ;
            right_calibration_data.fy = fy ;

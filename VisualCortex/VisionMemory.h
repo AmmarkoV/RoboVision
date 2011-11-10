@@ -12,6 +12,7 @@ typedef unsigned char BOOLEAN;
 
 struct DepthData{   // Declare PERSON struct type
         unsigned int score;
+
         unsigned short depth;
         unsigned short edge_count;
         unsigned short movement_count;
@@ -23,6 +24,11 @@ struct DepthData{   // Declare PERSON struct type
 		unsigned short patch_size_x;
         unsigned short patch_size_y;
         unsigned short second_pass_improvement;
+
+        float X;
+        float Y;
+        float Z;
+
 };
 
 struct ImageRegion{

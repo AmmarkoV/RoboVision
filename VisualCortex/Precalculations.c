@@ -37,6 +37,7 @@ unsigned int CameraDistanceInMM = 65;
 
 
 
+
 inline unsigned char AbsUCharVDiff(unsigned char param1,unsigned char param2)
 {
     if ( param1<param2 ) { return param2-param1; }
@@ -78,7 +79,6 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
         return 0;
     }
 */
-
 
   fprintf(stderr,"Calibrating fx=%f fy=%f cx=%f cy=%f\n",fx,fy,cx,cy);
   fprintf(stderr,"k1=%f k2=%f p1=%f p2=%f k3=%f \n",k1,k2,p1,p2,k3);

@@ -4,14 +4,15 @@
 
 struct CameraCalibrationData
 {
-  double focal_length;
-
   double fx;
   double fy;
   double cx;
   double cy;
 
   double k1, k2 , p1 , p2 , k3;
+
+
+  double CameraDistanceMultipliedByFocalLength;
 
   double intrinsic_parameters_array[9];
 };
@@ -22,6 +23,7 @@ struct CameraCalibrationData
 extern unsigned int resection_left_precalc[321*241*3];
 extern unsigned int resection_right_precalc[321*241*3];
 extern unsigned int CameraDistanceInMM;
+extern float CameraDistanceMultipliedByFocalLength;
 
 extern unsigned int precalc_group_block_belong[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
 extern unsigned long precalc_memplace_3byte[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];

@@ -182,7 +182,7 @@ int TrackAllPointsOnRegistersBrute(unsigned int reg_new , unsigned int reg_old ,
         VisCortx_RenewAllTrackPoints(reg_new);
      }
 
-    return 1;
+    return video_register[reg_new].features->current_features;
 }
 
 
@@ -430,7 +430,7 @@ int FindAndTrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int r
    StopUsingVideoRegister(MONOCHROME_TMP_REGISTER_OLD);
 
 
-  return 0;
+  return corner_count;
 }
 
 

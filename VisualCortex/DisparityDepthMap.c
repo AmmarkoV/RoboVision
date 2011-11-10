@@ -95,6 +95,7 @@ void inline FillDepthMemWithData(unsigned short * depth_data_raw_left,unsigned s
 
 	 unsigned int x=0;
 	 unsigned int y=0;
+	 unsigned int ptr=0;
 	 unsigned int xlim=0 , ylim=0 , full_lim=image_x*image_y;
 
 
@@ -102,24 +103,38 @@ void inline FillDepthMemWithData(unsigned short * depth_data_raw_left,unsigned s
 	ylim=y+depth_data->patch_size_y;
 	while (y<ylim)
 	{
-		x = ( (y) * image_x ) + ( depth_data->x1_patch );
-	    xlim=x+depth_data->patch_size_x;
+	    x=depth_data->x1_patch;
+		ptr = ( (y) * image_x ) + ( x );
+	    xlim=ptr+depth_data->patch_size_x;
 
-		while ( ( x<xlim ) && ( x < full_lim) )
+		while ( ( ptr<xlim ) && ( ptr < full_lim) )
 		{
-		    depth_data_raw_left[x]=far_away;
 		    // TODO depth_data_raw_right
-			depth_data_full[x].depth=depth_data->depth;
-            depth_data_full[x].score=depth_data->score;
-            depth_data_full[x].edge_count=depth_data->edge_count;
-            depth_data_full[x].movement_count=depth_data->movement_count;
-            depth_data_full[x].movement_difference=depth_data->movement_difference;
-            depth_data_full[x].x1_patch=depth_data->x1_patch;
-            depth_data_full[x].y1_patch=depth_data->y1_patch;
-            depth_data_full[x].x2_patch=depth_data->x2_patch;
-            depth_data_full[x].y2_patch=depth_data->y2_patch;
-		    depth_data_full[x].patch_size_x=depth_data->patch_size_x;
-            depth_data_full[x].patch_size_y=depth_data->patch_size_y;
+
+			depth_data_raw_left[ptr]=far_away;
+		    depth_data_full[ptr].depth=depth_data->depth;
+            depth_data_full[ptr].score=depth_data->score;
+            depth_data_full[ptr].edge_count=depth_data->edge_count;
+            depth_data_full[ptr].movement_count=depth_data->movement_count;
+            depth_data_full[ptr].movement_difference=depth_data->movement_difference;
+            depth_data_full[ptr].x1_patch=depth_data->x1_patch;
+            depth_data_full[ptr].y1_patch=depth_data->y1_patch;
+            depth_data_full[ptr].x2_patch=depth_data->x2_patch;
+            depth_data_full[ptr].y2_patch=depth_data->y2_patch;
+		    depth_data_full[ptr].patch_size_x=depth_data->patch_size_x;
+            depth_data_full[ptr].patch_size_y=depth_data->patch_size_y;
+
+
+            /* Explained nicely here : http://www.societyofrobots.com/programming_computer_vision_tutorial_pt3.shtml#stereo_vision :P
+             Z_actual = (b * focal_length) / (x_camL - x_camR)
+             X_actual = x_camL * Z_actual / focal_length
+             Y_actual = y_camL * Z_actual / focal_length */
+            if ( depth_data->depth != 0 ) { depth_data_full[ptr].Z= left_calibration_data.CameraDistanceMultipliedByFocalLength / depth_data->depth; }
+			if ( left_calibration_data.fx != 0 ) { depth_data_full[ptr].X = ( x * depth_data_full[ptr].Z ) / left_calibration_data.fx; }
+            if ( left_calibration_data.fy != 0 ) { depth_data_full[ptr].Y = ( y * depth_data_full[ptr].Z ) / left_calibration_data.fy; }
+
+
+            ++ptr;
 			++x;
 		}
 	  ++y;
@@ -524,6 +539,8 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
 
        SaveTransformationMatrixToFile("memfs/LEFT_ROTATION_AND_TRANSLATION0",&left_rotation_and_translation);
        SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION_AND_TRANSLATION0",&right_rotation_and_translation);
+
+       SaveDepthMapToFile("memfs/DEPTH_MAP",CALIBRATED_LEFT_EYE);
 
    }
 
