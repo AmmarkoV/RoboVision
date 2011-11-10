@@ -17,6 +17,9 @@ GLfloat right_translation[16]={0.0};
 double last_load;
 
 
+struct PointData points[320*240]={0};
+unsigned int current_points=0;
+
 void LoadDepth(int snap)
 {
    char filename[60]={0};
@@ -93,3 +96,47 @@ void LoadMatrix4x4(char * filename,int snap,GLfloat * transformation)
 
 
 }
+
+
+void LoadDepthNew(int snap)
+{
+   FILE * fp;
+   fp = fopen("memfs/DEPTH_MAP","r");
+   if (fp == 0) { fprintf(stderr,"Failed to load Depth data \n "); return; }
+
+
+   float smallestX=0.0,largestX=0.0,smallestY=0.0,largestY=0.0,smallestZ=0.0,largestZ=0.0;
+
+   current_points=0;
+   while (feof(fp)==0)
+    {
+      fscanf(fp,"%f",&points[current_points].X);
+      fscanf(fp,"%f",&points[current_points].Y);
+      fscanf(fp,"%f",&points[current_points].Z);
+      fscanf(fp,"%u",&points[current_points].R);
+      fscanf(fp,"%u",&points[current_points].G);
+      fscanf(fp,"%u",&points[current_points].B);
+
+      if (smallestX<points[current_points].X) { smallestX = points[current_points].X;}
+      if (largestX >points[current_points].X) { largestX  = points[current_points].X;}
+      if (smallestY<points[current_points].Y) { smallestY = points[current_points].Y;}
+      if (largestY >points[current_points].Y) { largestY  = points[current_points].Y;}
+      if (smallestZ<points[current_points].Z) { smallestZ = points[current_points].Z;}
+      if (largestZ >points[current_points].Z) { largestZ  = points[current_points].Z;}
+
+
+      if (points[current_points].X > 1000 )
+       {
+           fprintf(stderr,"%0.2f %0.2f %0.2f = RGB ( %u , %u , %u ) \n",points[current_points].X,points[current_points].Y,points[current_points].Z,points[current_points].R,points[current_points].G,points[current_points].B);
+       }
+
+     ++current_points;
+    }
+
+   fprintf(stderr,"Loaded %u points\n",current_points);
+   fprintf(stderr,"Bounding box X ( %0.2f - %0.2f )   Y ( %0.2f - %0.2f )   Z ( %0.2f - %0.2f ) \n",smallestX,largestX,smallestY,largestY,smallestZ,largestZ);
+   fclose(fp);
+}
+
+
+

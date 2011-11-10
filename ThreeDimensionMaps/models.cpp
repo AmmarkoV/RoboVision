@@ -227,7 +227,7 @@ void DrawEmptyDepthMap(int num,float transx,float transy,float transz,float head
 
 
 
-void DrawDepthMap(int num,float transx,float transy,float transz,float heading , float pitch , float roll)
+void DrawDepthMapClassic(int num,float transx,float transy,float transz,float heading , float pitch , float roll)
 {
   unsigned int x,y,memplace=0;
   float rect_left_x = 0.0;
@@ -329,67 +329,122 @@ void DrawDepthMap(int num,float transx,float transy,float transz,float heading ,
 
 
 
-
-
-
-
-
-
-
-
-void DrawDepthMapOLD(int num,float transx,float transy,float transz,float heading , float pitch , float roll)
+void DrawDepthMap(int num,float transx,float transy,float transz,float heading , float pitch , float roll)
 {
-  int x,y,memplace=0;
+  return DrawDepthMapClassic(num,transx,transy,transz,heading,pitch,roll) ;
+  //DEBUG SWITCH
+
+  unsigned int x,y,memplace=0;
+  float rect_left_x = 0.0;
+  float rect_right_x = 0.0;
+  float rect_top_y = 0.0;
+  float rect_bottom_y = 0.0;
+  float depth = 0.0;
+
+
   glPushMatrix();
-  glLoadIdentity();
+
     glTranslated(transx,transy,transz);
 
     glRotated(roll,0.0,0.0,1.0);
     glRotated(heading,0.0,1.0,0.0);
     glRotated(pitch,1.0,0.0,0.0);
 
-               glBegin(GL_QUADS);
-                 glColor3f(1.0f, 0.0f, 0.0f);
-                 glVertex3f(0,0,1);
-                 glVertex3f(320,0,1);
-                 glVertex3f(320,240,1);
-                 glVertex3f(0,240,1);
-               glEnd();
 
       glBegin(GL_QUADS);
-      unsigned int scale_factor = 4;
+      float scale_start = -255;
+      float scale_factor = 3; //-1;
+
+
+
+       memplace=0;
+       unsigned int point_iterator = 0;
+       while (point_iterator<current_points)
+       {
+
+             x=points[current_points].X;
+             y=points[current_points].Y;
+             depth=points[current_points].Z;
+             glColorRGB(points[current_points].R,points[current_points].G,points[current_points].B);
+
+
+             rect_left_x = x;
+             rect_left_x -= 161;
+
+             rect_right_x = rect_left_x + 1;
+
+             rect_top_y = y;
+             rect_top_y = (-1) * rect_top_y;
+             rect_top_y += 45+120+28;
+
+             rect_bottom_y = rect_top_y+1;
+
+
+             depth  = (float) video_depth[memplace];
+             depth  *= (float) scale_factor;
+             depth  += (float ) scale_start;
+
+             //fprintf(stderr," Point %fx%f -> %fx%f = %f \n",rect_left_x,rect_top_y,rect_right_x,rect_bottom_y    ,depth);
+
+            // ACTUAL VOXEL
+             glVertex3f(rect_left_x  ,  rect_top_y  , depth);
+             glVertex3f(rect_right_x ,  rect_top_y  , depth);
+             glVertex3f(rect_right_x ,rect_bottom_y , depth);
+             glVertex3f(rect_left_x  ,rect_bottom_y , depth);
+
+            // ACTUAL TAIL
+
+             glVertex3f(rect_left_x  ,  rect_top_y  , depth-30);
+             glVertex3f(rect_left_x  ,rect_bottom_y , depth-30);
+             glVertex3f(rect_right_x ,  rect_top_y  , depth);
+             glVertex3f(rect_right_x ,rect_bottom_y , depth);
+
+            glVertex3f(rect_left_x  ,  rect_top_y  ,  depth);
+            glVertex3f(rect_right_x ,  rect_top_y  ,  depth);
+            glVertex3f(rect_right_x ,rect_bottom_y ,  depth);
+            glVertex3f(rect_left_x  ,rect_bottom_y ,  depth);
+
+
+           ++point_iterator;
+       }
+
        for (y=0; y<240; y++)
          { for (x=0; x<320; x++)
            {
-             glColorRGB(video_color[memplace],video_color[memplace+1],video_color[memplace+2]);
-
-            // ACTUAL VOXEL
-            glVertex3f(x-1,-(y-1),scale_factor*video_depth[memplace]);
-            glVertex3f(x+1,-(y-1),scale_factor*video_depth[memplace]);
-            glVertex3f(x+1,-(y+1),scale_factor*video_depth[memplace]);
-            glVertex3f(x-1,-(y+1),scale_factor*video_depth[memplace]);
-
-            // ACTUAL TAIL
-            glVertex3f(x-1,-(y-1),0);
-            glVertex3f(x-1,-(y+1),0);
-            glVertex3f(x+1,-(y-1),scale_factor*video_depth[memplace]);
-            glVertex3f(x+1,-(y+1),scale_factor*video_depth[memplace]);
-
-            glVertex3f(x-1,-(y-1),scale_factor*video_depth[memplace]);
-            glVertex3f(x+1,-(y-1),scale_factor*video_depth[memplace]);
-            glVertex3f(x+1,-(y+1),scale_factor*video_depth[memplace]);
-            glVertex3f(x-1,-(y+1),scale_factor*video_depth[memplace]);
 
 
             memplace+=3;
            }
          }
       glEnd();
-   //  glPopMatrix();
-
 
     glTranslated(-transx,-transy,-transz);
+
   glPopMatrix();
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

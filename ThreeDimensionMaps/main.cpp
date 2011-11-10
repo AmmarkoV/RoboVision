@@ -223,6 +223,7 @@ int main(int argc, char *argv[])
 
 
     LoadDepth(0);
+    LoadDepthNew(0);
 
     glutMainLoop();
 
