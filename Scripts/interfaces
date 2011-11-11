@@ -1,0 +1,25 @@
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto eth0
+#iface eth0 inet dhcp
+iface eth0 inet static
+address 192.168.1.14
+netmask 255.255.255.0
+network 192.168.1.0
+broadcast 192.168.1.255
+gateway 192.168.1.1
+
+
+#Wireless as AccessPoint Setup
+auto wlan0
+iface wlan0 inet manual
+wireless-mode master
+wireless-essid GuarddoG
+#Well this is the key in cleartext :P , this has to be changed by the host
+wireless-key 6944769913
+#Well this is the key in cleartext :P , this has to be changed by the host
+wireless-channel 7
+
