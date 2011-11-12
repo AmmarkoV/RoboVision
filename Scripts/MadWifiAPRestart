@@ -1,0 +1,11 @@
+#!/bin/bash
+
+sudo wlanconfig ath0 destroy
+sudo wlanconfig ath0 create wlandev wifi0 wlanmode ap
+sudo ifconfig ath0 up
+sudo ifconfig wifi0 up
+sudo /etc/init.d/networking restart
+sudo ifconfig ath0 up
+sudo ifconfig wifi0 up
+
+exit 0

@@ -10,10 +10,11 @@ case "$1" in
   start)
     echo "Starting GuarddoG script "
       cd /home/guarddog/RoboVision/
-      #Startup Wifi Access Point ( if it exists :P  see Scripts/MadWifi) 
-      sudo ifconfig ath0 up 
-     
+  
+      #make sure wifi is ok!
+      sudo ./Scripts/MadWifiAPRestart
 
+      #startup guarddog!
       sudo ./guarddog_init_service&
     ;;
   stop)
