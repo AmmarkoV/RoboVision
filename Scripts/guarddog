@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "$@" >> /home/guarddog/RoboVisionRuntime/memfs/public_html/commands.dat
+#echo "$@" >> /home/guarddog/RoboVisionX/memfs/public_html/commands.dat
+#echo "$@" >> /home/guarddog/RoboVisionCLI/memfs/public_html/commands.dat
+
+exit 0

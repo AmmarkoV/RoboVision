@@ -17,7 +17,7 @@ gateway 192.168.1.1
 auto ath0
 #iface wlan0 inet manual
 iface ath0 inet static
-address 192.168.2.29
+address 192.168.2.14
 netmask 255.255.255.0
 network 192.168.2.0
 broadcast 192.168.2.255
