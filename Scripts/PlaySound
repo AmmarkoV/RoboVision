@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# This finds out if there is pulse audio or plain alsa sound mixer and use it to hopefully play a wav (?) file 
+
+if [[ `which paplay` ]]
+then
+  paplay "$@"
+elif [[ `which aplay` ]]
+then
+  aplay "$@"
+fi  
+ 
+exit

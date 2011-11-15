@@ -11,17 +11,25 @@ case "$1" in
     echo "Starting GuarddoG script "
       cd /home/guarddog/RoboVision/
   
+      sudo ./Scripts/StopProcessesThatAreNotNeeded 
+
       #make sure wifi is ok!
       sudo ./Scripts/MadWifiAPRestart
+
+      #make sure wifi is ok!
+      sudo ./Scripts/PlaySound  "./DataSets/Sounds/startupv.wav"
 
       #startup guarddog!
       sudo ./guarddog_init_service&
     ;;
   stop)
-    echo "Stopping script blah"
-       killall guarddog_init_service
-       killall RoboVisionCLI
-       killall RoboVisionX
+    echo "Stopping GuarddoG script" 
+       cd /home/guarddog/RoboVision/
+       sudo ./Scripts/PlaySound  "./DataSets/Sounds/shutdownv.wav"
+
+       sudo killall guarddog_init_service
+       sudo killall RoboVisionCLI
+       sudo killall RoboVisionX
     ;;
   *)
     echo "Usage: /etc/init.d/guarddog_linux_startup_script {start|stop}"
