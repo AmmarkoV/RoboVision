@@ -20,6 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "VisCortexConvolutionFilters.h"
 #include "Precalculations.h"
 #include "FeatureTracking.h"
+#include "VisCortexTimer.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -203,6 +204,9 @@ void KillPixelsBetween(unsigned int image_reg,int low_threshold,int high_thresho
  if (image==0) {return;}
  unsigned int image_depth = video_register[image_reg].depth;
 
+
+StartTimer(PIXEL_OVER_THRESHOLD_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+
  register BYTE *start_px = (BYTE *) image;
  register BYTE *px = (BYTE *) image;
  register BYTE *r;
@@ -235,6 +239,7 @@ void KillPixelsBetween(unsigned int image_reg,int low_threshold,int high_thresho
    }
   }
 
+EndTimer(PIXEL_OVER_THRESHOLD_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
  return;
 }
 
@@ -358,6 +363,9 @@ int  Sobel(unsigned int image_reg)
 
   if (image==0) { return(0); }
 
+
+StartTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+
   unsigned char *proc_image=0;
   //proc_image = new unsigned char [ image_x * image_y * 3 ];
   proc_image = ( unsigned char * ) malloc ( sizeof(unsigned char) * image_x * image_y * 3 );
@@ -426,6 +434,8 @@ memcpy(image,proc_image,image_x*image_y*sizeof(BYTE));
 
 free(proc_image);
 
+EndTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+
 return (1);
 }
 
@@ -447,6 +457,7 @@ int SobelFromSource(unsigned int source_reg,unsigned int target_reg)
   //unsigned char *proc_image;
   //proc_image = new unsigned char [ image_x * image_y * 3 ];
 
+StartTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
   BYTE *px;
 
  BYTE p1=0,p2=0,p3=0,p4=0,p5=0,p6=0,p7=0,p8=0,p9=0;
@@ -504,6 +515,7 @@ int SobelFromSource(unsigned int source_reg,unsigned int target_reg)
    }
  } //SOBEL FILTER DONE
 
+EndTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
 
 return (1);
 }
@@ -514,10 +526,15 @@ int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int t
 {
     if (!ThisIsA1ByteRegister(source_reg)) { fprintf(stderr,"SecondDerivative Intensities requires monochrome image conversion"); return 0; }
 
+    StartTimer(SECOND_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+
     signed char table[9]={-1,0,1,0,0,0,1,0,-1};
     signed int divisor = 3;
+    unsigned int retres = ConvolutionFilter9_1Byte(source_reg,target_reg,table,divisor);
 
-    return  ConvolutionFilter9_1Byte(source_reg,target_reg,table,divisor);
+    EndTimer(SECOND_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+
+    return retres;
 }
 
 
@@ -535,6 +552,7 @@ int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int m
 
   if ( (target==0) || (source==0) ) {return(0);}
 
+StartTimer(GAUSSIAN_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
   unsigned char *proc_image=0;
   proc_image = (unsigned char *) malloc( sizeof(unsigned char) * image_x * image_y * 3);
   if (proc_image==0) { fprintf(stderr,"Error allocating memory for proc_image \n"); return 0; }
@@ -638,6 +656,7 @@ int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int m
 	 }
 
  free(proc_image);
+EndTimer(GAUSSIAN_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
 
  return (1);
 }
@@ -666,11 +685,15 @@ unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_arr
 void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
 {
     GaussianBlurFromSource(rgb_image_reg,target_sobel_image_reg,1);
+
 	Sobel(target_sobel_image_reg);
+
 	KillPixelsBetween(target_sobel_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
 
     CopyRegister(rgb_image_reg,GENERAL_3,0,0);
+
     ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
+
 	SecondDerivativeIntensitiesFromSource(GENERAL_3,target_derivative_image_reg);
 
 }
@@ -690,6 +713,8 @@ int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned i
            return i;
          }
     /*The array M is the array calculated from Precalculations.c to speed up things*/
+
+    StartTimer(CALIBRATION_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
     unsigned int ptr=0 , new_ptr = 0, ptr_end = metrics[RESOLUTION_MEMORY_LIMIT_3BYTE] ;
 
@@ -715,7 +740,9 @@ int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned i
      }
 
    video_register[rgb_calibrated].time = video_register[rgb_image].time;
-    //return CopyRegister(rgb_image,rgb_calibrated);
+
+   EndTimer(CALIBRATION_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+
    return 1;
 }
 

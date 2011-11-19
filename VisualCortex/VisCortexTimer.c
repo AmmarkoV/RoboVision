@@ -8,6 +8,10 @@ struct TimerArrItem
    struct timeval starttime;
    struct timeval endtime;
    struct timeval timediff;
+
+   unsigned int last_time;
+   unsigned int total_time;
+   unsigned int times_counted;
 };
 
 
@@ -41,11 +45,43 @@ void StartTimer( unsigned int timer_num )
   gettimeofday(&timers_array[timer_num].starttime,0x0);
 }
 
-int EndTimer( unsigned int timer_num )
+unsigned int EndTimer( unsigned int timer_num )
 {
   gettimeofday(&timers_array[timer_num].endtime,0x0);
-  return timeval_diff(&timers_array[timer_num].timediff,&timers_array[timer_num].endtime,&timers_array[timer_num].starttime);
+
+
+  timers_array[timer_num].last_time = timeval_diff(&timers_array[timer_num].timediff,&timers_array[timer_num].endtime,&timers_array[timer_num].starttime);
+
+  timers_array[timer_num].total_time+=timers_array[timer_num].last_time;
+  ++timers_array[timer_num].times_counted;
+
+
+  if ( timers_array[timer_num].total_time > 100000 )
+    {
+          timers_array[timer_num].total_time = timers_array[timer_num].total_time / 2;
+          timers_array[timer_num].times_counted = timers_array[timer_num].times_counted / 2;
+    }
+
+
+  return timers_array[timer_num].last_time;
 }
+
+unsigned int GetLastTimer( unsigned int timer_num )
+{
+  return timers_array[timer_num].last_time;
+}
+
+unsigned int GetAverageTimer( unsigned int timer_num )
+{
+  if (timers_array[timer_num].times_counted == 0 ) { return 0; }
+  return (unsigned int) timers_array[timer_num].total_time/timers_array[timer_num].times_counted;
+}
+
+unsigned int GetTimesTimerTimed( unsigned int timer_num )
+{
+  return  timers_array[timer_num].times_counted;
+}
+
 
 void VisCortxMillisecondsSleep(unsigned int milliseconds)
 {

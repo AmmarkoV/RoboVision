@@ -68,6 +68,7 @@ enum command_id_consts
   CMD_SCRIPT,
   CMD_STOP_SCRIPT,
   CMD_DELAY,
+  CMD_HYPERVISOR_STATISTICS,
 
   CMD_SEARCH,
   CMD_TELL,
@@ -345,8 +346,10 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
              sprintf(outptstr,"From %s : Stopping Script %s ! \n",from,cmds_1);
              StopScript(cmds_1);
      break;
-
-
+     case CMD_HYPERVISOR_STATISTICS:
+             sprintf(outptstr,"From %s : Hypervisor Statistics  ! \n",from,cmdi_1);
+             VisCortx_GetHyperVisorStatus();
+     break;
      case CMD_DELAY:
              sprintf(outptstr,"From %s : Delaying for %u ms ! \n",from,cmdi_1);
              usleep(cmdi_1*1000);
@@ -440,6 +443,7 @@ int IssueCommandInternal(char * command,char * from,char* outptstr,unsigned int 
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"SCRIPT",6)==1) { chosen_command=CMD_SCRIPT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"STOP SCRIPT",11)==1) { chosen_command=CMD_STOP_SCRIPT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"DELAY",5)==1) { chosen_command=CMD_DELAY; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"HYPERVISOR STATISTICS",21)==1) { chosen_command=CMD_HYPERVISOR_STATISTICS; } else
 
 
 

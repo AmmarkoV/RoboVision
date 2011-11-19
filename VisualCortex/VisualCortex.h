@@ -292,6 +292,7 @@ unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras,float di
 unsigned int VisCortx_SelfCheck();
 void VisCortx_SetSetting(unsigned int set_num,unsigned int set_val);
 void VisCortx_SetDefaultSettings();
+void VisCortx_GetHyperVisorStatus();
 unsigned int VisCortx_GetSetting(unsigned int get_num);
 unsigned int VisCortx_GetMetric(unsigned int get_num);
 void VisCortx_SetPipelineSwitch(unsigned int set_num,unsigned int set_val);

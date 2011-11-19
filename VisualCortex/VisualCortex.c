@@ -39,7 +39,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.602";
+char * VISCORTEX_VER = "0.615";
 
 /*
 
@@ -178,6 +178,24 @@ unsigned int VisCortx_GetPipelineSwitch(unsigned int set_num)
   return pipeline_switches[set_num];
 }
 
+
+void VisCortx_GetHyperVisorStatus()
+{
+  fprintf(stderr,"Visual Cortex HyperVisor status -=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+  fprintf(stderr,"PERFORMANCE , ALL TIMES ARE IN ! ! MICROSECONDS ! !\n");
+  fprintf(stderr," CALIBRATION , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(CALIBRATION_DELAY),GetLastTimer(CALIBRATION_DELAY),GetTimesTimerTimed(CALIBRATION_DELAY));
+  fprintf(stderr," GAUSSIAN , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(GAUSSIAN_DELAY),GetLastTimer(GAUSSIAN_DELAY),GetTimesTimerTimed(GAUSSIAN_DELAY));
+  fprintf(stderr," SOBEL , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(SOBEL_DELAY),GetLastTimer(SOBEL_DELAY),GetTimesTimerTimed(SOBEL_DELAY));
+  fprintf(stderr," SECOND DERIV. , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(SECOND_DERIVATIVE_DELAY),GetLastTimer(SECOND_DERIVATIVE_DELAY),GetTimesTimerTimed(SECOND_DERIVATIVE_DELAY));
+  fprintf(stderr," PIXEL OV THR , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(PIXEL_OVER_THRESHOLD_DELAY),GetLastTimer(PIXEL_OVER_THRESHOLD_DELAY),GetTimesTimerTimed(PIXEL_OVER_THRESHOLD_DELAY));
+  fprintf(stderr," COMPRESS IMAGE , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(COMPRESS_IMAGE_DELAY),GetLastTimer(COMPRESS_IMAGE_DELAY),GetTimesTimerTimed(COMPRESS_IMAGE_DELAY));
+  fprintf(stderr," RECOGNIZE FACES , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(RECOGNIZE_FACES_DELAY ),GetLastTimer(RECOGNIZE_FACES_DELAY ),GetTimesTimerTimed(RECOGNIZE_FACES_DELAY ));
+  fprintf(stderr," FIND CORNERS , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(FIND_CORNERS_DELAY),GetLastTimer(FIND_CORNERS_DELAY),GetTimesTimerTimed(FIND_CORNERS_DELAY));
+  fprintf(stderr," TRACK CORNERS , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(TRACK_CORNERS_DELAY),GetLastTimer(TRACK_CORNERS_DELAY),GetTimesTimerTimed(TRACK_CORNERS_DELAY));
+  fprintf(stderr," DEPTH MAP , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(TIMER_DEPTH_MAP_DELAY),GetLastTimer(TIMER_DEPTH_MAP_DELAY),GetTimesTimerTimed(TIMER_DEPTH_MAP_DELAY));
+  fprintf(stderr," CAMERA POSE TR , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(UPDATE_CAMERA_POSE_DELAY),GetLastTimer(UPDATE_CAMERA_POSE_DELAY),GetTimesTimerTimed(UPDATE_CAMERA_POSE_DELAY));
+  fprintf(stderr,"     -=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+}
 
 void VisCortx_SetMetric(unsigned int set_num,unsigned int set_val)
 {

@@ -1,6 +1,6 @@
 #include "IntegralImageConversion.h"
 #include "Precalculations.h"
-
+#include "VisCortexTimer.h"
 
 /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -422,6 +422,8 @@ unsigned int CompressRegister1Byte(int input,int output)
       return 0;
     }
 
+ StartTimer(COMPRESS_IMAGE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+
   ClearExtraLargeVideoRegister(output);
   unsigned char *in_ptr_start=video_register[input].pixels,*in_ptr=in_ptr_start;
   unsigned int *out_ptr_start=xl_video_register[output].pixels,*out_ptr=out_ptr_start,*out_ptr_adj=out_ptr_start;
@@ -472,6 +474,7 @@ unsigned int CompressRegister1Byte(int input,int output)
       ++x;
     }
 
+ EndTimer(COMPRESS_IMAGE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
   return 1;
 }
 
@@ -493,6 +496,8 @@ unsigned int CompressRegister3Byte(int input,int output)
       fprintf(stderr,"CompressRegister3Byte called with 1byte image\n");
       return 0;
     }
+
+ StartTimer(COMPRESS_IMAGE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
   ClearExtraLargeVideoRegister(output);
   unsigned char *in_ptr_start=video_register[input].pixels,*in_ptr=in_ptr_start;
@@ -558,6 +563,7 @@ unsigned int CompressRegister3Byte(int input,int output)
       ++x;
     }
 
+ EndTimer(COMPRESS_IMAGE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
   return 1;
 }
 

@@ -1,6 +1,7 @@
 #include "FeatureExtraction.h"
 #include "FeatureLists.h"
 #include "VisCortexFilters.h"
+#include "VisCortexTimer.h"
 #include "VisCortexConvolutionFilters.h"
 #include "FeatureTracking.h"
 #include <stdlib.h>
@@ -185,7 +186,9 @@ int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_
 
 
    unsigned int TMP_REGISTER = GetTempRegister();
-   if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register\n"); }
+   if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register\n"); return 0; }
+
+  StartTimer(FIND_CORNERS_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
    CopyRegister(rgb_reg,TMP_REGISTER,1,0);
    ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
    corner_list = (struct xy_local *) fast9_detect_nonmax ( video_register[TMP_REGISTER].pixels ,
@@ -195,11 +198,11 @@ int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_
                                                            &numcorners );
    StopUsingVideoRegister(TMP_REGISTER);
 
+ EndTimer(FIND_CORNERS_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+
 
    ClearFeatureList(video_register[rgb_reg].features);
    video_register[rgb_reg].features->last_track_time  = video_register[rgb_reg].time; // AFTER the procedure , the feature list is up to date
-
-
   if ( corner_list == 0 )
     {
         fprintf(stderr,"FAST Feature extractor returned null pointer .. assuming no memory leak and returning 0 \n");

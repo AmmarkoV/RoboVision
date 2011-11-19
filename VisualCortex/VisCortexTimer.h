@@ -7,14 +7,52 @@ enum VisCortTimerList
 {
    TIMER_PROCESSING_DELAY = 0 ,
    TIMER_DEPTH_MAP_DELAY ,
-   TIMER_DEPTH_MAP_AVERAGE_DELAY ,
+
+
+   // INTERNAL FUNCTIONS
+   COPY_REGISTER_DELAY ,
+
+
+   // CALIBRATION STAGE
+   CALIBRATION_DELAY ,
+
+   // GAUSSIAN CONVOLUTION FILTER
+   GAUSSIAN_DELAY ,
+
+   // SOBEL CONVOLUTION FILTER
+   SOBEL_DELAY ,
+
+   // SECOND DERIVATIVE CONVOLUTION FILTER
+   SECOND_DERIVATIVE_DELAY ,
+
+   // PIXEL OVER THRESHOLD FILTER
+   PIXEL_OVER_THRESHOLD_DELAY ,
+
+   // PIXEL OVER THRESHOLD FILTER
+   COMPRESS_IMAGE_DELAY ,
+
+   // RECOGNIZE FACES FILTER
+   RECOGNIZE_FACES_DELAY ,
+
+   // FIND CORNERS
+   FIND_CORNERS_DELAY ,
+
+   // TRACK CORNERS
+   TRACK_CORNERS_DELAY ,
+
+   // UPDATE CAMERA POSE
+   UPDATE_CAMERA_POSE_DELAY ,
+
 
    TOTAL_TIMERS
 };
 
 
 void StartTimer( unsigned int timer_num );
-int EndTimer( unsigned int timer_num );
+unsigned int EndTimer( unsigned int timer_num );
+unsigned int GetLastTimer( unsigned int timer_num );
+unsigned int GetAverageTimer( unsigned int timer_num );
+unsigned int GetTimesTimerTimed( unsigned int timer_num );
 
 void VisCortxMillisecondsSleep(unsigned int milliseconds);
 void VisCortxMicrosecondsSleep(unsigned int microseconds);

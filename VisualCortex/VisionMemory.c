@@ -19,6 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "VisionMemory.h"
 #include "Precalculations.h"
 #include "VisCortexFilters.h"
+#include "VisCortexTimer.h"
 #include "StateSetting.h"
 
 #define PPMREADBUFLEN 256
@@ -543,6 +544,9 @@ int SwapRegister(unsigned int source,unsigned int target)
 
 int CopyRegister(unsigned int source,unsigned int target,unsigned int copy_features,unsigned int copy_faces)
 {
+ StartTimer(COPY_REGISTER_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+
+
   unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
   if ( video_register[source].depth == 1 ) { image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]; } else
   if ( video_register[source].depth == 3 ) { image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]; } else
@@ -572,6 +576,7 @@ int CopyRegister(unsigned int source,unsigned int target,unsigned int copy_featu
   if (copy_features) { CopyFeatureList(video_register[source].features,video_register[target].features); }
   if (copy_faces) { CopyFeatureList(video_register[source].faces,video_register[target].faces); }
 
+ EndTimer(COPY_REGISTER_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
   return 1;
 }
 

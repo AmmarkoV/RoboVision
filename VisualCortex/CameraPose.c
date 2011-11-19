@@ -2,6 +2,7 @@
 #include "Precalculations.h"
 #include "Matrix.h"
 #include "LinearAlgebra.h"
+#include "VisCortexTimer.h"
 #include "../WorldMapping/MasterWorld/MasterWorld.h"
 
 struct TransformationMatrix left_homography;
@@ -37,6 +38,7 @@ struct TransformationMatrix total_right_rotation_and_translation;
 
 int UpdateCameraPose(unsigned int reg_num)
 {
+ StartTimer(UPDATE_CAMERA_POSE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
    int PRINT_THINGS_DEBUG = 0;
 
@@ -89,6 +91,10 @@ int UpdateCameraPose(unsigned int reg_num)
                  SetAgent(1,x,y,z ,heading,pitch,yaw);
 
                 }
+
+
+  EndTimer(UPDATE_CAMERA_POSE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+
   return 1;
 }
 

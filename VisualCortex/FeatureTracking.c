@@ -3,6 +3,7 @@
 #include "Precalculations.h"
 #include "MovementRegistration.h"
 #include "VisCortexFilters.h"
+#include "VisCortexTimer.h"
 #include "VisionMemory.h"
 #include "PatchComparison.h"
 #include <cv.h>
@@ -369,15 +370,23 @@ int FindAndTrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int r
 
 	// Get the features for tracking
 
-	int corner_count = MAX_CORNERS;
+  StartTimer(FIND_CORNERS_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
+
+	int corner_count = MAX_CORNERS;
 
 	cvGoodFeaturesToTrack( image_1, eig_image, tmp_image, cornersA, &corner_count, 0.05, 5.0, 0, 3, 0, 0.04 );
 
 	cvFindCornerSubPix( image_1, cornersA, corner_count, cvSize( win_size, win_size ),
 		cvSize( -1, -1 ), cvTermCriteria( CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.03 ) );
 
+  EndTimer(FIND_CORNERS_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+
+
+
 	// Call Lucas Kanade algorithm
+
+ StartTimer(TRACK_CORNERS_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 	char features_found[ MAX_CORNERS ];
 	float feature_errors[ MAX_CORNERS ];
 
@@ -392,6 +401,7 @@ int FindAndTrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int r
 		 cvTermCriteria( CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.3 ), 0 );
 
 
+ EndTimer(TRACK_CORNERS_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
 
 
 

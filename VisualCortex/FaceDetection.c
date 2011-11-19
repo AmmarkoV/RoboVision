@@ -5,6 +5,7 @@
 #include "VisionMemory.h"
 #include "FeatureLists.h"
 #include "StateSetting.h"
+#include "VisCortexTimer.h"
 
 IplImage  *image=0;
 char * opencv_pointer_retainer=0; // This is a kind of an ugly hack ( see lines noted with UGLY HACK ) to minimize memcpying between my VisCortex and OpenCV , without disturbing OpenCV
@@ -49,6 +50,8 @@ unsigned int RecognizeFaces(unsigned int vid_reg)
     /* detect faces */
     image->imageData=(char*) video_register[vid_reg].pixels; // UGLY HACK
 
+    StartTimer(RECOGNIZE_FACES_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+
     CvSeq *faces = cvHaarDetectObjects
            (
             image,
@@ -81,6 +84,10 @@ unsigned int RecognizeFaces(unsigned int vid_reg)
                          );
 
     }
+
+
+    EndTimer(RECOGNIZE_FACES_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+
 	return 0;
 }
 
