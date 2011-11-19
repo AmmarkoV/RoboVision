@@ -56,7 +56,7 @@ unsigned int EndTimer( unsigned int timer_num )
   ++timers_array[timer_num].times_counted;
 
 
-  if ( timers_array[timer_num].total_time > 100000 )
+  if ( timers_array[timer_num].total_time > 900000 )
     {
           timers_array[timer_num].total_time = timers_array[timer_num].total_time / 2;
           timers_array[timer_num].times_counted = timers_array[timer_num].times_counted / 2;

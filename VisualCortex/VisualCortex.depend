@@ -57,10 +57,11 @@
 
 1315098721 /home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.h
 
-1316710079 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureExtraction.c
+1321660872 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureExtraction.c
 	"FeatureExtraction.h"
 	"FeatureLists.h"
 	"VisCortexFilters.h"
+	"VisCortexTimer.h"
 	"VisCortexConvolutionFilters.h"
 	"FeatureTracking.h"
 	<stdlib.h>
@@ -75,12 +76,13 @@
 1316710396 /home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureTracking.h
 	"VisionMemory.h"
 
-1320877434 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureTracking.c
+1321660519 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FeatureTracking.c
 	"FeatureTracking.h"
 	"FeatureLists.h"
 	"Precalculations.h"
 	"MovementRegistration.h"
 	"VisCortexFilters.h"
+	"VisCortexTimer.h"
 	"VisionMemory.h"
 	"PatchComparison.h"
 	<cv.h>
@@ -557,12 +559,12 @@
 
 1321534264 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
 
-1321658674 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.c
+1321674346 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.c
 	"VisCortexTimer.h"
 	<sys/time.h>
 	<unistd.h>
 
-1321659244 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.h
+1321662566 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.h
 
 1315852947 /usr/local/include/opencv2/flann/miniflann.hpp
 	"opencv2/core/core.hpp"
