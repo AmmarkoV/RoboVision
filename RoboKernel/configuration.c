@@ -38,6 +38,29 @@ unsigned int motion_lock_on=0;
 unsigned int swap_inputs=0;
 
 
+
+int filename_stripper_found_attack(char * filename)
+{
+   unsigned int i=0;
+   unsigned int length=strlen(filename);
+
+   while (i<length)
+     {
+        if ( (filename[i]=='_') )  { /* UNDERSCORES ARE ACCEPTABLE , OK */} else
+        if ( (filename[i]>='0') && (filename[i]<='9') )  { /* CHARACTER IS A NUMBER , OK */} else
+        if ( (filename[i]>='A') && (filename[i]<='Z') )  { /* CHARACTER IS A CAPITAL LETTER , OK */} else
+        if ( (filename[i]>='a') && (filename[i]<='z') )  { /* CHARACTER IS A LOWERCASE LETTER , OK */} else
+           {
+               return 1;
+           }
+
+        ++i;
+     }
+
+
+   return 0;
+}
+
 char * Int2Str(signed int val)
 {
   // ver 1.0

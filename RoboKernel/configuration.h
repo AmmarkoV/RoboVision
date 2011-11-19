@@ -29,6 +29,7 @@ extern unsigned int web_interface_snaptime;
 extern unsigned int motion_lock_on;
 extern unsigned int swap_inputs;
 
+int filename_stripper_found_attack(char * filename);
 void LoadConfiguration();
 int RefreshDeviceNumbering();
 

@@ -13,6 +13,12 @@
 
 int Say(char * what2say)
 {
+ if (filename_stripper_found_attack(what2say))
+   {
+     /*Weird Filename detected , aborting unsafe code */
+     return 666;
+   }
+
  char command_s[1024]={0};
 
  sprintf(command_s,"killall %s&",tts_command); // Clear all running tts instances ( could also add a script that waits for them to end here )
@@ -28,6 +34,12 @@ int Say(char * what2say)
 
 int PlaySound(char * sndname)
 {
+ if (filename_stripper_found_attack(sndname))
+   {
+     /*Weird Filename detected , aborting unsafe code */
+     return 666;
+   }
+
   char command_s[1024]={0};
   sprintf(command_s,"%s ../DataSets/Sounds/%s.wav&",sound_play_command,sndname);
   fprintf(stderr," %s \n ",command_s);
@@ -37,6 +49,12 @@ int PlaySound(char * sndname)
 
 int RecordSound(char * sndname, unsigned int delay)
 {
+ if (filename_stripper_found_attack(sndname))
+   {
+     /*Weird Filename detected , aborting unsafe code */
+     return 666;
+   }
+
      char command_s[1024]={0};
     if ( delay != 0 )
      {
