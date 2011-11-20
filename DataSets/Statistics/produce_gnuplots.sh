@@ -1,6 +1,9 @@
 #!/bin/bash
 
-gnuplot>  plot  "hypervisor_performance.dat" using 1:2 title 'Column', \ "hypervisor_performance.dat" using 1:3 title 'Beam' \ set terminal 'jpeg' \ set output 'myplot.jpg'
+gnuplot -e 'set terminal png; set output "hypervisor_performance_delay.png"; set xlabel "RoboVision Uptime in ms"; set ylabel "Average Proccesing time in microseconds"; plot "hypervisor_performance.dat" using 1:2 with lines  title "GuarddoG Performance Graph"'
+
+gnuplot -e 'set terminal png; set output "hypervisor_performance_fps.png"; set xlabel "RoboVision Uptime in ms"; set ylabel "Average Frame Rate in fps"; plot "hypervisor_performance.dat" using 1:3 with lines  title "GuarddoG Performance Graph"'
+
 
 
 exit 0

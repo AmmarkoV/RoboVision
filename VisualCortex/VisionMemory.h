@@ -104,6 +104,7 @@ struct ExtraLargeVideoRegister
 };
 
 extern unsigned int TIME_INC;
+extern unsigned int TIME_START;
 extern unsigned int COLD_START;
 
 extern unsigned int pipeline_switches[PIPELINE_SWITCH_COUNT];

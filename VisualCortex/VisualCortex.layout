@@ -86,16 +86,16 @@
 		<Cursor position="238" topLine="0" />
 	</File>
 	<File name="StateSetting.c" open="1" top="0" tabpos="18">
-		<Cursor position="738" topLine="0" />
+		<Cursor position="6321" topLine="181" />
 	</File>
 	<File name="StateSetting.h" open="1" top="0" tabpos="19">
 		<Cursor position="100" topLine="0" />
 	</File>
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="1616" topLine="32" />
+		<Cursor position="10707" topLine="327" />
 	</File>
-	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
-		<Cursor position="247" topLine="0" />
+	<File name="VideoInputAdapter.h" open="1" top="1" tabpos="37">
+		<Cursor position="409" topLine="0" />
 	</File>
 	<File name="VisCortexConvolutionFilters.c" open="1" top="0" tabpos="27">
 		<Cursor position="392" topLine="126" />
@@ -128,15 +128,15 @@
 		<Cursor position="206" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="15594" topLine="10" />
+		<Cursor position="935" topLine="841" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="766" topLine="119" />
+		<Cursor position="1931" topLine="66" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
-		<Cursor position="7853" topLine="185" />
+	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
+		<Cursor position="4452" topLine="117" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="6596" topLine="279" />
+		<Cursor position="5664" topLine="263" />
 	</File>
 </CodeBlocks_layout_file>

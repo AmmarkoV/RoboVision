@@ -84,6 +84,7 @@ unsigned int InitializeEverything(unsigned int res_x,unsigned int res_y)
    fprintf(stderr,"\n");
    fprintf(stderr,"---------------------------------------\n");
 
+
    //unsigned int MAX_INT=-1;
    //fprintf(stderr,"MAX_Integer is %u",MAX_INT);
 
@@ -203,7 +204,9 @@ unsigned int GetMetric(unsigned int get_num)
 void SetTime(unsigned int thetime)
 {
     if ( thetime<TIME_INC) { fprintf(stderr,"VisCortex Clock truncated"); }
-TIME_INC=thetime;
+    if ( TIME_START==0 ) { TIME_START=TIME_INC; }
+
+    TIME_INC=thetime;
 }
 
 

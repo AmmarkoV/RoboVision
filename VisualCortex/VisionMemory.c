@@ -24,6 +24,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #define PPMREADBUFLEN 256
 unsigned int TIME_INC=0;
+unsigned int TIME_START=0;
 unsigned int COLD_START=1;
 
 unsigned int pipeline_switches[PIPELINE_SWITCH_COUNT]={0};

@@ -218,6 +218,10 @@ void VisCortx_GetHyperVisorStatus()
   fprintf(stderr," AVERAGE PROCESSING TIME PER FRAME %u ms - framerate %0.2f fps\n",  ( unsigned int ) average_per_frame/1000 , fps_average );
   fprintf(stderr," PROCESSING TIME FOR LAST FRAME %u ms - framerate %0.2f fps\n",  ( unsigned int ) last_frame/1000 , fps_last );
   fprintf(stderr,"     -=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+
+
+  UpdateStatistics(last_frame,fps_last);
+
 }
 
 void VisCortx_SetMetric(unsigned int set_num,unsigned int set_val)

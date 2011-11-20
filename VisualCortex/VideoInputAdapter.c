@@ -349,3 +349,23 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
 }
 
 
+int UpdateStatistics(unsigned int last_frame_microseconds, float last_fps)
+{
+    FILE *fd=0;
+    fd = fopen("../DataSets/Statistics/hypervisor_performance.dat","a");
+
+    if (fd!=0)
+	{
+      fprintf(fd, "%u %u %0.2f\n", TIME_INC-TIME_START , last_frame_microseconds, last_fps);
+
+
+
+     fflush(fd);
+     fclose(fd);
+     return 1;
+	}
+
+  return 1;
+}
+
+
