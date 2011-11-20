@@ -183,6 +183,7 @@ void VisCortx_GetHyperVisorStatus()
 {
   fprintf(stderr,"Visual Cortex HyperVisor status -=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
   fprintf(stderr,"PERFORMANCE , ALL TIMES ARE IN ! ! MICROSECONDS ! !\n");
+  fprintf(stderr," MEMCPY TO REGISTER , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(WRITE_REGISTER_DELAY),GetLastTimer(WRITE_REGISTER_DELAY),GetTimesTimerTimed(WRITE_REGISTER_DELAY));
   fprintf(stderr," CALIBRATION , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(CALIBRATION_DELAY),GetLastTimer(CALIBRATION_DELAY),GetTimesTimerTimed(CALIBRATION_DELAY));
   fprintf(stderr," GAUSSIAN , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(GAUSSIAN_DELAY),GetLastTimer(GAUSSIAN_DELAY),GetTimesTimerTimed(GAUSSIAN_DELAY));
   fprintf(stderr," SOBEL , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(SOBEL_DELAY),GetLastTimer(SOBEL_DELAY),GetTimesTimerTimed(SOBEL_DELAY));
@@ -198,12 +199,13 @@ void VisCortx_GetHyperVisorStatus()
   fprintf(stderr,"PER FRAME , ALL TIMES ARE IN ! ! MILLISECONDS ! !\n");
   unsigned int last_frame , average_per_frame;
 
+  average_per_frame = GetAverageTimer(WRITE_REGISTER_DELAY)*2        ,    last_frame = GetLastTimer(WRITE_REGISTER_DELAY)*2;
   average_per_frame = GetAverageTimer(UPDATE_CAMERA_POSE_DELAY)*2    ,    last_frame = GetLastTimer(UPDATE_CAMERA_POSE_DELAY)*2;
   average_per_frame += GetAverageTimer(GAUSSIAN_DELAY)*2             ,    last_frame += GetLastTimer(GAUSSIAN_DELAY)*2;
   average_per_frame += GetAverageTimer(SOBEL_DELAY)*2                ,    last_frame += GetLastTimer(SOBEL_DELAY)*2;
   average_per_frame += GetAverageTimer(SECOND_DERIVATIVE_DELAY)*2    ,    last_frame += GetLastTimer(SECOND_DERIVATIVE_DELAY)*2;
   average_per_frame += GetAverageTimer(PIXEL_OVER_THRESHOLD_DELAY)*2 ,    last_frame += GetLastTimer(PIXEL_OVER_THRESHOLD_DELAY)*2;
-  average_per_frame += GetAverageTimer(COMPRESS_IMAGE_DELAY)*4       ,    last_frame += GetLastTimer(COMPRESS_IMAGE_DELAY)*4;
+  average_per_frame += GetAverageTimer(COMPRESS_IMAGE_DELAY)*8       ,    last_frame += GetLastTimer(COMPRESS_IMAGE_DELAY)*8;
   average_per_frame += GetAverageTimer(RECOGNIZE_FACES_DELAY)*2      ,    last_frame += GetLastTimer(RECOGNIZE_FACES_DELAY)*2;
   average_per_frame += GetAverageTimer(FIND_CORNERS_DELAY)*2         ,    last_frame += GetLastTimer(FIND_CORNERS_DELAY)*2;
   average_per_frame += GetAverageTimer(TRACK_CORNERS_DELAY)*2        ,    last_frame += GetLastTimer(TRACK_CORNERS_DELAY)*2;
@@ -403,7 +405,10 @@ unsigned int VisCortx_WriteToVideoRegister(unsigned int reg_num,unsigned int siz
     if ( pic_mem_end > mem_end ) { fprintf(stderr,"Register is not big enough to accomodate data! \n "); return 1; } else
     if ( pic_mem_end < mem_end ) { mem_end = pic_mem_end; }
 
-    memcpy(video_register[reg_num].pixels,rgbdata,mem_end);
+    StartTimer( WRITE_REGISTER_DELAY );
+     memcpy(video_register[reg_num].pixels,rgbdata,mem_end);
+	EndTimer( WRITE_REGISTER_DELAY );
+
 	return 1;
 }
 

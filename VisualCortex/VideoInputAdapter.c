@@ -57,7 +57,7 @@ inline unsigned int FrameAcquisition
        SwapRegister(REG_MOVEMENT,REG_LAST_MOVEMENT);
 
        // SECOND PASS NEW IMAGE
-       VisCortx_WriteToVideoRegister(REG_EYE,size_x,size_y,depth,rgbdata);
+       VisCortx_WriteToVideoRegister(REG_EYE,size_x,size_y,depth,rgbdata); // <- Performance Note , this can be avoided by directly calculating the calibrated image saving 2-4ms
        video_register[REG_EYE].time=TIME_INC;
        CalibrateImage(REG_EYE,REG_CALIBRATED_EYE,REG_CALIBRATION_PRECALCULATION);
 

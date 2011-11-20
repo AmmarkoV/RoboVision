@@ -11,22 +11,22 @@
 		<Cursor position="388" topLine="0" />
 	</File>
 	<File name="command_hal.c" open="1" top="0" tabpos="3">
-		<Cursor position="21060" topLine="417" />
+		<Cursor position="13766" topLine="318" />
 	</File>
 	<File name="command_hal.h" open="1" top="0" tabpos="4">
 		<Cursor position="195" topLine="0" />
 	</File>
-	<File name="command_implementation.c" open="1" top="1" tabpos="11">
-		<Cursor position="1111" topLine="1" />
+	<File name="command_implementation.c" open="1" top="0" tabpos="11">
+		<Cursor position="870" topLine="0" />
 	</File>
 	<File name="command_implementation.h" open="1" top="0" tabpos="12">
 		<Cursor position="196" topLine="0" />
 	</File>
 	<File name="configuration.c" open="1" top="0" tabpos="9">
-		<Cursor position="8723" topLine="243" />
+		<Cursor position="1563" topLine="18" />
 	</File>
 	<File name="configuration.h" open="1" top="0" tabpos="10">
-		<Cursor position="478" topLine="0" />
+		<Cursor position="860" topLine="0" />
 	</File>
 	<File name="gsm_modem.c" open="1" top="0" tabpos="19">
 		<Cursor position="2338" topLine="81" />
@@ -50,7 +50,7 @@
 		<Cursor position="68" topLine="0" />
 	</File>
 	<File name="script_runner.c" open="1" top="0" tabpos="21">
-		<Cursor position="3789" topLine="121" />
+		<Cursor position="78" topLine="0" />
 	</File>
 	<File name="script_runner.h" open="1" top="0" tabpos="22">
 		<Cursor position="156" topLine="0" />
