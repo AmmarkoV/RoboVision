@@ -348,7 +348,7 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      break;
      case CMD_HYPERVISOR_STATISTICS:
              sprintf(outptstr,"From %s : Hypervisor Statistics  ! \n",from);
-             VisCortx_GetHyperVisorStatus();
+             VisCortx_GetHyperVisorStatus(1,1);
      break;
      case CMD_DELAY:
              sprintf(outptstr,"From %s : Delaying for %u ms ! \n",from,cmdi_1);

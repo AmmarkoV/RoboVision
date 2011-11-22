@@ -94,7 +94,7 @@
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
 		<Cursor position="10707" topLine="327" />
 	</File>
-	<File name="VideoInputAdapter.h" open="1" top="1" tabpos="37">
+	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="409" topLine="0" />
 	</File>
 	<File name="VisCortexConvolutionFilters.c" open="1" top="0" tabpos="27">
@@ -133,10 +133,10 @@
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="1931" topLine="66" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="4452" topLine="117" />
+	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+		<Cursor position="9844" topLine="192" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="5664" topLine="263" />
+		<Cursor position="6225" topLine="281" />
 	</File>
 </CodeBlocks_layout_file>

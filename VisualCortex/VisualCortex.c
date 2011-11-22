@@ -39,7 +39,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.615";
+char * VISCORTEX_VER = "0.617";
 
 /*
 
@@ -179,8 +179,10 @@ unsigned int VisCortx_GetPipelineSwitch(unsigned int set_num)
 }
 
 
-void VisCortx_GetHyperVisorStatus()
+void VisCortx_GetHyperVisorStatus(unsigned int print_std,unsigned int print_file)
 {
+ if (print_std)
+ {
   fprintf(stderr,"Visual Cortex HyperVisor status -=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
   fprintf(stderr,"PERFORMANCE , ALL TIMES ARE IN ! ! MICROSECONDS ! !\n");
   fprintf(stderr," MEMCPY TO REGISTER , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(WRITE_REGISTER_DELAY),GetLastTimer(WRITE_REGISTER_DELAY),GetTimesTimerTimed(WRITE_REGISTER_DELAY));
@@ -197,6 +199,7 @@ void VisCortx_GetHyperVisorStatus()
   fprintf(stderr," CAMERA POSE TR , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(UPDATE_CAMERA_POSE_DELAY),GetLastTimer(UPDATE_CAMERA_POSE_DELAY),GetTimesTimerTimed(UPDATE_CAMERA_POSE_DELAY));
   fprintf(stderr,"     -=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
   fprintf(stderr,"PER FRAME , ALL TIMES ARE IN ! ! MILLISECONDS ! !\n");
+ }
   unsigned int last_frame , average_per_frame;
 
   average_per_frame = GetAverageTimer(WRITE_REGISTER_DELAY)*2        ,    last_frame = GetLastTimer(WRITE_REGISTER_DELAY)*2;
@@ -215,13 +218,18 @@ void VisCortx_GetHyperVisorStatus()
   if ( fps_average != 0.0 ) { fps_average = 1000 / fps_average; }
   if ( fps_last != 0.0 )    { fps_last = 1000 / fps_last; }
 
+
+ if (print_std)
+ {
   fprintf(stderr," AVERAGE PROCESSING TIME PER FRAME %u ms - framerate %0.2f fps\n",  ( unsigned int ) average_per_frame/1000 , fps_average );
   fprintf(stderr," PROCESSING TIME FOR LAST FRAME %u ms - framerate %0.2f fps\n",  ( unsigned int ) last_frame/1000 , fps_last );
   fprintf(stderr,"     -=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+ }
 
-
-  UpdateStatistics(last_frame,fps_last);
-
+if (print_file)
+  {
+    UpdateStatistics(last_frame,fps_last);
+  }
 }
 
 void VisCortx_SetMetric(unsigned int set_num,unsigned int set_val)
