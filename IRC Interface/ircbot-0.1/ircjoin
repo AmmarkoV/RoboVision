@@ -1,0 +1,5 @@
+#!/bin/rc
+{
+	for (i in $*)
+		echo ';join' '#'^$i
+} | nc $bothost $botport

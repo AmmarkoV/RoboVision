@@ -1,0 +1,14 @@
+#!/bin/rc
+if (test $#* -le 1) {
+	echo 'usage: msg nick text' >[1=2]
+	exit 1
+}
+if (! ~ $1 '#'^*) {
+	nick='%'^$1
+} else {
+	nick=$1
+}
+shift
+text=$^*
+echo $nick $text | nc $bothost $botport
+

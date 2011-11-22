@@ -1,0 +1,8 @@
+#!/bin/rc
+{
+for (i in $*) {
+	echo $i
+}
+} >> $nickfile
+echo readnicks | nc $bothost $botport
+

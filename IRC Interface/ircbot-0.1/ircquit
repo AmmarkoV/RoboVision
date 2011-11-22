@@ -1,0 +1,3 @@
+#!/bin/rc
+echo ';quit' ':'^$^* | nc $bothost $botport
+

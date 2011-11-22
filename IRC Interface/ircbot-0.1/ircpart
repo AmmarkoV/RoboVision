@@ -1,0 +1,14 @@
+#!/bin/rc
+{
+	if (~ $#* 0) {
+		if (~ $fromchannel ()) {
+			echo need a channel to part >[1=2]
+			exit 1
+		}
+		echo ';part' $fromchannel
+	} else {
+		for (i in $*)
+			echo ';part' '#'^$i
+	}
+} | nc $bothost $botport
+

@@ -1,0 +1,11 @@
+#!/bin/rc
+{
+	if (~ $#* 0) {
+		echo ';mode' $target +o $fromuser
+	} else {
+		for (newop in $*) {
+			echo ';mode' $target +o $newop
+		}
+	}
+} | nc $bothost $botport
+

@@ -1,0 +1,10 @@
+#!/bin/rc
+if (test $#* -ge 2 && ~ $1 '#'*) {
+	target=$1
+	shift
+} else if (! ~ $target '#'*) {
+	echo need channel to set topic on >[1=2]
+	exit 1
+}
+echo ';topic' $target ':'^$^* | nc $bothost $botport
+

@@ -1,0 +1,20 @@
+#!/bin/bash
+echo "IRC Bot  / Provides bot for irc  / Author : Mechiel Lukkien"  
+echo "http://www.ueber.net/who/mjl/projects/ircbot/  , mechiel@ueber.net "
+
+if [ -e ircbot ]
+then
+  rm bin/Release/ircbot
+fi 
+
+cc ircbot.c -pthread -lm -lrt -o bin/Release/ircbot
+
+
+if [ -e bin/Release/ircbot ]
+then
+  echo "Success.."
+else
+  echo "Failure.."
+fi
+
+exit 0

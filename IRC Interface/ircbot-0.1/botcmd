@@ -1,0 +1,14 @@
+#!/bin/rc
+# public domain
+
+if (! ~ $#* 1) {
+	exit 1
+}
+
+if (~ $target ()) {
+	target='#'
+} else if (! ~ $target '#'^*) {
+	target='%'^$target
+}
+
+{echo $1 | rc >[2=1] | head -n15 | expand | sed -e 's/^/'^$target^' /g' | nc $bothost $botport}&

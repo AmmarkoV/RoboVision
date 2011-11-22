@@ -1,0 +1,16 @@
+#!/bin/rc
+
+if (~ $#* 0) {
+	commands=`{ls -1 $home^/bin}
+	for (i in `{jot $#commands 1}) {
+		echo -n $commands($i)
+		if (! ~ $#commands $i) {
+			echo -n ', '
+		}
+	}
+	echo
+} else {
+	echo usage: help >[1=2]
+	exit 1
+}
+
