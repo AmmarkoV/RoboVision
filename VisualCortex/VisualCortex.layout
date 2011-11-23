@@ -92,7 +92,7 @@
 		<Cursor position="100" topLine="0" />
 	</File>
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="10707" topLine="327" />
+		<Cursor position="10760" topLine="327" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="409" topLine="0" />
@@ -122,21 +122,21 @@
 		<Cursor position="247" topLine="0" />
 	</File>
 	<File name="VisCortexTimer.c" open="1" top="0" tabpos="41">
-		<Cursor position="887" topLine="18" />
+		<Cursor position="887" topLine="21" />
 	</File>
 	<File name="VisCortexTimer.h" open="1" top="0" tabpos="42">
-		<Cursor position="206" topLine="0" />
+		<Cursor position="156" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="935" topLine="841" />
+		<Cursor position="11014" topLine="247" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="1931" topLine="66" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
-		<Cursor position="9844" topLine="192" />
+		<Cursor position="8505" topLine="197" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="6225" topLine="281" />
+		<Cursor position="6143" topLine="276" />
 	</File>
 </CodeBlocks_layout_file>

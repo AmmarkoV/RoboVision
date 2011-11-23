@@ -127,6 +127,14 @@ inline unsigned int FrameProcessing
            VisCortx_Movement_Detection((left_right_switch==1),(left_right_switch==1));
          }
 
+     if (settings[USE_MOVEMENT_FLOW_FOR_CALCULATION_SKIPPING])
+       {
+        if ( MoveRegEnabledAndNoMovement(50) )
+           { // No movement after checking for movement
+             return 1;
+           }
+       }
+
         if ( settings[PASS_TO_FACE_DETECTOR] ) { RecognizeFaces(REG_CALIBRATED_EYE); }
 
         if ( settings[PASS_TO_FEATURE_DETECTOR] )

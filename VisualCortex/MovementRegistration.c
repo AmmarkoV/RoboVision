@@ -19,6 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "MovementRegistration.h"
 #include "Precalculations.h"
+#include "VisCortexTimer.h"
 #include "IntegralImageConversion.h"
 
 
@@ -34,6 +35,7 @@ unsigned int RegisterMovements(BOOLEAN lefteye,unsigned int last_source_block_re
  //unsigned char *last_source_block=;
 // unsigned char *source_block=     ;
 // unsigned char *background_block= video_register[background_block_reg].pixels;
+  StartTimer(MOVEMENT_RAW_DELAY);
 
  unsigned int  changes=0,last_changes = 0; //Tha metrisei athroistika posa pixels allaksan
 
@@ -79,6 +81,19 @@ unsigned int RegisterMovements(BOOLEAN lefteye,unsigned int last_source_block_re
 //CompressRegister(movement_target,movement_target_grouped);
 video_register[movement_target].depth=1; // Set BitDepth of output array as 1
 
+ EndTimer(MOVEMENT_RAW_DELAY);
  return changes;
 }
 
+int IfMovementRegistrationEnabledAndOverOrDisabled(int number_over)
+{
+   if  ( (settings[CALCULATE_MOVEMENT_FLOW]) && ( ( metrics[CHANGES_LEFT]>number_over)||( metrics[CHANGES_RIGHT]>number_over) ) ) { return 1; }
+   if  (!settings[CALCULATE_MOVEMENT_FLOW]) { return 1; }
+
+   return 0;
+}
+
+int MoveRegEnabledAndNoMovement(int number_over)
+{
+    return (!IfMovementRegistrationEnabledAndOverOrDisabled(number_over));
+}

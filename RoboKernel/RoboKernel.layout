@@ -5,28 +5,28 @@
 		<Cursor position="481" topLine="0" />
 	</File>
 	<File name="activity_coordination.c" open="1" top="0" tabpos="18">
-		<Cursor position="543" topLine="0" />
+		<Cursor position="1874" topLine="0" />
 	</File>
 	<File name="activity_coordination.h" open="1" top="0" tabpos="17">
 		<Cursor position="388" topLine="0" />
 	</File>
-	<File name="command_hal.c" open="1" top="1" tabpos="3">
-		<Cursor position="13734" topLine="318" />
+	<File name="command_hal.c" open="1" top="0" tabpos="3">
+		<Cursor position="13118" topLine="304" />
 	</File>
 	<File name="command_hal.h" open="1" top="0" tabpos="4">
 		<Cursor position="195" topLine="0" />
 	</File>
 	<File name="command_implementation.c" open="1" top="0" tabpos="11">
-		<Cursor position="870" topLine="0" />
+		<Cursor position="973" topLine="3" />
 	</File>
 	<File name="command_implementation.h" open="1" top="0" tabpos="12">
-		<Cursor position="196" topLine="0" />
+		<Cursor position="91" topLine="0" />
 	</File>
 	<File name="configuration.c" open="1" top="0" tabpos="9">
-		<Cursor position="1563" topLine="18" />
+		<Cursor position="219" topLine="0" />
 	</File>
 	<File name="configuration.h" open="1" top="0" tabpos="10">
-		<Cursor position="860" topLine="0" />
+		<Cursor position="119" topLine="0" />
 	</File>
 	<File name="gsm_modem.c" open="1" top="0" tabpos="19">
 		<Cursor position="2338" topLine="81" />
@@ -34,8 +34,8 @@
 	<File name="gsm_modem.h" open="1" top="0" tabpos="20">
 		<Cursor position="275" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="5166" topLine="42" />
+	<File name="main.c" open="1" top="1" tabpos="1">
+		<Cursor position="2555" topLine="90" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
 		<Cursor position="479" topLine="0" />
@@ -44,10 +44,10 @@
 		<Cursor position="76" topLine="0" />
 	</File>
 	<File name="motor_system.c" open="1" top="0" tabpos="13">
-		<Cursor position="245" topLine="0" />
+		<Cursor position="53" topLine="0" />
 	</File>
 	<File name="motor_system.h" open="1" top="0" tabpos="16">
-		<Cursor position="68" topLine="0" />
+		<Cursor position="109" topLine="0" />
 	</File>
 	<File name="script_runner.c" open="1" top="0" tabpos="21">
 		<Cursor position="78" topLine="0" />
@@ -56,13 +56,13 @@
 		<Cursor position="156" topLine="0" />
 	</File>
 	<File name="visual_system.c" open="1" top="0" tabpos="5">
-		<Cursor position="3780" topLine="75" />
+		<Cursor position="3780" topLine="0" />
 	</File>
 	<File name="visual_system.h" open="1" top="0" tabpos="6">
 		<Cursor position="175" topLine="0" />
 	</File>
 	<File name="webinterface.c" open="1" top="0" tabpos="7">
-		<Cursor position="1982" topLine="76" />
+		<Cursor position="734" topLine="12" />
 	</File>
 	<File name="webinterface.h" open="1" top="0" tabpos="8">
 		<Cursor position="151" topLine="0" />

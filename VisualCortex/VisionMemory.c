@@ -278,6 +278,8 @@ void DefaultSettings()
    settings[CALCULATE_MOVEMENT_MATRIX]=1;
    settings[CALCULATE_MOVEMENT_FLOW]=1;
 
+   settings[USE_MOVEMENT_FLOW_FOR_CALCULATION_SKIPPING]=1;
+
    settings[REMEMBER_FACES]=1;
 
    settings[FEATURE_TRACKING_MAX_MOVEMENT_THRESHOLD]=120; /* FEATURE Tracking comparison threshold */

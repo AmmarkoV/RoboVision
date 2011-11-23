@@ -8,6 +8,12 @@ int FeaturesAquired(unsigned int video_reg_num)
        //Features will never be aquired because they are disabled.. :P
        return 0;
    }
+  if ( VisCortx_GetFeature(video_reg_num,0,TOTAL_POINTS)==0 )
+   {
+       fprintf(stderr,"TODO : VisCortex Should swap back to the last features if it can be done :P\n ");
+       //Features will never be aquired because there are no features :P
+       return 0;
+   }
 
  unsigned int wait_time = 0 , max_wait_time = 1000;
      while ( (wait_time<max_wait_time) && ( VisCortx_GetFeature(video_reg_num,0,FEATURE_LAST_TRACK_TIME ) != VisCortx_GetVideoRegisterData(video_reg_num,0 /*TODO ADD AN ENUM*/) ) )

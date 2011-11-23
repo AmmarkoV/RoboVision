@@ -61,7 +61,7 @@ int UpdateCameraPose(unsigned int reg_num)
                  if (PRINT_THINGS_DEBUG) { PrintMatrix("Left rotation",&left_rotation); }
 
                  float  x = 1.0 , y = 1.0 , z = 1.0 , heading , pitch , yaw ;
-                // GetAgent(0,&x,&y,&z,&heading,&pitch,&yaw);
+                 GetAgent(0,&x,&y,&z,&heading,&pitch,&yaw);
                  if (PRINT_THINGS_DEBUG) { fprintf(stderr,"Point was %0.2f , %0.2f , %0.2f  and now is ",x,y,z); }
                  Multiply3DPointWithMatrix(&x,&y,&z ,&left_rotation);
                  if (PRINT_THINGS_DEBUG) { fprintf(stderr," %0.2f , %0.2f , %0.2f  \n",x,y,z); }
@@ -86,7 +86,7 @@ int UpdateCameraPose(unsigned int reg_num)
                  if (PRINT_THINGS_DEBUG) { PrintMatrix("Right rotation",&right_rotation); }
 
                  float  x = 1.0 , y = 1.0 , z = 1.0 , heading , pitch , yaw ;
-                // GetAgent(1,&x,&y,&z,&heading,&pitch,&yaw);
+                 GetAgent(1,&x,&y,&z,&heading,&pitch,&yaw);
                  Multiply3DPointWithMatrix(&x,&y,&z ,&left_rotation);
                  SetAgent(1,x,y,z ,heading,pitch,yaw);
 
