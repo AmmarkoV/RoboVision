@@ -1,4 +1,4 @@
-#!/bin/rc
+#!/usr/bin/rc
 {
 	for (i in $*)
 		echo ';join' '#'^$i

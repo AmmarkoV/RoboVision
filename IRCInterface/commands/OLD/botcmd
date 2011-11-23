@@ -1,4 +1,4 @@
-#!/bin/rc
+#!/usr/bin/rc
 # public domain
 
 if (! ~ $#* 1) {

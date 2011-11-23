@@ -2,6 +2,7 @@
 #include <pthread.h>
 #include "webinterface.h"
 #include "command_hal.h"
+#include "command_implementation.h"
 #include "visual_system.h"
 #include "gsm_modem.h"
 #include "configuration.h"
@@ -199,10 +200,14 @@ int EraseConsoleOutput()
 int WriteConsoleOutput(char * outstr)
 {
   FILE * pFile=0;
+
+  printf("%s\n",outstr);
+  IRCSay(outstr);
+
+
   pFile = fopen ("memfs/public_html/consoleout.dat","a");
   if (pFile!=0 )
   {
-    printf("%s\n",outstr);
     fprintf(pFile,"%s\n",outstr);
     fclose(pFile);
     return 1;

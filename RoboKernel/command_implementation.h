@@ -1,6 +1,7 @@
 #ifndef COMMAND_IMPLEMENTATION_H_INCLUDED
 #define COMMAND_IMPLEMENTATION_H_INCLUDED
 
+int IRCSay(char * what2say);
 int Say(char * what2say);
 int PlaySound(char * sndname);
 int RecordSound(char * sndname, unsigned int delay);

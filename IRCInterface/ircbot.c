@@ -427,7 +427,8 @@ handlequeue(char *nick, const char *listenhost, const char *listenport, const ch
 			 * <<< :brein!plan@tunnel4040.ipv6.xs4all.nl NICK :newbrein
 			 */
 			if (strequiv(msg->cmd, "NICK") && msg->nparams == 1 &&
-			    msg->src != nil && msg->src->nick != nil && strequiv(msg->src->nick, nick)) {
+			    msg->src != nil && msg->src->nick != nil && strequiv(msg->src->nick, nick)) 
+                        {
 				free(nick);
 				nick = xstrdup(msg->params[0]);
 			}
@@ -453,7 +454,8 @@ handlequeue(char *nick, const char *listenhost, const char *listenport, const ch
 					if (strequiv(msg->params[0], nick))	/* private message to bot, send response to nick, not channel */
 						target = msg->src->nick;
 
-					switch (fork()) {
+					switch (fork()) 
+                                    {
 					case 0:
 						setenv("target", target, 1);
 						setenv("nick", nick, 1);
@@ -486,12 +488,15 @@ handlequeue(char *nick, const char *listenhost, const char *listenport, const ch
 			free(data); data = nil;
 			break;
 		case INTYPEbuiltin:	/* built in commands */
-			if (streql("flush", (char *)data)) {
+			if (streql("flush", (char *)data)) 
+                        {
 				qflushout();
-			} else if (streql("readnicks", (char *)data)) {
+			} else if (streql("readnicks", (char *)data)) 
+                        {
 				nfree(nicks);
 				nicks = nnew(nickfile);
-			} else {
+			} else 
+                        {
 				warnx("unexpected builtin command read in handlequeue: %s", (char *)data);
 			}
 			free(data); data = nil;

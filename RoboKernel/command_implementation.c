@@ -10,6 +10,26 @@
 
 
 
+int IRCSay(char * what2say)
+{
+    //IRC Messages need security checks but are disabled for debugging for now :P
+/*
+ if (filename_stripper_found_attack(what2say))
+   {
+     //Weird Filename detected , aborting unsafe code
+     return 666;
+   }*/
+
+ char command_s[1024]={0};
+
+ sprintf(command_s,"../IRCInterface/commands/say 127.0.0.1 6667 foss-aueb \"%s\" &",what2say); // Clear all running tts instances ( could also add a script that waits for them to end here )
+ fprintf(stderr,"IRC COMMAND: %s " , command_s);
+ int i=system((const char * ) command_s);
+
+
+ return i;
+}
+
 
 int Say(char * what2say)
 {

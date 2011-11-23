@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ $# -lt 3 ]
+then
+  echo "Usage: `basename $0` ircd_host_ip ircd_port channel_name(without #) "
+  echo "i.e. : `basename $0` 127.0.0.1 6667 my_irc_channel "
+  exit $E_BADARGS
+fi
+echo ';join' '#'$3 | nc $1 $2
+
+exit 0 
