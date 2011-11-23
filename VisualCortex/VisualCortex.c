@@ -200,35 +200,24 @@ void VisCortx_GetHyperVisorStatus(unsigned int print_std,unsigned int print_file
   fprintf(stderr,"     -=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
   fprintf(stderr,"PER FRAME , ALL TIMES ARE IN ! ! MILLISECONDS ! !\n");
  }
-  unsigned int last_frame , average_per_frame;
 
-  average_per_frame = GetAverageTimer(WRITE_REGISTER_DELAY)*2        ,    last_frame = GetLastTimer(WRITE_REGISTER_DELAY)*2;
-  average_per_frame = GetAverageTimer(UPDATE_CAMERA_POSE_DELAY)*2    ,    last_frame = GetLastTimer(UPDATE_CAMERA_POSE_DELAY)*2;
-  average_per_frame += GetAverageTimer(GAUSSIAN_DELAY)*2             ,    last_frame += GetLastTimer(GAUSSIAN_DELAY)*2;
-  average_per_frame += GetAverageTimer(SOBEL_DELAY)*2                ,    last_frame += GetLastTimer(SOBEL_DELAY)*2;
-  average_per_frame += GetAverageTimer(SECOND_DERIVATIVE_DELAY)*2    ,    last_frame += GetLastTimer(SECOND_DERIVATIVE_DELAY)*2;
-  average_per_frame += GetAverageTimer(PIXEL_OVER_THRESHOLD_DELAY)*2 ,    last_frame += GetLastTimer(PIXEL_OVER_THRESHOLD_DELAY)*2;
-  average_per_frame += GetAverageTimer(COMPRESS_IMAGE_DELAY)*8       ,    last_frame += GetLastTimer(COMPRESS_IMAGE_DELAY)*8;
-  average_per_frame += GetAverageTimer(RECOGNIZE_FACES_DELAY)*2      ,    last_frame += GetLastTimer(RECOGNIZE_FACES_DELAY)*2;
-  average_per_frame += GetAverageTimer(FIND_CORNERS_DELAY)*2         ,    last_frame += GetLastTimer(FIND_CORNERS_DELAY)*2;
-  average_per_frame += GetAverageTimer(TRACK_CORNERS_DELAY)*2        ,    last_frame += GetLastTimer(TRACK_CORNERS_DELAY)*2;
-  average_per_frame += GetAverageTimer(UPDATE_CAMERA_POSE_DELAY)*2   ,    last_frame += GetLastTimer(UPDATE_CAMERA_POSE_DELAY)*2;
-
-  float fps_average = average_per_frame/1000 , fps_last = last_frame/1000;
+  float fps_average = GetAverageTimer(TIMER_PROCESSING_DELAY)/1000 , fps_last = GetLastTimer(TIMER_PROCESSING_DELAY)/1000;
   if ( fps_average != 0.0 ) { fps_average = 1000 / fps_average; }
   if ( fps_last != 0.0 )    { fps_last = 1000 / fps_last; }
 
 
+
+
  if (print_std)
  {
-  fprintf(stderr," AVERAGE PROCESSING TIME PER FRAME %u ms - framerate %0.2f fps\n",  ( unsigned int ) average_per_frame/1000 , fps_average );
-  fprintf(stderr," PROCESSING TIME FOR LAST FRAME %u ms - framerate %0.2f fps\n",  ( unsigned int ) last_frame/1000 , fps_last );
+  fprintf(stderr," AVERAGE PROCESSING TIME PER FRAME %u ms - framerate %0.2f fps\n",  ( unsigned int ) GetAverageTimer(TIMER_PROCESSING_DELAY)/1000 , fps_average );
+  fprintf(stderr," PROCESSING TIME FOR LAST FRAME %u ms - framerate %0.2f fps\n",  ( unsigned int ) GetLastTimer(TIMER_PROCESSING_DELAY)/1000 , fps_last );
   fprintf(stderr,"     -=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
  }
 
 if (print_file)
   {
-    UpdateStatistics(last_frame,fps_last);
+    UpdateStatistics(GetLastTimer(TIMER_PROCESSING_DELAY),fps_last);
   }
 }
 

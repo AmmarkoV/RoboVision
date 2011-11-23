@@ -1,7 +1,6 @@
 #include "motor_system.h"
 #include "configuration.h"
 
-int motor_system_autonomous = 0;
 
 int InitMotorSystem()
 {

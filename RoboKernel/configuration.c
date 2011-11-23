@@ -9,6 +9,8 @@
 #define MAX_LINE_SIZE 2048
 
 
+int system_autonomous=0;
+
 char video_device_1[MAX_STR]="/dev/video0";
 char video_device_2[MAX_STR]="/dev/video1";
 char gsm_modem[MAX_STR]="/dev/ttyUSB2";

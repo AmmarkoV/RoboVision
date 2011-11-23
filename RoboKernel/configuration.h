@@ -3,6 +3,9 @@
 
 #define MAX_STR 256
 
+extern int system_autonomous;
+
+
 extern char video_device_1[MAX_STR];
 extern char video_device_2[MAX_STR];
 extern char rd01_device[MAX_STR];

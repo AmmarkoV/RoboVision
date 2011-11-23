@@ -356,7 +356,10 @@ int UpdateStatistics(unsigned int last_frame_microseconds, float last_fps)
 
     if (fd!=0)
 	{
-      fprintf(fd, "%u %u %0.2f\n", TIME_INC-TIME_START , last_frame_microseconds, last_fps);
+
+
+	  float uptime_in_seconds = (TIME_INC-TIME_START) / 1000;
+      fprintf(fd, "%0.2f %u %0.2f\n", uptime_in_seconds , last_frame_microseconds, last_fps);
 
 
 

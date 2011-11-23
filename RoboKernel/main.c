@@ -15,6 +15,10 @@
 
 #include "../MotorFoundation/MotorHAL.h"
 
+
+#define PRINT_DOTS_ALIVE 1
+
+
 struct ThreadPassParam { int feednum; };
 int go_to_sleep=0;
 
@@ -89,6 +93,10 @@ void find_something_to_do(unsigned int clock_time)
 void do_something(unsigned int clock_time)
 {
   /* THIS FUNCTION WILL EXECUTE SCRIPT OF FUNCTIONS CREATED BY FIND_SOMETHING_TO_DO */
+
+  if ( motion_lock_on == 1 ) { CheckAlarm(VisCortx_GetMetric(CHANGES_LEFT) , VisCortx_GetMetric(CHANGES_RIGHT)); }
+
+
   if ( keep_snapshots == 1 )
     {
         if (clock_time<last_snapshot_activation ) { last_snapshot_activation = 0; } /* SLOPPY TRUNCATION :P */ else
@@ -99,6 +107,13 @@ void do_something(unsigned int clock_time)
               last_snapshot_activation = clock_time;
          }
     }
+
+  if ( system_autonomous == 1)
+         {
+             if ( clock_time % 5 == 0 ) { fprintf(stderr,"Reminder, that Hypervisor status is recorded\n"); VisCortx_GetHyperVisorStatus(0,1); } else
+             if ( clock_time % 5000 == 0 ) { RobotStartRotating(50,1); } else
+             if ( clock_time % 10000 == 0 ) { RobotStartRotating(50,-1); }
+         }
 
 }
 
@@ -182,24 +197,17 @@ void * KernelLoop(void *ptr )
         /* PASS VIDEO REFERENCES AROUND MEMORY */
         PassVideoInputToCortex(clock_count);
 
-        //TakeCareOfNetworkInterface(clock_count);
-
-        if ( motion_lock_on == 1 ) { CheckAlarm(VisCortx_GetMetric(CHANGES_LEFT) , VisCortx_GetMetric(CHANGES_RIGHT)); }
-
+        /* PERFORM GUARDDOG DUTIES -----------------*/
         find_something_to_do(clock_count);
+
         do_something(clock_count);
+        /* -----------------------------------------*/
 
-        //fprintf(stderr,"%u ms ( %u )\n",clock_count,clock_countbig);
+
         ++loopcount;
-        if ( motor_system_autonomous )
-         {
-             if ( loopcount % 5000 == 0 ) { RobotStartRotating(50,1); } else
-             if ( loopcount % 10000 == 0 ) { RobotStartRotating(50,-1); }
-
-         }
-        if (loopcount%20000 == 0 )  { fprintf(stderr,"."); }
-
         usleep(1000);
+
+        if ( (PRINT_DOTS_ALIVE) && (loopcount%20000 == 0) )  { fprintf(stderr,"."); }
     }
 
   IssueCommand("SAY(Robovision closing)",0,0,"RoboKernel");
