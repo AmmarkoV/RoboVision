@@ -497,15 +497,15 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
         DrawFacesAtFeed( dc , feed_1_x , feed_1_y , CALIBRATED_RIGHT_EYE ); // DRAW FACES ON RIGHT EYE
 
 
-
+/*
        if ( Autonomous->IsChecked() )
           {
              if ( (VisCortx_GetFaces(CALIBRATED_LEFT_EYE,0,TOTAL_POINTS)>0) || (VisCortx_GetFaces(CALIBRATED_RIGHT_EYE,0,TOTAL_POINTS)>0) )
              {
-               //IssueCommand((char *) "PLAYSOUND(alarm)",0,0,(char *)"GUI");
+               IssueCommand((char *) "PLAYSOUND(alarm)",0,0,(char *)"GUI");
              }
           }
-
+*/
       dc.SetPen(marker);
 
 
@@ -537,7 +537,7 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
 
      float x,y,z,heading,pitch,yaw;
      GetAgent(0,&x,&y,&z,&heading,&pitch,&yaw);
-     msg.Clear()  , msg.Printf( wxT("X:%.2f Y:%.2f Z:%.2f heading:%.2f") , x,y,z,heading );
+     msg.Clear()  , msg.Printf( wxT("X:%0.2f Y:%0.2f Z:%0.2f heading:%0.2f") , x,y,z,heading );
      PoseString->SetLabel(msg);
 
      last_draw =  uptimer->Time();
@@ -796,7 +796,9 @@ void RoboVisionXFrame::OnSaveSnapshotsClick(wxCommandEvent& event)
 
 void RoboVisionXFrame::OnAutonomousClick(wxCommandEvent& event)
 {
-    IssueCommand((char *) "AUTONOMOUS MODE",0,0,(char *)"GUI");
+//    IssueCommand((char *) "AUTONOMOUS MODE",0,0,(char *)"GUI");
+   if ( Autonomous->IsChecked() ) { IssueCommand((char *) "AUTONOMOUS MODE(1)",0,0,(char *)"GUI");  } else
+                                  { IssueCommand((char *) "AUTONOMOUS MODE(0)",0,0,(char *)"GUI");  }
 }
 
 

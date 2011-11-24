@@ -9,6 +9,8 @@
 // TO SET VIDEO MODE V4L2_PIX_FMT_RGB24
 #include <linux/videodev2.h>
 
+int USE_VIS_CORTEX_LOCKS = 0;
+
 wxMouseState mouse;
 wxBitmap *default_feed=0;
 wxBitmap *default_patch=0;
@@ -165,9 +167,30 @@ int SnapWebCams()
       (!VisCortx_VideoRegistersSynced(RIGHT_EYE,CALIBRATED_RIGHT_EYE))
      )
   {
-       fprintf(stderr,"Feeds not synchronized , not drawing frame \n");
+       fprintf(stderr,"Feeds not synchronized , not copying frame \n");
        return 0;
   }
+
+if (USE_VIS_CORTEX_LOCKS)
+{
+ unsigned int wait_time=0 , MAX_WAIT = 1000;
+ while ( wait_time < MAX_WAIT )
+ {
+   if ( ! VisCortx_CheckTheFramesLeftRightForLock() )
+   {
+       break;
+   }
+   ++wait_time;
+   wxMilliSleep(10);
+ }
+ if ( wait_time >= MAX_WAIT )
+  {
+      fprintf(stderr,"Feeds locked , not copying frame \n");
+      return 0;
+  }
+
+ VisCortx_OperationLockFramesLeftRight();
+}
 
  if (last_viscrtx_pass==VisCortx_GetTime()) { return 0; }
  last_viscrtx_pass=VisCortx_GetTime();
@@ -219,6 +242,11 @@ if ( last_time_of_left_operation != VisCortx_GetVideoRegisterData(LAST_LEFT_OPER
          last_time_of_right_depth_map= VisCortx_GetVideoRegisterData(DEPTH_RIGHT_VIDEO,0);
          PassVideoRegisterToFeed ( 3 , VisCortx_ReadFromVideoRegister(DEPTH_RIGHT_VIDEO,GetCortexMetric(RESOLUTION_X),GetCortexMetric(RESOLUTION_Y),3),3 );
     }
+
+  if (USE_VIS_CORTEX_LOCKS)
+  {
+    VisCortx_OperationUnLockFramesLeftRight();
+  }
 
 
   return 1 ;

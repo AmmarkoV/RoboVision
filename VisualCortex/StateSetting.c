@@ -32,6 +32,17 @@ int GuardBytesOk()
 
 
 
+int CheckGuardBytes()
+{
+  if (!GuardBytesOk())
+    {
+        fprintf(stderr,"\n\n\n\n !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+        fprintf(stderr,"GUARD BYTES CORRUPTED , SOMETHING IS OVERWRITING MEMORY .. \n");
+        fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n ");
+        return 0;
+    }
+}
+
 
 
 

@@ -104,6 +104,7 @@ const long CortexSettings::ID_CHECKBOX11 = wxNewId();
 const long CortexSettings::ID_CHECKBOX12 = wxNewId();
 const long CortexSettings::ID_CHECKBOX13 = wxNewId();
 const long CortexSettings::ID_CHECKBOX14 = wxNewId();
+const long CortexSettings::ID_CHECKBOX15 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CortexSettings,wxDialog)
@@ -230,12 +231,14 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	FeatureDetection->SetValue(false);
 	TrackCameraMovement = new wxCheckBox(this, ID_CHECKBOX11, _("Track Camera Movement"), wxPoint(568,360), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX11"));
 	TrackCameraMovement->SetValue(false);
-	Map3D = new wxCheckBox(this, ID_CHECKBOX12, _("Map 3D"), wxPoint(568,392), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX12"));
+	Map3D = new wxCheckBox(this, ID_CHECKBOX12, _("Map 3D"), wxPoint(568,408), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX12"));
 	Map3D->SetValue(false);
 	UseOpenCV = new wxCheckBox(this, ID_CHECKBOX13, _("Use OpenCV"), wxPoint(568,488), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX13"));
 	UseOpenCV->SetValue(false);
 	RectifyVideoInput = new wxCheckBox(this, ID_CHECKBOX14, _("Rectify Video Input"), wxPoint(568,216), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX14"));
 	RectifyVideoInput->SetValue(false);
+	SkipCalculations = new wxCheckBox(this, ID_CHECKBOX15, _("Skip Calculations when Idle"), wxPoint(568,384), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX15"));
+	SkipCalculations->SetValue(false);
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnSaveButtonClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnCancelButtonClick);
@@ -374,6 +377,8 @@ void CortexSettings::PullSettingsFromCortex()
  if (VisCortx_GetSetting(PASS_TO_FEATURE_DETECTOR)==1) { FeatureDetection->SetValue(1); } else
                                                        { FeatureDetection->SetValue(0); }
 
+ if (VisCortx_GetSetting(USE_MOVEMENT_FLOW_FOR_CALCULATION_SKIPPING)==1) { SkipCalculations->SetValue(1); } else
+                                                                         { SkipCalculations->SetValue(0); }
 
  if (VisCortx_GetSetting(CALCULATE_MOVEMENT_MATRIX)==1) { TrackCameraMovement->SetValue(1); } else
                                                         { TrackCameraMovement->SetValue(0); }
@@ -522,6 +527,10 @@ void CortexSettings::PushSettingsToCortex()
 
   if ( FeatureDetection->IsChecked() ) { VisCortx_SetSetting(PASS_TO_FEATURE_DETECTOR,1); } else
                                             { VisCortx_SetSetting(PASS_TO_FEATURE_DETECTOR,0); }
+
+
+  if ( SkipCalculations->IsChecked() )  { VisCortx_SetSetting(USE_MOVEMENT_FLOW_FOR_CALCULATION_SKIPPING,1); } else
+                                            { VisCortx_SetSetting(USE_MOVEMENT_FLOW_FOR_CALCULATION_SKIPPING,0); }
 
   if ( TrackCameraMovement->IsChecked() ) { VisCortx_SetSetting(CALCULATE_MOVEMENT_MATRIX,1); } else
                                           { VisCortx_SetSetting(CALCULATE_MOVEMENT_MATRIX,0); }

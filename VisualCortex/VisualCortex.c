@@ -39,7 +39,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.617";
+char * VISCORTEX_VER = "0.619";
 
 /*
 
@@ -216,7 +216,7 @@ void VisCortx_GetHyperVisorStatus(unsigned int print_std,unsigned int print_file
   fprintf(stderr,"     -=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
  }
 
-if (print_file)
+if ( (print_file) && (settings[HYPERVISOR_STORE_PERFORMANCE_STATISTICS]) )
   {
     UpdateStatistics(GetLastTimer(TIMER_PROCESSING_DELAY),fps_last);
   }
@@ -464,7 +464,14 @@ int VisCortx_OperationUnLockFramesLeftRight()
      return 1;
 }
 
-
+int VisCortx_CheckTheFramesLeftRightForLock()
+{
+  if ( (video_register[LEFT_EYE].lock ) || ( video_register[RIGHT_EYE].lock ) )
+    {
+         return 1;
+    }
+  return 0;
+}
 /*
  ----------------- DEPTH MAPPING FUNCTIONS ----------------------
 */

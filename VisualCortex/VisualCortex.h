@@ -31,6 +31,9 @@ enum VisCortxSettings
 
    USE_OPENCV,
 
+   HYPERVISOR_STORE_PERFORMANCE_STATISTICS,
+
+
    PASS_TO_WORLD_3D,
    PASS_TO_FACE_DETECTOR,
    PASS_TO_FEATURE_DETECTOR,
@@ -318,6 +321,7 @@ unsigned int VisCortX_SaveVideoRegisterToFile(unsigned int reg_num,char * filena
 
 int VisCortx_OperationLockFramesLeftRight();
 int VisCortx_OperationUnLockFramesLeftRight();
+int VisCortx_CheckTheFramesLeftRightForLock();
 
 void ExecutePipeline();
 

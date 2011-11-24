@@ -99,6 +99,7 @@ class CortexSettings: public wxDialog
 		wxStaticText* StaticText2;
 		wxTextCtrl* ShiftUp;
 		wxStaticText* StaticText27;
+		wxCheckBox* SkipCalculations;
 		wxTextCtrl* FeatureDetectionThreshold;
 		wxStaticText* StaticText26;
 		wxStaticText* StaticText6;
@@ -218,6 +219,7 @@ class CortexSettings: public wxDialog
 		static const long ID_CHECKBOX12;
 		static const long ID_CHECKBOX13;
 		static const long ID_CHECKBOX14;
+		static const long ID_CHECKBOX15;
 		//*)
 
 	private:

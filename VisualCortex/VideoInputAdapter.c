@@ -25,6 +25,44 @@
 /*
  THIS FUNCTION IS CALLED EVERY TIME A NEW FRAME IS READY FOR STEREO VISION
 */
+
+inline unsigned int PretendOldFramesAreNewAgain_ToSkipCalculations
+   (
+     unsigned int REG_EYE,
+     unsigned int REG_CALIBRATED_EYE,
+     unsigned int REG_EDGES,
+     unsigned int REG_SECOND_DERIVATIVE,
+     unsigned int REG_MOVEMENT,
+     unsigned int REG_HISTOGRAM,
+
+     unsigned int * REG_CALIBRATION_PRECALCULATION,
+
+     unsigned int REG_LAST_EYE,
+     unsigned int REG_LAST_CALIBRATED_EYE,
+     unsigned int REG_LAST_EDGES,
+     unsigned int REG_LAST_SECOND_DERIVATIVE,
+     unsigned int REG_LAST_MOVEMENT,
+
+          // RAW IMAGE
+     unsigned int size_x,unsigned int size_y,unsigned int depth,
+     unsigned char * rgbdata
+   )
+
+ {
+       // FIRST STORE OLD REGISTERS
+       SwapRegister(REG_EYE,REG_LAST_EYE);
+       SwapRegister(REG_CALIBRATED_EYE,REG_LAST_CALIBRATED_EYE);
+       SwapRegister(REG_EDGES,REG_LAST_EDGES);
+       SwapRegister(REG_SECOND_DERIVATIVE,REG_LAST_SECOND_DERIVATIVE);
+       SwapRegister(REG_MOVEMENT,REG_LAST_MOVEMENT);
+
+       video_register[REG_EYE].time=TIME_INC;
+       video_register[REG_CALIBRATED_EYE].time=TIME_INC;
+
+   return 1;
+ }
+
+
 inline unsigned int FrameAcquisition
    (
 
@@ -127,13 +165,28 @@ inline unsigned int FrameProcessing
            VisCortx_Movement_Detection((left_right_switch==1),(left_right_switch==1));
          }
 
+      /* CALCULATION SKIPPER FOR LOWER CPU USAGE WHEN IDLE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
      if (settings[USE_MOVEMENT_FLOW_FOR_CALCULATION_SKIPPING])
        {
-        if ( MoveRegEnabledAndNoMovement(50) )
+        if ( MoveRegEnabledAndNoMovement(80) )
            { // No movement after checking for movement
-             return 1;
+              //  fprintf(stderr,"TODO : add here re swap of old frames and \"mark them\" as new ones ;p \n");
+              unsigned int skip_calculations = 1;
+
+              if ( settings[PASS_TO_FEATURE_DETECTOR] )
+               {
+                 if ( GetFeatureData(video_register[REG_LAST_CALIBRATED_EYE].features,0,TOTAL_POINTS)==0 )
+                   {
+                       // We wont skip because there are no features detected in the frame and that is bad
+                       skip_calculations = 0;
+                      // if (REG_EYE==LEFT_EYE) { fprintf(stderr,"I *COULD* SKIP but we want features in the left eye\n"); } else
+                      // if (REG_EYE==RIGHT_EYE) { fprintf(stderr,"I *COULD* SKIP but we want features in the right eye\n"); }
+                   }
+               }
+
+             if (skip_calculations) { /*fprintf(stderr,"SKIP\n");*/ return 2; }
            }
-       }
+       } /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
         if ( settings[PASS_TO_FACE_DETECTOR] ) { RecognizeFaces(REG_CALIBRATED_EYE); }
 
@@ -223,10 +276,11 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
 
     video_register[input_img_regnum].lock=1;
 
-   int retres = 0;
+   int acquisition_result = 0;
+   int processing_result = 0;
    if ( input_img_regnum == LEFT_EYE )
     {
-          retres += FrameAcquisition
+          acquisition_result = FrameAcquisition
                     ( LEFT_EYE,
                       CALIBRATED_LEFT_EYE,
                       EDGES_LEFT,
@@ -245,7 +299,7 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
                       size_x,size_y,depth,
                       rgbdata);
 
-           retres += FrameProcessing
+           processing_result = FrameProcessing
                     ( LEFT_EYE,
                       CALIBRATED_LEFT_EYE,
                       EDGES_LEFT,
@@ -265,11 +319,35 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
                       0
                     );
 
+       if ( processing_result == 2)
+                   {
+                       //THIS MEANS THAT FRAME PROCESSING SKIPPED CPU INTENSIVE CALCULATIONS TO SAVE THE PROCESSOR TIME  BECAUSE
+                       //IT DETECTED THAT THE SCENE HAS NOT MOVED AT ALL!
+                       //SO NOW WE MUST CALL THE FUNCTION TO KEEP THE LAST STATE AS THE CURRENT ONE
+                       processing_result = PretendOldFramesAreNewAgain_ToSkipCalculations
+                                          ( LEFT_EYE,
+                                            CALIBRATED_LEFT_EYE,
+                                            EDGES_LEFT,
+                                            SECOND_DERIVATIVE_LEFT,
+                                            MOVEMENT_LEFT,
+                                            HISTOGRAM_COMPRESSED_LEFT,
+
+                                            resection_left_precalc,
+
+                                            LAST_LEFT_EYE,
+                                            LAST_CALIBRATED_LEFT_EYE,
+                                            LAST_EDGES_LEFT,
+                                            LAST_SECOND_DERIVATIVE_LEFT,
+                                            LAST_MOVEMENT_LEFT,
+
+                                            size_x,size_y,depth,
+                                            rgbdata);
+                   }
 
     } else
     if ( input_img_regnum == RIGHT_EYE )
     {
-         retres += FrameAcquisition
+         acquisition_result = FrameAcquisition
                     (  RIGHT_EYE,
                       CALIBRATED_RIGHT_EYE,
                       EDGES_RIGHT,
@@ -290,7 +368,7 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
 
 
 
-      retres += FrameProcessing
+      processing_result = FrameProcessing
                     ( RIGHT_EYE,
                       CALIBRATED_RIGHT_EYE,
                       EDGES_RIGHT,
@@ -310,6 +388,30 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
                       1
                     );
 
+       if ( processing_result == 2)
+                   {
+                       //THIS MEANS THAT FRAME PROCESSING SKIPPED CPU INTENSIVE CALCULATIONS TO SAVE THE PROCESSOR TIME  BECAUSE
+                       //IT DETECTED THAT THE SCENE HAS NOT MOVED AT ALL!
+                       //SO NOW WE MUST CALL THE FUNCTION TO KEEP THE LAST STATE AS THE CURRENT ONE
+                       processing_result = PretendOldFramesAreNewAgain_ToSkipCalculations
+                                              (  RIGHT_EYE,
+                                                 CALIBRATED_RIGHT_EYE,
+                                                 EDGES_RIGHT,
+                                                 SECOND_DERIVATIVE_RIGHT,
+                                                 MOVEMENT_RIGHT,
+                                                 HISTOGRAM_COMPRESSED_RIGHT,
+
+                                                 resection_right_precalc,
+
+                                                 LAST_RIGHT_EYE,
+                                                 LAST_CALIBRATED_RIGHT_EYE,
+                                                 LAST_EDGES_RIGHT,
+                                                 LAST_SECOND_DERIVATIVE_RIGHT,
+                                                 LAST_MOVEMENT_RIGHT,
+
+                                                 size_x,size_y,depth,
+                                                 rgbdata);
+                   }
 
     }
 
@@ -341,19 +443,14 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
 
 
 
+  //THE FOLLOWING MAKES A CHECK FOR OVERFLOWS ON THE SETTINGS BUFFER
+  //TO AVOID RANDOM BEHAVIOUR FROM PROGRAMMING ERRORS THAT MAY OVERWRITE SETTINGS
+  CheckGuardBytes();
 
 
-  if (!GuardBytesOk())
-    {
-        fprintf(stderr,"\n\n\n\n !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-        fprintf(stderr,"GUARD BYTES CORRUPTED , SOMETHING IS OVERWRITING MEMORY .. \n");
-        fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n ");
-        return 0;
-    }
+ if ( ( acquisition_result ) && ( processing_result ) ) { return 1; }
 
- if ( retres == 2 ) { retres = 1; } else
-                    { retres =0;  }
- return retres ;
+ return 0;
 }
 
 
@@ -366,7 +463,7 @@ int UpdateStatistics(unsigned int last_frame_microseconds, float last_fps)
 	{
 
 
-	  float uptime_in_seconds = (TIME_INC-TIME_START) / 1000;
+	  float uptime_in_seconds = (float) (TIME_INC-TIME_START) / 1000;
       fprintf(fd, "%0.2f %u %0.2f\n", uptime_in_seconds , last_frame_microseconds, last_fps);
 
 

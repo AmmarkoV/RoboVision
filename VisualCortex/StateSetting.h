@@ -5,6 +5,7 @@
 
 void SetGuardBytes();
 int GuardBytesOk();
+int CheckGuardBytes();
 
 unsigned int SetCamerasGeometry(float distance_between_cameras,float diagonal_field_of_view,float horizontal_field_of_view,float vertical_field_of_view);
 unsigned int InitializeEverything(unsigned int res_x,unsigned int res_y);

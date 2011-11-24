@@ -457,7 +457,7 @@
 		</object>
 		<object class="wxCheckBox" name="ID_CHECKBOX12" variable="Map3D" member="yes">
 			<label>Map 3D</label>
-			<pos>568,392</pos>
+			<pos>568,408</pos>
 		</object>
 		<object class="wxCheckBox" name="ID_CHECKBOX13" variable="UseOpenCV" member="yes">
 			<label>Use OpenCV</label>
@@ -466,6 +466,10 @@
 		<object class="wxCheckBox" name="ID_CHECKBOX14" variable="RectifyVideoInput" member="yes">
 			<label>Rectify Video Input</label>
 			<pos>568,216</pos>
+		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX15" variable="SkipCalculations" member="yes">
+			<label>Skip Calculations when Idle</label>
+			<pos>568,384</pos>
 		</object>
 	</object>
 </wxsmith>
