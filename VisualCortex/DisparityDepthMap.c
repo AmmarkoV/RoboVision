@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "Precalculations.h"
 #include "PatchComparison.h"
 #include "VisCortexTimer.h"
+#include "StatisticsGeneration.h"
 #include "CameraPose.h"
 #include "Matrix.h"
 #include "cv.h"
@@ -331,7 +332,7 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
 
 
 
-void DepthMapFull  ( unsigned int left_view_reg,
+unsigned int DepthMapFull  ( unsigned int left_view_reg,
                      unsigned int right_view_reg,
                      unsigned int left_depth_reg,
                      unsigned int right_depth_reg,
@@ -428,7 +429,7 @@ void DepthMapFull  ( unsigned int left_view_reg,
 
   if ( settings[DEPTHMAP_IMPROVE_FILLING_HOLES]!=0 )  EnhanceDepthMapFillHoles(video_register[LEFT_EYE].pixels, l_video_register[left_depth_reg].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
   if ( settings[DEPTHMAP_IMPROVE_USING_EDGES]!=0 )  EnhanceDepthMapWithEdges(video_register[LEFT_EYE].pixels, l_video_register[left_depth_reg].pixels,video_register[EDGES_LEFT].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-  return;
+  return metrics[COMPAREPATCH_TOTAL_CALLS];
 }
 
 
@@ -446,6 +447,7 @@ int ExecuteDisparityMappingPyramid()
 
   unsigned int edgepercent=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED],patch_x=metrics[HORIZONTAL_BUFFER],patch_y=metrics[VERTICAL_BUFFER];
    unsigned int originalthreshold=settings[DEPTHMAP_COMPARISON_THRESHOLD];
+    unsigned int comparisons_small = 0 ,  comparisons_medium = 0 , comparisons_large = 0;
   /*
      WE COMPARE PATCHES ON 3 DIFFERENT LEVELS , EXTRA LARGE PATCHES , LARGE PATCHES , NORMAL PATCHES
    */
@@ -461,12 +463,12 @@ int ExecuteDisparityMappingPyramid()
    metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_EXTRALARGE];
    metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_EXTRALARGE];
 
-   DepthMapFull( CALIBRATED_LEFT_EYE,
-                 CALIBRATED_RIGHT_EYE,
-                 DEPTH_LEFT,
-                 DEPTH_RIGHT,
-                 1
-               );
+   comparisons_large = DepthMapFull( CALIBRATED_LEFT_EYE,
+                                     CALIBRATED_RIGHT_EYE,
+                                     DEPTH_LEFT,
+                                     DEPTH_RIGHT,
+                                     1
+                                    );
 
   /*
     CALCULATION OF LARGE PATCHES FOLLOWS
@@ -481,12 +483,12 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
   metrics[VERTICAL_BUFFER]=metrics[VERTICAL_BUFFER_LARGE];
   metrics[HORIZONTAL_BUFFER]=metrics[HORIZONTAL_BUFFER_LARGE];
 
-  DepthMapFull( CALIBRATED_LEFT_EYE,
-                CALIBRATED_RIGHT_EYE,
-                DEPTH_LEFT,
-                DEPTH_RIGHT,
-                0
-             );
+  comparisons_medium = DepthMapFull( CALIBRATED_LEFT_EYE,
+                                     CALIBRATED_RIGHT_EYE,
+                                     DEPTH_LEFT,
+                                     DEPTH_RIGHT,
+                                     0
+                                   );
 
 
 }
@@ -502,12 +504,12 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
 
 if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
 {
-  DepthMapFull( CALIBRATED_LEFT_EYE,
-                CALIBRATED_RIGHT_EYE,
-                DEPTH_LEFT,
-                DEPTH_RIGHT,
-                0
-             );
+  comparisons_small = DepthMapFull( CALIBRATED_LEFT_EYE,
+                                    CALIBRATED_RIGHT_EYE,
+                                    DEPTH_LEFT,
+                                    DEPTH_RIGHT,
+                                    0
+                                  );
 }
  // THIS IS SET HERE IN ORDER TO BE PASSED TO Depth_Left_Video without problems
   video_register[DEPTH_LEFT].time = video_register[CALIBRATED_LEFT_EYE].time;
@@ -546,10 +548,18 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
 
    }
 
+  unsigned int covered_percent = DisparityMapGetPercentCovered(DEPTH_LEFT);
+  fprintf(stderr,"Percent Covered %u %%\n",covered_percent);
+
 
   metrics[DEPTHMAP_DELAY_MICROSECONDS] = EndTimer(TIMER_DEPTH_MAP_DELAY);
   metrics[TOTAL_DEPTHMAP_DELAY_MICROSECONDS]+=metrics[DEPTHMAP_DELAY_MICROSECONDS] ;
   ++metrics[TOTAL_DEPTHMAPS_PERFORMED];
+
+if ( settings[HYPERVISOR_STORE_PERFORMANCE_STATISTICS] )
+  {
+    UpdateDisparityMapStatistics(metrics[DEPTHMAP_DELAY_MICROSECONDS] ,covered_percent,comparisons_small,comparisons_medium,comparisons_large);
+  }
 
   video_register[DEPTH_RIGHT].lock=0;
   video_register[DEPTH_LEFT].lock=0;

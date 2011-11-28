@@ -34,12 +34,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "VisCortexTimer.h"
 #include "LinearAlgebra.h"
 #include "VideoInputAdapter.h"
+#include "StatisticsGeneration.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.621";
+char * VISCORTEX_VER = "0.623";
 
 /*
 
@@ -218,7 +219,7 @@ void VisCortx_GetHyperVisorStatus(unsigned int print_std,unsigned int print_file
 
 if ( (print_file) && (settings[HYPERVISOR_STORE_PERFORMANCE_STATISTICS]) )
   {
-    UpdateStatistics(GetLastTimer(TIMER_PROCESSING_DELAY),fps_last);
+    UpdateFrameProcessingRateStatistics(GetLastTimer(TIMER_PROCESSING_DELAY),fps_last);
   }
 }
 

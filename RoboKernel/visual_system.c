@@ -127,8 +127,8 @@ int PassVideoInputToCortex(unsigned int clock_time)
   if ( ( has_left ) && ( has_right ) )
    {
      memcpy(right_frame_temporary,frame2,width*height*3);
-     if ( VisCortX_NewFrame(LEFT_EYE,width,height,3,(unsigned char *)frame1) )  { SignalFrameProcessed(0); }
-     if ( VisCortX_NewFrame(RIGHT_EYE,width,height,3,(unsigned char *)right_frame_temporary) ) { SignalFrameProcessed(1); }
+     if ( VisCortX_NewFrame(LEFT_EYE,width,height,3,(unsigned char *)frame1) )  { SignalFrameProcessed(0); SignalFrameProcessed(1); }
+     if ( VisCortX_NewFrame(RIGHT_EYE,width,height,3,(unsigned char *)right_frame_temporary) ) {  }
      has_right = 0;
      has_left = 0;
    }

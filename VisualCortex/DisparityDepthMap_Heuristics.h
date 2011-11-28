@@ -19,4 +19,5 @@ unsigned int EnhanceDepthMapFillHoles(unsigned char * rgb_image,unsigned short *
 int SaveDepthMapToFile(char * filename,unsigned int vid_reg);
 int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int depth_scale);
 
+unsigned int DisparityMapGetPercentCovered(unsigned int depth_reg);
 #endif // DISPARITYDEPTHMAP_HEURISTICS_H_INCLUDED

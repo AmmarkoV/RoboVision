@@ -107,6 +107,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="StateSetting.h" />
+		<Unit filename="StatisticsGeneration.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="StatisticsGeneration.h" />
 		<Unit filename="VideoInputAdapter.c">
 			<Option compilerVar="CC" />
 		</Unit>

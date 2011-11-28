@@ -454,26 +454,5 @@ unsigned int PassNewFrameFromVideoInput(unsigned int input_img_regnum,unsigned i
 }
 
 
-int UpdateStatistics(unsigned int last_frame_microseconds, float last_fps)
-{
-    FILE *fd=0;
-    fd = fopen("../DataSets/Statistics/hypervisor_performance.dat","a");
-
-    if (fd!=0)
-	{
-
-
-	  float uptime_in_seconds = (float) (TIME_INC-TIME_START) / 1000;
-      fprintf(fd, "%0.2f %u %0.2f\n", uptime_in_seconds , last_frame_microseconds, last_fps);
-
-
-
-     fflush(fd);
-     fclose(fd);
-     return 1;
-	}
-
-  return 1;
-}
 
 

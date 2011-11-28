@@ -1,0 +1,27 @@
+<html>
+  <head>
+   <title>GuarddoG Perfomance Statistics</title>
+
+   <script language="JavaScript">
+    <!--
+       function refreshIt() 
+       {
+          if (!document.images) return;
+          document.images['Feed1'].src = 'hypervisor_performance_delay.png?' + Math.random();
+          document.images['Feed2'].src = 'hypervisor_performance_fps.png?' + Math.random();
+          setTimeout('refreshIt()',500); // refresh every 100 ms 
+       }
+    //-->
+   </script>
+
+  </head>
+  <body  onLoad="setTimeout('refreshIt()',500)" >
+    <center>
+      <table>
+       <tr>
+         <td width=640><img name="Feed1" src="hypervisor_performance_delay.png"></td><td width=640><img name="Feed2" src="hypervisor_performance_fps.png"></td>
+       </tr>
+      </table> 
+    </center>
+  </body>
+</html>

@@ -409,3 +409,19 @@ int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int dep
 
    return 1;
 }
+
+unsigned int DisparityMapGetPercentCovered(unsigned int depth_reg)
+{
+  unsigned int pixels_covered = 0;
+  unsigned int ptr,dpth_lim=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
+    unsigned short *full_depth_map=l_video_register[depth_reg].pixels;
+
+  for ( ptr = 0; ptr < dpth_lim; ptr++)
+   {
+      if ( full_depth_map[ptr] != 0 ) { ++pixels_covered; }
+   }
+
+   unsigned int percent = (unsigned int) ( ( pixels_covered *100 ) / ( metrics[RESOLUTION_X]*metrics[RESOLUTION_Y] ) );
+
+  return percent;
+}
