@@ -39,7 +39,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.619";
+char * VISCORTEX_VER = "0.621";
 
 /*
 
@@ -521,6 +521,7 @@ unsigned int  VisCortx_Get_DepthMapData(unsigned int typeofdata,unsigned int px,
      case 12 : retval= mem_place; break;
      case 13 : retval= (unsigned int) depth_data_array[mem_place].movement_count; break;
      case 14 : retval= (unsigned int) depth_data_array[mem_place].movement_difference; break;
+     case 15 : retval= (unsigned int) depth_data_array[mem_place].choices_rejected; break;
      };
   return retval;
 }

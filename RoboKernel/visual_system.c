@@ -10,7 +10,9 @@
 
 int acquire_width=320,acquire_height=240;
 int width=320,height=240;
+char * right_frame_temporary = 0;
 int has_init = 0;
+int has_left = 0 , has_right = 0;
 
 
 int wait_for_cameras_to_init()
@@ -79,7 +81,7 @@ int InitVisualSystem()
 
     VisCortx_SetCamerasGeometry(6.5,72.0,0.0,0.0);
 
-
+    right_frame_temporary  = (char *) malloc( width * height * 3 * sizeof(char));
 
     has_init=1;
     return 1;
@@ -87,7 +89,6 @@ int InitVisualSystem()
 
 int PassVideoInputToCortex(unsigned int clock_time)
 {
-  int frames_processed_this_loop = 0;
   void *frame1=0 ,*frame2 = 0;
 
 
@@ -101,7 +102,7 @@ int PassVideoInputToCortex(unsigned int clock_time)
    {
       if ( frame1 != 0 )
        {
-         if ( VisCortX_NewFrame(LEFT_EYE,width,height,3,(unsigned char *)frame1) ) { SignalFrameProcessed(0); ++frames_processed_this_loop; }
+         has_left = 1;
        } else
        {
           /* FRAME1 IS DEAD*/
@@ -112,7 +113,7 @@ int PassVideoInputToCortex(unsigned int clock_time)
   {
        if ( frame2 != 0 )
        {
-        if ( VisCortX_NewFrame(RIGHT_EYE,width,height,3,(unsigned char *)frame2) ) { SignalFrameProcessed(1); ++frames_processed_this_loop; }
+         has_right = 1;
        } else
        {
           /* FRAME2 IS DEAD*/
@@ -123,11 +124,15 @@ int PassVideoInputToCortex(unsigned int clock_time)
   * Frames should be signaled processed AFTER they have been passed to Visual Cortex :P
   */
 
- /*
- if (frames_processed_this_loop == 2 ) { fprintf(stderr,"2 FRAMES\n"); } else
- if (frames_processed_this_loop < 2 ) { fprintf(stderr,"NOT 2 FRAMES\n"); } else
- if (frames_processed_this_loop < 1 ) { fprintf(stderr,"NOT 1 FRAMES\n"); }
-*/
+  if ( ( has_left ) && ( has_right ) )
+   {
+     memcpy(right_frame_temporary,frame2,width*height*3);
+     if ( VisCortX_NewFrame(LEFT_EYE,width,height,3,(unsigned char *)frame1) )  { SignalFrameProcessed(0); }
+     if ( VisCortX_NewFrame(RIGHT_EYE,width,height,3,(unsigned char *)right_frame_temporary) ) { SignalFrameProcessed(1); }
+     has_right = 0;
+     has_left = 0;
+   }
+
 
  return 1;
 }
@@ -135,6 +140,8 @@ int PassVideoInputToCortex(unsigned int clock_time)
 
 int CloseVisualSystem()
 {
+  free(right_frame_temporary);
+  right_frame_temporary =0;
 
     CloseVideoInputs();
     VisCortx_Stop();

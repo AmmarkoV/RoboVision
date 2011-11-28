@@ -123,6 +123,8 @@ void inline FillDepthMemWithData(unsigned short * depth_data_raw_left,unsigned s
             depth_data_full[ptr].y2_patch=depth_data->y2_patch;
 		    depth_data_full[ptr].patch_size_x=depth_data->patch_size_x;
             depth_data_full[ptr].patch_size_y=depth_data->patch_size_y;
+            ++depth_data_full[ptr].choices_rejected;
+
 
 
             /* Explained nicely here : http://www.societyofrobots.com/programming_computer_vision_tutorial_pt3.shtml#stereo_vision :P

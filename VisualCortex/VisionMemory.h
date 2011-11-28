@@ -24,6 +24,7 @@ struct DepthData{   // Declare PERSON struct type
 		unsigned short patch_size_x;
         unsigned short patch_size_y;
         unsigned short second_pass_improvement;
+        unsigned int   choices_rejected;
 
         float X;
         float Y;
