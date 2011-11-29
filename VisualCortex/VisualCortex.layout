@@ -2,22 +2,22 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="CameraPose.c" open="1" top="0" tabpos="44">
-		<Cursor position="3282" topLine="33" />
+		<Cursor position="1058" topLine="21" />
 	</File>
 	<File name="CameraPose.h" open="1" top="0" tabpos="43">
-		<Cursor position="826" topLine="0" />
+		<Cursor position="861" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="26624" topLine="537" />
+		<Cursor position="6063" topLine="120" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="627" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
-		<Cursor position="13519" topLine="380" />
+		<Cursor position="106" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
-		<Cursor position="1386" topLine="0" />
+		<Cursor position="105" topLine="0" />
 	</File>
 	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
 		<Cursor position="581" topLine="46" />
@@ -62,10 +62,10 @@
 		<Cursor position="180" topLine="0" />
 	</File>
 	<File name="MovementRegistration.c" open="1" top="0" tabpos="9">
-		<Cursor position="3494" topLine="52" />
+		<Cursor position="1262" topLine="0" />
 	</File>
 	<File name="MovementRegistration.h" open="1" top="0" tabpos="10">
-		<Cursor position="441" topLine="0" />
+		<Cursor position="633" topLine="0" />
 	</File>
 	<File name="PatchComparison.c" open="1" top="0" tabpos="32">
 		<Cursor position="18547" topLine="267" />
@@ -91,10 +91,10 @@
 	<File name="StateSetting.h" open="1" top="0" tabpos="19">
 		<Cursor position="141" topLine="0" />
 	</File>
-	<File name="StatisticsGeneration.c" open="1" top="0" tabpos="60">
+	<File name="StatisticsGeneration.c" open="1" top="0" tabpos="47">
 		<Cursor position="577" topLine="0" />
 	</File>
-	<File name="StatisticsGeneration.h" open="1" top="1" tabpos="61">
+	<File name="StatisticsGeneration.h" open="1" top="0" tabpos="48">
 		<Cursor position="178" topLine="0" />
 	</File>
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
@@ -134,13 +134,13 @@
 		<Cursor position="596" topLine="6" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="17080" topLine="382" />
+		<Cursor position="22368" topLine="645" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="753" topLine="0" />
+		<Cursor position="3397" topLine="118" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="8702" topLine="195" />
+	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+		<Cursor position="11152" topLine="856" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
 		<Cursor position="672" topLine="276" />
