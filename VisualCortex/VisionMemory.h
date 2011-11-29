@@ -138,7 +138,8 @@ int ClearExtraLargeVideoRegister(unsigned int reg_num);
 int InitVisionMemory(unsigned int res_x,unsigned int res_y);
 int CloseVisionMemory();
 
-
+unsigned char CheckRegistersForSynchronization(unsigned int source,unsigned int target);
+void MarkRegistersAsSynced(unsigned int source,unsigned int target);
 
 void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y);
 int CopyRegister(unsigned int source,unsigned int target,unsigned int copy_features,unsigned int copy_faces);

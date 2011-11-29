@@ -1,7 +1,7 @@
 #ifndef DISPARITYDEPTHMAP_HEURISTICS_H_INCLUDED
 #define DISPARITYDEPTHMAP_HEURISTICS_H_INCLUDED
 
-
+void SaveRegistersStateRequiredForDisparityMapping();
 
 unsigned char InstantMovementDisparity(unsigned short *left_depth,unsigned short *right_depth);
 unsigned char DisparityMapNormalize(unsigned short *left_depth,unsigned short *right_depth);

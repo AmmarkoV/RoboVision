@@ -25,6 +25,8 @@ extern struct TransformationMatrix total_right_rotation_and_translation;
 
 
 int InitCameraPose();
+
+void PassDepthMapToCameraSystem();
 int UpdateCameraPose(unsigned int reg_num);
 
 #endif // CAMERAPOSE_H_INCLUDED

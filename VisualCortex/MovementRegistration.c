@@ -30,7 +30,16 @@ unsigned int GetMovementAtBlock(unsigned int movement,struct ImageRegion * sourc
 }
 
 
-unsigned int RegisterMovements(BOOLEAN lefteye,unsigned int last_source_block_reg,unsigned int source_block_reg,unsigned int movement_target,unsigned int movement_target_grouped)
+
+unsigned int PrepareRegisterMovementsRegisters(unsigned char left_eye)
+{
+  // if left_eye AND CheckRegistersForSynchronization(CALIBRATED_LEFT,MPLA MPLA ) mpla mpla
+  return 0;
+}
+
+
+
+unsigned int RegisterMovementsInternal(BOOLEAN lefteye,unsigned int last_source_block_reg,unsigned int source_block_reg,unsigned int movement_target,unsigned int movement_target_grouped)
 {
  //unsigned char *last_source_block=;
 // unsigned char *source_block=     ;
@@ -84,6 +93,18 @@ video_register[movement_target].depth=1; // Set BitDepth of output array as 1
  EndTimer(MOVEMENT_RAW_DELAY);
  return changes;
 }
+
+
+
+unsigned int RegisterMovements(unsigned char left_eye)
+{
+  //TODO
+  PrepareRegisterMovementsRegisters(left_eye);
+  //RegisterMovementsInternal(BOOLEAN lefteye,unsigned int last_source_block_reg,unsigned int source_block_reg,unsigned int movement_target,unsigned int movement_target_grouped);
+  return 0;
+}
+
+
 
 int IfMovementRegistrationEnabledAndOverOrDisabled(int number_over)
 {

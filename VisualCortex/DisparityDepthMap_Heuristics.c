@@ -2,6 +2,27 @@
 #include "VisCortexFilters.h"
 #include "Precalculations.h"
 
+
+
+void SaveRegistersStateRequiredForDisparityMapping()
+{
+   SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_LEFT.ppm",CALIBRATED_LEFT_EYE,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+   SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_RIGHT.ppm",CALIBRATED_RIGHT_EYE,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+   SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_EDGES_LEFT.ppm",EDGES_LEFT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+   SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_EDGES_RIGHT.ppm",EDGES_RIGHT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+   SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_SECOND_DERIVATIVE_LEFT.ppm",SECOND_DERIVATIVE_LEFT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+   SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_SECOND_DERIVATIVE_RIGHT.ppm",SECOND_DERIVATIVE_RIGHT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+   SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_MOVEMENT_LEFT.ppm",MOVEMENT_LEFT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+   SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_MOVEMENT_RIGHT.ppm",MOVEMENT_RIGHT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+}
+
+
+
+
+
+
+
+
 unsigned char InstantMovementDisparity(unsigned short *left_depth,unsigned short *right_depth)
 {
 

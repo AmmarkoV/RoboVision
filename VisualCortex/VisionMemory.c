@@ -546,6 +546,17 @@ int SwapRegister(unsigned int source,unsigned int target)
 }
 
 
+unsigned char CheckRegistersForSynchronization(unsigned int source,unsigned int target)
+{
+     return ( video_register[target].time == video_register[source].time );
+}
+
+void MarkRegistersAsSynced(unsigned int source,unsigned int target)
+{
+     video_register[target].time = video_register[source].time;
+}
+
+
 int CopyRegister(unsigned int source,unsigned int target,unsigned int copy_features,unsigned int copy_faces)
 {
  StartTimer(COPY_REGISTER_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START

@@ -37,9 +37,10 @@ typedef unsigned int uint;
 
 
 int PrepareForDepthMapping(
-                           uint left_depth_reg,
-                           uint right_depth_reg,
-                           unsigned char clear_and_calculate)
+                             uint left_depth_reg,
+                             uint right_depth_reg,
+                             unsigned char clear_and_calculate
+                          )
 {
    if ( clear_and_calculate == 1 )
     {
@@ -161,32 +162,38 @@ void PassGuessNextDepthMem(unsigned int prox,unsigned int patch_x,unsigned int p
 
 
 
-inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
-                                      struct ImageRegion * left_rgn,
-                                      struct DepthData *best_match,
-                                      unsigned char * has_match
+inline void MatchInHorizontalScanline(
+                                          unsigned char *rgb1,
+                                          unsigned char *rgb2,
+                                          struct ImageRegion * left_rgn,
+                                          struct DepthData *best_match,
+                                          unsigned char * has_match
                                      )
 {
-
+  //WE DONT HAVE A MATCH YET :P
   *has_match=0;
+
+  //WE SET OUR SCORES TO FAIL MODE SO THAT THE FIRST RESULT THAT WILL BE BETTER WILL BE PICKED
   uint max_prox_score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED];
   best_match->score = settings[DEPTHMAP_COMPARISON_THRESHOLD]+1;
 
   struct ImageRegion right_rgn={0};
-
   uint xr_start = 0;
   uint xr_lim=left_rgn->x1;
 
-  if ( ( left_rgn->x1 > settings[DEPTHMAP_CLOSEST_DEPTH] ) &&
+  //TRY TO PUT THE RIGHT PATCH AS CLOSE AS POSSIBLE TO REDUCE OPERATIONS
+  if (
+       ( left_rgn->x1 > settings[DEPTHMAP_CLOSEST_DEPTH] ) &&
        (settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH])
      )
       { xr_start = left_rgn->x1 - settings[DEPTHMAP_CLOSEST_DEPTH]; }
 
 
-                                                                 /*SHIFTING LEFT IMAGE UP OR DOWN  TO MAKE UP FOR WRONG PHYSICAL CALIBRATION*/
+  /*SHIFTING LEFT IMAGE UP OR DOWN  TO MAKE UP FOR WRONG PHYSICAL CALIBRATION*/
   uint yr_lim=left_rgn->y1+settings[DEPTHMAP_VERT_OFFSET_DOWN] + settings[DEPTHMAP_VERT_SHIFT_DOWN];
   uint prox=0;
-                                                                /*SHIFTING LEFT IMAGE UP OR DOWN  TO MAKE UP FOR WRONG PHYSICAL CALIBRATION*/
+
+  /*SHIFTING LEFT IMAGE UP OR DOWN  TO MAKE UP FOR WRONG PHYSICAL CALIBRATION*/
   right_rgn.y1=left_rgn->y1-settings[DEPTHMAP_VERT_OFFSET_UP] - settings[DEPTHMAP_VERT_SHIFT_UP];
   right_rgn.width=metrics[HORIZONTAL_BUFFER];
   right_rgn.height=metrics[VERTICAL_BUFFER];
@@ -209,20 +216,25 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
   }
 
 
+      // WELL THIS IS IT WE WANT TO COMPARE THE left_gn with the right_rgn
+      // The right_rgn will change position until it seeps the whole right frame
       while (right_rgn.y1 <= yr_lim)
        {
          right_rgn.x1=xr_lim;
          while (right_rgn.x1 > xr_start)
          {
 
-								prox = ComparePatches( left_rgn , &right_rgn,
+								prox = ComparePatches(
+                                                       left_rgn , &right_rgn,
                                                        rgb1,rgb2,
                                                        video_register[EDGES_LEFT].pixels , video_register[EDGES_RIGHT].pixels ,
                                                        video_register[SECOND_DERIVATIVE_LEFT].pixels  , video_register[SECOND_DERIVATIVE_RIGHT].pixels ,
                                                        video_register[MOVEMENT_LEFT].pixels  , video_register[MOVEMENT_RIGHT].pixels ,
                                                        metrics[HORIZONTAL_BUFFER] , metrics[VERTICAL_BUFFER],
                                                        metrics[RESOLUTION_X] , metrics[RESOLUTION_Y] ,
-                                                       best_match->score);
+                                                       best_match->score
+                                                    );
+
 
                                 // DEPTH ESTIMATION ---------------------------------------
 								 uint depth_act;
@@ -250,6 +262,8 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
 
                                     *has_match=1;
 
+                                   // IF WE ACHIEVE A LOW ENOUGH SCORE THEN WE NEED TO SEARCH NO MORE :D
+                                   // CPU TIME IS A VALUABLE THING :P
                                    if ( settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD] >= prox )
                                    {
                                      ++metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS];
@@ -322,47 +336,45 @@ inline void MatchInHorizontalScanline(unsigned char *rgb1,unsigned char *rgb2,
            --new_left_rgn.x1;
          }
     }
+
+  return;
+}
   /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
      >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
      >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 
 
-  return;
-}
 
 
 
-unsigned int DepthMapFull  ( unsigned int left_view_reg,
-                     unsigned int right_view_reg,
-                     unsigned int left_depth_reg,
-                     unsigned int right_depth_reg,
-                     unsigned char clear_and_calculate /*Cleaning the depth arrays takes a little longer :) */
-                    )
+
+
+
+
+unsigned int DepthMapFull  (
+                             unsigned int left_view_reg,
+                             unsigned int right_view_reg,
+                             unsigned int left_depth_reg,
+                             unsigned int right_depth_reg,
+                             unsigned char clear_and_calculate /*Cleaning the depth arrays takes a little longer :) */
+                            )
 {
-    metrics[COMPAREPATCH_TOTAL_CALLS]=0;
-    metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS]=0;
-    metrics[COMPAREPATCH_REVERSE_ACCEPTS]=0;
+  //THESE ARE USED FOR DOCUMENTATION / STATISTICS / DEBUGGING
+  metrics[COMPAREPATCH_TOTAL_CALLS]=0;
+  metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS]=0;
+  metrics[COMPAREPATCH_REVERSE_ACCEPTS]=0;
+  metrics[HISTOGRAM_DENIES]=0;
+  metrics[COMPAREPATCH_ALGORITHM_DENIES]=0;
 
-    PrepareForDepthMapping( left_depth_reg , right_depth_reg , clear_and_calculate);
-
-
+  // PREPARE REGISTERS FOR OPERATION!
+  PrepareForDepthMapping( left_depth_reg , right_depth_reg , clear_and_calculate);
 
   if ( settings[DEPTHMAP_DEBUG] )
-    {  //DEBUG THINGS ON HDD
-         // WILL BE REMOVED ENTIRELY WHEN LOCKING PROBLEMS ARE SOLVED..
-        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_LEFT.ppm",CALIBRATED_LEFT_EYE,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_RIGHT.ppm",CALIBRATED_RIGHT_EYE,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_EDGES_LEFT.ppm",EDGES_LEFT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_EDGES_RIGHT.ppm",EDGES_RIGHT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_SECOND_DERIVATIVE_LEFT.ppm",SECOND_DERIVATIVE_LEFT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_SECOND_DERIVATIVE_RIGHT.ppm",SECOND_DERIVATIVE_RIGHT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_MOVEMENT_LEFT.ppm",MOVEMENT_LEFT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-        SaveRegisterPartToFile("memfs/DEBUG_Dpthmap_MOVEMENT_RIGHT.ppm",MOVEMENT_RIGHT,0,0,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-
+    {  //DEBUG THINGS ON HDD WILL BE REMOVED ENTIRELY WHEN LOCKING PROBLEMS ARE SOLVED..
+       SaveRegistersStateRequiredForDisparityMapping();
     }
 
-    metrics[HISTOGRAM_DENIES]=0;
-    metrics[COMPAREPATCH_ALGORITHM_DENIES]=0;
+
 
     uint edges_required_to_process=( (uint) ( metrics[VERTICAL_BUFFER] * metrics[HORIZONTAL_BUFFER] * settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] )  / 100 );
 
@@ -398,23 +410,33 @@ unsigned int DepthMapFull  ( unsigned int left_view_reg,
            best_match.edge_count = GetCompressedRegisterPatchSum1Byte(EDGES_PRESENCE_GROUPED_LEFT,left_rgn.x1,left_rgn.y1,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
            if ( best_match.edge_count > edges_required_to_process)
            {
-             //IF THIS PATCH ( xl,yl with size metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER] has enough edges process it..
-             MatchInHorizontalScanline( video_register[left_view_reg].pixels , video_register[right_view_reg].pixels,
-                                             &left_rgn,
-                                             &best_match,
-                                             &patch_has_match );
+             //THE PATCH OF THE LEFT FRAME
+             //STARTING AT ( xl,yl ) with size metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER] has enough edges
+             //THATS WHY WE WANT TO PROCESS IT ..!!!
+
+             // COMMENCE COMPARISON WITH THE SCANLINE AT THE RIGHT FRAME
+             MatchInHorizontalScanline(
+                                         video_register[left_view_reg].pixels , video_register[right_view_reg].pixels,
+                                         &left_rgn,
+                                         &best_match,
+                                         &patch_has_match
+                                      );
 
              if ( patch_has_match )
                {
                  /* WE FOUND A MATCH */
-                 FillDepthMemWithData(l_video_register[left_depth_reg].pixels,
-                                      l_video_register[right_depth_reg].pixels,
-                                      depth_data_array,
-                                      &best_match,
-                                      metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+                 FillDepthMemWithData(
+                                       l_video_register[left_depth_reg].pixels,
+                                       l_video_register[right_depth_reg].pixels,
+                                       depth_data_array,
+                                       &best_match,
+                                       metrics[RESOLUTION_X],metrics[RESOLUTION_Y]
+                                      );
                } else
                {
-                 /* AREA IS NOT MATCHED :P */
+                 /* AREA IS NOT MATCHED :P
+                    Code can be added here to maybe try something else :P
+                 */
                }
            }
 
@@ -423,8 +445,9 @@ unsigned int DepthMapFull  ( unsigned int left_view_reg,
          left_rgn.y1+=y_vima;
        }
 
-   video_register[left_depth_reg].time = video_register[left_view_reg].time;
-   video_register[right_depth_reg].time = video_register[right_view_reg].time;
+  MarkRegistersAsSynced(left_view_reg,left_depth_reg);
+  MarkRegistersAsSynced(right_view_reg,right_depth_reg);
+
   fprintf(stderr,"Depth Map did a total of %u Patch Comparisons , %u reverse , %u immediate \n",metrics[COMPAREPATCH_TOTAL_CALLS] , metrics[COMPAREPATCH_REVERSE_ACCEPTS] , metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS]);
 
   if ( settings[DEPTHMAP_IMPROVE_FILLING_HOLES]!=0 )  EnhanceDepthMapFillHoles(video_register[LEFT_EYE].pixels, l_video_register[left_depth_reg].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
@@ -520,32 +543,10 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
    */
   DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1);
   DepthMapToVideo(DEPTH_RIGHT,DEPTH_RIGHT_VIDEO,1);
+
   if (settings[PASS_TO_WORLD_3D])
    {
-       //(unsigned char *)
-       fprintf(stderr,"Registers DEPTH0 and COLOR0 are written to filesystem\n");
-       SaveRegisterToFile("memfs/DEPTH0",DEPTH_LEFT_VIDEO);
-       SaveRegisterToFile("memfs/COLOR0",CALIBRATED_LEFT_EYE);
-       SaveTransformationMatrixToFile("memfs/LEFT_HOMOGRAPHY0",&left_homography);
-       SaveTransformationMatrixToFile("memfs/RIGHT_HOMOGRAPHY0",&right_homography);
-
-       SaveFeatureListContents(video_register[CALIBRATED_LEFT_EYE].features,"memfs/POINTS_FOR_LEFT_HOMOGRAPHY0");
-       SaveFeatureListContents(video_register[CALIBRATED_RIGHT_EYE].features,"memfs/POINTS_FOR_RIGHT_HOMOGRAPHY0");
-
-       SaveTransformationMatrixToFile("memfs/LEFT_ROTATION0",&left_rotation);
-       SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION0",&right_rotation);
-
-       SaveTransformationMatrixToFile("memfs/TOTAL_LEFT_ROTATION0",&total_left_rotation);
-       SaveTransformationMatrixToFile("memfs/TOTAL_RIGHT_ROTATION0",&total_right_rotation);
-
-       SaveTransformationMatrixToFile("memfs/LEFT_TRANSLATION0",&left_translation);
-       SaveTransformationMatrixToFile("memfs/RIGHT_TRANSLATION0",&right_translation);
-
-       SaveTransformationMatrixToFile("memfs/LEFT_ROTATION_AND_TRANSLATION0",&left_rotation_and_translation);
-       SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION_AND_TRANSLATION0",&right_rotation_and_translation);
-
-       SaveDepthMapToFile("memfs/DEPTH_MAP",CALIBRATED_LEFT_EYE);
-
+      PassDepthMapToCameraSystem();
    }
 
   unsigned int covered_percent = DisparityMapGetPercentCovered(DEPTH_LEFT);
@@ -563,8 +564,14 @@ if ( settings[HYPERVISOR_STORE_PERFORMANCE_STATISTICS] )
 
   video_register[DEPTH_RIGHT].lock=0;
   video_register[DEPTH_LEFT].lock=0;
+
 return 1;
 }
+
+
+/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                            DISPARITY MAPPING USING OPENCV LIBRARY
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 
 
 unsigned int ExecuteDisparityMappingOpenCV()

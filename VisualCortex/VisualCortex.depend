@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1322480243 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
+1322532031 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
 	"DisparityDepthMap.h"
 	"DisparityDepthMap_Heuristics.h"
 	"VisCortexFilters.h"
@@ -8,6 +8,7 @@
 	"Precalculations.h"
 	"PatchComparison.h"
 	"VisCortexTimer.h"
+	"StatisticsGeneration.h"
 	"CameraPose.h"
 	"Matrix.h"
 	"cv.h"
@@ -17,7 +18,7 @@
 1322480890 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.h
 	"VisionMemory.h"
 
-1322441520 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
+1322531254 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
 	"FeatureLists.h"
 	"VisualCortex.h"
 	<stdio.h>
@@ -26,7 +27,7 @@
 
 1322096121 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
-1322478297 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.h
+1322530200 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.h
 
 1313925808 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexFilters.h
 	"VisionMemory.h"
@@ -35,12 +36,12 @@
 1303852517 /home/ammar/Documents/Programming/RoboVision/VisualCortex/IntegralImageConversion.h
 	"VisionMemory.h"
 
-1322052679 /home/ammar/Documents/Programming/RoboVision/VisualCortex/MovementRegistration.h
+1322532540 /home/ammar/Documents/Programming/RoboVision/VisualCortex/MovementRegistration.h
 	"VisionMemory.h"
 
 1320888286 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.h
 
-1322478290 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.c
+1322530187 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.c
 	"DisparityDepthMap_Heuristics.h"
 	"VisCortexFilters.h"
 	"Precalculations.h"
@@ -109,7 +110,7 @@
 	"VisionMemory.h"
 	"Precalculations.h"
 
-1322052671 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/MovementRegistration.c
+1322532515 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/MovementRegistration.c
 	"MovementRegistration.h"
 	"Precalculations.h"
 	"VisCortexTimer.h"
@@ -172,7 +173,7 @@
 1313925807 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexHeuristics.h
 	"VisCortexHeuristics.h"
 
-1322071308 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
+1322531259 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
 	"VisionMemory.h"
 	"Precalculations.h"
 	"VisCortexFilters.h"
@@ -222,7 +223,7 @@
 
 1311412733 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/fast/fast.h
 
-1320877447 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
+1322480812 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
 	"VideoInputAdapter.h"
 	"VisualCortex.h"
 	"VisionMemory.h"
@@ -659,7 +660,7 @@
 	"VisionMemory.h"
 	"FeatureLists.h"
 
-1322049586 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.c
+1322530546 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.c
 	"CameraPose.h"
 	"Precalculations.h"
 	"Matrix.h"
@@ -667,7 +668,7 @@
 	"VisCortexTimer.h"
 	"../WorldMapping/MasterWorld/MasterWorld.h"
 
-1320801020 /home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.h
+1322530559 /home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.h
 	"VisionMemory.h"
 
 1320875642 /home/ammar/Documents/Programming/RoboVision/VisualCortex/Matrix.h
@@ -679,4 +680,14 @@
 	"CameraPose.h"
 
 1320791357 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterWorld/MasterWorld.h
+
+1322485499 /home/ammar/Documents/Programming/RoboVision/VisualCortex/StatisticsGeneration.h
+
+1322485187 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StatisticsGeneration.c
+	"StatisticsGeneration.h"
+	"VisionMemory.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
 
