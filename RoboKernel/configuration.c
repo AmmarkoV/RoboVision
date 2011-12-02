@@ -49,6 +49,9 @@ int filename_stripper_found_attack(char * filename)
    while (i<length)
      {
         if ( (filename[i]=='_') )  { /* UNDERSCORES ARE ACCEPTABLE , OK */} else
+        if ( (filename[i]==' ') )  { /* Empty Spaces are acceptable , OK */} else
+        if ( (filename[i]=='.') )  { /* Dots are acceptable , OK */} else
+        if ( (filename[i]=='!') )  { /* Exclamation marks are acceptable , OK */} else
         if ( (filename[i]>='0') && (filename[i]<='9') )  { /* CHARACTER IS A NUMBER , OK */} else
         if ( (filename[i]>='A') && (filename[i]<='Z') )  { /* CHARACTER IS A CAPITAL LETTER , OK */} else
         if ( (filename[i]>='a') && (filename[i]<='z') )  { /* CHARACTER IS A LOWERCASE LETTER , OK */} else

@@ -41,6 +41,7 @@ int CheckGuardBytes()
         fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n ");
         return 0;
     }
+  return 1;
 }
 
 

@@ -3,6 +3,7 @@
 #include "Matrix.h"
 #include "LinearAlgebra.h"
 #include "VisCortexTimer.h"
+#include "DisparityDepthMap_Heuristics.h"
 #include "../WorldMapping/MasterWorld/MasterWorld.h"
 
 struct TransformationMatrix left_homography;

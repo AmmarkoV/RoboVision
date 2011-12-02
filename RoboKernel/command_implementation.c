@@ -17,6 +17,7 @@ int IRCSay(char * what2say)
  if (filename_stripper_found_attack(what2say))
    {
      //Weird Filename detected , aborting unsafe code
+     fprintf(stderr,"INJECTION ATTEMPT AT IRCSAY FUNCTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
      return 666;
    }*/
 
@@ -36,6 +37,7 @@ int Say(char * what2say)
  if (filename_stripper_found_attack(what2say))
    {
      /*Weird Filename detected , aborting unsafe code */
+     fprintf(stderr,"INJECTION ATTEMPT AT SAY FUNCTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
      return 666;
    }
 
@@ -57,6 +59,7 @@ int PlaySound(char * sndname)
  if (filename_stripper_found_attack(sndname))
    {
      /*Weird Filename detected , aborting unsafe code */
+     fprintf(stderr,"INJECTION ATTEMPT AT PlaySound FUNCTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
      return 666;
    }
 
@@ -72,6 +75,7 @@ int RecordSound(char * sndname, unsigned int delay)
  if (filename_stripper_found_attack(sndname))
    {
      /*Weird Filename detected , aborting unsafe code */
+     fprintf(stderr,"INJECTION ATTEMPT AT RecordSound FUNCTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
      return 666;
    }
 

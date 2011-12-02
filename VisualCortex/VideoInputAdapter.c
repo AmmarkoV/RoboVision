@@ -188,7 +188,21 @@ inline unsigned int FrameProcessing
            }
        } /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
-        if ( settings[PASS_TO_FACE_DETECTOR] ) { RecognizeFaces(REG_CALIBRATED_EYE); }
+        if ( settings[PASS_TO_FACE_DETECTOR] )
+        {
+            if ( ( settings[ALTERNATE_DETECTORS_BETWEEN_EYES_FOR_CALCULATION_SKIPPING]==1 ) && ( (metrics[FRAMES_PROCESSED]%2==0) && (REG_CALIBRATED_EYE==CALIBRATED_LEFT_EYE) ) )
+            {
+               RecognizeFaces(REG_CALIBRATED_EYE);
+            }  else
+            if ( ( settings[ALTERNATE_DETECTORS_BETWEEN_EYES_FOR_CALCULATION_SKIPPING]==1 ) && ( (metrics[FRAMES_PROCESSED]%2==1) && (REG_CALIBRATED_EYE==CALIBRATED_RIGHT_EYE) ) )
+            {
+               RecognizeFaces(REG_CALIBRATED_EYE);
+            }  else
+            if ( settings[ALTERNATE_DETECTORS_BETWEEN_EYES_FOR_CALCULATION_SKIPPING]==0  )
+            {
+               RecognizeFaces(REG_CALIBRATED_EYE);
+            }
+        }
 
         if ( settings[PASS_TO_FEATURE_DETECTOR] )
         {

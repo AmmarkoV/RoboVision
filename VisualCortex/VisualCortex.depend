@@ -18,14 +18,14 @@
 1322480890 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.h
 	"VisionMemory.h"
 
-1322531254 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
+1322532706 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
 	"FeatureLists.h"
 	"VisualCortex.h"
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1322096121 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1322782655 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
 1322530200 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.h
 
@@ -110,7 +110,7 @@
 	"VisionMemory.h"
 	"Precalculations.h"
 
-1322532515 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/MovementRegistration.c
+1322532845 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/MovementRegistration.c
 	"MovementRegistration.h"
 	"Precalculations.h"
 	"VisCortexTimer.h"
@@ -131,7 +131,7 @@
 	<limits.h>
 	<math.h>
 
-1322072106 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.c
+1322783084 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.c
 	"StateSetting.h"
 	"VisionMemory.h"
 	"FaceDetection.h"
@@ -173,14 +173,14 @@
 1313925807 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexHeuristics.h
 	"VisCortexHeuristics.h"
 
-1322531259 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
+1322782686 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
 	"VisionMemory.h"
 	"Precalculations.h"
 	"VisCortexFilters.h"
 	"VisCortexTimer.h"
 	"StateSetting.h"
 
-1322441580 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
+1322532912 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
 	"VisualCortex.h"
 	"VisionMemory.h"
 	"Precalculations.h"
@@ -199,6 +199,7 @@
 	"VisCortexTimer.h"
 	"LinearAlgebra.h"
 	"VideoInputAdapter.h"
+	"StatisticsGeneration.h"
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -223,7 +224,7 @@
 
 1311412733 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/fast/fast.h
 
-1322480812 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
+1322782930 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
 	"VideoInputAdapter.h"
 	"VisualCortex.h"
 	"VisionMemory.h"
@@ -660,12 +661,13 @@
 	"VisionMemory.h"
 	"FeatureLists.h"
 
-1322530546 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.c
+1322783136 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.c
 	"CameraPose.h"
 	"Precalculations.h"
 	"Matrix.h"
 	"LinearAlgebra.h"
 	"VisCortexTimer.h"
+	"DisparityDepthMap_Heuristics.h"
 	"../WorldMapping/MasterWorld/MasterWorld.h"
 
 1322530559 /home/ammar/Documents/Programming/RoboVision/VisualCortex/CameraPose.h
