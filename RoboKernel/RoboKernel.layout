@@ -17,13 +17,13 @@
 		<Cursor position="195" topLine="0" />
 	</File>
 	<File name="command_implementation.c" open="1" top="0" tabpos="11">
-		<Cursor position="973" topLine="3" />
+		<Cursor position="2279" topLine="23" />
 	</File>
 	<File name="command_implementation.h" open="1" top="0" tabpos="12">
 		<Cursor position="91" topLine="0" />
 	</File>
 	<File name="configuration.c" open="1" top="0" tabpos="9">
-		<Cursor position="219" topLine="0" />
+		<Cursor position="1943" topLine="30" />
 	</File>
 	<File name="configuration.h" open="1" top="0" tabpos="10">
 		<Cursor position="119" topLine="0" />
@@ -50,13 +50,13 @@
 		<Cursor position="109" topLine="0" />
 	</File>
 	<File name="script_runner.c" open="1" top="0" tabpos="21">
-		<Cursor position="78" topLine="0" />
+		<Cursor position="78" topLine="102" />
 	</File>
 	<File name="script_runner.h" open="1" top="0" tabpos="22">
 		<Cursor position="156" topLine="0" />
 	</File>
 	<File name="visual_system.c" open="1" top="0" tabpos="5">
-		<Cursor position="4722" topLine="102" />
+		<Cursor position="112" topLine="0" />
 	</File>
 	<File name="visual_system.h" open="1" top="0" tabpos="6">
 		<Cursor position="175" topLine="0" />

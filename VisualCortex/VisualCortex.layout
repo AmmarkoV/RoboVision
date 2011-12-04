@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="CameraPose.c" open="1" top="0" tabpos="44">
-		<Cursor position="1058" topLine="21" />
+		<Cursor position="855" topLine="0" />
 	</File>
 	<File name="CameraPose.h" open="1" top="0" tabpos="43">
 		<Cursor position="861" topLine="0" />
@@ -14,10 +14,10 @@
 		<Cursor position="627" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
-		<Cursor position="106" topLine="0" />
+		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
-		<Cursor position="105" topLine="0" />
+		<Cursor position="1242" topLine="0" />
 	</File>
 	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
 		<Cursor position="581" topLine="46" />
@@ -86,7 +86,7 @@
 		<Cursor position="238" topLine="0" />
 	</File>
 	<File name="StateSetting.c" open="1" top="0" tabpos="18">
-		<Cursor position="742" topLine="5" />
+		<Cursor position="1101" topLine="20" />
 	</File>
 	<File name="StateSetting.h" open="1" top="0" tabpos="19">
 		<Cursor position="141" topLine="0" />
@@ -98,7 +98,7 @@
 		<Cursor position="178" topLine="0" />
 	</File>
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="56" topLine="0" />
+		<Cursor position="6627" topLine="192" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="409" topLine="0" />
@@ -134,15 +134,15 @@
 		<Cursor position="596" topLine="6" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="22368" topLine="645" />
+		<Cursor position="11540" topLine="243" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="3397" topLine="118" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
 		<Cursor position="11152" topLine="856" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="672" topLine="276" />
+		<Cursor position="735" topLine="21" />
 	</File>
 </CodeBlocks_layout_file>

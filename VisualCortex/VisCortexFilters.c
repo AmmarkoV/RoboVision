@@ -516,6 +516,7 @@ StartTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
  } //SOBEL FILTER DONE
 
 EndTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+MarkRegistersAsSynced(source_reg,target_reg);
 
 return (1);
 }
@@ -533,6 +534,7 @@ int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int t
     unsigned int retres = ConvolutionFilter9_1Byte(source_reg,target_reg,table,divisor);
 
     EndTimer(SECOND_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+    MarkRegistersAsSynced(source_reg,target_reg);
 
     return retres;
 }
@@ -656,7 +658,8 @@ StartTimer(GAUSSIAN_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 	 }
 
  free(proc_image);
-EndTimer(GAUSSIAN_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+ EndTimer(GAUSSIAN_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+ MarkRegistersAsSynced(source_reg,target_reg);
 
  return (1);
 }

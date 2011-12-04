@@ -475,6 +475,8 @@ unsigned int CompressRegister1Byte(int input,int output)
     }
 
  EndTimer(COMPRESS_IMAGE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+ MarkRegistersAsSynced(input,output);
+
   return 1;
 }
 
@@ -564,6 +566,8 @@ unsigned int CompressRegister3Byte(int input,int output)
     }
 
  EndTimer(COMPRESS_IMAGE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+ MarkRegistersAsSynced(input,output);
+
   return 1;
 }
 

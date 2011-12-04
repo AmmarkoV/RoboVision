@@ -40,7 +40,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.631";
+char * VISCORTEX_VER = "0.634";
 
 /*
 
@@ -631,10 +631,10 @@ void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error)
 int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam)
 {
    if ( left_cam == 1 ) {
-                          metrics[CHANGES_LEFT]=RegisterMovementsInternal(1,LAST_LEFT_EYE,LEFT_EYE,MOVEMENT_LEFT,MOVEMENT_GROUPED_LEFT);
+                          metrics[CHANGES_LEFT]=RegisterMovementsInternal(1,LAST_LEFT_EYE,LEFT_EYE,MOVEMENT_LEFT,1,MOVEMENT_GROUPED_LEFT);
                         }
    if (right_cam == 1 ) {
-                          metrics[CHANGES_RIGHT]=RegisterMovementsInternal(0,LAST_RIGHT_EYE,RIGHT_EYE,MOVEMENT_RIGHT,MOVEMENT_GROUPED_RIGHT);
+                          metrics[CHANGES_RIGHT]=RegisterMovementsInternal(0,LAST_RIGHT_EYE,RIGHT_EYE,MOVEMENT_RIGHT,1,MOVEMENT_GROUPED_RIGHT);
                         }
   return 1;
 }

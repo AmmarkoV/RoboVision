@@ -36,11 +36,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 typedef unsigned int uint;
 
 
-int PrepareForDepthMapping(
-                             uint left_depth_reg,
-                             uint right_depth_reg,
-                             unsigned char clear_and_calculate
-                          )
+int PrepareRegistersForDepthMapping(
+                                     uint left_depth_reg,
+                                     uint right_depth_reg,
+                                     unsigned char clear_and_calculate
+                                   )
 {
    if ( clear_and_calculate == 1 )
     {
@@ -48,39 +48,37 @@ int PrepareForDepthMapping(
        ClearLargeVideoRegister(left_depth_reg);
        ClearLargeVideoRegister(right_depth_reg);
 
-      // THIS IS DONE FOR EVERY FRAME NOW PrepareCleanSobeledGaussianAndDerivative(LEFT_EYE,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
-      // THIS IS DONE FOR EVERY FRAME NOW PrepareCleanSobeledGaussianAndDerivative(RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
+       PrepareCleanSobeledGaussianAndDerivative(CALIBRATED_LEFT_EYE ,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
+       PrepareCleanSobeledGaussianAndDerivative(CALIBRATED_RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
     }
 
    if (  settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM] == 1 )
    {
-       /*
+
        GenerateCompressHistogramOfImage(video_register[CALIBRATED_LEFT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_LEFT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
        GenerateCompressHistogramOfImage(video_register[CALIBRATED_RIGHT_EYE].pixels,l_video_register[HISTOGRAM_COMPRESSED_RIGHT].pixels,metrics[HORIZONTAL_BUFFER],metrics[VERTICAL_BUFFER]);
-       */
        /* TODO ADD GENERIC HISTOGRAM COMPRESSION  HERE .. ( 3 byte )*/
    }
 
-
     if ( clear_and_calculate == 1 )
      {
-       //CompressPresenceRegister(EDGES_LEFT,GENERAL_XLARGE_1,5); // This must be executed
-        // I dont like the following , I should really change the sobel function to give a one byte response..!
+        unsigned int TMP_REGISTER = GetTempRegister();
+        if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( PassNewFrameFromVideoInput ) \n"); }
+        CopyRegister(EDGES_LEFT,TMP_REGISTER,0,0);
+        PixelsOverThresholdSetAsOne(TMP_REGISTER,1);
+        CompressRegister(TMP_REGISTER,EDGES_PRESENCE_GROUPED_LEFT);
+        StopUsingVideoRegister(TMP_REGISTER);
 
-        /* This is now calculated in every frame
-        CopyRegister(EDGES_LEFT,GENERAL_3);
-        PixelsOverThresholdSetAsOne(GENERAL_3,1);
-        CompressRegister(GENERAL_3,GENERAL_XLARGE_1);
-
+        /*THIS HAPPENS NOW INSIDE MOVEMENT_DETECTION AS IT SHOULD
         CompressRegister(MOVEMENT_LEFT,MOVEMENT_GROUPED_LEFT);
         CompressRegister(MOVEMENT_RIGHT,MOVEMENT_GROUPED_RIGHT);
+        */
 
         CompressRegister(EDGES_LEFT,EDGES_GROUPED_LEFT);
         CompressRegister(EDGES_RIGHT,EDGES_GROUPED_RIGHT);
 
         CompressRegister(SECOND_DERIVATIVE_LEFT,SECOND_DERIVATIVE_GROUPED_LEFT);
         CompressRegister(SECOND_DERIVATIVE_RIGHT,SECOND_DERIVATIVE_GROUPED_RIGHT);
-        */
 
      }
   return 1;
@@ -367,13 +365,18 @@ unsigned int DepthMapFull  (
   metrics[COMPAREPATCH_ALGORITHM_DENIES]=0;
 
   // PREPARE REGISTERS FOR OPERATION!
-  PrepareForDepthMapping( left_depth_reg , right_depth_reg , clear_and_calculate);
+  PrepareRegistersForDepthMapping(left_depth_reg , right_depth_reg , clear_and_calculate);
 
   if ( settings[DEPTHMAP_DEBUG] )
     {  //DEBUG THINGS ON HDD WILL BE REMOVED ENTIRELY WHEN LOCKING PROBLEMS ARE SOLVED..
        SaveRegistersStateRequiredForDisparityMapping();
     }
 
+
+    if (!CheckRegistersForSynchronization(CALIBRATED_LEFT_EYE,EDGES_LEFT)) { fprintf(stderr,"EDGES LEFT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(CALIBRATED_LEFT_EYE,SECOND_DERIVATIVE_LEFT)) { fprintf(stderr,"SECOND DERIV LEFT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(CALIBRATED_RIGHT_EYE,EDGES_RIGHT)) { fprintf(stderr,"EDGES RIGHT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(CALIBRATED_RIGHT_EYE,SECOND_DERIVATIVE_RIGHT)) { fprintf(stderr,"SECOND DERIV RIGHT NOT IN SYNC\n"); }
 
 
     uint edges_required_to_process=( (uint) ( metrics[VERTICAL_BUFFER] * metrics[HORIZONTAL_BUFFER] * settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] )  / 100 );

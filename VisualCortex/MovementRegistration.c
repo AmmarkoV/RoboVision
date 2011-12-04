@@ -37,9 +37,7 @@ unsigned int PrepareRegisterMovementsRegisters(unsigned char left_eye)
   return 0;
 }
 
-
-
-unsigned int RegisterMovementsInternal(BOOLEAN lefteye,unsigned int last_source_block_reg,unsigned int source_block_reg,unsigned int movement_target,unsigned int movement_target_grouped)
+unsigned int RegisterMovementsInternal(unsigned char lefteye,unsigned int last_reg,unsigned int current_reg,unsigned int movement_target,unsigned int generate_grouped,unsigned int movement_target_grouped)
 {
  //unsigned char *last_source_block=;
 // unsigned char *source_block=     ;
@@ -48,8 +46,8 @@ unsigned int RegisterMovementsInternal(BOOLEAN lefteye,unsigned int last_source_
 
  unsigned int  changes=0,last_changes = 0; //Tha metrisei athroistika posa pixels allaksan
 
-  unsigned char * lfsptr=video_register[last_source_block_reg].pixels; // Last FrameSource Pointer
-  unsigned char * ptr=video_register[source_block_reg].pixels; // Source Pointer
+  unsigned char * lfsptr=video_register[last_reg].pixels; // Last FrameSource Pointer
+  unsigned char * ptr=video_register[current_reg].pixels; // Source Pointer
   unsigned char * limit_size = ptr + metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
   unsigned char * movement_ptr = video_register[movement_target].pixels;
 
@@ -87,7 +85,7 @@ unsigned int RegisterMovementsInternal(BOOLEAN lefteye,unsigned int last_source_
       ++movement_ptr;
   }
 
-//CompressRegister(movement_target,movement_target_grouped);
+CompressRegister(movement_target,movement_target_grouped);
 video_register[movement_target].depth=1; // Set BitDepth of output array as 1
 
  EndTimer(MOVEMENT_RAW_DELAY);

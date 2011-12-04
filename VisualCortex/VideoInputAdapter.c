@@ -130,21 +130,24 @@ inline unsigned int FrameProcessing
    )
 {
        // THIRD PROCESS NEW IMAGE  ( COMPRESSION )
+       /*
        PrepareCleanSobeledGaussianAndDerivative
          (   REG_CALIBRATED_EYE,
              REG_EDGES,
              REG_SECOND_DERIVATIVE,
              settings[DEPTHMAP_EDGE_LOW_STRICTNESS],
              settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]
-         );
+         );*/
 
+       /*
        GenerateCompressHistogramOfImage
          ( video_register[REG_CALIBRATED_EYE].pixels,
            l_video_register[REG_HISTOGRAM].pixels,
            metrics[HORIZONTAL_BUFFER],
            metrics[VERTICAL_BUFFER]
-         );
+         );*/
 
+/*
       if ( ADD_EDGES_PRESENCE_SWITCH )
        {
            unsigned int TMP_REGISTER = GetTempRegister();
@@ -154,10 +157,10 @@ inline unsigned int FrameProcessing
            CompressRegister(TMP_REGISTER,REG_GROUP_EDGES_PRESENCE);
            StopUsingVideoRegister(TMP_REGISTER);
        }
-
-        CompressRegister(REG_MOVEMENT,REG_GROUP_MOVEMENT);
+     // THIS HAPPENS NOW INSIDE MOVEMENT_DETECTION AS IT SHOULD   CompressRegister(REG_MOVEMENT,REG_GROUP_MOVEMENT);
         CompressRegister(REG_EDGES,REG_GROUP_EDGES);
         CompressRegister(REG_SECOND_DERIVATIVE,REG_GROUP_SECOND_DERIVATIVE);
+*/
 
         // FOURTH TRACK ALL POINTS ON NEW FRAME FROM OLD FRAME
         if ( settings[CALCULATE_MOVEMENT_FLOW ] )

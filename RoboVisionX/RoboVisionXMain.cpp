@@ -512,6 +512,7 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
 
 
 
+
      if ( uptimer->Time() - last_draw < 4500 ) { return; }
 
     unsigned int ultrasonic_value;
