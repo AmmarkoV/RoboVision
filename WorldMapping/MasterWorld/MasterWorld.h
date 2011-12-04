@@ -27,6 +27,7 @@ struct Agents
 int Add3DPoint(float x,float y,float z , unsigned char r ,unsigned char g ,unsigned char b);
 int SetAgent(unsigned int agent_num,float x,float y,float z , float heading , float pitch , float yaw);
 int GetAgent(unsigned int agent_num,float * x,float * y,float * z , float * heading , float * pitch , float * yaw);
+int PrintFAgent(unsigned int agent_num);
 
 
 #ifdef __cplusplus

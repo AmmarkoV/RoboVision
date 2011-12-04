@@ -513,7 +513,7 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
 
 
 
-     if ( uptimer->Time() - last_draw < 4500 ) { return; }
+   if ( uptimer->Time() - last_draw < 4500 ) { return; }
 
     unsigned int ultrasonic_value;
     ultrasonic_value = RobotGetUltrasonic(1);
@@ -537,10 +537,10 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
      msg.Clear() , msg.Printf( wxT("%u ms") , uptimer->Time() );
      Uptime->SetLabel(msg);
 
-
-     float x,y,z,heading,pitch,yaw;
+     float x=0.0,y=0.0,z=0.0,heading=0.0,pitch=0.0,yaw=0.0;
      GetAgent(0,&x,&y,&z,&heading,&pitch,&yaw);
      msg.Clear()  , msg.Printf( wxT("X:%0.2f Y:%0.2f Z:%0.2f heading:%0.2f") , x,y,z,heading );
+
      PoseString->SetLabel(msg);
 
      last_draw =  uptimer->Time();

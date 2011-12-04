@@ -2,10 +2,10 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="CameraPose.c" open="1" top="0" tabpos="44">
-		<Cursor position="855" topLine="0" />
+		<Cursor position="4521" topLine="84" />
 	</File>
 	<File name="CameraPose.h" open="1" top="0" tabpos="43">
-		<Cursor position="861" topLine="0" />
+		<Cursor position="862" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
 		<Cursor position="6063" topLine="120" />
@@ -98,7 +98,7 @@
 		<Cursor position="178" topLine="0" />
 	</File>
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="6627" topLine="192" />
+		<Cursor position="8375" topLine="195" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="409" topLine="0" />
@@ -134,15 +134,18 @@
 		<Cursor position="596" topLine="6" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="11540" topLine="243" />
+		<Cursor position="11425" topLine="249" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="3397" topLine="118" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="11152" topLine="856" />
+		<Cursor position="1332" topLine="0" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="735" topLine="21" />
+		<Cursor position="8224" topLine="319" />
+	</File>
+	<File name="version.h" open="1" top="0" tabpos="49">
+		<Cursor position="0" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
