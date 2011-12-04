@@ -29,6 +29,7 @@ class CortexSettings: public wxDialog
 		wxTextCtrl* ClosestDepth;
 		wxTextCtrl* MinB;
 		wxTextCtrl* MaxG;
+		wxTextCtrl* DecidePixelsDown;
 		wxStaticText* StaticText21;
 		wxStaticText* StaticText13;
 		wxTextCtrl* PatchMinR;
@@ -44,6 +45,7 @@ class CortexSettings: public wxDialog
 		wxStaticText* StaticText28;
 		wxTextCtrl* ComparisonThresholdMedium;
 		wxButton* SaveButton;
+		wxTextCtrl* DecidePixelsRight;
 		wxCheckBox* FaceDetection;
 		wxCheckBox* DoNotProcessCloserThanPreviousSizeResult;
 		wxTextCtrl* PatchMinB;
@@ -108,6 +110,7 @@ class CortexSettings: public wxDialog
 		wxStaticText* StaticText19;
 		wxStaticText* StaticText29;
 		wxTextCtrl* PatchSizeXMedium;
+		wxStaticText* StaticText9;
 		wxTextCtrl* OffsetDown;
 		wxCheckBox* FeatureDetection;
 		wxStaticText* StaticText33;
@@ -220,6 +223,9 @@ class CortexSettings: public wxDialog
 		static const long ID_CHECKBOX13;
 		static const long ID_CHECKBOX14;
 		static const long ID_CHECKBOX15;
+		static const long ID_STATICTEXT9;
+		static const long ID_TEXTCTRL40;
+		static const long ID_TEXTCTRL41;
 		//*)
 
 	private:

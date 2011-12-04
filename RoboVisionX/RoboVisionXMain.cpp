@@ -120,7 +120,7 @@ BEGIN_EVENT_TABLE(RoboVisionXFrame,wxFrame)
 
 END_EVENT_TABLE()
 
-unsigned int WAIT_TIME_REDRAW = 200; // WAIT TIME PER FRAME
+unsigned int WAIT_TIME_REDRAW = 250; // WAIT TIME PER FRAME
 unsigned int WAIT_TIME_STARTUP = 5000;
 int position = 0;
 char * version_code_name = (char *) " -  Luben ";

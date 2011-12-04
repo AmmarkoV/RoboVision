@@ -64,6 +64,13 @@ if  (VisCortx_GetFeature(video_reg_num,0,TOTAL_POINTS)>0)
 
 int DrawFacesAtFeed(wxPaintDC & dc , unsigned int x , unsigned int y , unsigned int video_reg_num )
 {
+      if ( VisCortx_GetSetting(PASS_TO_FACE_DETECTOR)==0 )
+      {
+       //Faces will never be aquired because they are disabled.. :P
+       return 0;
+      }
+
+
        if (VisCortx_GetFaces(video_reg_num,0,TOTAL_POINTS)>0  )
        {
          unsigned int center_x,center_y,scale,i;

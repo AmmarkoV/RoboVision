@@ -100,17 +100,20 @@ void inline FillDepthMemWithData(unsigned short * depth_data_raw_left,unsigned s
 
 
 	y=depth_data->y1_patch;
-	ylim=y+depth_data->patch_size_y;
+	ylim=y+depth_data->patch_size_y+settings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN];
+	if ( ylim>=metrics[RESOLUTION_Y] ) { ylim = metrics[RESOLUTION_Y]-1; }
+
 	while (y<ylim)
 	{
 	    x=depth_data->x1_patch;
 		ptr = ( (y) * image_x ) + ( x );
-	    xlim=ptr+depth_data->patch_size_x;
+	    xlim=ptr+depth_data->patch_size_x+settings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT];
+        if ( xlim>=ptr+metrics[RESOLUTION_X] ) { xlim = ptr+metrics[RESOLUTION_X]-1; }
+
 
 		while ( ( ptr<xlim ) && ( ptr < full_lim) )
 		{
 		    // TODO depth_data_raw_right
-
 			depth_data_raw_left[ptr]=far_away;
 		    depth_data_full[ptr].depth=depth_data->depth;
             depth_data_full[ptr].score=depth_data->score;

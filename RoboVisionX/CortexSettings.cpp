@@ -105,6 +105,9 @@ const long CortexSettings::ID_CHECKBOX12 = wxNewId();
 const long CortexSettings::ID_CHECKBOX13 = wxNewId();
 const long CortexSettings::ID_CHECKBOX14 = wxNewId();
 const long CortexSettings::ID_CHECKBOX15 = wxNewId();
+const long CortexSettings::ID_STATICTEXT9 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL40 = wxNewId();
+const long CortexSettings::ID_TEXTCTRL41 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CortexSettings,wxDialog)
@@ -127,7 +130,7 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Start Left Px"), wxPoint(32,112), wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	StartLeft = new wxTextCtrl(this, ID_TEXTCTRL2, _("15"), wxPoint(128,104), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
 	StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Edge Strictness"), wxPoint(240,40), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
-	EdgeStrictness = new wxTextCtrl(this, ID_TEXTCTRL3, _("25"), wxPoint(360,34), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
+	EdgeStrictness = new wxTextCtrl(this, ID_TEXTCTRL3, _("25"), wxPoint(352,32), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
 	DefaultButton = new wxButton(this, ID_BUTTON3, _("Default"), wxPoint(608,544), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
 	StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("Instant Quality (1..15)"), wxPoint(32,80), wxDefaultSize, 0, _T("ID_STATICTEXT4"));
 	InstantQuality = new wxTextCtrl(this, ID_TEXTCTRL4, _("2"), wxPoint(184,72), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
@@ -138,8 +141,8 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	ComparisonThreshold = new wxTextCtrl(this, ID_TEXTCTRL7, _("15000"), wxPoint(288,232), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL7"));
 	StaticText7 = new wxStaticText(this, ID_STATICTEXT7, _("Comparison Min Score"), wxPoint(312,304), wxDefaultSize, 0, _T("ID_STATICTEXT7"));
 	ComparisonMinScore = new wxTextCtrl(this, ID_TEXTCTRL8, _("30000"), wxPoint(352,320), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
-	StaticText8 = new wxStaticText(this, ID_STATICTEXT8, _("Closest Depth Plane"), wxPoint(40,400), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
-	ClosestDepth = new wxTextCtrl(this, ID_TEXTCTRL9, _("90"), wxPoint(192,392), wxSize(48,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
+	StaticText8 = new wxStaticText(this, ID_STATICTEXT8, _("Closest Depth Plane"), wxPoint(40,424), wxDefaultSize, 0, _T("ID_STATICTEXT8"));
+	ClosestDepth = new wxTextCtrl(this, ID_TEXTCTRL9, _("90"), wxPoint(80,440), wxSize(48,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
 	PatchesEdgesPerCent = new wxTextCtrl(this, ID_TEXTCTRL10, _("15"), wxPoint(392,232), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL10"));
 	StaticText10 = new wxStaticText(this, ID_STATICTEXT10, _("%"), wxPoint(440,240), wxDefaultSize, 0, _T("ID_STATICTEXT10"));
 	FillHoles = new wxCheckBox(this, ID_CHECKBOX1, _("Fill Holes"), wxPoint(224,528), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
@@ -173,10 +176,10 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	PatchMinB = new wxTextCtrl(this, ID_TEXTCTRL20, _("18"), wxPoint(720,184), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL20"));
 	ImproveUsingHistogram = new wxCheckBox(this, ID_CHECKBOX4, _("Depth Map Improve Using Histogram"), wxPoint(40,552), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
 	ImproveUsingHistogram->SetValue(true);
-	DoNotProcessFar = new wxCheckBox(this, ID_CHECKBOX5, _("Do not process closer"), wxPoint(40,432), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX5"));
+	DoNotProcessFar = new wxCheckBox(this, ID_CHECKBOX5, _("Do not process closer"), wxPoint(32,400), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX5"));
 	DoNotProcessFar->SetValue(false);
-	EdgeStrictnessHigh = new wxTextCtrl(this, ID_TEXTCTRL21, _("150"), wxPoint(424,34), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL21"));
-	StaticText23 = new wxStaticText(this, ID_STATICTEXT23, _("to"), wxPoint(400,40), wxDefaultSize, 0, _T("ID_STATICTEXT23"));
+	EdgeStrictnessHigh = new wxTextCtrl(this, ID_TEXTCTRL21, _("150"), wxPoint(416,32), wxSize(40,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL21"));
+	StaticText23 = new wxStaticText(this, ID_STATICTEXT23, _("to"), wxPoint(392,40), wxDefaultSize, 0, _T("ID_STATICTEXT23"));
 	ComparisonExpectedThreshold = new wxTextCtrl(this, ID_TEXTCTRL22, _("5000"), wxPoint(192,318), wxSize(72,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL22"));
 	StaticText24 = new wxStaticText(this, ID_STATICTEXT24, _("Small Patches"), wxPoint(32,240), wxDefaultSize, 0, _T("ID_STATICTEXT24"));
 	StaticText25 = new wxStaticText(this, ID_STATICTEXT25, _("Medium Patches"), wxPoint(32,205), wxDefaultSize, 0, _T("ID_STATICTEXT25"));
@@ -239,6 +242,9 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	RectifyVideoInput->SetValue(false);
 	SkipCalculations = new wxCheckBox(this, ID_CHECKBOX15, _("Skip Calculations when Idle"), wxPoint(568,384), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX15"));
 	SkipCalculations->SetValue(false);
+	StaticText9 = new wxStaticText(this, ID_STATICTEXT9, _("Decide for more pixels right , down"), wxPoint(232,424), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
+	DecidePixelsRight = new wxTextCtrl(this, ID_TEXTCTRL40, _("0"), wxPoint(376,440), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL40"));
+	DecidePixelsDown = new wxTextCtrl(this, ID_TEXTCTRL41, _("0"), wxPoint(424,440), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL41"));
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnSaveButtonClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnCancelButtonClick);
@@ -285,6 +291,12 @@ void CortexSettings::PullSettingsFromCortex()
 
   val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_VERT_SHIFT_DOWN);
   ShiftDown->SetValue(val);
+
+  val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT);
+  DecidePixelsRight->SetValue(val);
+
+  val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN);
+  DecidePixelsDown->SetValue(val);
 
   val.Clear(); val<<VisCortx_GetSetting(DEPTHMAP_COMPARISON_THRESHOLD);
   ComparisonThreshold->SetValue(val);
@@ -459,6 +471,11 @@ void CortexSettings::PushSettingsToCortex()
 
   if(ShiftUp->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_VERT_SHIFT_UP,(unsigned int) value); }
   if(ShiftDown->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_VERT_SHIFT_DOWN,(unsigned int) value); }
+
+  if(DecidePixelsRight->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT,(unsigned int) value); }
+  if(DecidePixelsDown->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN,(unsigned int) value); }
+
+
 
   if(ComparisonThreshold->GetValue().ToLong(&value)) { VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD,(unsigned int) value); }
 
