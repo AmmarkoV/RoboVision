@@ -14,26 +14,135 @@
 #define _POSIX_SOURCE 1 /* POSIX compliant source */
 
 
+char arduinodevice_name[100]={0};
+
+struct termios oldtio,newtio;
+int fd=0;
+
 int WORKS=0;
 int FAILED=0;
 volatile int STOP=0;
 int wait_flag=1;  /* TRUE while no signal received */
-char arduinodevice_name[100]={0};
 int arduinothread_id=0;
-int fd=0;
 
 int arduino_tickcount=0;
 
 struct arduino_connected_devices activated_state={0};
 struct arduino_connected_devices future_state={0};
 
-/*
-unsigned int ultrasonic1=0,ultrasonic2=0,accelerometerX=0,accelerometerY=0,arduino_tickcount=0;
-unsigned int last_camera_pose_pitch=0,last_camera_pose_heading=0;
-unsigned int camera_pose_pitch=0,camera_pose_heading=0;
-int last_lights[2]=0;
-int lights[2]=0;*/
 
+
+int ArduinoProtocolSend(char * command , unsigned int length)
+{
+  if ( (length!=3) || ( strlen(command)!=3 ) )
+    {
+        fprintf(stderr,"Incorrect Payload for ArduinoProtocolSend , not sending it\n");
+        return 0;
+    }
+
+  int res = write(fd,command,3);
+  tcflush(fd, TCOFLUSH);
+  if (res<3) { fprintf(stderr,"Command Failed to be send , this may mean arduino device is dead ( code %i ) \n",res); return 0; }
+
+  return 1;
+}
+
+
+
+
+
+int ArduinoProtocolReceive(char * command , unsigned int length)
+{
+  return 0;
+}
+
+
+/*
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                           ACTUAL COMMANDS START
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+*/
+int ArduinoNodServo(int dev, int servo_num , int degrees)
+{
+  // THIS MUST TRANSMIT
+  // M(servo_num)(degrees)
+  char command[10]={"N00\0"};
+
+  command[1]=servo_num+'0';
+  command[2]=(char) degrees;
+
+  return ArduinoProtocolSend(command,3);
+}
+
+int ArduinoMoveServo(int dev, int servo_num , int degrees)
+{
+  // THIS MUST TRANSMIT
+  // M(servo_num)(degrees)
+  char command[10]={"M00\0"};
+
+  command[1]=servo_num+'0';
+  command[2]=(char) degrees;
+
+  return ArduinoProtocolSend(command,3);
+}
+
+int ArduinoControlLights(int dev,int light_number,int light_state)
+{
+  // THIS MUST TRANSMIT
+  // L(A or D)(1/0)
+  char command[10]={"LA0\0"};
+
+ if ( light_state ) { command[1]='A'; } else
+                    { command[1]='D'; }
+  command[2]=light_number+'0';
+
+  return ArduinoProtocolSend(command,3);
+}
+
+int ArduinoAutoSampleMode(int dev,int true_for_on)
+{
+  // THIS MUST TRANSMIT
+  // BAS / EAS (1/0)
+  char command[10]={"BAS\0"};
+  if ( !true_for_on ) { command[0]='E'; }
+  return ArduinoProtocolSend(command,3);
+}
+
+int ArduinoFlushInput(int dev)
+{
+  // THIS MUST TRANSMIT FLU
+  char command[10]={"FLU\0"};
+  return ArduinoProtocolSend(command,3);
+}
+
+
+int ArduinoRestart(int dev)
+{
+  // THIS MUST TRANSMIT ZZZ
+  char command[10]={"ZZZ\0"};
+  return ArduinoProtocolSend(command,3);
+}
+
+int ArduinoCheck(int dev)
+{
+  // THIS MUST TRANSMIT CHK
+  char command[10]={"CHK\0"};
+  return ArduinoProtocolSend(command,3);
+}
+/*
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                           ACTUAL COMMANDS END
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+*/
+
+
+
+
+/*
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                           HIGH LEVEL COMMANDS FOR RELAY START
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+*/
 int ArduinoInternalGetUltrasonicValue(int which_one)
 {
   if (which_one==0 ) return activated_state.ultrasonic1; else
@@ -121,56 +230,11 @@ int ArduinoInternalSetLights(int light_num,int light_state,int wait_for_it)
 
   return 1;
 }
-
-
-int ArduinoNodServo(int dev, int servo_num , int degrees)
-{
-  // THIS MUST TRANSMIT
-  // M(servo_num)(degrees)
-  char command[10]={"N00\0"};
-
-  command[1]=servo_num+'0';
-  command[2]=(char) degrees;
-
-  //fprintf(stderr,"Sending %s to arduino\n",command);
-  int res = write(fd,command,3);
-  tcflush(fd, TCOFLUSH);
-  if (res<3) { /*fprintf(stderr,"Command Failed\n");*/ return 0; }
-  return 1;
-}
-
-int ArduinoMoveServo(int dev, int servo_num , int degrees)
-{
-  // THIS MUST TRANSMIT
-  // M(servo_num)(degrees)
-  char command[10]={"M00\0"};
-
-  command[1]=servo_num+'0';
-  command[2]=(char) degrees;
-
-  //fprintf(stderr,"Sending %s to arduino\n",command);
-  int res = write(fd,command,3);
-  tcflush(fd, TCOFLUSH);
-  if (res<3) { /*fprintf(stderr,"Command Failed\n");*/ return 0; }
-  return 1;
-}
-
-int ArduinoControlLights(int dev,int light_number,int light_state)
-{
-  // THIS MUST TRANSMIT
-  // L(A or D)(1/0)
-  char command[10]={"LA0\0"};
-
- if ( light_state ) { command[1]='A'; } else
-                    { command[1]='D'; }
-  command[2]=light_number+'0';
-
-  //fprintf(stderr,"Sending %s to arduino\n",command);
-  int res = write(fd,command,3);   /* Flash LED */
-  tcflush(fd, TCOFLUSH);
-  if (res<3) { return 0; }
-  return 1;
-}
+/*
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                           HIGH LEVEL COMMANDS FOR RELAY END
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+*/
 
 
 int AnalyzeArduinoInput(struct InputParserC * ipc,char * arduinostring,unsigned int length)
@@ -233,60 +297,39 @@ int AnalyzeArduinoInput(struct InputParserC * ipc,char * arduinostring,unsigned 
 int ArduinoCodeStartup(int fd)
 {
     fprintf(stderr,"Arduino Code startup running \n");
-
-    int res = write(fd,(unsigned char *) "ZZZ",3);   /* Restart Arduino */
-    usleep(100*1000);
-    res = write(fd,(unsigned char *) "FLU",3);   /* Flush input again..*/
-    res = write(fd,(unsigned char *) "EAS",3);   /* End autonomous state.. */
+    ArduinoAutoSampleMode(fd,0);
 
 
-
-    res = write(fd,(unsigned char *) "CHK",3);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
-    if (res<0) { fprintf(stderr,"Cannot write to arduino\n"); return 0; }
-    if (res!=3) {  fprintf(stderr,"Could not send all 3 bytes to arduino\n"); return 0;  }
-
-    usleep(100*1000);
-
-    char buf[256]={0};
-    fprintf(stderr,"Receiving..\n");
-    int chk_acknowledged = 0;
+    fprintf(stderr,"Trying to receive a check response..\n");
+    unsigned int chk_acknowledged = 0 , time_waited = 0 ;
     while ( !chk_acknowledged  )
      {
-       res = write(fd,(unsigned char *) "CHK",3);
-       res = read(fd,buf,8);   /* returns after at least newtio.c_cc[VMIN] chars have been input */
-       //if (res == 0 )                     { fprintf(stderr," "); }
-       if ( strncmp(buf,"ARDUINO",7)==0 ) { chk_acknowledged=1; } else
-                                          {
-                                            fprintf(stderr,"%s",buf);
-                                          }
+
+       if ( ArduinoCheck(fd) ) { chk_acknowledged=1; }
+       ++time_waited;
+       usleep(1000);
+
+       if ( time_waited > 1000 ) { fprintf(stderr,"Arduino Failed to respond \n"); return 0;}
+
      }
 
-    if ( strncmp(buf,"ARDUINO",7)==0 )
-      {
-      fprintf(stderr,"Got back answer \n"); WORKS=1;
-      }
-    res = write(fd,"LA0",3);   /* Flash LED */
-    usleep(1000);
-    res = write(fd,"LD0",3);   /* Flash LED */
-    //res = write(fd,"BAS",3);   /* Startup arduino automatic sending*/
+    // IF We reach here it means things work!
+    WORKS = 1;
+
+
+    if (!ArduinoControlLights(fd,0,1)) { fprintf(stderr,"Arduino does not respond to lights command\n"); return 0; }
+    usleep(10*1000);
+    if (!ArduinoControlLights(fd,0,0)) { fprintf(stderr,"Arduino does not respond to lights command\n"); return 0; }
+
+    //if (!ArduinoAutoSampleMode(fd,1)) { fprintf(stderr,"Arduino does not respond to AutoSample command\n"); return 0; }
 
     fprintf(stderr,"Arduino Code success\n");
     return 1;
 }
 
 
-void * Arduino_Thread(void * ptr)
+unsigned int ConnectToArduino()
 {
-
-int res;
-struct termios oldtio,newtio;
-
-
-unsigned int clear_packet_size=0;
-char clear_packet[512];
-
-unsigned int terminal_symbol_position=0;
-
 fprintf(stderr,"Trying to open arduino @ %s \n",arduinodevice_name);
 fd = open(arduinodevice_name, O_RDWR | O_NOCTTY  ); // | O_NDELAY
 if (fd <0) { perror(arduinodevice_name); FAILED=1; return(0); }
@@ -312,24 +355,27 @@ bzero(&newtio, sizeof(newtio));
  newtio.c_oflag &= ~OPOST; // make raw
  // see: http://unixwiz.net/techtips/termios-vmin-vtime.html
  newtio.c_cc[VMIN]  = 0;
- newtio.c_cc[VTIME] = 10;
+ newtio.c_cc[VTIME] = 20;
 
 
 tcflush(fd, TCIFLUSH);
 tcsetattr(fd,TCSANOW,&newtio);
 
-usleep (10*1000);
+usleep (5000*1000);
+fprintf(stderr,"Lets See if things will work\n");
 
 if (!ArduinoCodeStartup(fd))
  {
      STOP=1;  FAILED=1;
+     fprintf(stderr,"Giving up with Arduino\n");
+     return 0;
  } else
  {
      WORKS=1;
  }
 
 /*
-       int tcflush( fd, queue_selector );
+  int tcflush( fd, queue_selector );
 
   The queue_selector flags are:
 
@@ -340,15 +386,17 @@ if (!ArduinoCodeStartup(fd))
 
   o  TCIOFLUSH 2  flush both buffers
 */
+ return 1;
+}
+
+
+void * Arduino_Thread(void * ptr)
+{
+
 
 struct InputParserC * ipc=0;
 ipc = InputParser_Create(512,5);
 
-unsigned int overflow_buf_size=0;
-char overflow_buf[255];
-
-unsigned int buf_size=0;
-char buf[255];
 
 fprintf(stderr,"Arduino receive/send thread is now starting \n");
 int arduino_loop_tick_count = 0;
@@ -373,68 +421,6 @@ while (STOP==0)     {
                                activated_state.lights[0]=future_state.lights[0];
                          }
 
-                  if (0)
-                    {
-                       res = read(fd,buf,254);   // returns after at least newtio.c_cc[VMIN] chars have been input
-                       if (res==0) { //QUIET :P
-                                    } else
-                       if (res<0) { fprintf(stderr,"Error Reading Serial Stream \n"); WORKS=0;  } else
-                       if (res>255) { fprintf(stderr,"Error , overflow Reading Serial Stream \n"); WORKS=0; } else
-                       {
-                          buf_size = res;
-                          buf[res]=0;       // so we can printf...
-
-                          // START BUILDING THE ACTUAL FULL PACKET RECEIVED
-                          // IT IS TERMINATED WITH A # SO WE ARE TRYING TO MAKE A COMPLETE PACKET
-                          // FROM THE CHUNKS WE READ TIME AFTER TIME
-                          //
-
-                          clear_packet_size=0;
-
-
-                          unsigned int i=0;
-                          if (overflow_buf_size>0)
-                          { // WE HAVE AN OVERFLOWED MESSAGE TO ADD BEFORE THE CURRENT BUFFER TO THE PACKET
-                            for (i=0; i<overflow_buf_size; i++) { clear_packet[i]=overflow_buf[i]; }
-                            clear_packet_size=overflow_buf_size;
-                          } // CLEAR PACKET NOW CONTAINS ALL THE DATA THAT HAS BEEN OVERFLOWED FROM LAST TIME
-
-
-                          //The character stream is not steady so we search for a # that marks the end of a "packet"
-                          terminal_symbol_position=0;
-                          i=buf_size-1;
-                          while ( ( i > 0 ) && (buf[i]!='#') )
-                           {
-                               --i;
-                           }
-                           if (buf[i]=='#') { terminal_symbol_position=i;  }
-
-
-                          if ( terminal_symbol_position != 0 )
-                            { // We have located a # , our packet is complete :D
-                              for (i=0; i<terminal_symbol_position; i++) {  clear_packet[clear_packet_size++]=buf[i]; }
-                              clear_packet[clear_packet_size]=0; /* for printf */
-                              AnalyzeArduinoInput(ipc,clear_packet,clear_packet_size);
-                              //printf("START===================\n");
-                             // printf("%s\n",clear_packet);
-                             // printf("END=====================\n");
-                              overflow_buf_size=0;  // All older overflow has now been processed
-                            } else
-                            { //We still havent found a # so all current input goes all into overflow_buf for the next loop
-                              for (i=0; i<clear_packet_size; i++) {  overflow_buf[i]=clear_packet[i]; }
-                              overflow_buf_size=clear_packet_size;
-                            }
-
-                           unsigned int starting_point_of_overflow=0;
-                           if ( terminal_symbol_position != 0 ) { starting_point_of_overflow=terminal_symbol_position+1; }
-                           for (i=starting_point_of_overflow; i<buf_size; i++) {  overflow_buf[overflow_buf_size++]=buf[i]; }
-
-                          //printf("\n%d characters read\n", buf_size);
-
-
-                          if (buf[0]=='z') STOP=1;
-                       }
-                    }// DISABLED CODE
 
                     if ( arduino_loop_tick_count%100 == 0 )
                        {
@@ -446,13 +432,13 @@ while (STOP==0)     {
                     ++arduino_loop_tick_count;
                     }
 
- res=write(fd,"EAS",3);
- res=write(fd,"ZZZ",3);
- fprintf(stderr,"Closing auto system \n");
- usleep(10000);
+ ArduinoAutoSampleMode(fd,0);
+ fprintf(stderr,"Closing arduino \n");
  close(fd);
-
  tcsetattr(fd,TCSANOW,&oldtio);
+
+ usleep(10000);
+
  InputParser_Destroy(ipc);
  return 0;
 }
@@ -471,9 +457,16 @@ int ArduinoThreadStart(char * devname)
  if(stat(arduinodevice_name,&st) == 0) { printf(" Arduino device is present\n");  } else
                                        { printf(" Arduino device is not present\n"); FAILED=1;  return 0; }
 
+
+ if ( !ConnectToArduino() )
+   {
+       fprintf(stderr,"Arduino device seems to be present but i could not connect to it!\n");
+       FAILED=1;
+       return 0;
+   }
+
  int res=pthread_create((pthread_t *) &arduinothread_id, NULL,Arduino_Thread,0);
  if ( res != 0 ) { printf(" Arduino thread did not start\n"); FAILED=1;  }
- usleep(100000);
 
  return (res==0);
 }

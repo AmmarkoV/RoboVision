@@ -226,10 +226,10 @@ inline unsigned int FrameProcessing
 
             if ( settings[CALCULATE_MOVEMENT_MATRIX]==1 )
              {
-               // if ( corners_tracked > 8 )
-                 //{ // WE HAVE ENOUGH CORNERS TRACKED TO CALCULATE THE CAMERA POSE
+                if ( corners_tracked > 8 )
+                 { // WE HAVE ENOUGH CORNERS TRACKED TO CALCULATE THE CAMERA POSE
                    UpdateCameraPose(REG_CALIBRATED_EYE);
-                 //}
+                 }
              }
 
         }

@@ -21,6 +21,9 @@
 
      PI           0-2          Proximity IR Sensor Value   
 
+     FLU                       Flushes Input Buffer on arduino
+     XXX                       Flushes Input Buffer on arduino
+
      CHK                       Check Arduino sensor condition   
      ZZZ                       Reset Arduino    
 

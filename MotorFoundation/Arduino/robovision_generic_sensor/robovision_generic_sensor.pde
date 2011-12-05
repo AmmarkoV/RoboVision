@@ -41,7 +41,7 @@ int LightControl(unsigned int light_number,int state)
 void setup(void) 
 {
   Serial.begin(38400);
-  delay(2000);
+  //delay(500);
 
   ledPins[0]=13; // THERE ARE 2 LED PINS ON GUARDDOG
   ledPins[1]=12; // THERE ARE 2 LED PINS ON GUARDDOG
@@ -104,11 +104,44 @@ void SendEmptyBytes(int number)
 }
 
 int SerialInputReceiver()
-{
+{      
+  
          byte inB1 = Serial.read();
          byte inB2 = Serial.read();
          byte inB3 = Serial.read();
+      
+      /*
+      byte inB1 = 0 , inB2 = 0 , inB3 = 0; 
+      int character_waiting_for = 1;  
+      while ( character_waiting_for < 4 )
+      {
+         if ( character_waiting_for == 1 )
+             { inB1 = Serial.read(); ++character_waiting_for; }
+         if ( character_waiting_for == 2 )
+             { inB2 = Serial.read(); ++character_waiting_for; }
+         if ( character_waiting_for == 3 )
+             { inB3 = Serial.read(); ++character_waiting_for; }
          
+         if ( inB1 == '!' ) 
+            { // ! IS USED AS A CATCH CHARACTER FOR THE END OF A COMMAND , THUS! WE HAVE TO WAIT FOR B3
+              inB1 = inB2;
+              inB2 = inB3; 
+              character_waiting_for = 2;
+            }
+         if ( inB2 == '!' ) 
+            { // ! IS USED AS A CATCH CHARACTER FOR THE END OF A COMMAND , THUS! WE HAVE TO WAIT FOR B3
+              inB2 = inB3;
+              character_waiting_for = 3;
+            }
+            if ( inB1 == '!' ) 
+            { // ! IS USED AS A CATCH CHARACTER FOR THE END OF A COMMAND , THUS! WE HAVE TO WAIT FOR B3
+              inB1 = inB2;
+              inB2 = inB3;
+              byte inB3 = Serial.read(); 
+            }
+       } 
+    */
+      
          switch (inB1)
           {
             case 'M' :    //MOVE SERVO
