@@ -20,7 +20,7 @@ int ConnectRoboVisionSensors(char * devname)
         usleep(100000);
         ++tries;
     }
-    fprintf(stderr,"\n\n");
+    if ( tries > 0 ) fprintf(stderr,"\n\n");
     if ( !RoboVisionSensorsOK() ) { fprintf(stderr,"Could not get any data off arduino check , port / connections \n"); return 0;  }
 
     fprintf(stderr,"We are finished waiting \n");

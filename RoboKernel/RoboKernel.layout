@@ -5,10 +5,10 @@
 		<Cursor position="481" topLine="0" />
 	</File>
 	<File name="activity_coordination.c" open="1" top="0" tabpos="18">
-		<Cursor position="1874" topLine="0" />
+		<Cursor position="129" topLine="0" />
 	</File>
 	<File name="activity_coordination.h" open="1" top="0" tabpos="17">
-		<Cursor position="388" topLine="0" />
+		<Cursor position="114" topLine="0" />
 	</File>
 	<File name="command_hal.c" open="1" top="0" tabpos="3">
 		<Cursor position="13118" topLine="304" />
@@ -35,7 +35,7 @@
 		<Cursor position="275" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="2555" topLine="90" />
+		<Cursor position="3295" topLine="97" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
 		<Cursor position="479" topLine="0" />

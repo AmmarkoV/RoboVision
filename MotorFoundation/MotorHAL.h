@@ -13,6 +13,7 @@ unsigned int RobotClose();
 void RobotWait(unsigned int msecs);
 
 unsigned int RobotBaseOk();
+unsigned int RobotHeadOk();
 
 unsigned int RobotMoveJoystick(signed int joy_x,signed int joy_y);
 unsigned int RobotRotate(unsigned char power,signed int degrees);

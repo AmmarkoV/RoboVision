@@ -22,11 +22,6 @@ int fd,res;
 struct termios oldtio,newtio;
 
 
-unsigned int clear_packet_size=0;
-char clear_packet[512];
-
-unsigned int terminal_symbol_position=0;
-
 fd = open("/dev/ttyUSB0", O_RDWR | O_NOCTTY  | O_NDELAY  ); //
 if (fd <0) { perror("/dev/ttyUSB0");  return(0); }
 
@@ -118,12 +113,22 @@ int main()
       }
 
 
+
+
       while (1)
        {
         printf("Ultrasonic 1 : %u \n ", GetUltrasonicValue(0) );
         printf("Ultrasonic 2 : %u \n ", GetUltrasonicValue(1) );
         printf("Accelerometers ( X : %u , Y : %u ) \n ", GetAccelerometerX(0), GetAccelerometerY(0) );
         usleep(1000*1000);
+        SetLights(0,1);
+        SetLights(1,1);
+        SetLights(2,1);
+         usleep(1000*1000);
+        SetLights(0,0);
+        SetLights(1,0);
+        SetLights(2,0);
+
        }
     DisconnectRoboVisionSensors();
 

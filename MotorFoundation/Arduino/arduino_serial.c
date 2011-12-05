@@ -32,6 +32,23 @@ struct arduino_connected_devices future_state={0};
 
 
 
+
+/*
+   MEMO
+
+  int tcflush( fd, queue_selector );
+
+  The queue_selector flags are:
+
+  o  TCIFLUSH  0  flush any data not yet read from the input buffer
+
+  o  TCOFLUSH  1  flush any data written to the output buffer but not
+     yet transmitted
+
+  o  TCIOFLUSH 2  flush both buffers
+*/
+
+
 int ArduinoProtocolSend(char * command , unsigned int length)
 {
   if ( (length!=3) || ( strlen(command)!=3 ) )
@@ -368,24 +385,16 @@ if (!ArduinoCodeStartup(fd))
  {
      STOP=1;  FAILED=1;
      fprintf(stderr,"Giving up with Arduino\n");
+
+     close(fd);
+     tcsetattr(fd,TCSANOW,&oldtio);
+
      return 0;
  } else
  {
      WORKS=1;
  }
 
-/*
-  int tcflush( fd, queue_selector );
-
-  The queue_selector flags are:
-
-  o  TCIFLUSH  0  flush any data not yet read from the input buffer
-
-  o  TCOFLUSH  1  flush any data written to the output buffer but not
-     yet transmitted
-
-  o  TCIOFLUSH 2  flush both buffers
-*/
  return 1;
 }
 
@@ -393,10 +402,8 @@ if (!ArduinoCodeStartup(fd))
 void * Arduino_Thread(void * ptr)
 {
 
-
 struct InputParserC * ipc=0;
 ipc = InputParser_Create(512,5);
-
 
 fprintf(stderr,"Arduino receive/send thread is now starting \n");
 int arduino_loop_tick_count = 0;
@@ -421,12 +428,14 @@ while (STOP==0)     {
                                activated_state.lights[0]=future_state.lights[0];
                          }
 
-
+                    /*
                     if ( arduino_loop_tick_count%100 == 0 )
                        {
-                         int i=write(fd,"XXX",3); /* TRY TO FLUSH EVERY 1 SEC*/
+                         int i=write(fd,"XXX",3); //TRY TO FLUSH EVERY 1 SEC
                          if (i!=3) { fprintf(stderr,"Error flushing arduino\n"); }
                        }
+                    */
+
 
                     usleep (50*1000);
                     ++arduino_loop_tick_count;
@@ -475,8 +484,9 @@ int ArduinoThreadStart(char * devname)
 int ArduinoOk()
 {
   if (FAILED) { return 0; }
-  if (WORKS) { return 1; } else
-             { return 0;}
+
+  if (WORKS)  { return 1; } else
+              { return 0;}
   return 1;
 }
 

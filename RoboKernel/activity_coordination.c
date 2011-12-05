@@ -2,7 +2,7 @@
 #include "visual_system.h"
 #include "../MotorFoundation/MotorHAL.h"
 
-int current_activity=0;
+int current_activity=IDLE;
 
 
 #define RESX 320

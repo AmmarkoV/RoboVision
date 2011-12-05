@@ -88,6 +88,21 @@ if (AutoMapping)
 }
 
 
+unsigned int RobotBaseOk()
+{
+  if ( guard_base == 0) { return 0; }
+  if ( !MD23_ok(guard_base) ) { return 0; }
+  return 1;
+}
+
+
+unsigned int RobotHeadOk()
+{
+  if ( guard_base == 0) { return 0; }
+  if ( !RoboVisionSensorsOK() ) { return 0; }
+  return 1;
+}
+
 void RobotWait(unsigned int msecs)
 {
   usleep(msecs);
@@ -107,6 +122,7 @@ inline unsigned int _abs1(signed int num)
 // WE EXPECT VALUES FROM -255 TO 255 IN VARIABLE FRONT_REAR SIGNALING FULL FRONT (-255) TO FULL REAR  (255)
 unsigned int RobotMoveJoystick(signed int joy_x,signed int joy_y)
 {
+ if (!RobotBaseOk()) { return 0;}
   unsigned int MAX_POWER=123,BASE=100;
   unsigned int powerleft=_abs1(joy_y) , powerright=_abs1(joy_y);
   signed int degrees_left=0,degrees_right=0,lr_powercross=0;
@@ -158,6 +174,7 @@ unsigned int RobotMoveJoystick(signed int joy_x,signed int joy_y)
 
 unsigned int RobotSetHeadNod(char * pose_string)
 {
+  if ( !RoboVisionSensorsOK ) { return 0; }
   if ( strcmp(pose_string,"YES") == 0 )
       {
            SetCameraNod(0,110);
@@ -174,21 +191,17 @@ unsigned int RobotSetHeadNod(char * pose_string)
 
 unsigned int RobotSetHeadPose(unsigned int heading,unsigned int pitch)
 {
+    if ( !RoboVisionSensorsOK ) { return 0; }
     return SetCameraPose(heading,pitch);
 }
 
 unsigned int RobotGetHeadPose(unsigned int * heading,unsigned int * pitch)
 {
+    if ( !RoboVisionSensorsOK ) { return 0; }
     return GetCameraPose(heading,pitch);
 }
 
 
-unsigned int RobotBaseOk()
-{
-  if ( guard_base == 0) { return 0; }
-  if ( !MD23_ok(guard_base) ) { return 0; }
-  return 1;
-}
 
 unsigned int RobotStartRotating(unsigned char power,signed int direction)
 {
