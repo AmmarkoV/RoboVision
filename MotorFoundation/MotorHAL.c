@@ -98,7 +98,6 @@ unsigned int RobotBaseOk()
 
 unsigned int RobotHeadOk()
 {
-  if ( guard_base == 0) { return 0; }
   if ( !RoboVisionSensorsOK() ) { return 0; }
   return 1;
 }

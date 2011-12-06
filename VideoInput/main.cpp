@@ -42,6 +42,7 @@ char * VIDEOINPT_VERSION=(char *) "0.247 RGB24/YUYV compatible";
 int do_not_return_zero_pointers=1;
 int increase_priority=0;
 
+unsigned int DEBUG=0;
 
 struct Video
 {
@@ -128,7 +129,7 @@ int ReallocEmptyFrame(unsigned int new_size_x,unsigned int new_size_y)
           DrawLine_inFrame(0,largest_feed_y-1,largest_feed_x-1,0,255,0,0,empty_frame,3,largest_feed_x,largest_feed_y);
 
 
-          fprintf(stderr,"Reallocating new `empty` frame with size %ux%u \n",largest_feed_x,largest_feed_y);
+          if (DEBUG) { fprintf(stderr,"Reallocating new `empty` frame with size %ux%u \n",largest_feed_x,largest_feed_y); }
       }
 
     return 1;
@@ -188,25 +189,19 @@ int InitVideoInputs(int numofinputs)
       }
 
     /*Lets Refresh USB devices list :)*/
-    int ret=system((const char * ) "lsusb");
-    if ( ret == 0 ) { printf("Syscall USB list success\n"); }
+    if (DEBUG)
+    {
+      int ret=system((const char * ) "ls /dev/video*");
+      if ( ret == 0 ) { printf("These are the possible video devices .. \n"); }
 
-    ret=system((const char * ) "ls /dev/video*");
-    if ( ret == 0 ) { printf("These are the possible video devices .. \n"); }
-
-    ret=system((const char * ) "ls /dev/video* | wc -l");
-    if ( ret == 0 ) { printf("total video devices .. \n"); }
-
-
-
-    printf("\nAvailiable Video Devices : \n");
-    ret=system((const char * ) "ls /dev | grep video");
-    if ( ret == 0 ) { printf("Success receiving video device list \n"); }
+      ret=system((const char * ) "ls /dev/video* | wc -l");
+      if ( ret == 0 ) { printf("total video devices .. \n"); }
+    }
 
     /*We want higher priority now..! :)*/
     if ( increase_priority == 1 )
     {
-     if ( nice(-4) == -1 ) { fprintf(stderr,"Error increasing priority on main video capture loop\n");} else
+     if ( nice(-4) == -1 ) { fprintf(stderr,"Error increasing priority on main video capture loop\n"); } else
                            { fprintf(stderr,"Increased priority \n"); }
     }
 
@@ -256,12 +251,9 @@ int CloseVideoInputs()
 
 
     fprintf(stderr,"Deallocation of Video Structures\n");
-
     free(camera_feeds);
 
-
     fprintf(stderr,"Video Input successfully deallocated\n");
-
     return 1 ;
 }
 
@@ -289,7 +281,7 @@ int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,char 
    ReallocEmptyFrame(width,height);
 
    if (!VideoInputsOk()) return 0;
-   if ( (!FileExists(viddev)) ) { fprintf(stderr,"\n\n\nLinux Check for the webcam (%s) returned false..\n PLEASE CONNECT V4L2 COMPATIBLE CAMERA!!!!!\n\n\n",viddev); return 0; }
+   if ( (!FileExists(viddev)) ) { fprintf(stderr,"\n\n\Check for the webcam (%s) returned false..\n PLEASE CONNECT V4L2 COMPATIBLE CAMERA!!!!!\n\n\n",viddev); return 0; }
 
 
    camera_feeds[inpt].videoinp = viddev; /*i.e. (char *) "/dev/video0";*/
@@ -344,20 +336,18 @@ int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,char 
 
 
       fprintf(stderr,(char *)"Starting camera , if it segfaults consider running \nLD_PRELOAD=/usr/lib/libv4l/v4l2convert.so  executable_name\n");
-      fprintf(stderr,(char *)"Your webcam might not support V4L2!\n");
-      fprintf(stderr,(char *)"------------------------------------------------\n");
       camera_feeds[inpt].v4l2_intf = new V4L2(camera_feeds[inpt].videoinp, io);
        if ( camera_feeds[inpt].v4l2_intf->set(camera_feeds[inpt].fmt) == 0 ) { fprintf(stderr,"Device does not support settings:\n"); return 0; }
          else
        {
-           fprintf(stderr,"No errors , starting camera %u / locking memory..!",inpt);
+           if (DEBUG) { fprintf(stderr,"No errors , starting camera %u / locking memory..!",inpt); }
            camera_feeds[inpt].v4l2_intf->initBuffers();
            camera_feeds[inpt].v4l2_intf->startCapture();
 
            camera_feeds[inpt].frame = empty_frame;
        }
 
-   printf("Enabling Snapshots!\n");
+   if (DEBUG) { printf("Enabling Snapshots!\n"); }
    camera_feeds[inpt].rec_video.pixels = 0; /* Xreiazontai etsi wste an den theloume snapshots na min crasharei to sympan*/
    camera_feeds[inpt].rec_video.size_x=width;
    camera_feeds[inpt].rec_video.size_y=height;
@@ -389,14 +379,14 @@ int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,char 
          }
 
     unsigned int waittime=0,MAX_WAIT=100  , SLEEP_PER_LOOP_MILLI = 50 * /*Milliseconds*/ 1000;
-    printf("Giving some time ( max =  %u ms ) for the receive threads to wake up ",MAX_WAIT*SLEEP_PER_LOOP_MILLI);
+    if (DEBUG) { printf("Giving some time ( max =  %u ms ) for the receive threads to wake up ",MAX_WAIT*SLEEP_PER_LOOP_MILLI); }
     while ( ( waittime<MAX_WAIT ) && (camera_feeds[inpt].thread_alive_flag==0) ) {
                                                                                    if (waittime%10==0) printf(".");
                                                                                    usleep(SLEEP_PER_LOOP_MILLI);
                                                                                    ++waittime;
                                                                                  }
 
-    printf("\nInitVideoFeed %u is ok!\n",inpt);
+    if (DEBUG) { printf("\nInitVideoFeed %u is ok!\n",inpt); }
 
     camera_feeds[inpt].video_simulation=LIVE_ON;
 

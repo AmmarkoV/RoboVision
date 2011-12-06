@@ -13,9 +13,16 @@ int system_autonomous=0;
 
 char video_device_1[MAX_STR]="/dev/video0";
 char video_device_2[MAX_STR]="/dev/video1";
+
+char arduino_device[MAX_STR]="/dev/ttyUSB0";
+char arduino_device_name[MAX_STR]="FTDI FT232R USB UART A9007Wk3";
+
+char rd01_device[MAX_STR]="/dev/ttyUSB1";
+char rd01_device_name[MAX_STR]="FTDI FT232R USB UART A2001mqz";
+
 char gsm_modem[MAX_STR]="/dev/ttyUSB2";
-char arduino_device[MAX_STR]="/dev/ttyUSB3";
-char rd01_device[MAX_STR]="/dev/ttyUSB4";
+char gsm_modem_name[MAX_STR]="ZTE,Incorporated ZTE WCDMA Technologies MSM P673M2COSD010000";
+
 char user[MAX_STR]="guarddog";
 char group[MAX_STR]="guarddog";
 char parentdir[MAX_STR]="/home/guarddog/RoboVisionRuntime/";
@@ -176,9 +183,29 @@ void ParseConfigString(char * inpt)
            if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,rd01_device,MAX_STR);
         }
       else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"RD01_CONTROLLER_NAME",20)==1)
+        {
+           if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,rd01_device_name,MAX_STR);
+        }
+      else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"ARDUINO_CONTROLLER",18)==1)
         {
            if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,arduino_device,MAX_STR);
+        }
+      else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"ARDUINO_CONTROLLER_NAME",23)==1)
+        {
+           if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,arduino_device_name,MAX_STR);
+        }
+      else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"GSM_MODEM",9)==1)
+        {
+           if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,gsm_modem,MAX_STR);
+        }
+      else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"GSM_MODEM_NAME",14)==1)
+        {
+           if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,gsm_modem_name,MAX_STR);
         }
       else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"VIDEO1",6)==1)
@@ -293,12 +320,63 @@ void ParseConfigString(char * inpt)
     InputParser_Destroy(ipc);
 }
 
+
+int GetDeviceFilename(char * device_filename,char * output,unsigned int size_of_output)
+{
+    strcpy(output,"");
+    char command[1024]={0};
+    strcpy(command,"../Scripts/GetDeviceFilename.sh \"");
+    strcat(command,device_filename);
+    strcat(command,"\"");
+
+    FILE *fp;
+    int status=0;
+
+    /* Open the command for reading. */
+     fp = popen(command, "r");
+     if (fp == 0 )
+       {
+         fprintf(stderr,"Failed to run command\n");
+         return 0;
+       }
+
+ /* Read the output a line at a time - output it. */
+  unsigned int i=0;
+  while (fgets(output, size_of_output , fp) != 0)
+    {
+        ++i;
+        //fprintf(stderr,"\n\nline %u = %s \n",i,output);
+        /* break;*/
+    }
+
+
+  /* close */
+  pclose(fp);
+  if (i==1) { return 1; }
+  return 0;
+}
+
+
+
 int RefreshDeviceNumbering()
 {
-    /* TODO */
-    //VIDEO
 
-    //TTYUSB
+    char path[1024]={0};
+    if ( GetDeviceFilename(arduino_device_name,path,1024) )
+         { fprintf(stderr,"SWITCHING TO REAL ARDUINO THAT IS %s\n",path);
+           strcpy(arduino_device_name,path);
+         }
+
+    if ( GetDeviceFilename(rd01_device_name,path,1024) )
+         { fprintf(stderr,"SWITCHING TO REAL RD01 THAT IS %s\n",path);
+           strcpy(rd01_device_name,path);
+         }
+
+    if ( GetDeviceFilename(gsm_modem_name,path,1024) )
+         {  fprintf(stderr,"SWITCHING TO REAL GSM DEVICE IS %s\n",path);
+           strcpy(gsm_modem_name,path);
+         }
+
 
     return 1;
 }
@@ -338,6 +416,9 @@ void LoadConfiguration()
         }
       while (c != EOF);
       fclose (pFile);
+
+
+      RefreshDeviceNumbering();
     }
   else
     {
