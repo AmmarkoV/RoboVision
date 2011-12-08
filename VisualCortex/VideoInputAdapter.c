@@ -193,12 +193,12 @@ inline unsigned int FrameProcessing
 
         if ( settings[PASS_TO_FACE_DETECTOR] )
         {
-            if ( ( settings[ALTERNATE_DETECTORS_BETWEEN_EYES_FOR_CALCULATION_SKIPPING]==1 ) && (metrics[FRAMES_PROCESSED]%2==0) && (REG_CALIBRATED_EYE==CALIBRATED_LEFT_EYE)  )
+            if ( ( settings[ALTERNATE_DETECTORS_BETWEEN_EYES_FOR_CALCULATION_SKIPPING]==1 ) && ((metrics[FRAMES_PROCESSED]/2)%2==0) && (REG_CALIBRATED_EYE==CALIBRATED_LEFT_EYE)  )
             {
                RecognizeFaces(REG_CALIBRATED_EYE);
                //fprintf(stderr,"RECO FACES BECAUSE OF SKIP and left and %u \n",metrics[FRAMES_PROCESSED]);
             }  else
-            if ( ( settings[ALTERNATE_DETECTORS_BETWEEN_EYES_FOR_CALCULATION_SKIPPING]==1 ) && (metrics[FRAMES_PROCESSED]%2==1) && (REG_CALIBRATED_EYE==CALIBRATED_RIGHT_EYE) )
+            if ( ( settings[ALTERNATE_DETECTORS_BETWEEN_EYES_FOR_CALCULATION_SKIPPING]==1 ) && ((metrics[FRAMES_PROCESSED]/2)%2==1) && (REG_CALIBRATED_EYE==CALIBRATED_RIGHT_EYE) )
             {
                RecognizeFaces(REG_CALIBRATED_EYE);
                //fprintf(stderr,"RECO FACES BECAUSE OF SKIP and right and %u \n",metrics[FRAMES_PROCESSED]);

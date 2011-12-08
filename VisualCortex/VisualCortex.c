@@ -40,7 +40,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.634";
+char * VISCORTEX_VER = "0.635";
 
 /*
 
@@ -194,7 +194,7 @@ void VisCortx_GetHyperVisorStatus(unsigned int print_std,unsigned int print_file
   fprintf(stderr," PIXEL OV THR , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(PIXEL_OVER_THRESHOLD_DELAY),GetLastTimer(PIXEL_OVER_THRESHOLD_DELAY),GetTimesTimerTimed(PIXEL_OVER_THRESHOLD_DELAY));
   fprintf(stderr," MOVEMENT RAW , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(MOVEMENT_RAW_DELAY),GetLastTimer(MOVEMENT_RAW_DELAY),GetTimesTimerTimed(MOVEMENT_RAW_DELAY));
   fprintf(stderr," COMPRESS IMAGE , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(COMPRESS_IMAGE_DELAY),GetLastTimer(COMPRESS_IMAGE_DELAY),GetTimesTimerTimed(COMPRESS_IMAGE_DELAY));
-  fprintf(stderr," RECOGNIZE FACES , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(RECOGNIZE_FACES_DELAY ),GetLastTimer(RECOGNIZE_FACES_DELAY ),GetTimesTimerTimed(RECOGNIZE_FACES_DELAY ));
+  fprintf(stderr," DETECT FACES , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(RECOGNIZE_FACES_DELAY ),GetLastTimer(RECOGNIZE_FACES_DELAY ),GetTimesTimerTimed(RECOGNIZE_FACES_DELAY ));
   fprintf(stderr," FIND CORNERS , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(FIND_CORNERS_DELAY),GetLastTimer(FIND_CORNERS_DELAY),GetTimesTimerTimed(FIND_CORNERS_DELAY));
   fprintf(stderr," TRACK CORNERS , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(TRACK_CORNERS_DELAY),GetLastTimer(TRACK_CORNERS_DELAY),GetTimesTimerTimed(TRACK_CORNERS_DELAY));
   fprintf(stderr," DEPTH MAP , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(TIMER_DEPTH_MAP_DELAY),GetLastTimer(TIMER_DEPTH_MAP_DELAY),GetTimesTimerTimed(TIMER_DEPTH_MAP_DELAY));

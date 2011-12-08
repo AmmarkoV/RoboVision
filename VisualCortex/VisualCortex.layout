@@ -97,8 +97,8 @@
 	<File name="StatisticsGeneration.h" open="1" top="0" tabpos="48">
 		<Cursor position="178" topLine="0" />
 	</File>
-	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="8411" topLine="195" />
+	<File name="VideoInputAdapter.c" open="1" top="1" tabpos="36">
+		<Cursor position="6953" topLine="168" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="409" topLine="0" />
@@ -140,7 +140,7 @@
 		<Cursor position="3397" topLine="118" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="1332" topLine="0" />
+		<Cursor position="6932" topLine="513" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
 		<Cursor position="8224" topLine="319" />

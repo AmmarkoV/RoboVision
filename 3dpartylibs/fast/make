@@ -1,7 +1,10 @@
 #!/bin/bash
 echo "FAST Feature Detection / Provides libFast.a / Author : Edward Rosten http://www.edwardrosten.com/work/fast.html"  
 
-rm libFast.a
+if [ -e libFast.a ]
+then
+  rm libFast.a
+fi 
 
 gcc -Os -O3 -fexpensive-optimizations -c fast.c -o fast.o
 gcc -Os -O3 -fexpensive-optimizations -c fast_9.c -o fast_9.o 
