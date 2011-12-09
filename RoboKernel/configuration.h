@@ -22,6 +22,9 @@ extern char sound_play_command[MAX_STR];
 extern char sound_record_command[MAX_STR];
 extern char sound_record_parameter[MAX_STR];
 
+
+extern char tts_app[MAX_STR];
+extern char tts_pre_command[MAX_STR];
 extern char tts_command[MAX_STR];
 extern char tts_command_parameter[MAX_STR];
 

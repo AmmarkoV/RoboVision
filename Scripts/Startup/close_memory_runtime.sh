@@ -1,6 +1,6 @@
 #!/bin/bash
 
-killall festival 
+sudo killall festival 
 
 sleep 1 
 

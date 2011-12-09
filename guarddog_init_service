@@ -1,12 +1,12 @@
 #!/bin/bash 
 echo "Copying RoboVision To Runtime Directory.."
-sudo ./Scripts/init_memory_runtime.sh
+sudo ./Scripts/Startup/init_memory_runtime.sh
 
 echo "Copying Things inside runtime Directory.."
-sudo ./Scripts/memoryfs_prepare.sh
+sudo ./Scripts/Startup/memoryfs_prepare.sh
 
 echo "Starting SMS Receiver.."
-sudo ./Scripts/startSMSReceiver
+sudo ./Scripts/Startup/startSMSReceiver
 
 echo "Running RoboVision From Runtime Directory.."
 
@@ -25,12 +25,12 @@ sudo ./RoboVisionCLICompat noinput
 echo "GuarddoG has stopped , cleaning up .."
 cd ..
 
-killall RoboVisionCLI
-killall RoboVisionCLICompat
-killall gsmsmsd
+sudo killall RoboVisionCLI
+sudo killall RoboVisionCLICompat
+sudo killall gsmsmsd
 
 sleep 5
 
-sudo ./Scripts/close_memory_runtime.sh
+sudo ./Scripts/Startup/close_memory_runtime.sh
 echo "GuarddoG Init Service is Done.."
 exit 0

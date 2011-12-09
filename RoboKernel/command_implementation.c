@@ -23,8 +23,10 @@ int IRCSay(char * what2say)
 
  char command_s[1024]={0};
 
+
  sprintf(command_s,"../IRCInterface/commands/say 127.0.0.1 6667 foss-aueb \"%s\" &",what2say); // Clear all running tts instances ( could also add a script that waits for them to end here )
- fprintf(stderr,"IRC COMMAND: %s " , command_s);
+// fprintf(stderr,"IRC COMMAND: %s " , command_s);
+ fprintf(stderr,"Streaming to IRC\n");
  int i=system((const char * ) command_s);
 
 
@@ -43,12 +45,13 @@ int Say(char * what2say)
 
  char command_s[1024]={0};
 
- sprintf(command_s,"killall %s&",tts_command); // Clear all running tts instances ( could also add a script that waits for them to end here )
+ sprintf(command_s,"killall %s&",tts_app); // Clear all running tts instances ( could also add a script that waits for them to end here )
  int i=system((const char * ) command_s);
- fprintf(stderr,"%s " , command_s);
+ //fprintf(stderr,"%s " , command_s);
 
 
- sprintf(command_s,"echo \"%s\" | %s %s&",what2say,tts_command,tts_command_parameter);
+ sprintf(command_s,"%s %s %s %s&",tts_pre_command,what2say,tts_command,tts_command_parameter);
+ fprintf(stderr,"TTS : %s \n" , command_s);
  i=system((const char * ) command_s);
  return i;
 }

@@ -32,7 +32,9 @@ char sound_play_command[MAX_STR]="paplay";
 char sound_record_command[MAX_STR]="arecord";
 char sound_record_parameter[MAX_STR]="-f cd -t raw | oggenc - -r -o";
 
-char tts_command[MAX_STR]="festival";
+char tts_app[MAX_STR]="festival";
+char tts_pre_command[MAX_STR]="echo \"";
+char tts_command[MAX_STR]="\" | festival";
 char tts_command_parameter[MAX_STR]="--tts";
 
 
@@ -256,6 +258,14 @@ void ParseConfigString(char * inpt)
         {
            if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,sound_play_command,MAX_STR);
         }else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"TTS_APP",7)==1)
+        {
+           if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,tts_app,MAX_STR);
+        }else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"TTS_PRE_COMMAND",15)==1)
+        {
+           if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,tts_pre_command,MAX_STR);
+        }else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"TTS_COMMAND",11)==1)
         {
            if ( InputParser_GetWordLength(ipc,1)<MAX_STR ) InputParser_GetWord(ipc,1,tts_command,MAX_STR);
@@ -327,7 +337,7 @@ int GetDeviceFilename(char * device_filename,char * output,unsigned int size_of_
 
     strcpy(output,"");
     char command[1024]={0};
-    strcpy(command,"../Scripts/GetDeviceFilename.sh \"");
+    strcpy(command,"../Scripts/Tools/GetDeviceFilename.sh \"");
     strcat(command,device_filename);
     strcat(command,"\"");
 
@@ -364,7 +374,6 @@ int GetDeviceFilename(char * device_filename,char * output,unsigned int size_of_
 
   InputParser_ClearNonCharacters(output,strlen(output));
   InputParser_TrimCharacters(output,strlen(output),' ');
- // if (output[strlen(output)-1]==' ') { output[strlen(output)-1]=0; }
 
   if (i==1) { return 1; }
   return 0;
