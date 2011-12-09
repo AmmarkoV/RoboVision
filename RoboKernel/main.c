@@ -159,6 +159,7 @@ unsigned int SanityCheck()
 
    strcat(message," Robovision started.");
    char final_message[1200]={0};
+
    sprintf(final_message,"SAY(%s)",message);
    IssueCommand(final_message,0,0,"RoboKernel");
 

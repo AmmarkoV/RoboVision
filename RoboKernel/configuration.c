@@ -14,13 +14,13 @@ int system_autonomous=0;
 char video_device_1[MAX_STR]="/dev/video0";
 char video_device_2[MAX_STR]="/dev/video1";
 
-char arduino_device[MAX_STR]="/dev/ttyUSB0";
+char arduino_device[MAX_STR]="";
 char arduino_device_name[MAX_STR]="FTDI FT232R USB UART A9007Wk3";
 
-char rd01_device[MAX_STR]="/dev/ttyUSB1";
+char rd01_device[MAX_STR]="";
 char rd01_device_name[MAX_STR]="FTDI FT232R USB UART A2001mqz";
 
-char gsm_modem[MAX_STR]="/dev/ttyUSB2";
+char gsm_modem[MAX_STR]="";
 char gsm_modem_name[MAX_STR]="ZTE,Incorporated ZTE WCDMA Technologies MSM P673M2COSD010000";
 
 char user[MAX_STR]="guarddog";
@@ -323,6 +323,8 @@ void ParseConfigString(char * inpt)
 
 int GetDeviceFilename(char * device_filename,char * output,unsigned int size_of_output)
 {
+
+
     strcpy(output,"");
     char command[1024]={0};
     strcpy(command,"../Scripts/GetDeviceFilename.sh \"");
@@ -330,7 +332,6 @@ int GetDeviceFilename(char * device_filename,char * output,unsigned int size_of_
     strcat(command,"\"");
 
     FILE *fp;
-    int status=0;
 
     /* Open the command for reading. */
      fp = popen(command, "r");
@@ -346,12 +347,25 @@ int GetDeviceFilename(char * device_filename,char * output,unsigned int size_of_
     {
         ++i;
         //fprintf(stderr,"\n\nline %u = %s \n",i,output);
-        /* break;*/
+        break;
     }
 
 
   /* close */
   pclose(fp);
+
+  if( !strstr(output,"/dev/") )
+    { //If thre is no /dev/ put it in !
+      char fullpath[1024]={0};
+      strcpy(fullpath,"/dev/");
+      strcat(fullpath,output);
+      strcpy(output,fullpath);
+    }
+
+  InputParser_ClearNonCharacters(output,strlen(output));
+  InputParser_TrimCharacters(output,strlen(output),' ');
+ // if (output[strlen(output)-1]==' ') { output[strlen(output)-1]=0; }
+
   if (i==1) { return 1; }
   return 0;
 }
@@ -360,21 +374,29 @@ int GetDeviceFilename(char * device_filename,char * output,unsigned int size_of_
 
 int RefreshDeviceNumbering()
 {
-
+    /*
+       NOTICE THAT !IF! A STATIC PATH IS GIVEN FOR ARDUINO DEVICE ( i.e. /dev/ttyUSB0 )
+       AND THE MD23 DEVICE IS SCANNED ON THE USB AT /dev/ttyUSB0 , BOTH WILL BE CONSIDERED
+       VALID , SO IT IS BEST TO USE AUTOMATIC DETECTION , AND RESORT TO STATIC CONFIGURATIONS
+       ONLY FOR DEBUGGING REASONS.,
+    */
     char path[1024]={0};
     if ( GetDeviceFilename(arduino_device_name,path,1024) )
-         { fprintf(stderr,"SWITCHING TO REAL ARDUINO THAT IS %s\n",path);
-           strcpy(arduino_device_name,path);
+         {
+           fprintf(stderr,"SWITCHING TO REAL ARDUINO THAT IS %s\n",path);
+           strcpy(arduino_device,path);
          }
 
     if ( GetDeviceFilename(rd01_device_name,path,1024) )
-         { fprintf(stderr,"SWITCHING TO REAL RD01 THAT IS %s\n",path);
-           strcpy(rd01_device_name,path);
+         {
+           fprintf(stderr,"SWITCHING TO REAL RD01 THAT IS %s\n",path);
+           strcpy(rd01_device,path);
          }
 
     if ( GetDeviceFilename(gsm_modem_name,path,1024) )
-         {  fprintf(stderr,"SWITCHING TO REAL GSM DEVICE IS %s\n",path);
-           strcpy(gsm_modem_name,path);
+         {
+           fprintf(stderr,"SWITCHING TO REAL GSM DEVICE IS %s\n",path);
+           strcpy(gsm_modem,path);
          }
 
 

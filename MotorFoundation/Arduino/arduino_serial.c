@@ -347,7 +347,7 @@ int ArduinoCodeStartup(int fd)
 
 unsigned int ConnectToArduino()
 {
-fprintf(stderr,"Trying to open arduino @ %s \n",arduinodevice_name);
+fprintf(stderr,"Trying to open arduino @ \"%s\" \n",arduinodevice_name);
 fd = open(arduinodevice_name, O_RDWR | O_NOCTTY  ); // | O_NDELAY
 if (fd <0) { perror(arduinodevice_name); FAILED=1; return(0); }
 

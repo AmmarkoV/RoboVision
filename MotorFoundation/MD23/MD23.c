@@ -5,7 +5,7 @@
 #include <string.h>
 
 void * MD23_loop(void * ptr);
-char * MD23_Lib_Version = "0.04";
+char * MD23_Lib_Version = "0.041";
 // ===============================================
 // ======================================
 // LOW LEVEL MD23 COMMANDS
@@ -129,13 +129,20 @@ void Thread_ReachTarget(struct  md23_device * dev)
 
 struct md23_device * MD23_Init(char * dev_name,unsigned int threading_on)
 {
+  if (strlen(dev_name)<=1)
+      {
+          fprintf(stderr,"Invalid Device Name For MD23 Device\n");
+          return 0;
+      }
+
+
   struct md23_device * dev=0;
-  fprintf(stderr,"Care malloc \n");
   dev = ( struct md23_device * ) malloc( sizeof(struct md23_device) );
   strcpy(dev->i2c_dev.name,dev_name);
+  printf("Trying to open MD23 @ \"%s\" \n",dev->i2c_dev.name);
   if ( i2c_open(&dev->i2c_dev)  == 0 )
     {
-      printf("Could not connect to Device %s \n",dev->i2c_dev.name);
+      printf("Could not connect to Device \"%s\" \n",dev->i2c_dev.name);
       return 0;
     }
 
@@ -156,10 +163,10 @@ struct md23_device * MD23_Init(char * dev_name,unsigned int threading_on)
           dev->future_motors[0].power=128;
           dev->future_motors[1].power=128;
 
-          printf("Read Initial Status of MD23 \n");
+          //printf("Read Initial Status of MD23 \n");
           if ( threading_on == 1 )
             {
-              printf("Initializing receive thread for MD23\n");
+              //printf("Initializing receive thread for MD23\n");
               pthread_create( &dev->loop_thread, NULL,  MD23_loop ,(void*) dev);
             }
         }

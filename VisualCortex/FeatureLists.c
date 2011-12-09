@@ -187,7 +187,7 @@ void RemoveTrackPointsIfTimedOut(struct FeatureList * list,unsigned int timeout)
 unsigned int RemoveTrackPointsIfMovementMoreThan(struct FeatureList * list,unsigned int movement_max)
 {
     if  (!FeatureListIsOk(list)) { fprintf(stderr,"RemoveTrackPointsIfMovementMoreThan called with a zero list \n");  return 0; }
-    if ( list->current_features == 0 ) { fprintf(stderr,"Cannot RemoveTrackPointsIfMovementMoreThan from feature list , feature list is empty\n"); return 0; }
+    if ( list->current_features == 0 ) { /*fprintf(stderr,"Cannot RemoveTrackPointsIfMovementMoreThan from feature list , feature list is empty\n");*/ return 0; }
 
 	int total_removed=0,i=list->current_features-1;
 	while ( i >= 0 )
@@ -225,7 +225,7 @@ unsigned int RemoveTrackPointsIfMovementMoreThan(struct FeatureList * list,unsig
 unsigned int Remove2DTrackPointsIfOutOfBounds(struct FeatureList * list,unsigned int x,unsigned int y ,unsigned int width , unsigned int height)
 {
     if  (!FeatureListIsOk(list)) { fprintf(stderr,"Remove2DTrackPointsIfOutOfBounds called with a zero list \n");  return 0; }
-    if ( list->current_features == 0 ) { fprintf(stderr,"Cannot Remove2DTrackPointsIfOutOfBounds from feature list , feature list is empty\n"); return 0; }
+    if ( list->current_features == 0 ) { /*fprintf(stderr,"Cannot Remove2DTrackPointsIfOutOfBounds from feature list , feature list is empty\n");*/ return 0; }
 
 	unsigned int total_removed=0,drop_point =0 ;
     unsigned int x2 = x+width,y2 = y+height ;

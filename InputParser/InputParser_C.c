@@ -27,6 +27,90 @@ char * InputParserC_Version()
 }
 
 
+int InputParser_ClearNonCharacters(char * inpt , unsigned int length)
+{
+   unsigned int skip_chars=0;
+   unsigned int i=0;
+   while  (i<length)
+    {
+       if (inpt[i]<' ') /*The characters before space should be filtered*/
+        {
+          ++skip_chars;
+        }
+
+        if (skip_chars>0)
+        {
+           if (i+skip_chars>=length)
+             {
+                inpt[i]=0;
+             } else
+             {
+                inpt[i]=inpt[i+skip_chars];
+             }
+        }
+      ++i;
+    }
+   return 1;
+}
+
+
+
+int InputParser_TrimCharactersStart(char * inpt , unsigned int length,char what2trim)
+{
+   unsigned int skip_chars=0;
+   unsigned int i=0;
+
+
+   while ((inpt[skip_chars]==what2trim)&&(skip_chars<length)) { ++skip_chars; }
+
+   while  (i<length)
+    {
+        if (skip_chars>0)
+        {
+           if (i+skip_chars>=length)
+             {
+                inpt[i]=0;
+             } else
+             {
+                inpt[i]=inpt[i+skip_chars];
+             }
+        }
+      ++i;
+    }
+
+   return 1;
+}
+
+
+int InputParser_TrimCharactersEnd(char * inpt , unsigned int length,char what2trim)
+{
+   if ( strlen(inpt)!=length ) { length=strlen(inpt); }
+   if ( length==0 ) { return 1;}
+   if ( (length==1) && (inpt[0]==what2trim) ) {  inpt[0]=0; return 1; } else
+   if ( length==1 )                           { return 1; }
+
+   unsigned int i; i=length-1;
+   while ((inpt[i]==what2trim)&&(i>0)) { --i; }
+   if ( i==length-1 ) { /*No chars found*/ return 1; }
+
+   if ((i==0) && (inpt[0]==what2trim) ) { inpt[0]=0; } else
+                                        {
+                                          inpt[i+1]=0;
+                                        }
+   return 1;
+}
+
+int InputParser_TrimCharacters(char * inpt , unsigned int length,char what2trim)
+{
+  int i=0;
+  i=InputParser_TrimCharactersStart(inpt,length,what2trim);
+  if (i==0) { return 0; }
+
+  return InputParser_TrimCharactersEnd(inpt,length,what2trim);
+}
+
+
+
 inline signed int Str2Int_internal(char * inpt,unsigned int start_from,unsigned int length)
 {
     if ( inpt == 0 ) { fprintf(stderr,"Null string to Str2IntInternal!\n"); return 0;}

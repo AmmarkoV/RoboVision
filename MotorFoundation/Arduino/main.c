@@ -3,9 +3,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 int ConnectRoboVisionSensors(char * devname)
 {
+    if (strlen(devname)<=1)
+      {
+          fprintf(stderr,"Invalid Device Name For Arduino\n");
+          return 0;
+      }
     if (!ArduinoThreadStart(devname) )
       {
         fprintf(stderr,"ConnectRoboVisionSensors failed\n");

@@ -76,6 +76,12 @@ struct InputParserC
 
 char * InputParserC_Version();
 
+int InputParser_ClearNonCharacters(char * inpt , unsigned int length);
+int InputParser_TrimCharactersStart(char * inpt , unsigned int length,char what2trim);
+int InputParser_TrimCharactersEnd(char * inpt , unsigned int length,char what2trim);
+int InputParser_TrimCharacters(char * inpt , unsigned int length,char what2trim);
+
+
 void InputParser_DefaultDelimeters(struct InputParserC * ipc);
 void InputParser_SetDelimeter(struct InputParserC * ipc,int num,char tmp);
 char InputParser_GetDelimeter(struct InputParserC * ipc,int num);

@@ -486,7 +486,7 @@ unsigned int CompressRegister1Byte(int input,int output)
 unsigned int CompressRegister3Byte(int input,int output)
 {
 
-  fprintf(stderr,"This needs to be implemented , the implementation is of CompressRegister1Byte!\n");
+  fprintf(stderr,"CompressRegister3Byte NOT implemented ( the implementation is of CompressRegister1Byte ) !\n");
   return 0;
 
   if (!VideoRegisterRequestIsOk(input,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }

@@ -15,7 +15,9 @@ mkdir RoboVisionRuntime/Sounds
 mkdir RoboVisionRuntime/Stored 
 mkdir RoboVisionRuntime/memfs 
 mkdir RoboVisionRuntime/memfs/SMS_Receive
+sudo chmod 777 RoboVisionRuntime/memfs/SMS_Receive
 mkdir RoboVisionRuntime/memfs/SMS_Send
+sudo chmod 777 RoboVisionRuntime/memfs/SMS_Send
 mkdir RoboVisionRuntime/memfs/public_html 
 
 

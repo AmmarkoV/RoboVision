@@ -281,7 +281,7 @@ int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,char 
    ReallocEmptyFrame(width,height);
 
    if (!VideoInputsOk()) return 0;
-   if ( (!FileExists(viddev)) ) { fprintf(stderr,"\n\n\Check for the webcam (%s) returned false..\n PLEASE CONNECT V4L2 COMPATIBLE CAMERA!!!!!\n\n\n",viddev); return 0; }
+   if ( (!FileExists(viddev)) ) { fprintf(stderr,"\n\nCheck for the webcam (%s) returned false..\n PLEASE CONNECT V4L2 COMPATIBLE CAMERA!!!!!\n\n\n",viddev); return 0; }
 
 
    camera_feeds[inpt].videoinp = viddev; /*i.e. (char *) "/dev/video0";*/

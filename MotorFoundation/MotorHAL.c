@@ -173,7 +173,7 @@ unsigned int RobotMoveJoystick(signed int joy_x,signed int joy_y)
 
 unsigned int RobotSetHeadNod(char * pose_string)
 {
-  if ( !RoboVisionSensorsOK ) { return 0; }
+  if ( !RoboVisionSensorsOK() ) { return 0; }
   if ( strcmp(pose_string,"YES") == 0 )
       {
            SetCameraNod(0,110);
@@ -190,13 +190,13 @@ unsigned int RobotSetHeadNod(char * pose_string)
 
 unsigned int RobotSetHeadPose(unsigned int heading,unsigned int pitch)
 {
-    if ( !RoboVisionSensorsOK ) { return 0; }
+    if ( !RoboVisionSensorsOK() ) { return 0; }
     return SetCameraPose(heading,pitch);
 }
 
 unsigned int RobotGetHeadPose(unsigned int * heading,unsigned int * pitch)
 {
-    if ( !RoboVisionSensorsOK ) { return 0; }
+    if ( !RoboVisionSensorsOK() ) { return 0; }
     return GetCameraPose(heading,pitch);
 }
 
