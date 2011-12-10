@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="MotorHAL.c" open="1" top="0" tabpos="1">
-		<Cursor position="5423" topLine="169" />
+	<File name="MotorHAL.c" open="1" top="1" tabpos="1">
+		<Cursor position="966" topLine="18" />
 	</File>
 	<File name="MotorHAL.h" open="1" top="0" tabpos="2">
 		<Cursor position="347" topLine="0" />

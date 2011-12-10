@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1322014929 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_implementation.c
+1323466042 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_implementation.c
 	<time.h>
 	<stdio.h>
 	<stdlib.h>
@@ -20,9 +20,9 @@
 
 1316161437 /home/ammar/Documents/Programming/RoboVision/VideoInput/VideoInput.h
 
-1322096121 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1322963946 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
-1322016917 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.c
+1323466062 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.c
 	"configuration.h"
 	<stdio.h>
 	<stdlib.h>
@@ -30,15 +30,15 @@
 	"../VisualCortex/VisualCortex.h"
 	"../VideoInput/VideoInput.h"
 
-1322016923 /home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.h
+1323466071 /home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.h
 
-1282907255 /home/ammar/Documents/Programming/RoboVision/InputParser/InputParser_C.h
+1323383489 /home/ammar/Documents/Programming/RoboVision/InputParser/InputParser_C.h
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
 	<ctype.h>
 
-1322018685 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
+1323374743 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
 	<pthread.h>
 	"RoboKernel.h"
 	"command_hal.h"
@@ -62,7 +62,7 @@
 1322016893 /home/ammar/Documents/Programming/RoboVision/RoboKernel/motor_system.h
 	"../MotorFoundation/MotorHAL.h"
 
-1319575142 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
+1323055607 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
 	"../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
 
 1289554847 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
@@ -84,11 +84,12 @@
 	"motor_system.h"
 	"configuration.h"
 
-1317902306 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/visual_system.c
+1322783407 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/visual_system.c
 	"visual_system.h"
 	"configuration.h"
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
 	<unistd.h>
 	"webinterface.h"
 	<linux/videodev2.h>
@@ -127,7 +128,7 @@
 
 1318798038 /home/ammar/Documents/Programming/RoboVision/RoboKernel/activity_coordination.h
 
-1319490637 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/activity_coordination.c
+1323057102 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/activity_coordination.c
 	"activity_coordination.h"
 	"visual_system.h"
 	"../MotorFoundation/MotorHAL.h"

@@ -6,6 +6,7 @@
 #include "../InputParser/InputParser_C.h"
 #include "../RVKnowledgeBase/RVKnowledgeBase.h"
 #include "../MotorFoundation/MotorHAL.h"
+#include "../WorldMapping/MasterWorld/MasterWorld.h"
 
 #include "script_runner.h"
 #include "visual_system.h"
@@ -62,6 +63,7 @@ enum command_id_consts
   CMD_DEPTHMAP_TO_FILE,
   CMD_DEPTHMAP_IMPORT_TO_MAP,
   CMD_CONVOLUTION_FILTER,
+  CMD_TRACKING_RESTART,
   CMD_FACE_DETECTION,
   CMD_JOYSTICK_INPUT,
   CMD_AUTONOMOUS,
@@ -306,6 +308,11 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                     free(table);
                   }
      break;
+     case CMD_TRACKING_RESTART :
+             sprintf(outptstr,"From %s : Face Detection! \n",from);
+             SetAgent(0,1.0,1.0,1.0,0.0,0.0,0.0);
+             SetAgent(1,1.0,1.0,1.0,0.0,0.0,0.0);
+     break;
      case CMD_FACE_DETECTION :
              sprintf(outptstr,"From %s : Face Detection! \n",from);
              VisCortx_RecognizeFaces(0);
@@ -436,6 +443,7 @@ int IssueCommandInternal(char * command,char * from,char* outptstr,unsigned int 
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"REMEMBER IMAGE",14)==1) { chosen_command=CMD_REMEMBER_IMAGE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"IDENTIFY IMAGE",14)==1) { chosen_command=CMD_IDENTIFY_IMAGE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"CONVOLUTION FILTER",18)==1) { chosen_command=CMD_CONVOLUTION_FILTER; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"TRACKING RESTART",16)==1) { chosen_command=CMD_TRACKING_RESTART; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"FACE DETECTION",14)==1) { chosen_command=CMD_FACE_DETECTION; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"JOYSTICK INPUT",14)==1) { chosen_command=CMD_JOYSTICK_INPUT; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"AUTONOMOUS MODE",15)==1) { chosen_command=CMD_AUTONOMOUS ; } else

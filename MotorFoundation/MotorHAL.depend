@@ -1,13 +1,14 @@
 # depslib dependency file v1.0
-1316992068 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.c
+1323373152 source:/home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.c
 	"MotorHAL.h"
 	"MD23/MD23.h"
 	"Arduino/RoboVisionSensorLib.h"
 	<stdio.h>
 	<stdlib.h>
 	<unistd.h>
+	<string.h>
 
-1316992275 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
+1323055607 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
 	"../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
 
 1289554847 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
@@ -21,5 +22,5 @@
 1268752229 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MD23/usb_2_i2c.h
 	<termios.h>
 
-1285810186 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/RoboVisionSensorLib.h
+1319575766 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/Arduino/RoboVisionSensorLib.h
 

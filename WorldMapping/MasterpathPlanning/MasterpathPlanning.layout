@@ -34,7 +34,7 @@
 	<File name="WorldLocations.h" open="1" top="0" tabpos="6">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="7233" topLine="177" />
+	<File name="main.c" open="1" top="1" tabpos="1">
+		<Cursor position="7233" topLine="18" />
 	</File>
 </CodeBlocks_layout_file>
