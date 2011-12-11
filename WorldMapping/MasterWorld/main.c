@@ -12,6 +12,11 @@ struct Agents agent[MAX_AGENTS_ON_WORLD]={0};
 unsigned int total_points_number=0;
 
 
+int Clear3DPointCloud()
+{
+   total_points_number=0;
+   return 1;
+}
 
 
 int Add3DPoint(float x,float y,float z , unsigned char r ,unsigned char g ,unsigned char b)
@@ -70,4 +75,34 @@ int RotateAgent(unsigned int agent_num, float degrees)
 {
    return 1;
 }
+
+
+
+
+
+int Save3DPointCloudToFile(char * filename)
+{
+  FILE *fd=0;
+    fd = fopen(filename,"w");
+
+    if (fd!=0)
+	{
+
+	  int i=0;
+      while ( i<total_points_number )
+      {
+        fprintf(fd,"%f\n%f\n%f\n",voxels[i].x,voxels[i].y,voxels[i].z);
+        fprintf(fd,"%u\n%u\n%u\n",voxels[i].r,voxels[i].g,voxels[i].b);
+        ++i;
+      }
+
+     fclose(fd);
+     return 1;
+	}
+
+   return 0;
+}
+
+
+
 

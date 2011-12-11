@@ -428,6 +428,9 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
 
        msg<<wxT("\nDepth : ");
        msg<<DepthMap ( 1 , dpth_x , dpth_y );
+       msg<<wxT(" ( ");
+       msg<<DepthMap ( 18 , dpth_x , dpth_y );
+       msg<<wxT(" ) ");
        msg<<wxT("\nScore : ");
        msg<<DepthMap ( 2 , dpth_x , dpth_y );
        msg<<wxT(" Choices Rejected : ");

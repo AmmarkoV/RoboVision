@@ -523,6 +523,9 @@ unsigned int  VisCortx_Get_DepthMapData(unsigned int typeofdata,unsigned int px,
      case 13 : retval= (unsigned int) depth_data_array[mem_place].movement_count; break;
      case 14 : retval= (unsigned int) depth_data_array[mem_place].movement_difference; break;
      case 15 : retval= (unsigned int) depth_data_array[mem_place].choices_rejected; break;
+     case 16 : retval= (unsigned int) depth_data_array[mem_place].X; break;
+     case 17 : retval= (unsigned int) depth_data_array[mem_place].Y; break;
+     case 18 : retval= (unsigned int) depth_data_array[mem_place].Z; break;
      };
   return retval;
 }

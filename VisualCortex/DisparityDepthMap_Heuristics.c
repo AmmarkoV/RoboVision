@@ -1,6 +1,7 @@
 #include "DisparityDepthMap_Heuristics.h"
 #include "VisCortexFilters.h"
 #include "Precalculations.h"
+#include "../WorldMapping/MasterWorld/MasterWorld.h"
 
 
 
@@ -25,7 +26,6 @@ void SaveRegistersStateRequiredForDisparityMapping()
 
 unsigned char InstantMovementDisparity(unsigned short *left_depth,unsigned short *right_depth)
 {
-
  return 1;
 }
 
@@ -304,39 +304,75 @@ int DepthMapToVideoSimple(unsigned int depth_reg,unsigned int vid_reg,unsigned i
 }
 
 
-
-
-
-
-int SaveDepthMapToFile(char * filename,unsigned int vid_reg)
+float ConvertDepthUnitToCM(unsigned int depth_unit)
 {
-  FILE *fd=0;
-    fd = fopen(filename,"w");
+   unsigned int total_points = 11;
+   unsigned int table[total_points][2];
+   //Static table for 2 PS3EYES , parallel configuration 6.5cm away
+   // Depth Units    Centimeters
+   table[0][0]=56;  table[0][1]=25;
+   table[1][0]=50;  table[1][1]=30;
+   table[2][0]=39;  table[2][1]=35;
+   table[3][0]=35;  table[3][1]=40;
+   table[4][0]=30;  table[4][1]=45;
+   table[5][0]=27;  table[5][1]=50;
+   table[6][0]=21;  table[6][1]=55;
+   table[7][0]=20;  table[7][1]=60;
+   table[8][0]=16;  table[8][1]=65;
+   table[9][0]=15;  table[9][1]=70;
+   table[10][0]=14; table[10][1]=75;
 
-    if (fd!=0)
-	{
-	  register BYTE *px , *r , *g , *b;
-      int i=0;
+   if ( table[0][0]<=depth_unit )
+     {
+         //THIS POINT IS VERY CLOSE
+         return 0.0;
+     }
 
-      px = video_register[vid_reg].pixels;
+   unsigned int i=0;
+    while (i<total_points)
+     {
+         if ( table[i][0]<depth_unit )
+           {
+               if (i>0)
+                {
+                   //y = mx+b
+                   //m = y2-y1 / x2-x1
 
-      for (i=0; i<metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]; i++)
+                   float m = (float) table[i-1][0]-table[i][0]/table[i-1][1]-table[i][1];
+                   float b = (float) table[i][0] - m * table[i][1];
+                   if (m==0.0) { fprintf(stderr,"Division by zero avoided\n"); return 0.0; }
+                   float real_value = (float) (depth_unit - b) / m;
+                   return real_value;
+                }
+           }
+         ++i;
+     }
+
+
+   return 0.0;
+}
+
+int PassDepthMapToMasterWorld(unsigned int vid_reg)
+{
+ register BYTE *px , *r , *g , *b;
+ int i=0;
+
+ fprintf(stderr,"Clearing 3D PointCloud For Now\n");
+ Clear3DPointCloud();
+ px = video_register[vid_reg].pixels;
+
+ for (i=0; i<metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]; i++)
       {
         r = px++; g = px++; b = px++;
         if ( depth_data_array[i].Z != 0.0 )
          {
-           fprintf(fd,"%f\n%f\n%f\n",depth_data_array[i].X,depth_data_array[i].Y,depth_data_array[i].Z);
-           fprintf(fd,"%u\n%u\n%u\n",*r,*g,*b);
+           //fprintf(fd,"%f\n%f\n%f\n",depth_data_array[i].X,depth_data_array[i].Y,depth_data_array[i].Z); fprintf(fd,"%u\n%u\n%u\n",*r,*g,*b);
+           //depth_data_array[i].Z
+           Add3DPoint(depth_data_array[i].X,depth_data_array[i].Y,ConvertDepthUnitToCM(depth_data_array[i].depth_raw),*r,*g,*b);
          }
       }
-
-     fclose(fd);
-     return 1;
-	}
-
-   return 0;
+  return 1;
 }
-
 
 
 
@@ -433,6 +469,7 @@ int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int dep
 
 unsigned int DisparityMapGetPercentCovered(unsigned int depth_reg)
 {
+  unsigned int pixels_too_close = 0;
   unsigned int pixels_covered = 0;
   unsigned int ptr,dpth_lim=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
     unsigned short *full_depth_map=l_video_register[depth_reg].pixels;
@@ -440,9 +477,14 @@ unsigned int DisparityMapGetPercentCovered(unsigned int depth_reg)
   for ( ptr = 0; ptr < dpth_lim; ptr++)
    {
       if ( full_depth_map[ptr] != 0 ) { ++pixels_covered; }
+      if ( full_depth_map[ptr] > DEPTHMAP_CLOSEST_DEPTH-8 ) { ++pixels_too_close; }
    }
 
-   unsigned int percent = (unsigned int) ( ( pixels_covered *100 ) / ( metrics[RESOLUTION_X]*metrics[RESOLUTION_Y] ) );
+   unsigned int percent = (unsigned int) ( ( pixels_too_close *100 ) / ( metrics[RESOLUTION_X]*metrics[RESOLUTION_Y] ) );
+   metrics[LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE]=percent;
+
+   percent = (unsigned int) ( ( pixels_covered *100 ) / ( metrics[RESOLUTION_X]*metrics[RESOLUTION_Y] ) );
+   metrics[LAST_DEPTH_MAP_COVERAGE]=percent;
 
   return percent;
 }

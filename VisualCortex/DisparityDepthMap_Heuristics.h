@@ -16,7 +16,9 @@ inline unsigned short FindNeighborDepth(
 void EnhanceDepthMapWithEdges(unsigned char * rgb_image,unsigned short *full_depth_map,unsigned char * edges_map,unsigned int image_x,unsigned int image_y);
 unsigned int EnhanceDepthMapFillHoles(unsigned char * rgb_image,unsigned short *full_depth_map,unsigned int image_x,unsigned int image_y);
 
-int SaveDepthMapToFile(char * filename,unsigned int vid_reg);
+float ConvertDepthUnitToCM(unsigned int depth_unit);
+int PassDepthMapToMasterWorld(unsigned int vid_reg);
+
 int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int depth_scale);
 
 unsigned int DisparityMapGetPercentCovered(unsigned int depth_reg);

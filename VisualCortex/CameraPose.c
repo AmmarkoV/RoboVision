@@ -60,7 +60,11 @@ void PassDepthMapToCameraSystem()
        SaveTransformationMatrixToFile("memfs/LEFT_ROTATION_AND_TRANSLATION0",&left_rotation_and_translation);
        SaveTransformationMatrixToFile("memfs/RIGHT_ROTATION_AND_TRANSLATION0",&right_rotation_and_translation);
 
-       SaveDepthMapToFile("memfs/DEPTH_MAP",CALIBRATED_LEFT_EYE);
+     //  SaveDepthMapToFile("memfs/DEPTH_MAP",CALIBRATED_LEFT_EYE);
+
+     //THIS IS NOW PASSED THROUGH MasterWorld!
+     PassDepthMapToMasterWorld(CALIBRATED_LEFT_EYE);
+     Save3DPointCloudToFile("memfs/DEPTH_MAP");
 
 }
 

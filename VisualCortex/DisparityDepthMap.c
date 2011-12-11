@@ -115,7 +115,8 @@ void inline FillDepthMemWithData(unsigned short * depth_data_raw_left,unsigned s
 		{
 		    // TODO depth_data_raw_right
 			depth_data_raw_left[ptr]=far_away;
-		    depth_data_full[ptr].depth=depth_data->depth;
+		    depth_data_full[ptr].depth_raw=far_away;
+            depth_data_full[ptr].depth=depth_data->depth;
             depth_data_full[ptr].score=depth_data->score;
             depth_data_full[ptr].edge_count=depth_data->edge_count;
             depth_data_full[ptr].movement_count=depth_data->movement_count;
@@ -555,8 +556,9 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
       PassDepthMapToCameraSystem();
    }
 
-  unsigned int covered_percent = DisparityMapGetPercentCovered(DEPTH_LEFT);
-  fprintf(stderr,"Percent Covered %u %%\n",covered_percent);
+  DisparityMapGetPercentCovered(DEPTH_LEFT);
+  fprintf(stderr,"Percent Covered %u %% , too close %u %% \n",metrics[LAST_DEPTH_MAP_COVERAGE],metrics[LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE]);
+
 
 
   metrics[DEPTHMAP_DELAY_MICROSECONDS] = EndTimer(TIMER_DEPTH_MAP_DELAY);
@@ -565,7 +567,7 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
 
 if ( settings[HYPERVISOR_STORE_PERFORMANCE_STATISTICS] )
   {
-    UpdateDisparityMapStatistics(metrics[DEPTHMAP_DELAY_MICROSECONDS] ,covered_percent,comparisons_small,comparisons_medium,comparisons_large);
+    UpdateDisparityMapStatistics(metrics[DEPTHMAP_DELAY_MICROSECONDS],metrics[LAST_DEPTH_MAP_COVERAGE],metrics[LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE],comparisons_small,comparisons_medium,comparisons_large);
   }
 
   video_register[DEPTH_RIGHT].lock=0;
