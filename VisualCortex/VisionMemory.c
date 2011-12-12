@@ -372,10 +372,10 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[RESOLUTION_DEPTH]=3;
     metrics[CHANGES_LEFT]=0;
     metrics[CHANGES_RIGHT]=0;
-    metrics[HORIZONTAL_BUFFER]=12; //20
-    metrics[VERTICAL_BUFFER]=15; //25
+    metrics[HORIZONTAL_BUFFER]=10; //20
+    metrics[VERTICAL_BUFFER]=12; //25
     metrics[HORIZONTAL_BUFFER_LARGE]=20; //50
-    metrics[VERTICAL_BUFFER_LARGE]=40; //75
+    metrics[VERTICAL_BUFFER_LARGE]=30; //75
     metrics[HORIZONTAL_BUFFER_EXTRALARGE]=40; //125
     metrics[VERTICAL_BUFFER_EXTRALARGE]=50; // 188
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
