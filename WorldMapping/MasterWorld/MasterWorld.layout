@@ -2,9 +2,9 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="MasterWorld.h" open="1" top="0" tabpos="2">
-		<Cursor position="635" topLine="0" />
+		<Cursor position="320" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="1" tabpos="1">
-		<Cursor position="681" topLine="9" />
+	<File name="main.c" open="1" top="0" tabpos="1">
+		<Cursor position="281" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
