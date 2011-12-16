@@ -17,6 +17,8 @@ char video_device_2[MAX_STR]="/dev/video1";
 char arduino_device[MAX_STR]="";
 char arduino_device_name[MAX_STR]="FTDI FT232R USB UART A9007Wk3";
 
+char joystick_device[MAX_STR]="/dev/input/js0";
+
 char rd01_device[MAX_STR]="";
 char rd01_device_name[MAX_STR]="FTDI FT232R USB UART A2001mqz";
 

@@ -8,6 +8,7 @@ extern int system_autonomous;
 
 extern char video_device_1[MAX_STR];
 extern char video_device_2[MAX_STR];
+extern char joystick_device[MAX_STR];
 extern char rd01_device[MAX_STR];
 extern char arduino_device[MAX_STR];
 extern char user[MAX_STR];

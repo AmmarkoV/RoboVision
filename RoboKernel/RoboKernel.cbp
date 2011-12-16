@@ -64,6 +64,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="gsm_modem.h" />
+		<Unit filename="joystick.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="joystick.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

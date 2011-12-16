@@ -1,8 +1,12 @@
 #!/bin/bash
 
 clear
-
 echo "Compiling The whole RoboVision Project :D"
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ] ; do SOURCE="$(readlink "$SOURCE")"; done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+cd $DIR
 
 
 echo "Compiling 3d Party Libraries.."
