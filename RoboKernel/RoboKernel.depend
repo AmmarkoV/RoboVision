@@ -18,7 +18,7 @@
 	"../VideoInput/VideoInput.h"
 	"../VisualCortex/VisualCortex.h"
 
-1316161437 /home/ammar/Documents/Programming/RoboVision/VideoInput/VideoInput.h
+1324008661 /home/ammar/Documents/Programming/RoboVision/VideoInput/VideoInput.h
 
 1323563842 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
@@ -156,4 +156,18 @@
 	<string.h>
 
 1323564375 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterWorld/MasterWorld.h
+
+1323996935 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/joystick.c
+	<stdio.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<unistd.h>
+	<stdlib.h>
+	<string.h>
+	"configuration.h"
+	"joystick.h"
+
+1323996934 /home/ammar/Documents/Programming/RoboVision/RoboKernel/joystick.h
+	<stdio.h>
 

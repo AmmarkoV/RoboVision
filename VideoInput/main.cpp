@@ -74,6 +74,7 @@ struct Video
   struct Image rec_video;
   int video_simulation;
   int keep_timestamp;
+  int compress;
 
   /* THREADING DATA */
   int thread_alive_flag;
@@ -623,7 +624,11 @@ void RecordInLoop(int feed_num)
     last_part[0]='0'+feed_num;
     strcat(store_path,last_part);
 
+    compress_files = camera_feeds[feed_num].compress;
+
+
     WritePPM(store_path,&camera_feeds[feed_num].rec_video);
+
 
     if ( mode_started == RECORDING_ONE_ON) { camera_feeds[feed_num].video_simulation = LIVE_ON; }
 
@@ -736,7 +741,7 @@ void CompressRecordWithImageMagick(int state)
   compress_files=state;
 }
 
-void Record(char * filename,int timestamp_filename)
+void Record(char * filename,int timestamp_filename,int compress)
 {
     if (!VideoInputsOk()) return;
     if ( strlen( filename ) > 250 ) return;
@@ -747,13 +752,14 @@ void Record(char * filename,int timestamp_filename)
          PauseFeed(i);
            camera_feeds[i].video_simulation = RECORDING_ON;
            camera_feeds[i].keep_timestamp = timestamp_filename;
+           camera_feeds[i].compress = compress;
          UnpauseFeed(i);
      }
 
     strcpy(video_simulation_path,filename);
 }
 
-void RecordOne(char * filename,int timestamp_filename)
+void RecordOne(char * filename,int timestamp_filename,int compress)
 {
   if (!VideoInputsOk()) return;
 
@@ -765,6 +771,7 @@ void RecordOne(char * filename,int timestamp_filename)
         PauseFeed(i);
           camera_feeds[i].video_simulation = RECORDING_ONE_ON;
           camera_feeds[i].keep_timestamp = timestamp_filename;
+          camera_feeds[i].compress = compress;
         UnpauseFeed(i);
       }
     strcpy(video_simulation_path,filename);
