@@ -25,7 +25,6 @@
 #include <wx/timer.h>
 //*)
 #include <wx/sound.h>
-#include <wx/joystick.h>
 
 class RoboVisionXFrame: public wxFrame
 {
@@ -39,8 +38,6 @@ class RoboVisionXFrame: public wxFrame
 
         int feed_0_x,feed_0_y,feed_1_x,feed_1_y,feed_2_x,feed_2_y,feed_3_x,feed_3_y;
 
-        wxJoystick *joy_stick;
-
     private:
 
         //(*Handlers(RoboVisionXFrame)
@@ -50,7 +47,6 @@ class RoboVisionXFrame: public wxFrame
         void OnAbout(wxCommandEvent& event);
         void OnTimer1Trigger(wxTimerEvent& event);
         void OnButtonDepthMapClick(wxCommandEvent& event);
-        void OnJoystickEvent(wxJoystickEvent& event);
         void OnMotionAlarmButtonClick(wxCommandEvent& event);
         void OnSwapFeedsClick(wxCommandEvent& event);
         void OnRecordButtonClick(wxCommandEvent& event);

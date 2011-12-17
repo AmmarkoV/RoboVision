@@ -116,7 +116,6 @@ BEGIN_EVENT_TABLE(RoboVisionXFrame,wxFrame)
     EVT_TIMER(-1,RoboVisionXFrame::OnTimerEvent)
     EVT_PAINT(RoboVisionXFrame::OnPaint)
     EVT_MOTION(RoboVisionXFrame::OnMotion)
-    EVT_JOYSTICK_EVENTS(RoboVisionXFrame::OnJoystickEvent)
 
 END_EVENT_TABLE()
 
@@ -333,21 +332,7 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     feed_3_x=feed_1_x;
     feed_3_y=feed_2_y;
 
-
-  fprintf(stderr,"Trying to get joystick\n");
-  joy_stick = new wxJoystick(wxJOYSTICK1);
-  if ( joy_stick != 0 )
-  {
-   if ( joy_stick->IsOk() )
-   {
-     joy_stick->SetCapture(this,0);
-   } else IssueCommand((char *)"Say(Could not detect a joystick)",0,0,(char *)"GUI");
-   wxMilliSleep(100);
   }
-
-
-    //This is done inside RoboKernel now :P IssueCommand((char *)"Say(Robo Vision X started!)",0,0,(char *)"GUI");
-}
 
 
 
@@ -369,7 +354,6 @@ RoboVisionXFrame::~RoboVisionXFrame()
 void RoboVisionXFrame::OnQuit(wxCommandEvent& event)
 {
     GUI_Shutdown=1;
-    if (joy_stick!=0) { delete joy_stick; }
 
     //wxMilliSleep(500);
     Close();
@@ -808,122 +792,6 @@ void RoboVisionXFrame::OnAutonomousClick(wxCommandEvent& event)
 }
 
 
-/*
- *
- *      ROBOT  WX WIDGETS JOYSTICK!
- *
- */
-
-void CalibrateJoystickPos(wxJoystick * joy , wxPoint &pos,unsigned int MAX_POWER)
-{
- if ( joy == 0 ) { return; }
-
- if ( ( joy->GetXMin()==0 ) | ( joy->GetXMax()==0 ) | ( joy->GetYMin()==0 ) | ( joy->GetYMax()==0 ) ) { return; }
-
- if  ( pos.x < 0 ) { pos.x = -(signed int)MAX_POWER * pos.x / joy->GetXMin(); } else
- if  ( pos.x > 0 ) { pos.x = MAX_POWER * pos.x / joy->GetXMax(); }
-
- if  ( pos.y < 0 ) { pos.y = -(signed int)MAX_POWER * pos.y / joy->GetYMin(); } else
- if  ( pos.y > 0 ) { pos.y = MAX_POWER * pos.y / joy->GetYMax(); }
-
- return;
-}
-
-
-void RoboVisionXFrame::OnJoystickEvent(wxJoystickEvent& event)
-{
-   if ( joy_stick == 0 ) {return;}
-   if ( joy_stick->IsOk() )
-   {
-
-     char inptstr[512]={0};
-
-     wxPoint pos=joy_stick->GetPosition();
-     printf("Joystick Position is now %d,%d\n", pos.x ,  pos.y);
-
-
-     if ( event.ButtonDown(wxJOY_BUTTON1) )
-         {
-           fprintf(stderr," Joystick BUTTON 1 ( joy label 2 ) \n");
-         } else
-     if ( event.ButtonDown(wxJOY_BUTTON2) )
-         {
-          fprintf(stderr," Joystick BUTTON 2  ( joy label 3 ) \n");
-
-         } else
-     if ( event.ButtonDown(wxJOY_BUTTON3) )
-         {
-           fprintf(stderr," Joystick BUTTON 3 ( joy label 5 L1 ) \n");
-           IssueCommand((char *) "PLAYSOUND(alarm)",0,0,(char *)"JOYSTICK");
-         } else
-     if ( event.ButtonDown(wxJOY_BUTTON4) )
-         {
-           fprintf(stderr," Joystick BUTTON 4  ( joy label 9 SELECT ) \n");
-           // This could directly interface the RoboKernel , but we want to update the wxwidgets button :P
-           wxCommandEvent null_event;
-           if ( Autonomous->IsChecked() ) { Autonomous->SetValue(0);
-                                            RoboVisionXFrame::OnAutonomousClick(null_event);
-                                          } else
-                                          { Autonomous->SetValue(1);
-                                            RoboVisionXFrame::OnAutonomousClick(null_event);
-                                          }
-         } else
-     if ( event.ButtonDown(wxJOY_BUTTON4+1) )
-         {
-           fprintf(stderr," Joystick BUTTON 5  ( joy label 10 START ) \n");
-           wxCommandEvent null_event;
-           RoboVisionXFrame::OnOkClick(null_event);
-         } else
-     if ( event.ButtonDown(wxJOY_BUTTON1+1) ) { fprintf(stderr," Joystick BUTTON 6 \n"); } else
-
-     if ( event.ButtonDown(wxJOY_BUTTON2+1) )
-        {
-           fprintf(stderr," Joystick BUTTON 7 ( joy label 4 ) \n");
-        } else
-     if ( event.ButtonDown(wxJOY_BUTTON3+1) )
-        {
-           fprintf(stderr," Joystick BUTTON 8 ( joy label 6 R1 ) \n");
-           IssueCommand((char *) "PLAYSOUND(kleftis_itan_o_pateras_sou)",0,0,(char *)"JOYSTICK");
-        } else
-     if ( event.ButtonDown(wxJOY_BUTTON4+2) ) { fprintf(stderr," Joystick BUTTON 9 \n"); } else
-     if ( event.ButtonDown(wxJOY_BUTTON1+2) ) { fprintf(stderr," Joystick BUTTON 10 \n"); } else
-     if ( event.ButtonDown(wxJOY_BUTTON2+2) ) { fprintf(stderr," Joystick BUTTON 11 \n"); } else
-     if ( event.ButtonDown(wxJOY_BUTTON3+2) )
-        {
-          fprintf(stderr," Joystick BUTTON 12 ( label 7 L2 ) \n");
-          IssueCommand((char *) "STOP SOUNDS",0,0,(char *)"JOYSTICK");
-        } else
-     if ( event.ButtonDown(wxJOY_BUTTON4+3) ) { fprintf(stderr," Joystick BUTTON 13 \n"); } else
-     if ( event.ButtonDown(wxJOY_BUTTON1+3) ) { fprintf(stderr," Joystick BUTTON 14 \n"); } else
-     if ( event.ButtonDown(wxJOY_BUTTON2+3) ) { fprintf(stderr," Joystick BUTTON 15 \n"); } else
-     if ( event.ButtonDown(wxJOY_BUTTON3+3) )
-        {
-          fprintf(stderr," Joystick BUTTON 16 ( label 8 R2 \n");
-           IssueCommand((char *) "PLAYSOUND(whistle_at_girl)",0,0,(char *)"JOYSTICK");
-        } else
-     if ( event.ButtonDown(wxJOY_BUTTON4+3) ) { fprintf(stderr," Joystick BUTTON 17 \n"); }
-
-
-     if ( ( pos.x == 0 ) && ( pos.y == 0 ) )
-      {
-
-      } else
-      {
-        CalibrateJoystickPos(joy_stick,pos,255);
-        printf("GoJoystick %d,%d\n", pos.x ,  pos.y);
-
-        sprintf(inptstr , (char *) "JOYSTICK INPUT(%u,%u)",pos.x,pos.y);
-        IssueCommand(inptstr,0,0,(char *)"GUI");
-      }
-   }
-}
-
-
-/*
- *
- *      ROBOT MOTOR CONTROL PANEL
- *
- */
 
 
 void RoboVisionXFrame::OnUpButtonClick(wxCommandEvent& event)

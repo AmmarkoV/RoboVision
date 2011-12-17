@@ -1484,7 +1484,7 @@
 1314284222 /usr/include/wx-2.8/wx/gtk/filedlg.h
 	"wx/generic/filedlgg.h"
 
-1319486945 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.h
+1324085609 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.h
 	<wx/gauge.h>
 	<wx/checkbox.h>
 	<wx/button.h>
@@ -1498,7 +1498,6 @@
 	<wx/choice.h>
 	<wx/timer.h>
 	<wx/sound.h>
-	<wx/joystick.h>
 
 1314284223 /usr/include/wx-2.8/wx/sound.h
 	"wx/defs.h"
@@ -1542,7 +1541,7 @@
 1316163470 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXApp.h
 	<wx/app.h>
 
-1323564798 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.cpp
+1324085620 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.cpp
 	"RoboVisionXMain.h"
 	"FeedScreenMemory.h"
 	"CortexSettings.h"

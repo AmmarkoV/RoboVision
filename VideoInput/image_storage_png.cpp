@@ -41,7 +41,7 @@ png_infop info_ptr;
 int number_of_passes;
 png_bytep * row_pointers;
 
-int x,y,width, height;
+unsigned int width, height;
 
 
    /* pic->pixels pic->size_x pic->size_y */
@@ -88,6 +88,7 @@ int x,y,width, height;
                 abort_("[read_png_file] Error during read_image");
 
         row_pointers = (png_bytep*) malloc(sizeof(png_bytep) * height);
+        unsigned int y;
         for (y=0; y<height; y++)
              {
                  row_pointers[y] = (png_byte*) malloc(png_get_rowbytes(png_ptr,info_ptr));
@@ -112,7 +113,7 @@ png_infop info_ptr;
 int number_of_passes;
 png_bytep * row_pointers;
 
-int x,y,width, height;
+int width, height;
 // -------------------------------
 
 
@@ -145,13 +146,10 @@ if (setjmp(png_jmpbuf(png_ptr))) { abort_("[write_png_file] Error during writing
 row_pointers = (png_bytep*) malloc(sizeof(png_bytep) * pic->size_y);
 char * raw_pixels=pic->pixels;
 
+unsigned int y;
 for (y=0; y<pic->size_y; y++)
  {
-   //row_pointers[y] = (png_byte*) malloc(3*sizeof(unsigned char)* pic->size_x);
-   //memcpy(row_pointers[y],raw_pixels,3*pic->size_x);
-
    row_pointers[y] = (png_byte*) raw_pixels;
-
    raw_pixels+=3*pic->size_x;
  }
 
@@ -164,10 +162,6 @@ for (y=0; y<pic->size_y; y++)
  png_write_end(png_ptr, NULL);
 
  /* cleanup heap allocation */
- for (y=0; y<height; y++)
- {
-  //free(row_pointers[y]);
- }
  free(row_pointers);
 
  fclose(fp);

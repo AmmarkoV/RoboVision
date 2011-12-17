@@ -67,6 +67,7 @@ void InitSenses()
    InitVisualSystem();
    OpenWebInterface();
 
+   StartJoystickControl();
    StartScriptRunnerServer();
    EngageActivity(FACE_TRACKING);
 
@@ -76,6 +77,7 @@ void InitSenses()
 void CloseSenses()
 {
    StopScriptRunnerServer();
+   StopJoystickControl();
 
    CloseWebInterface();
    CloseMotorSystem();
