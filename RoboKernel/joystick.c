@@ -217,7 +217,7 @@ void * JoystickPollingLoop(void *ptr )
 	fd = open_joystick(joystick_device);
 	if (fd < 0)
 	{
-		printf("open failed.\n");
+		printf("joystick open failed.\n");
 		STOP_JOYSTICK_THREAD=1;
 		return 0;
 	}
@@ -250,7 +250,7 @@ int StartJoystickControl()
     JOYSTICK_OK=0;
     if ( pthread_create( &joystick_polling_loop_id , NULL,  JoystickPollingLoop ,(void*) 0) != 0 )
      {
-         fprintf(stderr,"Error creating script loop \n");
+         fprintf(stderr,"Error creating Joystick loop \n");
          return 0;
      }
     return 1;

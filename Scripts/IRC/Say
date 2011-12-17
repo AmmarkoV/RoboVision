@@ -1,0 +1,25 @@
+#!/bin/bash
+
+STARTDIR=`pwd`
+
+cd ../IRCInterface
+cd IRCInterface
+
+if [ -e bin/Release/ircbot ]
+then
+  echo "Found IRC Bot"
+else
+  echo "Cannot Find IRC Bot executable"
+  exit 1
+fi 
+
+BOT_OK = `ps -A | grep ircbot | wc -l`
+echo "Trying to find out if bot process ok = $BOT_OK"
+
+
+commands/say 127.0.0.1 6667 foss-aueb "$@"
+echo "Success" 
+
+cd $STARTDIR
+
+exit 0

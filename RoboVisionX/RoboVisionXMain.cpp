@@ -355,7 +355,7 @@ void RoboVisionXFrame::OnQuit(wxCommandEvent& event)
 {
     GUI_Shutdown=1;
 
-    //wxMilliSleep(500);
+    wxMilliSleep(2500);
     Close();
 }
 

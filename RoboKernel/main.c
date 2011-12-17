@@ -9,6 +9,8 @@
 #include "configuration.h"
 #include "activity_coordination.h"
 #include "script_runner.h"
+#include "joystick.h"
+#include "irc_interface.h"
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
@@ -66,6 +68,7 @@ void InitSenses()
    InitMotorSystem();
    InitVisualSystem();
    OpenWebInterface();
+   StartIRCInterface();
 
    StartJoystickControl();
    StartScriptRunnerServer();
@@ -79,6 +82,8 @@ void CloseSenses()
    StopScriptRunnerServer();
    StopJoystickControl();
 
+
+   StopIRCInterface();
    CloseWebInterface();
    CloseMotorSystem();
    CloseVisualSystem();

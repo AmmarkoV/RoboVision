@@ -30,7 +30,7 @@ cd VideoInputGUITester
 cd ..
 
 
-if [ -e libVideoInput_C.a ]
+if [ -e libVideoInput.a ]
 then
   echo "Success.."
 else

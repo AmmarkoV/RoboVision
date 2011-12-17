@@ -202,8 +202,6 @@ int WriteConsoleOutput(char * outstr)
   FILE * pFile=0;
 
   printf("%s\n",outstr);
-  IRCSay(outstr);
-
 
   pFile = fopen ("memfs/public_html/consoleout.dat","a");
   if (pFile!=0 )

@@ -6,6 +6,6 @@ then
   exit $E_BADARGS
 fi
 
-echo ';PRIVMSG' '#'$3' : '$4 | nc $1 $2
+echo ';PRIVMSG' '#'$3' :'$4 | nc $1 $2
 
 exit 0 
