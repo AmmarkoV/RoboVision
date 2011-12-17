@@ -51,6 +51,8 @@
 		<Unit filename="VideoInput.h" />
 		<Unit filename="image_storage.cpp" />
 		<Unit filename="image_storage.h" />
+		<Unit filename="image_storage_png.cpp" />
+		<Unit filename="image_storage_png.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

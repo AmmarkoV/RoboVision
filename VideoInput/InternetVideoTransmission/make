@@ -2,7 +2,7 @@
 echo "Hand made make script for RoboVisionX binary .."
 echo "Should provide bin/Release/InternetVideoTransmission " 
 echo "Compiling files.."
-g++ InternetVideoTransmissionApp.cpp InternetVideoTransmissionApp.h InternetVideoTransmissionMain.cpp InternetVideoTransmissionMain.h network_framework.cpp network_framework.h  ../libVideoInput.a `wx-config --libs` `wx-config --cxxflags` -L. -pthread -o bin/Release/InternetVideoTransmission
+g++ InternetVideoTransmissionApp.cpp InternetVideoTransmissionApp.h InternetVideoTransmissionMain.cpp InternetVideoTransmissionMain.h network_framework.cpp network_framework.h  ../libVideoInput.a `wx-config --libs` `wx-config --cxxflags` -L. -pthread -lpng -o bin/Release/InternetVideoTransmission
 
 
 echo "Done.."

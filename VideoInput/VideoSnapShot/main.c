@@ -58,8 +58,8 @@ int main()
 
        if ((WebIntNeedsNewSnapshot()==1)&&( snapit ==1 ))
        {
-        RecordOne((char*) "snap");
-        i=system((const char *)"convert snap0.ppm /home/ammar/public_html/snap0.jpg");
+        RecordOne((char*) "snap",1,1);
+        //i=system((const char *)"convert snap0.ppm /home/ammar/public_html/snap0.jpg");
         milliseconds=0;
         snapit=0;
        }

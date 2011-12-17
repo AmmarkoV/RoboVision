@@ -124,19 +124,6 @@ int WritePPM(char * filename,struct Image * pic)
      fflush(fd);
      fclose(fd);
 
-     if ( compress_files )
-       { /*Compress to jpg*/
-         char filenameout[512]={0};
-         strcpy(filenameout,filename);
-         filenameout[strlen(filenameout)-3]='j';
-         filenameout[strlen(filenameout)-2]='p';
-         filenameout[strlen(filenameout)-1]='g';
-         filenameout[strlen(filenameout)]='0';
-
-         ConvertImageFormats(filename,filenameout);
-      }
-
-
      return 1;
 	}
 

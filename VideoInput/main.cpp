@@ -27,6 +27,7 @@
 #include "PixelFormats.h"
 #include "PixelFormatConversions.h"
 #include "image_storage.h"
+#include "image_storage_png.h"
 #include <unistd.h>
 
 #define LIVE_ON 0
@@ -610,6 +611,8 @@ void RecordInLoop(int feed_num)
     char store_path[512]={0};
     strcpy(store_path,video_simulation_path);
 
+    compress_files = camera_feeds[feed_num].compress;
+
     if ( camera_feeds[feed_num].keep_timestamp )
     {
      char timestamp[256]={0};
@@ -620,14 +623,20 @@ void RecordInLoop(int feed_num)
      strcat(store_path,timestamp);
     }
 
-    char last_part[7]="0.ppm";
-    last_part[0]='0'+feed_num;
-    strcat(store_path,last_part);
-
-    compress_files = camera_feeds[feed_num].compress;
-
-
-    WritePPM(store_path,&camera_feeds[feed_num].rec_video);
+    if (!camera_feeds[feed_num].compress)
+    {
+      char last_part[7]="0.ppm";
+      last_part[0]='0'+feed_num;
+      strcat(store_path,last_part);
+      WritePPM(store_path,&camera_feeds[feed_num].rec_video);
+    }
+      else
+    {
+     char last_part[7]="0.png";
+     last_part[0]='0'+feed_num;
+     strcat(store_path,last_part);
+     WritePNG(store_path,&camera_feeds[feed_num].rec_video);
+    }
 
 
     if ( mode_started == RECORDING_ONE_ON) { camera_feeds[feed_num].video_simulation = LIVE_ON; }

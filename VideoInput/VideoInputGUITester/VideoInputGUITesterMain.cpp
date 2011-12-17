@@ -159,5 +159,5 @@ void VideoInputGUITesterDialog::OnButtonQuitClick(wxCommandEvent& event)
 
 void VideoInputGUITesterDialog::OnButtonSaveSnapshotClick(wxCommandEvent& event)
 {
-   RecordOne((char *) "snapshot",1);
+   RecordOne((char *) "snapshot",1,1);
 }

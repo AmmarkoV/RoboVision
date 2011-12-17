@@ -136,14 +136,14 @@ int main()
     printf ("I Will now try to write what the camera is seeing in a file called raw.ppm  ... ");
     fflush(0);
 
-    RecordOne((char*) "raw",0);
+    RecordOne((char*) "raw",0,0);
     sleep(1);
     printf("Done\n");
 
     printf ("I Will now try to write what the camera is seeing in a file again in a file called raw.ppm  ... ");
     fflush(0);
 
-    RecordOne((char*) "raw",0);
+    RecordOne((char*) "raw",0,0);
     sleep(1);
     printf("Done\n");
 
@@ -153,7 +153,7 @@ int main()
     printf("Done\n");
 
     printf ("I Will now try to write the file again in a file called piperaw.raw  ... ");
-    RecordOne((char*) "piperaw",0);
+    RecordOne((char*) "piperaw",0,0);
     sleep(1);
     printf("Done\n");
 

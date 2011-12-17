@@ -46,6 +46,7 @@
 			<Add option="-lm" />
 			<Add option="`wx-config --libs`" />
 			<Add option="`pkg-config --libs opencv`" />
+			<Add option="-lpng" />
 			<Add library="../RoboKernel/libRoboKernel.a" />
 			<Add library="../VideoInput/libVideoInput.a" />
 			<Add library="../VisualCortex/libVisualCortex.a" />
