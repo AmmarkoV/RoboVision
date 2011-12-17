@@ -101,7 +101,13 @@ void do_something(unsigned int clock_time)
 {
   /* THIS FUNCTION WILL EXECUTE SCRIPT OF FUNCTIONS CREATED BY FIND_SOMETHING_TO_DO */
 
-  if ( motion_lock_on == 1 ) { CheckAlarm(VisCortx_GetMetric(CHANGES_LEFT) , VisCortx_GetMetric(CHANGES_RIGHT)); }
+  if ( motion_lock_on == 1 )
+    {
+      if ( CheckAlarm(VisCortx_GetMetric(CHANGES_LEFT) , VisCortx_GetMetric(CHANGES_RIGHT)) )
+      {
+          Danger();
+      }
+    }
 
 
   if ( keep_snapshots == 1 )
@@ -117,7 +123,7 @@ void do_something(unsigned int clock_time)
 
   if ( system_autonomous == 1)
          {
-             if ( clock_time % 5 == 0 ) { fprintf(stderr,"Reminder, that Hypervisor status is recorded\n"); VisCortx_GetHyperVisorStatus(0,1); } else
+             if ( clock_time % 5 == 0 ) { fprintf(stderr,"Reminder, that Hypervisor status is recorded\n"); VisCortx_GetHyperVisorStatus(0,1,0); } else
              if ( clock_time % 5000 == 0 ) { RobotStartRotating(50,1); } else
              if ( clock_time % 10000 == 0 ) { RobotStartRotating(50,-1); }
          }

@@ -1,5 +1,9 @@
 #include "activity_coordination.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "visual_system.h"
+#include "irc_interface.h"
+#include "webinterface.h"
 #include "../MotorFoundation/MotorHAL.h"
 
 int current_activity=IDLE;
@@ -9,6 +13,7 @@ int current_activity=IDLE;
 #define RESY 240
 
 int center_of_attention_lost = 0 ;
+int danger=0;
 
 int TrackFace()
 {
@@ -72,11 +77,35 @@ int TrackFace()
 
 
 
+int Danger()
+{
+   if(!danger)
+    {
+      WriteConsoleOutput("Danger!");
+      IRCSay("Danger!");
+      fprintf(stderr,"Danger!\n");
+    }
+
+   danger=1;
+
+   return 1;
+}
 
 
 
+int Safe()
+{
+   if(danger)
+    {
+      WriteConsoleOutput("Safe!");
+      IRCSay("Safe!");
+      fprintf(stderr,"Safe!\n");
+    }
 
+   danger=0;
 
+   return 1;
+}
 
 
 

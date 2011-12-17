@@ -21,6 +21,8 @@ enum ActivityStatus
 
 extern int current_activity;
 
+int Danger();
+int Safe();
 
 
 int EngageActivity(int activity_num);

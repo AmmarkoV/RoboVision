@@ -19,14 +19,21 @@ fpos_t pos;
 
 int IRCSay(char * what2say)
 {
-    //IRC Messages need security checks but are disabled for debugging for now :P
-/*
+ //IRC Messages need security checks but are disabled for debugging for now :P
+ /*
  if (filename_stripper_found_attack(what2say))
    {
      //Weird Filename detected , aborting unsafe code
      fprintf(stderr,"INJECTION ATTEMPT AT IRCSAY FUNCTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
      return 666;
-   }*/
+   }
+   */
+  if ( !IRC_INTERFACE_OK )
+   {
+       fprintf(stderr,"IRC Interface is dead \n");
+       return 1;
+   }
+
 
  char command_s[1024]={0};
 

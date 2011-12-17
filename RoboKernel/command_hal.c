@@ -8,6 +8,7 @@
 #include "../MotorFoundation/MotorHAL.h"
 #include "../WorldMapping/MasterWorld/MasterWorld.h"
 
+#include "activity_coordination.h"
 #include "script_runner.h"
 #include "visual_system.h"
 #include "motor_system.h"
@@ -25,6 +26,8 @@ enum command_id_consts
   CMD_UNKNOWN=0,
  /* ------------------ */
 
+  CMD_DANGER,
+  CMD_SAFE,
   CMD_PANORAMIC,
   CMD_KEEPCOLOR,
   CMD_MOTION_ALARM,
@@ -101,6 +104,15 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
    { case CMD_UNKNOWN :
        return 0;
      break;
+
+     case CMD_DANGER :
+                sprintf(outptstr,"From %s : DANGER! \n",from);
+                Danger();
+     break;
+     case CMD_SAFE :
+                sprintf(outptstr,"From %s : Safe! \n",from);
+                Safe();
+     break;
      case CMD_PANORAMIC :
                 sprintf(outptstr,"From %s : Panoramic \n",from);
                 Panoramic();
@@ -152,7 +164,10 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      break;
      case CMD_PLAYSOUND :
                  sprintf(outptstr,"From %s : Command Parser Playing sound : %s\n",from,cmds_1);
-                 PlaySound(cmds_1);
+                 if (PlaySound(cmds_1)!=0)
+                  {
+                    sprintf(outptstr,"Operation PlaySound(%s) did not succeed!\n",cmds_1);
+                  }
      break;
      case CMD_RECORDSOUND :
                  sprintf(outptstr,"From %s : Command Parser Recording sound : %s duration %u ( call STOP SOUNDS to force stop )\n",from,cmds_1,cmdi_2);
@@ -355,7 +370,14 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      break;
      case CMD_HYPERVISOR_STATISTICS:
              sprintf(outptstr,"From %s : Hypervisor Statistics  ! \n",from);
-             VisCortx_GetHyperVisorStatus(1,1);
+             char hyp_output[2048]={0};
+             VisCortx_GetHyperVisorStatus(1,1,hyp_output);
+             /*
+             unsigned int taken_size = strlen(outptstr)+1;
+             strncat(outptstr,hyp_output,output_length-taken_size);
+             */
+             fprintf(stderr,"%s",hyp_output);
+             // outptstr usually doesnt have enough space to accomodate data :P
      break;
      case CMD_DELAY:
              sprintf(outptstr,"From %s : Delaying for %u ms ! \n",from,cmdi_1);
@@ -406,6 +428,9 @@ int IssueCommandInternal(char * command,char * from,char* outptstr,unsigned int 
     if ( words_count > 0 )
     {
       /* NEEDS CARE BECAUSE ITS STRING , MUST HAVE ITS LENGTH AS A PARAMETER :P*/
+
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"DANGER",6)==1) { chosen_command=CMD_DANGER; } else
+      if (InputParser_WordCompareNoCase(ipc,0,(char*)"SAFE",4)==1) { chosen_command=CMD_SAFE; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"PANORAMIC",9)==1) { chosen_command=CMD_PANORAMIC; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"KEEPCOLOR",9)==1) { chosen_command=CMD_KEEPCOLOR; } else
       if (InputParser_WordCompareNoCase(ipc,0,(char*)"MOTION ALARM",12)==1) { chosen_command=CMD_MOTION_ALARM; } else

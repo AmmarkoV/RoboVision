@@ -10,6 +10,18 @@
 #include "irc_interface.h"
 
 
+char FileExists(char * filename)
+{
+ FILE *fp = fopen(filename,"r");
+ if( fp ) { /* exists */
+            fclose(fp);
+            return 1;
+          }
+          else
+          { /* doesnt exist */ }
+ return 0;
+}
+
 
 int Say(char * what2say)
 {
@@ -19,6 +31,13 @@ int Say(char * what2say)
      fprintf(stderr,"INJECTION ATTEMPT AT SAY FUNCTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
      return 666;
    }
+
+  if (strlen(what2say)>500)
+   {
+      fprintf(stderr,"OVERFLOW ATTEMPT AT SAY FUNCTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+      return 666;
+   }
+
 
  char command_s[1024]={0};
 
@@ -43,7 +62,18 @@ int PlaySound(char * sndname)
      return 666;
    }
 
+  if (strlen(sndname)>150)
+   {
+      fprintf(stderr,"OVERFLOW ATTEMPT AT PlaySound FUNCTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+      return 666;
+   }
+
+
   char command_s[1024]={0};
+  sprintf(command_s,"../DataSets/Sounds/%s.wav",sndname);
+  if (!FileExists(command_s)) { return 1; }
+
+
   sprintf(command_s,"%s ../DataSets/Sounds/%s.wav&",sound_play_command,sndname);
   fprintf(stderr," %s \n ",command_s);
   int i=system((const char * ) command_s);
@@ -175,12 +205,14 @@ unsigned int Flow_Sufficient_For_Movement(unsigned int flow1,unsigned int flow2)
   return 0;
 }
 
-void CheckAlarm(unsigned int flow1,unsigned int flow2)
+int CheckAlarm(unsigned int flow1,unsigned int flow2)
 {
     if ( Flow_Sufficient_For_Movement(flow1,flow2)==1 )
      {
         PlaySound((char *)"alarm");
+        return 1;
      }
+   return 0;
 }
 
 void Panoramic()

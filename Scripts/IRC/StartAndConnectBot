@@ -1,4 +1,4 @@
 #!/bin/bash
-Scripts/IRC/StartBot
+Scripts/IRC/StartBot&
 Scripts/IRC/ConnectToFOSSAUEB
 exit 0

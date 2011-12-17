@@ -17,8 +17,7 @@ BOT_OK = `ps -A | grep ircbot | wc -l`
 echo "Trying to find out if bot process ok = $BOT_OK"
 
 
-commands/say 127.0.0.1 6667 foss-aueb "$@"
-echo "Success" 
+commands/say 127.0.0.1 6667 foss-aueb "$@" 
 
 cd $STARTDIR
 

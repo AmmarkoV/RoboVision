@@ -180,27 +180,29 @@ unsigned int VisCortx_GetPipelineSwitch(unsigned int set_num)
 }
 
 
-void VisCortx_GetHyperVisorStatus(unsigned int print_std,unsigned int print_file)
+void VisCortx_GetHyperVisorStatus(unsigned int print_std,unsigned int print_file,char * output)
 {
- if (print_std)
+ if ( (print_std) && ( output != 0 ) )
  {
-  fprintf(stderr,"Visual Cortex HyperVisor status -=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-  fprintf(stderr,"PERFORMANCE , ALL TIMES ARE IN ! ! MICROSECONDS ! !\n");
-  fprintf(stderr," MEMCPY TO REGISTER , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(WRITE_REGISTER_DELAY),GetLastTimer(WRITE_REGISTER_DELAY),GetTimesTimerTimed(WRITE_REGISTER_DELAY));
-  fprintf(stderr," CALIBRATION , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(CALIBRATION_DELAY),GetLastTimer(CALIBRATION_DELAY),GetTimesTimerTimed(CALIBRATION_DELAY));
-  fprintf(stderr," GAUSSIAN , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(GAUSSIAN_DELAY),GetLastTimer(GAUSSIAN_DELAY),GetTimesTimerTimed(GAUSSIAN_DELAY));
-  fprintf(stderr," SOBEL , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(SOBEL_DELAY),GetLastTimer(SOBEL_DELAY),GetTimesTimerTimed(SOBEL_DELAY));
-  fprintf(stderr," SECOND DERIV. , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(SECOND_DERIVATIVE_DELAY),GetLastTimer(SECOND_DERIVATIVE_DELAY),GetTimesTimerTimed(SECOND_DERIVATIVE_DELAY));
-  fprintf(stderr," PIXEL OV THR , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(PIXEL_OVER_THRESHOLD_DELAY),GetLastTimer(PIXEL_OVER_THRESHOLD_DELAY),GetTimesTimerTimed(PIXEL_OVER_THRESHOLD_DELAY));
-  fprintf(stderr," MOVEMENT RAW , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(MOVEMENT_RAW_DELAY),GetLastTimer(MOVEMENT_RAW_DELAY),GetTimesTimerTimed(MOVEMENT_RAW_DELAY));
-  fprintf(stderr," COMPRESS IMAGE , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(COMPRESS_IMAGE_DELAY),GetLastTimer(COMPRESS_IMAGE_DELAY),GetTimesTimerTimed(COMPRESS_IMAGE_DELAY));
-  fprintf(stderr," DETECT FACES , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(RECOGNIZE_FACES_DELAY ),GetLastTimer(RECOGNIZE_FACES_DELAY ),GetTimesTimerTimed(RECOGNIZE_FACES_DELAY ));
-  fprintf(stderr," FIND CORNERS , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(FIND_CORNERS_DELAY),GetLastTimer(FIND_CORNERS_DELAY),GetTimesTimerTimed(FIND_CORNERS_DELAY));
-  fprintf(stderr," TRACK CORNERS , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(TRACK_CORNERS_DELAY),GetLastTimer(TRACK_CORNERS_DELAY),GetTimesTimerTimed(TRACK_CORNERS_DELAY));
-  fprintf(stderr," DEPTH MAP , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(TIMER_DEPTH_MAP_DELAY),GetLastTimer(TIMER_DEPTH_MAP_DELAY),GetTimesTimerTimed(TIMER_DEPTH_MAP_DELAY));
-  fprintf(stderr," CAMERA POSE TR , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(UPDATE_CAMERA_POSE_DELAY),GetLastTimer(UPDATE_CAMERA_POSE_DELAY),GetTimesTimerTimed(UPDATE_CAMERA_POSE_DELAY));
-  fprintf(stderr,"     -=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-  fprintf(stderr,"PER FRAME , ALL TIMES ARE IN ! ! MILLISECONDS ! !\n");
+  char tmpline[512]={0};
+
+  sprintf(output,"Visual Cortex HyperVisor status -=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+  sprintf(tmpline," FUNCTION             TIME  IN  MICROSECONDS  SAMPLES! !\n"); strcat(output,tmpline);
+  sprintf(tmpline," MEMCPY TO REGISTER , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(WRITE_REGISTER_DELAY),GetLastTimer(WRITE_REGISTER_DELAY),GetTimesTimerTimed(WRITE_REGISTER_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," CALIBRATION , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(CALIBRATION_DELAY),GetLastTimer(CALIBRATION_DELAY),GetTimesTimerTimed(CALIBRATION_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," GAUSSIAN , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(GAUSSIAN_DELAY),GetLastTimer(GAUSSIAN_DELAY),GetTimesTimerTimed(GAUSSIAN_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," SOBEL , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(SOBEL_DELAY),GetLastTimer(SOBEL_DELAY),GetTimesTimerTimed(SOBEL_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," SECOND DERIV. , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(SECOND_DERIVATIVE_DELAY),GetLastTimer(SECOND_DERIVATIVE_DELAY),GetTimesTimerTimed(SECOND_DERIVATIVE_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," PIXEL OV THR , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(PIXEL_OVER_THRESHOLD_DELAY),GetLastTimer(PIXEL_OVER_THRESHOLD_DELAY),GetTimesTimerTimed(PIXEL_OVER_THRESHOLD_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," MOVEMENT RAW , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(MOVEMENT_RAW_DELAY),GetLastTimer(MOVEMENT_RAW_DELAY),GetTimesTimerTimed(MOVEMENT_RAW_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," COMPRESS IMAGE , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(COMPRESS_IMAGE_DELAY),GetLastTimer(COMPRESS_IMAGE_DELAY),GetTimesTimerTimed(COMPRESS_IMAGE_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," DETECT FACES , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(RECOGNIZE_FACES_DELAY ),GetLastTimer(RECOGNIZE_FACES_DELAY ),GetTimesTimerTimed(RECOGNIZE_FACES_DELAY )); strcat(output,tmpline);
+  sprintf(tmpline," FIND CORNERS , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(FIND_CORNERS_DELAY),GetLastTimer(FIND_CORNERS_DELAY),GetTimesTimerTimed(FIND_CORNERS_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," TRACK CORNERS , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(TRACK_CORNERS_DELAY),GetLastTimer(TRACK_CORNERS_DELAY),GetTimesTimerTimed(TRACK_CORNERS_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," DEPTH MAP , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(TIMER_DEPTH_MAP_DELAY),GetLastTimer(TIMER_DEPTH_MAP_DELAY),GetTimesTimerTimed(TIMER_DEPTH_MAP_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," CAMERA POSE TR , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(UPDATE_CAMERA_POSE_DELAY),GetLastTimer(UPDATE_CAMERA_POSE_DELAY),GetTimesTimerTimed(UPDATE_CAMERA_POSE_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline,"     -=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-\n"); strcat(output,tmpline);
+  sprintf(tmpline,"PER FRAME , ALL TIMES ARE IN ! ! MILLISECONDS ! !\n"); strcat(output,tmpline);
  }
 
   float fps_average = GetAverageTimer(TIMER_PROCESSING_DELAY)/1000 , fps_last = GetLastTimer(TIMER_PROCESSING_DELAY)/1000;
