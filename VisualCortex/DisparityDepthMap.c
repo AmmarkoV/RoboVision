@@ -478,12 +478,45 @@ int ExecuteDisparityMappingPyramid()
   unsigned int edgepercent=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED],patch_x=metrics[HORIZONTAL_BUFFER],patch_y=metrics[VERTICAL_BUFFER];
    unsigned int originalthreshold=settings[DEPTHMAP_COMPARISON_THRESHOLD];
     unsigned int comparisons_small = 0 ,  comparisons_medium = 0 , comparisons_large = 0;
+
+
+
+    /*
+
+   CODE SHOULD OPTIMALLY LOOK LIKE THIS :P
+   unsigned int pyramid_iterator=0,pyramid_total_stages=3;
+
+
+   while ( pyramid_iterator < pyramid_total_stages )
+    {
+
+
+      comparisons_medium = DepthMapFull( CALIBRATED_LEFT_EYE,
+                                         CALIBRATED_RIGHT_EYE,
+                                         DEPTH_LEFT,
+                                         DEPTH_RIGHT,
+                                         0
+                                        );
+
+
+      ++pyramid_iterator;
+    }
+
+    */
+
+
+
+
+
+
   /*
      WE COMPARE PATCHES ON 3 DIFFERENT LEVELS , EXTRA LARGE PATCHES , LARGE PATCHES , NORMAL PATCHES
    */
   /*
     CALCULATION OF EXTRA LARGE PATCHES FOLLOWS
    */
+
+
 
    unsigned int default_detail =  settings[DEPTHMAP_DETAIL];
    settings[DEPTHMAP_DETAIL]=settings[DEPTHMAP_DETAIL]/2;
@@ -548,13 +581,16 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
   /*
     CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
    */
-  DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1);
-  DepthMapToVideo(DEPTH_RIGHT,DEPTH_RIGHT_VIDEO,1);
+     DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1);
+     DepthMapToVideo(DEPTH_RIGHT,DEPTH_RIGHT_VIDEO,1);
 
-  if (settings[PASS_TO_WORLD_3D])
-   {
-      PassDepthMapToCameraSystem();
-   }
+     if (settings[PASS_TO_WORLD_3D])
+      {
+        PassDepthMapToCameraSystem();
+      }
+  /* -------------------------------------------------------------- */
+
+
 
   DisparityMapGetPercentCovered(DEPTH_LEFT);
   fprintf(stderr,"Percent Covered %u %% , too close %u %% \n",metrics[LAST_DEPTH_MAP_COVERAGE],metrics[LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE]);

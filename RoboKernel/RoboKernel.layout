@@ -10,7 +10,7 @@
 	<File name="activity_coordination.h" open="1" top="0" tabpos="17">
 		<Cursor position="344" topLine="0" />
 	</File>
-	<File name="command_hal.c" open="1" top="1" tabpos="3">
+	<File name="command_hal.c" open="1" top="0" tabpos="3">
 		<Cursor position="14654" topLine="341" />
 	</File>
 	<File name="command_hal.h" open="1" top="0" tabpos="4">
@@ -34,10 +34,10 @@
 	<File name="gsm_modem.h" open="1" top="0" tabpos="20">
 		<Cursor position="275" topLine="0" />
 	</File>
-	<File name="irc_interface.c" open="1" top="0" tabpos="89">
+	<File name="irc_interface.c" open="1" top="0" tabpos="25">
 		<Cursor position="635" topLine="12" />
 	</File>
-	<File name="irc_interface.h" open="1" top="0" tabpos="90">
+	<File name="irc_interface.h" open="1" top="0" tabpos="26">
 		<Cursor position="99" topLine="0" />
 	</File>
 	<File name="joystick.c" open="1" top="0" tabpos="23">

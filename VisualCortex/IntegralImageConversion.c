@@ -488,7 +488,7 @@ unsigned int CompressRegister3Byte(int input,int output)
 
   fprintf(stderr,"CompressRegister3Byte NOT implemented ( the implementation is of CompressRegister1Byte ) !\n");
   return 0;
-
+/*
   if (!VideoRegisterRequestIsOk(input,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
   if (!ExtraLargeVideoRegisterRequestIsOk(output,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
   //This code will add up all the pixels to every other pixel , in order to speed up access
@@ -567,7 +567,7 @@ unsigned int CompressRegister3Byte(int input,int output)
 
  EndTimer(COMPRESS_IMAGE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
  MarkRegistersAsSynced(input,output);
-
+*/
   return 1;
 }
 
@@ -589,9 +589,29 @@ unsigned int CompressRegister(int input,int output)
 
 
 
+/*
 
+TODO ADD AN MMX/SSE IMPLEMENTATION HERE !!
 
-
+void integral_image( const uint8_t* in, int32_t* out, int w, int h ) {
+      int32_t* out_top = out;
+      const uint8_t* line_end = in + w;
+      const uint8_t* in_end = in + w*h;
+      int32_t line_sum = 0;
+      for( ; in != line_end; in++, out++ ) {
+        line_sum += *in;
+        *out = line_sum;
+      }
+      for( ; in != in_end; ) {
+        int32_t line_sum = 0;
+        const uint8_t* line_end = in + w;
+        for( ; in != line_end; in++, out++, out_top++ ) {
+          line_sum += *in;
+          *out = *out_top + line_sum;
+        }
+      }
+    }
+*/
 
 
 
