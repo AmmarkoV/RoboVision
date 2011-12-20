@@ -33,7 +33,11 @@ int IRCSay(char * what2say)
        fprintf(stderr,"IRC Interface is dead \n");
        return 1;
    }
-
+    if (!IRC_Interface_Enabled)
+      {
+          fprintf(stderr,"IRC interface is disabled \n ");
+          return 1;
+      }
 
  char command_s[1024]={0};
 
@@ -190,6 +194,11 @@ int StartIRCInterface()
     if (IRC_INTERFACE_OK==1)
       {
           fprintf(stderr,"IRC interface is already running fine :P \n ");
+          return 0;
+      }
+    if (!IRC_Interface_Enabled)
+      {
+          fprintf(stderr,"IRC interface is disabled \n ");
           return 0;
       }
 

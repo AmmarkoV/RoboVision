@@ -39,6 +39,8 @@ char tts_pre_command[MAX_STR]="echo \"";
 char tts_command[MAX_STR]="\" | festival";
 char tts_command_parameter[MAX_STR]="--tts";
 
+unsigned int IRC_Interface_Enabled=0;
+
 
 double camera_params_1[12]={0};
 double camera_params_2[12]={0};

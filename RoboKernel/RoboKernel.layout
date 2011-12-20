@@ -23,10 +23,10 @@
 		<Cursor position="524" topLine="0" />
 	</File>
 	<File name="configuration.c" open="1" top="0" tabpos="9">
-		<Cursor position="434" topLine="276" />
+		<Cursor position="1151" topLine="0" />
 	</File>
 	<File name="configuration.h" open="1" top="0" tabpos="10">
-		<Cursor position="224" topLine="0" />
+		<Cursor position="505" topLine="0" />
 	</File>
 	<File name="gsm_modem.c" open="1" top="0" tabpos="19">
 		<Cursor position="625" topLine="102" />
@@ -34,8 +34,8 @@
 	<File name="gsm_modem.h" open="1" top="0" tabpos="20">
 		<Cursor position="275" topLine="0" />
 	</File>
-	<File name="irc_interface.c" open="1" top="0" tabpos="25">
-		<Cursor position="635" topLine="12" />
+	<File name="irc_interface.c" open="1" top="1" tabpos="25">
+		<Cursor position="4783" topLine="175" />
 	</File>
 	<File name="irc_interface.h" open="1" top="0" tabpos="26">
 		<Cursor position="99" topLine="0" />

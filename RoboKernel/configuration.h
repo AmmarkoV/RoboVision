@@ -17,6 +17,7 @@ extern char parentdir[MAX_STR];
 extern double camera_params_1[12];
 extern double camera_params_2[12];
 
+extern unsigned int IRC_Interface_Enabled;
 
 extern char sound_play_command[MAX_STR];
 
