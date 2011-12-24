@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
+#include "command_hal.h"
+#include "configuration.h"
+#include "../InputParser/InputParser_C.h"
 
 pthread_t irc_loop_id=0;
 void * IRCInterfaceLoop(void *ptr );
@@ -185,6 +188,7 @@ void * IRCInterfaceLoop(void *ptr )
      }
    IRCSay("IRC interface is now deactivated\n");
    IRC_INTERFACE_OK=0;
+   return 0;
 }
 
 

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1323466042 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_implementation.c
+1324152562 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_implementation.c
 	<time.h>
 	<stdio.h>
 	<stdlib.h>
@@ -9,10 +9,11 @@
 	"command_implementation.h"
 	"visual_system.h"
 	<unistd.h>
+	"irc_interface.h"
 
 1319247196 /home/ammar/Documents/Programming/RoboVision/RoboKernel/command_hal.h
 
-1322014344 /home/ammar/Documents/Programming/RoboVision/RoboKernel/command_implementation.h
+1324150988 /home/ammar/Documents/Programming/RoboVision/RoboKernel/command_implementation.h
 
 1309974144 /home/ammar/Documents/Programming/RoboVision/RoboKernel/visual_system.h
 	"../VideoInput/VideoInput.h"
@@ -20,9 +21,9 @@
 
 1324008661 /home/ammar/Documents/Programming/RoboVision/VideoInput/VideoInput.h
 
-1323563842 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1324153042 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
-1323996743 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.c
+1324395235 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.c
 	"configuration.h"
 	<stdio.h>
 	<stdlib.h>
@@ -30,7 +31,7 @@
 	"../VisualCortex/VisualCortex.h"
 	"../VideoInput/VideoInput.h"
 
-1323996762 /home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.h
+1324395246 /home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.h
 
 1323383489 /home/ammar/Documents/Programming/RoboVision/InputParser/InputParser_C.h
 	<stdlib.h>
@@ -38,7 +39,7 @@
 	<string.h>
 	<ctype.h>
 
-1323374743 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
+1324153229 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
 	<pthread.h>
 	"RoboKernel.h"
 	"command_hal.h"
@@ -50,6 +51,8 @@
 	"configuration.h"
 	"activity_coordination.h"
 	"script_runner.h"
+	"joystick.h"
+	"irc_interface.h"
 	<string.h>
 	<time.h>
 	<unistd.h>
@@ -94,7 +97,7 @@
 	"webinterface.h"
 	<linux/videodev2.h>
 
-1322014593 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/webinterface.c
+1324149489 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/webinterface.c
 	"RoboKernel.h"
 	<pthread.h>
 	"webinterface.h"
@@ -107,7 +110,7 @@
 	"../MotorFoundation/MotorHAL.h"
 	<unistd.h>
 
-1324010330 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_hal.c
+1324153793 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/command_hal.c
 	"command_hal.h"
 	"command_implementation.h"
 	<unistd.h>
@@ -116,6 +119,7 @@
 	"../RVKnowledgeBase/RVKnowledgeBase.h"
 	"../MotorFoundation/MotorHAL.h"
 	"../WorldMapping/MasterWorld/MasterWorld.h"
+	"activity_coordination.h"
 	"script_runner.h"
 	"visual_system.h"
 	"motor_system.h"
@@ -127,11 +131,15 @@
 
 1265652107 /home/ammar/Documents/Programming/CStringOrganize/CStringOrganize.h
 
-1318798038 /home/ammar/Documents/Programming/RoboVision/RoboKernel/activity_coordination.h
+1324151549 /home/ammar/Documents/Programming/RoboVision/RoboKernel/activity_coordination.h
 
-1323057102 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/activity_coordination.c
+1324151539 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/activity_coordination.c
 	"activity_coordination.h"
+	<stdio.h>
+	<stdlib.h>
 	"visual_system.h"
+	"irc_interface.h"
+	"webinterface.h"
 	"../MotorFoundation/MotorHAL.h"
 
 1319502499 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/gsm_modem.c
@@ -157,7 +165,7 @@
 
 1323564375 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterWorld/MasterWorld.h
 
-1323996935 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/joystick.c
+1324145785 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/joystick.c
 	<stdio.h>
 	<sys/types.h>
 	<sys/stat.h>
@@ -165,9 +173,13 @@
 	<unistd.h>
 	<stdlib.h>
 	<string.h>
+	<pthread.h>
+	"RoboKernel.h"
 	"configuration.h"
 	"joystick.h"
 
-1323996934 /home/ammar/Documents/Programming/RoboVision/RoboKernel/joystick.h
+1324084952 /home/ammar/Documents/Programming/RoboVision/RoboKernel/joystick.h
 	<stdio.h>
+
+1324149146 /home/ammar/Documents/Programming/RoboVision/RoboKernel/irc_interface.h
 
