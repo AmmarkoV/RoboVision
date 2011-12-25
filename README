@@ -8,12 +8,12 @@ https://github.com/AmmarkoV/RoboVision/blob/master/Documentation/GuarDDoG_RoboVi
 https://github.com/AmmarkoV/RoboVision/tree/master/Documentation
 
 Although it is under development several years now, it is still premature so I continue to work on it.
-The testing platform for the software is my pet project named “GuardDoG” ( http://ammar.gr/gddg/ ) , a surveillance robot guard for homes and offices. All the layers of the project are abstract enough to be able to be used by different designs.
+The testing platform for the software is my pet project named “GuardDoG” ( http://ammar.gr/gddg/ ) , a surveillance robot guard for homes and offices. Most of the layers of the project are abstract enough to be able to be used by different designs.
 
 RoboVision works ONLY on linux, and uses V4L2, wxWidgets, OpenGL, Festival, CMU Sphinx, OpenCV , Apache and other foss as extensions.
 I have made an effort to implement everything in a low enough level so that the console “daemon” mode will need only V4L2 support, and everything will be compiled together to reduce unneeded overheads.
 Lately I have added OpenCV as a library dependency to speed up development by using some thoroughly tested function calls and reducing the debugging surface. 
-An effort has been also made to keep libraries clean of bloat and the whole project could easily be ported to another platform , but there is currently no benefit for the extra maintenance cost , so there are ( and probably will never be :P )no plans for porting it to Windows or Mac.   
+An effort has been also made to keep libraries clean of bloat and the whole project could easily be ported to another platform , but there is currently no benefit for the extra maintenance cost , so there are no ( and probably will never be :P ) plans for porting it to Windows or Mac.   
 
 Due to the complexity and combination of computer science fields involved ( Computer Vision , Natural Language Processing , Artificial Intelligence , Embedded Systems , Robotics [among the most important] ) the project has still not reached maturity and development is continued until an acceptable functionality level is reached..
 
@@ -22,3 +22,5 @@ Once you download the project , to compile it you will need to run the custom ma
 The IDE used for the development of the Project is  Code::Blocks , and you can use the workspaces on the root directory that open the sub projects , in any case , once you download a fresh copy of the project be sure to run ./make first to compile any libraries that may be needed and are not part of the workspace
 
 To download the system libraries required as dependencies you can run the script "./apt-get-guarddog-dependencies" that apt-gets every library required ( Debian/Ubuntu Linux )
+
+I Hope you'll find this project/repository usefull ..!
