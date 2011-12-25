@@ -19,6 +19,7 @@ char arduinodevice_name[100]={0};
 struct termios oldtio,newtio;
 int fd=0;
 
+extern int ARDUINO_THREAD_RUNNING=0;
 int WORKS=0;
 int FAILED=0;
 volatile int STOP=0;
@@ -407,6 +408,7 @@ ipc = InputParser_Create(512,5);
 
 fprintf(stderr,"Arduino receive/send thread is now starting \n");
 int arduino_loop_tick_count = 0;
+ARDUINO_THREAD_RUNNING = 1;
 while (STOP==0)     {
 
                        if ( activated_state.camera_pose_pitch != future_state.camera_pose_pitch)
@@ -449,6 +451,9 @@ while (STOP==0)     {
  usleep(10000);
 
  InputParser_Destroy(ipc);
+
+ARDUINO_THREAD_RUNNING = 0;
+
  return 0;
 }
 

@@ -16,6 +16,7 @@ void * ScriptKernelLoop(void *ptr );
 char running_script_name[512]={0};
 char running_from_user[512]={0};
 int STOP_SCRIPT_RUNNER=0;
+int SCRIPT_RUNNER_OK=0;
 
 
 int InternalRunScript(char * script_name , char * from, int recursion_level)
@@ -113,6 +114,7 @@ int StopScript(char * script_name)
 
 void * ScriptKernelLoop(void *ptr )
 {
+   SCRIPT_RUNNER_OK=1;
    while ( !STOP_SCRIPT_RUNNER )
      {
         if ( strlen(running_script_name) > 0 )
@@ -127,6 +129,7 @@ void * ScriptKernelLoop(void *ptr )
                                           { usleep(100*1000); } //100 ms sleep time when not having a script loaded
 
      }
+  SCRIPT_RUNNER_OK=0;
   return 0;
 }
 
@@ -146,4 +149,13 @@ int StopScriptRunnerServer()
 {
    STOP_SCRIPT_RUNNER=1;
    return 1;
+}
+
+int ScriptRunnerStopped()
+{
+   if ((!SCRIPT_RUNNER_OK) && (STOP_SCRIPT_RUNNER))
+    {
+      return 1;
+    }
+   return 0;
 }

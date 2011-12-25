@@ -6,5 +6,6 @@ int StopScript(char * script_name);
 
 int StartScriptRunnerServer();
 int StopScriptRunnerServer();
+int ScriptRunnerStopped();
 
 #endif // SCRIPT_RUNNER_H_INCLUDED

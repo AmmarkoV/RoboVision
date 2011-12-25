@@ -224,3 +224,14 @@ int StopIRCInterface()
      STOP_IRC_INTERFACE=1;
    return 1;
 }
+
+
+int IRCInterfaceStopped()
+{
+   if ((!IRC_INTERFACE_OK) && (STOP_IRC_INTERFACE))
+    {
+      return 1;
+    }
+   return 0;
+}
+

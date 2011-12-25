@@ -13,6 +13,7 @@ struct md23_device * guard_base=0;
 pthread_t monitor_thread_id=0;
 
 unsigned int AutoMapping=1;
+unsigned int HAL_Monitor_Running=0;
 unsigned int StopMonitorThread=0;
 
 struct Map * worldmap=0;
@@ -85,6 +86,16 @@ if (AutoMapping)
      }
 
     return 0;
+}
+
+
+unsigned int RobotIsClosed()
+{
+   if (HAL_Monitor_Running) { return 0; }
+   if (!MD23_IsClosed()) { return 0; }
+   if (!RoboVisionSensorsAreDisconnected()) { return 0; }
+
+   return 1;
 }
 
 
@@ -391,6 +402,7 @@ void * HAL_Monitor(void * ptr)
 
 
   start_clock_count = GetTickCount();
+  HAL_Monitor_Running=1;
 
   while (!StopMonitorThread)
    {
@@ -445,6 +457,8 @@ void * HAL_Monitor(void * ptr)
 
 
    }
+
+   HAL_Monitor_Running=0;
    fprintf(stderr,"HAL_Monitor thread stopping \n");
   return 0;
 }

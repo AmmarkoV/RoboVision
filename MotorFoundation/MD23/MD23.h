@@ -55,6 +55,7 @@ void MD23_Wait();
 unsigned char MD23_MovementDone(struct md23_device * dev);
 float MD23_GetEncoder(struct md23_device * dev,unsigned char param);
 
+unsigned int MD23_IsClosed();
 
 #ifdef __cplusplus
 }

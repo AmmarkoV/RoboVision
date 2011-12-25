@@ -5,11 +5,13 @@
 #include "../MotorFoundation/MotorHAL.h"
 #include "../VisualCortex/VisualCortex.h"
 
+struct Map * world=0;
+
 int PassDepthToMap()
 {
    fprintf(stderr,"PassDepthToMap function is a stub \n");
 
-   struct Map * world = RobotGetMapPointer();
+   if  ( world == 0 )  {  world = RobotGetMapPointer(); }
 
    if  ( world == 0 )  { return 0; }
 

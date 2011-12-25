@@ -232,3 +232,15 @@ void * WebInterfaceLoop(void *ptr )
   web_interface_thread_stop=2;
   return 0;
 }
+
+
+
+int WebInterfaceStopped()
+{
+   if (web_interface_thread_stop==2)
+    {
+      return 1;
+    }
+   return 0;
+}
+

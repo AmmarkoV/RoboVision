@@ -40,6 +40,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-march=core2" />
+			<Add option="-march=pentium4" />
 			<Add option="-fexpensive-optimizations" />
 			<Add option="-O3" />
 			<Add option="-Wall" />

@@ -40,6 +40,12 @@ int DisconnectRoboVisionSensors()
  return 0;
 }
 
+
+int RoboVisionSensorsAreDisconnected()
+{
+  return (!ARDUINO_THREAD_RUNNING);
+}
+
 int RoboVisionSensorsOK()
 {
   return ArduinoOk();

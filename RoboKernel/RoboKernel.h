@@ -16,6 +16,7 @@ unsigned int GetCortexMetric(unsigned int option);
 
 int StartRoboKernel();
 int StopRoboKernel();
+int CheckThatRoboKernelStopped();
 
 int RoboKernelAlive();
 

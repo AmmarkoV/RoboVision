@@ -7,5 +7,6 @@
 
 int InitMotorSystem();
 int CloseMotorSystem();
+int MotorSystemIsClosed();
 
 #endif // MOTOR_SYSTEM_H_INCLUDED

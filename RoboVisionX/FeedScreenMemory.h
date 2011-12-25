@@ -23,6 +23,7 @@ extern int VideoFeedsNotAccessible;
 
 void InitFeeds();
 void CloseFeeds();
+int EverythingClosed();
 
 int SaveRegisterToFile(char * filename , unsigned int reg_num);
 

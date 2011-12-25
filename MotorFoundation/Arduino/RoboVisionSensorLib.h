@@ -1,10 +1,12 @@
 #ifndef ROBOVISIONSENSORLIB_H_INCLUDED
 #define ROBOVISIONSENSORLIB_H_INCLUDED
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 int ConnectRoboVisionSensors(char * devname);
 int DisconnectRoboVisionSensors();
+int RoboVisionSensorsAreDisconnected();
 int RoboVisionSensorsOK();
 int SetLights(int light_num,int light_state);
 int SetCameraNod(int motor,int pitch);

@@ -10,6 +10,7 @@ extern "C" {
 
 unsigned int RobotInit(char * md23_device_id,char * arduino_device_id);
 unsigned int RobotClose();
+unsigned int RobotIsClosed();
 void RobotWait(unsigned int msecs);
 
 unsigned int RobotBaseOk();

@@ -63,5 +63,6 @@ extern int get_joystick_status(struct wwvi_js_event *wjse);
 
 int StartJoystickControl();
 int StopJoystickControl();
+int JoystickControlStopped();
 
 #endif // JOYSTICK_H_INCLUDED

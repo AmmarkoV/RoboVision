@@ -238,8 +238,29 @@ int StopRoboKernel()
   return 1;
 }
 
+int CheckThatRoboKernelStopped()
+{
+   //STUB todo here
+
+  if (!IRCInterfaceStopped()) { return 0;}
+  if (!JoystickControlStopped()) { return 0;}
+  if (!MotorSystemIsClosed()) { return 0;}
+  if (!ScriptRunnerStopped()) { return 0;}
+  if (!WebInterfaceStopped()) { return 0;}
+
+
+   if ( go_to_sleep == 2 )
+     {
+         return 1;
+     }
+
+   return 0;
+}
+
+
 int RoboKernelAlive()
 {
+
   if ( go_to_sleep==2 ) { return 0; }
   return 1;
 }

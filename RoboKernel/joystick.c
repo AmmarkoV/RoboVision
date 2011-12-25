@@ -262,3 +262,14 @@ int StopJoystickControl()
     JOYSTICK_OK=0;
     return 0;
 }
+
+
+int JoystickControlStopped()
+{
+   if ((!JOYSTICK_OK) && (STOP_JOYSTICK_THREAD))
+    {
+      return 1;
+    }
+   return 0;
+}
+

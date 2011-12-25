@@ -16,3 +16,8 @@ int CloseMotorSystem()
     RobotClose();
     return 1;
 }
+
+int MotorSystemIsClosed()
+{
+    return RobotIsClosed();
+}

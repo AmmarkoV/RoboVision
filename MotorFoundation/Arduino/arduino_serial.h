@@ -30,6 +30,8 @@ struct arduino_connected_devices
 
 };
 
+extern int ARDUINO_THREAD_RUNNING;
+
 extern struct arduino_connected_devices activated_state;
 extern struct arduino_connected_devices future_state;
 

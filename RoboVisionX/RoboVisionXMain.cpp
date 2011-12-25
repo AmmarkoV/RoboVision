@@ -346,16 +346,33 @@ RoboVisionXFrame::~RoboVisionXFrame()
 {
     //(*Destroy(RoboVisionXFrame)
     //*)
+    fprintf(stderr,"Closing all subsystems\n");
     CloseFeeds();
-    wxMilliSleep(2000);
+    fprintf(stderr,"Waiting for things to end..\n");
+
+
+    unsigned int wait_time = 0; // ms
+    unsigned int time_increment = 50; // ms
+    unsigned int MAX_WAIT_TIME_FOR_CLOSE = 5000; // ms
+    while ( ( !EverythingClosed() )&& (wait_time<MAX_WAIT_TIME_FOR_CLOSE) )
+      {
+          wxMilliSleep(time_increment);
+          wait_time += time_increment;
+      }
+    if (wait_time<MAX_WAIT_TIME_FOR_CLOSE)  { fprintf(stderr,"RoboKernel Reported that everything exited ok\n"); } else
+                                            { fprintf(stderr,"Timed out while waiting for Robokernel to close everything down, exiting..\n"); }
+    fprintf(stderr,"Program is halting now...\n");
+    wxMilliSleep(1000);
 
 }
 
 void RoboVisionXFrame::OnQuit(wxCommandEvent& event)
 {
     GUI_Shutdown=1;
-
-    wxMilliSleep(2500);
+    WAIT_TIME_STARTUP = uptimer->Time() + 10000;
+    DrawFeeds->SetValue(false);
+    fprintf(stderr,"Closing window , on quit called \n");
+    wxMilliSleep(500);
     Close();
 }
 
@@ -375,6 +392,7 @@ void RoboVisionXFrame::OnPaint(wxPaintEvent& event)
 
      if ( uptimer->Time() < WAIT_TIME_STARTUP ) { /*Wait for warmup :P */ return ; }
      if ( !DrawFeeds->IsChecked() ) { return ; }
+     if (GUI_Shutdown) { return ; }
 
      dc.DrawBitmap(*live_feeds[0].bmp,feed_0_x,feed_0_y,0); //FEED 1
      dc.DrawBitmap(*live_feeds[1].bmp,feed_1_x,feed_1_y,0); //FEED 2
@@ -565,6 +583,7 @@ void RoboVisionXFrame::OnTimer1Trigger(wxTimerEvent& event)
 
 void RoboVisionXFrame::OnButtonDepthMapClick(wxCommandEvent& event)
 {
+    if ( GUI_Shutdown == 1 ) { return ; }
     wxStopWatch sw;
     unsigned char write_to_file=1;
     if (lowcpuusage->IsChecked()) { write_to_file = 0; }

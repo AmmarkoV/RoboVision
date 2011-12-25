@@ -6,6 +6,8 @@
 
 void * MD23_loop(void * ptr);
 char * MD23_Lib_Version = "0.041";
+unsigned int MD23_loop_running = 0;
+
 // ===============================================
 // ======================================
 // LOW LEVEL MD23 COMMANDS
@@ -442,6 +444,7 @@ void * MD23_loop(void * ptr)
   loopdev->read_loop_active=1;
   printf("Started MD23 Loop\n");
 
+  MD23_loop_running = 1;
   while ( MD23_ok(loopdev) == 1 )
     {
       usleep(lag);
@@ -449,6 +452,7 @@ void * MD23_loop(void * ptr)
       MD23_ReadStatus(loopdev,0);
       Thread_ReachTarget(loopdev);
     }
+  MD23_loop_running = 0;
 
   printf("Exiting MD23 Read Loop for device %s \n",loopdev->i2c_dev.name);
   loopdev->read_loop_active=0;
@@ -456,6 +460,10 @@ void * MD23_loop(void * ptr)
   return (void *) 0;
 }
 
+unsigned int MD23_IsClosed()
+{
+     return (!MD23_loop_running);
+}
 
 // ===============================================
 // ======================================

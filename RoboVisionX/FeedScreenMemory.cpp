@@ -129,6 +129,11 @@ void CloseFeeds()
      fprintf(stderr,"Gracefull exit :) \n");
 }
 
+int EverythingClosed()
+{
+   return  CheckThatRoboKernelStopped();
+}
+
 
 bool XYOverFeed(int x , int y , feed feedmem)
 {

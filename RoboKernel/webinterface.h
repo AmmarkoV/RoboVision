@@ -14,5 +14,6 @@ int UpdateNetworkInterface(char * pica,char * picb,char * picc,char * picd,unsig
 
 int WriteConsoleOutput(char * outstr);
 int EraseConsoleOutput();
+int WebInterfaceStopped();
 
 #endif // WEBINTERFACE_H_INCLUDED
