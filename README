@@ -1,12 +1,14 @@
 RoboVision is a GPLv3 Computer Vision / Robotics Project that aims to provide a stable compact software stack for generic vision enabled robotics!
 
- <hr>
+-------------------------------------------------------------------------
 
+You can read the computer vision theory that it is based on in the Documentation directory 
 
-You can <a href="https://github.com/AmmarkoV/RoboVision/blob/master/Documentation/GuarDDoG_RoboVision.pdf?raw=true">read the computer vision theory</a> that it is based on in the <a href="https://github.com/AmmarkoV/RoboVision/tree/master/Documentation>Documentation directory</a> 
+https://github.com/AmmarkoV/RoboVision/blob/master/Documentation/GuarDDoG_RoboVision.pdf?raw=true
+https://github.com/AmmarkoV/RoboVision/tree/master/Documentation
 
 Although it is under development several years now, it is still premature so I continue to work on it.
-The testing platform for the software is my pet project named <a href="http://ammar.gr/gddg/">“GuardDoG” ( http://ammar.gr/gddg/ )</a> , a surveillance robot guard for homes and offices. All the layers of the project are abstract enough to be able to be used by different designs.
+The testing platform for the software is my pet project named “GuardDoG” ( http://ammar.gr/gddg/ ) , a surveillance robot guard for homes and offices. All the layers of the project are abstract enough to be able to be used by different designs.
 
 RoboVision works ONLY on linux, and uses V4L2, wxWidgets, OpenGL, Festival, CMU Sphinx, OpenCV , Apache and other foss as extensions.
 I have made an effort to implement everything in a low enough level so that the console “daemon” mode will need only V4L2 support, and everything will be compiled together to reduce unneeded overheads.
