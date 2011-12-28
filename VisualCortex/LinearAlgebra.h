@@ -13,7 +13,9 @@ int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source
                                                      struct TransformationMatrix * rotation_matrix,
                                                      struct TransformationMatrix * translation_matrix,
                                                      struct TransformationMatrix * rotation_and_translation_matrix,
-                                                     struct TransformationMatrix * homography_matrix);
+                                                     struct TransformationMatrix * homography_matrix,
+                                                     unsigned int render_warped_image
+                                                     );
 
 int ComputeFundamentalMatrixFromPointCorrespondance(struct FeatureList * list,struct TransformationMatrix * E);
 

@@ -19,7 +19,7 @@ char arduinodevice_name[100]={0};
 struct termios oldtio,newtio;
 int fd=0;
 
-extern int ARDUINO_THREAD_RUNNING=0;
+int ARDUINO_THREAD_RUNNING=0;
 int WORKS=0;
 int FAILED=0;
 volatile int STOP=0;

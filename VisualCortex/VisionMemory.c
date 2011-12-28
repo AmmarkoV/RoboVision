@@ -1,7 +1,7 @@
 /*
 The Visual Cortex of guarddog
-URLs: http://ammarkov.ath.cx
-Written by Ammar Qammaz a.k.a. AmmarkoV 2010
+URLs: http://ammar.gr
+Written by Ammar Qammaz a.k.a. AmmarkoV 2010+
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

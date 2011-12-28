@@ -40,7 +40,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.635";
+char * VISCORTEX_VER = "0.636";
 
 /*
 
@@ -190,8 +190,8 @@ void VisCortx_GetHyperVisorStatus(unsigned int print_std,unsigned int print_file
   sprintf(tmpline," FUNCTION             TIME  IN  MICROSECONDS  SAMPLES! !\n"); strcat(output,tmpline);
   sprintf(tmpline," MEMCPY TO REGISTER , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(WRITE_REGISTER_DELAY),GetLastTimer(WRITE_REGISTER_DELAY),GetTimesTimerTimed(WRITE_REGISTER_DELAY)); strcat(output,tmpline);
   sprintf(tmpline," CALIBRATION , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(CALIBRATION_DELAY),GetLastTimer(CALIBRATION_DELAY),GetTimesTimerTimed(CALIBRATION_DELAY)); strcat(output,tmpline);
-  sprintf(tmpline," GAUSSIAN , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(GAUSSIAN_DELAY),GetLastTimer(GAUSSIAN_DELAY),GetTimesTimerTimed(GAUSSIAN_DELAY)); strcat(output,tmpline);
-  sprintf(tmpline," SOBEL , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(SOBEL_DELAY),GetLastTimer(SOBEL_DELAY),GetTimesTimerTimed(SOBEL_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," BLUR , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(GAUSSIAN_DELAY),GetLastTimer(GAUSSIAN_DELAY),GetTimesTimerTimed(GAUSSIAN_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," FIRST DERIV. , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(SOBEL_DELAY),GetLastTimer(SOBEL_DELAY),GetTimesTimerTimed(SOBEL_DELAY)); strcat(output,tmpline);
   sprintf(tmpline," SECOND DERIV. , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(SECOND_DERIVATIVE_DELAY),GetLastTimer(SECOND_DERIVATIVE_DELAY),GetTimesTimerTimed(SECOND_DERIVATIVE_DELAY)); strcat(output,tmpline);
   sprintf(tmpline," PIXEL OV THR , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(PIXEL_OVER_THRESHOLD_DELAY),GetLastTimer(PIXEL_OVER_THRESHOLD_DELAY),GetTimesTimerTimed(PIXEL_OVER_THRESHOLD_DELAY)); strcat(output,tmpline);
   sprintf(tmpline," MOVEMENT RAW , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(MOVEMENT_RAW_DELAY),GetLastTimer(MOVEMENT_RAW_DELAY),GetTimesTimerTimed(MOVEMENT_RAW_DELAY)); strcat(output,tmpline);
@@ -429,7 +429,22 @@ unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int
       { fprintf(stderr,"Wrong Register Request Size :S \n ");
         fprintf(stderr,"Register ( %ux%u:%u ) , Request ( %ux%u:%u )\n ",size_x,size_y,depth,video_register[reg_num].size_x,video_register[reg_num].size_y,video_register[reg_num].depth);
 
-        return 0; }
+        fprintf(stderr,"Will try to auto correct ( this may cause problems elsewhere though :P ) \n ");
+        if ( (depth==3) && (video_register[reg_num].depth==1) )
+         {
+           ConvertRegisterFrom1ByteTo3Byte(reg_num);
+           return video_register[reg_num].pixels;
+         } else
+        if ( (depth==1) && (video_register[reg_num].depth==3) )
+         {
+           ConvertRegisterFrom3ByteTo1Byte(reg_num);
+           return video_register[reg_num].pixels;
+         } else
+         {
+             return 0;
+         }
+
+     }
 
 
    return video_register[reg_num].pixels;

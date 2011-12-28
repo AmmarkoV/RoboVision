@@ -582,13 +582,16 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
     CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
    */
      DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1);
-     DepthMapToVideo(DEPTH_RIGHT,DEPTH_RIGHT_VIDEO,1);
+     //DepthMapToVideo(DEPTH_RIGHT,DEPTH_RIGHT_VIDEO,1);
+    CopyRegister(EDGES_LEFT,DEPTH_RIGHT_VIDEO,0,0);
+    MarkRegistersAsSynced(DEPTH_LEFT,DEPTH_RIGHT_VIDEO);
 
      if (settings[PASS_TO_WORLD_3D])
       {
         PassDepthMapToCameraSystem();
       }
   /* -------------------------------------------------------------- */
+
 
 
 

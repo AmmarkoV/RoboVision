@@ -83,7 +83,9 @@ int UpdateCameraPose(unsigned int reg_num)
                                                                                               &left_rotation,
                                                                                               &left_translation,
                                                                                               &left_rotation_and_translation,
-                                                                                              &left_homography);
+                                                                                              &left_homography,
+                                                                                              0 //THIS SWITCH RENDERS ( OR NOT ) THE WARPED IMAGE
+                                                                                              );
                                               }
 
 
@@ -110,7 +112,9 @@ int UpdateCameraPose(unsigned int reg_num)
                                                                                                &right_rotation,
                                                                                                &right_translation,
                                                                                                &right_rotation_and_translation,
-                                                                                               &right_homography);
+                                                                                               &right_homography,
+                                                                                               0 //THIS SWITCH RENDERS ( OR NOT ) THE WARPED IMAGE
+                                                                                               );
                                               }
 
                  struct TransformationMatrix tmp_matrix;

@@ -18,6 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 #include "VisCortexFilters.h"
 #include "VisCortexConvolutionFilters.h"
+#include "VisCortexOptimizedConvolutionFilters.h"
 #include "Precalculations.h"
 #include "FeatureTracking.h"
 #include "VisCortexTimer.h"
@@ -256,7 +257,7 @@ void KillPixelsBelow(unsigned int image_reg,int threshold)
  register BYTE *b;
  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
 
- if ( image_depth == 3 )
+ if ( ThisIsA3ByteRegister(image_reg) )
  {
    while ( px < start_px + image_size )
      {
@@ -271,7 +272,7 @@ void KillPixelsBelow(unsigned int image_reg,int threshold)
     }
   }
    else
-  if ( image_depth == 1 )
+  if ( ThisIsA1ByteRegister(image_reg) )
  {
    image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
    while (px<start_px+image_size)
@@ -522,6 +523,34 @@ return (1);
 }
 
 
+int FirstDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int target_reg)
+{
+    if (!ThisIsA1ByteRegister(source_reg)) { fprintf(stderr,"FirstDerivative Intensities requires monochrome image conversion"); return 0; }
+
+    StartTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+
+    signed char table[9];//={1,-2,1,2,-4,2,1,-2,1};
+    signed int divisor = 1;
+
+    /* SCHAR FILTER
+    table[0]= 3; table[1]= 10; table[2]= 3;
+    table[3]= 0; table[4]=  0; table[5]= 0;
+    table[6]=-3; table[7]=-10; table[8]=-3;
+    */
+
+    //SOBEL FILTER
+    table[0]= 1; table[1]= 2; table[2]= 1;
+    table[3]= 0; table[4]= 0; table[5]= 0;
+    table[6]=-1; table[7]=-2; table[8]=-1;
+
+    unsigned int retres = ConvolutionFilter9_1Byte(source_reg,target_reg,table,divisor);
+
+    EndTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+    MarkRegistersAsSynced(source_reg,target_reg);
+
+    return retres;
+}
+
 
 int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int target_reg)
 {
@@ -541,125 +570,33 @@ int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int t
 
 
 
-
 int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int monochrome)
 {
   if (!ThisIsA3ByteRegister(source_reg)) { return 0; }
-  unsigned char * source = video_register[source_reg].pixels;
-  unsigned char * target = video_register[target_reg].pixels;
-   int image_x=video_register[source_reg].size_x;
-   int image_y=video_register[source_reg].size_y;
-  video_register[target_reg].depth = 3;
-  int effW = (image_x*3);
+  if ( (video_register[source_reg].pixels==0) || (video_register[target_reg].pixels==0) ) {return(0);}
 
-  if ( (target==0) || (source==0) ) {return(0);}
+  StartTimer(GAUSSIAN_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
-StartTimer(GAUSSIAN_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
-  unsigned char *proc_image=0;
-  proc_image = (unsigned char *) malloc( sizeof(unsigned char) * image_x * image_y * 3);
-  if (proc_image==0) { fprintf(stderr,"Error allocating memory for proc_image \n"); return 0; }
+  signed char table[9];//={1,1,1,1,1,1,1,1,1};
+  signed int divisor;
 
-  BYTE *px,*px2;
-  BYTE *r,*r2;
-  BYTE *g,*g2;
-  BYTE *b,*b2;
+  /* SIMPLE BLUR FILTER
+  divisor = 9;
+  table[0]=1; table[1]=1; table[2]=1;
+  table[3]=1; table[4]=1; table[5]=1;
+  table[6]=1; table[7]=1; table[8]=1;
+  */
 
-  double linc_r=0.0,linc_g=0.0,linc_b=0.0;
+  // GAUSSIAN BLUR FILTER
+  divisor = 16;
+  table[0]=1; table[1]=2; table[2]=1;
+  table[3]=2; table[4]=4; table[5]=2;
+  table[6]=1; table[7]=2; table[8]=1;
 
-     //
-     const int gauss_w = 7;                            // Level(+1)
-     int mask[7]={1,6,15,20,15,6,1}; // Mask
-     int gauss_sum=64;                           // Sum
+  ConvolutionFilter9_3ByteOptimized(source_reg,target_reg,table,divisor);
 
-     register int i,k,j;
-     //For every pixel on the temporary bitmap ...
-     for(i=gauss_w-1;i<image_y-1;i++)
-	 {
-       for(j=0;j<image_x;j++)
-	   {
-         linc_r=0.0 , linc_g=0.0 , linc_b=0.0;
-
-		 for(k=0;k<gauss_w;k++)
-		 {
-          // color=o.getPixel(j,i-(gauss_w-1)+k);
- 	      px = ((BYTE *)  source + (effW * (i-(gauss_w-1)+k) ) + (3* (j) ) );
-
-          r= px++ , g = px++ , b = px;
-
-          linc_r+=(*r)*mask[k] , linc_g+=(*g)*mask[k] , linc_b+=(*b)*mask[k];
-         }
-
-        px = ((BYTE *)  proc_image + (effW * (i) ) + (3* (j) ) );
-        r2= px++ , g2 = px++ , b2 = px;
-
-		*r2=linc_r/gauss_sum , *g2=linc_g/gauss_sum , *b2=linc_b/gauss_sum;
-
-        // tmp.drawPixel(Pixel(,linc_g/gauss_sum,linc_b/gauss_sum),j,i);
-      }
-     }
-     //For every pixel on the output bitmap ...
-     for(i=0;i<image_y;i++)
-	 {
-       for(j=gauss_w;j<image_x-1;j++)
-	   {
-         linc_r=0.0 , linc_g=0.0 , linc_b=0.0;
-
-         for(k=0;k<gauss_w;k++){
-           px = ((BYTE *)  proc_image + (effW * (i) ) + (3* (j-(gauss_w-1)+k) ) );
-
-		   r= px++ , g = px++ , b = px;
-
-           linc_r+=(*r)*mask[k] , linc_g+=(*g)*mask[k] , linc_b+=(*b)*mask[k];
-         }
-
-         linc_r/=gauss_sum , linc_g/=gauss_sum , linc_b/=gauss_sum;
-
-       //  result.drawPixel(Pixel((byte)link_r,(byte)link_g,(byte)link_b),j,i);
-
-	     px = ((BYTE *)  target + (effW * (i) ) + (3* (j) ) );
-		 r2= px++ , g2 = px++ , b2 = px;
-
-	    if ( (i>gauss_w) && (j>gauss_w) )
-		  {
-			*r2=(BYTE) linc_r , *g2=(BYTE) linc_g , *b2=(BYTE) linc_b;
-		  }
-	   }
-     }
-
-   //
-   //    FILL IN PARTS OF THE BLUR THAT ARE UNDER THE THRESHOLD AND ARE LEFT EMPTY!
-   //
-     unsigned int offset=3; // ( gauss_w / 2 )
-     // VERTICAL LEFT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-     for(i=0;i<image_y;i++)
-	 {
-       for(j=0;j<=gauss_w;j++)
-	   {
-	     px  = ((BYTE *)  target + (effW * (i+offset) ) + (3* (j) ) );
-		 px2 = ((BYTE *)  source + (effW * (i) ) + (3* (j) ) );
-
-         r= px++ , g = px++ , b = px;
-         r2= px2++ , g2 = px2++ , b2 = px2;
-         *r = *r2 , *g = *g2 ,  *b = *b2;
-	   }
-	 }
-     // HORIZONTAL UP!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	 for(i=0; i<=gauss_w; i++)
-	 {
-       for(j=0; j<image_x; j++)
-	   {
-	     px  = ((BYTE *)  target + (effW * (i) ) + (3* (j+offset) ) );
-		 px2 = ((BYTE *)  source + (effW * (i) ) + (3* (j) ) );
-
-         r= px++ , g = px++ , b = px;
-         r2= px2++ , g2 = px2++ , b2 = px2;
-         *r = *r2 , *g = *g2 ,  *b = *b2;
-	   }
-	 }
-
- free(proc_image);
- EndTimer(GAUSSIAN_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
- MarkRegistersAsSynced(source_reg,target_reg);
+  EndTimer(GAUSSIAN_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+  MarkRegistersAsSynced(source_reg,target_reg);
 
  return (1);
 }
@@ -685,7 +622,7 @@ unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_arr
 
 
 
-void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
+void PrepareCleanSobeledGaussianAndDerivativeOLD(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
 {
     GaussianBlurFromSource(rgb_image_reg,target_sobel_image_reg,1);
 
@@ -699,9 +636,22 @@ void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigne
 
 	SecondDerivativeIntensitiesFromSource(GENERAL_3,target_derivative_image_reg);
 
+
 }
 
+void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
+{
+    GaussianBlurFromSource(rgb_image_reg,target_sobel_image_reg,1);
 
+    CopyRegister(rgb_image_reg,GENERAL_3,0,0);
+    ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
+    FirstDerivativeIntensitiesFromSource(GENERAL_3,target_sobel_image_reg);
+
+	KillPixelsBetween(target_sobel_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
+
+	SecondDerivativeIntensitiesFromSource(target_sobel_image_reg,target_derivative_image_reg);
+
+}
 
 int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned int * M)
 {

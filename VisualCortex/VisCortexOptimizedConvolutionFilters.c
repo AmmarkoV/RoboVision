@@ -15,12 +15,12 @@
 
 
 int ConvolutionFilter9_1ByteOptimized(unsigned int monochrome_reg,unsigned int target_reg,signed char * table,signed int divisor)
-{  // FALLBACK TO NOT OPTIMIZED CONVOLUTION FILTER 
+{  // FALLBACK TO NOT OPTIMIZED CONVOLUTION FILTER
  return ConvolutionFilter9_1Byte(monochrome_reg,target_reg,table,divisor);
 }
 
-int ConvolutionFilter9_3ByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table)
-{  // FALLBACK TO NOT OPTIMIZED CONVOLUTION FILTER 
- return ConvolutionFilter9_3Byte(rgb_reg,target_reg,table);
+int ConvolutionFilter9_3ByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table,signed int divisor)
+{  // FALLBACK TO NOT OPTIMIZED CONVOLUTION FILTER
+ return ConvolutionFilter9_3Byte(rgb_reg,target_reg,table,divisor);
 }
 
