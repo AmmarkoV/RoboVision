@@ -20,7 +20,7 @@ case "$1" in
       sudo ./Scripts/PlaySound  "./DataSets/Sounds/startupv.wav"
       
       #use ethernet as gateway :P ( or else no network connectivity )  
-      route add default gw 192.168.1.1 eth0
+      sudo route add default gw 192.168.1.1 eth0
 
       #startup guarddog!
       sudo ./guarddog_init_service&

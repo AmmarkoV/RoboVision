@@ -16,31 +16,34 @@ then
   rm libVisualCortex.a
 fi 
  
+OpenCVStuff="`pkg-config --cflags opencv` `pkg-config --libs opencv`"
+Optimizations="-Os -O3 -fexpensive-optimizations"
+CPU="-msse -msse2 -msse3"
 
-gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c DisparityDepthMap.c -o DisparityDepthMap.o
-gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c DisparityDepthMap_Heuristics.c -o DisparityDepthMap_Heuristics.o 
-gcc  -Os -O3 -fexpensive-optimizations -c MovementRegistration.c -o MovementRegistration.o
-gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c FaceDetection.c -o FaceDetection.o 
-gcc  -Os -O3 -fexpensive-optimizations -c FeatureLists.c -o FeatureLists.o 
-gcc  -Os -O3 -fexpensive-optimizations -c FeatureExtraction.c -o FeatureExtraction.o 
-gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c FeatureTracking.c -o FeatureTracking.o
-gcc  -Os -O3 -fexpensive-optimizations -c IntegralImageConversion.c -o IntegralImageConversion.o
-gcc  -Os -O3 -fexpensive-optimizations -c PatchComparison.c -o PatchComparison.o
-gcc  -Os -O3 -fexpensive-optimizations -c PatternRecognition.c -o PatternRecognition.o
-gcc  -Os -O3 -fexpensive-optimizations -c Precalculations.c -o Precalculations.o  
-gcc  -Os -O3 -fexpensive-optimizations -c StatisticsGeneration.c -o StatisticsGeneration.o 
-gcc  -Os -O3 -fexpensive-optimizations -c Matrix.c -o Matrix.o 
-gcc  -Os -O3 -fexpensive-optimizations -c CameraPose.c -o CameraPose.o 
-gcc  -Os -O3 -fexpensive-optimizations -c StateSetting.c -o StateSetting.o
-gcc  -Os -O3 -fexpensive-optimizations -c VisCortexConvolutionFilters.c -o VisCortexConvolutionFilters.o
-gcc  -Os -O3 -fexpensive-optimizations -c VisCortexOptimizedConvolutionFilters.c -o VisCortexOptimizedConvolutionFilters.o
-gcc  -Os -O3 -fexpensive-optimizations -c VisCortexTimer.c -o VisCortexTimer.o
-gcc  -Os -O3 -fexpensive-optimizations -c VisCortexFilters.c -o VisCortexFilters.o
-gcc  -Os -O3 -fexpensive-optimizations -c VisCortexHeuristics.c -o VisCortexHeuristics.o 
-gcc  -Os -O3 -fexpensive-optimizations -c VisionMemory.c -o VisionMemory.o
-gcc  -Os -O3 -fexpensive-optimizations -c VideoInputAdapter.c -o VideoInputAdapter.o 
-gcc  `pkg-config --cflags opencv` `pkg-config --libs opencv` -Os -O3 -fexpensive-optimizations -c LinearAlgebra.c -o LinearAlgebra.o  
-gcc  -Os -O3 -fexpensive-optimizations -c VisualCortex.c -o VisualCortex.o
+gcc  $OpenCVStuff $Optimizations $CPU -c DisparityDepthMap.c -o DisparityDepthMap.o
+gcc  $OpenCVStuff $Optimizations $CPU -c DisparityDepthMap_Heuristics.c -o DisparityDepthMap_Heuristics.o 
+gcc  $Optimizations $CPU -c MovementRegistration.c -o MovementRegistration.o
+gcc  $OpenCVStuff $Optimizations $CPU -c FaceDetection.c -o FaceDetection.o 
+gcc  $Optimizations $CPU -c FeatureLists.c -o FeatureLists.o 
+gcc  $Optimizations $CPU -c FeatureExtraction.c -o FeatureExtraction.o 
+gcc  $OpenCVStuff $Optimizations $CPU -c FeatureTracking.c -o FeatureTracking.o
+gcc  $Optimizations $CPU -c IntegralImageConversion.c -o IntegralImageConversion.o
+gcc  $Optimizations $CPU -c PatchComparison.c -o PatchComparison.o
+gcc  $Optimizations $CPU -c PatternRecognition.c -o PatternRecognition.o
+gcc  $Optimizations $CPU -c Precalculations.c -o Precalculations.o  
+gcc  $Optimizations $CPU -c StatisticsGeneration.c -o StatisticsGeneration.o 
+gcc  $Optimizations $CPU -c Matrix.c -o Matrix.o 
+gcc  $Optimizations $CPU -c CameraPose.c -o CameraPose.o 
+gcc  $Optimizations $CPU -c StateSetting.c -o StateSetting.o
+gcc  $Optimizations $CPU -c VisCortexConvolutionFilters.c -o VisCortexConvolutionFilters.o
+gcc  $Optimizations $CPU -c VisCortexOptimizedConvolutionFilters.c -o VisCortexOptimizedConvolutionFilters.o
+gcc  $Optimizations $CPU -c VisCortexTimer.c -o VisCortexTimer.o
+gcc  $Optimizations $CPU -c VisCortexFilters.c -o VisCortexFilters.o
+gcc  $Optimizations $CPU -c VisCortexHeuristics.c -o VisCortexHeuristics.o 
+gcc  $Optimizations $CPU -c VisionMemory.c -o VisionMemory.o
+gcc  $Optimizations $CPU -c VideoInputAdapter.c -o VideoInputAdapter.o 
+gcc  $OpenCVStuff $Optimizations $CPU -c LinearAlgebra.c -o LinearAlgebra.o  
+gcc  $Optimizations $CPU -c VisualCortex.c -o VisualCortex.o
 
 
 ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o CameraPose.o Matrix.o StatisticsGeneration.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
