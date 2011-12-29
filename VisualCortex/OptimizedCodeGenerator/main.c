@@ -16,7 +16,8 @@ void WriteHeader()
         fprintf(hofp,"#define VISCORTEXCONVOLUTIONFILTERSOPTIMIZED_H_INCLUDED\n");
 
         fprintf(hofp,"int ConvolutionFilter9_1ByteOptimized(unsigned int monochrome_reg,unsigned int target_reg,signed char * table,signed int divisor);\n");
-        fprintf(hofp,"int ConvolutionFilter9_3ByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table);\n");
+        fprintf(hofp,"int ConvolutionFilter9_3ByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table,signed int divisor);\n");
+        fprintf(hofp,"int ConvolutionFilter9_AutoByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table,signed int divisor);\n");
 
         fprintf(hofp,"#endif // CONVOLUTIONFILTERS_H_INCLUDED\n");
         fprintf(hofp,"\n\n");
@@ -132,9 +133,17 @@ void DefaultNotOptimizedOutput(FILE *ofp)
    fprintf(ofp," return ConvolutionFilter9_1Byte(monochrome_reg,target_reg,table,divisor);\n");
    fprintf(ofp,"}\n\n");
 
-   fprintf(ofp,"int ConvolutionFilter9_3ByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table)\n");
+   fprintf(ofp,"int ConvolutionFilter9_3ByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table,signed int divisor)\n");
    fprintf(ofp,"{  // FALLBACK TO NOT OPTIMIZED CONVOLUTION FILTER \n");
-   fprintf(ofp," return ConvolutionFilter9_3Byte(rgb_reg,target_reg,table);\n");
+   fprintf(ofp," return ConvolutionFilter9_3Byte(rgb_reg,target_reg,table,divisor);\n");
+   fprintf(ofp,"}\n");
+
+   fprintf(ofp,"int ConvolutionFilter9_AutoByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table,signed int divisor)\n");
+   fprintf(ofp,"{  // FALLBACK TO NOT OPTIMIZED CONVOLUTION FILTER \n");
+   fprintf(ofp,"  if ( video_register[rgb_reg].depth == 1 ) { return ConvolutionFilter9_1ByteOptimized(rgb_reg,target_reg,table,divisor); } else\n");
+   fprintf(ofp,"  if ( video_register[rgb_reg].depth == 3 ) { return ConvolutionFilter9_3ByteOptimized(rgb_reg,target_reg,table,divisor); }\n");
+   fprintf(ofp,"  fprintf(stderr,\"This color depth ( %%u ) doesnt have a convolution filter implemented \\n\",video_register[rgb_reg].depth);"); 
+   fprintf(ofp," return 0;\n");
    fprintf(ofp,"}\n");
 
    EndCBody(ofp);
