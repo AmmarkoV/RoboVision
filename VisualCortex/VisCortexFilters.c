@@ -248,7 +248,6 @@ void KillPixelsBelow(unsigned int image_reg,int threshold)
 {
  unsigned char * image = video_register[image_reg].pixels;
  if (image==0) {return;}
- unsigned int image_depth = video_register[image_reg].depth;
 
  register BYTE *start_px = (BYTE *) image;
  register BYTE *px = (BYTE *) image;
@@ -365,7 +364,7 @@ int  Sobel(unsigned int image_reg)
   if (image==0) { return(0); }
 
 
-StartTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
   unsigned char *proc_image=0;
   //proc_image = new unsigned char [ image_x * image_y * 3 ];
@@ -435,7 +434,7 @@ memcpy(image,proc_image,image_x*image_y*sizeof(BYTE));
 
 free(proc_image);
 
-EndTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+EndTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
 
 return (1);
 }
@@ -458,7 +457,7 @@ int SobelFromSource(unsigned int source_reg,unsigned int target_reg)
   //unsigned char *proc_image;
   //proc_image = new unsigned char [ image_x * image_y * 3 ];
 
-StartTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
   BYTE *px;
 
  BYTE p1=0,p2=0,p3=0,p4=0,p5=0,p6=0,p7=0,p8=0,p9=0;
@@ -516,7 +515,7 @@ StartTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
    }
  } //SOBEL FILTER DONE
 
-EndTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+EndTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
 MarkRegistersAsSynced(source_reg,target_reg);
 
 return (1);
@@ -527,7 +526,7 @@ int FirstDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int ta
 {
     if (!ThisIsA1ByteRegister(source_reg)) { fprintf(stderr,"FirstDerivative Intensities requires monochrome image conversion"); return 0; }
 
-    StartTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+    StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
     signed char table[9];//={1,-2,1,2,-4,2,1,-2,1};
     signed int divisor = 1;
@@ -545,7 +544,7 @@ int FirstDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int ta
 
     unsigned int retres = ConvolutionFilter9_1Byte(source_reg,target_reg,table,divisor);
 
-    EndTimer(SOBEL_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
+    EndTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
     MarkRegistersAsSynced(source_reg,target_reg);
 
     return retres;
@@ -635,8 +634,6 @@ void PrepareCleanSobeledGaussianAndDerivativeOLD(unsigned int rgb_image_reg,unsi
     ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
 
 	SecondDerivativeIntensitiesFromSource(GENERAL_3,target_derivative_image_reg);
-
-
 }
 
 void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)

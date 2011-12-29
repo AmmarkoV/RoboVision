@@ -84,7 +84,7 @@ int UpdateCameraPose(unsigned int reg_num)
                                                                                               &left_translation,
                                                                                               &left_rotation_and_translation,
                                                                                               &left_homography,
-                                                                                              0 //THIS SWITCH RENDERS ( OR NOT ) THE WARPED IMAGE
+                                                                                              settings[RENDER_IMAGE_WITH_MOVEMENT_COMPENSATED] //THIS SWITCH RENDERS ( OR NOT ) THE WARPED IMAGE
                                                                                               );
                                               }
 
@@ -113,7 +113,7 @@ int UpdateCameraPose(unsigned int reg_num)
                                                                                                &right_translation,
                                                                                                &right_rotation_and_translation,
                                                                                                &right_homography,
-                                                                                               0 //THIS SWITCH RENDERS ( OR NOT ) THE WARPED IMAGE
+                                                                                               settings[RENDER_IMAGE_WITH_MOVEMENT_COMPENSATED] //THIS SWITCH RENDERS ( OR NOT ) THE WARPED IMAGE
                                                                                                );
                                               }
 
