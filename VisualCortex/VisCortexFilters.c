@@ -350,94 +350,6 @@ void ReducePalette(unsigned int image_reg,int new_palette)
 
 
 
-int  Sobel(unsigned int image_reg)
-{
-  if (!ThisIsA3ByteRegister(image_reg)) { return 0; }
-  unsigned char * image = video_register[image_reg].pixels;
-  int image_x=video_register[image_reg].size_x;
-  int image_y=video_register[image_reg].size_y;
-  video_register[image_reg].depth=1;
-  unsigned int x=0,y=0;
-  unsigned int x1=1,y1=1,x2=image_x,y2=image_y;
-
-
-  if (image==0) { return(0); }
-
-
-StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
-
-  unsigned char *proc_image=0;
-  //proc_image = new unsigned char [ image_x * image_y * 3 ];
-  proc_image = ( unsigned char * ) malloc ( sizeof(unsigned char) * image_x * image_y * 3 );
-  if (proc_image==0) { fprintf(stderr,"Error allocating memory for proc_image\n"); return 0; }
-
-  BYTE *px;
-
- BYTE p1=0,p2=0,p3=0,p4=0,p5=0,p6=0,p7=0,p8=0,p9=0;
-
- int sum1=0,sum2=0;
- int sum=0;
- float acol=0.0;
-
- //SOBEL EDGE DETECTION
-
-  for (x=x1; x<x2; x++)
- { for (y=y1; y<y2; y++)
-  {
-
-	     px = (BYTE *)  image + precalc_memplace_3byte[x-1][y-1];
-         //px = ((BYTE *)  image + (effW * (y-1) ) + (3* (x-1) ) );
-		 p1 = *px;
-		 px+=5;
-         p2 = *px++;
-         p3 = *px;
-
-
-
-		 px = (BYTE *)  image + precalc_memplace_3byte[x-1][y];
-         //px = ((BYTE *)  image + (effW * y ) + (3* (x-1) ) );
-         p4 = *px;
-         px+=5;
-		 p5 = *px++;
-         p6 = *px;
-
-
-
-		 px = (BYTE *)  image + precalc_memplace_3byte[x-1][y+1];
-         //px = ((BYTE *)  image + (effW * (y+1) ) + (3* (x-1) ) );
-         p7 = *px;
-         px+=5;
-		 p8 = *px++;
-         p9 = *px;
-
-
-        //Get Pixel Color
-        sum1 =( p1 + 2*p2 + p3 - p7 - 2*p8 - p9 );
-        sum2 =( p1  + 2*p4 + p7 - p3 - 2*p6 - p9 );
-        acol=(sum1*sum1) + (sum2*sum2);
-		acol=floor(sqrt(acol));
-		sum = (unsigned long)  acol ;
-
-		if (sum> 255) { sum = 255; }
-
-
-
-		px = (BYTE *)  proc_image + precalc_memplace_1byte[x][y];
-        //px = ((BYTE *)  proc_image + (effW * y ) + (3*x) );
-	    *px=  (BYTE) sum ;
-   }
- } //SOBEL FILTER DONE
-
-
-memcpy(image,proc_image,image_x*image_y*sizeof(BYTE));
-
-
-free(proc_image);
-
-EndTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
-
-return (1);
-}
 
 
 int SobelFromSource(unsigned int source_reg,unsigned int target_reg)
@@ -519,6 +431,23 @@ EndTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
 MarkRegistersAsSynced(source_reg,target_reg);
 
 return (1);
+}
+
+
+int  Sobel(unsigned int image_reg)
+{
+  if (!ThisIsA3ByteRegister(image_reg)) { return 0; }
+
+    unsigned int TMP_REGISTER = GetTempRegister();
+    if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( Sobel ) \n"); return 0; }
+
+    CopyRegister(image_reg,TMP_REGISTER,0,0);
+
+    SobelFromSource(TMP_REGISTER,image_reg);
+
+    StopUsingVideoRegister(TMP_REGISTER);
+
+  return 1;
 }
 
 
@@ -669,8 +598,6 @@ void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigne
 	KillPixelsBetween(target_sobel_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
 
 	SecondDerivativeIntensitiesFromSource(TMP_REGISTER,target_derivative_image_reg);
-
-	//KillPixelsBetween(target_derivative_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
 
     StopUsingVideoRegister(TMP_REGISTER);
 
