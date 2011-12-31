@@ -196,6 +196,7 @@ void VisCortx_GetHyperVisorStatus(unsigned int print_std,unsigned int print_file
   sprintf(tmpline," PIXEL OV THR , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(PIXEL_OVER_THRESHOLD_DELAY),GetLastTimer(PIXEL_OVER_THRESHOLD_DELAY),GetTimesTimerTimed(PIXEL_OVER_THRESHOLD_DELAY)); strcat(output,tmpline);
   sprintf(tmpline," MOVEMENT RAW , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(MOVEMENT_RAW_DELAY),GetLastTimer(MOVEMENT_RAW_DELAY),GetTimesTimerTimed(MOVEMENT_RAW_DELAY)); strcat(output,tmpline);
   sprintf(tmpline," COMPRESS IMAGE , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(COMPRESS_IMAGE_DELAY),GetLastTimer(COMPRESS_IMAGE_DELAY),GetTimesTimerTimed(COMPRESS_IMAGE_DELAY)); strcat(output,tmpline);
+  sprintf(tmpline," Gauss+Sob+Sec+... , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(PREPARE_GRADIENTS_DELAY),GetLastTimer(PREPARE_GRADIENTS_DELAY),GetTimesTimerTimed(PREPARE_GRADIENTS_DELAY)); strcat(output,tmpline);
   sprintf(tmpline," DETECT FACES , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(RECOGNIZE_FACES_DELAY ),GetLastTimer(RECOGNIZE_FACES_DELAY ),GetTimesTimerTimed(RECOGNIZE_FACES_DELAY )); strcat(output,tmpline);
   sprintf(tmpline," FIND CORNERS , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(FIND_CORNERS_DELAY),GetLastTimer(FIND_CORNERS_DELAY),GetTimesTimerTimed(FIND_CORNERS_DELAY)); strcat(output,tmpline);
   sprintf(tmpline," TRACK CORNERS , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(TRACK_CORNERS_DELAY),GetLastTimer(TRACK_CORNERS_DELAY),GetTimesTimerTimed(TRACK_CORNERS_DELAY)); strcat(output,tmpline);
@@ -631,8 +632,8 @@ void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error)
      if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( VisCortx_ConvolutionFilter )\n"); }
 
     CopyRegister(reg_in,TMP_REGISTER,0,0);
-    GaussianBlur(TMP_REGISTER,0);
     ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
+    GaussianBlur(TMP_REGISTER);
     ConvolutionFilter9_1ByteOptimized(TMP_REGISTER,reg_out,table,divisor);
 
     StopUsingVideoRegister(TMP_REGISTER);

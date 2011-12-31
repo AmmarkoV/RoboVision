@@ -350,7 +350,7 @@ void ReducePalette(unsigned int image_reg,int new_palette)
 
 
 //http://ilab.usc.edu/wiki/index.php/Fast_Square_Root
-inline float sqrt3(const float x)
+inline float sqrt_fast_approximation(const float x)
 {
   union
   {
@@ -368,7 +368,7 @@ inline float sqrt3(const float x)
 
 int SobelFromSource(unsigned int source_reg,unsigned int target_reg)
 {
-  if (!ThisIsA3ByteRegister(source_reg)) { return 0; }
+  if (!ThisIsA1ByteRegister(source_reg)) { fprintf(stderr,"SobelFromSource cannot run with this image depth \n"); return 0; }
   unsigned char * source = video_register[source_reg].pixels;
   unsigned char * target = video_register[target_reg].pixels;
   if ( (target==0) || (source==0) ) {return(0);}
@@ -385,7 +385,7 @@ StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
  BYTE *output_px = target;
  BYTE *output_end_px = target+image_x*image_y;
  BYTE *output_end_of_line_px = target+image_x;
- unsigned int line_width = image_x*3;
+ unsigned int line_width = image_x;//*3;
 
  BYTE *px;
  BYTE p1=0,p2=0,p3=0,p4=0,p5=0,p6=0,p7=0,p8=0,p9=0;
@@ -415,7 +415,7 @@ StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
 	     px = px_xMin1_yMin1;
 		 p1 = *px;
-		 px+=5;
+		 //px+=5;
          p2 = *px++;
          p3 = *px;
 
@@ -423,7 +423,7 @@ StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
 		 px = px_xMin1_y;
          p4 = *px;
-         px+=5;
+        // px+=5;
 		 p5 = *px++;
          p6 = *px;
 
@@ -431,30 +431,30 @@ StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
 		 px = px_xMin1_yAdd1;
          p7 = *px;
-         px+=5;
+        // px+=5;
 		 p8 = *px++;
          p9 = *px;
 
 
         //Get Pixel Color
-        sum1 =( p1 + 2*p2 + p3 - p7 - 2*p8 - p9 );
-        sum2 =( p1  + 2*p4 + p7 - p3 - 2*p6 - p9 );
+        sum1 =( p1 + p2 + p2 + p3 - p7 - p8 - p8 - p9 );
+        sum2 =( p1  + p4 + p4 + p7 - p3 - p6 - p6 - p9 );
 
         //These require acol to be declared float
         sum=(sum1*sum1) + (sum2*sum2);
-		sum=(unsigned int) floor(sqrt3(sum));
+		sum=(unsigned int) floor(sqrt_fast_approximation(sum));
 		if (sum> 255) { sum = 255; }
 
 	    *px_x_y=  (BYTE) sum ;
 
 	    ++output_px;
-	    input_px+=3;
+	    input_px+=1;//3;
 
 	 if (output_end_of_line_px<=output_px)
 	  { // We ended a with a horizontal line..
         output_end_of_line_px=output_px+image_x;
         ++output_px;
-        input_px+=3;
+        input_px+=1;//3;
 	  }
  }
   //SOBEL FILTER DONE
@@ -468,7 +468,7 @@ return (1);
 
 int Sobel(unsigned int image_reg)
 {
-  if (!ThisIsA3ByteRegister(image_reg)) { return 0; }
+  if (!ThisIsA1ByteRegister(image_reg)) { fprintf(stderr,"Sobel cannot run with this image depth \n"); return 0; }
 
     unsigned int TMP_REGISTER = GetTempRegister();
     if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( Sobel ) \n"); return 0; }
@@ -502,9 +502,9 @@ int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int t
 
 
 
-int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int monochrome)
+int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg)
 {
-  if (!ThisIsA3ByteRegister(source_reg)) { return 0; }
+  if (!ThisIsA1ByteRegister(source_reg)) {  fprintf(stderr,"GaussianBlurFromSource Intensities requires monochrome image conversion"); return 0; }
   if ( (video_register[source_reg].pixels==0) || (video_register[target_reg].pixels==0) ) {return(0);}
 
   StartTimer(GAUSSIAN_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
@@ -533,9 +533,9 @@ int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int m
  return (1);
 }
 
-int GaussianBlur(unsigned int image_reg,int monochrome)
+int GaussianBlur(unsigned int image_reg)
 {
-  return GaussianBlurFromSource(image_reg,image_reg,monochrome);
+  return GaussianBlurFromSource(image_reg,image_reg);
 }
 
 unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_array,unsigned int point_x,unsigned int point_y,unsigned int size_x,unsigned int size_y,unsigned char size_rgb)
@@ -556,11 +556,7 @@ unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_arr
 
 void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
 {
-    GaussianBlurFromSource(rgb_image_reg,target_sobel_image_reg,1);
-
-	Sobel(target_sobel_image_reg);
-
-	KillPixelsBetween(target_sobel_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
+    StartTimer(PREPARE_GRADIENTS_DELAY);
 
     unsigned int TMP_REGISTER = GetTempRegister();
     if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( PrepareCleanSobeledGaussianAndDerivative ) \n"); return; }
@@ -569,9 +565,19 @@ void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigne
 
     ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
 
+//    SobelFromSource(TMP_REGISTER,target_sobel_image_reg);
+
+    GaussianBlurFromSource(TMP_REGISTER,target_sobel_image_reg);
+	Sobel(target_sobel_image_reg);
+
+	KillPixelsBetween(target_sobel_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
+
+
 	SecondDerivativeIntensitiesFromSource(TMP_REGISTER,target_derivative_image_reg);
 
     StopUsingVideoRegister(TMP_REGISTER);
+
+    EndTimer(PREPARE_GRADIENTS_DELAY);
 }
 
 int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned int * M)

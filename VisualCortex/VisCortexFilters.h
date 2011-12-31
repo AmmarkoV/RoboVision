@@ -19,8 +19,8 @@ void KillPixelsBetween(unsigned int image_reg,int low_threshold,int high_thresho
 void Kill3PixelsBelow(unsigned int image_reg,int threshold);
 void Monochrome(unsigned char * input_frame,int image_x,int image_y);
 void MonochromeL(unsigned char * input_frame,int image_x,int image_y);
-int GaussianBlur(unsigned int image_reg,int monochrome);
-int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg,int monochrome);
+int GaussianBlur(unsigned int image_reg);
+int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg);
 void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold);
 int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned int * M);
 
