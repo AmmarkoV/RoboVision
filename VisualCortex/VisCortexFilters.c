@@ -349,6 +349,20 @@ void ReducePalette(unsigned int image_reg,int new_palette)
 }
 
 
+//http://ilab.usc.edu/wiki/index.php/Fast_Square_Root
+inline float sqrt3(const float x)
+{
+  union
+  {
+    int i;
+    float x;
+  } u;
+
+  u.x = x;
+  u.i = (1<<29) + (u.i >> 1) - (1<<22);
+  return u.x;
+}
+
 
 
 
@@ -357,35 +371,51 @@ int SobelFromSource(unsigned int source_reg,unsigned int target_reg)
   if (!ThisIsA3ByteRegister(source_reg)) { return 0; }
   unsigned char * source = video_register[source_reg].pixels;
   unsigned char * target = video_register[target_reg].pixels;
-  int image_x=video_register[source_reg].size_x;
-  int image_y=video_register[source_reg].size_y;
+  if ( (target==0) || (source==0) ) {return(0);}
+
+  unsigned int image_x=video_register[source_reg].size_x;
+  unsigned int image_y=video_register[source_reg].size_y;
   video_register[target_reg].depth=1;
   unsigned int x=0,y=0;
   unsigned int x1=1,y1=1,x2=image_x,y2=image_y;
 
 
-  if ( (target==0) || (source==0) ) {return(0);}
-
-  //unsigned char *proc_image;
-  //proc_image = new unsigned char [ image_x * image_y * 3 ];
 
 StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
-  BYTE *px;
 
+ BYTE *input_px = source;
+ BYTE *output_px = target;
+ BYTE *output_end_px = target+image_x*image_y;
+ BYTE *output_end_of_line_px = target+image_x;
+ unsigned int line_width = image_x*3;
+
+ BYTE *px;
  BYTE p1=0,p2=0,p3=0,p4=0,p5=0,p6=0,p7=0,p8=0,p9=0;
 
- int sum1=0,sum2=0;
- int sum=0;
- float acol=0.0;
+ unsigned int sum=0,sum1=0,sum2=0;
+
+ //Temp variables for pointer arithmetic
+ BYTE *px_xMin1_yMin1;
+ BYTE *px_xMin1_y;
+ BYTE *px_xMin1_yAdd1;
+ BYTE *px_x_y;
+
 
  //SOBEL EDGE DETECTION
+ while (output_px<output_end_px)
+ {
+         //THIS IS THE OUTPUT FRAME ( 1byte [ monochrome ] )
+         px_x_y = output_px; //(BYTE *)  target + precalc_memplace_1byte[x][y];
 
-  for (x=x1; x<x2; x++)
- { for (y=y1; y<y2; y++)
-  {
 
-	     px = (BYTE *)  source + precalc_memplace_3byte[x-1][y-1];
-         //px = ((BYTE *)  image + (effW * (y-1) ) + (3* (x-1) ) );
+         //THESE ARE POINTERS ON THE INPUT FRAME ( 3byte [ RGB ] )
+         px_xMin1_y = input_px-3;//(BYTE *)  source + precalc_memplace_3byte[x-1][y];
+         px_xMin1_yMin1 = px_xMin1_y-line_width;//(BYTE *)  source + precalc_memplace_3byte[x-1][y-1];
+         px_xMin1_yAdd1 = px_xMin1_y+line_width;//(BYTE *)  source + precalc_memplace_3byte[x-1][y+1];
+
+
+
+	     px = px_xMin1_yMin1;
 		 p1 = *px;
 		 px+=5;
          p2 = *px++;
@@ -393,8 +423,7 @@ StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
 
 
-		 px = (BYTE *)  source + precalc_memplace_3byte[x-1][y];
-         //px = ((BYTE *)  image + (effW * y ) + (3* (x-1) ) );
+		 px = px_xMin1_y;
          p4 = *px;
          px+=5;
 		 p5 = *px++;
@@ -402,8 +431,7 @@ StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
 
 
-		 px = (BYTE *)  source + precalc_memplace_3byte[x-1][y+1];
-         //px = ((BYTE *)  image + (effW * (y+1) ) + (3* (x-1) ) );
+		 px = px_xMin1_yAdd1;
          p7 = *px;
          px+=5;
 		 p8 = *px++;
@@ -413,19 +441,25 @@ StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
         //Get Pixel Color
         sum1 =( p1 + 2*p2 + p3 - p7 - 2*p8 - p9 );
         sum2 =( p1  + 2*p4 + p7 - p3 - 2*p6 - p9 );
-        acol=(sum1*sum1) + (sum2*sum2);
-		acol=floor(sqrt(acol));
-		sum = (unsigned long)  acol ;
 
+        //These require acol to be declared float
+        sum=(sum1*sum1) + (sum2*sum2);
+		sum=(unsigned int) floor(sqrt3(sum));
 		if (sum> 255) { sum = 255; }
 
+	    *px_x_y=  (BYTE) sum ;
 
+	    ++output_px;
+	    input_px+=3;
 
-		px = (BYTE *)  target + precalc_memplace_1byte[x][y];
-        //px = ((BYTE *)  proc_image + (effW * y ) + (3*x) );
-	    *px=  (BYTE) sum ;
-   }
- } //SOBEL FILTER DONE
+	 if (output_end_of_line_px<=output_px)
+	  { // We ended a with a horizontal line..
+        output_end_of_line_px=output_px+image_x;
+        ++output_px;
+        input_px+=3;
+	  }
+ }
+  //SOBEL FILTER DONE
 
 EndTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
 MarkRegistersAsSynced(source_reg,target_reg);
@@ -434,7 +468,7 @@ return (1);
 }
 
 
-int  Sobel(unsigned int image_reg)
+int Sobel(unsigned int image_reg)
 {
   if (!ThisIsA3ByteRegister(image_reg)) { return 0; }
 
@@ -477,11 +511,12 @@ int FirstDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int ta
     table[3]= 0; table[4]= 0; table[5]= 0;
     table[6]=-1; table[7]=-2; table[8]=-1;
 
-     /*
+    /*
     //SOBEL FILTER VERTICAL
     table[0]= 1; table[1]= 0; table[2]= -1;
     table[3]= 2; table[4]= 0; table[5]= -2;
-    table[6]= 1; table[7]= 0; table[8]= -1;*/
+    table[6]= 1; table[7]= 0; table[8]= -1;
+    */
 
 
     unsigned int retres = ConvolutionFilter9_1Byte(source_reg,target_reg,table,divisor);
@@ -563,7 +598,7 @@ unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_arr
 
 
 
-void PrepareCleanSobeledGaussianAndDerivativeOLD(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
+void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
 {
     GaussianBlurFromSource(rgb_image_reg,target_sobel_image_reg,1);
 
@@ -583,7 +618,7 @@ void PrepareCleanSobeledGaussianAndDerivativeOLD(unsigned int rgb_image_reg,unsi
     StopUsingVideoRegister(TMP_REGISTER);
 }
 
-void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
+void PrepareCleanSobeledGaussianAndDerivativeNEW(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
 {
 
     unsigned int TMP_REGISTER = GetTempRegister();
