@@ -1,4 +1,5 @@
 #include "VisCortexTimer.h"
+#include "VisionMemory.h"
 #include <sys/time.h>
 #include <unistd.h>
 
@@ -42,11 +43,13 @@ long timeval_diff ( struct timeval *difference, struct timeval *end_time, struct
 
 void StartTimer( unsigned int timer_num )
 {
+  if ( settings[DISABLE_TIMER_OPERATIONS] ) { return ; }
   gettimeofday(&timers_array[timer_num].starttime,0x0);
 }
 
 unsigned int EndTimer( unsigned int timer_num )
 {
+  if ( settings[DISABLE_TIMER_OPERATIONS] ) { return 0; }
   gettimeofday(&timers_array[timer_num].endtime,0x0);
 
 

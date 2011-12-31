@@ -376,8 +376,6 @@ int SobelFromSource(unsigned int source_reg,unsigned int target_reg)
   unsigned int image_x=video_register[source_reg].size_x;
   unsigned int image_y=video_register[source_reg].size_y;
   video_register[target_reg].depth=1;
-  unsigned int x=0,y=0;
-  unsigned int x1=1,y1=1,x2=image_x,y2=image_y;
 
 
 
@@ -485,48 +483,6 @@ int Sobel(unsigned int image_reg)
 }
 
 
-int FirstDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int target_reg)
-{
-    if (!ThisIsA1ByteRegister(source_reg)) { fprintf(stderr,"FirstDerivative Intensities requires monochrome image conversion"); return 0; }
-
-    StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
-
-    signed char table[9];//={1,-2,1,2,-4,2,1,-2,1};
-    signed int divisor = 1;
-
-    /* SCHAR FILTER HORIZONTAL
-    table[0]= 3; table[1]= 10; table[2]= 3;
-    table[3]= 0; table[4]=  0; table[5]= 0;
-    table[6]=-3; table[7]=-10; table[8]=-3;
-    */
-
-    /* SCHAR FILTER VERTICAL
-    table[0]=  3; table[1]=  0; table[2]= -3;
-    table[3]= 10; table[4]=  0; table[5]= -10;
-    table[6]=  3; table[7]=  0; table[8]= -3;
-    */
-
-    //SOBEL FILTER HORIZONTAL
-    table[0]= 1; table[1]= 2; table[2]= 1;
-    table[3]= 0; table[4]= 0; table[5]= 0;
-    table[6]=-1; table[7]=-2; table[8]=-1;
-
-    /*
-    //SOBEL FILTER VERTICAL
-    table[0]= 1; table[1]= 0; table[2]= -1;
-    table[3]= 2; table[4]= 0; table[5]= -2;
-    table[6]= 1; table[7]= 0; table[8]= -1;
-    */
-
-
-    unsigned int retres = ConvolutionFilter9_1Byte(source_reg,target_reg,table,divisor);
-
-    EndTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
-    MarkRegistersAsSynced(source_reg,target_reg);
-
-    return retres;
-}
-
 
 int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int target_reg)
 {
@@ -616,26 +572,6 @@ void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigne
 	SecondDerivativeIntensitiesFromSource(TMP_REGISTER,target_derivative_image_reg);
 
     StopUsingVideoRegister(TMP_REGISTER);
-}
-
-void PrepareCleanSobeledGaussianAndDerivativeNEW(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
-{
-
-    unsigned int TMP_REGISTER = GetTempRegister();
-    if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( PrepareCleanSobeledGaussianAndDerivative ) \n"); return; }
-
-    GaussianBlurFromSource(rgb_image_reg,TMP_REGISTER,1);
-
-    ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
-
-    FirstDerivativeIntensitiesFromSource(TMP_REGISTER,target_sobel_image_reg);
-
-	KillPixelsBetween(target_sobel_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
-
-	SecondDerivativeIntensitiesFromSource(TMP_REGISTER,target_derivative_image_reg);
-
-    StopUsingVideoRegister(TMP_REGISTER);
-
 }
 
 int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned int * M)

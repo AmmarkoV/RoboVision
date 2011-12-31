@@ -22,8 +22,6 @@ signed int SumTable(signed char * table , signed int total_blocks)
 
 
 
-
-
 int ConvolutionFilter9_1Byte(unsigned int monochrome_reg,unsigned int target_reg,signed char * table,signed int divisor)
 {
     if (!ThisIsA1ByteRegister(monochrome_reg)) { return 0; }

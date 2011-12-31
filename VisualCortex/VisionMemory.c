@@ -271,6 +271,8 @@ void DefaultSettings()
     settings[INPUT_CALIBRATION]=0; // DEACTIVATED UNTIL FIX :P
     // TEST
 
+   settings[DISABLE_TIMER_OPERATIONS]=0;
+
    settings[HYPERVISOR_STORE_PERFORMANCE_STATISTICS]=1;
 
    settings[PASS_TO_WORLD_3D]=0; // FOR NOW ONLY PASSES TO 3D Visualization
@@ -626,7 +628,14 @@ void ConvertRegisterFrom3ByteTo1Byte(int in_reg)
  while ( px < start_px+image_size)
  {
        r = px++; g = px++; b = px++;
+
        col_med=  ( *r + *g + *b )/3;
+
+       /* FASTER APPROXIMATION CODE :P
+       col_med=  ( *r + *g ) >> 1;
+       col_med=  ( col_med + *b ) >> 1;
+       */
+
        if ( col_med < 255 ) {
                               *opx= (BYTE)col_med ;
                             }
