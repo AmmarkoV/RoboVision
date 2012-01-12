@@ -303,8 +303,8 @@ void DefaultSettings()
    settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER]=39;
 
 
-    settings[DEPTHMAP_STARTLEFT_X]=16;
-    settings[DEPTHMAP_DETAIL]=5;
+    settings[DEPTHMAP_STARTLEFT_X]=48;// Just like OpenCV :P 16;
+    settings[DEPTHMAP_DETAIL]=4;
     settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=45;
     settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=255; // 255
     settings[DEPTHMAP_INSTANT_DETAIL]=2;

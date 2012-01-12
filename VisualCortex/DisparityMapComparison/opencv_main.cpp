@@ -11,7 +11,7 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/contrib/contrib.hpp"
-
+ 
 #include <stdio.h>
 
 using namespace cv;
@@ -271,7 +271,7 @@ int main(int argc, char** argv)
     else if( alg == STEREO_SGBM || alg == STEREO_HH )
         sgbm(img1, img2, disp);
     t = getTickCount() - t;
-    printf("Time elapsed: %fms\n", t*1000/getTickFrequency());
+    printf("OpenCV Time elapsed: %fms\n", t*1000/getTickFrequency());
 
     //disp = dispp.colRange(numberOfDisparities, img1p.cols);
     if( alg != STEREO_VAR )

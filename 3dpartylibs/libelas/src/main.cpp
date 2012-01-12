@@ -25,12 +25,38 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA
 #include "elas.h"
 #include "image.h"
 
+#include <sys/time.h>
+#include <unistd.h>
+
 using namespace std;
+
+
+long timeval_diff ( struct timeval *difference, struct timeval *end_time, struct timeval *start_time )
+{
+
+   struct timeval temp_diff;
+
+   if(difference==0) { difference=&temp_diff; }
+
+  difference->tv_sec =end_time->tv_sec -start_time->tv_sec ;
+  difference->tv_usec=end_time->tv_usec-start_time->tv_usec;
+
+  /* Using while instead of if below makes the code slightly more robust. */
+
+  while(difference->tv_usec<0)
+  {
+    difference->tv_usec+=1000000;
+    difference->tv_sec -=1;
+  }
+
+  return 1000000LL*difference->tv_sec+ difference->tv_usec;
+
+}
 
 // compute disparities of pgm image input pair file_1, file_2
 void process (const char* file_1,const char* file_2) {
 
-  cout << "Processing: " << file_1 << ", " << file_2 << endl;
+  cout << "LibELAS Processing: " << file_1 << ", " << file_2 << endl;
 
   // load images
   image<uchar> *I1,*I2;
@@ -59,6 +85,8 @@ void process (const char* file_1,const char* file_2) {
   float* D1_data = (float*)malloc(width*height*sizeof(float));
   float* D2_data = (float*)malloc(width*height*sizeof(float));
 
+  struct timeval starttime,endtime,difference;
+  gettimeofday(&starttime,0x0);
   // process
   Elas::parameters param;
   param.postprocess_only_left = false;
@@ -80,6 +108,10 @@ void process (const char* file_1,const char* file_2) {
     D2->data[i] = (uint8_t)max(255.0*D2_data[i]/disp_max,0.0);
   }
 
+
+  gettimeofday(&endtime,0x0);
+  fprintf(stderr,"LibELAS time : %u microseconds\n",timeval_diff(&difference,&endtime,&starttime));
+
   // save disparity images
   char output_1[1024];
   char output_2[1024];
@@ -100,6 +132,8 @@ void process (const char* file_1,const char* file_2) {
   free(D1_data);
   free(D2_data);
 }
+
+
 
 int main (int argc, char** argv) {
 

@@ -10,6 +10,17 @@ echo "Recompiling.."
 cd build
 cmake ..
 make
+
+if [ -e elas ]
+then
+  echo "libELAS Executable is OK .."
+  echo "Copying it to VisualCortex Tester .."
+  cp elas ../../../VisualCortex/DisparityMapComparison/elas
+else
+  echo "libELAS Executable compilation FAILED !!!!!!!!!!" 
+fi
+
+
 cd ..
 echo "Done"
 exit 0

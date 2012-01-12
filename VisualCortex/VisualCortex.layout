@@ -8,7 +8,7 @@
 		<Cursor position="862" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="8478" topLine="175" />
+		<Cursor position="8478" topLine="187" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="627" topLine="0" />
@@ -133,13 +133,13 @@
 	<File name="VisCortexTimer.h" open="1" top="0" tabpos="42">
 		<Cursor position="693" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="12629" topLine="289" />
+	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
+		<Cursor position="12444" topLine="295" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="3782" topLine="0" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
 		<Cursor position="12704" topLine="299" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
