@@ -271,6 +271,7 @@ void DefaultSettings()
     settings[INPUT_CALIBRATION]=0; // DEACTIVATED UNTIL FIX :P
     // TEST
 
+
    settings[DISABLE_TIMER_OPERATIONS]=0;
 
    settings[HYPERVISOR_STORE_PERFORMANCE_STATISTICS]=1;
@@ -297,6 +298,7 @@ void DefaultSettings()
 
    settings[DEPTHMAP_COMPARISON_ALSO_REVERSE_CHECK]=1; // <- THIS IS KIND OF LIKE NOT TRUSTING THE CHECK :P
 
+   settings[DEPTHMAP_OPENCV_LIKE_OUTPUT]=0;
    settings[DEPTHMAP_RGB_MULTIPLIER]=1;
    settings[DEPTHMAP_MOVEMENT_MULTIPLIER]=10;
    settings[DEPTHMAP_SOBEL_MULTIPLIER]=4;
@@ -390,25 +392,26 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
 
     DefaultSettings(); //Settings must be set after metrics because they take them into account
 
-    fprintf(stderr,"Initializing %u  Video Registers\n",REGISTERS_COUNT+LARGE_REGISTERS_COUNT);
+    fprintf(stderr,"Initializing %u  Video Register with %u MB , %u MB ( large ) , %u MB ( xlarge ) s\n",REGISTERS_COUNT+LARGE_REGISTERS_COUNT
+                                                                                                        ,(unsigned int) ( 3*res_x*res_y*REGISTERS_COUNT*sizeof(char)) / 1048576
+                                                                                                        ,(unsigned int) ( 3*res_x*res_y*LARGE_REGISTERS_COUNT*sizeof(unsigned short)) / 1048576
+                                                                                                        ,(unsigned int) ( 3*res_x*res_y*LARGE_REGISTERS_COUNT*sizeof(unsigned int)) / 1048576
+            );
 
     for ( i=0; i<REGISTERS_COUNT; i++)
      {
         if ( InitRegister(i,res_x,res_y,3)!=0 ) { fprintf(stderr,"Error initializing Vision Memory"); return 1; }
      }
-     fprintf(stderr,"%u MB of memory allocated for video registers\n",(unsigned int) ( 3*res_x*res_y*REGISTERS_COUNT*sizeof(char)) / 1048576);
 
      for ( i=0; i<LARGE_REGISTERS_COUNT; i++)
      {
         if ( InitLargeRegister(i,res_x,res_y,3)!=0 ) { fprintf(stderr,"Error initializing Vision Memory"); return 1; }
      }
-     fprintf(stderr,"%u MB of memory allocated for large video registers\n",(unsigned int) ( 3*res_x*res_y*LARGE_REGISTERS_COUNT*sizeof(unsigned short)) / 1048576);
 
      for ( i=0; i<EXTRA_LARGE_REGISTERS_COUNT; i++)
      {
         if ( InitExtraLargeRegister(i,res_x,res_y,3)!=0 ) { fprintf(stderr,"Error initializing Vision Memory"); return 1; }
      }
-     fprintf(stderr,"%u MB of memory allocated for extra large video registers\n",(unsigned int) ( 3*res_x*res_y*LARGE_REGISTERS_COUNT*sizeof(unsigned int)) / 1048576);
 
 
   //  unsigned int MEM3BIT = (res_x+1)*(res_y+1)*3;
@@ -429,31 +432,31 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
 
 int CloseVisionMemory()
 {
-   fprintf(stderr,"Deinitializing Vision Memory \n");
+   fprintf(stderr,"Deinitializing Vision Memory .. ");
    int i=0;
     for ( i=0; i<REGISTERS_COUNT; i++)
      {
-        fprintf(stderr,"Deinit %u ",i );
+        //fprintf(stderr,"Deinit %u ",i );
         if ( CloseRegister(i)!=0 ) { fprintf(stderr,"Error deinitializing Vision Memory"); return 1; }
      }
 
-   fprintf(stderr,"Deinitializing Large Vision Memory \n");
+   //fprintf(stderr,"Deinitializing Large Vision Memory \n");
     for ( i=0; i<LARGE_REGISTERS_COUNT; i++)
      {
         if ( CloseLargeRegister(i)!=0 ) { fprintf(stderr,"Error deinitializing Vision Memory"); return 1; }
      }
 
 
-   fprintf(stderr,"Deinitializing Extra Large Vision Memory \n");
+   //fprintf(stderr,"Deinitializing Extra Large Vision Memory \n");
     for ( i=0; i<EXTRA_LARGE_REGISTERS_COUNT; i++)
      {
         if ( CloseExtraLargeRegister(i)!=0 ) { fprintf(stderr,"Error deinitializing Vision Memory"); return 1; }
      }
 
-   fprintf(stderr,"Deinitializing Depth data array \n");
+   //fprintf(stderr,"Deinitializing Depth data array \n");
    if ( depth_data_array != 0 )  free ( depth_data_array );
 
-   fprintf(stderr,"Successfull Deinitialization of Visual Cortex!\n");
+   fprintf(stderr,"success!\n");
   return 0; // 0 Means Success!
 }
 

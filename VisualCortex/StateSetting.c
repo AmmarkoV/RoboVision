@@ -88,18 +88,17 @@ unsigned int SetCamerasGeometry(float distance_between_cameras,float diagonal_fi
 
 unsigned int InitializeEverything(unsigned int res_x,unsigned int res_y)
 {
-
+/*
    fprintf(stderr,"Visual Cortex , Things todo memo : \n");
-   fprintf(stderr,"Check if precalculations are correct\n");
-   fprintf(stderr,"Improve filters using a single real pointer\n");
-   fprintf(stderr,"Fix Feature tracking!\n");
-   fprintf(stderr,"\n");
    fprintf(stderr,"---------------------------------------\n");
-
+*/
 
    //unsigned int MAX_INT=-1;
    //fprintf(stderr,"MAX_Integer is %u",MAX_INT);
 
+
+  if (0)
+  {
        //e(mach) calculation
     float e1=1.0;
     while (1+e1 >1)
@@ -112,8 +111,9 @@ unsigned int InitializeEverything(unsigned int res_x,unsigned int res_y)
      {
         e2 = e2/2;
      }
-
     fprintf(stderr,"Machine numerical error , single : %e , double : %e \n",e1,e2);
+  }
+
 
    InitFaceRecognition(res_x,res_y);
     int i= InitVisionMemory(res_x,res_y);

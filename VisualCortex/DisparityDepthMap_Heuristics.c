@@ -294,7 +294,15 @@ int DepthMapToVideoSimple(unsigned int depth_reg,unsigned int vid_reg,unsigned i
 
        //Just a convertion of the numbers to RGB
        if ( full_depth_map[ptr] >= 255 ) { val = 255; } else
-                                         { val = ( unsigned char ) (full_depth_map[ptr]); }
+                                         {
+                                           if (settings[DEPTHMAP_OPENCV_LIKE_OUTPUT])
+                                              {
+                                                  val = ( unsigned char ) (full_depth_map[ptr]*16);
+                                              } else
+                                              {
+                                                  val = ( unsigned char ) (full_depth_map[ptr]);
+                                              }
+                                         }
 
        *r= val; *g=val; *b= val;
    }
@@ -452,7 +460,7 @@ int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int dep
           {
             tmp_val = 0;
           }
-       val = (unsigned char) tmp_val;
+       val = (unsigned char) (tmp_val);
       } else
       { // NON LINEAR DEPTH SCALE
         if (full_depth_map[ptr]>255) { val = 255; } else

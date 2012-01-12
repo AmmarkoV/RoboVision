@@ -594,15 +594,14 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
 
 
 
-
-  DisparityMapGetPercentCovered(DEPTH_LEFT);
-  fprintf(stderr,"Percent Covered %u %% , too close %u %% \n",metrics[LAST_DEPTH_MAP_COVERAGE],metrics[LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE]);
-
-
-
   metrics[DEPTHMAP_DELAY_MICROSECONDS] = EndTimer(TIMER_DEPTH_MAP_DELAY);
   metrics[TOTAL_DEPTHMAP_DELAY_MICROSECONDS]+=metrics[DEPTHMAP_DELAY_MICROSECONDS] ;
   ++metrics[TOTAL_DEPTHMAPS_PERFORMED];
+
+  DisparityMapGetPercentCovered(DEPTH_LEFT);
+  fprintf(stderr,"Percent Covered %u %% , too close %u %% \n",metrics[LAST_DEPTH_MAP_COVERAGE],metrics[LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE]);
+  fprintf(stderr," DEPTH MAP , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(TIMER_DEPTH_MAP_DELAY),GetLastTimer(TIMER_DEPTH_MAP_DELAY),GetTimesTimerTimed(TIMER_DEPTH_MAP_DELAY));
+
 
 if ( settings[HYPERVISOR_STORE_PERFORMANCE_STATISTICS] )
   {
