@@ -1,42 +1,31 @@
 #!/bin/bash
 
-time ./stereo_disparity_my_tester 320 240 flowerpots_snapshot0.ppm flowerpots_snapshot1.ppm 0depth_my.ppm
-time ./stereo_disparity_opencv_tester flowerpots_snapshot0.ppm flowerpots_snapshot1.ppm --no-display=1 -o 0depth_opencv.ppm
-time ./elas flowerpots_snapshot0.ppm flowerpots_snapshot1.ppm
+TRIAL_NUMBER=0
+EXT_0="0.ppm"
+EXT_1="1.ppm"
+SP="_"
 
-time ./stereo_disparity_my_tester 320 240 gddg_snapshot0.ppm gddg_snapshot1.ppm 1depth_my.ppm
-time ./stereo_disparity_opencv_tester gddg_snapshot0.ppm gddg_snapshot1.ppm --no-display=1 -o 1depth_opencv.ppm
-time ./elas gddg_snapshot0.ppm gddg_snapshot1.ppm
- 
+GUARDDOG_LABEL="_guarddog.ppm"
+LIBELAS_LABEL="_libelas.ppm"
+OPENCV_LABEL="_opencv.ppm"
 
-time ./stereo_disparity_my_tester 320 240 scene_l.ppm scene_r.ppm 2depth_my.ppm
-time ./stereo_disparity_opencv_tester scene_l.ppm scene_r.ppm --no-display=1 -o 2depth_opencv.ppm
-time ./elas scene_l.ppm scene_r.ppm
+OPENCV_OPTIONS="--no-display=1 -o"
 
 
-time ./stereo_disparity_my_tester 320 240 snapshot0.ppm snapshot1.ppm 3depth_my.ppm
-time ./stereo_disparity_opencv_tester snapshot0.ppm snapshot1.ppm --no-display=1 -o 3depth_opencv.ppm
-time ./elas snapshot0.ppm snapshot1.ppm
+samples=( flowerpots gddg bowling cloth lampshade middlebury wood aloe tsukuba cones teddy )
 
-time ./stereo_disparity_my_tester 320 240 cloth0.ppm cloth1.ppm 4depth_my.ppm
-time ./stereo_disparity_opencv_tester cloth0.ppm cloth1.ppm --no-display=1 -o 4depth_opencv.ppm
-time ./elas cloth0.ppm cloth1.ppm
 
-time ./stereo_disparity_my_tester 320 240 bowling0.ppm bowling1.ppm 4depth_my.ppm
-time ./stereo_disparity_opencv_tester bowling0.ppm bowling1.ppm --no-display=1 -o 4depth_opencv.ppm
-time ./elas bowling0.ppm bowling1.ppm
-
-time ./stereo_disparity_my_tester 320 240 lampshade0.ppm lampshade1.ppm 5depth_my.ppm
-time ./stereo_disparity_opencv_tester lampshade0.ppm lampshade1.ppm --no-display=1 -o 5depth_opencv.ppm
-time ./elas lampshade0.ppm lampshade1.ppm
-
-time ./stereo_disparity_my_tester 320 240 wood0.ppm wood1.ppm 6depth_my.ppm
-time ./stereo_disparity_opencv_tester wood0.ppm wood1.ppm --no-display=1 -o 6depth_opencv.ppm
-time ./elas wood0.ppm wood1.ppm
-
-time ./stereo_disparity_my_tester 320 240 aloe0.ppm aloe1.ppm 7depth_my.ppm
-time ./stereo_disparity_opencv_tester aloe0.ppm aloe1.ppm --no-display=1 -o 7depth_opencv.ppm
-time ./elas aloe0.ppm aloe1.ppm
- 
+for TRIAL_NAME in "${samples[@]}"; do
+echo "Executing $TRIAL_NAME test"
+# GUARDDOG VISUAL CORTEX PART
+time ./stereo_disparity_my_tester 320 240 "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" "$TRIAL_NUMBER$SP$TRIAL_NAME$GUARDDOG_LABEL"
+# OPENCV PART
+time ./stereo_disparity_opencv_tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" --no-display=1 -o "$TRIAL_NUMBER$SP$TRIAL_NAME$OPENCV_LABEL"
+# LIBELAS PART
+time ./elas "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1"
+mv "$TRIAL_NAME"0_disp.ppm "$TRIAL_NUMBER$SP$TRIAL_NAME$LIBELAS_LABEL"
+rm "$TRIAL_NAME"1_disp.ppm   
+(( TRIAL_NUMBER++ ))
+done
 
 exit 0
