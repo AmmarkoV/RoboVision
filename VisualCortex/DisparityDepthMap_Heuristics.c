@@ -297,7 +297,7 @@ int DepthMapToVideoSimple(unsigned int depth_reg,unsigned int vid_reg,unsigned i
                                          {
                                            if (settings[DEPTHMAP_OPENCV_LIKE_OUTPUT])
                                               {
-                                                  val = ( unsigned char ) (full_depth_map[ptr]*16);
+                                                  val = ( unsigned char ) (full_depth_map[ptr]*5);
                                               } else
                                               {
                                                   val = ( unsigned char ) (full_depth_map[ptr]);

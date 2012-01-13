@@ -301,13 +301,13 @@ void DefaultSettings()
    settings[DEPTHMAP_OPENCV_LIKE_OUTPUT]=0;
    settings[DEPTHMAP_RGB_MULTIPLIER]=1;
    settings[DEPTHMAP_MOVEMENT_MULTIPLIER]=10;
-   settings[DEPTHMAP_SOBEL_MULTIPLIER]=4;
-   settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER]=39;
+   settings[DEPTHMAP_SOBEL_MULTIPLIER]=6;
+   settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER]=40;
 
 
     settings[DEPTHMAP_STARTLEFT_X]=48;// Just like OpenCV :P 16;
     settings[DEPTHMAP_DETAIL]=4;
-    settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=45;
+    settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=35;
     settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=255; // 255
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
 
@@ -318,13 +318,13 @@ void DefaultSettings()
 //    settings[DEPTHMAP_VERT_OFFSET_DOWN]=0;
 
     // THIS INCREASES COVERAGE , AND DECREACES PRECISION
-    settings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=2;
-    settings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=5;
+    settings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=1;
+    settings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=1;
 
-    settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD]=500;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD]=30000; // 27000;//18000; //16000;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=30000;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]=20000;
+    settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD]=200;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD]=4000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=4000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]=4000;
     // SetThresholdsForAllPatchSizes();
     settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
 
@@ -332,19 +332,19 @@ void DefaultSettings()
     settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH]=1;
     settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]=1; /* <- This actually should always be 1 :P */
     settings[DEPTHMAP_CLOSEST_DEPTH]=75; // Praktika dedomena deixnoun oti synithws apotelesmata panw apo 80 einai poly konta kai tha prepe na theorountai thoryvos!
-    settings[DEPTHMAP_GUESSES]=0;
+    settings[DEPTHMAP_GUESSES]=0;// <- This is not used ..
     settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM]=1;
     settings[DEPTHMAP_IMPROVE_FILLING_HOLES]=0;
-    settings[DEPTHMAP_IMPROVE_USING_EDGES]=0;
+    settings[DEPTHMAP_IMPROVE_USING_EDGES]=0;// <- This is not used ..
     settings[DEPTHMAP_IMPROVE_USING_MOVEMENT]=1;
 
 
-    settings[PATCH_COMPARISON_LEVELS]=3; /* It will use 3 different size block levels for comparison */
-    settings[PATCH_COMPARISON_SCORE_MIN]=35000;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=20;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=20;
+    settings[PATCH_COMPARISON_LEVELS]=3;//3; /* It will use 3 different size block levels for comparison */
+    settings[PATCH_COMPARISON_SCORE_MIN]=33000; // <- This is not used ..
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=2;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=5;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=10;
-    settings[PATCH_HIST_THRESHOLD_R]=9; settings[PATCH_HIST_THRESHOLD_G]=9; settings[PATCH_HIST_THRESHOLD_B]=9;
+    settings[PATCH_HIST_THRESHOLD_R]=7; settings[PATCH_HIST_THRESHOLD_G]=7; settings[PATCH_HIST_THRESHOLD_B]=7;
 
     settings[MAX_FEATURES]=2000;
     settings[MAX_FACES]=100;
@@ -380,12 +380,12 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[RESOLUTION_DEPTH]=3;
     metrics[CHANGES_LEFT]=0;
     metrics[CHANGES_RIGHT]=0;
-    metrics[HORIZONTAL_BUFFER]=10; //20
-    metrics[VERTICAL_BUFFER]=12; //25
-    metrics[HORIZONTAL_BUFFER_LARGE]=20; //50
-    metrics[VERTICAL_BUFFER_LARGE]=30; //75
-    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=40; //125
-    metrics[VERTICAL_BUFFER_EXTRALARGE]=50; // 188
+    metrics[HORIZONTAL_BUFFER]=7; //20
+    metrics[VERTICAL_BUFFER]=7; //25
+    metrics[HORIZONTAL_BUFFER_LARGE]=11; //50
+    metrics[VERTICAL_BUFFER_LARGE]=11; //75
+    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=19; //125
+    metrics[VERTICAL_BUFFER_EXTRALARGE]=19; // 188
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
 
 
