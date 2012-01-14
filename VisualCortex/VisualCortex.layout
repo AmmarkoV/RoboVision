@@ -7,8 +7,8 @@
 	<File name="CameraPose.h" open="1" top="0" tabpos="43">
 		<Cursor position="862" topLine="0" />
 	</File>
-	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="22783" topLine="455" />
+	<File name="DisparityDepthMap.c" open="1" top="1" tabpos="7">
+		<Cursor position="21583" topLine="333" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="627" topLine="0" />
@@ -133,8 +133,8 @@
 	<File name="VisCortexTimer.h" open="1" top="0" tabpos="42">
 		<Cursor position="693" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
-		<Cursor position="14775" topLine="331" />
+	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
+		<Cursor position="14775" topLine="286" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="3782" topLine="54" />
