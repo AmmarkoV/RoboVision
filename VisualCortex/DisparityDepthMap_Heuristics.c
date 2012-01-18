@@ -307,7 +307,7 @@ int DepthMapToVideoSimple(unsigned int depth_reg,unsigned int vid_reg,unsigned i
        *r= val; *g=val; *b= val;
    }
 
-   video_register[vid_reg].time = video_register[depth_reg].time;
+   video_register[vid_reg].time = l_video_register[depth_reg].time;
    return 1;
 }
 
@@ -470,7 +470,7 @@ int DepthMapToVideo(unsigned int depth_reg,unsigned int vid_reg,unsigned int dep
        *r= val; *g=val; *b= val;
    }
 
-   video_register[vid_reg].time = video_register[depth_reg].time;
+   video_register[vid_reg].time = l_video_register[depth_reg].time;
 
    return 1;
 }

@@ -108,6 +108,7 @@ const long CortexSettings::ID_CHECKBOX15 = wxNewId();
 const long CortexSettings::ID_STATICTEXT9 = wxNewId();
 const long CortexSettings::ID_TEXTCTRL40 = wxNewId();
 const long CortexSettings::ID_TEXTCTRL41 = wxNewId();
+const long CortexSettings::ID_CHECKBOX16 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(CortexSettings,wxDialog)
@@ -245,6 +246,8 @@ CortexSettings::CortexSettings(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	StaticText9 = new wxStaticText(this, ID_STATICTEXT9, _("Decide for more pixels right , down"), wxPoint(232,424), wxDefaultSize, 0, _T("ID_STATICTEXT9"));
 	DecidePixelsRight = new wxTextCtrl(this, ID_TEXTCTRL40, _("0"), wxPoint(376,440), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL40"));
 	DecidePixelsDown = new wxTextCtrl(this, ID_TEXTCTRL41, _("0"), wxPoint(424,440), wxSize(32,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL41"));
+	DepthMapUseOpenCV = new wxCheckBox(this, ID_CHECKBOX16, _("Use OpenCV for Depth Maps"), wxPoint(568,472), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX16"));
+	DepthMapUseOpenCV->SetValue(false);
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnSaveButtonClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CortexSettings::OnCancelButtonClick);
@@ -406,6 +409,9 @@ void CortexSettings::PullSettingsFromCortex()
  if (VisCortx_GetSetting(USE_OPENCV)==1) { UseOpenCV->SetValue(1); } else
                                          { UseOpenCV->SetValue(0); }
 
+ if (VisCortx_GetSetting(DEPTHMAP_USE_OPENCV)==1) { DepthMapUseOpenCV->SetValue(1); } else
+                                                  { DepthMapUseOpenCV->SetValue(0); }
+
 
   val.Clear(); val<<VisCortx_GetSetting(FEATURE_DETECTION_THRESHOLD);
   FeatureDetectionThreshold->SetValue(val);
@@ -561,6 +567,8 @@ void CortexSettings::PushSettingsToCortex()
   if ( UseOpenCV->IsChecked() ) { VisCortx_SetSetting(USE_OPENCV,1); } else
                                 { VisCortx_SetSetting(USE_OPENCV,0); }
 
+  if ( DepthMapUseOpenCV->IsChecked() ) { VisCortx_SetSetting(DEPTHMAP_USE_OPENCV,1); } else
+                                        { VisCortx_SetSetting(DEPTHMAP_USE_OPENCV,0); }
 
 
   if(FeatureDetectionThreshold->GetValue().ToLong(&value)) { VisCortx_SetSetting(FEATURE_DETECTION_THRESHOLD,(unsigned int) value); }

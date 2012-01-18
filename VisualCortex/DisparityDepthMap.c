@@ -463,17 +463,66 @@ unsigned int DepthMapFull  (
 }
 
 
-
-int ExecuteDisparityMappingPyramid()
+int StartDisparityMapping()
 {
-  if ( ( video_register[DEPTH_LEFT].lock ) || ( video_register[DEPTH_RIGHT].lock ) )
+  if ( ( l_video_register[DEPTH_LEFT].lock ) || ( l_video_register[DEPTH_RIGHT].lock ) )
    {
-     fprintf(stderr,"ExecuteDisparityMappingPyramid while another disparity map is pending..! \n"); //return 0;
+     fprintf(stderr,"ExecuteDisparityMappingPyramid while another disparity map is pending..! \n");
+     return 0;
    }
-  video_register[DEPTH_RIGHT].lock=1; video_register[DEPTH_LEFT].lock=1;
+  l_video_register[DEPTH_RIGHT].lock=1; l_video_register[DEPTH_LEFT].lock=1;
 
 
   StartTimer(TIMER_DEPTH_MAP_DELAY);
+  return 1;
+}
+
+int EndDisparityMapping(unsigned int convert_to_video,unsigned int comparisons_small,unsigned int comparisons_medium,unsigned int comparisons_large)
+{
+ // THIS IS SET HERE IN ORDER TO BE PASSED TO Depth_Left_Video without problems
+  l_video_register[DEPTH_LEFT].time = video_register[CALIBRATED_LEFT_EYE].time;
+  l_video_register[DEPTH_RIGHT].time = video_register[CALIBRATED_RIGHT_EYE].time;
+
+  /*
+    CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
+   */
+     if (convert_to_video) { DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1); }
+     //DepthMapToVideo(DEPTH_RIGHT,DEPTH_RIGHT_VIDEO,1);
+    CopyRegister(EDGES_LEFT,DEPTH_RIGHT_VIDEO,0,0);
+    MarkRegistersAsSynced(DEPTH_LEFT,DEPTH_RIGHT_VIDEO);
+
+     if (settings[PASS_TO_WORLD_3D])
+      {
+        PassDepthMapToCameraSystem();
+      }
+  /* -------------------------------------------------------------- */
+
+
+
+  metrics[DEPTHMAP_DELAY_MICROSECONDS] = EndTimer(TIMER_DEPTH_MAP_DELAY);
+  metrics[TOTAL_DEPTHMAP_DELAY_MICROSECONDS]+=metrics[DEPTHMAP_DELAY_MICROSECONDS] ;
+  ++metrics[TOTAL_DEPTHMAPS_PERFORMED];
+
+  DisparityMapGetPercentCovered(DEPTH_LEFT);
+  fprintf(stderr,"Percent Covered %u %% , too close %u %% \n",metrics[LAST_DEPTH_MAP_COVERAGE],metrics[LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE]);
+  fprintf(stderr," DEPTH MAP , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(TIMER_DEPTH_MAP_DELAY),GetLastTimer(TIMER_DEPTH_MAP_DELAY),GetTimesTimerTimed(TIMER_DEPTH_MAP_DELAY));
+
+
+if ( settings[HYPERVISOR_STORE_PERFORMANCE_STATISTICS] )
+  {
+    UpdateDisparityMapStatistics(metrics[DEPTHMAP_DELAY_MICROSECONDS],metrics[LAST_DEPTH_MAP_COVERAGE],metrics[LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE],comparisons_small,comparisons_medium,comparisons_large);
+  }
+
+  l_video_register[DEPTH_RIGHT].lock=0;
+  l_video_register[DEPTH_LEFT].lock=0;
+
+  return 1;
+}
+
+
+int ExecuteDisparityMappingPyramid()
+{
+  if (!StartDisparityMapping()) { return 0; }
 
   unsigned int edgepercent=settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED],patch_x=metrics[HORIZONTAL_BUFFER],patch_y=metrics[VERTICAL_BUFFER];
    unsigned int originalthreshold=settings[DEPTHMAP_COMPARISON_THRESHOLD];
@@ -574,44 +623,8 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
                                     0
                                   );
 }
- // THIS IS SET HERE IN ORDER TO BE PASSED TO Depth_Left_Video without problems
-  video_register[DEPTH_LEFT].time = video_register[CALIBRATED_LEFT_EYE].time;
-  video_register[DEPTH_RIGHT].time = video_register[CALIBRATED_RIGHT_EYE].time;
 
-  /*
-    CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
-   */
-     DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1);
-     //DepthMapToVideo(DEPTH_RIGHT,DEPTH_RIGHT_VIDEO,1);
-    CopyRegister(EDGES_LEFT,DEPTH_RIGHT_VIDEO,0,0);
-    MarkRegistersAsSynced(DEPTH_LEFT,DEPTH_RIGHT_VIDEO);
-
-     if (settings[PASS_TO_WORLD_3D])
-      {
-        PassDepthMapToCameraSystem();
-      }
-  /* -------------------------------------------------------------- */
-
-
-
-  metrics[DEPTHMAP_DELAY_MICROSECONDS] = EndTimer(TIMER_DEPTH_MAP_DELAY);
-  metrics[TOTAL_DEPTHMAP_DELAY_MICROSECONDS]+=metrics[DEPTHMAP_DELAY_MICROSECONDS] ;
-  ++metrics[TOTAL_DEPTHMAPS_PERFORMED];
-
-  DisparityMapGetPercentCovered(DEPTH_LEFT);
-  fprintf(stderr,"Percent Covered %u %% , too close %u %% \n",metrics[LAST_DEPTH_MAP_COVERAGE],metrics[LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE]);
-  fprintf(stderr," DEPTH MAP , AVERAGE %u , LAST %u , SAMPLES %u \n",GetAverageTimer(TIMER_DEPTH_MAP_DELAY),GetLastTimer(TIMER_DEPTH_MAP_DELAY),GetTimesTimerTimed(TIMER_DEPTH_MAP_DELAY));
-
-
-if ( settings[HYPERVISOR_STORE_PERFORMANCE_STATISTICS] )
-  {
-    UpdateDisparityMapStatistics(metrics[DEPTHMAP_DELAY_MICROSECONDS],metrics[LAST_DEPTH_MAP_COVERAGE],metrics[LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE],comparisons_small,comparisons_medium,comparisons_large);
-  }
-
-  video_register[DEPTH_RIGHT].lock=0;
-  video_register[DEPTH_LEFT].lock=0;
-
-return 1;
+return EndDisparityMapping(1,comparisons_small,comparisons_medium,comparisons_large);
 }
 
 
@@ -622,39 +635,94 @@ return 1;
 
 unsigned int ExecuteDisparityMappingOpenCV()
 {
-  IplImage* srcLeft = cvCreateImage(cvGetSize(srcLeft), IPL_DEPTH_8U, 3);
-  IplImage* srcRight = cvCreateImage(cvGetSize(srcRight), IPL_DEPTH_8U, 3);
-  IplImage* leftImage = cvCreateImage(cvGetSize(leftImage), IPL_DEPTH_8U, 1);
-  IplImage* rightImage = cvCreateImage(cvGetSize(rightImage), IPL_DEPTH_8U, 1);
-  IplImage* depthImage = cvCreateImage(cvGetSize(srcRight), IPL_DEPTH_8U, 1);
+
+    if (!StartDisparityMapping()) { return 0; }
+
+  fprintf(stderr,"ExecuteDisparityMappingOpenCV \n");
+
+  IplImage* srcLeft = cvCreateImage(cvSize(320,240), IPL_DEPTH_8U, 3);
+  IplImage* srcRight = cvCreateImage(cvSize(320,240), IPL_DEPTH_8U, 3);
+  IplImage* leftImage = cvCreateImage(cvSize(320,240), IPL_DEPTH_8U, 1);
+  IplImage* rightImage = cvCreateImage(cvSize(320,240), IPL_DEPTH_8U, 1);
+
+  char * srcLeftPointer = srcLeft->imageData; // UGLY HACK
+  char * srcRightPointer = srcRight->imageData; // UGLY HACK
+
+  srcLeft->imageData = (char *) video_register[CALIBRATED_LEFT_EYE].pixels;
+  srcRight->imageData = (char *) video_register[CALIBRATED_RIGHT_EYE].pixels;
+
+  cvCvtColor(srcLeft, leftImage, CV_RGB2GRAY);
+  cvCvtColor(srcRight, rightImage, CV_RGB2GRAY);
 
 
-  char * srcLeftPointer=0;
-  char * srcRightPointer=0;
 
-  srcLeftPointer = srcLeft->imageData; // UGLY HACK
-  srcRightPointer = srcRight->imageData; // UGLY HACK
+  CvMat* left = 0;//cvCreateMat( 320,240, CV_8U );
+  CvMat* right = 0;//cvCreateMat( 320,240, CV_8U );
+  CvMat* disp = cvCreateMat( 240,320, CV_16S );
+  CvMat* vdisp = cvCreateMat( 240,320, CV_8U );
+  CvMat stub1,stub2;
+  left = cvGetMat(leftImage, &stub1, 0, 0);
+  right = cvGetMat(rightImage, &stub2, 0, 0);
 
-  srcLeft->imageData = (char *) video_register[DEPTH_LEFT_VIDEO].pixels;
-  srcRight->imageData = (char *) video_register[DEPTH_RIGHT_VIDEO].pixels;
 
-  cvCvtColor(srcLeft, leftImage, CV_BGR2GRAY);
-  cvCvtColor(srcRight, rightImage, CV_BGR2GRAY);
 
-   //cvFindStereoCorrespondence( leftImage, rightImage, 0, depthImage, 50, 15, 3, 6, 8, 15 );
+   CvStereoBMState* state = cvCreateStereoBMState(CV_STEREO_BM_BASIC,0);
 
-  memcpy(video_register[DEPTH_LEFT_VIDEO].pixels,depthImage->imageData,metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]);
+    //state->roi1 = roi1;
+    //state->roi2 = roi2;
+    /*
+    state->preFilterCap = 31;
+    state->SADWindowSize = 9;
+    state->minDisparity = 0;
+    state->numberOfDisparities =     64;
+    state->textureThreshold = 10;
+    state->uniquenessRatio = 15;
+    state->speckleWindowSize = 100;
+    state->speckleRange = 32;
+    state->disp12MaxDiff = 1;*/
 
-  srcLeft->imageData = (char *)  srcLeftPointer; // UGLY HACK
-  srcRight->imageData = (char *)  srcRightPointer; // UGLY HACK
 
+
+
+   cvFindStereoCorrespondenceBM(left, right ,disp ,state);
+   cvNormalize(disp,vdisp,0,256,CV_MINMAX,0);
+
+/*   cvShowImage("srcLeft", srcLeft);
+   cvShowImage("srcRight", srcRight );
+   cvShowImage("leftImage", leftImage);
+   cvShowImage("rightImage", rightImage );
+   cvShowImage("left", left);
+   cvShowImage("right", right );
+     cvShowImage("disp", disp );
+      cvShowImage("vdisp", vdisp );
+  cvWaitKey(0);
+      */
+
+   cvReleaseStereoBMState(&state);
+
+   srcLeft->imageData = (char *) srcLeftPointer; // UGLY HACK
+   srcRight->imageData = (char *) srcRightPointer; // UGLY HACK
+
+   IplImage temp;
+   IplImage* depth = cvGetImage(vdisp,&temp);
+   memcpy(video_register[DEPTH_LEFT_VIDEO].pixels,depth->imageData ,metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]);
+   video_register[DEPTH_LEFT_VIDEO].time=video_register[CALIBRATED_LEFT_EYE].time;
+   video_register[DEPTH_LEFT_VIDEO].depth=1;
+   ConvertRegisterFrom1ByteTo3Byte(DEPTH_LEFT_VIDEO);
+
+
+
+
+
+  cvReleaseMat(&disp);
+  cvReleaseMat(&vdisp);
   cvReleaseImage(&srcLeft);
   cvReleaseImage(&srcRight);
 
   cvReleaseImage(&leftImage);
   cvReleaseImage(&rightImage);
-  cvReleaseImage(&depthImage);
 
-  return 1;
+  return EndDisparityMapping(0,0,0,0);
+
 }
 

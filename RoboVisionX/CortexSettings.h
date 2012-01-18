@@ -107,6 +107,7 @@ class CortexSettings: public wxDialog
 		wxStaticText* StaticText6;
 		wxTextCtrl* StartLeft;
 		wxTextCtrl* PatchSensitivity;
+		wxCheckBox* DepthMapUseOpenCV;
 		wxStaticText* StaticText19;
 		wxStaticText* StaticText29;
 		wxTextCtrl* PatchSizeXMedium;
@@ -226,6 +227,7 @@ class CortexSettings: public wxDialog
 		static const long ID_STATICTEXT9;
 		static const long ID_TEXTCTRL40;
 		static const long ID_TEXTCTRL41;
+		static const long ID_CHECKBOX16;
 		//*)
 
 	private:

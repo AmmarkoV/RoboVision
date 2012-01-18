@@ -95,6 +95,7 @@ int main(int argc, const char* argv[])
     //DISABLE STUFF THAT ARE NOT NEEDED FOR DISPARITY MAPPING..
     VisCortx_SetSetting(PASS_TO_FACE_DETECTOR,0);
     VisCortx_SetSetting(PASS_TO_FEATURE_DETECTOR,0);
+    VisCortx_SetSetting(DEPTHMAP_USE_OPENCV,0);
     VisCortx_SetSetting(USE_OPENCV,0);
     VisCortx_SetSetting(DEPTHMAP_OPENCV_LIKE_OUTPUT,1);
     VisCortx_SetSetting(CALCULATE_MOVEMENT_FLOW,0); 

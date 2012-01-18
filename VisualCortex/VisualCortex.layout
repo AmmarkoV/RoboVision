@@ -7,20 +7,20 @@
 	<File name="CameraPose.h" open="1" top="0" tabpos="43">
 		<Cursor position="862" topLine="0" />
 	</File>
-	<File name="DisparityDepthMap.c" open="1" top="1" tabpos="7">
-		<Cursor position="21583" topLine="333" />
+	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
+		<Cursor position="21470" topLine="444" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
-		<Cursor position="627" topLine="0" />
+		<Cursor position="632" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
-		<Cursor position="11193" topLine="269" />
+		<Cursor position="15298" topLine="415" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
 		<Cursor position="1348" topLine="0" />
 	</File>
 	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
-		<Cursor position="581" topLine="46" />
+		<Cursor position="1014" topLine="6" />
 	</File>
 	<File name="FaceDetection.h" open="1" top="0" tabpos="13">
 		<Cursor position="209" topLine="0" />
@@ -98,7 +98,7 @@
 		<Cursor position="386" topLine="0" />
 	</File>
 	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
-		<Cursor position="2990" topLine="76" />
+		<Cursor position="8840" topLine="227" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
 		<Cursor position="409" topLine="0" />
@@ -133,17 +133,17 @@
 	<File name="VisCortexTimer.h" open="1" top="0" tabpos="42">
 		<Cursor position="693" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="14775" topLine="286" />
+	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
+		<Cursor position="12198" topLine="265" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="3782" topLine="54" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="8315" topLine="175" />
+		<Cursor position="8315" topLine="823" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="2121" topLine="66" />
+		<Cursor position="1221" topLine="45" />
 	</File>
 	<File name="version.h" open="1" top="0" tabpos="49">
 		<Cursor position="0" topLine="0" />

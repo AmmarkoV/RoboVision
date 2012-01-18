@@ -248,8 +248,15 @@ unsigned int Pipeline_Stereo_Frames_Collected_Actions()
   if ( pipeline_switches[EXECUTE_DEPTHMAP]==1  )
    {
       pipeline_switches[EXECUTE_DEPTHMAP]=2;
-      ExecuteDisparityMappingPyramid();
-       //ExecuteDisparityMappingOpenCV();
+
+      if ((settings[DEPTHMAP_USE_OPENCV])&&(settings[USE_OPENCV]) )
+        {
+          ExecuteDisparityMappingOpenCV();
+        } else
+        {
+          ExecuteDisparityMappingPyramid();
+        }
+
       VisCortxMillisecondsSleep(1);
       pipeline_switches[EXECUTE_DEPTHMAP]=0;
    }

@@ -485,5 +485,9 @@
 			<pos>424,440</pos>
 			<size>32,27</size>
 		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX16" variable="DepthMapUseOpenCV" member="yes">
+			<label>Use OpenCV for Depth Maps</label>
+			<pos>568,472</pos>
+		</object>
 	</object>
 </wxsmith>

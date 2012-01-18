@@ -298,6 +298,7 @@ void DefaultSettings()
 
    settings[DEPTHMAP_COMPARISON_ALSO_REVERSE_CHECK]=1; // <- THIS IS KIND OF LIKE NOT TRUSTING THE CHECK :P
 
+   settings[DEPTHMAP_USE_OPENCV]=0;
    settings[DEPTHMAP_OPENCV_LIKE_OUTPUT]=0;
    settings[DEPTHMAP_RGB_MULTIPLIER]=1;
    settings[DEPTHMAP_MOVEMENT_MULTIPLIER]=10;
@@ -380,12 +381,12 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     metrics[RESOLUTION_DEPTH]=3;
     metrics[CHANGES_LEFT]=0;
     metrics[CHANGES_RIGHT]=0;
-    metrics[HORIZONTAL_BUFFER]=7; //20
-    metrics[VERTICAL_BUFFER]=7; //25
-    metrics[HORIZONTAL_BUFFER_LARGE]=11; //50
-    metrics[VERTICAL_BUFFER_LARGE]=11; //75
-    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=19; //125
-    metrics[VERTICAL_BUFFER_EXTRALARGE]=19; // 188
+    metrics[HORIZONTAL_BUFFER]=9; //20
+    metrics[VERTICAL_BUFFER]=9; //25
+    metrics[HORIZONTAL_BUFFER_LARGE]=15; //50
+    metrics[VERTICAL_BUFFER_LARGE]=15; //75
+    metrics[HORIZONTAL_BUFFER_EXTRALARGE]=21; //125
+    metrics[VERTICAL_BUFFER_EXTRALARGE]=21; // 188
     metrics[GROUP_MOVEMENT_ARRAY_SIZE] = ( ((res_y+1)/metrics[VERTICAL_BUFFER])*((res_x+1)/metrics[HORIZONTAL_BUFFER]) ) + ((res_x+1)/metrics[HORIZONTAL_BUFFER]);
 
 
