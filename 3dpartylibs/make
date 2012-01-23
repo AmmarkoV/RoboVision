@@ -3,21 +3,21 @@
 echo "Compiling 3d party libraries"
 
 
-if [ -d "OpenKinect" ]; then
-cd OpenKinect 
-./make
-cd ..
-else
-  echo "Error : Could not find OpenKinect lib directory" 
-fi
+#if [ -d "OpenKinect" ]; then
+#cd OpenKinect 
+#./make
+#cd ..
+#else
+#  echo "Error : Could not find OpenKinect lib directory" 
+#fi
 
-if [ -d "OpenSURFcpp" ]; then
-cd OpenSURFcpp
-./make
-cd ..
-else
-  echo "Error : Could not find OpenSURFcpp lib directory" 
-fi
+#if [ -d "OpenSURFcpp" ]; then
+#cd OpenSURFcpp
+#./make
+#cd ..
+#else
+#  echo "Error : Could not find OpenSURFcpp lib directory" 
+#fi
 
 if [ -d "fast" ]; then
 cd fast

@@ -1,6 +1,0 @@
-#!/bin/bash
-echo "Executing OpenSurf make script.." 
-make clean
-make all
-echo "Done"
-exit 0
