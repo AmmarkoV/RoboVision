@@ -8,7 +8,7 @@
 		<Cursor position="862" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="21470" topLine="444" />
+		<Cursor position="1076" topLine="7" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="632" topLine="0" />
@@ -19,26 +19,26 @@
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
 		<Cursor position="1348" topLine="0" />
 	</File>
-	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
-		<Cursor position="1014" topLine="6" />
+	<File name="FaceDetection.c" open="1" top="1" tabpos="12">
+		<Cursor position="1888" topLine="42" />
 	</File>
 	<File name="FaceDetection.h" open="1" top="0" tabpos="13">
 		<Cursor position="209" topLine="0" />
 	</File>
 	<File name="FeatureExtraction.c" open="1" top="0" tabpos="14">
-		<Cursor position="5302" topLine="176" />
+		<Cursor position="5302" topLine="0" />
 	</File>
 	<File name="FeatureExtraction.h" open="1" top="0" tabpos="15">
 		<Cursor position="162" topLine="0" />
 	</File>
 	<File name="FeatureLists.c" open="1" top="0" tabpos="38">
-		<Cursor position="8403" topLine="196" />
+		<Cursor position="8403" topLine="0" />
 	</File>
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
 		<Cursor position="647" topLine="0" />
 	</File>
 	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
-		<Cursor position="16135" topLine="356" />
+		<Cursor position="288" topLine="0" />
 	</File>
 	<File name="FeatureTracking.h" open="1" top="0" tabpos="29">
 		<Cursor position="571" topLine="0" />
@@ -133,7 +133,7 @@
 	<File name="VisCortexTimer.h" open="1" top="0" tabpos="42">
 		<Cursor position="693" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
+	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
 		<Cursor position="12198" topLine="265" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">

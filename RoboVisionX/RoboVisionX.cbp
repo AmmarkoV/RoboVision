@@ -38,6 +38,7 @@
 			<Add option="-O3" />
 			<Add option="-Wall" />
 			<Add option="`wx-config --cflags`" />
+			<Add option="`pkg-config --cflags opencv`" />
 		</Compiler>
 		<Linker>
 			<Add option="-pthread" />

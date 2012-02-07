@@ -31,7 +31,6 @@
 					<Add option="-Os" />
 					<Add option="-O3" />
 					<Add option="-Wall" />
-					<Add option="`pkg-config opencv --cflags`" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -43,6 +42,7 @@
 			<Add option="-fexpensive-optimizations" />
 			<Add option="-O3" />
 			<Add option="-Wall" />
+			<Add option="`pkg-config --cflags opencv`" />
 		</Compiler>
 		<Linker>
 			<Add option="-s" />
