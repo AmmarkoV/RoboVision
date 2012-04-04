@@ -2,7 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../InputParser/InputParser_C.h"
+#include "StringList.h"
  // #include <curl/curl.h>
+
+
+struct StringList * queries=0;
+struct StringList * verbs=0;
+
+
+
 
 boolean KB_ok(struct KnowledgeBase * kb)
 {

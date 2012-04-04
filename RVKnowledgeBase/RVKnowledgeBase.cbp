@@ -41,6 +41,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="RVKnowledgeBase.h" />
+		<Unit filename="StringList.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="StringList.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

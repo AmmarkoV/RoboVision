@@ -8,11 +8,12 @@ then
 fi  
 
 gcc -c RVKnowledgeBase.c -o RVKnowledgeBase.o 
+gcc -c StringList.c -o StringList.o 
 
-ar  rcs libRVKnowledgeBase.a RVKnowledgeBase.o 
+ar  rcs libRVKnowledgeBase.a RVKnowledgeBase.o StringList.o
 
 
-rm RVKnowledgeBase.o 
+rm RVKnowledgeBase.o StringList.o
  
 
 if [ -e libRVKnowledgeBase.a ]

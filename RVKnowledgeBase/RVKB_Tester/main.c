@@ -13,7 +13,7 @@ void LinkinPark()
 int main()
 {
     LinkinPark();
-    struct KnowledgeBase * kb;
+    struct KnowledgeBase * kb=0;
     kb = InitKnowledgeBase();
     LoadKnowledgeBase(kb,"my_knowledgebase");
 
