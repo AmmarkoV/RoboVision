@@ -66,6 +66,8 @@
 		<Unit filename="FeedScreenMemory.h" />
 		<Unit filename="FramesOSD.cpp" />
 		<Unit filename="FramesOSD.h" />
+		<Unit filename="MapOverview.cpp" />
+		<Unit filename="MapOverview.h" />
 		<Unit filename="RememberImage.cpp" />
 		<Unit filename="RememberImage.h" />
 		<Unit filename="RoboVisionXApp.cpp" />
@@ -74,6 +76,7 @@
 		<Unit filename="RoboVisionXMain.h" />
 		<Unit filename="version.h" />
 		<Unit filename="wxsmith/CortexSettings.wxs" />
+		<Unit filename="wxsmith/MapOverview.wxs" />
 		<Unit filename="wxsmith/RememberImage.wxs" />
 		<Unit filename="wxsmith/RoboVisionXframe.wxs" />
 		<Extensions>
@@ -87,6 +90,7 @@
 					<wxFrame wxs="wxsmith/RoboVisionXframe.wxs" src="RoboVisionXMain.cpp" hdr="RoboVisionXMain.h" name="RoboVisionXFrame" language="CPP" />
 					<wxDialog wxs="wxsmith/CortexSettings.wxs" src="CortexSettings.cpp" hdr="CortexSettings.h" name="CortexSettings" language="CPP" />
 					<wxDialog wxs="wxsmith/RememberImage.wxs" src="RememberImage.cpp" hdr="RememberImage.h" name="RememberImage" language="CPP" />
+					<wxFrame wxs="wxsmith/MapOverview.wxs" src="MapOverview.cpp" hdr="MapOverview.h" name="MapOverview" language="CPP" />
 				</resources>
 			</wxsmith>
 			<AutoVersioning>

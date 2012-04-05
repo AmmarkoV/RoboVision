@@ -10,6 +10,7 @@
 #include "FeedScreenMemory.h"
 #include "CortexSettings.h"
 #include "RememberImage.h"
+#include "MapOverview.h"
 
 #include "FramesOSD.h"
 #include "version.h"
@@ -102,6 +103,7 @@ const long RoboVisionXFrame::ID_STATICTEXT14 = wxNewId();
 const long RoboVisionXFrame::ID_STATICTEXT15 = wxNewId();
 const long RoboVisionXFrame::ID_CHECKBOX4 = wxNewId();
 const long RoboVisionXFrame::ID_STATICTEXT16 = wxNewId();
+const long RoboVisionXFrame::ID_BUTTON15 = wxNewId();
 const long RoboVisionXFrame::idMenuOpenSnapshots = wxNewId();
 const long RoboVisionXFrame::idMenuQuit = wxNewId();
 const long RoboVisionXFrame::idMenuAbout = wxNewId();
@@ -121,7 +123,9 @@ END_EVENT_TABLE()
 
 unsigned int WAIT_TIME_REDRAW = 250; // WAIT TIME PER FRAME
 unsigned int WAIT_TIME_STARTUP = 5000;
+MapOverview * map_frame=0;
 int position = 0;
+
 char * version_code_name = (char *) " -  Luben ";
 
 inline wxString _U(const char String[] = "")
@@ -144,10 +148,10 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     SetClientSize(wxSize(924,584));
     StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, _("Position Status"), wxPoint(680,32), wxSize(232,168), 0, _T("ID_STATICBOX1"));
     StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Dist. Traveled :"), wxPoint(688,54), wxSize(128,17), 0, _T("ID_STATICTEXT1"));
-    ButtonDepthMap = new wxButton(this, ID_BUTTON1, _("Depth Map"), wxPoint(680,392), wxSize(120,24), 0, wxDefaultValidator, _T("ID_BUTTON1"));
+    ButtonDepthMap = new wxButton(this, ID_BUTTON1, _("Depth Map"), wxPoint(680,392), wxSize(88,24), 0, wxDefaultValidator, _T("ID_BUTTON1"));
     StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Left Cam"), wxPoint(15,0), wxDefaultSize, 0, _T("ID_STATICTEXT2"));
     StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Right Cam"), wxPoint(340,0), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
-    MotionAlarmButton = new wxButton(this, ID_BUTTON2, _("Motion Alarm"), wxPoint(808,392), wxSize(104,24), 0, wxDefaultValidator, _T("ID_BUTTON2"));
+    MotionAlarmButton = new wxButton(this, ID_BUTTON2, _("Motion Alarm"), wxPoint(816,392), wxSize(96,24), 0, wxDefaultValidator, _T("ID_BUTTON2"));
     StaticBox2 = new wxStaticBox(this, ID_STATICBOX2, _("General"), wxPoint(680,200), wxSize(232,72), 0, _T("ID_STATICBOX2"));
     UptimeLabel = new wxStaticText(this, ID_STATICTEXT4, _("Uptime :"), wxPoint(688,220), wxSize(72,17), 0, _T("ID_STATICTEXT4"));
     Uptime = new wxStaticText(this, ID_STATICTEXT5, _("0"), wxPoint(760,220), wxDefaultSize, 0, _T("ID_STATICTEXT5"));
@@ -237,6 +241,7 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     SaveLoadStreamOfSnapshots = new wxCheckBox(this, ID_CHECKBOX4, _("Rec/Play Stream of Snapshots"), wxPoint(680,464), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
     SaveLoadStreamOfSnapshots->SetValue(false);
     PoseString = new wxStaticText(this, ID_STATICTEXT16, _("X:0.0   Y:0.0  Z:0.0  heading: 0.0 "), wxPoint(680,176), wxSize(232,17), 0, _T("ID_STATICTEXT16"));
+    ButtonMap = new wxButton(this, ID_BUTTON15, _("Map"), wxPoint(768,392), wxSize(48,24), 0, wxDefaultValidator, _T("ID_BUTTON15"));
     MenuBar1 = new wxMenuBar();
     Menu1 = new wxMenu();
     MenuItem3 = new wxMenuItem(Menu1, idMenuOpenSnapshots, _("Open Snapshot\tF2"), _("Opens a recorded snapshot"), wxITEM_NORMAL);
@@ -280,6 +285,7 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_SLIDER2,wxEVT_SCROLL_THUMBTRACK,(wxObjectEventFunction)&RoboVisionXFrame::OnMovementVerticalCmdScroll);
     Connect(ID_SLIDER2,wxEVT_SCROLL_THUMBRELEASE,(wxObjectEventFunction)&RoboVisionXFrame::OnMovementVerticalCmdScroll);
     Connect(ID_CHECKBOX4,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&RoboVisionXFrame::OnSaveSnapshotsClick);
+    Connect(ID_BUTTON15,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RoboVisionXFrame::OnButtonMapClick);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&RoboVisionXFrame::OnQuit);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&RoboVisionXFrame::OnAbout);
     Connect(ID_TIMER1,wxEVT_TIMER,(wxObjectEventFunction)&RoboVisionXFrame::OnTimer1Trigger);
@@ -331,6 +337,7 @@ RoboVisionXFrame::RoboVisionXFrame(wxWindow* parent,wxWindowID id)
 
     feed_3_x=feed_1_x;
     feed_3_y=feed_2_y;
+
 
   }
 
@@ -888,4 +895,20 @@ void RoboVisionXFrame::OnAutonomousClick1(wxCommandEvent& event)
 {
    if ( Autonomous->IsChecked() ) { IssueCommand((char *) "AUTONOMOUS MODE(1)",0,0,(char *)"GUI");  } else
                                   { IssueCommand((char *) "AUTONOMOUS MODE(0)",0,0,(char *)"GUI");  }
+}
+
+void RoboVisionXFrame::OnButtonMapClick(wxCommandEvent& event)
+{
+   if (map_frame!=0)
+     {
+       delete map_frame;
+       map_frame=0;
+       return ;
+     }
+
+
+   map_frame = new MapOverview(this, wxID_ANY);
+   map_frame->Show();
+
+
 }

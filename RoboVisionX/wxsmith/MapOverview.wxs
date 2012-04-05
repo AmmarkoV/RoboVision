@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxFrame" name="MapOverview">
+		<title>Map Overview</title>
+		<size>924,584</size>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<object class="wxStaticBox" name="ID_STATICBOX1" variable="StaticBox1" member="yes">
+			<label>Map Overview</label>
+			<pos>16,8</pos>
+			<size>896,568</size>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+			<label>Current Position</label>
+			<pos>40,536</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="TextCurPosX" member="yes">
+			<value>0</value>
+			<pos>152,532</pos>
+			<size>48,27</size>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="TextCurPosY" member="yes">
+			<value>0</value>
+			<pos>200,532</pos>
+			<size>48,27</size>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
+			<label>Target Position</label>
+			<pos>304,536</pos>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="TextTargetPosX" member="yes">
+			<value>0</value>
+			<pos>400,532</pos>
+			<size>48,27</size>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL4" variable="TextTargetPosY" member="yes">
+			<value>0</value>
+			<pos>448,532</pos>
+			<size>48,27</size>
+		</object>
+		<object class="wxCheckBox" name="ID_CHECKBOX1" variable="CheckBoxAutoUpdate" member="yes">
+			<label>Auto Update</label>
+			<pos>536,536</pos>
+		</object>
+		<object class="wxButton" name="ID_BUTTON1" variable="ButtonExecute" member="yes">
+			<label>Execute</label>
+			<pos>664,532</pos>
+			<handler function="OnButtonExecuteClick" entry="EVT_BUTTON" />
+		</object>
+	</object>
+</wxsmith>

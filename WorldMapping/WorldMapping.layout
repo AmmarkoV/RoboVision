@@ -4,13 +4,13 @@
 	<File name="WorldMappingApp.cpp" open="1" top="0" tabpos="3">
 		<Cursor position="449" topLine="0" />
 	</File>
-	<File name="WorldMappingApp.h" open="1" top="1" tabpos="4">
+	<File name="WorldMappingApp.h" open="1" top="0" tabpos="4">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="WorldMappingMain.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="801" topLine="102" />
+	<File name="WorldMappingMain.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="508" topLine="0" />
 	</File>
 	<File name="WorldMappingMain.h" open="1" top="0" tabpos="2">
-		<Cursor position="674" topLine="33" />
+		<Cursor position="2346" topLine="33" />
 	</File>
 </CodeBlocks_layout_file>

@@ -17,7 +17,7 @@
 		<object class="wxButton" name="ID_BUTTON1" variable="ButtonDepthMap" member="yes">
 			<label>Depth Map</label>
 			<pos>680,392</pos>
-			<size>120,24</size>
+			<size>88,24</size>
 			<handler function="OnButtonDepthMapClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
@@ -30,8 +30,8 @@
 		</object>
 		<object class="wxButton" name="ID_BUTTON2" variable="MotionAlarmButton" member="yes">
 			<label>Motion Alarm</label>
-			<pos>808,392</pos>
-			<size>104,24</size>
+			<pos>816,392</pos>
+			<size>96,24</size>
 			<handler function="OnMotionAlarmButtonClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxStaticBox" name="ID_STATICBOX2" variable="StaticBox2" member="yes">
@@ -297,6 +297,12 @@
 			<label>X:0.0   Y:0.0  Z:0.0  heading: 0.0 </label>
 			<pos>680,176</pos>
 			<size>232,17</size>
+		</object>
+		<object class="wxButton" name="ID_BUTTON15" variable="ButtonMap" member="yes">
+			<label>Map</label>
+			<pos>768,392</pos>
+			<size>48,24</size>
+			<handler function="OnButtonMapClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxMenuBar" variable="MenuBar1" member="no">
 			<object class="wxMenu" variable="Menu1" member="no">

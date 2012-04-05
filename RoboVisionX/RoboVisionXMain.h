@@ -26,6 +26,10 @@
 //*)
 #include <wx/sound.h>
 
+#include "MapOverview.h"
+
+extern MapOverview * map_frame;
+
 class RoboVisionXFrame: public wxFrame
 {
     public:
@@ -37,6 +41,7 @@ class RoboVisionXFrame: public wxFrame
         void PrintStats();
 
         int feed_0_x,feed_0_y,feed_1_x,feed_1_y,feed_2_x,feed_2_y,feed_3_x,feed_3_y;
+
 
     private:
 
@@ -65,6 +70,7 @@ class RoboVisionXFrame: public wxFrame
         void OnSaveSnapshotsClick(wxCommandEvent& event);
         void OnAutonomousClick(wxCommandEvent& event);
         void OnAutonomousClick1(wxCommandEvent& event);
+        void OnButtonMapClick(wxCommandEvent& event);
         //*)
         void OnMotion(wxMouseEvent& event);
 
@@ -114,6 +120,7 @@ class RoboVisionXFrame: public wxFrame
         static const long ID_STATICTEXT15;
         static const long ID_CHECKBOX4;
         static const long ID_STATICTEXT16;
+        static const long ID_BUTTON15;
         static const long idMenuOpenSnapshots;
         static const long idMenuQuit;
         static const long idMenuAbout;
@@ -125,6 +132,7 @@ class RoboVisionXFrame: public wxFrame
         wxButton* PlayButton;
         wxButton* StopButton;
         wxButton* UpButton;
+        wxButton* ButtonMap;
         wxStatusBar* StatusBar1;
         wxButton* LiveButton;
         wxButton* Ok;

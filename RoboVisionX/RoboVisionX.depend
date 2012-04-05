@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1322966993 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/CortexSettings.cpp
+1326857011 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/CortexSettings.cpp
 	"CortexSettings.h"
 	"../VisualCortex/VisualCortex.h"
 	<wx/string.h>
 	<wx/intl.h>
 	<wx/font.h>
 
-1322966996 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/CortexSettings.h
+1326856954 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/CortexSettings.h
 	<wx/checkbox.h>
 	<wx/dialog.h>
 	<wx/button.h>
@@ -636,7 +636,7 @@
 
 1314284222 /usr/include/wx-2.8/wx/gtk/textctrl.h
 
-1326409128 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1326843154 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
 1324775140 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/FeedScreenMemory.cpp
 	"FeedScreenMemory.h"
@@ -1484,7 +1484,7 @@
 1314284222 /usr/include/wx-2.8/wx/gtk/filedlg.h
 	"wx/generic/filedlgg.h"
 
-1324085609 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.h
+1333579990 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.h
 	<wx/gauge.h>
 	<wx/checkbox.h>
 	<wx/button.h>
@@ -1498,6 +1498,7 @@
 	<wx/choice.h>
 	<wx/timer.h>
 	<wx/sound.h>
+	"MapOverview.h"
 
 1314284223 /usr/include/wx-2.8/wx/sound.h
 	"wx/defs.h"
@@ -1541,11 +1542,12 @@
 1316163470 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXApp.h
 	<wx/app.h>
 
-1324783758 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.cpp
+1333583667 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RoboVisionXMain.cpp
 	"RoboVisionXMain.h"
 	"FeedScreenMemory.h"
 	"CortexSettings.h"
 	"RememberImage.h"
+	"MapOverview.h"
 	"FramesOSD.h"
 	"version.h"
 	"../MotorFoundation/MotorHAL.h"
@@ -1598,4 +1600,23 @@
 	"../VisualCortex/VisualCortex.h"
 
 1323564375 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterWorld/MasterWorld.h
+
+1333583906 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/MapOverview.cpp
+	"MapOverview.h"
+	"RoboVisionXMain.h"
+	<wx/string.h>
+	<wx/intl.h>
+	<wx/dc.h>
+	<wx/dcclient.h>
+	<wx/dcmemory.h>
+	<wx/colour.h>
+	<wx/utils.h>
+
+1333583027 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/MapOverview.h
+	<wx/checkbox.h>
+	<wx/button.h>
+	<wx/statbox.h>
+	<wx/frame.h>
+	<wx/stattext.h>
+	<wx/textctrl.h>
 

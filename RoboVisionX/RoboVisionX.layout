@@ -19,6 +19,12 @@
 	<File name="FramesOSD.h" open="1" top="0" tabpos="13">
 		<Cursor position="475" topLine="0" />
 	</File>
+	<File name="MapOverview.cpp" open="1" top="0" tabpos="14">
+		<Cursor position="343" topLine="0" />
+	</File>
+	<File name="MapOverview.h" open="1" top="0" tabpos="15">
+		<Cursor position="1267" topLine="0" />
+	</File>
 	<File name="RememberImage.cpp" open="1" top="0" tabpos="8">
 		<Cursor position="2953" topLine="34" />
 	</File>
@@ -32,10 +38,10 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="RoboVisionXMain.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="4776" topLine="0" />
+		<Cursor position="4588" topLine="102" />
 	</File>
 	<File name="RoboVisionXMain.h" open="1" top="0" tabpos="2">
-		<Cursor position="6682" topLine="0" />
+		<Cursor position="783" topLine="18" />
 	</File>
 	<File name="version.h" open="1" top="0" tabpos="11">
 		<Cursor position="814" topLine="0" />
