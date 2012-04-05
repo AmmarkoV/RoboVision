@@ -59,7 +59,8 @@ unsigned int RobotInit(char * md23_device_id,char * arduino_device_id)
      {
        worldmap=CreateMap(500,500,3);
        SetMapUnit_In_cm(worldmap,15);
-       SetAgentLocation(worldmap,0,250,250);
+       SetAgentLocation(worldmap,0,50,50); // This is so it can show up on the map :P
+       SetAgentTargetLocation(worldmap,0,50,50); // This is so it will not move :P
      }
 
     if ( pthread_create(&monitor_thread_id, NULL,  HAL_Monitor ,0) != 0 )

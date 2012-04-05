@@ -1519,7 +1519,8 @@
 1289554847 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
 	<stdio.h>
 
-1324775143 /home/ammar/Documents/Programming/RoboVision/RoboKernel/RoboKernel.h
+1333657229 /home/ammar/Documents/Programming/RoboVision/RoboKernel/RoboKernel.h
+	"../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
 
 1303475277 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/RememberImage.cpp
 	"RememberImage.h"
@@ -1601,18 +1602,20 @@
 
 1323564375 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterWorld/MasterWorld.h
 
-1333583906 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/MapOverview.cpp
+1333666544 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/MapOverview.cpp
 	"MapOverview.h"
 	"RoboVisionXMain.h"
 	<wx/string.h>
 	<wx/intl.h>
+	"../RoboKernel/RoboKernel.h"
+	"../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
 	<wx/dc.h>
 	<wx/dcclient.h>
 	<wx/dcmemory.h>
 	<wx/colour.h>
 	<wx/utils.h>
 
-1333583027 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/MapOverview.h
+1333661169 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/MapOverview.h
 	<wx/checkbox.h>
 	<wx/button.h>
 	<wx/statbox.h>

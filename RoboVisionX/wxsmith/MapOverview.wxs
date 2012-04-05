@@ -40,12 +40,24 @@
 		</object>
 		<object class="wxCheckBox" name="ID_CHECKBOX1" variable="CheckBoxAutoUpdate" member="yes">
 			<label>Auto Update</label>
-			<pos>536,536</pos>
+			<pos>672,536</pos>
 		</object>
 		<object class="wxButton" name="ID_BUTTON1" variable="ButtonExecute" member="yes">
 			<label>Execute</label>
-			<pos>664,532</pos>
+			<pos>808,528</pos>
 			<handler function="OnButtonExecuteClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxButton" name="ID_BUTTON2" variable="ButtonSetCurPos" member="yes">
+			<label>Set</label>
+			<pos>248,530</pos>
+			<size>32,29</size>
+			<handler function="OnButtonSetCurPosClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxButton" name="ID_BUTTON3" variable="ButtonSetTargetPos" member="yes">
+			<label>Set</label>
+			<pos>496,530</pos>
+			<size>32,29</size>
+			<handler function="OnButtonSetTargetPosClick" entry="EVT_BUTTON" />
 		</object>
 	</object>
 </wxsmith>

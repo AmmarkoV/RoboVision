@@ -5,6 +5,9 @@
 #include <wx/intl.h>
 //*)
 
+#include "../RoboKernel/RoboKernel.h"
+#include "../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
+
 
 #include <wx/dc.h>
 #include <wx/dcclient.h>
@@ -12,9 +15,23 @@
 #include <wx/colour.h>
 #include <wx/utils.h>
 
+int MapDrawX=30;
+int MapDrawY=30;
+unsigned int map_box_size=4;
+unsigned int map_box_size_half=2;
+
+
 wxBitmap *draw_area=0;
 unsigned int draw_area_width=866;
 unsigned int draw_area_height=500;
+
+unsigned int draw_area_actual_pointsX=200;
+unsigned int draw_area_actual_pointsY=100;
+
+
+unsigned int OURROBOT=0;
+unsigned int OBSTACLE_UNCERTAINTY=1;
+
 
 //(*IdInit(MapOverview)
 const long MapOverview::ID_STATICBOX1 = wxNewId();
@@ -26,6 +43,8 @@ const long MapOverview::ID_TEXTCTRL3 = wxNewId();
 const long MapOverview::ID_TEXTCTRL4 = wxNewId();
 const long MapOverview::ID_CHECKBOX1 = wxNewId();
 const long MapOverview::ID_BUTTON1 = wxNewId();
+const long MapOverview::ID_BUTTON2 = wxNewId();
+const long MapOverview::ID_BUTTON3 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(MapOverview,wxFrame)
@@ -48,14 +67,20 @@ MapOverview::MapOverview(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
 	StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Target Position"), wxPoint(304,536), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	TextTargetPosX = new wxTextCtrl(this, ID_TEXTCTRL3, _("0"), wxPoint(400,532), wxSize(48,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
 	TextTargetPosY = new wxTextCtrl(this, ID_TEXTCTRL4, _("0"), wxPoint(448,532), wxSize(48,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
-	CheckBoxAutoUpdate = new wxCheckBox(this, ID_CHECKBOX1, _("Auto Update"), wxPoint(536,536), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
+	CheckBoxAutoUpdate = new wxCheckBox(this, ID_CHECKBOX1, _("Auto Update"), wxPoint(672,536), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
 	CheckBoxAutoUpdate->SetValue(false);
-	ButtonExecute = new wxButton(this, ID_BUTTON1, _("Execute"), wxPoint(664,532), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	ButtonExecute = new wxButton(this, ID_BUTTON1, _("Execute"), wxPoint(808,528), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	ButtonSetCurPos = new wxButton(this, ID_BUTTON2, _("Set"), wxPoint(248,530), wxSize(32,29), 0, wxDefaultValidator, _T("ID_BUTTON2"));
+	ButtonSetTargetPos = new wxButton(this, ID_BUTTON3, _("Set"), wxPoint(496,530), wxSize(32,29), 0, wxDefaultValidator, _T("ID_BUTTON3"));
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&MapOverview::OnButtonExecuteClick);
+	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&MapOverview::OnButtonSetCurPosClick);
+	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&MapOverview::OnButtonSetTargetPosClick);
 	//*)
 
     draw_area = new wxBitmap(draw_area_width,draw_area_height,-1);
+    set_point_flag=0;
+
 
 }
 
@@ -69,8 +94,8 @@ MapOverview::~MapOverview()
 }
 
 
-void DrawSolvePath(wxMemoryDC &mem,struct Map *floorplancopy)
-{/*
+void DrawSolvePath(wxMemoryDC &mem)
+{
   unsigned int route_count=0;
   unsigned int x=0,y=0;
 
@@ -78,28 +103,28 @@ void DrawSolvePath(wxMemoryDC &mem,struct Map *floorplancopy)
   wxPen yellow(wxColour(255,255,0),1,wxSOLID);
 
 
-  while ( GetRouteWaypoint(floorplancopy,0,route_count,&x,&y) == 1 )
+  while ( GetRouteWaypoint(GetWorldHandler(),0,route_count,&x,&y) == 1 )
     {
       mem.SetPen(yellow);
       mem.SetBrush(yellowback);
 
-      mem.DrawRectangle(x*10,y*10,10,10);
+      mem.DrawRectangle(x*map_box_size,y*map_box_size,map_box_size,map_box_size);
       ++route_count;
     }
 
   //printf("Drawing Level 1 Lines \n");
   wxPen redfat(wxColour(255,0,0),3,wxSOLID);
   unsigned int oldx=0,oldy=0;
-  if ( GetStraightRouteWaypoint(floorplancopy,OURROBOT,0,&oldx,&oldy)==1 ) { mem.DrawCircle(oldx*10+5,oldy*10+5,3); }
+  if ( GetStraightRouteWaypoint(GetWorldHandler(),OURROBOT,0,&oldx,&oldy)==1 ) { mem.DrawCircle(oldx*10+5,oldy*10+5,3); }
   route_count=1;
-  while ( GetStraightRouteWaypoint(floorplancopy,OURROBOT,route_count,&x,&y)==1 )
+  while ( GetStraightRouteWaypoint(GetWorldHandler(),OURROBOT,route_count,&x,&y)==1 )
     {
       mem.SetPen(redfat);
-      mem.DrawCircle(x*10+5,y*10+5,3);
-      mem.DrawLine(oldx*10+5,oldy*10+5,x*10+5,y*10+5);
+      mem.DrawCircle(x*map_box_size+map_box_size_half,y*map_box_size+map_box_size_half,3);
+      mem.DrawLine(oldx*map_box_size+map_box_size_half,oldy*map_box_size+map_box_size_half,x*map_box_size+map_box_size_half,y*map_box_size+map_box_size_half);
       ++route_count;
       oldx = x , oldy = y ;
-    }*/
+    }
   return;
 }
 
@@ -115,7 +140,7 @@ void DrawStartPoint(wxMemoryDC &mem,unsigned int startx,unsigned int starty)
       mem.SetPen(green);
       mem.SetBrush(greenback);
 
-      mem.DrawRectangle(startx*10,starty*10,10,10);
+      mem.DrawRectangle(startx*map_box_size-3,starty*map_box_size-3,map_box_size+6,map_box_size+6);
     }
 }
 
@@ -134,14 +159,14 @@ void DrawEndPoint(wxMemoryDC &mem,unsigned int endx,unsigned int endy)
       else
         mem.SetPen(black);
 
-      mem.DrawRectangle(endx*10,endy*10,10,10);
+      mem.DrawRectangle(endx*map_box_size-3,endy*map_box_size-3,map_box_size+6,map_box_size+6);
     }
 }
 
 
 
 
-void DrawWorld(wxMemoryDC &mem,struct Map *floorplancopy,unsigned int startx,unsigned int starty,unsigned int endx,unsigned int endy)
+void DrawWorld(wxMemoryDC &mem,struct Map *floorplancopy)
 {
   wxBrush blackback(wxColour(0,0,0),wxSOLID);
   wxPen white(wxColour(255,255,255),1,wxSOLID);
@@ -160,19 +185,19 @@ void DrawWorld(wxMemoryDC &mem,struct Map *floorplancopy,unsigned int startx,uns
   mem.SetPen(black);
   mem.SetBrush(whiteback);
 
-  for (int y =0; y<100; y++ )
+  for (int y =0; y<draw_area_actual_pointsY; y++ )
     {
-      for (int x =0; x<100; x++ )
+      for (int x =0; x<draw_area_actual_pointsX; x++ )
         {
 
-         // obj = ObstacleExists(floorplancopy,x,y);
+          obj = ObstacleExists(GetWorldHandler(),x,y);
           if ( obj!=0 )
             {
               mem.SetPen(red);
               mem.SetBrush(blackback);
             } else
             {
-           //   obj = ObstacleRadiousExists(floorplancopy,x,y);
+              obj = ObstacleRadiousExists(GetWorldHandler(),x,y);
               if ( obj!=0 )
               {
                 mem.SetPen(black);
@@ -180,11 +205,11 @@ void DrawWorld(wxMemoryDC &mem,struct Map *floorplancopy,unsigned int startx,uns
               }
             }
 
-          mem.DrawRectangle(x*10,y*10,10,10);
+          mem.DrawRectangle(x*map_box_size,y*map_box_size,map_box_size,map_box_size);
            obj=1;
           if ( obj!=0 )
             {
-              mem.SetPen(black);
+              mem.SetPen(white); //black for boxes everywhere!
               mem.SetBrush(whiteback);
               obj = 0;
             }
@@ -192,10 +217,22 @@ void DrawWorld(wxMemoryDC &mem,struct Map *floorplancopy,unsigned int startx,uns
         }
     }
 
-  DrawSolvePath(mem,floorplancopy);
+  DrawSolvePath(mem);
+
+
+
+  unsigned int endx=0,endy=0;
+  GetAgentTargetLocation(GetWorldHandler(),OURROBOT,&endx,&endy);
+
+  DrawEndPoint(mem,endx,endy);
+
+  // Draw Start point drawn second in case both points are the same ( we are on target :P )
+
+  unsigned int startx=0,starty=0;
+  GetAgentLocation(GetWorldHandler(),OURROBOT,&startx,&starty);
 
   DrawStartPoint(mem,startx,starty);
-  DrawEndPoint(mem,endx,endy);
+
 
 }
 
@@ -204,35 +241,23 @@ void MapOverview::OnPaint(wxPaintEvent& event)
 {
   wxPaintDC dc(this);
   wxMemoryDC mem;
-  int x=30;
-  int y=30;
   mem.SelectObject(*draw_area);
   mem.Clear();
 
-  unsigned int startx=10,starty=10;
-  //GetAgentLocation(floor,OURROBOT,&startx,&starty);
+  DrawWorld(mem,GetWorldHandler());
 
-  unsigned int endx=11,endy=11;
-  //GetAgentTargetLocation(floor,OURROBOT,&endx,&endy);
-//  DrawWorld(mem,floor,startx,starty,endx,endy);
-
-
-  DrawStartPoint(mem,startx,starty);
-  DrawEndPoint(mem,endx,endy);
-
-
-  dc.DrawBitmap(*draw_area,x,y,true);
+  dc.DrawBitmap(*draw_area,MapDrawX,MapDrawY,1);
 }
 
 
 int XYOverFeed(int &x , int &y )
 {
-  if ( (x>=130) && (x<=130+10*100) )
+  if ( (x>=MapDrawX) && (x<=MapDrawX+map_box_size*draw_area_actual_pointsX) )
     {
-      if ( (y>=30) && (y<=30+10*100) )
+      if ( (y>=MapDrawY) && (y<=MapDrawY+map_box_size*draw_area_actual_pointsY) )
         {
-          x =(int) ( x - 130 ) / 10;
-          y =(int) ( y - 30 ) / 10;
+          x =(int) ( x - MapDrawX ) / map_box_size;
+          y =(int) ( y - MapDrawY ) / map_box_size;
 
           return 1;
         }
@@ -243,7 +268,7 @@ int XYOverFeed(int &x , int &y )
 void MapOverview::OnMotion(wxMouseEvent& event)
 {
   wxSleep(0.01);
-  /*
+
   if ( event.LeftIsDown()==1 )
     {
       int x=event.GetX();
@@ -255,36 +280,35 @@ void MapOverview::OnMotion(wxMouseEvent& event)
           if ( set_point_flag == 1 )
             {
               wxString tmp;
-              tmp.clear() , tmp<<x , ptx1->SetValue(tmp);
-              tmp.clear() , tmp<<y , pty1->SetValue(tmp);
-              StatusBar1->SetStatusText(wxT("Set Start point"));
+              tmp.clear() , tmp<<x , TextCurPosX->SetValue(tmp);
+              tmp.clear() , tmp<<y , TextCurPosY->SetValue(tmp);
+              //StatusBar1->SetStatusText(wxT("Set Start point"));
 
-                 SetAgentLocation(floor,OURROBOT,x,y);
+                 SetAgentLocation(GetWorldHandler(),OURROBOT,x,y);
 
               wxCommandEvent nullevent;
-              OnButtonCalculateClick(nullevent);
+              OnButtonExecuteClick(nullevent);
             }
           else
             if ( set_point_flag == 2 )
               {
                 wxString tmp;
-                tmp.clear() , tmp<<x , ptx2->SetValue(tmp);
-                tmp.clear() , tmp<<y , pty2->SetValue(tmp);
-                StatusBar1->SetStatusText(wxT("Set End point"));
+                tmp.clear() , tmp<<x , TextTargetPosX->SetValue(tmp);
+                tmp.clear() , tmp<<y , TextTargetPosY->SetValue(tmp);
+                //StatusBar1->SetStatusText(wxT("Set End point"));
 
-                 SetAgentTargetLocation(floor,OURROBOT,x,y);
+                 SetAgentTargetLocation(GetWorldHandler(),OURROBOT,x,y);
 
                 wxCommandEvent nullevent;
-                OnButtonCalculateClick(nullevent);
+                OnButtonExecuteClick(nullevent);
               }
             else
               {
-                //floor_plan->SetObjectAt(x,y,BLOCKED);
-                SetObstacle(floor,x,y,OBSTACLE_UNCERTAINTY) ;
+                SetObstacle(GetWorldHandler(),x,y,OBSTACLE_UNCERTAINTY) ;
                 Refresh();
               }
 
-          set_point_flag=0;
+            set_point_flag=0;
         }
     }
   else
@@ -294,11 +318,10 @@ void MapOverview::OnMotion(wxMouseEvent& event)
         int y=event.GetY();
         if ( XYOverFeed(x,y)==1 )
           {
-            //floor_plan->SetObjectAt(x,y,FREE);
-            RemoveObstacle(floor,x,y,OBSTACLE_UNCERTAINTY);
+            RemoveObstacle(GetWorldHandler(),x,y,OBSTACLE_UNCERTAINTY);
             Refresh();
           }
-      }*/
+      }
   return;
 }
 
@@ -306,4 +329,19 @@ void MapOverview::OnMotion(wxMouseEvent& event)
 
 void MapOverview::OnButtonExecuteClick(wxCommandEvent& event)
 {
+   signed int res=FindPath(GetWorldHandler(),OURROBOT,100); //TimeMS->GetValue()*10
+  //floor_plan->FindPathTo(endx,endy,);
+//  if ( res <1 ) { TTS((char *)"Could not establish a route.");  } else
+//                { TTS((char *)"New route established."); }
+  Refresh();
+}
+
+void MapOverview::OnButtonSetCurPosClick(wxCommandEvent& event)
+{
+  set_point_flag=1;
+}
+
+void MapOverview::OnButtonSetTargetPosClick(wxCommandEvent& event)
+{
+  set_point_flag=2;
 }

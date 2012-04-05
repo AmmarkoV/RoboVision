@@ -22,7 +22,9 @@ class MapOverview: public wxFrame
 		wxTextCtrl* TextTargetPosX;
 		wxCheckBox* CheckBoxAutoUpdate;
 		wxStaticText* StaticText1;
+		wxButton* ButtonSetTargetPos;
 		wxTextCtrl* TextCurPosX;
+		wxButton* ButtonSetCurPos;
 		wxStaticText* StaticText3;
 		wxStaticBox* StaticBox1;
 		wxTextCtrl* TextTargetPosY;
@@ -41,16 +43,23 @@ class MapOverview: public wxFrame
 		static const long ID_TEXTCTRL4;
 		static const long ID_CHECKBOX1;
 		static const long ID_BUTTON1;
+		static const long ID_BUTTON2;
+		static const long ID_BUTTON3;
 		//*)
 
 	private:
 
 		//(*Handlers(MapOverview)
 		void OnButtonExecuteClick(wxCommandEvent& event);
+		void OnButtonSetCurPosClick(wxCommandEvent& event);
+		void OnButtonSetTargetPosClick(wxCommandEvent& event);
 		//*)
 
         void OnPaint(wxPaintEvent& event);
         void OnMotion(wxMouseEvent& event);
+
+        wxMouseState mouse;
+        int set_point_flag;
 
 		DECLARE_EVENT_TABLE()
 };
