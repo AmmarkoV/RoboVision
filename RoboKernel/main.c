@@ -264,3 +264,9 @@ int RoboKernelAlive()
   if ( go_to_sleep==2 ) { return 0; }
   return 1;
 }
+
+
+struct Map * GetWorldHandler()
+{
+   return RobotGetMapPointer();
+}

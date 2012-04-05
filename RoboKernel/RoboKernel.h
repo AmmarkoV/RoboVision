@@ -1,6 +1,9 @@
 #ifndef ROBOKERNEL_H_INCLUDED
 #define ROBOKERNEL_H_INCLUDED
 
+#include "../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -19,6 +22,8 @@ int StopRoboKernel();
 int CheckThatRoboKernelStopped();
 
 int RoboKernelAlive();
+
+struct Map * GetWorldHandler();
 
 #ifdef __cplusplus
 }
