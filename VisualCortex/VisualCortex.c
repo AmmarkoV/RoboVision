@@ -360,7 +360,7 @@ unsigned int VisCortX_NewFrame(unsigned int input_img_regnum,unsigned int size_x
 
 unsigned int VisCortX_ClearVideoRegister(unsigned int input_img_regnum)
 {
-    return ClearVideoRegister(input_img_regnum);
+    return ClearVideoRegister(&video_register[input_img_regnum]);
 }
 
 unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum,unsigned int copy_features,unsigned int copy_faces)
@@ -376,8 +376,8 @@ unsigned int VisCortX_SwapVideoRegisters(unsigned int input_img_regnum,unsigned 
 unsigned int VisCortX_ConvertVideoRegisterToColorDepth(unsigned int input_img_regnum,unsigned int new_color_depth)
 {
   if ( video_register[input_img_regnum].depth == new_color_depth ) { return 1;}
-  if ( ( video_register[input_img_regnum].depth == 1 )&& ( new_color_depth == 3 ) ) { ConvertRegisterFrom1ByteTo3Byte(input_img_regnum); return 1; } else
-  if ( ( video_register[input_img_regnum].depth == 3 )&& ( new_color_depth == 1 ) ) { ConvertRegisterFrom3ByteTo1Byte(input_img_regnum); return 1; } else
+  if ( ( video_register[input_img_regnum].depth == 1 )&& ( new_color_depth == 3 ) ) { ConvertRegisterFrom1ByteTo3Byte(&video_register[input_img_regnum]); return 1; } else
+  if ( ( video_register[input_img_regnum].depth == 3 )&& ( new_color_depth == 1 ) ) { ConvertRegisterFrom3ByteTo1Byte(&video_register[input_img_regnum]); return 1; } else
                                                                           {  fprintf(stderr,"Don`t know what to do for conversion of register %u from color depth %u to %u\n",input_img_regnum,video_register[input_img_regnum].depth,new_color_depth); }
 
   return 1;
@@ -433,12 +433,12 @@ unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int
         fprintf(stderr,"Will try to auto correct ( this may cause problems elsewhere though :P ) \n ");
         if ( (depth==3) && (video_register[reg_num].depth==1) )
          {
-           ConvertRegisterFrom1ByteTo3Byte(reg_num);
+           ConvertRegisterFrom1ByteTo3Byte(&video_register[reg_num]);
            return video_register[reg_num].pixels;
          } else
         if ( (depth==1) && (video_register[reg_num].depth==3) )
          {
-           ConvertRegisterFrom3ByteTo1Byte(reg_num);
+           ConvertRegisterFrom3ByteTo1Byte(&video_register[reg_num]);
            return video_register[reg_num].pixels;
          } else
          {
@@ -628,17 +628,17 @@ void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error)
     //CONVOLUTION FILTER(9,1,-1,0,1,0,0,0,1,0,-1)
     //CONVOLUTION FILTER(9,1,1,1,1,1,5,1,1,1,1)
     /*Testing*/
-     unsigned int TMP_REGISTER = GetTempRegister();
+     struct VideoRegister * TMP_REGISTER = GetTempRegister();
      if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( VisCortx_ConvolutionFilter )\n"); }
 
-    CopyRegister(&video_register[reg_in],&video_register[TMP_REGISTER],0,0);
+    CopyRegister(&video_register[reg_in],TMP_REGISTER,0,0);
     ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
-    GaussianBlur(&video_register[TMP_REGISTER]);
-    ConvolutionFilter9_1ByteOptimized(&video_register[TMP_REGISTER],&video_register[reg_out],table,divisor);
+    GaussianBlur(TMP_REGISTER);
+    ConvolutionFilter9_1ByteOptimized(TMP_REGISTER,&video_register[reg_out],table,divisor);
 
     StopUsingVideoRegister(TMP_REGISTER);
 
-    ConvertRegisterFrom1ByteTo3Byte(reg_out);
+    ConvertRegisterFrom1ByteTo3Byte(&video_register[reg_out]);
     return 1;
  }
 
@@ -835,20 +835,20 @@ int SobelNDerivative(int n)
 {
     if ( n == 1 ) {
                     SobelFromSource(&video_register[CALIBRATED_LEFT_EYE],&video_register[LAST_LEFT_OPERATION]);
-                    ConvertRegisterFrom1ByteTo3Byte(LAST_LEFT_OPERATION);
+                    ConvertRegisterFrom1ByteTo3Byte(&video_register[LAST_LEFT_OPERATION]);
                     SobelFromSource(&video_register[CALIBRATED_RIGHT_EYE],&video_register[LAST_RIGHT_OPERATION]);
-                    ConvertRegisterFrom1ByteTo3Byte(LAST_RIGHT_OPERATION);
+                    ConvertRegisterFrom1ByteTo3Byte(&video_register[LAST_RIGHT_OPERATION]);
                   } else
     if ( n == 2 ) {
                     CopyRegister(&video_register[CALIBRATED_LEFT_EYE],&video_register[GENERAL_3],0,0);
-                    ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
+                    ConvertRegisterFrom3ByteTo1Byte(&video_register[GENERAL_3]);
                     SecondDerivativeIntensitiesFromSource(&video_register[GENERAL_3],&video_register[LAST_LEFT_OPERATION]);
-                    ConvertRegisterFrom1ByteTo3Byte(LAST_LEFT_OPERATION);
+                    ConvertRegisterFrom1ByteTo3Byte(&video_register[LAST_LEFT_OPERATION]);
 
                     CopyRegister(&video_register[CALIBRATED_RIGHT_EYE],&video_register[GENERAL_3],0,0);
-                    ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
+                    ConvertRegisterFrom3ByteTo1Byte(&video_register[GENERAL_3]);
                     SecondDerivativeIntensitiesFromSource(&video_register[GENERAL_3],&video_register[LAST_RIGHT_OPERATION]);
-                    ConvertRegisterFrom1ByteTo3Byte(LAST_RIGHT_OPERATION);
+                    ConvertRegisterFrom1ByteTo3Byte(&video_register[LAST_RIGHT_OPERATION]);
                   } else
                   {
                       fprintf(stderr,"Higher order derivative not implemented\n");

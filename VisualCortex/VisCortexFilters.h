@@ -27,9 +27,6 @@ int GaussianBlurFromSource(struct VideoRegister * source_reg,struct VideoRegiste
 void PrepareCleanSobeledGaussianAndDerivative(struct VideoRegister * rgb_reg,struct VideoRegister * target_sobel_reg,struct VideoRegister * target_derivative_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold);
 int CalibrateImage(struct VideoRegister * rgb_reg,struct VideoRegister * rgb_calibrated_reg,unsigned int * M);
 
-//BOOLEAN FindGoodTrackingPoints(unsigned char * edge_source,unsigned char * target,int image_x,int image_y,BOOLEAN monochrome);
-int PixelIsBright(unsigned char * rgb_image,unsigned int memplace_3_byte);
-int PixelBelongsWithSurroundingPixels(unsigned char * rgb_image,unsigned int x,unsigned int y,unsigned int memplace);
 //unsigned int FloodPixel(unsigned char * picture_array,unsigned int point_y,unsigned int point_y,unsigned int size_x,unsigned int size_y);
 
 

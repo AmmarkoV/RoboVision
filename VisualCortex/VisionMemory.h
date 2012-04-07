@@ -139,9 +139,9 @@ int ExtraLargeVideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,
 void DefaultSettings();
 
 
-int ClearVideoRegister(unsigned int reg_num);
-int ClearLargeVideoRegister(unsigned int reg_num);
-int ClearExtraLargeVideoRegister(unsigned int reg_num);
+int ClearVideoRegister(struct VideoRegister * reg_num);
+int ClearLargeVideoRegister(struct LargeVideoRegister * reg_num);
+int ClearExtraLargeVideoRegister(struct ExtraLargeVideoRegister *  reg_num);
 
 int InitVisionMemory(unsigned int res_x,unsigned int res_y);
 int CloseVisionMemory();
@@ -156,8 +156,8 @@ int SwapRegister(unsigned int source,unsigned int target);
 int ThisIsA3ByteRegister(struct VideoRegister * reg);
 int ThisIsA1ByteRegister(struct VideoRegister * reg);
 
-void ConvertRegisterFrom3ByteTo1Byte(int in_reg);
-void ConvertRegisterFrom1ByteTo3Byte(int in_reg);
+void ConvertRegisterFrom3ByteTo1Byte(struct VideoRegister * in_reg);
+void ConvertRegisterFrom1ByteTo3Byte(struct VideoRegister * in_reg);
 
 int PrintRegister(char * filename,unsigned int reg_num);
 int PrintExtraLargeRegister(char * filename,unsigned int reg_num);
@@ -166,8 +166,8 @@ int SaveRegisterPartToFile(char * filename,unsigned int reg_num,unsigned int x_s
 int LoadRegisterFromFile(char * filename,unsigned int reg_num);
 
 
-unsigned int GetTempRegister();
-unsigned int StopUsingVideoRegister(unsigned int thereg);
+struct VideoRegister * GetTempRegister();
+unsigned int StopUsingVideoRegister(struct VideoRegister * thereg);
 
 unsigned int MarkVideoRegistersAsUnsynced(struct VideoRegister * unsync_reg , struct VideoRegister * other_reg);
 

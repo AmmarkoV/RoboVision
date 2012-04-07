@@ -45,8 +45,8 @@ int PrepareRegistersForDepthMapping(
    if ( clear_and_calculate == 1 )
     {
        memset(depth_data_array,0,sizeof(struct DepthData) * metrics[RESOLUTION_X] * metrics[RESOLUTION_Y] );// CLEAR DEPTH MAP FROM ARTIFACTS
-       ClearLargeVideoRegister(left_depth_reg);
-       ClearLargeVideoRegister(right_depth_reg);
+       ClearLargeVideoRegister(&l_video_register[left_depth_reg]);
+       ClearLargeVideoRegister(&l_video_register[right_depth_reg]);
 
        PrepareCleanSobeledGaussianAndDerivative(&video_register[CALIBRATED_LEFT_EYE],&video_register[EDGES_LEFT],&video_register[SECOND_DERIVATIVE_LEFT],settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
        PrepareCleanSobeledGaussianAndDerivative(&video_register[CALIBRATED_RIGHT_EYE],&video_register[EDGES_RIGHT],&video_register[SECOND_DERIVATIVE_RIGHT],settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
@@ -62,11 +62,12 @@ int PrepareRegistersForDepthMapping(
 
     if ( clear_and_calculate == 1 )
      {
-        unsigned int TMP_REGISTER = GetTempRegister();
-        if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( PassNewFrameFromVideoInput ) \n"); }
-        CopyRegister(&video_register[EDGES_LEFT],&video_register[TMP_REGISTER],0,0);
-        PixelsOverThresholdSetAsOne(&video_register[TMP_REGISTER],1);
-        CompressRegister(TMP_REGISTER,EDGES_PRESENCE_GROUPED_LEFT);
+        struct VideoRegister * TMP_REGISTER = GetTempRegister();
+        if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( PassNewFrameFromVideoInput ) \n");
+                                  return 0;  }
+        CopyRegister(&video_register[EDGES_LEFT],TMP_REGISTER,0,0);
+        PixelsOverThresholdSetAsOne(TMP_REGISTER,1);
+        CompressRegister(TMP_REGISTER,&xl_video_register[EDGES_PRESENCE_GROUPED_LEFT]);
         StopUsingVideoRegister(TMP_REGISTER);
 
         /*THIS HAPPENS NOW INSIDE MOVEMENT_DETECTION AS IT SHOULD
@@ -74,11 +75,11 @@ int PrepareRegistersForDepthMapping(
         CompressRegister(MOVEMENT_RIGHT,MOVEMENT_GROUPED_RIGHT);
         */
 
-        CompressRegister(EDGES_LEFT,EDGES_GROUPED_LEFT);
-        CompressRegister(EDGES_RIGHT,EDGES_GROUPED_RIGHT);
+        CompressRegister(&video_register[EDGES_LEFT],&xl_video_register[EDGES_GROUPED_LEFT]);
+        CompressRegister(&video_register[EDGES_RIGHT],&xl_video_register[EDGES_GROUPED_RIGHT]);
 
-        CompressRegister(SECOND_DERIVATIVE_LEFT,SECOND_DERIVATIVE_GROUPED_LEFT);
-        CompressRegister(SECOND_DERIVATIVE_RIGHT,SECOND_DERIVATIVE_GROUPED_RIGHT);
+        CompressRegister(&video_register[SECOND_DERIVATIVE_LEFT],&xl_video_register[SECOND_DERIVATIVE_GROUPED_LEFT]);
+        CompressRegister(&video_register[SECOND_DERIVATIVE_RIGHT],&xl_video_register[SECOND_DERIVATIVE_GROUPED_RIGHT]);
 
      }
   return 1;
@@ -708,7 +709,7 @@ unsigned int ExecuteDisparityMappingOpenCV()
    memcpy(video_register[DEPTH_LEFT_VIDEO].pixels,depth->imageData ,metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]);
    video_register[DEPTH_LEFT_VIDEO].time=video_register[CALIBRATED_LEFT_EYE].time;
    video_register[DEPTH_LEFT_VIDEO].depth=1;
-   ConvertRegisterFrom1ByteTo3Byte(DEPTH_LEFT_VIDEO);
+   ConvertRegisterFrom1ByteTo3Byte(&video_register[DEPTH_LEFT_VIDEO]);
 
 
 

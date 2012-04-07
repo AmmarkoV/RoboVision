@@ -170,7 +170,7 @@ int ExtractFeaturesMy(int rgb_reg,unsigned int edge_reg,unsigned int second_deri
 {
 
     ExtractFeatures_MyAlgorithm(max_features,edge_reg,second_deriv_reg,target_reg,cam_num);
-    ConvertRegisterFrom1ByteTo3Byte(target_reg);
+    ConvertRegisterFrom1ByteTo3Byte(&video_register[target_reg]);
     CopyFeatureList(video_register[edge_reg].features,video_register[rgb_reg].features);
 
     return 1;
@@ -185,13 +185,13 @@ int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_
    corner_list = 0;
 
 
-   unsigned int TMP_REGISTER = GetTempRegister();
+   struct VideoRegister * TMP_REGISTER = GetTempRegister();
    if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register\n"); return 0; }
 
   StartTimer(FIND_CORNERS_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
-   CopyRegister(&video_register[rgb_reg],&video_register[TMP_REGISTER],1,0);
+   CopyRegister(&video_register[rgb_reg],TMP_REGISTER,1,0);
    ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
-   corner_list = (struct xy_local *) fast9_detect_nonmax ( video_register[TMP_REGISTER].pixels ,
+   corner_list = (struct xy_local *) fast9_detect_nonmax ( TMP_REGISTER->pixels ,
                                                            metrics[RESOLUTION_X] , metrics[RESOLUTION_Y] ,
                                                            metrics[RESOLUTION_X] ,
                                                            settings[FEATURE_DETECTION_THRESHOLD] ,

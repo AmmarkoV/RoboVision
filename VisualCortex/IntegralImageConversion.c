@@ -410,24 +410,23 @@ unsigned int GetCompressedRegisterPatchSum(int comp_register,int x,int y,int wid
  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
-unsigned int CompressRegister1Byte(int input,int output)
+unsigned int CompressRegister1Byte(struct VideoRegister *   input,struct ExtraLargeVideoRegister *   output)
 {
-  if (!VideoRegisterRequestIsOk(input,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
-  if (!ExtraLargeVideoRegisterRequestIsOk(output,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
+
+  if ( ( input==0 ) || ( output==0 ) ) { fprintf(stderr,"Compress Register called with incorrect registers\n"); return 0; }
+//  if (!VideoRegisterRequestIsOk(input,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
+
+//  if (!ExtraLargeVideoRegisterRequestIsOk(output,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],3)) { return 0; }
   //This code will add up all the pixels to every other pixel , in order to speed up access
   //Patch procedures when each pixel must be added to the others..!
-  if ( video_register[input].depth != 1 )
-    {
-      fprintf(stderr,"CompressRegister1Byte called with 3byte image\n");
-      return 0;
-    }
+  if ( !ThisIsA1ByteRegister(input) ) { fprintf(stderr,"CompressRegister1Byte called with 3byte image\n"); return 0; }
 
  StartTimer(COMPRESS_IMAGE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
   ClearExtraLargeVideoRegister(output);
-  unsigned char *in_ptr_start=video_register[input].pixels,*in_ptr=in_ptr_start;
-  unsigned int *out_ptr_start=xl_video_register[output].pixels,*out_ptr=out_ptr_start,*out_ptr_adj=out_ptr_start;
-  xl_video_register[output].depth = 1;
+  unsigned char *in_ptr_start=input->pixels,*in_ptr=in_ptr_start;
+  unsigned int *out_ptr_start=output->pixels,*out_ptr=out_ptr_start,*out_ptr_adj=out_ptr_start;
+  output->depth = 1;
 
   unsigned int x=0,y=0;
   while (y<metrics[RESOLUTION_Y])
@@ -475,17 +474,20 @@ unsigned int CompressRegister1Byte(int input,int output)
     }
 
  EndTimer(COMPRESS_IMAGE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
- MarkRegistersAsSynced(&video_register[input],&video_register[output]);
 
-  return 1;
+// THIS IS WRONG -> MarkRegistersAsSynced(input,output);
+   output->time = input->time; // Instead of MarkRegistersAsSynced
+
+   return 1;
 }
 
 
 
 
-unsigned int CompressRegister3Byte(int input,int output)
+unsigned int CompressRegister3Byte(struct VideoRegister *   input,struct ExtraLargeVideoRegister  *   output)
 {
 
+  if ( ( input==0 ) || ( output==0 ) ) { fprintf(stderr,"Compress Register called with incorrect registers\n"); return 0; }
   fprintf(stderr,"CompressRegister3Byte NOT implemented ( the implementation is of CompressRegister1Byte ) !\n");
   return 0;
 /*
@@ -576,11 +578,13 @@ unsigned int CompressRegister3Byte(int input,int output)
 
 
 
-unsigned int CompressRegister(int input,int output)
+unsigned int CompressRegister(struct VideoRegister *  input,struct ExtraLargeVideoRegister  *  output)
 {
-    if (video_register[input].depth==1) { return CompressRegister1Byte(input,output); }
+    if ( ( input==0 ) || ( output==0 ) ) { fprintf(stderr,"Compress Register called with incorrect registers\n"); return 0; }
+
+    if (input->depth==1) { return CompressRegister1Byte(input,output); }
      else
-    if (video_register[input].depth==3) { return CompressRegister3Byte(input,output); }
+    if (input->depth==3) { return CompressRegister3Byte(input,output); }
     return 0;
 }
 
@@ -630,7 +634,7 @@ int TestIntegralImaging()
 {
   return 1;
 
-
+/*
 
   fprintf(stderr,"TestIntegralImaging starting ( %u x %u ) \n",metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
   if ( !VideoRegisterRequestIsOk(GENERAL_4,1,1,1 ) )
@@ -667,6 +671,6 @@ int TestIntegralImaging()
 
 
   fprintf(stderr,"TestIntegralImaging survived\n");
-  return 1;
+  return 1;*/
 }
 

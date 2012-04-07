@@ -52,7 +52,7 @@ unsigned int RegisterMovementsInternal(unsigned char lefteye,unsigned int last_r
   unsigned char * movement_ptr = video_register[movement_target].pixels;
 
   unsigned char diff;
-  ClearVideoRegister(movement_target);
+  ClearVideoRegister(&video_register[movement_target]);
 
   while (ptr<limit_size)
   {
@@ -85,7 +85,7 @@ unsigned int RegisterMovementsInternal(unsigned char lefteye,unsigned int last_r
       ++movement_ptr;
   }
 
-CompressRegister(movement_target,movement_target_grouped);
+CompressRegister(&video_register[movement_target],&xl_video_register[movement_target_grouped]);
 video_register[movement_target].depth=1; // Set BitDepth of output array as 1
 
  EndTimer(MOVEMENT_RAW_DELAY);

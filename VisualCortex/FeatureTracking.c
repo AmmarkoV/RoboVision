@@ -348,20 +348,20 @@ int FindAndTrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int r
     if  ( ( video_register[reg_new].pixels == 0 ) || ( video_register[reg_old].pixels == 0 ) ) { return 0; }
 
     // Load two images and allocate other structures
-    unsigned int MONOCHROME_TMP_REGISTER_OLD = GetTempRegister();
-    if (MONOCHROME_TMP_REGISTER_OLD == 0 ) { fprintf(stderr," Error Getting the first temporary Video Register ( TrackAllPointsOnRegistersOpenCV ) \n"); }
+    struct VideoRegister * MONOCHROME_TMP_REGISTER_OLD = GetTempRegister();
+    if (MONOCHROME_TMP_REGISTER_OLD == 0 ) { fprintf(stderr," Error Getting the first temporary Video Register ( TrackAllPointsOnRegistersOpenCV ) \n"); return 0; }
 
-    unsigned int MONOCHROME_TMP_REGISTER_NEW = GetTempRegister();
-    if (MONOCHROME_TMP_REGISTER_NEW == 0 ) { fprintf(stderr," Error Getting the second temporary Video Register ( TrackAllPointsOnRegistersOpenCV ) \n"); }
+    struct VideoRegister * MONOCHROME_TMP_REGISTER_NEW = GetTempRegister();
+    if (MONOCHROME_TMP_REGISTER_NEW == 0 ) { fprintf(stderr," Error Getting the second temporary Video Register ( TrackAllPointsOnRegistersOpenCV ) \n"); return 0; }
 
-    CopyRegister(&video_register[reg_new],&video_register[MONOCHROME_TMP_REGISTER_NEW],0,0);
+    CopyRegister(&video_register[reg_new],MONOCHROME_TMP_REGISTER_NEW,0,0);
     ConvertRegisterFrom3ByteTo1Byte(MONOCHROME_TMP_REGISTER_NEW);
 
-    CopyRegister(&video_register[reg_old],&video_register[MONOCHROME_TMP_REGISTER_OLD],0,0);
+    CopyRegister(&video_register[reg_old],MONOCHROME_TMP_REGISTER_OLD,0,0);
     ConvertRegisterFrom3ByteTo1Byte(MONOCHROME_TMP_REGISTER_OLD);
 
-    image_1->imageData=(char*) video_register[MONOCHROME_TMP_REGISTER_OLD].pixels; // UGLY HACK
-    image_2->imageData=(char*) video_register[MONOCHROME_TMP_REGISTER_NEW].pixels; // UGLY HACK
+    image_1->imageData=(char*) MONOCHROME_TMP_REGISTER_OLD->pixels; // UGLY HACK
+    image_2->imageData=(char*) MONOCHROME_TMP_REGISTER_NEW->pixels; // UGLY HACK
 
 
 

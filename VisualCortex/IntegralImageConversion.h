@@ -14,6 +14,6 @@ int TestIntegralImaging();
 
 unsigned int inline GetCompressedRegisterPatchSum1Byte(int comp_register,int x,int y,int width,int height);
 unsigned int GetCompressedRegisterPatchSum(int comp_register,int x,int y,int width,int height);
-unsigned int CompressRegister(int input,int output);
+unsigned int CompressRegister(struct VideoRegister *  input,struct ExtraLargeVideoRegister *  output);
 
 #endif // INTEGRALIMAGECONVERSION_H_INCLUDED

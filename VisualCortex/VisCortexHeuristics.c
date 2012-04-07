@@ -12,8 +12,9 @@ inline unsigned char AbsUCharDiffLoc(unsigned char param1,unsigned char param2)
 
 
 
-char PixelsSameColour(unsigned char * rgb_image,unsigned int memplace1,unsigned int memplace2)
+char PixelsSameColour(struct VideoRegister * rgb_reg,unsigned int memplace1,unsigned int memplace2)
 {
+  unsigned char * rgb_image = rgb_reg->pixels;
   char res=0;
   if ( AbsUCharDiffLoc(rgb_image[memplace1],rgb_image[memplace2]) < 20 ) ++res;
   if ( AbsUCharDiffLoc(rgb_image[memplace1+1],rgb_image[memplace2+1]) < 20 ) ++res;
@@ -25,8 +26,9 @@ char PixelsSameColour(unsigned char * rgb_image,unsigned int memplace1,unsigned 
   return res;
 }
 
-char PixelIsBright(unsigned char * rgb_image,unsigned int memplace_3_byte)
+char PixelIsBright(struct VideoRegister * rgb_reg,unsigned int memplace_3_byte)
 {
+  unsigned char * rgb_image = rgb_reg->pixels;
   char res=0;
   if ( AbsUCharDiffLoc(rgb_image[memplace_3_byte],rgb_image[255]) < 150 ) ++res;
   if ( AbsUCharDiffLoc(rgb_image[memplace_3_byte],rgb_image[255]) < 150 ) ++res;
@@ -39,7 +41,7 @@ char PixelIsBright(unsigned char * rgb_image,unsigned int memplace_3_byte)
 }
 
 
-char PixelBelongsWithSurroundingPixels(unsigned char * rgb_image,unsigned int x,unsigned int y,unsigned int memplace)
+char PixelBelongsWithSurroundingPixels(struct VideoRegister * rgb_reg,unsigned int x,unsigned int y,unsigned int memplace)
 {
     char resemblence=0;
     unsigned int memplace2;
@@ -48,30 +50,28 @@ char PixelBelongsWithSurroundingPixels(unsigned char * rgb_image,unsigned int x,
        unsigned int SHIFT_3_BYTE = metrics[RESOLUTION_X_3_BYTE];
 
        memplace2=memplace-1; // LEFT
-       if ( PixelsSameColour(rgb_image,memplace,memplace2)==1 ) ++resemblence;
+       if ( PixelsSameColour(rgb_reg,memplace,memplace2)==1 ) ++resemblence;
 
        memplace2-=SHIFT_3_BYTE; // LEFT UP
-       if ( PixelsSameColour(rgb_image,memplace,memplace2)==1 ) ++resemblence;
+       if ( PixelsSameColour(rgb_reg,memplace,memplace2)==1 ) ++resemblence;
 
        ++memplace2; // UP
-       if ( PixelsSameColour(rgb_image,memplace,memplace2)==1 ) ++resemblence;
+       if ( PixelsSameColour(rgb_reg,memplace,memplace2)==1 ) ++resemblence;
 
        ++memplace2; // RIGHT UP
-       if ( PixelsSameColour(rgb_image,memplace,memplace2)==1 ) ++resemblence;
+       if ( PixelsSameColour(rgb_reg,memplace,memplace2)==1 ) ++resemblence;
 
        memplace2+=SHIFT_3_BYTE; // RIGHT
-       if ( PixelsSameColour(rgb_image,memplace,memplace2)==1 ) ++resemblence;
+       if ( PixelsSameColour(rgb_reg,memplace,memplace2)==1 ) ++resemblence;
 
        memplace2+=SHIFT_3_BYTE;// RIGHT DOWN
-       if ( PixelsSameColour(rgb_image,memplace,memplace2)==1 ) ++resemblence;
+       if ( PixelsSameColour(rgb_reg,memplace,memplace2)==1 ) ++resemblence;
 
        --memplace2; // DOWN
-       if ( PixelsSameColour(rgb_image,memplace,memplace2)==1 ) ++resemblence;
+       if ( PixelsSameColour(rgb_reg,memplace,memplace2)==1 ) ++resemblence;
 
        --memplace2; // LEFT DOWN
-       if ( PixelsSameColour(rgb_image,memplace,memplace2)==1 ) ++resemblence;
-
-
+       if ( PixelsSameColour(rgb_reg,memplace,memplace2)==1 ) ++resemblence;
      }
 
     if ( resemblence>7) return 1;

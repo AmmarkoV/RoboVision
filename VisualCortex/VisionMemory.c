@@ -258,62 +258,52 @@ int InitExtraLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned in
 
 
 
-int ClearVideoRegister(unsigned int reg_num)
+int ClearVideoRegister(struct VideoRegister * reg_num)
 {
-    if (video_register[reg_num].depth==3)
-     {
-        memset(video_register[reg_num].pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(unsigned char));
-     } else
-     {
-        memset(video_register[reg_num].pixels,0,video_register[reg_num].size_x*video_register[reg_num].size_y*video_register[reg_num].depth*sizeof(unsigned char));
-     }
+    if (reg_num==0) { return 0; }
 
-    video_register[reg_num].lock = 0;
-    video_register[reg_num].time = 0;
-    video_register[reg_num].used = 0;
-    ClearFeatureList(video_register[reg_num].features);
-    ClearFeatureList(video_register[reg_num].faces);
+    memset(reg_num->pixels,0,reg_num->size_x*reg_num->size_y*reg_num->depth*sizeof(unsigned char));
+
+    reg_num->lock = 0;
+    reg_num->time = 0;
+    reg_num->used = 0;
+    ClearFeatureList(reg_num->features);
+    ClearFeatureList(reg_num->faces);
 
 
     return 1;
 
 }
 
-int ClearLargeVideoRegister(unsigned int reg_num)
+int ClearLargeVideoRegister(struct LargeVideoRegister * reg_num)
 {
-    if (l_video_register[reg_num].depth==3)
-     {
-        memset(l_video_register[reg_num].pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(unsigned short));
-     } else
-     {
-       memset(l_video_register[reg_num].pixels,0,l_video_register[reg_num].size_x*l_video_register[reg_num].size_y*l_video_register[reg_num].depth*sizeof(unsigned short));
-     }
+    if (reg_num==0) { return 0; }
 
-    l_video_register[reg_num].lock = 0;
-    l_video_register[reg_num].time = 0;
-    l_video_register[reg_num].used = 0;
-    ClearFeatureList(l_video_register[reg_num].features);
-    ClearFeatureList(l_video_register[reg_num].faces);
+    memset(reg_num->pixels,0,reg_num->size_x*reg_num->size_y*reg_num->depth*sizeof(unsigned short));
+
+
+    reg_num->lock = 0;
+    reg_num->time = 0;
+    reg_num->used = 0;
+    ClearFeatureList(reg_num->features);
+    ClearFeatureList(reg_num->faces);
 
     return 1;
 
 }
 
-int ClearExtraLargeVideoRegister(unsigned int reg_num)
+int ClearExtraLargeVideoRegister(struct ExtraLargeVideoRegister *  reg_num)
 {
-    if (xl_video_register[reg_num].depth==3)
-     {
-        memset(xl_video_register[reg_num].pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(unsigned int));
-     } else
-     {
-       memset(xl_video_register[reg_num].pixels,0,l_video_register[reg_num].size_x*l_video_register[reg_num].size_y*l_video_register[reg_num].depth*sizeof(unsigned int));
-     }
+    if (reg_num==0) { return 0; }
 
-    xl_video_register[reg_num].lock = 0;
-    xl_video_register[reg_num].time = 0;
-    xl_video_register[reg_num].used = 0;
-    ClearFeatureList(xl_video_register[reg_num].features);
-    ClearFeatureList(xl_video_register[reg_num].faces);
+    memset(reg_num->pixels,0,reg_num->size_x*reg_num->size_y*reg_num->depth*sizeof(unsigned int));
+
+
+    reg_num->lock = 0;
+    reg_num->time = 0;
+    reg_num->used = 0;
+    ClearFeatureList(reg_num->features);
+    ClearFeatureList(reg_num->faces);
 
     return 1;
 
@@ -638,20 +628,21 @@ int CopyRegister(struct VideoRegister * source,struct VideoRegister * target,uns
 
 
 
-void ConvertRegisterFrom3ByteTo1Byte(int in_reg)
+void ConvertRegisterFrom3ByteTo1Byte(struct VideoRegister *  in_reg)
 {
-  if (video_register[in_reg].pixels==0) {return;}
+  if (in_reg==0) {return;}
+  if (in_reg->pixels==0) {return;}
   int col_med;
   unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
-  if ( video_register[in_reg].depth == 3 ) { video_register[in_reg].depth = 1; } else
+  if ( in_reg->depth == 3 ) { in_reg->depth = 1; } else
                                            {
-                                             fprintf(stderr,"Error , ConvertRegisterFrom3ByteTo1Byte called with register of %u depth\n",video_register[in_reg].depth);
+                                             fprintf(stderr,"Error , ConvertRegisterFrom3ByteTo1Byte called with register of %u depth\n",in_reg->depth);
                                              return;
                                            }
 
- register BYTE *start_px = (BYTE *) video_register[in_reg].pixels;
- register BYTE *opx = (BYTE *) video_register[in_reg].pixels;
- register BYTE *px =  (BYTE *) video_register[in_reg].pixels;
+ register BYTE *start_px = (BYTE *) in_reg->pixels;
+ register BYTE *opx = (BYTE *) in_reg->pixels;
+ register BYTE *px =  (BYTE *) in_reg->pixels;
  register BYTE *r;
  register BYTE *g;
  register BYTE *b;
@@ -680,19 +671,20 @@ void ConvertRegisterFrom3ByteTo1Byte(int in_reg)
 }
 
 
-void ConvertRegisterFrom1ByteTo3Byte(int in_reg)
+void ConvertRegisterFrom1ByteTo3Byte(struct VideoRegister * in_reg)
 {
-  if (video_register[in_reg].pixels==0) {return;}
+  if (in_reg==0) {return;}
+  if (in_reg->pixels==0) {return;}
 
-  if ( video_register[in_reg].depth == 1 ) { video_register[in_reg].depth = 3; } else
+  if ( in_reg->depth == 1 ) { in_reg->depth = 3; } else
                                            {
-                                             fprintf(stderr,"Error , ConvertRegisterFrom1ByteTo3Byte called with register of %u depth\n",video_register[in_reg].depth);
+                                             fprintf(stderr,"Error , ConvertRegisterFrom1ByteTo3Byte called with register of %u depth\n",in_reg->depth);
                                              return;
                                            }
 
- register BYTE *start_px = (BYTE *) video_register[in_reg].pixels;
- register BYTE *opx      = (BYTE *) video_register[in_reg].pixels+metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
- register BYTE *px       = (BYTE *) video_register[in_reg].pixels+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
+ register BYTE *start_px = (BYTE *) in_reg->pixels;
+ register BYTE *opx      = (BYTE *) in_reg->pixels+metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
+ register BYTE *px       = (BYTE *) in_reg->pixels+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
 
  while ( px >= start_px)
  {
@@ -917,7 +909,7 @@ FILE *pf=0;
   return 0;
 }
 
-unsigned int GetTempRegister()
+struct VideoRegister * GetTempRegister()
 {
     int res_reg = GENERAL_1;
     while ( (video_register[res_reg].used) && (res_reg < REGISTERS_COUNT) )
@@ -927,13 +919,13 @@ unsigned int GetTempRegister()
 
     if (res_reg >= REGISTERS_COUNT) { return 0; }
     video_register[res_reg].used=1;
-
-    return res_reg;
+    return &video_register[res_reg];
 }
 
-unsigned int StopUsingVideoRegister(unsigned int thereg)
+unsigned int StopUsingVideoRegister(struct VideoRegister * thereg)
 {
-    video_register[thereg].used=0;
+    if (thereg==0)  { fprintf(stderr,"StopUsingVideoRegister Called with incorrect register as parameter\n"); return 0; }
+    thereg->used=0;
     return 1;
 }
 

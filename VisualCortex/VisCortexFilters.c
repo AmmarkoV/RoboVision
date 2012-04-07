@@ -195,7 +195,7 @@ void CollapseLargeRegister(struct LargeVideoRegister * reg)
     //TODO : Add documentation here :P
   if (input_frame==0) {return;}
   //if (l_video_register[image_reg].depth!=1) { fprintf(stderr,"Function CollapseFrame assumes 1byte array\n"); return 0; }
-  int col_med;
+
   unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
 
  register unsigned short *store_start_px = (unsigned short *) input_frame;
@@ -228,7 +228,6 @@ void CollapseRegister(struct VideoRegister * reg)
     //TODO : Add documentation here :P
   if (input_frame==0) {return;}
   //if (l_video_register[image_reg].depth!=1) { fprintf(stderr,"Function CollapseFrame assumes 1byte array\n"); return 0; }
-  int col_med;
   unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
 
  register unsigned char *store_start_px = (unsigned char *) input_frame;
@@ -269,8 +268,6 @@ void KillDifferentPixels(struct VideoRegister * reg,unsigned char R,unsigned cha
  if (reg->depth!=3) { fprintf(stderr,"Function KillDifferentPixels assumes 3byte array\n"); return ; }
 
  unsigned char * image = reg->pixels;
- int image_x = reg->size_x;
- int image_y = reg->size_y;
 
  if (image==0) {return;}
 
@@ -310,8 +307,6 @@ void KillPixelsBetween(struct VideoRegister * reg,int low_threshold,int high_thr
 
  unsigned char * image = reg->pixels;
  unsigned int image_depth = reg->depth;
- int image_x = reg->size_x;
- int image_y = reg->size_y;
 
 
  if (image==0) {return;}
@@ -361,9 +356,6 @@ void KillPixelsBelow(struct VideoRegister * reg,int threshold)
  if (reg->depth!=3) { fprintf(stderr,"Function KillPixelsBelow assumes 3byte array\n"); return ; }
 
  unsigned char * image = reg->pixels;
- unsigned int image_depth = reg->depth;
- int image_x = reg->size_x;
- int image_y = reg->size_y;
 
  if (image==0) {return;}
 
@@ -448,9 +440,6 @@ void ReducePalette(struct VideoRegister * reg,int new_palette)
  if (reg==0) { fprintf(stderr,"Function ReducePalette given Null Video Register\n"); return ; }
 
  unsigned char * image = reg->pixels;
- unsigned int image_depth = reg->depth;
- int image_x = reg->size_x;
- int image_y = reg->size_y;
 
  if (!ThisIsA3ByteRegister(reg)) { return; }
 
@@ -601,12 +590,12 @@ int Sobel(struct VideoRegister * image_reg)
 {
   if (!ThisIsA1ByteRegister(image_reg)) { fprintf(stderr,"Sobel cannot run with this image depth \n"); return 0; }
 
-    unsigned int TMP_REGISTER = GetTempRegister();
+    struct VideoRegister * TMP_REGISTER = GetTempRegister();
     if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( Sobel ) \n"); return 0; }
 
-    CopyRegister(image_reg,&video_register[TMP_REGISTER],0,0);
+    CopyRegister(image_reg,TMP_REGISTER,0,0);
 
-    SobelFromSource(&video_register[TMP_REGISTER],image_reg);
+    SobelFromSource(TMP_REGISTER,image_reg);
 
     StopUsingVideoRegister(TMP_REGISTER);
 
@@ -679,22 +668,22 @@ void PrepareCleanSobeledGaussianAndDerivative(struct VideoRegister * rgb_reg,str
 {
     StartTimer(PREPARE_GRADIENTS_DELAY);
 
-    unsigned int TMP_REGISTER = GetTempRegister();
+    struct VideoRegister * TMP_REGISTER = GetTempRegister();
     if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( PrepareCleanSobeledGaussianAndDerivative ) \n"); return; }
 
-    CopyRegister(rgb_reg,&video_register[TMP_REGISTER],0,0);
+    CopyRegister(rgb_reg,TMP_REGISTER,0,0);
 
     ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
 
 //    SobelFromSource(TMP_REGISTER,target_sobel_image_reg);
 
-    GaussianBlurFromSource(&video_register[TMP_REGISTER],target_sobel_reg);
+    GaussianBlurFromSource(TMP_REGISTER,target_sobel_reg);
 	Sobel(target_sobel_reg);
 
 	KillPixelsBetween(target_sobel_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
 
 
-	SecondDerivativeIntensitiesFromSource(&video_register[TMP_REGISTER],target_derivative_reg);
+	SecondDerivativeIntensitiesFromSource(TMP_REGISTER,target_derivative_reg);
 
     StopUsingVideoRegister(TMP_REGISTER);
 

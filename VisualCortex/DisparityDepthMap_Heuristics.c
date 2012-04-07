@@ -1,5 +1,6 @@
 #include "DisparityDepthMap_Heuristics.h"
 #include "VisCortexFilters.h"
+#include "VisCortexHeuristics.h"
 #include "Precalculations.h"
 #include "../WorldMapping/MasterWorld/MasterWorld.h"
 
@@ -126,6 +127,9 @@ inline unsigned short FindNeighborDepth(
 void EnhanceDepthMapWithEdges(unsigned char * rgb_image,unsigned short *full_depth_map,unsigned char * edges_map,unsigned int image_x,unsigned int image_y)
 {
   // Heuristic , fills depth map holes with neighborhood edge depth..
+  // TODO FIX PixelBelongsWithSurroundingPixels
+  return ;
+
 
   fprintf(stderr,"Todo : FindNeighborDepth is not complete , fix it ! \n");
   memcpy(l_video_register[GENERAL_LARGE_1].pixels,full_depth_map,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
@@ -203,7 +207,7 @@ void EnhanceDepthMapWithEdges(unsigned char * rgb_image,unsigned short *full_dep
            // AMA DEN EIMASTE ANAMESA SE KAPOIA EDGES APLA SVINETAI TO SIMEIO
            // YPARXEI MEGALI PITHANOTITA NA MIN EINAI SWSTO!
            //if ( PixelIsBright(rgb_image,ptr3bit) == 0 )
-           if ( PixelBelongsWithSurroundingPixels(rgb_image,xp,yp,ptr3bit) == 0 )
+          // TODO : -> if ( PixelBelongsWithSurroundingPixels(&video_register[rgb_image],xp,yp,ptr3bit) == 0 )
            { //UNRELATED PIXEL , REMOVE IT !
              l_video_register[GENERAL_LARGE_1].pixels[ptr]=0;
            }
