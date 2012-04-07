@@ -167,6 +167,72 @@ void MonochromeL(unsigned char * input_frame,int image_x,int image_y)
  return;
 }
 
+void CollapseLargeRegister(unsigned short * input_frame,int image_x,int image_y)
+{
+    //TODO : Add documentation here :P
+  if (input_frame==0) {return;}
+  //if (l_video_register[image_reg].depth!=1) { fprintf(stderr,"Function CollapseFrame assumes 1byte array\n"); return 0; }
+  int col_med;
+  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
+
+ register unsigned short *store_start_px = (unsigned short *) input_frame;
+ register unsigned short *start_px = (unsigned short *) input_frame;
+ register unsigned short *px = (unsigned short *) input_frame;
+
+
+while (store_start_px<start_px+image_x)
+{
+  px = (unsigned short *) store_start_px;
+  while ( px < start_px+image_size)
+  {
+    if ( *store_start_px < *px ) { *store_start_px=*px; }
+    px+=image_x;
+  }
+
+ ++store_start_px;
+}
+ return;
+}
+
+void CollapseRegister(unsigned char * input_frame,int image_x,int image_y)
+{
+    //TODO : Add documentation here :P
+  if (input_frame==0) {return;}
+  //if (l_video_register[image_reg].depth!=1) { fprintf(stderr,"Function CollapseFrame assumes 1byte array\n"); return 0; }
+  int col_med;
+  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
+
+ register unsigned char *store_start_px = (unsigned char *) input_frame;
+ register unsigned char *start_px = (unsigned char *) input_frame;
+ register unsigned char *px = (unsigned char *) input_frame;
+ register unsigned char *tmp_px = (unsigned char *) input_frame;
+
+
+while (store_start_px<start_px+image_x)
+{
+  px = (unsigned char *) store_start_px;
+  while ( px < start_px+image_size)
+  {
+    if ( *store_start_px < *px )
+     {
+       *store_start_px=*px;
+       //TEST PORTION THAT CAN BE SAFELY REMOVED START
+       tmp_px=store_start_px;
+       tmp_px+=image_x;  *tmp_px=*px;
+       tmp_px+=image_x;  *tmp_px=*px;
+       tmp_px+=image_x;  *tmp_px=*px;
+       tmp_px+=image_x;  *tmp_px=*px;
+       tmp_px+=image_x;  *tmp_px=*px;
+       tmp_px+=image_x;  *tmp_px=*px;
+       //TEST PORTION THAT CAN BE SAFELY REMOVED END
+     }
+    px+=image_x;
+  }
+
+ ++store_start_px;
+}
+ return;
+}
 
 void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned char R,unsigned char G,unsigned char B,unsigned char threshold)
 { if (image==0) {return;}
