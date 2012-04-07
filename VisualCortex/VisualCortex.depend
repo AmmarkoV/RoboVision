@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1327701550 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
+1333799179 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.c
 	"DisparityDepthMap.h"
 	"DisparityDepthMap_Heuristics.h"
 	"VisCortexFilters.h"
@@ -15,7 +15,7 @@
 	<stdio.h>
 	<string.h>
 
-1322480890 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.h
+1333798626 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.h
 	"VisionMemory.h"
 
 1323565270 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
@@ -29,7 +29,7 @@
 
 1323564322 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.h
 
-1325323081 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexFilters.h
+1333798572 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexFilters.h
 	"VisionMemory.h"
 	<math.h>
 
@@ -47,11 +47,12 @@
 	"Precalculations.h"
 	"../WorldMapping/MasterWorld/MasterWorld.h"
 
-1321660278 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.c
+1327701769 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.c
 	"FaceDetection.h"
 	<stdio.h>
 	<stdlib.h>
-	"cv.h"
+	<cv.h>
+	<cxcore.h>
 	"VisionMemory.h"
 	"FeatureLists.h"
 	"StateSetting.h"
@@ -226,7 +227,7 @@
 
 1311412733 /home/ammar/Documents/Programming/RoboVision/3dpartylibs/fast/fast.h
 
-1326843291 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
+1333799184 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VideoInputAdapter.c
 	"VideoInputAdapter.h"
 	"VisualCortex.h"
 	"VisionMemory.h"
@@ -552,7 +553,7 @@
 	"opencv2/core/core.hpp"
 	"opencv2/highgui/highgui_c.h"
 
-1325147777 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.c
+1333320864 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.c
 	"VisCortexOptimizedConvolutionFilters.h"
 	"VisCortexConvolutionFilters.h"
 	"VisCortexFilters.h"
@@ -562,7 +563,7 @@
 	<stdio.h>
 	<string.h>
 
-1325147777 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
+1333320864 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
 
 1325301538 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.c
 	"VisCortexTimer.h"

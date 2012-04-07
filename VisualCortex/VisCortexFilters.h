@@ -5,9 +5,10 @@
 #include <math.h>
 
 void GenerateCompressHistogramOfImage(unsigned char * input_img,unsigned short * output_img,unsigned int block_x,unsigned int block_y);
-unsigned int HistogramPatch(struct Histogram *hist_data,unsigned char *img,unsigned int px,unsigned int py,unsigned int patch_x,unsigned int patch_y);
+unsigned int HistogramPatch(struct Histogram *hist_data,struct VideoRegister * reg,unsigned int px,unsigned int py,unsigned int patch_x,unsigned int patch_y);
 unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned int x , unsigned int y,unsigned int size_x , unsigned int size_y,unsigned char * edge_array);
-unsigned int inline PixelsOverThresholdSetAsOne(int image_reg,unsigned int threshold);
+unsigned int inline PixelsOverThresholdSetAsOne(struct VideoRegister * reg,unsigned int threshold);
+
 
 int Sobel(unsigned int image_reg);
 int SobelFromSource(unsigned int source_reg,unsigned int target_reg);
@@ -17,10 +18,10 @@ void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned 
 void KillPixelsBelow(unsigned int image_reg,int threshold);
 void KillPixelsBetween(unsigned int image_reg,int low_threshold,int high_threshold);
 void Kill3PixelsBelow(unsigned int image_reg,int threshold);
-void Monochrome(unsigned char * input_frame,int image_x,int image_y);
-void MonochromeL(unsigned char * input_frame,int image_x,int image_y);
-void CollapseLargeRegister(unsigned short * input_frame,int image_x,int image_y);
-void CollapseRegister(unsigned char * input_frame,int image_x,int image_y);
+void Monochrome(struct VideoRegister * reg);
+void MonochromeL(struct VideoRegister * reg);
+void CollapseLargeRegister(struct LargeVideoRegister * reg);
+void CollapseRegister(struct VideoRegister * reg);
 int GaussianBlur(unsigned int image_reg);
 int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg);
 void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold);

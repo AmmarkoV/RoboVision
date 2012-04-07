@@ -153,7 +153,7 @@ inline unsigned int FrameProcessing
            unsigned int TMP_REGISTER = GetTempRegister();
            if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( PassNewFrameFromVideoInput ) \n"); }
            CopyRegister(REG_EDGES,TMP_REGISTER,0,0);
-           PixelsOverThresholdSetAsOne(TMP_REGISTER,1);
+           PixelsOverThresholdSetAsOne(video_register[TMP_REGISTER],1);
            CompressRegister(TMP_REGISTER,REG_GROUP_EDGES_PRESENCE);
            StopUsingVideoRegister(TMP_REGISTER);
        }
@@ -257,7 +257,7 @@ unsigned int Pipeline_Stereo_Frames_Collected_Actions()
           ExecuteDisparityMappingPyramid();
         }
 
-      CollapseRegister(video_register[DEPTH_LEFT_VIDEO].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+      CollapseRegister(&video_register[DEPTH_LEFT_VIDEO]);
 
       VisCortxMillisecondsSleep(1);
       pipeline_switches[EXECUTE_DEPTHMAP]=0;

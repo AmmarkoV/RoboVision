@@ -65,7 +65,7 @@ int PrepareRegistersForDepthMapping(
         unsigned int TMP_REGISTER = GetTempRegister();
         if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( PassNewFrameFromVideoInput ) \n"); }
         CopyRegister(EDGES_LEFT,TMP_REGISTER,0,0);
-        PixelsOverThresholdSetAsOne(TMP_REGISTER,1);
+        PixelsOverThresholdSetAsOne(&video_register[TMP_REGISTER],1);
         CompressRegister(TMP_REGISTER,EDGES_PRESENCE_GROUPED_LEFT);
         StopUsingVideoRegister(TMP_REGISTER);
 

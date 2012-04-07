@@ -28,10 +28,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned int x , unsigned int y,unsigned int size_x , unsigned int size_y,unsigned char * edge_array)
 {
-    /*
-                THIS CAN BE DONE MUCH FASTER , SEE IntegralImageConversion.c
-              THIS FUNCTION IS DEPRECIATED , USED ONLY FOR DEBUGGING THE NEW ONES
-    */
+    /* THIS CAN BE DONE MUCH FASTER , SEE IntegralImageConversion.c
+       THIS FUNCTION IS DEPRECIATED , USED ONLY FOR DEBUGGING THE NEW ONES */
    unsigned int counted_edges=0;
    unsigned int x_c=x ,  y_c=y;
    register BYTE *px;
@@ -50,14 +48,16 @@ unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned
 
 
 
-unsigned int inline PixelsOverThresholdSetAsOne(int image_reg,unsigned int threshold)
+unsigned int inline PixelsOverThresholdSetAsOne(struct VideoRegister * reg,unsigned int threshold)
+//unsigned int inline PixelsOverThresholdSetAsOne(int image_reg,unsigned int threshold)
 {
-   if (video_register[image_reg].depth!=1) { fprintf(stderr,"Function PixelsOverThresholdSetAsOne assumes 1byte array\n"); return 0; }
+  if (reg==0) { fprintf(stderr,"Function HistogramPatch given Null Video Register\n"); return 0; }
+  if (reg->depth!=1) { fprintf(stderr,"Function PixelsOverThresholdSetAsOne assumes 1byte array\n"); return 0; }
 
  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
 
- register BYTE *start_px = (BYTE *) video_register[image_reg].pixels;
- register BYTE *px = (BYTE *) video_register[image_reg].pixels;
+ register BYTE *start_px = (BYTE *) reg->pixels;
+ register BYTE *px = (BYTE *) reg->pixels;
 
  while ( px < start_px+image_size)
  {
@@ -68,12 +68,17 @@ unsigned int inline PixelsOverThresholdSetAsOne(int image_reg,unsigned int thres
   return 1;
 }
 
-unsigned int HistogramPatch(struct Histogram *hist_data,unsigned char *img,unsigned int px,unsigned int py,unsigned int patch_x,unsigned int patch_y)
+unsigned int HistogramPatch(struct Histogram *hist_data,struct VideoRegister * reg,unsigned int px,unsigned int py,unsigned int patch_x,unsigned int patch_y)
+//unsigned int HistogramPatch(struct Histogram *hist_data,unsigned char *img,unsigned int px,unsigned int py,unsigned int patch_x,unsigned int patch_y)
 {
     /*
       THERE ALSO EXISTS A COMPRESSED HISTOGRAM PATCH ( MUCH FASTER , SEE IntegralImageConversion.c
-              THIS FUNCTION IS DEPRECIATED , USED ONLY FOR DEBUGGING THE NEW ONES
+      THIS FUNCTION IS DEPRECIATED , USED ONLY FOR DEBUGGING THE NEW ONES
     */
+
+    if (reg==0) { fprintf(stderr,"Function HistogramPatch given Null Video Register\n"); return 0; }
+    if (reg->depth!=3) { fprintf(stderr,"Function HistogramPatch assumes 3byte array\n"); return 0; }
+    unsigned char * img = reg->pixels;
     register BYTE *image_px,*image_stopx;
     register BYTE *r,*g,*b;
 
@@ -117,8 +122,13 @@ unsigned int HistogramPatch(struct Histogram *hist_data,unsigned char *img,unsig
 }
 
 
-void Monochrome(unsigned char * input_frame,int image_x,int image_y)
+void Monochrome(struct VideoRegister * reg)
 {
+  if (reg==0) { fprintf(stderr,"Function Monochrome given Null Video Register\n"); return ; }
+  if (reg->depth!=3) { fprintf(stderr,"Function Monochrome assumes 3byte array\n"); return ; }
+
+  unsigned char * input_frame = reg->pixels;
+
   if (input_frame==0) {return;}
   int col_med;
   unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
@@ -134,16 +144,22 @@ void Monochrome(unsigned char * input_frame,int image_x,int image_y)
        r = px++; g = px++; b = px++;
 
        col_med= ( *r + *g + *b )/3;
-*r= (BYTE)col_med ;
+
+       *r= (BYTE)col_med ;
        *g=*r;
-*b=*r;
+       *b=*r;
  }
 
  return;
 }
 
-void MonochromeL(unsigned char * input_frame,int image_x,int image_y)
+void MonochromeL(struct VideoRegister * reg)
 {
+  if (reg==0) { fprintf(stderr,"Function MonochromeL given Null Video Register\n"); return ; }
+  if (reg->depth!=3) { fprintf(stderr,"Function MonochromeL assumes 3byte array\n"); return ; }
+
+  unsigned char * input_frame = reg->pixels;
+
   if (input_frame==0) {return;}
   int col_med;
 
@@ -167,8 +183,15 @@ void MonochromeL(unsigned char * input_frame,int image_x,int image_y)
  return;
 }
 
-void CollapseLargeRegister(unsigned short * input_frame,int image_x,int image_y)
+void CollapseLargeRegister(struct LargeVideoRegister * reg)
 {
+
+  if (reg==0) { fprintf(stderr,"Function CollapseLargeRegister given Null Video Register\n"); return ; }
+  if (reg->depth!=1) { fprintf(stderr,"Function CollapseLargeRegister assumes 1byte array\n"); return ; }
+
+  unsigned short * input_frame = reg->pixels;
+  int image_x = reg->size_x;
+
     //TODO : Add documentation here :P
   if (input_frame==0) {return;}
   //if (l_video_register[image_reg].depth!=1) { fprintf(stderr,"Function CollapseFrame assumes 1byte array\n"); return 0; }
@@ -194,8 +217,14 @@ while (store_start_px<start_px+image_x)
  return;
 }
 
-void CollapseRegister(unsigned char * input_frame,int image_x,int image_y)
+void CollapseRegister(struct VideoRegister * reg)
 {
+  if (reg==0) { fprintf(stderr,"Function CollapseRegister given Null Video Register\n"); return ; }
+  if (reg->depth!=1) { fprintf(stderr,"Function CollapseRegister assumes 1byte array\n"); return ; }
+
+  unsigned char * input_frame = reg->pixels;
+  int image_x = reg->size_x;
+
     //TODO : Add documentation here :P
   if (input_frame==0) {return;}
   //if (l_video_register[image_reg].depth!=1) { fprintf(stderr,"Function CollapseFrame assumes 1byte array\n"); return 0; }
