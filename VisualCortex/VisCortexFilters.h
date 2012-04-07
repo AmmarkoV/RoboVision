@@ -10,22 +10,22 @@ unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned
 unsigned int inline PixelsOverThresholdSetAsOne(struct VideoRegister * reg,unsigned int threshold);
 
 
-int Sobel(unsigned int image_reg);
-int SobelFromSource(unsigned int source_reg,unsigned int target_reg);
-int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int target_reg);
-void ReducePalette(unsigned int image_reg,int new_palette);
-void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned char R,unsigned char G,unsigned char B,unsigned char threshold);
-void KillPixelsBelow(unsigned int image_reg,int threshold);
-void KillPixelsBetween(unsigned int image_reg,int low_threshold,int high_threshold);
-void Kill3PixelsBelow(unsigned int image_reg,int threshold);
+int Sobel(struct VideoRegister * image_reg);
+int SobelFromSource(struct VideoRegister * source_reg,struct VideoRegister * target_reg);
+int SecondDerivativeIntensitiesFromSource(struct VideoRegister * source_reg,struct VideoRegister * target_reg);
+void ReducePalette(struct VideoRegister * reg,int new_palette);
+void KillDifferentPixels(struct VideoRegister * reg,unsigned char R,unsigned char G,unsigned char B,unsigned char threshold);
+void KillPixelsBelow(struct VideoRegister * reg,int threshold);
+void KillPixelsBetween(struct VideoRegister * reg,int low_threshold,int high_threshold);
+void Kill3PixelsBelow(struct VideoRegister * reg,int threshold);
 void Monochrome(struct VideoRegister * reg);
 void MonochromeL(struct VideoRegister * reg);
 void CollapseLargeRegister(struct LargeVideoRegister * reg);
 void CollapseRegister(struct VideoRegister * reg);
-int GaussianBlur(unsigned int image_reg);
-int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg);
-void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold);
-int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned int * M);
+int GaussianBlur(struct VideoRegister * image_reg);
+int GaussianBlurFromSource(struct VideoRegister * source_reg,struct VideoRegister * target_reg);
+void PrepareCleanSobeledGaussianAndDerivative(struct VideoRegister * rgb_reg,struct VideoRegister * target_sobel_reg,struct VideoRegister * target_derivative_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold);
+int CalibrateImage(struct VideoRegister * rgb_reg,struct VideoRegister * rgb_calibrated_reg,unsigned int * M);
 
 //BOOLEAN FindGoodTrackingPoints(unsigned char * edge_source,unsigned char * target,int image_x,int image_y,BOOLEAN monochrome);
 int PixelIsBright(unsigned char * rgb_image,unsigned int memplace_3_byte);

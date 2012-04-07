@@ -365,7 +365,7 @@ unsigned int VisCortX_ClearVideoRegister(unsigned int input_img_regnum)
 
 unsigned int VisCortX_CopyVideoRegister(unsigned int input_img_regnum,unsigned int output_img_regnum,unsigned int copy_features,unsigned int copy_faces)
 {
-    return CopyRegister(input_img_regnum,output_img_regnum,copy_features,copy_faces);
+    return CopyRegister(&video_register[input_img_regnum],&video_register[output_img_regnum],copy_features,copy_faces);
 }
 
 unsigned int VisCortX_SwapVideoRegisters(unsigned int input_img_regnum,unsigned int output_img_regnum)
@@ -631,10 +631,10 @@ void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error)
      unsigned int TMP_REGISTER = GetTempRegister();
      if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( VisCortx_ConvolutionFilter )\n"); }
 
-    CopyRegister(reg_in,TMP_REGISTER,0,0);
+    CopyRegister(&video_register[reg_in],&video_register[TMP_REGISTER],0,0);
     ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
-    GaussianBlur(TMP_REGISTER);
-    ConvolutionFilter9_1ByteOptimized(TMP_REGISTER,reg_out,table,divisor);
+    GaussianBlur(&video_register[TMP_REGISTER]);
+    ConvolutionFilter9_1ByteOptimized(&video_register[TMP_REGISTER],&video_register[reg_out],table,divisor);
 
     StopUsingVideoRegister(TMP_REGISTER);
 
@@ -828,26 +828,26 @@ void  VisCortx_RenewAllTrackPoints(unsigned int vid_reg)
 void KeepOnlyPixelsClosetoColor(unsigned int src_reg, unsigned int target_reg , unsigned char R,unsigned char G,unsigned char B,unsigned char howclose)
 {
     memcpy(video_register[target_reg].pixels,video_register[src_reg].pixels,metrics[RESOLUTION_X]*metrics[RESOLUTION_Y]*3*sizeof(BYTE));
-    KillDifferentPixels(video_register[target_reg].pixels ,metrics[RESOLUTION_X],metrics[RESOLUTION_Y],R,G,B,howclose);
+    KillDifferentPixels(&video_register[target_reg],R,G,B,howclose);
 }
 
 int SobelNDerivative(int n)
 {
     if ( n == 1 ) {
-                    SobelFromSource(CALIBRATED_LEFT_EYE,LAST_LEFT_OPERATION);
+                    SobelFromSource(&video_register[CALIBRATED_LEFT_EYE],&video_register[LAST_LEFT_OPERATION]);
                     ConvertRegisterFrom1ByteTo3Byte(LAST_LEFT_OPERATION);
-                    SobelFromSource(CALIBRATED_RIGHT_EYE,LAST_RIGHT_OPERATION);
+                    SobelFromSource(&video_register[CALIBRATED_RIGHT_EYE],&video_register[LAST_RIGHT_OPERATION]);
                     ConvertRegisterFrom1ByteTo3Byte(LAST_RIGHT_OPERATION);
                   } else
     if ( n == 2 ) {
-                    CopyRegister(CALIBRATED_LEFT_EYE,GENERAL_3,0,0);
+                    CopyRegister(&video_register[CALIBRATED_LEFT_EYE],&video_register[GENERAL_3],0,0);
                     ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
-                    SecondDerivativeIntensitiesFromSource(GENERAL_3,LAST_LEFT_OPERATION);
+                    SecondDerivativeIntensitiesFromSource(&video_register[GENERAL_3],&video_register[LAST_LEFT_OPERATION]);
                     ConvertRegisterFrom1ByteTo3Byte(LAST_LEFT_OPERATION);
 
-                    CopyRegister(CALIBRATED_RIGHT_EYE,GENERAL_3,0,0);
+                    CopyRegister(&video_register[CALIBRATED_RIGHT_EYE],&video_register[GENERAL_3],0,0);
                     ConvertRegisterFrom3ByteTo1Byte(GENERAL_3);
-                    SecondDerivativeIntensitiesFromSource(GENERAL_3,LAST_RIGHT_OPERATION);
+                    SecondDerivativeIntensitiesFromSource(&video_register[GENERAL_3],&video_register[LAST_RIGHT_OPERATION]);
                     ConvertRegisterFrom1ByteTo3Byte(LAST_RIGHT_OPERATION);
                   } else
                   {

@@ -48,8 +48,8 @@ int PrepareRegistersForDepthMapping(
        ClearLargeVideoRegister(left_depth_reg);
        ClearLargeVideoRegister(right_depth_reg);
 
-       PrepareCleanSobeledGaussianAndDerivative(CALIBRATED_LEFT_EYE ,EDGES_LEFT,SECOND_DERIVATIVE_LEFT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
-       PrepareCleanSobeledGaussianAndDerivative(CALIBRATED_RIGHT_EYE,EDGES_RIGHT,SECOND_DERIVATIVE_RIGHT,settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
+       PrepareCleanSobeledGaussianAndDerivative(&video_register[CALIBRATED_LEFT_EYE],&video_register[EDGES_LEFT],&video_register[SECOND_DERIVATIVE_LEFT],settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
+       PrepareCleanSobeledGaussianAndDerivative(&video_register[CALIBRATED_RIGHT_EYE],&video_register[EDGES_RIGHT],&video_register[SECOND_DERIVATIVE_RIGHT],settings[DEPTHMAP_EDGE_LOW_STRICTNESS],settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]);
     }
 
    if (  settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM] == 1 )
@@ -64,7 +64,7 @@ int PrepareRegistersForDepthMapping(
      {
         unsigned int TMP_REGISTER = GetTempRegister();
         if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( PassNewFrameFromVideoInput ) \n"); }
-        CopyRegister(EDGES_LEFT,TMP_REGISTER,0,0);
+        CopyRegister(&video_register[EDGES_LEFT],&video_register[TMP_REGISTER],0,0);
         PixelsOverThresholdSetAsOne(&video_register[TMP_REGISTER],1);
         CompressRegister(TMP_REGISTER,EDGES_PRESENCE_GROUPED_LEFT);
         StopUsingVideoRegister(TMP_REGISTER);
@@ -377,10 +377,10 @@ unsigned int DepthMapFull  (
     }
 
 
-    if (!CheckRegistersForSynchronization(CALIBRATED_LEFT_EYE,EDGES_LEFT)) { fprintf(stderr,"EDGES LEFT NOT IN SYNC\n"); }
-    if (!CheckRegistersForSynchronization(CALIBRATED_LEFT_EYE,SECOND_DERIVATIVE_LEFT)) { fprintf(stderr,"SECOND DERIV LEFT NOT IN SYNC\n"); }
-    if (!CheckRegistersForSynchronization(CALIBRATED_RIGHT_EYE,EDGES_RIGHT)) { fprintf(stderr,"EDGES RIGHT NOT IN SYNC\n"); }
-    if (!CheckRegistersForSynchronization(CALIBRATED_RIGHT_EYE,SECOND_DERIVATIVE_RIGHT)) { fprintf(stderr,"SECOND DERIV RIGHT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(&video_register[CALIBRATED_LEFT_EYE],&video_register[EDGES_LEFT])) { fprintf(stderr,"EDGES LEFT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(&video_register[CALIBRATED_LEFT_EYE],&video_register[SECOND_DERIVATIVE_LEFT])) { fprintf(stderr,"SECOND DERIV LEFT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(&video_register[CALIBRATED_RIGHT_EYE],&video_register[EDGES_RIGHT])) { fprintf(stderr,"EDGES RIGHT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(&video_register[CALIBRATED_RIGHT_EYE],&video_register[SECOND_DERIVATIVE_RIGHT])) { fprintf(stderr,"SECOND DERIV RIGHT NOT IN SYNC\n"); }
 
 
     uint edges_required_to_process=( (uint) ( metrics[VERTICAL_BUFFER] * metrics[HORIZONTAL_BUFFER] * settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] )  / 100 );
@@ -452,8 +452,8 @@ unsigned int DepthMapFull  (
          left_rgn.y1+=y_vima;
        }
 
-  MarkRegistersAsSynced(left_view_reg,left_depth_reg);
-  MarkRegistersAsSynced(right_view_reg,right_depth_reg);
+  MarkRegistersAsSynced(&video_register[left_view_reg],&video_register[left_depth_reg]);
+  MarkRegistersAsSynced(&video_register[right_view_reg],&video_register[right_depth_reg]);
 
   fprintf(stderr,"Depth Map did a total of %u Patch Comparisons , %u reverse , %u immediate \n",metrics[COMPAREPATCH_TOTAL_CALLS] , metrics[COMPAREPATCH_REVERSE_ACCEPTS] , metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS]);
 
@@ -488,8 +488,8 @@ int EndDisparityMapping(unsigned int convert_to_video,unsigned int comparisons_s
    */
      if (convert_to_video) { DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1); }
      //DepthMapToVideo(DEPTH_RIGHT,DEPTH_RIGHT_VIDEO,1);
-    CopyRegister(EDGES_LEFT,DEPTH_RIGHT_VIDEO,0,0);
-    MarkRegistersAsSynced(DEPTH_LEFT,DEPTH_RIGHT_VIDEO);
+    CopyRegister(&video_register[EDGES_LEFT],&video_register[DEPTH_RIGHT_VIDEO],0,0);
+    MarkRegistersAsSynced(&video_register[DEPTH_LEFT],&video_register[DEPTH_RIGHT_VIDEO]);
 
      if (settings[PASS_TO_WORLD_3D])
       {

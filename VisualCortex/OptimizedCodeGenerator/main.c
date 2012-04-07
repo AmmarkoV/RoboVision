@@ -14,10 +14,11 @@ void WriteHeader()
      {
         fprintf(hofp,"#ifndef VISCORTEXCONVOLUTIONFILTERSOPTIMIZED_H_INCLUDED\n");
         fprintf(hofp,"#define VISCORTEXCONVOLUTIONFILTERSOPTIMIZED_H_INCLUDED\n");
+        fprintf(hofp,"#include \"VisionMemory.h\" \n");
 
-        fprintf(hofp,"int ConvolutionFilter9_1ByteOptimized(unsigned int monochrome_reg,unsigned int target_reg,signed char * table,signed int divisor);\n");
-        fprintf(hofp,"int ConvolutionFilter9_3ByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table,signed int divisor);\n");
-        fprintf(hofp,"int ConvolutionFilter9_AutoByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table,signed int divisor);\n");
+        fprintf(hofp,"int ConvolutionFilter9_1ByteOptimized(struct VideoRegister * monochrome_reg,struct VideoRegister * target_reg,signed char * table,signed int divisor);\n");
+        fprintf(hofp,"int ConvolutionFilter9_3ByteOptimized(struct VideoRegister * rgb_reg,struct VideoRegister * target_reg,signed char * table,signed int divisor);\n");
+        fprintf(hofp,"int ConvolutionFilter9_AutoByteOptimized(struct VideoRegister * rgb_reg,struct VideoRegister * target_reg,signed char * table,signed int divisor);\n");
 
         fprintf(hofp,"#endif // CONVOLUTIONFILTERS_H_INCLUDED\n");
         fprintf(hofp,"\n\n");
@@ -53,16 +54,16 @@ void EndCBody(FILE *ofp)
 
 void UnrollConvolution9_1Byte(FILE *ofp,int x_unroll)
 {
-   fprintf(ofp,"int ConvolutionFilter9_1ByteOptimized(unsigned int monochrome_reg,unsigned int target_reg,signed char * table,signed int divisor)\n");
+   fprintf(ofp,"int ConvolutionFilter9_1ByteOptimized(struct VideoRegister * monochrome_reg,struct VideoRegister * target_reg,signed char * table,signed int divisor)\n");
    fprintf(ofp,"{\n\n");
 
 
    fprintf(ofp,"if (!ThisIsA1ByteRegister(monochrome_reg)) { return 0; }\n");
-   fprintf(ofp,"video_register[target_reg].depth=1;\n");
+   fprintf(ofp,"target_reg->depth=1;\n");
    fprintf(ofp,"// 3 x 3 = 9 :P\n");
-   fprintf(ofp,"unsigned char * out_px=video_register[target_reg].pixels;\n");
-   fprintf(ofp,"unsigned char * cur_px=video_register[monochrome_reg].pixels;\n");
-   fprintf(ofp,"unsigned char * px=video_register[monochrome_reg].pixels;\n");
+   fprintf(ofp,"unsigned char * out_px=target_reg->pixels;\n");
+   fprintf(ofp,"unsigned char * cur_px=monochrome_reg->pixels;\n");
+   fprintf(ofp,"unsigned char * px=monochrome_reg->pixels;\n");
    fprintf(ofp,"\n");
    fprintf(ofp,"if ( divisor == 0 ) { divisor = 1; }\n");
    fprintf(ofp,"signed int cur_value ;\n");
@@ -73,7 +74,7 @@ void UnrollConvolution9_1Byte(FILE *ofp,int x_unroll)
 
 
 
-   fprintf(ofp," while ( y < video_register[monochrome_reg].size_y-1 )\n");
+   fprintf(ofp," while ( y < monochrome_reg->size_y-1 )\n");
    fprintf(ofp,"  {\n");
    fprintf(ofp,"      x=1;\n");
    fprintf(ofp,"     ++cur_px;\n");
@@ -116,7 +117,7 @@ fprintf(ofp,"}\n");
 
 void UnrollConvolution9_3Byte(FILE *ofp,int x_unroll)
 {
-   fprintf(ofp,"int ConvolutionFilter9_3ByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table)\n");
+   fprintf(ofp,"int ConvolutionFilter9_3ByteOptimized(struct VideoRegister *  rgb_reg,struct VideoRegister * target_reg,signed char * table)\n");
    fprintf(ofp,"{  // FALLBACK TO NOT OPTIMIZED CONVOLUTION FILTER \n");
    fprintf(ofp," return ConvolutionFilter9_3Byte(rgb_reg,target_reg,table);\n");
    fprintf(ofp,"}\n");
@@ -128,21 +129,21 @@ void DefaultNotOptimizedOutput(FILE *ofp)
 {
    StartCBody(ofp);
 
-   fprintf(ofp,"int ConvolutionFilter9_1ByteOptimized(unsigned int monochrome_reg,unsigned int target_reg,signed char * table,signed int divisor)\n");
+   fprintf(ofp,"int ConvolutionFilter9_1ByteOptimized(struct VideoRegister * monochrome_reg,struct VideoRegister * target_reg,signed char * table,signed int divisor)\n");
    fprintf(ofp,"{  // FALLBACK TO NOT OPTIMIZED CONVOLUTION FILTER \n");
    fprintf(ofp," return ConvolutionFilter9_1Byte(monochrome_reg,target_reg,table,divisor);\n");
    fprintf(ofp,"}\n\n");
 
-   fprintf(ofp,"int ConvolutionFilter9_3ByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table,signed int divisor)\n");
+   fprintf(ofp,"int ConvolutionFilter9_3ByteOptimized(struct VideoRegister * rgb_reg,struct VideoRegister * target_reg,signed char * table,signed int divisor)\n");
    fprintf(ofp,"{  // FALLBACK TO NOT OPTIMIZED CONVOLUTION FILTER \n");
    fprintf(ofp," return ConvolutionFilter9_3Byte(rgb_reg,target_reg,table,divisor);\n");
    fprintf(ofp,"}\n");
 
-   fprintf(ofp,"int ConvolutionFilter9_AutoByteOptimized(unsigned int rgb_reg,unsigned int target_reg,signed char * table,signed int divisor)\n");
+   fprintf(ofp,"int ConvolutionFilter9_AutoByteOptimized(struct VideoRegister * rgb_reg,struct VideoRegister * target_reg,signed char * table,signed int divisor)\n");
    fprintf(ofp,"{  // FALLBACK TO NOT OPTIMIZED CONVOLUTION FILTER \n");
-   fprintf(ofp,"  if ( video_register[rgb_reg].depth == 1 ) { return ConvolutionFilter9_1ByteOptimized(rgb_reg,target_reg,table,divisor); } else\n");
-   fprintf(ofp,"  if ( video_register[rgb_reg].depth == 3 ) { return ConvolutionFilter9_3ByteOptimized(rgb_reg,target_reg,table,divisor); }\n");
-   fprintf(ofp,"  fprintf(stderr,\"This color depth ( %%u ) doesnt have a convolution filter implemented \\n\",video_register[rgb_reg].depth);"); 
+   fprintf(ofp,"  if ( rgb_reg->depth == 1 ) { return ConvolutionFilter9_1ByteOptimized(rgb_reg,target_reg,table,divisor); } else\n");
+   fprintf(ofp,"  if ( rgb_reg->depth == 3 ) { return ConvolutionFilter9_3ByteOptimized(rgb_reg,target_reg,table,divisor); }\n");
+   fprintf(ofp,"  fprintf(stderr,\"This color depth ( %%u ) doesnt have a convolution filter implemented \\n\",rgb_reg->depth);");
    fprintf(ofp," return 0;\n");
    fprintf(ofp,"}\n");
 

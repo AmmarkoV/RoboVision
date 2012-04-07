@@ -354,10 +354,10 @@ int FindAndTrackAllPointsOnRegistersOpenCV(unsigned int reg_new , unsigned int r
     unsigned int MONOCHROME_TMP_REGISTER_NEW = GetTempRegister();
     if (MONOCHROME_TMP_REGISTER_NEW == 0 ) { fprintf(stderr," Error Getting the second temporary Video Register ( TrackAllPointsOnRegistersOpenCV ) \n"); }
 
-    CopyRegister(reg_new,MONOCHROME_TMP_REGISTER_NEW,0,0);
+    CopyRegister(&video_register[reg_new],&video_register[MONOCHROME_TMP_REGISTER_NEW],0,0);
     ConvertRegisterFrom3ByteTo1Byte(MONOCHROME_TMP_REGISTER_NEW);
 
-    CopyRegister(reg_old,MONOCHROME_TMP_REGISTER_OLD,0,0);
+    CopyRegister(&video_register[reg_old],&video_register[MONOCHROME_TMP_REGISTER_OLD],0,0);
     ConvertRegisterFrom3ByteTo1Byte(MONOCHROME_TMP_REGISTER_OLD);
 
     image_1->imageData=(char*) video_register[MONOCHROME_TMP_REGISTER_OLD].pixels; // UGLY HACK

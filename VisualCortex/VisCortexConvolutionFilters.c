@@ -22,16 +22,17 @@ signed int SumTable(signed char * table , signed int total_blocks)
 
 
 
-int ConvolutionFilter9_1Byte(unsigned int monochrome_reg,unsigned int target_reg,signed char * table,signed int divisor)
+int ConvolutionFilter9_1Byte(struct VideoRegister * monochrome_reg,struct VideoRegister * target_reg,signed char * table,signed int divisor)
 {
+    if ( ( monochrome_reg==0 ) || ( target_reg == 0) ) { fprintf(stderr,"ConvolutionFilter9_1Byte called with empty registers\n"); return 0; }
     if (!ThisIsA1ByteRegister(monochrome_reg)) { return 0; }
-    video_register[target_reg].depth=1;
+    target_reg->depth=1;
     // 3 x 3 = 9 :P
-    unsigned char * out_px=video_register[target_reg].pixels;
-    unsigned char * cur_px=video_register[monochrome_reg].pixels;
+    unsigned char * out_px=target_reg->pixels;
+    unsigned char * cur_px=monochrome_reg->pixels;
     unsigned char * end_of_line_cur_px=cur_px+metrics[RESOLUTION_X];
-    unsigned char * end_of_memory_cur_px=video_register[monochrome_reg].pixels+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]-metrics[RESOLUTION_X]-1;
-    unsigned char * px=video_register[monochrome_reg].pixels;
+    unsigned char * end_of_memory_cur_px=monochrome_reg->pixels+metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]-metrics[RESOLUTION_X]-1;
+    unsigned char * px=monochrome_reg->pixels;
 
     if ( divisor == 0 ) { divisor = 1; }
 
@@ -110,17 +111,18 @@ int ConvolutionFilter9_1Byte(unsigned int monochrome_reg,unsigned int target_reg
 }
 
 
-int ConvolutionFilter9_3Byte(unsigned int rgb_reg,unsigned int target_reg,signed char * table,signed int divisor)
+int ConvolutionFilter9_3Byte(struct VideoRegister * rgb_reg,struct VideoRegister * target_reg,signed char * table,signed int divisor)
 {
     //fprintf(stderr,"ConvolutionFilter9_3Byte is not tested yet and its disabled \n");
     //return 0;
 
+    if ( ( rgb_reg==0 ) || ( target_reg == 0) ) { fprintf(stderr,"ConvolutionFilter9_1Byte called with empty registers\n"); return 0; }
     if (!ThisIsA3ByteRegister(rgb_reg)) { return 0; }
-    video_register[target_reg].depth=3;
+    target_reg->depth=3;
     // 3 x 3 = 9 :P
-    unsigned char * out_px=video_register[target_reg].pixels;
-    unsigned char * cur_px=video_register[rgb_reg].pixels;
-    unsigned char * px=video_register[rgb_reg].pixels;
+    unsigned char * out_px=target_reg->pixels;
+    unsigned char * cur_px=rgb_reg->pixels;
+    unsigned char * px=rgb_reg->pixels;
 
 
 
@@ -149,13 +151,13 @@ int ConvolutionFilter9_3Byte(unsigned int rgb_reg,unsigned int target_reg,signed
     signed char * table_3_3 = table+8;
     //----------------------------------------------------------
 
-    while ( y < video_register[rgb_reg].size_y-1 )
+    while ( y < rgb_reg->size_y-1 )
      {
          x=1;
          out_px+=3; /*This because we go until 3 bytes before the edge of the array*/
          cur_px+=3; /*This because we go until 3 bytes before the edge of the array*/
 
-         while ( x < video_register[rgb_reg].size_x-1 )
+         while ( x < rgb_reg->size_x-1 )
           {
             px = cur_px - metrics[RESOLUTION_X_3_BYTE];
 

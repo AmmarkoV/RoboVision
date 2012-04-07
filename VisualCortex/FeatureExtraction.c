@@ -61,8 +61,8 @@ int ExtractFeatures_MyAlgorithm(int max_features,unsigned int edge_reg,unsigned 
 {
   int total_features_added=0;
 
-  if (!ThisIsA1ByteRegister(edge_reg)) { fprintf(stderr,"ExtractFeatures_MyAlgorithm expects 1byte (monochrome) color info for edge_reg"); return 0; }
-  if (!ThisIsA1ByteRegister(second_deriv_reg)) { fprintf(stderr,"ExtractFeatures_MyAlgorithm expects 1byte (monochrome) color info for second_deriv_reg"); return 0; }
+  if (!ThisIsA1ByteRegister(&video_register[edge_reg])) { fprintf(stderr,"ExtractFeatures_MyAlgorithm expects 1byte (monochrome) color info for edge_reg"); return 0; }
+  if (!ThisIsA1ByteRegister(&video_register[second_deriv_reg])) { fprintf(stderr,"ExtractFeatures_MyAlgorithm expects 1byte (monochrome) color info for second_deriv_reg"); return 0; }
 
   video_register[target_reg].depth=1;
   unsigned int image_x=video_register[edge_reg].size_x;
@@ -189,7 +189,7 @@ int ExtractFeatures(int rgb_reg,unsigned int edge_reg,unsigned int second_deriv_
    if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register\n"); return 0; }
 
   StartTimer(FIND_CORNERS_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
-   CopyRegister(rgb_reg,TMP_REGISTER,1,0);
+   CopyRegister(&video_register[rgb_reg],&video_register[TMP_REGISTER],1,0);
    ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
    corner_list = (struct xy_local *) fast9_detect_nonmax ( video_register[TMP_REGISTER].pixels ,
                                                            metrics[RESOLUTION_X] , metrics[RESOLUTION_Y] ,

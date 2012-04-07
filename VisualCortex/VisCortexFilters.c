@@ -263,8 +263,16 @@ while (store_start_px<start_px+image_x)
  return;
 }
 
-void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned char R,unsigned char G,unsigned char B,unsigned char threshold)
-{ if (image==0) {return;}
+void KillDifferentPixels(struct VideoRegister * reg,unsigned char R,unsigned char G,unsigned char B,unsigned char threshold)
+{
+ if (reg==0) { fprintf(stderr,"Function KillDifferentPixels given Null Video Register\n"); return ; }
+ if (reg->depth!=3) { fprintf(stderr,"Function KillDifferentPixels assumes 3byte array\n"); return ; }
+
+ unsigned char * image = reg->pixels;
+ int image_x = reg->size_x;
+ int image_y = reg->size_y;
+
+ if (image==0) {return;}
 
  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
  register BYTE *start_px = (BYTE *) image;
@@ -294,14 +302,22 @@ void KillDifferentPixels(unsigned char * image,int image_x,int image_y,unsigned 
 
 }
 
-void KillPixelsBetween(unsigned int image_reg,int low_threshold,int high_threshold)
+void KillPixelsBetween(struct VideoRegister * reg,int low_threshold,int high_threshold)
 {
- unsigned char * image = video_register[image_reg].pixels;
+
+ if (reg==0) { fprintf(stderr,"Function KillPixelsBetween given Null Video Register\n"); return ; }
+ if (reg->depth!=3) { fprintf(stderr,"Function KillPixelsBetween assumes 3byte array\n"); return ; }
+
+ unsigned char * image = reg->pixels;
+ unsigned int image_depth = reg->depth;
+ int image_x = reg->size_x;
+ int image_y = reg->size_y;
+
+
  if (image==0) {return;}
- unsigned int image_depth = video_register[image_reg].depth;
 
 
-StartTimer(PIXEL_OVER_THRESHOLD_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+ StartTimer(PIXEL_OVER_THRESHOLD_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
  register BYTE *start_px = (BYTE *) image;
  register BYTE *px = (BYTE *) image;
@@ -339,9 +355,16 @@ EndTimer(PIXEL_OVER_THRESHOLD_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
  return;
 }
 
-void KillPixelsBelow(unsigned int image_reg,int threshold)
+void KillPixelsBelow(struct VideoRegister * reg,int threshold)
 {
- unsigned char * image = video_register[image_reg].pixels;
+ if (reg==0) { fprintf(stderr,"Function KillPixelsBelow given Null Video Register\n"); return ; }
+ if (reg->depth!=3) { fprintf(stderr,"Function KillPixelsBelow assumes 3byte array\n"); return ; }
+
+ unsigned char * image = reg->pixels;
+ unsigned int image_depth = reg->depth;
+ int image_x = reg->size_x;
+ int image_y = reg->size_y;
+
  if (image==0) {return;}
 
  register BYTE *start_px = (BYTE *) image;
@@ -351,7 +374,7 @@ void KillPixelsBelow(unsigned int image_reg,int threshold)
  register BYTE *b;
  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
 
- if ( ThisIsA3ByteRegister(image_reg) )
+ if ( ThisIsA3ByteRegister(reg) )
  {
    while ( px < start_px + image_size )
      {
@@ -366,7 +389,7 @@ void KillPixelsBelow(unsigned int image_reg,int threshold)
     }
   }
    else
-  if ( ThisIsA1ByteRegister(image_reg) )
+  if ( ThisIsA1ByteRegister(reg) )
  {
    image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE];
    while (px<start_px+image_size)
@@ -380,19 +403,23 @@ void KillPixelsBelow(unsigned int image_reg,int threshold)
 }
 
 
-void Kill3PixelsBelow(unsigned int image_reg,int threshold)
+void Kill3PixelsBelow(struct VideoRegister * reg,int threshold)
 // LIKE KILLPIXELSBELOW , BUT WHENEVER EITHER A R , G or B PIXEL IS FOUND UNDER THRESHOLD IT WILL WIPE OUT ALL OF THE COLOR CHANNELS
 // IN THE PIXEL!
 {
- unsigned char * image = video_register[image_reg].pixels;
-  int image_x=video_register[image_reg].size_x;
-  int image_y=video_register[image_reg].size_y;
+ if (reg==0) { fprintf(stderr,"Function Kill3PixelsBelow given Null Video Register\n"); return ; }
+ if (reg->depth!=3) { fprintf(stderr,"Function Kill3PixelsBelow assumes 3byte array\n"); return ; }
+
+ unsigned char * image = reg->pixels;
+ unsigned int image_depth = reg->depth;
+ int image_x = reg->size_x;
+ int image_y = reg->size_y;
+
  if (image==0) {return;}
- unsigned int image_depth = video_register[image_reg].depth;
 
 if ( image_depth == 1 )
  {
-     KillPixelsBelow(image_reg,threshold);
+     KillPixelsBelow(reg,threshold);
      return;
  }
 
@@ -416,10 +443,17 @@ if ( image_depth == 1 )
 }
 
 
-void ReducePalette(unsigned int image_reg,int new_palette)
+void ReducePalette(struct VideoRegister * reg,int new_palette)
 {
- if (!ThisIsA3ByteRegister(image_reg)) { return; }
- unsigned char * image = video_register[image_reg].pixels;
+ if (reg==0) { fprintf(stderr,"Function ReducePalette given Null Video Register\n"); return ; }
+
+ unsigned char * image = reg->pixels;
+ unsigned int image_depth = reg->depth;
+ int image_x = reg->size_x;
+ int image_y = reg->size_y;
+
+ if (!ThisIsA3ByteRegister(reg)) { return; }
+
  if (image==0) {return;}
  unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
  register BYTE *start_px = ( BYTE * ) image;
@@ -461,16 +495,18 @@ inline float sqrt_fast_approximation(const float x)
 
 
 
-int SobelFromSource(unsigned int source_reg,unsigned int target_reg)
+int SobelFromSource(struct VideoRegister * source_reg,struct VideoRegister * target_reg)
+                       //unsigned int source_reg,unsigned int target_reg)
 {
+  if ( (source_reg==0)||(target_reg==0) ) { fprintf(stderr,"Function SobelFromSource given Null Video Register\n"); return 0 ; }
   if (!ThisIsA1ByteRegister(source_reg)) { fprintf(stderr,"SobelFromSource cannot run with this image depth \n"); return 0; }
-  unsigned char * source = video_register[source_reg].pixels;
-  unsigned char * target = video_register[target_reg].pixels;
-  if ( (target==0) || (source==0) ) {return(0);}
+  unsigned char * source = source_reg->pixels;
+  unsigned char * target = target_reg->pixels;
+  if ( (target==0) || (source==0) ) {return 0;}
 
-  unsigned int image_x=video_register[source_reg].size_x;
-  unsigned int image_y=video_register[source_reg].size_y;
-  video_register[target_reg].depth=1;
+  unsigned int image_x=source_reg->size_x;
+  unsigned int image_y=source_reg->size_y;
+  target_reg->depth=1;
 
 
 
@@ -561,16 +597,16 @@ return (1);
 }
 
 
-int Sobel(unsigned int image_reg)
+int Sobel(struct VideoRegister * image_reg)
 {
   if (!ThisIsA1ByteRegister(image_reg)) { fprintf(stderr,"Sobel cannot run with this image depth \n"); return 0; }
 
     unsigned int TMP_REGISTER = GetTempRegister();
     if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( Sobel ) \n"); return 0; }
 
-    CopyRegister(image_reg,TMP_REGISTER,0,0);
+    CopyRegister(image_reg,&video_register[TMP_REGISTER],0,0);
 
-    SobelFromSource(TMP_REGISTER,image_reg);
+    SobelFromSource(&video_register[TMP_REGISTER],image_reg);
 
     StopUsingVideoRegister(TMP_REGISTER);
 
@@ -579,7 +615,7 @@ int Sobel(unsigned int image_reg)
 
 
 
-int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int target_reg)
+int SecondDerivativeIntensitiesFromSource(struct VideoRegister * source_reg,struct VideoRegister * target_reg)
 {
     if (!ThisIsA1ByteRegister(source_reg)) { fprintf(stderr,"SecondDerivative Intensities requires monochrome image conversion"); return 0; }
 
@@ -597,10 +633,10 @@ int SecondDerivativeIntensitiesFromSource(unsigned int source_reg,unsigned int t
 
 
 
-int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg)
+int GaussianBlurFromSource(struct VideoRegister * source_reg,struct VideoRegister * target_reg)
 {
   if (!ThisIsA1ByteRegister(source_reg)) {  fprintf(stderr,"GaussianBlurFromSource Intensities requires monochrome image conversion"); return 0; }
-  if ( (video_register[source_reg].pixels==0) || (video_register[target_reg].pixels==0) ) {return(0);}
+  if ( (source_reg->pixels==0) || ( target_reg->pixels==0) ) {return(0);}
 
   StartTimer(GAUSSIAN_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
@@ -625,66 +661,58 @@ int GaussianBlurFromSource(unsigned int source_reg,unsigned int target_reg)
   EndTimer(GAUSSIAN_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
   MarkRegistersAsSynced(source_reg,target_reg);
 
- return (1);
+ return 1;
 }
 
-int GaussianBlur(unsigned int image_reg)
+int GaussianBlur(struct VideoRegister * image_reg)
 {
   return GaussianBlurFromSource(image_reg,image_reg);
 }
 
-unsigned int FloodPixel(unsigned char * picture_array,unsigned char * result_array,unsigned int point_x,unsigned int point_y,unsigned int size_x,unsigned int size_y,unsigned char size_rgb)
+unsigned int FloodPixel(struct VideoRegister * picture_array,struct VideoRegister * result_array,unsigned int point_x,unsigned int point_y,unsigned char size_rgb)
 {
 	fprintf(stderr,"FloodPixel not implemented!\n");
-	return 0;
-	register unsigned int ptr_x=0,y,x;
-
-	x=point_x;
-	for ( y=point_y-1; point_y>=0; y--)
-	   {
-	       ptr_x=( (y) * size_x * size_rgb )+( x * size_rgb );
-	   }
   return 0;
 }
 
-
-
-void PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_image_reg,unsigned int target_sobel_image_reg,unsigned int target_derivative_image_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
+void PrepareCleanSobeledGaussianAndDerivative(struct VideoRegister * rgb_reg,struct VideoRegister * target_sobel_reg,struct VideoRegister * target_derivative_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
 {
     StartTimer(PREPARE_GRADIENTS_DELAY);
 
     unsigned int TMP_REGISTER = GetTempRegister();
     if (TMP_REGISTER == 0 ) { fprintf(stderr," Error Getting a temporary Video Register ( PrepareCleanSobeledGaussianAndDerivative ) \n"); return; }
 
-    CopyRegister(rgb_image_reg,TMP_REGISTER,0,0);
+    CopyRegister(rgb_reg,&video_register[TMP_REGISTER],0,0);
 
     ConvertRegisterFrom3ByteTo1Byte(TMP_REGISTER);
 
 //    SobelFromSource(TMP_REGISTER,target_sobel_image_reg);
 
-    GaussianBlurFromSource(TMP_REGISTER,target_sobel_image_reg);
-	Sobel(target_sobel_image_reg);
+    GaussianBlurFromSource(&video_register[TMP_REGISTER],target_sobel_reg);
+	Sobel(target_sobel_reg);
 
-	KillPixelsBetween(target_sobel_image_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
+	KillPixelsBetween(target_sobel_reg,kill_lower_edges_threshold,kill_higher_edges_threshold);
 
 
-	SecondDerivativeIntensitiesFromSource(TMP_REGISTER,target_derivative_image_reg);
+	SecondDerivativeIntensitiesFromSource(&video_register[TMP_REGISTER],target_derivative_reg);
 
     StopUsingVideoRegister(TMP_REGISTER);
 
     EndTimer(PREPARE_GRADIENTS_DELAY);
 }
 
-int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned int * M)
+int CalibrateImage(struct VideoRegister * rgb_reg,struct VideoRegister * rgb_calibrated_reg,unsigned int * M)
 {
-   MarkVideoRegistersAsUnsynced(rgb_calibrated , rgb_image);
+
+  MarkVideoRegistersAsUnsynced(rgb_calibrated_reg , rgb_reg);
 
 
     /* TODO , For now the full register is returned!*/
        if ( settings[INPUT_CALIBRATION]==0 )
          {
-           int i = CopyRegister(rgb_image,rgb_calibrated,1,1);
-           video_register[rgb_calibrated].time = video_register[rgb_image].time;
+           int i = CopyRegister(rgb_reg,rgb_calibrated_reg,1,1);
+           MarkRegistersAsSynced(rgb_reg,rgb_calibrated_reg);
+           //video_register[rgb_calibrated].time = video_register[rgb_image].time;
            return i;
          }
     /*The array M is the array calculated from Precalculations.c to speed up things*/
@@ -693,28 +721,22 @@ int CalibrateImage(unsigned int rgb_image,unsigned int rgb_calibrated,unsigned i
 
     unsigned int ptr=0 , new_ptr = 0, ptr_end = metrics[RESOLUTION_MEMORY_LIMIT_3BYTE] ;
 
-    video_register[rgb_image].pixels[0]=255; // DEBUG KEEP BLACK PIXEL
-    video_register[rgb_image].pixels[1]=0; // DEBUG KEEP BLACK PIXEL
-    video_register[rgb_image].pixels[2]=0; // DEBUG KEEP BLACK PIXEL
-    video_register[rgb_image].pixels[3]=255; // DEBUG KEEP BLACK PIXEL
-    video_register[rgb_image].pixels[4]=0; // DEBUG KEEP BLACK PIXEL
-    video_register[rgb_image].pixels[5]=0; // DEBUG KEEP BLACK PIXEL
-    memset(video_register[rgb_calibrated].pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(unsigned char));
+    memset(rgb_calibrated_reg->pixels,0,metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]*sizeof(unsigned char));
 
     while (ptr < ptr_end)
      {
          new_ptr = M[ptr];
-         video_register[rgb_calibrated].pixels[new_ptr] = video_register[rgb_image].pixels[ptr];
+         rgb_calibrated_reg->pixels[new_ptr] = rgb_reg->pixels[ptr];
          ++new_ptr; ++ptr;
 
-         video_register[rgb_calibrated].pixels[new_ptr] = video_register[rgb_image].pixels[ptr];
+         rgb_calibrated_reg->pixels[new_ptr] = rgb_reg->pixels[ptr];
          ++new_ptr; ++ptr;
 
-         video_register[rgb_calibrated].pixels[new_ptr] = video_register[rgb_image].pixels[ptr];
+         rgb_calibrated_reg->pixels[new_ptr] = rgb_reg->pixels[ptr];
          ++ptr;
      }
 
-   video_register[rgb_calibrated].time = video_register[rgb_image].time;
+   MarkRegistersAsSynced(rgb_reg,rgb_calibrated_reg);
 
    EndTimer(CALIBRATION_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
 

@@ -475,7 +475,7 @@ unsigned int CompressRegister1Byte(int input,int output)
     }
 
  EndTimer(COMPRESS_IMAGE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
- MarkRegistersAsSynced(input,output);
+ MarkRegistersAsSynced(&video_register[input],&video_register[output]);
 
   return 1;
 }

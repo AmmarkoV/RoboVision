@@ -70,6 +70,7 @@ struct VideoRegister
   char used;
 
   unsigned char * pixels;
+  unsigned int GUARD_BYTE1;
 
   struct FeatureList * features;
   struct FeatureList * faces;
@@ -87,6 +88,8 @@ struct LargeVideoRegister
   char used;
 
   unsigned short * pixels;
+  unsigned int GUARD_BYTE1;
+
   struct FeatureList * features;
   struct FeatureList * faces;
 };
@@ -103,6 +106,8 @@ struct ExtraLargeVideoRegister
   char used;
 
   unsigned int * pixels;
+  unsigned int GUARD_BYTE1;
+
   struct FeatureList * features;
   struct FeatureList * faces;
 };
@@ -141,15 +146,15 @@ int ClearExtraLargeVideoRegister(unsigned int reg_num);
 int InitVisionMemory(unsigned int res_x,unsigned int res_y);
 int CloseVisionMemory();
 
-unsigned char CheckRegistersForSynchronization(unsigned int source,unsigned int target);
-void MarkRegistersAsSynced(unsigned int source,unsigned int target);
+unsigned char CheckRegistersForSynchronization(struct VideoRegister * source,struct VideoRegister * target);
+void MarkRegistersAsSynced(struct VideoRegister * source,struct VideoRegister * target);
 
 void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img,unsigned int px,unsigned int py,unsigned int tx,unsigned int ty,unsigned int size_x,unsigned int size_y);
-int CopyRegister(unsigned int source,unsigned int target,unsigned int copy_features,unsigned int copy_faces);
+int CopyRegister(struct VideoRegister * source,struct VideoRegister * target,unsigned int copy_features,unsigned int copy_faces);
 int SwapRegister(unsigned int source,unsigned int target);
 
-int ThisIsA3ByteRegister(int reg);
-int ThisIsA1ByteRegister(int reg);
+int ThisIsA3ByteRegister(struct VideoRegister * reg);
+int ThisIsA1ByteRegister(struct VideoRegister * reg);
 
 void ConvertRegisterFrom3ByteTo1Byte(int in_reg);
 void ConvertRegisterFrom1ByteTo3Byte(int in_reg);
@@ -164,6 +169,6 @@ int LoadRegisterFromFile(char * filename,unsigned int reg_num);
 unsigned int GetTempRegister();
 unsigned int StopUsingVideoRegister(unsigned int thereg);
 
-unsigned int MarkVideoRegistersAsUnsynced(unsigned int unsync_reg , unsigned int other_reg);
+unsigned int MarkVideoRegistersAsUnsynced(struct VideoRegister * unsync_reg , struct VideoRegister * other_reg);
 
 #endif // VISIONMEMORY_H_INCLUDED

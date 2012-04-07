@@ -26,6 +26,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 unsigned int TIME_INC=0;
 unsigned int TIME_START=0;
 unsigned int COLD_START=1;
+unsigned int GUARD_BYTE_VALUE=1435451;
 
 unsigned int pipeline_switches[PIPELINE_SWITCH_COUNT]={0};
 unsigned int settings[SETTINGS_COUNT]={0};
@@ -42,6 +43,114 @@ float camera_diagonal_field_of_view=0,camera_horizontal_field_of_view=0,camera_v
 
 float depth_units_in_cm[256]={0};
 
+
+
+
+
+
+void DefaultSettings()
+{
+
+    settings[USE_OPENCV]=1;
+
+
+    // Initialize all variables used by Visual Cortex
+    settings[INPUT_CALIBRATION]=0; // DEACTIVATED UNTIL FIX :P
+    // TEST
+
+
+   settings[DISABLE_TIMER_OPERATIONS]=0;
+
+   settings[HYPERVISOR_STORE_PERFORMANCE_STATISTICS]=1;
+
+   settings[PASS_TO_WORLD_3D]=0; // FOR NOW ONLY PASSES TO 3D Visualization
+   settings[PASS_TO_FACE_DETECTOR]=1;
+   settings[PASS_TO_FEATURE_DETECTOR]=1;
+   settings[CALCULATE_MOVEMENT_MATRIX]=1;
+   settings[CALCULATE_MOVEMENT_FLOW]=1;
+
+   settings[RENDER_IMAGE_WITH_MOVEMENT_COMPENSATED]=0;
+
+   settings[ALTERNATE_DETECTORS_BETWEEN_EYES_FOR_CALCULATION_SKIPPING]=1;
+   settings[USE_MOVEMENT_FLOW_FOR_CALCULATION_SKIPPING]=1;
+
+   settings[REMEMBER_FACES]=1;
+
+   settings[FEATURE_TRACKING_MAX_MOVEMENT_THRESHOLD]=120; /* FEATURE Tracking comparison threshold */
+   settings[FEATURE_TRACKING_COMPARISON_THRESHOLD]=35000; /* FEATURE Tracking comparison threshold */
+
+   settings[FEATURE_DETECTION_THRESHOLD]=40; // 30
+
+   settings[DEPTHMAP_DEBUG]=0; // <-- THIS IS VEEEEEEEEERY SLOW :P
+
+   settings[DEPTHMAP_COMPARISON_ALSO_REVERSE_CHECK]=1; // <- THIS IS KIND OF LIKE NOT TRUSTING THE CHECK :P
+
+   settings[DEPTHMAP_USE_OPENCV]=0;
+   settings[DEPTHMAP_OPENCV_LIKE_OUTPUT]=0;
+   settings[DEPTHMAP_RGB_MULTIPLIER]=1;
+   settings[DEPTHMAP_MOVEMENT_MULTIPLIER]=10;
+   settings[DEPTHMAP_SOBEL_MULTIPLIER]=6;
+   settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER]=40;
+
+
+    settings[DEPTHMAP_STARTLEFT_X]=48;// Just like OpenCV :P 16;
+    settings[DEPTHMAP_DETAIL]=4;
+    settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=35;
+    settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=255; // 255
+    settings[DEPTHMAP_INSTANT_DETAIL]=2;
+
+// THE FOLLOWING 4 VARIABLES ARE SET BY ROBOKERNEL ON GUARD.INI :P
+//    settings[DEPTHMAP_VERT_SHIFT_UP]=0;
+//    settings[DEPTHMAP_VERT_SHIFT_DOWN]=0;
+//    settings[DEPTHMAP_VERT_OFFSET_UP]=0;
+//    settings[DEPTHMAP_VERT_OFFSET_DOWN]=0;
+
+    // THIS INCREASES COVERAGE , AND DECREACES PRECISION
+    settings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=1;
+    settings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=1;
+
+    settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD]=200;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD]=4000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=4000;
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]=4000;
+    // SetThresholdsForAllPatchSizes();
+    settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
+
+    settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT]=1; /* <- This actually should always be 1 :P */
+    settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH]=1;
+    settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]=1; /* <- This actually should always be 1 :P */
+    settings[DEPTHMAP_CLOSEST_DEPTH]=75; // Praktika dedomena deixnoun oti synithws apotelesmata panw apo 80 einai poly konta kai tha prepe na theorountai thoryvos!
+    settings[DEPTHMAP_GUESSES]=0;// <- This is not used ..
+    settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM]=1;
+    settings[DEPTHMAP_IMPROVE_FILLING_HOLES]=0;
+    settings[DEPTHMAP_IMPROVE_USING_EDGES]=0;// <- This is not used ..
+    settings[DEPTHMAP_IMPROVE_USING_MOVEMENT]=1;
+
+
+    settings[PATCH_COMPARISON_LEVELS]=3;//3; /* It will use 3 different size block levels for comparison */
+    settings[PATCH_COMPARISON_SCORE_MIN]=33000; // <- This is not used ..
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=2;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=5;
+    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=10;
+    settings[PATCH_HIST_THRESHOLD_R]=7; settings[PATCH_HIST_THRESHOLD_G]=7; settings[PATCH_HIST_THRESHOLD_B]=7;
+
+    settings[MAX_FEATURES]=2000;
+    settings[MAX_FACES]=100;
+
+    settings[PATCH_TRACKING_WIDTH]=19;
+    settings[PATCH_TRACKING_HEIGHT]=19;
+
+    settings[TIME_BETWEEN_TRACKING]=500;
+
+    settings[MOVEMENT_PATCH_SENSITIVITY]=7;
+    settings[MOVEMENT_R_THRESHOLD]=45; settings[MOVEMENT_G_THRESHOLD]=45;   settings[MOVEMENT_B_THRESHOLD]=45;
+    settings[MOVEMENT_MIN_R_THRESHOLD]=29; settings[MOVEMENT_MIN_G_THRESHOLD]=29; settings[MOVEMENT_MIN_B_THRESHOLD]=29;
+}
+
+
+
+
+
 int SetImageRegion( struct ImageRegion * ir , unsigned int x1,unsigned int y1,unsigned int width,unsigned int height)
 {
    if ( ir == 0 ) { return 0; }
@@ -57,6 +166,7 @@ int VideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsigned i
 {
     if (reg_num>=REGISTERS_COUNT) { fprintf(stderr,"Register does not exist! \n "); return 0; }
     if (video_register[reg_num].pixels == 0 ) { fprintf(stderr,"Register is dead! \n "); return 0; }
+    if (video_register[reg_num].GUARD_BYTE1 != GUARD_BYTE_VALUE ) { fprintf(stderr,"Register has overflowed! \n "); return 0; }
     return 1;
 }
 
@@ -64,6 +174,7 @@ int LargeVideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,unsig
 {
     if (reg_num>=LARGE_REGISTERS_COUNT) { fprintf(stderr,"Large Register does not exist! \n "); return 0; }
     if (l_video_register[reg_num].pixels == 0 ) { fprintf(stderr,"Large Register is dead! \n "); return 0; }
+    if (l_video_register[reg_num].GUARD_BYTE1 != GUARD_BYTE_VALUE ) { fprintf(stderr,"Large Register has overflowed! \n "); return 0; }
     return 1;
 }
 
@@ -71,6 +182,7 @@ int ExtraLargeVideoRegisterRequestIsOk(unsigned int reg_num, unsigned int res_x,
 {
     if (reg_num>=EXTRA_LARGE_REGISTERS_COUNT) { fprintf(stderr,"ExtraLarge Register does not exist! \n "); return 0; }
     if (xl_video_register[reg_num].pixels == 0 ) { fprintf(stderr,"ExtraLarge Register is dead! \n "); return 0; }
+    if (xl_video_register[reg_num].GUARD_BYTE1 != GUARD_BYTE_VALUE ) { fprintf(stderr,"ExtraLarge Register has overflowed! \n "); return 0; }
     return 1;
 }
 
@@ -87,6 +199,7 @@ int InitRegister( unsigned int reg_num, unsigned int res_x,unsigned int res_y,un
   video_register[reg_num].depth = depth;
   video_register[reg_num].time = 0;
   video_register[reg_num].used = 0;
+  video_register[reg_num].GUARD_BYTE1 = GUARD_BYTE_VALUE;
   video_register[reg_num].features =  CreateFeatureList(settings[MAX_FEATURES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
   video_register[reg_num].faces = CreateFeatureList(settings[MAX_FACES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
 
@@ -110,6 +223,7 @@ int InitLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned int res
   l_video_register[reg_num].depth = depth;
   l_video_register[reg_num].time = 0;
   l_video_register[reg_num].used = 0;
+  l_video_register[reg_num].GUARD_BYTE1 = GUARD_BYTE_VALUE;
   l_video_register[reg_num].features =  CreateFeatureList(settings[MAX_FEATURES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
   l_video_register[reg_num].faces = CreateFeatureList(settings[MAX_FACES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
 
@@ -132,6 +246,7 @@ int InitExtraLargeRegister( unsigned int reg_num, unsigned int res_x,unsigned in
   xl_video_register[reg_num].depth = depth;
   xl_video_register[reg_num].time = 0;
   xl_video_register[reg_num].used = 0;
+  xl_video_register[reg_num].GUARD_BYTE1 = GUARD_BYTE_VALUE;
   xl_video_register[reg_num].features =  CreateFeatureList(settings[MAX_FEATURES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
   xl_video_register[reg_num].faces = CreateFeatureList(settings[MAX_FACES],settings[PATCH_TRACKING_WIDTH],settings[PATCH_TRACKING_HEIGHT]);
 
@@ -261,104 +376,6 @@ int CloseExtraLargeRegister( unsigned int reg_num )
 }
 
 
-void DefaultSettings()
-{
-
-    settings[USE_OPENCV]=1;
-
-
-    // Initialize all variables used by Visual Cortex
-    settings[INPUT_CALIBRATION]=0; // DEACTIVATED UNTIL FIX :P
-    // TEST
-
-
-   settings[DISABLE_TIMER_OPERATIONS]=0;
-
-   settings[HYPERVISOR_STORE_PERFORMANCE_STATISTICS]=1;
-
-   settings[PASS_TO_WORLD_3D]=0; // FOR NOW ONLY PASSES TO 3D Visualization
-   settings[PASS_TO_FACE_DETECTOR]=1;
-   settings[PASS_TO_FEATURE_DETECTOR]=1;
-   settings[CALCULATE_MOVEMENT_MATRIX]=1;
-   settings[CALCULATE_MOVEMENT_FLOW]=1;
-
-   settings[RENDER_IMAGE_WITH_MOVEMENT_COMPENSATED]=0;
-
-   settings[ALTERNATE_DETECTORS_BETWEEN_EYES_FOR_CALCULATION_SKIPPING]=1;
-   settings[USE_MOVEMENT_FLOW_FOR_CALCULATION_SKIPPING]=1;
-
-   settings[REMEMBER_FACES]=1;
-
-   settings[FEATURE_TRACKING_MAX_MOVEMENT_THRESHOLD]=120; /* FEATURE Tracking comparison threshold */
-   settings[FEATURE_TRACKING_COMPARISON_THRESHOLD]=35000; /* FEATURE Tracking comparison threshold */
-
-   settings[FEATURE_DETECTION_THRESHOLD]=40; // 30
-
-   settings[DEPTHMAP_DEBUG]=0; // <-- THIS IS VEEEEEEEEERY SLOW :P
-
-   settings[DEPTHMAP_COMPARISON_ALSO_REVERSE_CHECK]=1; // <- THIS IS KIND OF LIKE NOT TRUSTING THE CHECK :P
-
-   settings[DEPTHMAP_USE_OPENCV]=0;
-   settings[DEPTHMAP_OPENCV_LIKE_OUTPUT]=0;
-   settings[DEPTHMAP_RGB_MULTIPLIER]=1;
-   settings[DEPTHMAP_MOVEMENT_MULTIPLIER]=10;
-   settings[DEPTHMAP_SOBEL_MULTIPLIER]=6;
-   settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER]=40;
-
-
-    settings[DEPTHMAP_STARTLEFT_X]=48;// Just like OpenCV :P 16;
-    settings[DEPTHMAP_DETAIL]=4;
-    settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=35;
-    settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=255; // 255
-    settings[DEPTHMAP_INSTANT_DETAIL]=2;
-
-// THE FOLLOWING 4 VARIABLES ARE SET BY ROBOKERNEL ON GUARD.INI :P
-//    settings[DEPTHMAP_VERT_SHIFT_UP]=0;
-//    settings[DEPTHMAP_VERT_SHIFT_DOWN]=0;
-//    settings[DEPTHMAP_VERT_OFFSET_UP]=0;
-//    settings[DEPTHMAP_VERT_OFFSET_DOWN]=0;
-
-    // THIS INCREASES COVERAGE , AND DECREACES PRECISION
-    settings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=1;
-    settings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=1;
-
-    settings[DEPTHMAP_COMPARISON_TOO_GOOD_THRESHOLD]=200;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD]=4000;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH]=4000;
-    settings[DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH]=4000;
-    // SetThresholdsForAllPatchSizes();
-    settings[DEPTHMAP_COMPARISON_THRESHOLD_ADDED]=0;// <- this value is added to comparison_threshold!
-
-    settings[DEPTHMAP_COMPARISON_DO_NOT_PERFORM_FULL_COUNT]=1; /* <- This actually should always be 1 :P */
-    settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH]=1;
-    settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_CLOSEST_DEPTH]=1; /* <- This actually should always be 1 :P */
-    settings[DEPTHMAP_CLOSEST_DEPTH]=75; // Praktika dedomena deixnoun oti synithws apotelesmata panw apo 80 einai poly konta kai tha prepe na theorountai thoryvos!
-    settings[DEPTHMAP_GUESSES]=0;// <- This is not used ..
-    settings[DEPTHMAP_IMPROVE_USING_HISTOGRAM]=1;
-    settings[DEPTHMAP_IMPROVE_FILLING_HOLES]=0;
-    settings[DEPTHMAP_IMPROVE_USING_EDGES]=0;// <- This is not used ..
-    settings[DEPTHMAP_IMPROVE_USING_MOVEMENT]=1;
-
-
-    settings[PATCH_COMPARISON_LEVELS]=3;//3; /* It will use 3 different size block levels for comparison */
-    settings[PATCH_COMPARISON_SCORE_MIN]=33000; // <- This is not used ..
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=2;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=5;
-    settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH]=10;
-    settings[PATCH_HIST_THRESHOLD_R]=7; settings[PATCH_HIST_THRESHOLD_G]=7; settings[PATCH_HIST_THRESHOLD_B]=7;
-
-    settings[MAX_FEATURES]=2000;
-    settings[MAX_FACES]=100;
-
-    settings[PATCH_TRACKING_WIDTH]=19;
-    settings[PATCH_TRACKING_HEIGHT]=19;
-
-    settings[TIME_BETWEEN_TRACKING]=500;
-
-    settings[MOVEMENT_PATCH_SENSITIVITY]=7;
-    settings[MOVEMENT_R_THRESHOLD]=45; settings[MOVEMENT_G_THRESHOLD]=45;   settings[MOVEMENT_B_THRESHOLD]=45;
-    settings[MOVEMENT_MIN_R_THRESHOLD]=29; settings[MOVEMENT_MIN_G_THRESHOLD]=29; settings[MOVEMENT_MIN_B_THRESHOLD]=29;
-}
 
 int InitVisionMemory(unsigned int res_x,unsigned int res_y)
 {
@@ -562,32 +579,40 @@ int SwapRegister(unsigned int source,unsigned int target)
 }
 
 
-unsigned char CheckRegistersForSynchronization(unsigned int source,unsigned int target)
+unsigned char CheckRegistersForSynchronization(struct VideoRegister * source,struct VideoRegister * target)
 {
-     return ( video_register[target].time == video_register[source].time );
+   if ( (source!=0) && (target!=0) )
+   {
+     return ( target->time ==  source->time );
+   }
+   return 0;
 }
 
-void MarkRegistersAsSynced(unsigned int source,unsigned int target)
+void MarkRegistersAsSynced(struct VideoRegister * source,struct VideoRegister * target)
 {
-     video_register[target].time = video_register[source].time;
+     if ( (source!=0) && (target!=0) )
+      {
+       target->time = source->time;
+      }
 }
 
 
-int CopyRegister(unsigned int source,unsigned int target,unsigned int copy_features,unsigned int copy_faces)
+int CopyRegister(struct VideoRegister * source,struct VideoRegister * target,unsigned int copy_features,unsigned int copy_faces)
 {
- StartTimer(COPY_REGISTER_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
+  if ( (source==0) || (target==0) )   { fprintf(stderr,"CopyRegister Called with incorrect registers as parameters\n"); return 0; }
+
+  StartTimer(COPY_REGISTER_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
 
 
   unsigned int image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE];
-  if ( video_register[source].depth == 1 ) { image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]; } else
-  if ( video_register[source].depth == 3 ) { image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]; } else
-                                           {
-                                               fprintf(stderr,"assuming 3byte size");
-                                           }
+  if ( source->depth == 1 ) { image_size=metrics[RESOLUTION_MEMORY_LIMIT_1BYTE]; } else
+  if ( source->depth == 3 ) { image_size=metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]; } else
+                            { fprintf(stderr,"assuming 3byte size , although we got %u \n",source->depth); }
 
- register BYTE *start_px = (BYTE *) video_register[source].pixels;
- register BYTE *px = (BYTE *) video_register[source].pixels;
- register BYTE *tpx = (BYTE *) video_register[target].pixels;
+
+ register BYTE *start_px = (BYTE *) source->pixels;
+ register BYTE *px = (BYTE *) source->pixels;
+ register BYTE *tpx = (BYTE *) target->pixels;
 
  while ( px < start_px+image_size)
  {
@@ -596,16 +621,16 @@ int CopyRegister(unsigned int source,unsigned int target,unsigned int copy_featu
        ++px;
  }
 
-  video_register[target].size_x=video_register[source].size_x;
-  video_register[target].size_y=video_register[source].size_y;
-  video_register[target].depth=video_register[source].depth;
+  target->size_x=source->size_x;
+  target->size_y=source->size_y;
+  target->depth=source->depth;
 
-  video_register[target].lock=video_register[source].lock;
-  video_register[target].time=video_register[source].time;
-  video_register[target].used=video_register[source].used;
+  target->lock=source->lock;
+  target->time=source->time;
+  target->used=source->used;
 
-  if (copy_features) { CopyFeatureList(video_register[source].features,video_register[target].features); }
-  if (copy_faces) { CopyFeatureList(video_register[source].faces,video_register[target].faces); }
+  if (copy_features) { CopyFeatureList(source->features,target->features); }
+  if (copy_faces) { CopyFeatureList(source->faces,target->faces); }
 
  EndTimer(COPY_REGISTER_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | END
   return 1;
@@ -680,24 +705,20 @@ void ConvertRegisterFrom1ByteTo3Byte(int in_reg)
 }
 
 
-int ThisIsA3ByteRegister(int reg)
+int ThisIsA3ByteRegister(struct VideoRegister * reg)
 {
-    if ( video_register[reg].depth == 3 )
-     {
-         return 1;
-     }
+    if ( reg ==0 ) {  } else
+    if ( reg->depth == 3 ) { return 1; }
 
      fprintf(stderr,"3byte register check failed\n");
      return 0;
 }
 
 
-int ThisIsA1ByteRegister(int reg)
+int ThisIsA1ByteRegister(struct VideoRegister * reg)
 {
-    if ( video_register[reg].depth == 1 )
-     {
-         return 1;
-     }
+    if ( reg ==0 ) {  } else
+    if ( reg->depth == 1 ) { return 1; }
 
      fprintf(stderr,"1byte register check failed\n");
      return 0;
@@ -916,8 +937,9 @@ unsigned int StopUsingVideoRegister(unsigned int thereg)
     return 1;
 }
 
-unsigned int MarkVideoRegistersAsUnsynced(unsigned int unsync_reg , unsigned int other_reg)
+unsigned int MarkVideoRegistersAsUnsynced(struct VideoRegister * unsync_reg , struct VideoRegister * other_reg)
 {
-   video_register[unsync_reg].time = video_register[other_reg].time + 1 ;
+   if ( (unsync_reg==0) || (other_reg==0) )   { fprintf(stderr,"MarkVideoRegistersAsUnsynced Called with incorrect registers as parameters\n"); return 0; }
+   unsync_reg->time = other_reg->time + 1 ;
    return 1;
 }
