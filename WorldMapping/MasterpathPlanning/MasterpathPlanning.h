@@ -107,6 +107,7 @@ struct Map * LoadMap(char * filename) ;
 int SaveMap(struct Map * themap) ;
 int DeleteMap(struct Map * themap) ;
 int SetMapUnit_In_cm(struct Map * themap,unsigned int cm_per_unit) ;
+unsigned int GetMapUnit_In_cm(struct Map * themap);
 int MapIsOk(struct Map * themap);
 int ObstacleExists(struct Map * themap,unsigned int x,unsigned int y) ;
 int ObstacleRadiousExists(struct Map * themap,unsigned int x,unsigned int y);

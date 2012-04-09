@@ -72,6 +72,10 @@
 			<size>56,27</size>
 			<handler function="OnSpinCtrlOrientationChange" entry="EVT_SPINCTRL" />
 		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT4" variable="MapInfo" member="yes">
+			<label>Map Info : </label>
+			<pos>40,512</pos>
+		</object>
 		<object class="wxTimer" name="ID_TIMER1" variable="Timer1" member="yes">
 			<interval>100</interval>
 			<handler function="OnTimer1Trigger" entry="EVT_TIMER" />

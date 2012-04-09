@@ -22,6 +22,7 @@ class MapOverview: public wxFrame
 		//(*Declarations(MapOverview)
 		wxButton* ButtonExecute;
 		wxTextCtrl* TextTargetPosX;
+		wxStaticText* MapInfo;
 		wxSpinCtrl* SpinCtrlOrientation;
 		wxCheckBox* CheckBoxAutoUpdate;
 		wxStaticText* StaticText1;
@@ -52,6 +53,7 @@ class MapOverview: public wxFrame
 		static const long ID_BUTTON3;
 		static const long ID_STATICTEXT2;
 		static const long ID_SPINCTRL1;
+		static const long ID_STATICTEXT4;
 		static const long ID_TIMER1;
 		//*)
 

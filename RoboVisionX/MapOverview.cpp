@@ -20,8 +20,8 @@
 
 int MapDrawX=30;
 int MapDrawY=30;
-unsigned int map_box_size=4;
-unsigned int map_box_size_half=2;
+unsigned int map_box_size=6;
+unsigned int map_box_size_half=(unsigned int ) map_box_size_half/2;
 
 
 #define PI 3.14159265
@@ -52,6 +52,7 @@ const long MapOverview::ID_BUTTON2 = wxNewId();
 const long MapOverview::ID_BUTTON3 = wxNewId();
 const long MapOverview::ID_STATICTEXT2 = wxNewId();
 const long MapOverview::ID_SPINCTRL1 = wxNewId();
+const long MapOverview::ID_STATICTEXT4 = wxNewId();
 const long MapOverview::ID_TIMER1 = wxNewId();
 //*)
 
@@ -83,6 +84,7 @@ MapOverview::MapOverview(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
 	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Rotation"), wxPoint(544,536), wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	SpinCtrlOrientation = new wxSpinCtrl(this, ID_SPINCTRL1, _T("0"), wxPoint(608,532), wxSize(56,27), 0, -360, 360, 0, _T("ID_SPINCTRL1"));
 	SpinCtrlOrientation->SetValue(_T("0"));
+	MapInfo = new wxStaticText(this, ID_STATICTEXT4, _("Map Info : "), wxPoint(40,512), wxDefaultSize, 0, _T("ID_STATICTEXT4"));
 	Timer1.SetOwner(this, ID_TIMER1);
 	Timer1.Start(100, false);
 
@@ -97,6 +99,14 @@ MapOverview::MapOverview(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
     set_point_flag=0;
 
 
+    wxString comstr;
+    comstr.clear();
+    comstr<<wxT("Map Info , each block represents an area of ");
+    comstr<<GetMapUnit_In_cm(GetWorldHandler());
+    comstr<<wxT("x");
+    comstr<<GetMapUnit_In_cm(GetWorldHandler());
+    comstr<<wxT(" cm");
+    MapInfo->SetLabel(comstr);
 }
 
 MapOverview::~MapOverview()
@@ -193,8 +203,8 @@ X3,Y3                  X2,Y2
            XR,YR
   */
 
-  float box_width  = robot_length/1000;
-  float box_height = robot_width/1000;
+  float box_width  = robot_length/ (1000*GetMapUnit_In_cm(GetWorldHandler()));
+  float box_height = robot_width/  (1000*GetMapUnit_In_cm(GetWorldHandler()));
 
 
   float XA1 = 0.0+box_width/2 ;
@@ -217,32 +227,32 @@ X3,Y3                  X2,Y2
 
   float XB1 , YB1, XB2, YB2, XB3 , YB3, XB4, YB4 , XBF, YBF , XBB, YBB  , XBR, YBR  , XBL, YBL ;
 
-  XB1 =  startx + (XA1 * cos(heading*PI/180)) - (YA1 * sin(heading*PI/180));
-  YB1 =  starty + (YA1 * cos(heading*PI/180)) + (XA1 * sin(heading*PI/180));
+  XB1 =  startx  + XA1 * cos(heading*PI/180) - YA1 * sin(heading*PI/180);
+  YB1 =  starty  + YA1 * cos(heading*PI/180) + XA1 * sin(heading*PI/180);
 
 
-  XB2 =  startx + XA2 * cos(heading*PI/180) - YA2 * sin(heading*PI/180);
-  YB2 =  starty + YA2 * cos(heading*PI/180) + XA2 * sin(heading*PI/180);
+  XB2 =  startx  + XA2 * cos(heading*PI/180) - YA2 * sin(heading*PI/180);
+  YB2 =  starty  + YA2 * cos(heading*PI/180) + XA2 * sin(heading*PI/180);
 
 
-  XB3 =  startx + XA3 * cos(heading*PI/180) - YA3 * sin(heading*PI/180);
-  YB3 =  starty + YA3 * cos(heading*PI/180) + XA3 * sin(heading*PI/180);
+  XB3 =  startx  + XA3 * cos(heading*PI/180) - YA3 * sin(heading*PI/180);
+  YB3 =  starty  + YA3 * cos(heading*PI/180) + XA3 * sin(heading*PI/180);
 
 
-  XB4 =  startx + XA4 * cos(heading*PI/180) - YA4 * sin(heading*PI/180);
-  YB4 =  starty + YA4 * cos(heading*PI/180) + XA4 * sin(heading*PI/180);
+  XB4 =  startx  + XA4 * cos(heading*PI/180) - YA4 * sin(heading*PI/180);
+  YB4 =  starty  + YA4 * cos(heading*PI/180) + XA4 * sin(heading*PI/180);
 
-  XBF =  startx + XAF * cos(heading*PI/180) - YAF * sin(heading*PI/180);
-  YBF =  starty + YAF * cos(heading*PI/180) + XAF * sin(heading*PI/180);
+  XBF =  startx  + XAF * cos(heading*PI/180) - YAF * sin(heading*PI/180);
+  YBF =  starty  + YAF * cos(heading*PI/180) + XAF * sin(heading*PI/180);
 
-  XBB =  startx + XAB * cos(heading*PI/180) - YAB * sin(heading*PI/180);
-  YBB =  starty + YAB * cos(heading*PI/180) + XAB * sin(heading*PI/180);
+  XBB =  startx  + XAB * cos(heading*PI/180) - YAB * sin(heading*PI/180);
+  YBB =  starty  + YAB * cos(heading*PI/180) + XAB * sin(heading*PI/180);
 
-  XBR =  startx + XAR * cos(heading*PI/180) - YAR * sin(heading*PI/180);
-  YBR =  starty + YAR * cos(heading*PI/180) + XAR * sin(heading*PI/180);
+  XBR =  startx  + XAR * cos(heading*PI/180) - YAR * sin(heading*PI/180);
+  YBR =  starty  + YAR * cos(heading*PI/180) + XAR * sin(heading*PI/180);
 
-  XBL =  startx + XAL * cos(heading*PI/180) - YAL * sin(heading*PI/180);
-  YBL =  starty + YAL * cos(heading*PI/180) + XAL * sin(heading*PI/180);
+  XBL =  startx  + XAL * cos(heading*PI/180) - YAL * sin(heading*PI/180);
+  YBL =  starty  + YAL * cos(heading*PI/180) + XAL * sin(heading*PI/180);
 
 
   fprintf(stderr,"We have points %0.2f,%0.2f  %0.2f,%0.2f  %0.2f,%0.2f %0.2f,%0.2f  \n",XB1,YB1,XB2,YB2,XB3,YB3,XB4,YB4);
@@ -252,18 +262,18 @@ X3,Y3                  X2,Y2
      mem.SetPen(green);
      mem.SetBrush(greenback);
 
-     mem.DrawLine((signed int)XB1,(signed int)YB1,(signed int)XB2,(signed int)YB2);
-     mem.DrawLine((signed int)XB2,(signed int)YB2,(signed int)XB3,(signed int)YB3);
-     mem.DrawLine((signed int)XB3,(signed int)YB3,(signed int)XB4,(signed int)YB4);
-     mem.DrawLine((signed int)XB4,(signed int)YB4,(signed int)XB1,(signed int)YB1);
+     mem.DrawLine((signed int)XB1*map_box_size,(signed int)YB1*map_box_size,(signed int)XB2*map_box_size,(signed int)YB2*map_box_size);
+     mem.DrawLine((signed int)XB2*map_box_size,(signed int)YB2*map_box_size,(signed int)XB3*map_box_size,(signed int)YB3*map_box_size);
+     mem.DrawLine((signed int)XB3*map_box_size,(signed int)YB3*map_box_size,(signed int)XB4*map_box_size,(signed int)YB4*map_box_size);
+     mem.DrawLine((signed int)XB4*map_box_size,(signed int)YB4*map_box_size,(signed int)XB1*map_box_size,(signed int)YB1*map_box_size);
 
      //ARROW
-     mem.DrawLine((signed int)XBB,(signed int)YBB,(signed int)XBF,(signed int)YBF);
-     mem.DrawLine((signed int)XBF,(signed int)YBF,(signed int)XBL,(signed int)YBL);
-     mem.DrawLine((signed int)XBF,(signed int)YBF,(signed int)XBR,(signed int)YBR);
+     mem.DrawLine((signed int)XBB*map_box_size,(signed int)YBB*map_box_size,(signed int)XBF*map_box_size,(signed int)YBF*map_box_size);
+     mem.DrawLine((signed int)XBF*map_box_size,(signed int)YBF*map_box_size,(signed int)XBL*map_box_size,(signed int)YBL*map_box_size);
+     mem.DrawLine((signed int)XBF*map_box_size,(signed int)YBF*map_box_size,(signed int)XBR*map_box_size,(signed int)YBR*map_box_size);
 
 
-     mem.DrawRectangle(startx*map_box_size-3,starty*map_box_size-3,map_box_size+6,map_box_size+6);
+     mem.DrawRectangle(startx*map_box_size-1,starty*map_box_size-1,2,2);
     }
 }
 
@@ -282,7 +292,7 @@ void DrawEndPoint(wxMemoryDC &mem,unsigned int endx,unsigned int endy)
       else
         mem.SetPen(black);
 
-      mem.DrawRectangle(endx*map_box_size-3,endy*map_box_size-3,map_box_size+6,map_box_size+6);
+      mem.DrawRectangle(endx*map_box_size-map_box_size_half,endy*map_box_size-map_box_size_half,map_box_size,map_box_size);
     }
 }
 

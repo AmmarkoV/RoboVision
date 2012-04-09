@@ -114,6 +114,12 @@ int SetMapUnit_In_cm(struct Map * themap,unsigned int cm_per_unit)
     return 1;
 }
 
+unsigned int GetMapUnit_In_cm(struct Map * themap)
+{
+    if (!MapIsOk(themap)) { return 0; }
+    return themap->world_unit_in_cm;
+}
+
 int ObstacleExists(struct Map * themap,unsigned int x,unsigned int y)
 {
    /* Tactic is to return 1 when failing that will effectively disable movement , and is less catastrophic */
