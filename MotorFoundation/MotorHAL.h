@@ -8,6 +8,13 @@
 extern "C" {
 #endif
 
+extern unsigned int robot_height; // mm
+extern unsigned int robot_length; // mm
+extern unsigned int robot_width; // mm
+extern unsigned int motors_distance; // mm
+extern unsigned int wheel_diameter; // mm
+
+
 unsigned int RobotInit(char * md23_device_id,char * arduino_device_id);
 unsigned int RobotClose();
 unsigned int RobotIsClosed();

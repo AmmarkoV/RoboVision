@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="CortexSettings.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="28442" topLine="371" />
+		<Cursor position="32706" topLine="470" />
 	</File>
 	<File name="CortexSettings.h" open="1" top="0" tabpos="7">
 		<Cursor position="254" topLine="0" />
@@ -19,11 +19,11 @@
 	<File name="FramesOSD.h" open="1" top="0" tabpos="13">
 		<Cursor position="475" topLine="0" />
 	</File>
-	<File name="MapOverview.cpp" open="1" top="0" tabpos="14">
-		<Cursor position="9624" topLine="300" />
+	<File name="MapOverview.cpp" open="1" top="1" tabpos="14">
+		<Cursor position="12334" topLine="356" />
 	</File>
 	<File name="MapOverview.h" open="1" top="0" tabpos="15">
-		<Cursor position="1558" topLine="18" />
+		<Cursor position="1889" topLine="1" />
 	</File>
 	<File name="RememberImage.cpp" open="1" top="0" tabpos="8">
 		<Cursor position="2953" topLine="34" />
@@ -37,8 +37,8 @@
 	<File name="RoboVisionXApp.h" open="1" top="0" tabpos="3">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="RoboVisionXMain.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="4588" topLine="111" />
+	<File name="RoboVisionXMain.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="4988" topLine="111" />
 	</File>
 	<File name="RoboVisionXMain.h" open="1" top="0" tabpos="2">
 		<Cursor position="783" topLine="135" />

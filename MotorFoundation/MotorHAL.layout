@@ -2,9 +2,9 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="MotorHAL.c" open="1" top="0" tabpos="1">
-		<Cursor position="1822" topLine="30" />
+		<Cursor position="361" topLine="0" />
 	</File>
 	<File name="MotorHAL.h" open="1" top="0" tabpos="2">
-		<Cursor position="59" topLine="0" />
+		<Cursor position="279" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

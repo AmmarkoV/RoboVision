@@ -636,7 +636,7 @@
 
 1314284222 /usr/include/wx-2.8/wx/gtk/textctrl.h
 
-1326843154 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1333557760 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
 1324775140 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/FeedScreenMemory.cpp
 	"FeedScreenMemory.h"
@@ -1513,7 +1513,7 @@
 	"wx/defs.h"
 	"wx/object.h"
 
-1324782999 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
+1333930768 /home/ammar/Documents/Programming/RoboVision/MotorFoundation/MotorHAL.h
 	"../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
 
 1289554847 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterpathPlanning/MasterpathPlanning.h
@@ -1602,11 +1602,12 @@
 
 1323564375 /home/ammar/Documents/Programming/RoboVision/WorldMapping/MasterWorld/MasterWorld.h
 
-1333667554 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/MapOverview.cpp
+1333928136 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionX/MapOverview.cpp
 	"MapOverview.h"
 	"RoboVisionXMain.h"
 	<wx/string.h>
 	<wx/intl.h>
+	<math.h>
 	"../RoboKernel/RoboKernel.h"
 	"../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
 	<wx/dc.h>
@@ -1615,11 +1616,45 @@
 	<wx/colour.h>
 	<wx/utils.h>
 
-1333661169 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/MapOverview.h
+1333917095 /home/ammar/Documents/Programming/RoboVision/RoboVisionX/MapOverview.h
+	<wx/spinctrl.h>
 	<wx/checkbox.h>
 	<wx/button.h>
 	<wx/statbox.h>
 	<wx/frame.h>
 	<wx/stattext.h>
 	<wx/textctrl.h>
+	<wx/timer.h>
+
+1314284222 /usr/include/wx-2.8/wx/spinctrl.h
+	"wx/defs.h"
+	"wx/spinbutt.h"
+	"wx/generic/spinctlg.h"
+	"wx/msw/spinctrl.h"
+	"wx/os2/spinctrl.h"
+	"wx/gtk/spinctrl.h"
+	"wx/gtk1/spinctrl.h"
+	"wx/generic/spinctlg.h"
+	"wx/mac/spinctrl.h"
+	"wx/generic/spinctlg.h"
+
+1314284222 /usr/include/wx-2.8/wx/spinbutt.h
+	"wx/defs.h"
+	"wx/control.h"
+	"wx/event.h"
+	"wx/univ/spinbutt.h"
+	"wx/msw/spinbutt.h"
+	"wx/motif/spinbutt.h"
+	"wx/gtk/spinbutt.h"
+	"wx/gtk1/spinbutt.h"
+	"wx/mac/spinbutt.h"
+	"wx/cocoa/spinbutt.h"
+	"wx/os2/spinbutt.h"
+
+1314284222 /usr/include/wx-2.8/wx/gtk/spinbutt.h
+
+1314284222 /usr/include/wx-2.8/wx/generic/spinctlg.h
+	"wx/textctrl.h"
+
+1314284222 /usr/include/wx-2.8/wx/gtk/spinctrl.h
 

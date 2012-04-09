@@ -5,8 +5,11 @@
 #include <wx/intl.h>
 //*)
 
+#include <math.h>
+
 #include "../RoboKernel/RoboKernel.h"
 #include "../WorldMapping/MasterpathPlanning/MasterpathPlanning.h"
+#include "../MotorFoundation/MotorHAL.h"
 
 
 #include <wx/dc.h>
@@ -20,6 +23,8 @@ int MapDrawY=30;
 unsigned int map_box_size=4;
 unsigned int map_box_size_half=2;
 
+
+#define PI 3.14159265
 
 wxBitmap *draw_area=0;
 unsigned int draw_area_width=866;
@@ -45,6 +50,9 @@ const long MapOverview::ID_CHECKBOX1 = wxNewId();
 const long MapOverview::ID_BUTTON1 = wxNewId();
 const long MapOverview::ID_BUTTON2 = wxNewId();
 const long MapOverview::ID_BUTTON3 = wxNewId();
+const long MapOverview::ID_STATICTEXT2 = wxNewId();
+const long MapOverview::ID_SPINCTRL1 = wxNewId();
+const long MapOverview::ID_TIMER1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(MapOverview,wxFrame)
@@ -67,15 +75,22 @@ MapOverview::MapOverview(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
 	StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Target Position"), wxPoint(304,536), wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	TextTargetPosX = new wxTextCtrl(this, ID_TEXTCTRL3, _("0"), wxPoint(400,532), wxSize(48,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
 	TextTargetPosY = new wxTextCtrl(this, ID_TEXTCTRL4, _("0"), wxPoint(448,532), wxSize(48,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
-	CheckBoxAutoUpdate = new wxCheckBox(this, ID_CHECKBOX1, _("Auto Update"), wxPoint(672,536), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
+	CheckBoxAutoUpdate = new wxCheckBox(this, ID_CHECKBOX1, _("Auto Update"), wxPoint(688,533), wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
 	CheckBoxAutoUpdate->SetValue(false);
-	ButtonExecute = new wxButton(this, ID_BUTTON1, _("Execute"), wxPoint(808,528), wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	ButtonExecute = new wxButton(this, ID_BUTTON1, _("Execute"), wxPoint(800,520), wxSize(104,48), 0, wxDefaultValidator, _T("ID_BUTTON1"));
 	ButtonSetCurPos = new wxButton(this, ID_BUTTON2, _("Set"), wxPoint(248,530), wxSize(32,29), 0, wxDefaultValidator, _T("ID_BUTTON2"));
 	ButtonSetTargetPos = new wxButton(this, ID_BUTTON3, _("Set"), wxPoint(496,530), wxSize(32,29), 0, wxDefaultValidator, _T("ID_BUTTON3"));
+	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Rotation"), wxPoint(544,536), wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+	SpinCtrlOrientation = new wxSpinCtrl(this, ID_SPINCTRL1, _T("0"), wxPoint(608,532), wxSize(56,27), 0, -360, 360, 0, _T("ID_SPINCTRL1"));
+	SpinCtrlOrientation->SetValue(_T("0"));
+	Timer1.SetOwner(this, ID_TIMER1);
+	Timer1.Start(100, false);
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&MapOverview::OnButtonExecuteClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&MapOverview::OnButtonSetCurPosClick);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&MapOverview::OnButtonSetTargetPosClick);
+	Connect(ID_SPINCTRL1,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&MapOverview::OnSpinCtrlOrientationChange);
+	Connect(ID_TIMER1,wxEVT_TIMER,(wxObjectEventFunction)&MapOverview::OnTimer1Trigger);
 	//*)
 
     draw_area = new wxBitmap(draw_area_width,draw_area_height,-1);
@@ -128,19 +143,127 @@ void DrawSolvePath(wxMemoryDC &mem)
   return;
 }
 
-void DrawStartPoint(wxMemoryDC &mem,unsigned int startx,unsigned int starty)
+void DrawStartPoint(wxMemoryDC &mem,unsigned int startx,unsigned int starty,float heading)
 {
   wxBrush greenback(wxColour(0,255,0),wxSOLID);
   wxPen green(wxColour(0,255,0),1,wxSOLID);
 
+  fprintf(stderr,"Drawing Start point @ %u,%u heading %0.2f\n",startx,starty,heading);
+
+  // We have a box sized 6x12
+  // and want to rotate it accordign to heading
+  /*
+
+   |
+   |       * X',Y'
+   |      -         * X,Y
+   |  r  -       -
+   |    -     -
+   |   -   -  r
+   |  - -
+   |_-_________________
+
+  (old coordinates are (x, y) and the new coordinates are (x', y'))
+
+   q = initial angle, f = angle of rotation.
+
+   x = r cos q
+   y = r sin q
+
+   x' = r cos ( q + f ) = r cos q cos f - r sin q sin f
+   y' = r sin ( q + w ) = r sin q cos f + r cos q sin f
+
+   hence:
+   x' = x cos f - y sin f
+   y' = y cos f + x sin f
+
+
+   We also asume
+
+-,-        0,+        + . -
+
+          XL,YL
+X4,Y4________________  X1,Y1
+   |                |
+XB |        *       |   XF
+ YB|                |      YF
+   |________________|
+X3,Y3                  X2,Y2
+-.+          0,-          + , +
+           XR,YR
+  */
+
+  float box_width  = robot_length/1000;
+  float box_height = robot_width/1000;
+
+
+  float XA1 = 0.0+box_width/2 ;
+  float YA1 = 0.0-box_height/2 ;
+  float XA2 = 0.0+box_width/2 ;
+  float YA2 = 0.0+box_height/2 ;
+  float XA3 = 0.0-box_width/2 ;
+  float YA3 = 0.0+box_height/2 ;
+  float XA4 = 0.0-box_width/2 ;
+  float YA4 = 0.0-box_height/2 ;
+
+  float XAF = 0.0+box_width/2 ;
+  float YAF = 0.0;
+  float XAB=  0.0-box_width/2 ;
+  float YAB = 0.0;
+  float XAR = 0.0;
+  float YAR = 0.0+box_height/2 ;
+  float XAL = 0.0 ;
+  float YAL = 0.0-box_height/2 ;
+
+  float XB1 , YB1, XB2, YB2, XB3 , YB3, XB4, YB4 , XBF, YBF , XBB, YBB  , XBR, YBR  , XBL, YBL ;
+
+  XB1 =  startx + (XA1 * cos(heading*PI/180)) - (YA1 * sin(heading*PI/180));
+  YB1 =  starty + (YA1 * cos(heading*PI/180)) + (XA1 * sin(heading*PI/180));
+
+
+  XB2 =  startx + XA2 * cos(heading*PI/180) - YA2 * sin(heading*PI/180);
+  YB2 =  starty + YA2 * cos(heading*PI/180) + XA2 * sin(heading*PI/180);
+
+
+  XB3 =  startx + XA3 * cos(heading*PI/180) - YA3 * sin(heading*PI/180);
+  YB3 =  starty + YA3 * cos(heading*PI/180) + XA3 * sin(heading*PI/180);
+
+
+  XB4 =  startx + XA4 * cos(heading*PI/180) - YA4 * sin(heading*PI/180);
+  YB4 =  starty + YA4 * cos(heading*PI/180) + XA4 * sin(heading*PI/180);
+
+  XBF =  startx + XAF * cos(heading*PI/180) - YAF * sin(heading*PI/180);
+  YBF =  starty + YAF * cos(heading*PI/180) + XAF * sin(heading*PI/180);
+
+  XBB =  startx + XAB * cos(heading*PI/180) - YAB * sin(heading*PI/180);
+  YBB =  starty + YAB * cos(heading*PI/180) + XAB * sin(heading*PI/180);
+
+  XBR =  startx + XAR * cos(heading*PI/180) - YAR * sin(heading*PI/180);
+  YBR =  starty + YAR * cos(heading*PI/180) + XAR * sin(heading*PI/180);
+
+  XBL =  startx + XAL * cos(heading*PI/180) - YAL * sin(heading*PI/180);
+  YBL =  starty + YAL * cos(heading*PI/180) + XAL * sin(heading*PI/180);
+
+
+  fprintf(stderr,"We have points %0.2f,%0.2f  %0.2f,%0.2f  %0.2f,%0.2f %0.2f,%0.2f  \n",XB1,YB1,XB2,YB2,XB3,YB3,XB4,YB4);
 
   if ( (startx!=0) || (starty!=0) )
     {
+     mem.SetPen(green);
+     mem.SetBrush(greenback);
 
-      mem.SetPen(green);
-      mem.SetBrush(greenback);
+     mem.DrawLine((signed int)XB1,(signed int)YB1,(signed int)XB2,(signed int)YB2);
+     mem.DrawLine((signed int)XB2,(signed int)YB2,(signed int)XB3,(signed int)YB3);
+     mem.DrawLine((signed int)XB3,(signed int)YB3,(signed int)XB4,(signed int)YB4);
+     mem.DrawLine((signed int)XB4,(signed int)YB4,(signed int)XB1,(signed int)YB1);
 
-      mem.DrawRectangle(startx*map_box_size-3,starty*map_box_size-3,map_box_size+6,map_box_size+6);
+     //ARROW
+     mem.DrawLine((signed int)XBB,(signed int)YBB,(signed int)XBF,(signed int)YBF);
+     mem.DrawLine((signed int)XBF,(signed int)YBF,(signed int)XBL,(signed int)YBL);
+     mem.DrawLine((signed int)XBF,(signed int)YBF,(signed int)XBR,(signed int)YBR);
+
+
+     mem.DrawRectangle(startx*map_box_size-3,starty*map_box_size-3,map_box_size+6,map_box_size+6);
     }
 }
 
@@ -185,9 +308,9 @@ void DrawWorld(wxMemoryDC &mem,struct Map *floorplancopy)
   mem.SetPen(black);
   mem.SetBrush(whiteback);
 
-  for (int y =0; y<draw_area_actual_pointsY; y++ )
+  for (unsigned int y =0; y<draw_area_actual_pointsY; y++ )
     {
-      for (int x =0; x<draw_area_actual_pointsX; x++ )
+      for (unsigned int x =0; x<draw_area_actual_pointsX; x++ )
         {
 
           obj = ObstacleExists(GetWorldHandler(),x,y);
@@ -231,7 +354,7 @@ void DrawWorld(wxMemoryDC &mem,struct Map *floorplancopy)
   unsigned int startx=0,starty=0;
   GetAgentLocation(GetWorldHandler(),OURROBOT,&startx,&starty);
 
-  DrawStartPoint(mem,startx,starty);
+  DrawStartPoint(mem,startx,starty,GetAgentHeading(GetWorldHandler(),OURROBOT));
 
 
 }
@@ -344,4 +467,14 @@ void MapOverview::OnButtonSetCurPosClick(wxCommandEvent& event)
 void MapOverview::OnButtonSetTargetPosClick(wxCommandEvent& event)
 {
   set_point_flag=2;
+}
+
+void MapOverview::OnTimer1Trigger(wxTimerEvent& event)
+{
+}
+
+void MapOverview::OnSpinCtrlOrientationChange(wxSpinEvent& event)
+{
+    SetAgentHeading(GetWorldHandler(),OURROBOT,(float) SpinCtrlOrientation->GetValue());
+    Refresh();
 }

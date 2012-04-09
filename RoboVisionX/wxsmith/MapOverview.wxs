@@ -40,11 +40,12 @@
 		</object>
 		<object class="wxCheckBox" name="ID_CHECKBOX1" variable="CheckBoxAutoUpdate" member="yes">
 			<label>Auto Update</label>
-			<pos>672,536</pos>
+			<pos>688,533</pos>
 		</object>
 		<object class="wxButton" name="ID_BUTTON1" variable="ButtonExecute" member="yes">
 			<label>Execute</label>
-			<pos>808,528</pos>
+			<pos>800,520</pos>
+			<size>104,48</size>
 			<handler function="OnButtonExecuteClick" entry="EVT_BUTTON" />
 		</object>
 		<object class="wxButton" name="ID_BUTTON2" variable="ButtonSetCurPos" member="yes">
@@ -58,6 +59,22 @@
 			<pos>496,530</pos>
 			<size>32,29</size>
 			<handler function="OnButtonSetTargetPosClick" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
+			<label>Rotation</label>
+			<pos>544,536</pos>
+		</object>
+		<object class="wxSpinCtrl" name="ID_SPINCTRL1" variable="SpinCtrlOrientation" member="yes">
+			<value>0</value>
+			<min>-360</min>
+			<max>360</max>
+			<pos>608,532</pos>
+			<size>56,27</size>
+			<handler function="OnSpinCtrlOrientationChange" entry="EVT_SPINCTRL" />
+		</object>
+		<object class="wxTimer" name="ID_TIMER1" variable="Timer1" member="yes">
+			<interval>100</interval>
+			<handler function="OnTimer1Trigger" entry="EVT_TIMER" />
 		</object>
 	</object>
 </wxsmith>

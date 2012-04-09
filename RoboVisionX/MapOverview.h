@@ -2,12 +2,14 @@
 #define MAPOVERVIEW_H
 
 //(*Headers(MapOverview)
+#include <wx/spinctrl.h>
 #include <wx/checkbox.h>
 #include <wx/button.h>
 #include <wx/statbox.h>
 #include <wx/frame.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/timer.h>
 //*)
 
 class MapOverview: public wxFrame
@@ -20,13 +22,16 @@ class MapOverview: public wxFrame
 		//(*Declarations(MapOverview)
 		wxButton* ButtonExecute;
 		wxTextCtrl* TextTargetPosX;
+		wxSpinCtrl* SpinCtrlOrientation;
 		wxCheckBox* CheckBoxAutoUpdate;
 		wxStaticText* StaticText1;
+		wxTimer Timer1;
 		wxButton* ButtonSetTargetPos;
 		wxTextCtrl* TextCurPosX;
 		wxButton* ButtonSetCurPos;
 		wxStaticText* StaticText3;
 		wxStaticBox* StaticBox1;
+		wxStaticText* StaticText2;
 		wxTextCtrl* TextTargetPosY;
 		wxTextCtrl* TextCurPosY;
 		//*)
@@ -45,6 +50,9 @@ class MapOverview: public wxFrame
 		static const long ID_BUTTON1;
 		static const long ID_BUTTON2;
 		static const long ID_BUTTON3;
+		static const long ID_STATICTEXT2;
+		static const long ID_SPINCTRL1;
+		static const long ID_TIMER1;
 		//*)
 
 	private:
@@ -53,6 +61,8 @@ class MapOverview: public wxFrame
 		void OnButtonExecuteClick(wxCommandEvent& event);
 		void OnButtonSetCurPosClick(wxCommandEvent& event);
 		void OnButtonSetTargetPosClick(wxCommandEvent& event);
+		void OnTimer1Trigger(wxTimerEvent& event);
+		void OnSpinCtrlOrientationChange(wxSpinEvent& event);
 		//*)
 
         void OnPaint(wxPaintEvent& event);
