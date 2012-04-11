@@ -370,7 +370,7 @@ RoboVisionXFrame::~RoboVisionXFrame()
                                             { fprintf(stderr,"Timed out while waiting for Robokernel to close everything down, exiting..\n"); }
     fprintf(stderr,"Program is halting now...\n");
     wxMilliSleep(1000);
-
+    //pthread_exit(NULL);
 }
 
 void RoboVisionXFrame::OnQuit(wxCommandEvent& event)

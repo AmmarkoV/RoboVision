@@ -13,12 +13,10 @@ unsigned int wait_milliseconds(unsigned int time_milli)
   return  usleep( time_milli * 1000 ); /* Allow 5 seconds for guarddog scripts , etc. to startup*/
 }
 
-
 int LoopWithInput()
 {
   char buffer[2048]= {0};
   char *cptr=0;
-
   fprintf(stderr,"RoboVisionCLI is now running in the background , the client is waiting for input \n");
 
   do
@@ -29,31 +27,21 @@ int LoopWithInput()
         {
           IssueCommand(cptr,0,0,(char *)"CLI");
         }
-
     }
   while ( (strncmp(cptr,"exit",4)!=0 ) && (RoboKernelAlive()==1) );
   return 1;
 }
 
-
-
 int Loop()
 {
   fprintf(stderr,"RoboVisionCLI is now running in the background \n");
-
-  do
-    {
-      wait_milliseconds(500);
-    }
+  do { wait_milliseconds(1000); }
   while (RoboKernelAlive()==1);
   return 1;
 }
 
-
-
 int main(int argc, const char* argv[])
 {
-
   if ( argc > 1 )
     {
       int i=0;
@@ -74,41 +62,21 @@ int main(int argc, const char* argv[])
   printf("Starting RoboKernel!\n");
   if ( StartRoboKernel() )
     {
-      wait_milliseconds(5000);
-
-
-
-      if ( read_input )
-        {
-          LoopWithInput();
-        }
-      else
-        {
-          Loop();
-        }
-
-
+      wait_milliseconds(6000); // Dead time until RoboKernel Kicks in , robot is working we just dont receive commands ( and that only in case of looping with input )
+      //Depending on if we want to sample for input we choose the main loop..!
+      if ( read_input ) { LoopWithInput(); } else
+                        { Loop();          }
 
       printf("Stoping RoboKernel!\n");
       StopRoboKernel();
     }
   else
-    {
-      fprintf(stderr,"RoboKernel failed to start\n");
-    }
-
+    { fprintf(stderr,"RoboKernel failed to start\n"); }
 
   printf("Waiting for de-initialization!\n");
-  while ( RoboKernelAlive()==1 )
-    {
-      usleep(1000);
-    }
-
-      usleep(2000*1000);
-
+  while ( RoboKernelAlive()==1 ) { usleep(1000); }
+  usleep(2000*1000);
   clock_gettime(CLOCK_REALTIME,&end);
-
-  fprintf(stderr,"de-initialization complete, complete halt of robovision!\n");
-
+  fprintf(stderr,"De-initialization complete, complete halt of robovision!\n");
   return 0;
 }

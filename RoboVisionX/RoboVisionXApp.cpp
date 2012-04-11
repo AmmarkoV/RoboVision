@@ -30,6 +30,8 @@ bool RoboVisionXApp::OnInit()
     	SetTopWindow(Frame);
     }
     //*)
+
+
     return wxsOK;
 
 }
