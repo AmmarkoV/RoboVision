@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="CameraPose.c" open="1" top="0" tabpos="44">
-		<Cursor position="918" topLine="0" />
+		<Cursor position="4778" topLine="75" />
 	</File>
 	<File name="CameraPose.h" open="1" top="0" tabpos="43">
 		<Cursor position="862" topLine="0" />
@@ -139,11 +139,11 @@
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="4306" topLine="127" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="25869" topLine="494" />
+	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+		<Cursor position="25869" topLine="617" />
 	</File>
-	<File name="VisualCortex.h" open="1" top="1" tabpos="2">
-		<Cursor position="8450" topLine="293" />
+	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
+		<Cursor position="1221" topLine="19" />
 	</File>
 	<File name="version.h" open="1" top="0" tabpos="49">
 		<Cursor position="0" topLine="0" />

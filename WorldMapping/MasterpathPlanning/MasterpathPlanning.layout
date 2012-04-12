@@ -8,7 +8,7 @@
 		<Cursor position="405" topLine="0" />
 	</File>
 	<File name="MasterpathPlanning.h" open="1" top="0" tabpos="2">
-		<Cursor position="2449" topLine="69" />
+		<Cursor position="5576" topLine="103" />
 	</File>
 	<File name="NormalizePath.c" open="1" top="0" tabpos="7">
 		<Cursor position="8509" topLine="275" />
@@ -35,6 +35,6 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="4074" topLine="96" />
+		<Cursor position="6532" topLine="158" />
 	</File>
 </CodeBlocks_layout_file>
