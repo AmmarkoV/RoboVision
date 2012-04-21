@@ -27,6 +27,7 @@ gcc  $OpenCVStuff $Optimizations $CPU -c FaceDetection.c -o FaceDetection.o
 gcc  $Optimizations $CPU -c FeatureLists.c -o FeatureLists.o 
 gcc  $Optimizations $CPU -c FeatureExtraction.c -o FeatureExtraction.o 
 gcc  $OpenCVStuff $Optimizations $CPU -c FeatureTracking.c -o FeatureTracking.o
+gcc  $OpenCVStuff $Optimizations $CPU -c ObjectRecognition.c -o ObjectRecognition.o
 gcc  $Optimizations $CPU -c IntegralImageConversion.c -o IntegralImageConversion.o
 gcc  $Optimizations $CPU -c PatchComparison.c -o PatchComparison.o
 gcc  $Optimizations $CPU -c PatternRecognition.c -o PatternRecognition.o
@@ -45,11 +46,12 @@ gcc  $Optimizations $CPU -c VideoInputAdapter.c -o VideoInputAdapter.o
 gcc  $OpenCVStuff $Optimizations $CPU -c LinearAlgebra.c -o LinearAlgebra.o  
 gcc  $Optimizations $CPU -c VisualCortex.c -o VisualCortex.o
 
+FILESTOLINK="DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o CameraPose.o Matrix.o StatisticsGeneration.o FeatureTracking.o ObjectRecognition.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o"
 
-ar  rcs libVisualCortex.a DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o CameraPose.o Matrix.o StatisticsGeneration.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
+ar  rcs libVisualCortex.a $FILESTOLINK
 
 
-rm DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o CameraPose.o Matrix.o StatisticsGeneration.o FeatureTracking.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o
+rm $FILESTOLINK
 
 
 cd VisCortx_Tester

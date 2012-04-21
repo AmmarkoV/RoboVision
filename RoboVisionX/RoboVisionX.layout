@@ -22,7 +22,7 @@
 	<File name="MapOverview.cpp" open="1" top="0" tabpos="14">
 		<Cursor position="755" topLine="0" />
 	</File>
-	<File name="MapOverview.h" open="1" top="0" tabpos="15">
+	<File name="MapOverview.h" open="1" top="1" tabpos="15">
 		<Cursor position="1950" topLine="1" />
 	</File>
 	<File name="RememberImage.cpp" open="1" top="0" tabpos="8">
@@ -37,7 +37,7 @@
 	<File name="RoboVisionXApp.h" open="1" top="0" tabpos="3">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="RoboVisionXMain.cpp" open="1" top="1" tabpos="1">
+	<File name="RoboVisionXMain.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="20410" topLine="330" />
 	</File>
 	<File name="RoboVisionXMain.h" open="1" top="0" tabpos="2">

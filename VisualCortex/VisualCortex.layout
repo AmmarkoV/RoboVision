@@ -67,6 +67,12 @@
 	<File name="MovementRegistration.h" open="1" top="0" tabpos="10">
 		<Cursor position="633" topLine="0" />
 	</File>
+	<File name="ObjectRecognition.c" open="1" top="1" tabpos="65">
+		<Cursor position="220" topLine="0" />
+	</File>
+	<File name="ObjectRecognition.h" open="1" top="0" tabpos="66">
+		<Cursor position="105" topLine="0" />
+	</File>
 	<File name="PatchComparison.c" open="1" top="0" tabpos="32">
 		<Cursor position="3843" topLine="39" />
 	</File>
@@ -139,7 +145,7 @@
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="4306" topLine="127" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
 		<Cursor position="25869" topLine="617" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">

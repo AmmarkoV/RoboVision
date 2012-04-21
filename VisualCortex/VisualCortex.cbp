@@ -92,6 +92,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="MovementRegistration.h" />
+		<Unit filename="ObjectRecognition.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ObjectRecognition.h" />
 		<Unit filename="PatchComparison.c">
 			<Option compilerVar="CC" />
 		</Unit>
