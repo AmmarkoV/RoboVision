@@ -104,5 +104,20 @@ int Save3DPointCloudToFile(char * filename)
 }
 
 
+int AdapthDepthMapTo2DMap(unsigned char * depthvalues,unsigned int depthvalues_length,float horizontal_fov,float * mapping_of_depth_values_to_cm)
+{
+    /*                 O
+                /      O
+             /         O
+           /            O
+   Viewer* ----------- O
+          \         O
+            \  O
+               \
 
+
+
+    */
+  return 0;
+}
 

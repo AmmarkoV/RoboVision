@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "../WorldMapping/MasterWorld/MasterWorld.h"
 
 /*
  THIS FUNCTION IS CALLED EVERY TIME A NEW FRAME IS READY FOR STEREO VISION
@@ -257,7 +258,10 @@ unsigned int Pipeline_Stereo_Frames_Collected_Actions()
           ExecuteDisparityMappingPyramid();
         }
 
-      CollapseRegister(&video_register[DEPTH_LEFT_VIDEO]);
+      StartTimer(PASS_CAMERA_TO_2D_MAP);
+       CollapseRegister(&video_register[DEPTH_LEFT_VIDEO]);
+       AdapthDepthMapTo2DMap(video_register[DEPTH_LEFT_VIDEO].pixels,320,camera_horizontal_field_of_view,depth_units_in_cm);
+      EndTimer(PASS_CAMERA_TO_2D_MAP);
 
       VisCortxMillisecondsSleep(1);
       pipeline_switches[EXECUTE_DEPTHMAP]=0;

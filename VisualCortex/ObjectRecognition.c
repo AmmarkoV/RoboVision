@@ -26,3 +26,9 @@ unsigned int RememberRegisterPart(struct VideoRegister * frame , unsigned int x 
 
  return 0;
 }
+
+unsigned int RecognizeObjectsInRegister(struct VideoRegister * frame)
+{
+
+ return 0;
+}
