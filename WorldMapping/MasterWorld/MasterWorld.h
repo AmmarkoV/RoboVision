@@ -30,7 +30,7 @@ int GetAgent(unsigned int agent_num,float * x,float * y,float * z , float * head
 int PrintFAgent(unsigned int agent_num);
 
 int Save3DPointCloudToFile(char * filename);
-int AdapthDepthMapTo2DMap(unsigned char * depthvalues,unsigned int depthvalues_length,float horizontal_fov,float * mapping_of_depth_values_to_cm);
+int AdaptDepthMapTo2DMap(unsigned char * depthvalues,unsigned int depthvalues_length,float horizontal_fov,float * mapping_of_depth_values_to_cm);
 
 
 #ifdef __cplusplus

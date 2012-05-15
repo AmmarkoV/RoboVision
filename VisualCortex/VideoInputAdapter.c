@@ -260,7 +260,7 @@ unsigned int Pipeline_Stereo_Frames_Collected_Actions()
 
       StartTimer(PASS_CAMERA_TO_2D_MAP);
        CollapseRegister(&video_register[DEPTH_LEFT_VIDEO]);
-       AdapthDepthMapTo2DMap(video_register[DEPTH_LEFT_VIDEO].pixels,320,camera_horizontal_field_of_view,depth_units_in_cm);
+       AdaptDepthMapTo2DMap(video_register[DEPTH_LEFT_VIDEO].pixels,320,camera_horizontal_field_of_view,depth_units_in_cm);
       EndTimer(PASS_CAMERA_TO_2D_MAP);
 
       VisCortxMillisecondsSleep(1);

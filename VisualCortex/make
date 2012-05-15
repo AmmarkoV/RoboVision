@@ -17,7 +17,7 @@ then
 fi 
  
 OpenCVStuff="`pkg-config --cflags opencv` `pkg-config --libs opencv`"
-Optimizations="-O3 -fexpensive-optimizations"
+Optimizations="-O3 -fexpensive-optimizations -s"
 CPU="-mfpmath=sse -mtune=core2 -msse -msse2 -msse3"
 
 gcc  $OpenCVStuff $Optimizations $CPU -c DisparityDepthMap.c -o DisparityDepthMap.o
