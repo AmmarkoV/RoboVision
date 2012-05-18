@@ -1,0 +1,5 @@
+This folder will contain the library that will have the role of patching through Speech to Text 
+to the RoboKernel  IssueCommand(char * cmd,char * res,unsigned int resmaxsize,char * from) call
+The system should also redirect all Text To Speech operations through here and espeak / festival / etc..
+
+CMU (Pocket)Sphinx will most likely be used as the speech recognition engine.. 

@@ -1,1 +1,3 @@
-Input Parser has a stand-alone repository , this version might not be the most up to date!
+Please not that Input Parser has a stand-alone repository , this version might not be the most up to date!
+However it is bundled with the rest of the program here because it makes deployment much easier
+https://github.com/AmmarkoV/InputParser
