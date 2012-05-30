@@ -1,6 +1,2 @@
-Please note that this part of the code is a stub..!
-A couple of years I go I wrote a very nice wumpus AI which should be the base for the functionality I am looking for 
-http://ammar.gr/legacy/Wumpus.tar.gz , unfortunately I dont have the time to modify it for 
-guarddog .. I hope I will find time to do so in the near future..
-Commands that cannot be "analyzed" by this library could also be patched through to OpenMind , Wolfram Alpha and also
-be kept on a local answer repository for future use..
+Please note that this part of the code is a stub..! A couple of years I go I wrote a very nice wumpus AI which should be the base for the functionality I am looking for 
+http://ammar.gr/legacy/Wumpus.tar.gz , unfortunately I dont have the time to modify it for guarddog .. I hope I will find time to do so in the near future.. Commands that cannot be "analyzed" by this library could also be patched through to OpenMind , Wolfram Alpha and also be kept on a local answer repository for future use..

@@ -1,5 +1,3 @@
-This folder will contain the library that will have the role of patching through Speech to Text 
-to the RoboKernel  IssueCommand(char * cmd,char * res,unsigned int resmaxsize,char * from) call
-The system should also redirect all Text To Speech operations through here and espeak / festival / etc..
+This folder will contain the library that will have the role of patching through Speech to Text to the RoboKernel  IssueCommand(char * cmd,char * res,unsigned int resmaxsize,char * from) call. The system should also redirect all Text To Speech operations through here and espeak / festival / etc.. CMU (Pocket)Sphinx will most likely be used as the speech recognition engine.. 
 
-CMU (Pocket)Sphinx will most likely be used as the speech recognition engine.. 
+In the older times of the project ( very old , pre-git windows era :P ) I used a small library I wrote utilizing M$ SAPI , needless to say I dont like SAPI but someone may find it handy so here is the link .. http://ammar.gr/legacy/SapiSpeech.tar.gz
