@@ -26,11 +26,11 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-march=core2" />
 					<Add option="-fexpensive-optimizations" />
 					<Add option="-Os" />
 					<Add option="-O3" />
 					<Add option="-Wall" />
+					<Add option="-march=corei7" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -48,10 +48,10 @@
 			<Add option="-s" />
 			<Add option="`pkg-config --libs opencv`" />
 		</Linker>
-		<Unit filename="ArchOptimizations.c">
+		<Unit filename="ArchOptimizations/ArchOptimizations.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ArchOptimizations.h" />
+		<Unit filename="ArchOptimizations/ArchOptimizations.h" />
 		<Unit filename="CameraPose.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -152,6 +152,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="VisualCortex.h" />
+		<Unit filename="fastmemcpy.h" />
 		<Unit filename="version.h" />
 		<Extensions>
 			<code_completion />

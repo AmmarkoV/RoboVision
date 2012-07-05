@@ -33,7 +33,7 @@ gcc  $OpenCVStuff $Optimizations $CPU -c ObjectRecognition.c -o ObjectRecognitio
 gcc  $Optimizations $CPU -c IntegralImageConversion.c -o IntegralImageConversion.o
 gcc  $Optimizations $CPU -c PatchComparison.c -o PatchComparison.o
 gcc  $Optimizations $CPU -c PatternRecognition.c -o PatternRecognition.o
-gcc  $Optimizations $CPU -c ArchOptimizations.c -o ArchOptimizations.o  
+gcc  $Optimizations $CPU -c ArchOptimizations/ArchOptimizations.c -o ArchOptimizations.o  
 gcc  $Optimizations $CPU -c Precalculations.c -o Precalculations.o  
 gcc  $Optimizations $CPU -c StatisticsGeneration.c -o StatisticsGeneration.o 
 gcc  $Optimizations $CPU -c Matrix.c -o Matrix.o 

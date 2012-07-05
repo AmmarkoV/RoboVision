@@ -79,7 +79,7 @@ void DefaultSettings()
    settings[FEATURE_TRACKING_MAX_MOVEMENT_THRESHOLD]=120; /* FEATURE Tracking comparison threshold */
    settings[FEATURE_TRACKING_COMPARISON_THRESHOLD]=35000; /* FEATURE Tracking comparison threshold */
 
-   settings[FEATURE_DETECTION_THRESHOLD]=40; // 30
+   settings[FEATURE_DETECTION_THRESHOLD]=20; // 30
 
    settings[DEPTHMAP_DEBUG]=0; // <-- THIS IS VEEEEEEEEERY SLOW :P
 

@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "VisionMemory.h"
 #include <limits.h>
 #include <math.h>
-#include "ArchOptimizations.h"
+#include "ArchOptimizations/ArchOptimizations.h"
 
 unsigned int resection_left_precalc[321*241*3];
 unsigned int resection_right_precalc[321*241*3];

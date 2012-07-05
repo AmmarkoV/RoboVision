@@ -3,12 +3,13 @@
 
 #runs this script as root if not already
 if [ ! $( id -u ) -eq 0 ]; then
-	exec gksu "${0}" # call this script as root
+	exec sudo "${0}" # call this script as root
 	exit ${?}  # since we're 'execing' above, we wont reach this exit
                # unless something goes wrong.
 fi
  
 governor="performance"
+echo "Trying to set CPU(s) to $governor mode"
 
 for CPUFREQ in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 do

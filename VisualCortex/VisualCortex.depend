@@ -129,11 +129,12 @@
 1333557760 /home/ammar/Documents/Programming/RoboVision/VisualCortex/PatternRecognition.h
 	"VisualCortex.h"
 
-1333557760 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.c
+1341502285 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.c
 	"Precalculations.h"
 	"VisionMemory.h"
 	<limits.h>
 	<math.h>
+	"ArchOptimizations/ArchOptimizations.h"
 
 1333557760 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StateSetting.c
 	"StateSetting.h"
@@ -186,7 +187,7 @@
 	"VisCortexTimer.h"
 	"StateSetting.h"
 
-1333840397 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
+1341501914 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
 	"VisualCortex.h"
 	"VisionMemory.h"
 	"Precalculations.h"
@@ -557,7 +558,7 @@
 	"opencv2/core/core.hpp"
 	"opencv2/highgui/highgui_c.h"
 
-1339445966 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.c
+1341450490 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.c
 	"VisCortexOptimizedConvolutionFilters.h"
 	"VisCortexConvolutionFilters.h"
 	"VisCortexFilters.h"
@@ -567,7 +568,7 @@
 	<stdio.h>
 	<string.h>
 
-1339445966 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
+1341502419 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
 	"VisionMemory.h"
 
 1333557760 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.c
@@ -731,4 +732,23 @@
 	"opencv2/core/core.hpp"
 	"opencv2/highgui/highgui_c.h"
 	"opencv2/highgui/highgui.hpp"
+
+1341449984 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/ArchOptimizations.c
+	"ArchOptimizations.h"
+	<stdio.h>
+	<string.h>
+
+1341449325 /home/ammar/Documents/Programming/RoboVision/VisualCortex/ArchOptimizations.h
+	<string.h>
+
+1341499910 /home/ammar/Documents/Programming/RoboVision/VisualCortex/fastmemcpy.h
+	<stddef.h>
+
+1341502198 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/ArchOptimizations/ArchOptimizations.c
+	"ArchOptimizations.h"
+	<stdio.h>
+	<string.h>
+
+1341449325 /home/ammar/Documents/Programming/RoboVision/VisualCortex/ArchOptimizations/ArchOptimizations.h
+	<string.h>
 

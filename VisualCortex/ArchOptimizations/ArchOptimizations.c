@@ -3,6 +3,13 @@
 #include <stdio.h>
 #include <string.h>
 
+
+/*
+   THIS IS AN ASSEMBLY PLACE HOLDER FOR LOW LEVEL OPTIMIZATIONS
+   PROBABLY CONCERNING INTEGRAL IMAGES , CONVOLUTION FILTERS , MEMCPY
+   This subdir of VisualCortex serves this purpose..
+*/
+
 void * memcpy_ext(void *  b, const void *  a, size_t n)
 {
     char *s1 = b;

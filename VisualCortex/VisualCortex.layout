@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="ArchOptimizations.c" open="1" top="1" tabpos="67">
-		<Cursor position="502" topLine="0" />
-	</File>
-	<File name="ArchOptimizations.h" open="1" top="0" tabpos="68">
-		<Cursor position="155" topLine="0" />
+	<File name="ArchOptimizations/ArchOptimizations.c" open="1" top="0" tabpos="67">
+		<Cursor position="262" topLine="0" />
 	</File>
 	<File name="CameraPose.c" open="1" top="0" tabpos="44">
 		<Cursor position="4778" topLine="75" />
@@ -14,25 +11,25 @@
 		<Cursor position="862" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="24761" topLine="60" />
+		<Cursor position="31049" topLine="678" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="89" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
-		<Cursor position="4507" topLine="120" />
+		<Cursor position="8509" topLine="205" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
 		<Cursor position="1348" topLine="0" />
 	</File>
 	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
-		<Cursor position="1888" topLine="42" />
+		<Cursor position="229" topLine="0" />
 	</File>
 	<File name="FaceDetection.h" open="1" top="0" tabpos="13">
 		<Cursor position="209" topLine="0" />
 	</File>
 	<File name="FeatureExtraction.c" open="1" top="0" tabpos="14">
-		<Cursor position="4247" topLine="149" />
+		<Cursor position="5307" topLine="158" />
 	</File>
 	<File name="FeatureExtraction.h" open="1" top="0" tabpos="15">
 		<Cursor position="162" topLine="0" />
@@ -50,13 +47,13 @@
 		<Cursor position="571" topLine="0" />
 	</File>
 	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
-		<Cursor position="15090" topLine="378" />
+		<Cursor position="4447" topLine="132" />
 	</File>
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
 		<Cursor position="1084" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
-		<Cursor position="11545" topLine="218" />
+		<Cursor position="13921" topLine="304" />
 	</File>
 	<File name="LinearAlgebra.h" open="1" top="0" tabpos="31">
 		<Cursor position="261" topLine="0" />
@@ -92,7 +89,7 @@
 		<Cursor position="299" topLine="0" />
 	</File>
 	<File name="Precalculations.c" open="1" top="0" tabpos="11">
-		<Cursor position="9756" topLine="253" />
+		<Cursor position="796" topLine="0" />
 	</File>
 	<File name="Precalculations.h" open="1" top="0" tabpos="35">
 		<Cursor position="350" topLine="0" />
@@ -134,7 +131,7 @@
 		<Cursor position="324" topLine="0" />
 	</File>
 	<File name="VisCortexOptimizedConvolutionFilters.c" open="1" top="0" tabpos="39">
-		<Cursor position="1378" topLine="0" />
+		<Cursor position="1394" topLine="0" />
 	</File>
 	<File name="VisCortexOptimizedConvolutionFilters.h" open="1" top="0" tabpos="40">
 		<Cursor position="138" topLine="0" />
@@ -143,19 +140,22 @@
 		<Cursor position="1162" topLine="4" />
 	</File>
 	<File name="VisCortexTimer.h" open="1" top="0" tabpos="42">
-		<Cursor position="992" topLine="19" />
+		<Cursor position="183" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="1586" topLine="20" />
+	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
+		<Cursor position="2132" topLine="47" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
 		<Cursor position="2716" topLine="105" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="1267" topLine="12" />
+		<Cursor position="1410" topLine="12" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
 		<Cursor position="11322" topLine="343" />
+	</File>
+	<File name="fastmemcpy.h" open="0" top="0" tabpos="0">
+		<Cursor position="1365" topLine="0" />
 	</File>
 	<File name="version.h" open="1" top="0" tabpos="49">
 		<Cursor position="0" topLine="0" />
