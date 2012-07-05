@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "VisionMemory.h"
 #include <limits.h>
 #include <math.h>
-
+#include "ArchOptimizations.h"
 
 unsigned int resection_left_precalc[321*241*3];
 unsigned int resection_right_precalc[321*241*3];
@@ -248,7 +248,22 @@ unsigned int RGB(unsigned char R,unsigned char G,unsigned char B)
 void TestPrecalculations()
 {
   int errors=0;
-  if (errors>0) { fprintf(stderr,"Precalculation errors\n"); }
+
+  int a,b;
+  for (a=0; a<100; a++)
+   {
+     for (b=0; b<100; b++)
+     {
+       if ( testArchOptimizations(a,b) != a + b ) { ++errors;}
+     }
+   }
+  if (errors>0) { fprintf(stderr,"Precalculation errors, %u in Arch Optimizations\n"); }
+
+  errors=0;
+   /*Etc code*/
+  if (errors>0) { fprintf(stderr,"Precalculation errors, %u in etc code\n"); }
+
+
 }
 
 
@@ -285,5 +300,5 @@ void Precalculations()
 	 }
    }
 
- //TestPrecalculations();
+ TestPrecalculations();
 }

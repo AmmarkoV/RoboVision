@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
+	<File name="ArchOptimizations.c" open="1" top="1" tabpos="67">
+		<Cursor position="502" topLine="0" />
+	</File>
+	<File name="ArchOptimizations.h" open="1" top="0" tabpos="68">
+		<Cursor position="155" topLine="0" />
+	</File>
 	<File name="CameraPose.c" open="1" top="0" tabpos="44">
 		<Cursor position="4778" topLine="75" />
 	</File>
@@ -8,7 +14,7 @@
 		<Cursor position="862" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="31354" topLine="567" />
+		<Cursor position="24761" topLine="60" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="89" topLine="0" />
@@ -86,7 +92,7 @@
 		<Cursor position="299" topLine="0" />
 	</File>
 	<File name="Precalculations.c" open="1" top="0" tabpos="11">
-		<Cursor position="817" topLine="0" />
+		<Cursor position="9756" topLine="253" />
 	</File>
 	<File name="Precalculations.h" open="1" top="0" tabpos="35">
 		<Cursor position="350" topLine="0" />
@@ -103,7 +109,7 @@
 	<File name="StatisticsGeneration.h" open="1" top="0" tabpos="48">
 		<Cursor position="386" topLine="0" />
 	</File>
-	<File name="VideoInputAdapter.c" open="1" top="1" tabpos="36">
+	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
 		<Cursor position="9292" topLine="20" />
 	</File>
 	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
@@ -116,13 +122,13 @@
 		<Cursor position="122" topLine="0" />
 	</File>
 	<File name="VisCortexFilters.c" open="1" top="0" tabpos="3">
-		<Cursor position="5625" topLine="162" />
+		<Cursor position="13706" topLine="447" />
 	</File>
 	<File name="VisCortexFilters.h" open="1" top="0" tabpos="4">
 		<Cursor position="698" topLine="0" />
 	</File>
 	<File name="VisCortexHeuristics.c" open="1" top="0" tabpos="24">
-		<Cursor position="1326" topLine="33" />
+		<Cursor position="1326" topLine="29" />
 	</File>
 	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="23">
 		<Cursor position="324" topLine="0" />
@@ -137,7 +143,7 @@
 		<Cursor position="1162" topLine="4" />
 	</File>
 	<File name="VisCortexTimer.h" open="1" top="0" tabpos="42">
-		<Cursor position="992" topLine="20" />
+		<Cursor position="992" topLine="19" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
 		<Cursor position="1586" topLine="20" />
@@ -149,7 +155,7 @@
 		<Cursor position="1267" topLine="12" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="11322" topLine="347" />
+		<Cursor position="11322" topLine="343" />
 	</File>
 	<File name="version.h" open="1" top="0" tabpos="49">
 		<Cursor position="0" topLine="0" />

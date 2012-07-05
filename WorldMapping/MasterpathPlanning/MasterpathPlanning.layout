@@ -8,7 +8,7 @@
 		<Cursor position="405" topLine="0" />
 	</File>
 	<File name="MasterpathPlanning.h" open="1" top="0" tabpos="2">
-		<Cursor position="5576" topLine="103" />
+		<Cursor position="5576" topLine="99" />
 	</File>
 	<File name="NormalizePath.c" open="1" top="0" tabpos="7">
 		<Cursor position="8509" topLine="275" />
@@ -23,7 +23,7 @@
 		<Cursor position="703" topLine="0" />
 	</File>
 	<File name="PathPlanningHelper.c" open="1" top="0" tabpos="5">
-		<Cursor position="5389" topLine="132" />
+		<Cursor position="5389" topLine="131" />
 	</File>
 	<File name="PathPlanningHelper.h" open="1" top="0" tabpos="11">
 		<Cursor position="144" topLine="0" />

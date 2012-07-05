@@ -1,8 +1,0 @@
-#!/bin/bash
-#convert *.jpg: -resize 800x480\> \ -size 800x480 xc:black +swap -gravity center  -composite \ out.jpg
-#convert *.jpg -resize 800x480> -size 800x480 xc:white +swap -gravity center -composite out.jpg
-for f in *.jpg; do 
-echo "Processing $f file.."; 
-convert $f -resize "800x480>" -size "800x480" xc:white +swap -gravity center -composite output/$f-out.jpg
-done
-exit 0

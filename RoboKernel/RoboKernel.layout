@@ -5,7 +5,7 @@
 		<Cursor position="549" topLine="0" />
 	</File>
 	<File name="activity_coordination.c" open="1" top="0" tabpos="18">
-		<Cursor position="903" topLine="3" />
+		<Cursor position="74" topLine="0" />
 	</File>
 	<File name="activity_coordination.h" open="1" top="0" tabpos="17">
 		<Cursor position="344" topLine="0" />
@@ -17,37 +17,37 @@
 		<Cursor position="195" topLine="0" />
 	</File>
 	<File name="command_implementation.c" open="1" top="0" tabpos="11">
-		<Cursor position="3133" topLine="98" />
+		<Cursor position="1257" topLine="0" />
 	</File>
 	<File name="command_implementation.h" open="1" top="0" tabpos="12">
 		<Cursor position="524" topLine="0" />
 	</File>
 	<File name="configuration.c" open="1" top="0" tabpos="9">
-		<Cursor position="3748" topLine="137" />
+		<Cursor position="3748" topLine="394" />
 	</File>
 	<File name="configuration.h" open="1" top="0" tabpos="10">
 		<Cursor position="505" topLine="0" />
 	</File>
 	<File name="gsm_modem.c" open="1" top="0" tabpos="19">
-		<Cursor position="625" topLine="102" />
+		<Cursor position="625" topLine="98" />
 	</File>
 	<File name="gsm_modem.h" open="1" top="0" tabpos="20">
 		<Cursor position="275" topLine="0" />
 	</File>
 	<File name="irc_interface.c" open="1" top="0" tabpos="25">
-		<Cursor position="5362" topLine="190" />
+		<Cursor position="5362" topLine="186" />
 	</File>
 	<File name="irc_interface.h" open="1" top="0" tabpos="26">
 		<Cursor position="154" topLine="0" />
 	</File>
 	<File name="joystick.c" open="1" top="0" tabpos="23">
-		<Cursor position="6213" topLine="228" />
+		<Cursor position="6213" topLine="224" />
 	</File>
 	<File name="joystick.h" open="1" top="0" tabpos="24">
 		<Cursor position="1838" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="450" topLine="222" />
+		<Cursor position="6169" topLine="50" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
 		<Cursor position="1020" topLine="0" />
@@ -62,13 +62,13 @@
 		<Cursor position="164" topLine="0" />
 	</File>
 	<File name="script_runner.c" open="1" top="0" tabpos="21">
-		<Cursor position="3497" topLine="114" />
+		<Cursor position="3497" topLine="110" />
 	</File>
 	<File name="script_runner.h" open="1" top="0" tabpos="22">
 		<Cursor position="263" topLine="0" />
 	</File>
 	<File name="visual_system.c" open="1" top="0" tabpos="5">
-		<Cursor position="112" topLine="103" />
+		<Cursor position="112" topLine="99" />
 	</File>
 	<File name="visual_system.h" open="1" top="0" tabpos="6">
 		<Cursor position="175" topLine="0" />

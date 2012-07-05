@@ -48,6 +48,10 @@
 			<Add option="-s" />
 			<Add option="`pkg-config --libs opencv`" />
 		</Linker>
+		<Unit filename="ArchOptimizations.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ArchOptimizations.h" />
 		<Unit filename="CameraPose.c">
 			<Option compilerVar="CC" />
 		</Unit>
