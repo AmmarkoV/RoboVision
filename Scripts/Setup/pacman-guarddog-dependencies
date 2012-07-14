@@ -1,0 +1,23 @@
+#!/bin/bash
+echo "This script is supposed to download all dependencies , for building RoboVision ( guarddog ) "
+echo "This script supposes an Arch distro with pacman as a package manager!"
+
+echo
+echo -n "                Do you want to proceed (Y/N)?"
+read answer
+if test "$answer" != "Y" -a "$answer" != "y";
+then exit 0;
+fi
+
+
+echo "Starting downloads "
+echo "What is basically needed is GCC and libs , WxWidgets , LibV4L development headers , OpenAL , OpenGL/GLUT , Festival (TTS) , OpenCV "
+
+sudo pacman -s gcc wxgtk openal freealut freeglut imagemagick zenity opencv cmake gsl festival wget gnuplot
+
+
+#For Speech Recognition libpocketsphinx1 libpocketsphinx-dev libsphinxbase1
+
+  
+
+exit 0

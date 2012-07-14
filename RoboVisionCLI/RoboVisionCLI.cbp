@@ -34,23 +34,24 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Linker>
+			<Add option="../RoboKernel/libRoboKernel.a" />
+			<Add option="../VideoInput/libVideoInput.a" />
+			<Add option="../VisualCortex/libVisualCortex.a" />
+			<Add option="../InputParser/libInputParser_C.a" />
+			<Add option="../MotorFoundation/libMotorHAL.a" />
+			<Add option="../MotorFoundation/MD23/libMD23.a" />
+			<Add option="../MotorFoundation/Arduino/libRoboVisionSensorLib.a" />
+			<Add option="../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a" />
+			<Add option="../WorldMapping/MasterWorld/libMasterWorld.a" />
+			<Add option="../RVKnowledgeBase/libRVKnowledgeBase.a" />
+			<Add option="../3dpartylibs/fast/libFast.a" />
+			<Add option="`pkg-config --libs opencv`" />
 			<Add option="-pthread" />
 			<Add option="-lgsl" />
 			<Add option="-lgslcblas" />
 			<Add option="-lm" />
-			<Add option="`wx-config --libs`" />
-			<Add option="`pkg-config --libs opencv`" />
-			<Add library="../RoboKernel/libRoboKernel.a" />
-			<Add library="../VideoInput/libVideoInput.a" />
-			<Add library="../VisualCortex/libVisualCortex.a" />
-			<Add library="../InputParser/libInputParser_C.a" />
-			<Add library="../MotorFoundation/libMotorHAL.a" />
-			<Add library="../MotorFoundation/MD23/libMD23.a" />
-			<Add library="../MotorFoundation/Arduino/libRoboVisionSensorLib.a" />
-			<Add library="../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a" />
-			<Add library="../WorldMapping/MasterWorld/libMasterWorld.a" />
-			<Add library="../RVKnowledgeBase/libRVKnowledgeBase.a" />
-			<Add library="../3dpartylibs/fast/libFast.a" />
+			<Add option="-lpng" />
+			<Add option="-lrt" />
 		</Linker>
 		<Unit filename="main.cpp" />
 		<Extensions>

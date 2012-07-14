@@ -59,6 +59,7 @@
 			<Add option="-lgslcblas" />
 			<Add option="-lm" />
 			<Add option="-lpng" />
+			<Add option="-lrt" />
 		</Linker>
 		<Unit filename="CortexSettings.cpp" />
 		<Unit filename="CortexSettings.h" />

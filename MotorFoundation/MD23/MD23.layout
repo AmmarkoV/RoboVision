@@ -2,13 +2,13 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="MD23.c" open="1" top="0" tabpos="1">
-		<Cursor position="13434" topLine="419" />
+		<Cursor position="13434" topLine="372" />
 	</File>
 	<File name="MD23.h" open="1" top="0" tabpos="2">
 		<Cursor position="1385" topLine="13" />
 	</File>
 	<File name="MD23_commands.c" open="1" top="0" tabpos="3">
-		<Cursor position="90" topLine="0" />
+		<Cursor position="90" topLine="113" />
 	</File>
 	<File name="usb_2_i2c.c" open="1" top="0" tabpos="4">
 		<Cursor position="415" topLine="0" />
