@@ -20,9 +20,10 @@ LIBRARIES="-pthread -lgsl -lpng -lgslcblas -lm -lrt"
 
 g++ RoboVisionXApp.cpp RoboVisionXMain.cpp MapOverview.cpp FramesOSD.cpp  FeedScreenMemory.cpp CortexSettings.cpp RememberImage.cpp $CFLAGS  $OURLIBRARIES  $WXWIDGETSSTUFF $OPENCVSTUFF  -L.  $LIBRARIES -o $OUTPUT
 
-cd memfs/calibration
-./make
-cd ../..
+#cd memfs/calibration
+#./make
+#cd ../..
+
 
 if [ -e $OUTPUT ]
 then
