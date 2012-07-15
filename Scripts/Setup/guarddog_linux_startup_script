@@ -31,8 +31,8 @@ case "$1" in
        sudo ./Scripts/PlaySound  "./DataSets/Sounds/shutdownv.wav"
 
        sudo killall guarddog_init_service
-       sudo killall RoboVisionCLI
-       sudo killall RoboVisionX
+       sudo killall robovision
+       sudo killall robovisionx
     ;;
   *)
     echo "Usage: /etc/init.d/guarddog_linux_startup_script {start|stop}"

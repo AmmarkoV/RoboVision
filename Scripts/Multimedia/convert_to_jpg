@@ -1,0 +1,4 @@
+#!/bin/bash
+rm *.jpg
+convert *.ppm *.jpg
+exit 0

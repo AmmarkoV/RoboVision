@@ -231,7 +231,7 @@ int StopRoboKernel()
 {
 
     fprintf(stderr,"NOTE : Flushing consoleout.dat to prevent it from beeing refreshed over and over on github.. :P\n");
-    int i = system((const char *) "echo " " > memfs/public_html/consoleout.dat");
+    int i = system((const char *) "echo " " > robot/memfs/www/consoleout.dat");
     if ( i!=0 ) { fprintf(stderr,"It failed.. well , no big deal \n"); }
 
   go_to_sleep=1;

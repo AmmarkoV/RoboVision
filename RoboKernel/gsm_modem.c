@@ -38,7 +38,7 @@ int StopGSMModem()
 int SendSMS(char * number,char * sms_message)
 {
   FILE * pFile;
-  pFile = fopen ("../RoboVisionRuntime/memfs/SMS_Send/message","w");
+  pFile = fopen ("../robot/permfs/SMSSend/message","w");
   if (pFile!=0)
   {
     fprintf (pFile,"%s\n",number);
@@ -100,14 +100,14 @@ int ParseReceivedSMS(char * line)
 
 int FlushReceivedSMS()
 {
-   return system("> ../RoboVisionRuntime/memfs/SMS_Receive/Received");
+   return system("> ../robot/permfs/SMSReceive/Received");
 }
 
 
 int ReceiveSMS(char * number,unsigned int number_size,char * sms_message,int sms_message_size)
 {
   FILE * pFile=0;
-  pFile = fopen ("../RoboVisionRuntime/memfs/SMS_Receive/Received","r");
+  pFile = fopen ("../robot/permfs/SMSReceive/Received","r");
   if (pFile!=0)
    {
      int c=0;

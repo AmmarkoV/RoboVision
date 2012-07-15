@@ -252,11 +252,11 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  if ( cmdi_1 == 0 )
                  {
                    sprintf(outptstr,"From %s : Capturing VideoInput Snapshot without a timestamp in the filename (snapshot.ppm) \n",from);
-                   RecordOne((char *)"memfs/snapshot",0,1);
+                   RecordOne((char *)"../robot/memfs/snapshot",0,1);
                  } else
                  {
                    sprintf(outptstr,"From %s : Capturing VideoInput Snapshot (param , %u)\n",from,cmdi_1);
-                   RecordOne((char *)"memfs/snapshot",1,1);
+                   RecordOne((char *)"../robot/memfs/snapshot",1,1);
                    //SnapshotWithTimeStamp();
                  }
      break;
@@ -264,7 +264,7 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
                  IssueCommandInternal((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",from,outptstr,output_length); /*Internal message to stop recording of Streams*/
 
                  sprintf(outptstr,"From %s : PlayingBack VideoInput Snapshot \n",from);
-                 Play((char *)"memfs/snapshot");
+                 Play((char *)"../robot/memfs/snapshot");
      break;
      case CMD_PLAYBACK_LIVE :
                  IssueCommandInternal((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",from,outptstr,output_length); /*Internal message to stop recording of Streams*/

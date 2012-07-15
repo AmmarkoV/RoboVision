@@ -77,8 +77,8 @@ void PassVideoRegisterToFeed(unsigned int feednum,void * framedata,unsigned int 
 
 void InitFeeds()
 {
-    default_feed=new wxBitmap(wxT("feed.bmp"),wxBITMAP_TYPE_BMP);
-    default_patch=new wxBitmap(wxT("patch.bmp"),wxBITMAP_TYPE_BMP);
+    default_feed=new wxBitmap(wxT("../DataSets/Clipart/feed.bmp"),wxBITMAP_TYPE_BMP);
+    default_patch=new wxBitmap(wxT("../DataSets/Clipart/patch.bmp"),wxBITMAP_TYPE_BMP);
     live_feeds[0].bmp=default_feed;
     live_feeds[0].bmp_allocated = false;
     live_feeds[1].bmp=default_feed;

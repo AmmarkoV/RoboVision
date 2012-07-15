@@ -1,0 +1,5 @@
+#!/bin/bash
+convert scene_l.png -resize 320x240 snapshot0.ppm
+convert scene_r.png -resize 320x240 snapshot1.ppm
+exit 0
+

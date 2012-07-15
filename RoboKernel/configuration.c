@@ -421,7 +421,7 @@ void LoadConfiguration()
   char line[MAX_LINE_SIZE];
 
   FILE * pFile;
-  pFile = fopen ("guard.ini","r");
+  pFile = fopen ("../robot/guard.ini","r");
   if (pFile!=0 )
     {
       int line_length=0;

@@ -1,9 +1,11 @@
 #!/bin/bash
 echo "RoboVision WxWidgets GUI / Provides the main executable / Author : Ammar Qammaz"  
 
-if [ -e bin/Release/RoboVisionX ]
+OUTPUT="robovisionx"
+
+if [ -e $OUTPUT ]
 then
-  rm bin/Release/RoboVisionX
+  rm $OUTPUT
 fi
 
 CFLAGS="-s -O3 -fexpensive-optimizations"
@@ -15,13 +17,14 @@ OPENCVSTUFF="`pkg-config --cflags --libs opencv`"
 WXWIDGETSSTUFF="`wx-config --libs` `wx-config --cflags`"
 LIBRARIES="-pthread -lgsl -lpng -lgslcblas -lm -lrt"
 
-g++ RoboVisionXApp.cpp RoboVisionXMain.cpp MapOverview.cpp FramesOSD.cpp  FeedScreenMemory.cpp CortexSettings.cpp RememberImage.cpp $CFLAGS  $OURLIBRARIES  $WXWIDGETSSTUFF $OPENCVSTUFF  -L.  $LIBRARIES -o bin/Release/RoboVisionX
+
+g++ RoboVisionXApp.cpp RoboVisionXMain.cpp MapOverview.cpp FramesOSD.cpp  FeedScreenMemory.cpp CortexSettings.cpp RememberImage.cpp $CFLAGS  $OURLIBRARIES  $WXWIDGETSSTUFF $OPENCVSTUFF  -L.  $LIBRARIES -o $OUTPUT
 
 cd memfs/calibration
 ./make
 cd ../..
 
-if [ -e bin/Release/RoboVisionX ]
+if [ -e $OUTPUT ]
 then
   echo "Success.."
 else

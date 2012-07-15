@@ -1,15 +1,25 @@
 #!/bin/bash
 echo "RoboVisionCLI  / Provides Headless Lite Executable  / Author : Ammar Qammaz"  
 
-if [ -e bin/Release/RoboVisionCLI ]
+OUTPUT="robovision"
+
+if [ -e $OUTPUT ]
 then
-  rm bin/Release/RoboVisionCLI
+  rm $OUTPUT
 fi 
 
-g++ main.cpp ../RoboKernel/libRoboKernel.a ../VideoInput/libVideoInput.a ../VisualCortex/libVisualCortex.a ../InputParser/libInputParser_C.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/MD23/libMD23.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a  ../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a ../WorldMapping/MasterWorld/libMasterWorld.a ../RVKnowledgeBase/libRVKnowledgeBase.a ../3dpartylibs/fast/libFast.a -L. -pthread -lpng -lgsl -lgslcblas -lm -lrt `pkg-config --cflags --libs opencv` -o bin/Release/RoboVisionCLI
+CFLAGS="-s -O3 -fexpensive-optimizations"
+
+OURLIBRARIES="../RoboKernel/libRoboKernel.a ../VideoInput/libVideoInput.a ../VisualCortex/libVisualCortex.a ../InputParser/libInputParser_C.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/MD23/libMD23.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a ../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a ../WorldMapping/MasterWorld/libMasterWorld.a ../RVKnowledgeBase/libRVKnowledgeBase.a ../3dpartylibs/fast/libFast.a"
+
+OPENCVSTUFF="`pkg-config --cflags --libs opencv`"
+
+LIBRARIES="-pthread -lgsl -lpng -lgslcblas -lm -lrt"
+
+g++ main.cpp $OURLIBRARIES $OPENCVSTUFF -L. $LIBRARIES -o $OUTPUT
 
 
-if [ -e bin/Release/RoboVisionCLI ]
+if [ -e $OUTPUT ]
 then
   echo "Success.."
 else

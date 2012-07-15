@@ -49,13 +49,13 @@ int CloseWebInterface()
  web_interface_thread_stop = 1;
 
  int i=0;
- i=system((const char *)"cp empty.jpeg memfs/public_html/feed0.jpeg");
+ i=system((const char *)"cp DataSets/Clipart/empty.jpeg robot/memfs/www/feed0.jpeg");
  if ( i != 0 ) fprintf(stderr,"Error cleaning web interface :P \n");
- i=system((const char *)"cp empty.jpeg memfs/public_html/feed1.jpeg");
+ i=system((const char *)"cp DataSets/Clipart/empty.jpeg robot/memfs/www/feed1.jpeg");
  if ( i != 0 ) fprintf(stderr,"Error cleaning web interface :P \n");
- i=system((const char *)"cp empty.jpeg memfs/public_html/feed2.jpeg");
+ i=system((const char *)"cp DataSets/Clipart/empty.jpeg robot/memfs/www/feed2.jpeg");
  if ( i != 0 ) fprintf(stderr,"Error cleaning web interface :P \n");
- i=system((const char *)"cp empty.jpeg memfs/public_html/feed3.jpeg");
+ i=system((const char *)"cp DataSets/Clipart/empty.jpeg robot/memfs/www/feed3.jpeg");
  if ( i != 0 ) fprintf(stderr,"Error cleaning web interface :P \n");
  EraseConsoleOutput();
  return 1;
@@ -66,11 +66,11 @@ int WebIntNeedsNewSnapshot()
 {
 
   FILE * pFile=0;
-  pFile = fopen ("memfs/public_html/viewers.dat","r");
+  pFile = fopen ("robot/memfs/www/viewers.dat","r");
   if (pFile!=0 )
     {
      fclose(pFile);
-      if( remove( "memfs/public_html/viewers.dat" ) != 0 )
+      if( remove( "robot/memfs/www/viewers.dat" ) != 0 )
        {
         fprintf(stderr,"Could not clear viewers data\n");
         return 0;
@@ -86,7 +86,7 @@ int WebIntHasNewCommand()
 {
 
   FILE * pFile=0;
-  pFile = fopen ("memfs/public_html/commands.dat","r");
+  pFile = fopen ("robot/memfs/www/commands.dat","r");
 
   struct InputParserC * ipc=0;
   ipc = InputParser_Create(512,5);
@@ -116,7 +116,7 @@ int WebIntHasNewCommand()
 
       fclose(pFile);
 
-      if( remove( "memfs/public_html/commands.dat" ) != 0 )
+      if( remove( "robot/memfs/www/commands.dat" ) != 0 )
        {
         fprintf(stderr,"Could not clear viewers data\n");
         return 0;
@@ -131,7 +131,7 @@ int WebIntHasNewCommand()
 int UpdateSensorsOnNetworkInterface()
 {
   FILE * pFile=0;
-  pFile = fopen ("memfs/public_html/sensors.dat","w");
+  pFile = fopen ("robot/memfs/www/sensors.dat","w");
   if (pFile!=0 )
   {
     fprintf(pFile,"%u\n",RobotGetUltrasonic(0));
