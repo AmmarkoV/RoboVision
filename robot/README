@@ -1,2 +1,6 @@
 This folder upon installation should be copied to /robot/
-It will contain
+It is split in two , one part residing in a 64M tmpfs and one residing in the hard drive 
+The data on the tmpfs ( or memfs )  is where frequent read/write operations occur in order to make operations faster and not waste the read/write cycles of the flash medium that guarddog runs on..
+The data on the permfs is permanent and it carries all the state of the robot..
+
+All the parts of the guarddog stack should reside in the /robot/ dir so , removing the /robot/ directory and the two robovision binaries from the system should completely purge guarddog  

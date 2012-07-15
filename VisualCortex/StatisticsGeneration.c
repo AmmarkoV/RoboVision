@@ -10,7 +10,7 @@
 int UpdateFrameProcessingRateStatistics(unsigned int last_frame_microseconds, float last_fps)
 {
     FILE *fd=0;
-    fd = fopen("../DataSets/Statistics/hypervisor_performance.dat","a");
+    fd = fopen("../robot/memfs/Statistics/hypervisor_performance.dat","a");
 
     if (fd!=0)
 	{
@@ -29,7 +29,7 @@ int UpdateFrameProcessingRateStatistics(unsigned int last_frame_microseconds, fl
 int UpdateDisparityMapStatistics(unsigned int time_elapsed,unsigned int coverage,unsigned int too_close_coverage,unsigned int comparisons_small,unsigned int comparisons_medium,unsigned int comparisons_large)
 {
     FILE *fd=0;
-    fd = fopen("../DataSets/Statistics/hypervisor_disparity_mapping_performance.dat","a");
+    fd = fopen("../robot/memfs/Statistics/hypervisor_disparity_mapping_performance.dat","a");
 
     if (fd!=0)
 	{

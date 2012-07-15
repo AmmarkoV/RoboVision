@@ -1,0 +1,4 @@
+#!/bin/bash
+su
+echo "tmpfs /robot/memfs      tmpfs rw,nodev,nosuid,size=64M,umask=0000          0 0" >> /etc/fstab 
+exit 0
