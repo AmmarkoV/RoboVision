@@ -17,12 +17,13 @@
 using namespace std;
 void help()
 {
+    /*
     printf(
         "This program demonstrated the use of the SURF Detector and Descriptor using\n"
         "either FLANN (fast approx nearst neighbor classification) or brute force matching\n"
         "on planar objects.\n"
         "Usage:\n"
-        "./find_obj <object_filename> <scene_filename>, default is box.png  and box_in_scene.png\n\n");
+        "./find_obj <object_filename> <scene_filename>, default is box.png  and box_in_scene.png\n\n");*/
     return;
 }
 
@@ -225,12 +226,13 @@ int main(int argc, char** argv)
         exit(-1);
     }
 
+
     CvMemStorage* storage = cvCreateMemStorage(0);
 
-    cvNamedWindow("Object", 1);
-    cvNamedWindow("Object Correspond", 1);
+   // cvNamedWindow("Object", 1);
+   // cvNamedWindow("Object Correspond", 1);
 
-    static CvScalar colors[] = 
+    static CvScalar colors[] =
     {
         {{0,0,255}},
         {{0,128,255}},
@@ -253,13 +255,13 @@ int main(int argc, char** argv)
 
     double tt = (double)cvGetTickCount();
     cvExtractSURF( object, 0, &objectKeypoints, &objectDescriptors, storage, params );
-    printf("Object Descriptors: %d\n", objectDescriptors->total);
+    //printf("Object Descriptors: %d\n", objectDescriptors->total);
 
     cvExtractSURF( image, 0, &imageKeypoints, &imageDescriptors, storage, params );
-    printf("Image Descriptors: %d\n", imageDescriptors->total);
+    //printf("Image Descriptors: %d\n", imageDescriptors->total);
     tt = (double)cvGetTickCount() - tt;
 
-    printf( "Extraction time = %gms\n", tt/(cvGetTickFrequency()*1000.));
+    //printf( "Extraction time = %gms\n", tt/(cvGetTickFrequency()*1000.));
 
     CvPoint src_corners[4] = {{0,0}, {object->width,0}, {object->width, object->height}, {0, object->height}};
     CvPoint dst_corners[4];
@@ -271,7 +273,7 @@ int main(int argc, char** argv)
     cvResetImageROI( correspond );
 
 #ifdef USE_FLANN
-    printf("Using approximate nearest neighbor search\n");
+   // printf("Using approximate nearest neighbor search\n");
 #endif
 
     if( locatePlanarObject( objectKeypoints, objectDescriptors, imageKeypoints,
@@ -291,6 +293,8 @@ int main(int argc, char** argv)
 #else
     findPairs( objectKeypoints, objectDescriptors, imageKeypoints, imageDescriptors, ptpairs );
 #endif
+
+
     for( i = 0; i < (int)ptpairs.size(); i += 2 )
     {
         CvSURFPoint* r1 = (CvSURFPoint*)cvGetSeqElem( objectKeypoints, ptpairs[i] );
@@ -299,6 +303,9 @@ int main(int argc, char** argv)
             cvPoint(cvRound(r2->pt.x), cvRound(r2->pt.y+object->height)), colors[8] );
     }
 
+    //printf(" Found %u pairs \n",(int) ptpairs.size());
+    if ((int) ptpairs.size() > (objectDescriptors->total / 2) ) { return 0; }
+/*
     cvShowImage( "Object Correspond", correspond );
     for( i = 0; i < objectKeypoints->total; i++ )
     {
@@ -316,6 +323,6 @@ int main(int argc, char** argv)
 
     cvDestroyWindow("Object");
     cvDestroyWindow("Object Correspond");
-
-    return 0;
+*/
+    return 1;
 }

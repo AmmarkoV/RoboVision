@@ -1,4 +1,12 @@
 #!/bin/bash
+
+if [ -d /robot ]; then
+	echo "/robot/ directory already exists"
+else 
+	echo "Creating /robot/ directory"
+        sudo mkdir /robot
+fi 
+
 if cat /etc/fstab | grep -q "/robot"
 then
    echo "GuarddoG tmpfs seems to already exist in Fstab" 

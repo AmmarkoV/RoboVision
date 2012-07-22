@@ -11,25 +11,25 @@
 		<Cursor position="344" topLine="0" />
 	</File>
 	<File name="command_hal.c" open="1" top="0" tabpos="3">
-		<Cursor position="22489" topLine="436" />
+		<Cursor position="10083" topLine="241" />
 	</File>
 	<File name="command_hal.h" open="1" top="0" tabpos="4">
 		<Cursor position="195" topLine="0" />
 	</File>
 	<File name="command_implementation.c" open="1" top="0" tabpos="11">
-		<Cursor position="1257" topLine="0" />
+		<Cursor position="7818" topLine="242" />
 	</File>
 	<File name="command_implementation.h" open="1" top="0" tabpos="12">
 		<Cursor position="524" topLine="0" />
 	</File>
 	<File name="configuration.c" open="1" top="0" tabpos="9">
-		<Cursor position="3748" topLine="394" />
+		<Cursor position="12808" topLine="409" />
 	</File>
 	<File name="configuration.h" open="1" top="0" tabpos="10">
 		<Cursor position="505" topLine="0" />
 	</File>
 	<File name="gsm_modem.c" open="1" top="0" tabpos="19">
-		<Cursor position="625" topLine="98" />
+		<Cursor position="2700" topLine="84" />
 	</File>
 	<File name="gsm_modem.h" open="1" top="0" tabpos="20">
 		<Cursor position="275" topLine="0" />
@@ -47,7 +47,7 @@
 		<Cursor position="1838" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="6169" topLine="50" />
+		<Cursor position="5987" topLine="217" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
 		<Cursor position="1020" topLine="0" />
@@ -74,7 +74,7 @@
 		<Cursor position="175" topLine="0" />
 	</File>
 	<File name="webinterface.c" open="1" top="0" tabpos="7">
-		<Cursor position="4395" topLine="136" />
+		<Cursor position="3716" topLine="122" />
 	</File>
 	<File name="webinterface.h" open="1" top="0" tabpos="8">
 		<Cursor position="496" topLine="0" />

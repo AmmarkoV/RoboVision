@@ -23,7 +23,7 @@
 		<Cursor position="1348" topLine="0" />
 	</File>
 	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
-		<Cursor position="229" topLine="0" />
+		<Cursor position="1059" topLine="0" />
 	</File>
 	<File name="FaceDetection.h" open="1" top="0" tabpos="13">
 		<Cursor position="209" topLine="0" />
@@ -100,8 +100,8 @@
 	<File name="StateSetting.h" open="1" top="0" tabpos="19">
 		<Cursor position="141" topLine="0" />
 	</File>
-	<File name="StatisticsGeneration.c" open="1" top="0" tabpos="47">
-		<Cursor position="802" topLine="0" />
+	<File name="StatisticsGeneration.c" open="1" top="1" tabpos="47">
+		<Cursor position="347" topLine="0" />
 	</File>
 	<File name="StatisticsGeneration.h" open="1" top="0" tabpos="48">
 		<Cursor position="386" topLine="0" />
