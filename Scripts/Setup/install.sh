@@ -1,20 +1,22 @@
 #!/bin/bash
 
+BINPATH="RoboVisionCLI"
 BINARY="robovision"
-  if [ -e $BINARY ]
+  if [ -e $BINPATH/$BINARY ]
   then
     echo "$BINARY App is OK :) , including it to system binaries .."
-    sudo cp $BINARY /usr/bin/$BINARY 
+    sudo cp $BINPATH/$BINARY /usr/bin/$BINARY 
   else
     echo "$BINARY App could not be installed , you probably got a library missing"
     exit 1
   fi
 
+BINPATH="RoboVisionX"
 BINARY="robovisionx"
-  if [ -e $BINARY ]
+  if [ -e $BINPATH/$BINARY ]
   then
     echo "$BINARY App is OK :) , including it to system binaries .."
-    sudo cp $BINARY /usr/bin/$BINARY 
+    sudo cp $BINPATH/$BINARY /usr/bin/$BINARY 
   else
     echo "$BINARY App could not be installed , you probably got a library missing"
     exit 1
