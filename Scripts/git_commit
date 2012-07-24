@@ -1,4 +1,4 @@
 #!/bin/bash
-git commit -a
+git commit -a -m "..."
 git push origin master
 exit 0

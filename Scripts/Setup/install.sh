@@ -43,10 +43,10 @@ if test "$answer" != "Y" -a "$answer" != "y";
 then exit 0;
 fi
 
-
-sudo make /robot/
-sudo cp robot/* /robot/
-sudo ./AddToFstab_RobotDir.sh 
+mkdir robot/memfs
+sudo mkdir /robot/
+sudo cp -rf robot/* /robot/
+sudo Scripts/Setup/AddToFstab_RobotDir.sh 
 
 #sudo chmod 744  /robot/*   
 

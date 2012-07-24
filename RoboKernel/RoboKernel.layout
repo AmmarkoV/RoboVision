@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="RoboKernel.h" open="1" top="0" tabpos="2">
-		<Cursor position="549" topLine="0" />
+		<Cursor position="640" topLine="0" />
 	</File>
 	<File name="activity_coordination.c" open="1" top="0" tabpos="18">
 		<Cursor position="74" topLine="0" />
@@ -11,25 +11,25 @@
 		<Cursor position="344" topLine="0" />
 	</File>
 	<File name="command_hal.c" open="1" top="0" tabpos="3">
-		<Cursor position="10083" topLine="241" />
+		<Cursor position="9411" topLine="58" />
 	</File>
 	<File name="command_hal.h" open="1" top="0" tabpos="4">
 		<Cursor position="195" topLine="0" />
 	</File>
 	<File name="command_implementation.c" open="1" top="0" tabpos="11">
-		<Cursor position="7818" topLine="242" />
+		<Cursor position="2650" topLine="70" />
 	</File>
 	<File name="command_implementation.h" open="1" top="0" tabpos="12">
 		<Cursor position="524" topLine="0" />
 	</File>
-	<File name="configuration.c" open="1" top="0" tabpos="9">
-		<Cursor position="12808" topLine="409" />
+	<File name="configuration.c" open="1" top="1" tabpos="9">
+		<Cursor position="1415" topLine="42" />
 	</File>
 	<File name="configuration.h" open="1" top="0" tabpos="10">
-		<Cursor position="505" topLine="0" />
+		<Cursor position="795" topLine="2" />
 	</File>
 	<File name="gsm_modem.c" open="1" top="0" tabpos="19">
-		<Cursor position="2700" topLine="84" />
+		<Cursor position="2713" topLine="75" />
 	</File>
 	<File name="gsm_modem.h" open="1" top="0" tabpos="20">
 		<Cursor position="275" topLine="0" />
@@ -47,7 +47,7 @@
 		<Cursor position="1838" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="5987" topLine="217" />
+		<Cursor position="6546" topLine="62" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
 		<Cursor position="1020" topLine="0" />
@@ -68,13 +68,13 @@
 		<Cursor position="263" topLine="0" />
 	</File>
 	<File name="visual_system.c" open="1" top="0" tabpos="5">
-		<Cursor position="112" topLine="99" />
+		<Cursor position="4095" topLine="99" />
 	</File>
 	<File name="visual_system.h" open="1" top="0" tabpos="6">
 		<Cursor position="175" topLine="0" />
 	</File>
 	<File name="webinterface.c" open="1" top="0" tabpos="7">
-		<Cursor position="3716" topLine="122" />
+		<Cursor position="1133" topLine="34" />
 	</File>
 	<File name="webinterface.h" open="1" top="0" tabpos="8">
 		<Cursor position="496" topLine="0" />

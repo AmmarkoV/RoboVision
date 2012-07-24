@@ -12,7 +12,7 @@ then
    echo "GuarddoG tmpfs seems to already exist in Fstab" 
   exit 0
 else
-   echo "GuarddoG tmpfs doesnt seems to exist in Fstab" 
+   echo "GuarddoG tmpfs doesnt seem to exist in Fstab , adding it" 
    sudo sh -c 'echo "tmpfs /robot/memfs      tmpfs rw,nodev,nosuid,size=64M,umask=0000          0 0" >> /etc/fstab' 
 fi
 exit 0
