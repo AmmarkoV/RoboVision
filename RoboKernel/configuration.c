@@ -49,6 +49,9 @@ char INITIALIZATION_CONFIGURATION_PATH[MAX_STR]="../robot/guard.ini";
 char SNAPSHOT_PATH[MAX_STR]="../robot/permfs/Snapshots/snapshot";
 char WEB_SERVER_ROOT[MAX_STR]="../robot/memfs/www";
 char CONSOLE_OUT_PATH[MAX_STR]="../robot/memfs/www/consoleout.dat";
+char COMMANDS_PATH[MAX_STR]="../robot/memfs/www/commands.dat";
+char VIEWERS_PATH[MAX_STR]="../robot/memfs/www/viewers.dat";
+char SENSORS_PATH[MAX_STR]="../robot/memfs/www/sensors.dat";
 
 char SMS_SEND_PATH[MAX_STR]="../robot/permfs/SMSSend/message";
 char SMS_RECEIVE_PATH[MAX_STR]="../robot/permfs/SMSReceive/Received";
@@ -91,16 +94,28 @@ int quickcat(char * outfilename,char *infilename1,char * infilename2)
   return 1;
 }
 
-int find_environment_robot_directory(char * filename)
+int find_environment_robot_directory()
 {
-   if (filename==0) { fprintf(stderr,"find_environment_robot_directory called with empty string.. \n"); return 0; }
-   if (FileExistsConf("/robot/guard.ini"))   { strcpy(filename,"/robot/"); }   else
-   if (FileExistsConf("../robot/guard.ini")) { strcpy(filename,"../robot/"); } else
-                                             { filename[0]=0; filename[1]=0; }
+   if (ENVDIR==0) { fprintf(stderr,"find_environment_robot_directory called with empty string.. \n"); return 0; }
+   if (FileExistsConf("/robot/guard.ini"))   { strcpy(ENVDIR,"/robot/"); }   else
+   if (FileExistsConf("../robot/guard.ini")) { strcpy(ENVDIR,"../robot/"); } else
+                                             { ENVDIR[0]=0; ENVDIR[1]=0; }
 
-   fprintf(stderr,"Setting Environment directory to : %s \n",filename);
+   fprintf(stderr,"Setting Environment directory to : %s \n",ENVDIR);
 
-   return (filename[0]!=0);
+   quickcat(INITIALIZATION_CONFIGURATION_PATH,ENVDIR,"guard.ini");
+   quickcat(SNAPSHOT_PATH,ENVDIR,"permfs/Snapshots/snapshot");
+   quickcat(WEB_SERVER_ROOT,ENVDIR,"memfs/www");
+   quickcat(CONSOLE_OUT_PATH,ENVDIR,"memfs/www/consoleout.dat");
+   quickcat(COMMANDS_PATH,ENVDIR,"memfs/www/commands.dat");
+   quickcat(VIEWERS_PATH,ENVDIR,"memfs/www/viewers.dat");
+   quickcat(SENSORS_PATH,ENVDIR,"memfs/www/sensors.dat");
+   quickcat(SMS_SEND_PATH,ENVDIR,"permfs/SMSSend/message");
+   quickcat(SMS_RECEIVE_PATH,ENVDIR,"permfs/SMSReceive/Received");
+   quickcat(CLIPART_PATH,ENVDIR,"permfs/Clipart/");
+
+
+   return (ENVDIR[0]!=0);
 }
 
 

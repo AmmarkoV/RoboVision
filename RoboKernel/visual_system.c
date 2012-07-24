@@ -53,7 +53,7 @@ int InitVisualSystem()
       }
 
 
-    VisCortx_Start(width,height);
+    VisCortx_Start(width,height,ENVDIR);
 
     /*
          THE FOLLOWING CODE IS KIND OF BAD :P  , I WILL GRADUALLY MOVE RESECTIONING TO VIDEO INPUT SO

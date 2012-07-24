@@ -77,8 +77,18 @@ void PassVideoRegisterToFeed(unsigned int feednum,void * framedata,unsigned int 
 
 void InitFeeds()
 {
-    default_feed=new wxBitmap(wxT("../DataSets/Clipart/feed.bmp"),wxBITMAP_TYPE_BMP);
-    default_patch=new wxBitmap(wxT("../DataSets/Clipart/patch.bmp"),wxBITMAP_TYPE_BMP);
+    wxString filename;
+
+    filename.Clear();
+    filename<<wxString(GetRoboKernelEnvPath(),wxConvUTF8);
+    filename<<wxT("permfs/Clipart/feed.bmp");
+    default_feed=new wxBitmap(filename,wxBITMAP_TYPE_BMP);
+
+    filename.Clear();
+    filename<<wxString(GetRoboKernelEnvPath(),wxConvUTF8);
+    filename<<wxT("permfs/Clipart/patch.bmp");
+    default_patch=new wxBitmap(filename,wxBITMAP_TYPE_BMP);
+
     live_feeds[0].bmp=default_feed;
     live_feeds[0].bmp_allocated = false;
     live_feeds[1].bmp=default_feed;

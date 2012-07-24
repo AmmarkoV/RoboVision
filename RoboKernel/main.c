@@ -274,3 +274,9 @@ struct Map * GetWorldHandler()
 {
    return RobotGetMapPointer();
 }
+
+char * GetRoboKernelEnvPath()
+{
+   return ENVDIR;
+}
+

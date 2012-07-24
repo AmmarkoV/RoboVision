@@ -307,7 +307,7 @@ char *  VisCortx_Version();
 void VisCortx_SetTime(unsigned int thetime);
 unsigned int VisCortx_GetTime();
 
-unsigned int VisCortx_Start(unsigned int res_x,unsigned int res_y);
+unsigned int VisCortx_Start(unsigned int res_x,unsigned int res_y,char * envpath);
 unsigned int VisCortx_Stop();
 unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras,float diagonal_field_of_view,float horizontal_field_of_view,float vertical_field_of_view);
 unsigned int VisCortx_SelfCheck();

@@ -25,11 +25,18 @@ extern char sound_record_command[MAX_STR];
 extern char sound_record_parameter[MAX_STR];
 
 extern char ENVDIR[MAX_STR];
+extern char INITIALIZATION_CONFIGURATION_PATH[MAX_STR];
 extern char SNAPSHOT_PATH[MAX_STR];
 extern char WEB_SERVER_ROOT[MAX_STR];
 extern char CONSOLE_OUT_PATH[MAX_STR];
+extern char COMMANDS_PATH[MAX_STR];
+extern char VIEWERS_PATH[MAX_STR];
+extern char SENSORS_PATH[MAX_STR];
+
 extern char SMS_SEND_PATH[MAX_STR];
 extern char SMS_RECEIVE_PATH[MAX_STR];
+
+extern char CLIPART_PATH[MAX_STR];
 
 
 extern char tts_app[MAX_STR];
@@ -44,6 +51,7 @@ extern unsigned int web_interface_snaptime;
 extern unsigned int motion_lock_on;
 extern unsigned int swap_inputs;
 
+int quickcat(char * outfilename,char *infilename1,char * infilename2);
 int filename_stripper_found_attack(char * filename);
 void LoadConfiguration();
 int RefreshDeviceNumbering();

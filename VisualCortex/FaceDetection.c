@@ -17,7 +17,9 @@ CvMemStorage            *storage=0;
 
 void InitFaceRecognition(unsigned int x,unsigned int y)
 {
-    char *filename = "../DataSets/Haarcascades/haarcascade_frontalface_alt.xml";
+    char filename[512];
+    strcpy (filename,VisCortxENV);
+    strcat (filename,"permfs/Haarcascades/haarcascade_frontalface_alt.xml");
 
     /* load the classifier
        note that I put the file in the same directory with

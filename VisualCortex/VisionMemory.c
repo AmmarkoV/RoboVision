@@ -43,6 +43,7 @@ float camera_diagonal_field_of_view=0,camera_horizontal_field_of_view=0,camera_v
 
 float depth_units_in_cm[256]={0};
 
+char VisCortxENV[512]={0};
 
 
 

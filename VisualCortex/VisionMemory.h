@@ -128,6 +128,7 @@ extern float camera_diagonal_field_of_view,camera_horizontal_field_of_view,camer
 
 extern float depth_units_in_cm[256];
 
+extern char VisCortxENV[512];
 
 
 int SetImageRegion( struct ImageRegion * ir , unsigned int x1,unsigned int y1,unsigned int width,unsigned int height);

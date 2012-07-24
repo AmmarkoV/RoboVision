@@ -40,7 +40,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include <unistd.h>
 
-char * VISCORTEX_VER = "0.639";
+char * VISCORTEX_VER = "0.641";
 
 /*
 
@@ -128,8 +128,10 @@ unsigned int VisCortx_SetCamerasGeometry(float distance_between_cameras,float di
 
 
 
-unsigned int VisCortx_Start(unsigned int res_x,unsigned int res_y)
+unsigned int VisCortx_Start(unsigned int res_x,unsigned int res_y,char * envpath)
 {
+   strcpy(VisCortxENV,envpath); //To find haar cascades etc
+
    return InitializeEverything(res_x,res_y);
 }
 

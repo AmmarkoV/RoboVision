@@ -47,16 +47,32 @@ int OpenWebInterface()
 int CloseWebInterface()
 {
  web_interface_thread_stop = 1;
+ char filenamestart[512]={0};
+ char filenamefull[512]={0};
+
+ strcpy (filenamestart,"cp ");
+ strcat (filenamestart,CLIPART_PATH);
+ strcat (filenamestart,"empty.jpeg ");
+ strcat (filenamestart,WEB_SERVER_ROOT);
+
 
  int i=0;
- i=system((const char *)"cp DataSets/Clipart/empty.jpeg robot/memfs/www/feed0.jpeg");
+ quickcat(filenamefull,filenamestart,"feed0.jpeg");
+ i=system(filenamefull);
  if ( i != 0 ) fprintf(stderr,"Error cleaning web interface :P \n");
- i=system((const char *)"cp DataSets/Clipart/empty.jpeg robot/memfs/www/feed1.jpeg");
+
+ quickcat(filenamefull,filenamestart,"feed1.jpeg");
+ i=system(filenamefull);
  if ( i != 0 ) fprintf(stderr,"Error cleaning web interface :P \n");
- i=system((const char *)"cp DataSets/Clipart/empty.jpeg robot/memfs/www/feed2.jpeg");
+
+ quickcat(filenamefull,filenamestart,"feed2.jpeg");
+ i=system(filenamefull);
  if ( i != 0 ) fprintf(stderr,"Error cleaning web interface :P \n");
- i=system((const char *)"cp DataSets/Clipart/empty.jpeg robot/memfs/www/feed3.jpeg");
+
+ quickcat(filenamefull,filenamestart,"feed3.jpeg");
+ i=system(filenamefull);
  if ( i != 0 ) fprintf(stderr,"Error cleaning web interface :P \n");
+
  EraseConsoleOutput();
  return 1;
 }
@@ -66,11 +82,11 @@ int WebIntNeedsNewSnapshot()
 {
 
   FILE * pFile=0;
-  pFile = fopen ("robot/memfs/www/viewers.dat","r");
+  pFile = fopen (VIEWERS_PATH,"r");
   if (pFile!=0 )
     {
      fclose(pFile);
-      if( remove( "robot/memfs/www/viewers.dat" ) != 0 )
+      if( remove(VIEWERS_PATH) != 0 )
        {
         fprintf(stderr,"Could not clear viewers data\n");
         return 0;
@@ -86,7 +102,7 @@ int WebIntHasNewCommand()
 {
 
   FILE * pFile=0;
-  pFile = fopen ("robot/memfs/www/commands.dat","r");
+  pFile = fopen (COMMANDS_PATH,"r");
 
   struct InputParserC * ipc=0;
   ipc = InputParser_Create(512,5);
@@ -116,7 +132,7 @@ int WebIntHasNewCommand()
 
       fclose(pFile);
 
-      if( remove( "robot/memfs/www/commands.dat" ) != 0 )
+      if( remove(COMMANDS_PATH) != 0 )
        {
         fprintf(stderr,"Could not clear viewers data\n");
         return 0;
@@ -131,7 +147,7 @@ int WebIntHasNewCommand()
 int UpdateSensorsOnNetworkInterface()
 {
   FILE * pFile=0;
-  pFile = fopen ("robot/memfs/www/sensors.dat","w");
+  pFile = fopen (SENSORS_PATH,"w");
   if (pFile!=0 )
   {
     fprintf(pFile,"%u\n",RobotGetUltrasonic(0));

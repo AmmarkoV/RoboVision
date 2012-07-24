@@ -21,6 +21,8 @@ int StartRoboKernel();
 int StopRoboKernel();
 int CheckThatRoboKernelStopped();
 
+char * GetRoboKernelEnvPath();
+
 int RoboKernelAlive();
 
 struct Map * GetWorldHandler();
