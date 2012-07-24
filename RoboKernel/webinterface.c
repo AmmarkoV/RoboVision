@@ -26,7 +26,7 @@ int OpenWebInterface()
    count_snapshot=0;
 
    FILE * pFile=0;
-   pFile = fopen ("memfs/public_html/commands.dat","w");
+   pFile = fopen (COMMANDS_PATH,"w");
    if (pFile!=0 )
       {
         fclose(pFile);
@@ -178,7 +178,7 @@ int UpdateNetworkInterface(char * pica,char * picb,char * picc,char * picd,unsig
     UpdateSensorsOnNetworkInterface();
 
     /* system */
-    i=system((const char *)"scripts/webinterface_convert.sh");
+    i=system((const char *)"Scripts/webinterface_convert.sh");
     if ( i != 0 ) fprintf(stderr,"Error (%d) converting image of feeds\n",i);
   }
 
@@ -204,7 +204,7 @@ int TakeCareOfNetworkInterface(unsigned int clock_time)
 int EraseConsoleOutput()
 {
   FILE * pFile=0;
-  pFile = fopen ("memfs/public_html/consoleout.dat","w");
+  pFile = fopen (CONSOLE_OUT_PATH,"w");
   if (pFile!=0 )
   {
     fclose(pFile);
@@ -219,7 +219,7 @@ int WriteConsoleOutput(char * outstr)
 
   printf("%s\n",outstr);
 
-  pFile = fopen ("memfs/public_html/consoleout.dat","a");
+  pFile = fopen (CONSOLE_OUT_PATH,"a");
   if (pFile!=0 )
   {
     fprintf(pFile,"%s\n",outstr);

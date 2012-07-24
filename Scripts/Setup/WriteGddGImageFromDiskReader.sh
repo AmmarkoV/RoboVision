@@ -6,8 +6,7 @@ read answer
 if test "$answer" != "Y" -a "$answer" != "y";
 then exit 0;
 fi
-
-
+ 
 echo "Copying .."
-sudo dd if=/home/ammar/VirtualMachines/GUARDDOG_FS.img of=/dev/sdk
+sudo dd if=robot/permfs/DiskImages.img of=/dev/sdk
 exit 0 

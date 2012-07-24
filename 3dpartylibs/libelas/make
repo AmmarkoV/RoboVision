@@ -2,6 +2,15 @@
 echo "Trying to Compile LibElas http://www.rainsoft.de/software/libelas.html "
 echo "Author: Andreas Geiger"
 
+if [ -e build/elas ]
+then
+  echo "libELAS Executable seems to exist .."
+  echo "Skipping make operation..! "
+ cd ..
+ exit 0
+fi
+
+
 mkdir build
 echo "Cleaning everything"
 rm -fr build/*

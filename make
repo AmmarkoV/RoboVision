@@ -125,7 +125,7 @@ else
   echo "Error : Could not find RoboVisionX executable directory" 
 fi
 
-if [ -e RoboVisionX/bin/Release/RoboVisionX ]
+if [ -e RoboVisionX/robovisionx ]
 then
   echo "RoboVisionX Executable is OK .."
   notify-send "RoboVisionX Executable is OK .."
@@ -134,7 +134,7 @@ else
   notify-send "RoboVisionX Executable FAILED !!!!!!!!!!"
 fi
 
-if [ -e RoboVisionCLI/bin/Release/RoboVisionCLI ]
+if [ -e RoboVisionCLI/robovision ]
 then
   echo "RoboVisionCLI Executable is OK .."
   notify-send "RoboVisionCLI Executable is OK .."

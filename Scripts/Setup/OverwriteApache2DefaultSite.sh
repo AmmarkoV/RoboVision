@@ -9,7 +9,7 @@ if test "$answer" != "Y" -a "$answer" != "y";
 then exit 0;
 fi
 
-sudo cp /etc/apache2/sites-availiable/default Scripts/old_default_site
-sudo cp Scripts/new_default_site /etc/apache2/sites-availiable/default
+sudo cp /etc/apache2/sites-availiable/default robot/permfs/ConfigurationFilesTemplate/old_default_site
+sudo cp robot/permfs/ConfigurationFilesTemplate/new_default_site /etc/apache2/sites-availiable/default
 sudo /etc/init.d/apache2 restart
 exit 0

@@ -464,8 +464,8 @@ void MapOverview::OnButtonExecuteClick(wxCommandEvent& event)
 {
    signed int res=FindPath(GetWorldHandler(),OURROBOT,100); //TimeMS->GetValue()*10
   //floor_plan->FindPathTo(endx,endy,);
-//  if ( res <1 ) { TTS((char *)"Could not establish a route.");  } else
-//                { TTS((char *)"New route established."); }
+  if ( res <1 ) { fprintf(stderr,"Could not establish a route.\n"); /*TTS((char *)"Could not establish a route.");*/  } else
+                { fprintf(stderr,"New route established."); }
   Refresh();
 }
 

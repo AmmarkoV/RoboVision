@@ -249,7 +249,8 @@ void TestPrecalculations()
 {
   int errors=0;
 
-  int a,b;
+
+/*  int a,b;
   for (a=0; a<100; a++)
    {
      for (b=0; b<100; b++)
@@ -258,6 +259,8 @@ void TestPrecalculations()
      }
    }
   if (errors>0) { fprintf(stderr,"Precalculation errors, %u in Arch Optimizations\n"); }
+*/
+
 
   errors=0;
    /*Etc code*/
