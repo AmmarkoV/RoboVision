@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="ArchOptimizations/ArchOptimizations.c" open="1" top="0" tabpos="52">
-		<Cursor position="262" topLine="0" />
+		<Cursor position="467" topLine="0" />
 	</File>
 	<File name="CameraPose.c" open="1" top="0" tabpos="44">
 		<Cursor position="4778" topLine="75" />
@@ -23,7 +23,7 @@
 		<Cursor position="1348" topLine="0" />
 	</File>
 	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
-		<Cursor position="1059" topLine="0" />
+		<Cursor position="556" topLine="0" />
 	</File>
 	<File name="FaceDetection.h" open="1" top="0" tabpos="13">
 		<Cursor position="209" topLine="0" />
@@ -89,7 +89,7 @@
 		<Cursor position="299" topLine="0" />
 	</File>
 	<File name="Precalculations.c" open="1" top="0" tabpos="11">
-		<Cursor position="796" topLine="0" />
+		<Cursor position="7987" topLine="225" />
 	</File>
 	<File name="Precalculations.h" open="1" top="0" tabpos="35">
 		<Cursor position="350" topLine="0" />
@@ -100,7 +100,7 @@
 	<File name="StateSetting.h" open="1" top="0" tabpos="19">
 		<Cursor position="141" topLine="0" />
 	</File>
-	<File name="StatisticsGeneration.c" open="1" top="1" tabpos="47">
+	<File name="StatisticsGeneration.c" open="1" top="0" tabpos="47">
 		<Cursor position="347" topLine="0" />
 	</File>
 	<File name="StatisticsGeneration.h" open="1" top="0" tabpos="48">
@@ -143,16 +143,16 @@
 		<Cursor position="183" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="2132" topLine="47" />
+		<Cursor position="1642" topLine="0" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="2716" topLine="105" />
+		<Cursor position="2766" topLine="108" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="1410" topLine="873" />
+	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
+		<Cursor position="4305" topLine="105" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="11322" topLine="343" />
+		<Cursor position="6248" topLine="343" />
 	</File>
 	<File name="fastmemcpy.h" open="0" top="0" tabpos="0">
 		<Cursor position="1365" topLine="0" />
