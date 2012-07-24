@@ -98,8 +98,6 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
   if ( words_count > 3 ) InputParser_GetWord(ipc,4,cmds_4,512); cmdi_4=InputParser_GetWordInt(ipc,4);
   if ( words_count > 4 ) InputParser_GetWord(ipc,5,cmds_5,512); cmdi_5=InputParser_GetWordInt(ipc,5);
 
-
-
   switch (opcode)
    { case CMD_UNKNOWN :
        return 0;
@@ -251,20 +249,20 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      case CMD_RECORD_SNAPSHOT :
                  if ( cmdi_1 == 0 )
                  {
-                   sprintf(outptstr,"From %s : Capturing VideoInput Snapshot without a timestamp in the filename (snapshot.ppm) \n",from);
-                   RecordOne((char *)"../robot/memfs/snapshot",0,1);
+                   sprintf(outptstr,"From %s : Capturing VideoInput Snapshot without a timestamp in the filename (%s -> snapshot.ppm) \n",from , SNAPSHOT_PATH);
+                   RecordOne(SNAPSHOT_PATH,0,1);
                  } else
                  {
                    sprintf(outptstr,"From %s : Capturing VideoInput Snapshot (param , %u)\n",from,cmdi_1);
-                   RecordOne((char *)"../robot/memfs/snapshot",1,1);
+                   RecordOne(SNAPSHOT_PATH,1,1);
                    //SnapshotWithTimeStamp();
                  }
      break;
      case CMD_PLAYBACK_SNAPSHOT :
-                 IssueCommandInternal((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",from,outptstr,output_length); /*Internal message to stop recording of Streams*/
+                   IssueCommandInternal((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",from,outptstr,output_length); /*Internal message to stop recording of Streams*/
 
-                 sprintf(outptstr,"From %s : PlayingBack VideoInput Snapshot \n",from);
-                 Play((char *)"../robot/memfs/snapshot");
+                   sprintf(outptstr,"From %s : PlayingBack VideoInput Snapshot \n",from);
+                   Play(SNAPSHOT_PATH);
      break;
      case CMD_PLAYBACK_LIVE :
                  IssueCommandInternal((char *) "TOGGLE AUTO RECORD SNAPSHOTS(0)",from,outptstr,output_length); /*Internal message to stop recording of Streams*/

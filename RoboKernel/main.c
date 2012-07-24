@@ -230,8 +230,12 @@ void * KernelLoop(void *ptr )
 int StopRoboKernel()
 {
 
+    char filename[512]={0};
+    strcpy(filename,"echo \" \" > ");
+    strcat(filename,CONSOLE_OUT_PATH);
+
     fprintf(stderr,"NOTE : Flushing consoleout.dat to prevent it from beeing refreshed over and over on github.. :P\n");
-    int i = system((const char *) "echo " " > robot/memfs/www/consoleout.dat");
+    int i = system(filename);
     if ( i!=0 ) { fprintf(stderr,"It failed.. well , no big deal \n"); }
 
   go_to_sleep=1;

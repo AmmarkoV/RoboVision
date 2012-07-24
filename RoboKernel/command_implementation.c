@@ -89,13 +89,14 @@ int RecordSound(char * sndname, unsigned int delay)
      return 666;
    }
 
-     char command_s[1024]={0};
+
+    char command_s[1024]={0};
     if ( delay != 0 )
      {
-         sprintf(command_s,"%s -d %u %s ../robot/memfs/public_html/%s.ogg&",sound_record_command,delay,sound_record_parameter,sndname);
+       sprintf(command_s,"%s -d %u %s %s%s.ogg&",sound_record_command,delay,sound_record_parameter,WEB_SERVER_ROOT,sndname);
      } else
      {
-         sprintf(command_s,"%s %s ../robot/memfs/public_html/%s.ogg&",sound_record_command,sound_record_parameter,sndname);
+         sprintf(command_s,"%s %s %s%s.ogg&",sound_record_command,sound_record_parameter,WEB_SERVER_ROOT,sndname);
      }
 
     fprintf(stderr," %s \n ",command_s);

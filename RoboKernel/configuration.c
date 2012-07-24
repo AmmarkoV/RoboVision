@@ -27,7 +27,7 @@ char gsm_modem_name[MAX_STR]="ZTE,Incorporated ZTE WCDMA Technologies MSM P673M2
 
 char user[MAX_STR]="guarddog";
 char group[MAX_STR]="guarddog";
-char parentdir[MAX_STR]="/home/guarddog/RoboVisionRuntime/";
+//char parentdir[MAX_STR]="/home/guarddog/RoboVisionRuntime/";
 
 char sound_play_command[MAX_STR]="paplay";
 
@@ -42,6 +42,24 @@ char tts_command_parameter[MAX_STR]="--tts";
 unsigned int IRC_Interface_Enabled=0;
 
 
+
+
+char ENVDIR[MAX_STR]="../robot/";
+char INITIALIZATION_CONFIGURATION_PATH[MAX_STR]="../robot/guard.ini";
+char SNAPSHOT_PATH[MAX_STR]="../robot/permfs/Snapshots/snapshot";
+char WEB_SERVER_ROOT[MAX_STR]="../robot/memfs/www";
+char CONSOLE_OUT_PATH[MAX_STR]="../robot/memfs/www/consoleout.dat";
+
+char SMS_SEND_PATH[MAX_STR]="../robot/permfs/SMSSend/message";
+char SMS_RECEIVE_PATH[MAX_STR]="../robot/permfs/SMSReceive/Received";
+
+
+char CLIPART_PATH[MAX_STR]="../robot/permfs/Clipart/";
+
+
+
+
+
 double camera_params_1[12]={0};
 double camera_params_2[12]={0};
 
@@ -52,6 +70,38 @@ unsigned int web_interface_snaptime=3000;
 unsigned int motion_lock_on=0;
 unsigned int swap_inputs=0;
 
+
+
+char FileExistsConf(char * filename)
+{
+ FILE *fp = fopen(filename,"r");
+ if( fp ) { /* exists */
+            fclose(fp);
+            return 1;
+          }
+          else
+          { /* doesnt exist */ }
+ return 0;
+}
+
+int quickcat(char * outfilename,char *infilename1,char * infilename2)
+{
+  strcpy(outfilename,infilename1);
+  strcat(outfilename,infilename2);
+  return 1;
+}
+
+int find_environment_robot_directory(char * filename)
+{
+   if (filename==0) { fprintf(stderr,"find_environment_robot_directory called with empty string.. \n"); return 0; }
+   if (FileExistsConf("/robot/guard.ini"))   { strcpy(filename,"/robot/"); }   else
+   if (FileExistsConf("../robot/guard.ini")) { strcpy(filename,"../robot/"); } else
+                                             { filename[0]=0; filename[1]=0; }
+
+   fprintf(stderr,"Setting Environment directory to : %s \n",filename);
+
+   return (filename[0]!=0);
+}
 
 
 int filename_stripper_found_attack(char * filename)
@@ -117,7 +167,7 @@ int Str2Int(char * inpt)
       startdigit=1;
     }
 
-  int error_flag=0;
+  //int error_flag=0;
   int i;
   for (i=strlen(inpt)-1; i>=startdigit; i--)
     {
@@ -129,7 +179,7 @@ int Str2Int(char * inpt)
         }
       else
         {
-          error_flag=1;
+          //error_flag=1;
         }
     }
 
@@ -137,6 +187,8 @@ int Str2Int(char * inpt)
     {
       intresult = intresult * (-1);
     }
+
+  //if (error_flag) { return -1; }
   return intresult;
 }
 
@@ -420,8 +472,15 @@ void LoadConfiguration()
 {
   char line[MAX_LINE_SIZE];
 
+  if ( !find_environment_robot_directory(ENVDIR) )
+     {
+        fprintf(stderr,"ERROR : Could not find a robot/ directory so stopping load configuration , many things will fail..\n");
+        return;
+     }
+
+
   FILE * pFile;
-  pFile = fopen ("../robot/guard.ini","r");
+  pFile = fopen (INITIALIZATION_CONFIGURATION_PATH ,"r");
   if (pFile!=0 )
     {
       int line_length=0;

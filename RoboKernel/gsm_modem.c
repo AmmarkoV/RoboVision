@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../InputParser/InputParser_C.h"
+#include "configuration.h"
 /*
 
 IN ORDER FOR A SIMPLER APPROACH , AND NOT
@@ -38,7 +39,7 @@ int StopGSMModem()
 int SendSMS(char * number,char * sms_message)
 {
   FILE * pFile;
-  pFile = fopen ("../robot/permfs/SMSSend/message","w");
+  pFile = fopen (SMS_SEND_PATH,"w");
   if (pFile!=0)
   {
     fprintf (pFile,"%s\n",number);
@@ -100,14 +101,20 @@ int ParseReceivedSMS(char * line)
 
 int FlushReceivedSMS()
 {
-   return system("> ../robot/permfs/SMSReceive/Received");
+   char filename[512]={0};
+   strcpy(filename,"> ");
+   strcat(filename,SMS_RECEIVE_PATH);
+   fprintf(stderr,"FlushReceivedSMS running %s \n",filename);
+
+   return system(filename);
 }
 
 
 int ReceiveSMS(char * number,unsigned int number_size,char * sms_message,int sms_message_size)
 {
   FILE * pFile=0;
-  pFile = fopen ("../robot/permfs/SMSReceive/Received","r");
+
+  pFile = fopen (SMS_RECEIVE_PATH,"r");
   if (pFile!=0)
    {
      int c=0;

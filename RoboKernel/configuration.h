@@ -13,7 +13,7 @@ extern char rd01_device[MAX_STR];
 extern char arduino_device[MAX_STR];
 extern char user[MAX_STR];
 extern char group[MAX_STR];
-extern char parentdir[MAX_STR];
+
 extern double camera_params_1[12];
 extern double camera_params_2[12];
 
@@ -23,6 +23,13 @@ extern char sound_play_command[MAX_STR];
 
 extern char sound_record_command[MAX_STR];
 extern char sound_record_parameter[MAX_STR];
+
+extern char ENVDIR[MAX_STR];
+extern char SNAPSHOT_PATH[MAX_STR];
+extern char WEB_SERVER_ROOT[MAX_STR];
+extern char CONSOLE_OUT_PATH[MAX_STR];
+extern char SMS_SEND_PATH[MAX_STR];
+extern char SMS_RECEIVE_PATH[MAX_STR];
 
 
 extern char tts_app[MAX_STR];
