@@ -1,12 +1,12 @@
 <VirtualHost *:80>
 	ServerAdmin webmaster@guarddog
 
-	DocumentRoot /home/guarddog/RoboVision/RoboVisionRuntime/memfs/public_html
+	DocumentRoot /robot/memfs/www
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
 	</Directory>
-	<Directory /home/guarddog/RoboVision/RoboVisionRuntime/memfs/public_html>
+	<Directory /robot/memfs/www>
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
 		Order allow,deny

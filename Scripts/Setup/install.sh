@@ -48,6 +48,38 @@ sudo mkdir /robot/
 sudo cp -rf robot/* /robot/
 sudo Scripts/Setup/AddToFstab_RobotDir.sh 
 
+  if [ -d /etc/httpd/conf ]
+  then
+    echo "Found an Apache installation , adding GuarddoG webinterface"
+   sudo mkdir /etc/httpd/conf/vhosts
+   sudo ln -s /robot/permfs/ConfigurationFilesTemplate/guarddog_webinterface_apache.conf /etc/httpd/conf/vhosts/guarddog.conf
+   #add new vhost to /etc/httpd/conf/httpd.conf
+   if cat /etc/httpd/conf/httpd.conf | grep -q "Include conf/vhosts/guarddog.conf"
+     then
+       echo "GuarddoG seems to have been added to apache!"  
+    else
+      echo "GuarddoG doenst seem to exist in apache configuration!" 
+      sudo sh -c 'echo "#GuarddoG Vhost:" >>/etc/httpd/conf/httpd.conf' 
+      sudo sh -c 'echo "Include conf/vhosts/guarddog.conf" >>/etc/httpd/conf/httpd.conf'  
+   fi
+   
+  if [ -e /srv/http/index.html ]
+  then
+    echo "There seems to already be a static page on /srv/http/index.html , skipping copy"
+  else
+    echo "Copying Static web page..!"
+    sudo cp /robot/permfs/www/guarddog.jpg  /srv/http/guarddog.jpg
+    sudo cp /robot/permfs/www/StaticPlaceholderPage.html  /srv/http/index.html
+   fi
+  
+   sudo rc.d restart httpd
+  else
+    echo "Could not find an apache installation" 
+  fi
+
+
+
+
 #sudo chmod 744  /robot/*   
 
 exit 0
