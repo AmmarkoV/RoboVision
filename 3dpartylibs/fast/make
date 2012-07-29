@@ -3,8 +3,7 @@ echo "FAST Feature Detection / Provides libFast.a / Author : Edward Rosten http:
 
 if [ -e  libFast.a ]
 then
-  echo "libFast  seems to exist .."
-  echo "Skipping make operation , since this file rearly changes..! "
+   echo "libFast  seems to exist ..  Skipping make operation , since this file rarely changes..! "
  cd ..
  exit 0
 fi

@@ -187,30 +187,30 @@ int main(int argc, char *argv[])
     printf("RoboVisionStarter kickstarted..!\n");
 
 
-    if ( argc <1 )   { fprintf(stderr,"Something weird is happening , argument zero should be executable path :S \n"); return 1; } else
-    if ( argc == 1 ) { fprintf(stderr,"Usage robovisionstarter start|stop \n"); } else
-                     {
+    int start=0;
 
-                       LoadConfiguration();
-                       int start=0;
-                       int stop=0;
-                       int no_cli_input=1;
-                       int window=0;
+    if ( argc <1 )   { fprintf(stderr,"Something weird is happening , argument zero should be executable path :S \n"); return 1; }
+    if ( argc == 1 ) { fprintf(stderr,"Usage robovisionstarter start|stop , but assuming you called for start \n"); start=1;}
+
+    LoadConfiguration();
+    int stop=0;
+    int no_cli_input=1;
+    int window=0;
 
 
                        int i=0;
                        for (i=0; i<argc; i++)
                        {
                           if (strcmp(argv[i],"start")==0) { start=1; } else
-                          if (strcmp(argv[i],"stop")==0)  { stop=1;  } else
+                          if (strcmp(argv[i],"stop")==0)  { stop=1; start=0;  } else
                           if (strcmp(argv[i],"cliinput")==0) { no_cli_input=0;  } else
                           if (strcmp(argv[i],"window")==0)  { window=1;  }
                        }
 
 
-                       if (start) { start_guarddog(no_cli_input,window); } else
-                       if (stop)  { stop_guarddog(); }
+    if (start) { start_guarddog(no_cli_input,window); } else
+    if (stop)  { stop_guarddog(); }
 
-                     }
+
     return 0;
 }

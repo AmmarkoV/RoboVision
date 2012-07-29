@@ -4,8 +4,7 @@ echo "Author: Andreas Geiger"
 
 if [ -e build/elas ]
 then
-  echo "libELAS Executable seems to exist .."
-  echo "Skipping make operation..! "
+  echo "libELAS Executable seems to exist ..  Skipping make operation , since this file rarely changes..! " 
  cd ..
  exit 0
 fi
