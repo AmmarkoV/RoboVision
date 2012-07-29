@@ -142,34 +142,7 @@ fi
 #         ------------------------------------------------------------------------------------------------------------------------------------
 #
 
-
-if [ -e RoboVisionX/robovisionx ]
-then
-  echo "RoboVisionX Executable is OK .."
-  notify-send "RoboVisionX Executable is OK .."
-else
-  echo "RoboVisionX Executable FAILED !!!!!!!!!!"
-  notify-send "RoboVisionX Executable FAILED !!!!!!!!!!"
-fi
-
-if [ -e RoboVisionCLI/robovision ]
-then
-  echo "RoboVisionCLI Executable is OK .."
-  notify-send "RoboVisionCLI Executable is OK .."
-else
-  echo "RoboVisionCLI Executable FAILED !!!!!!!!!!"
-  notify-send "RoboVisionCLI Executable FAILED !!!!!!!!!!"
-fi
-
-if [ -e RoboVisionStarter/robovisionstarter ]
-then
-  echo "RoboVisionStarter Executable is OK .."
-  notify-send "RoboVisionStarter Executable is OK .."
-else
-  echo "RoboVisionStarter Executable FAILED !!!!!!!!!!"
-  notify-send "RoboVisionStarter Executable FAILED !!!!!!!!!!"
-fi
-
+Scripts/Setup/update_install.sh
 
 notify-send "GuarddoG compilation script has now finished.."
 echo "Done.."
