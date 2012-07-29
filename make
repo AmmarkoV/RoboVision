@@ -125,6 +125,24 @@ else
   echo "Error : Could not find RoboVisionX executable directory" 
 fi
 
+
+if [ -d "RoboVisionStarter" ]; then
+echo "Compiling RoboVision Starter App.."
+cd RoboVisionStarter
+./make
+cd ..
+else
+  echo "Error : Could not find RoboVisionX executable directory" 
+fi
+
+
+#
+#         ------------------------------------------------------------------------------------------------------------------------------------
+#           A FINAL CHECK ON THE BINARIES TO SEE THAT COMPILATION WAS A SUCCESS
+#         ------------------------------------------------------------------------------------------------------------------------------------
+#
+
+
 if [ -e RoboVisionX/robovisionx ]
 then
   echo "RoboVisionX Executable is OK .."
@@ -141,6 +159,15 @@ then
 else
   echo "RoboVisionCLI Executable FAILED !!!!!!!!!!"
   notify-send "RoboVisionCLI Executable FAILED !!!!!!!!!!"
+fi
+
+if [ -e RoboVisionStarter/robovisionstarter ]
+then
+  echo "RoboVisionStarter Executable is OK .."
+  notify-send "RoboVisionStarter Executable is OK .."
+else
+  echo "RoboVisionStarter Executable FAILED !!!!!!!!!!"
+  notify-send "RoboVisionStarter Executable FAILED !!!!!!!!!!"
 fi
 
 

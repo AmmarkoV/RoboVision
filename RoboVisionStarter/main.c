@@ -14,6 +14,9 @@ char V4L1_CONVERT_SO[MAX_LINE_SIZE]="/usr/lib32/libv4l/v4l2convert.so";
 
 int v4l2_compat = 0;
 int v4l1_compat = 0;
+int setup_wifi_ap = 0;
+int setup_wifi_client = 0;
+
 
 
 char FileExists(char * filename)
