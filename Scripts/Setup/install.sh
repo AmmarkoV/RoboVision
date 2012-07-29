@@ -1,5 +1,16 @@
 #!/bin/bash
 
+BINPATH="RoboVisionStarter"
+BINARY="robovisionstarter"
+  if [ -e $BINPATH/$BINARY ]
+  then
+    echo "$BINARY App is OK :) , including it to system binaries .."
+    sudo cp $BINPATH/$BINARY /usr/bin/$BINARY 
+  else
+    echo "$BINARY App could not be installed , you probably got a library missing"
+    exit 1
+  fi
+
 BINPATH="RoboVisionCLI"
 BINARY="robovision"
   if [ -e $BINPATH/$BINARY ]
@@ -34,6 +45,8 @@ BINARY="guarddog"
     exit 1
   fi
 
+
+echo Please add robovisionstarter to /etc/rc.conf DAEMONS 
 
 echo "Would you like to create a tmpfs and move files in  /robot/ ( and /robot/memfs directory ) ?!"
 echo

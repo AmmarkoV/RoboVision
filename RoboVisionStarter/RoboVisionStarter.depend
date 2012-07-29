@@ -1,5 +1,6 @@
 # depslib dependency file v1.0
-1343384845 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionStarter/main.c
+1343601923 source:/home/ammar/Documents/Programming/RoboVision/RoboVisionStarter/main.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
 

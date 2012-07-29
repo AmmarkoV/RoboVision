@@ -487,7 +487,7 @@ void LoadConfiguration()
 {
   char line[MAX_LINE_SIZE];
 
-  if ( !find_environment_robot_directory(ENVDIR) )
+  if ( !find_environment_robot_directory() )
      {
         fprintf(stderr,"ERROR : Could not find a robot/ directory so stopping load configuration , many things will fail..\n");
         return;
