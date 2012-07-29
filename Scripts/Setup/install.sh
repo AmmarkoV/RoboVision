@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Installing GuarddoG into system"
+sudo echo " "
+
 BINPATH="RoboVisionStarter"
 BINARY="robovisionstarter"
   if [ -e $BINPATH/$BINARY ]

@@ -45,19 +45,19 @@ unsigned int IRC_Interface_Enabled=0;
 
 
 char ENVDIR[MAX_STR]="../robot/";
-char INITIALIZATION_CONFIGURATION_PATH[MAX_STR]="../robot/guard.ini";
-char SNAPSHOT_PATH[MAX_STR]="../robot/permfs/Snapshots/snapshot";
-char WEB_SERVER_ROOT[MAX_STR]="../robot/memfs/www/";
-char CONSOLE_OUT_PATH[MAX_STR]="../robot/memfs/www/consoleout.dat";
-char COMMANDS_PATH[MAX_STR]="../robot/memfs/www/commands.dat";
-char VIEWERS_PATH[MAX_STR]="../robot/memfs/www/viewers.dat";
-char SENSORS_PATH[MAX_STR]="../robot/memfs/www/sensors.dat";
+char INITIALIZATION_CONFIGURATION_PATH[MAX_STR]="/robot/guard.ini";
+char SNAPSHOT_PATH[MAX_STR]="/robot/permfs/Snapshots/snapshot";
+char WEB_SERVER_ROOT[MAX_STR]="/robot/memfs/www/";
+char CONSOLE_OUT_PATH[MAX_STR]="/robot/memfs/www/consoleout.dat";
+char COMMANDS_PATH[MAX_STR]="/robot/memfs/www/commands.dat";
+char VIEWERS_PATH[MAX_STR]="/robot/memfs/www/viewers.dat";
+char SENSORS_PATH[MAX_STR]="/robot/memfs/www/sensors.dat";
 
-char SMS_SEND_PATH[MAX_STR]="../robot/permfs/SMSSend/message";
-char SMS_RECEIVE_PATH[MAX_STR]="../robot/permfs/SMSReceive/Received";
+char SMS_SEND_PATH[MAX_STR]="/robot/permfs/SMSSend/message";
+char SMS_RECEIVE_PATH[MAX_STR]="/robot/permfs/SMSReceive/Received";
 
 
-char CLIPART_PATH[MAX_STR]="../robot/permfs/Clipart/";
+char CLIPART_PATH[MAX_STR]="/robot/permfs/Clipart/";
 
 
 

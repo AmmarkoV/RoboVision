@@ -6,8 +6,8 @@
 #define MAX_LINE_SIZE 2048
 #define MAX_STR 512
 
-char ENVDIR[MAX_STR]="../robot/";
-char INITIALIZATION_CONFIGURATION_PATH[MAX_STR]="../robot/guard.ini";
+char ENVDIR[MAX_STR]="/robot/";
+char INITIALIZATION_CONFIGURATION_PATH[MAX_STR]="/robot/guard.ini";
 char V4L2_CONVERT_SO[MAX_LINE_SIZE]="/usr/lib32/libv4l/v4l2convert.so";
 char V4L1_CONVERT_SO[MAX_LINE_SIZE]="/usr/lib32/libv4l/v4l2convert.so";
 
