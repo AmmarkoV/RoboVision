@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include <jpeglib.h>
 #include <stdlib.h>
+#include <string.h>
+#include <jpeglib.h>
 #include "image_storage.h"
 #include "image_storage_jpg.h"
 
@@ -11,7 +12,6 @@ unsigned char *raw_image = NULL;
 int JPEGwidth = 1600;
 int JPEGheight = 1200;
 int JPEGbytes_per_pixel = 3;   /* or 1 for GRACYSCALE images */
-int JPEGcolor_space = JCS_RGB; /* or JCS_GRAYSCALE for grayscale images */
 
 /**
  * read_jpeg_file Reads from a jpeg file on disk specified by filename and saves into the
@@ -48,6 +48,9 @@ int ReadJPEG( char *filename,struct Image * pic)
 	/* reading the image header which contains image information */
 	jpeg_read_header( &cinfo, TRUE );
 	/* Uncomment the following to output image information, if needed. */
+
+	pic->size_x=cinfo.image_width;
+	pic->size_y=cinfo.image_height;
 	/*--
 	printf( "JPEG File Information: \n" );
 	printf( "Image width and height: %d pixels and %d pixels.\n", cinfo.image_width, cinfo.image_height );
@@ -58,7 +61,7 @@ int ReadJPEG( char *filename,struct Image * pic)
 	jpeg_start_decompress( &cinfo );
 
 	/* allocate memory to hold the uncompressed image */
-	raw_image = (unsigned char*)malloc( cinfo.output_width*cinfo.output_height*cinfo.num_components );
+	unsigned char *raw_image = (unsigned char*)malloc( cinfo.output_width*cinfo.output_height*cinfo.num_components );
 	/* now actually read the jpeg into the raw buffer */
 	row_pointer[0] = (unsigned char *)malloc( cinfo.output_width*cinfo.num_components );
 	/* read one scan line at a time */
@@ -69,6 +72,10 @@ int ReadJPEG( char *filename,struct Image * pic)
 			raw_image[location++] = row_pointer[0][i];
 	}
 	/* wrap up decompression, destroy objects, free pointers and close open files */
+	strncpy(pic->pixels,(char *) raw_image,cinfo.output_width*cinfo.output_height*cinfo.num_components);
+	free(raw_image);
+	raw_image=0;
+
 	jpeg_finish_decompress( &cinfo );
 	jpeg_destroy_decompress( &cinfo );
 	free( row_pointer[0] );
@@ -109,6 +116,7 @@ int WriteJPEG( char *filename,struct Image * pic)
 	cinfo.image_width = pic->size_x;
 	cinfo.image_height = pic->size_y;
 	cinfo.input_components = 3;//pic.depth bytes_per_pixel;
+    int JPEGcolor_space = JCS_RGB; /* or JCS_GRAYSCALE for grayscale images */
 	cinfo.in_color_space = (J_COLOR_SPACE) JPEGcolor_space;
     /* default compression parameters, we shouldn't be worried about these */
 	jpeg_set_defaults( &cinfo );
