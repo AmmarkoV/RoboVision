@@ -24,6 +24,28 @@ rm main.o image_storage.o image_storage_png.o V4L2.o PrintV4L2.o PixelFormats.o 
 if [ -e libVideoInput.a ]
 then
   echo "Success.."
+
+      if [ -d VideoInputTester ]
+      then
+       cd VideoInputTester 
+       ./make
+       cd ..
+     fi
+
+      if [ -d VideoInputGUITester ]
+      then
+       cd VideoInputGUITester 
+       ./make
+       cd ..
+     fi
+
+      if [ -d VideoSnapShot ]
+      then
+       cd VideoSnapShot 
+       ./make
+       cd ..
+     fi 
+
 else
   echo "Failure.."
 fi

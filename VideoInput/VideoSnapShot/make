@@ -1,0 +1,3 @@
+#!/bin/bash
+g++ main.c ../libVideoInput.a -L. -pthread -lpng -ljpeg -lrt -o bin/Release/VideoSnapShot
+exit 0

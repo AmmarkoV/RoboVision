@@ -1,16 +1,17 @@
-#include "image_storage_jpg.h"
 #include <stdio.h>
 #include <jpeglib.h>
 #include <stdlib.h>
+#include "image_storage.h"
+#include "image_storage_jpg.h"
 
 /* we will be using this uninitialized pointer later to store raw, uncompressd image */
 unsigned char *raw_image = NULL;
 
 /* dimensions of the image we want to write */
-int width = 1600;
-int height = 1200;
-int bytes_per_pixel = 3;   /* or 1 for GRACYSCALE images */
-int color_space = JCS_RGB; /* or JCS_GRAYSCALE for grayscale images */
+int JPEGwidth = 1600;
+int JPEGheight = 1200;
+int JPEGbytes_per_pixel = 3;   /* or 1 for GRACYSCALE images */
+int JPEGcolor_space = JCS_RGB; /* or JCS_GRAYSCALE for grayscale images */
 
 /**
  * read_jpeg_file Reads from a jpeg file on disk specified by filename and saves into the
@@ -21,7 +22,7 @@ int color_space = JCS_RGB; /* or JCS_GRAYSCALE for grayscale images */
  *
  */
 
-int read_jpeg_file( char *filename )
+int ReadJPEG( char *filename,struct Image * pic)
 {
 	/* these are standard libjpeg structures for reading(decompression) */
 	struct jpeg_decompress_struct cinfo;
@@ -31,7 +32,7 @@ int read_jpeg_file( char *filename )
 
 	FILE *infile = fopen( filename, "rb" );
 	unsigned long location = 0;
-	int i = 0;
+	unsigned int i = 0;
 
 	if ( !infile )
 	{
@@ -85,7 +86,7 @@ int read_jpeg_file( char *filename )
  * \param *filename char string specifying the file name to save to
  *
  */
-int write_jpeg_file( char *filename )
+int WriteJPEG( char *filename,struct Image * pic)
 {
 	struct jpeg_compress_struct cinfo;
 	struct jpeg_error_mgr jerr;
@@ -97,17 +98,18 @@ int write_jpeg_file( char *filename )
 	if ( !outfile )
 	{
 		printf("Error opening output jpeg file %s\n!", filename );
-		return -1;
+		return 0;
 	}
 	cinfo.err = jpeg_std_error( &jerr );
 	jpeg_create_compress(&cinfo);
 	jpeg_stdio_dest(&cinfo, outfile);
 
 	/* Setting the parameters of the output file here */
-	cinfo.image_width = width;
-	cinfo.image_height = height;
-	cinfo.input_components = bytes_per_pixel;
-	cinfo.in_color_space = (J_COLOR_SPACE) color_space;
+	unsigned char * raw_image = (unsigned char * ) pic->pixels;
+	cinfo.image_width = pic->size_x;
+	cinfo.image_height = pic->size_y;
+	cinfo.input_components = 3;//pic.depth bytes_per_pixel;
+	cinfo.in_color_space = (J_COLOR_SPACE) JPEGcolor_space;
     /* default compression parameters, we shouldn't be worried about these */
 	jpeg_set_defaults( &cinfo );
 	/* Now do the compression .. */
@@ -128,13 +130,13 @@ int write_jpeg_file( char *filename )
 
 int jpegtest()
 {
-	char *infilename = "test.jpg", *outfilename = "test_out.jpg";
+	char *infilename = (char*) "test.jpg", *outfilename = (char*) "test_out.jpg";
 
 	/* Try opening a jpeg*/
-	if( read_jpeg_file( infilename ) > 0 )
+	if( ReadJPEG( infilename , 0 ) > 0 )
 	{
 		/* then copy it to another file */
-		if( write_jpeg_file( outfilename ) < 0 ) return -1;
+		if( WriteJPEG( outfilename ,0 ) < 0 ) return -1;
 	}
 	else return -1;
 	return 0;

@@ -2,7 +2,7 @@
 echo "Hand made make script for RoboVisionX binary .."
 echo "Should provide bin/Release/VideoInputGUITester " 
 echo "Compiling files.."
-g++ VideoInputGUITesterApp.cpp VideoInputGUITesterApp.h VideoInputGUITesterMain.cpp VideoInputGUITesterMain.h  ../libVideoInput.a `wx-config --libs` `wx-config --cxxflags` -L. -pthread -lpng -o bin/Release/VideoInputGUITester
+g++ VideoInputGUITesterApp.cpp VideoInputGUITesterApp.h VideoInputGUITesterMain.cpp VideoInputGUITesterMain.h  ../libVideoInput.a `wx-config --libs` `wx-config --cxxflags` -L. -pthread -lpng  -ljpeg -o bin/Release/VideoInputGUITester
 
 
 echo "Done.."

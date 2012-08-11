@@ -14,7 +14,7 @@ OURLIBRARIES="../RoboKernel/libRoboKernel.a ../VideoInput/libVideoInput.a ../Vis
 
 OPENCVSTUFF="`pkg-config --cflags --libs opencv`"
 
-LIBRARIES="-pthread -lgsl -lpng -lgslcblas -lm -lrt"
+LIBRARIES="-pthread -lgsl -lpng -ljpeg -lgslcblas -lm -lrt"
 
 g++ main.cpp $OURLIBRARIES $OPENCVSTUFF -L. $LIBRARIES -o $OUTPUT
 
