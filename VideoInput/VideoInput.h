@@ -110,7 +110,7 @@ int InitVideoInputs(int numofinputs);
 int CloseVideoInputs();
 
 int CloseVideoFeed( int inpt );
-int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,char snapshots_on,struct VideoFeedSettings videosettings);
+int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,int framespersecond,char snapshots_on,struct VideoFeedSettings videosettings);
 
 
 int ResetVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,char snapshots_on,struct VideoFeedSettings videosettings);
@@ -134,6 +134,7 @@ void CompressRecordWithImageMagick(int state);
 void Play(char * filename);
 void PlayOne(char * filename);
 void Record(char * filename,int timestamp_filename,int compress);
+void RecordOneInMem(char * filename,int timestamp_filename,int compress,char * mem,unsigned long * mem_size);
 void RecordOne(char * filename,int timestamp_filename,int compress);
 void Stop();
 unsigned int VideoSimulationState();

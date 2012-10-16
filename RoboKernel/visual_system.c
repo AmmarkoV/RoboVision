@@ -38,8 +38,8 @@ int InitVisualSystem()
     feedsettings.PixelFormat=V4L2_PIX_FMT_RGB24;
 
 
-    camerasok+=InitVideoFeed(0,video_device_1,acquire_width,acquire_height,24,1,feedsettings);
-    camerasok+=InitVideoFeed(1,video_device_2,acquire_width,acquire_height,24,1,feedsettings);
+    camerasok+=InitVideoFeed(0,video_device_1,acquire_width,acquire_height,24,25,1,feedsettings);
+    camerasok+=InitVideoFeed(1,video_device_2,acquire_width,acquire_height,24,25,1,feedsettings);
     usleep(200);
 
     if ( (camerasok==2) )

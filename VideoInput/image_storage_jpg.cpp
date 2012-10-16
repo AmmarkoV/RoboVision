@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <jpeglib.h>
+#include <stdlib.h>
 #include "image_storage.h"
 #include "image_storage_jpg.h"
 
@@ -21,6 +21,22 @@ int JPEGbytes_per_pixel = 3;   /* or 1 for GRACYSCALE images */
  * \param *filename char string specifying the file name to read from
  *
  */
+
+/* setup the buffer but we did that in the main function */
+void init_buffer(jpeg_compress_struct* cinfo) {}
+
+/* what to do when the buffer is full; this should almost never
+ * happen since we allocated our buffer to be big to start with
+ */
+int empty_buffer(jpeg_compress_struct* cinfo) {
+	return 1;
+}
+
+/* finalize the buffer and do any cleanup stuff */
+void term_buffer(jpeg_compress_struct* cinfo)
+{
+}
+
 
 int ReadJPEG( char *filename,struct Image * pic)
 {
@@ -93,25 +109,44 @@ int ReadJPEG( char *filename,struct Image * pic)
  * \param *filename char string specifying the file name to save to
  *
  */
-int WriteJPEG( char *filename,struct Image * pic)
+int WriteJPEG( char *filename,struct Image * pic,char *mem,unsigned long * mem_size)
 {
 	struct jpeg_compress_struct cinfo;
 	struct jpeg_error_mgr jerr;
+    struct jpeg_destination_mgr dmgr;
+    unsigned long initial_mem_size = *mem_size;
+
+    FILE *outfile =0;
 
 	/* this is a pointer to one row of image data */
 	JSAMPROW row_pointer[1];
-	FILE *outfile = fopen( filename, "wb" );
 
-	if ( !outfile )
-	{
-		printf("Error opening output jpeg file %s\n!", filename );
-		return 0;
-	}
 	cinfo.err = jpeg_std_error( &jerr );
 	jpeg_create_compress(&cinfo);
-	jpeg_stdio_dest(&cinfo, outfile);
 
 	/* Setting the parameters of the output file here */
+
+    if ( (mem!=0) && (mem_size!=0) )
+	 {
+	   //We want destination to be our buffer..!
+       dmgr.init_destination    = init_buffer;
+	   dmgr.empty_output_buffer = empty_buffer;
+	   dmgr.term_destination    = term_buffer;
+	   dmgr.next_output_byte    = (JOCTET*) mem;
+	   dmgr.free_in_buffer      = *mem_size;
+
+	   cinfo.dest = &dmgr;
+	 } else
+	 {
+	    outfile = fopen( filename, "wb" );
+        if ( !outfile )
+	     {
+	    	printf("Error opening output jpeg file %s\n!", filename );
+		    return 0;
+	     }
+	   jpeg_stdio_dest(&cinfo, outfile);
+	 }
+
 	unsigned char * raw_image = (unsigned char * ) pic->pixels;
 	cinfo.image_width = pic->size_x;
 	cinfo.image_height = pic->size_y;
@@ -120,18 +155,29 @@ int WriteJPEG( char *filename,struct Image * pic)
 	cinfo.in_color_space = (J_COLOR_SPACE) JPEGcolor_space;
     /* default compression parameters, we shouldn't be worried about these */
 	jpeg_set_defaults( &cinfo );
+	jpeg_set_quality (&cinfo, 75, true);
 	/* Now do the compression .. */
 	jpeg_start_compress( &cinfo, TRUE );
 	/* like reading a file, this time write one row at a time */
-	while( cinfo.next_scanline < cinfo.image_height )
-	{
+
+     while( cinfo.next_scanline < cinfo.image_height )
+	   {
 		row_pointer[0] = &raw_image[ cinfo.next_scanline * cinfo.image_width *  cinfo.input_components];
 		jpeg_write_scanlines( &cinfo, row_pointer, 1 );
-	}
-	/* similar to read file, clean up after we're done compressing */
-	jpeg_finish_compress( &cinfo );
-	jpeg_destroy_compress( &cinfo );
-	fclose( outfile );
+       }
+
+    jpeg_finish_compress( &cinfo );
+    jpeg_destroy_compress( &cinfo );
+
+	 if ( (mem!=0) && (mem_size!=0) )
+	 {
+	   //Write back the file size of the compressed image
+       *mem_size = initial_mem_size-cinfo.dest->free_in_buffer;
+	 } else
+	 {
+	   /* similar to read file, clean up after we're done compressing */
+	   fclose( outfile );
+	 }
 	/* success code is 1! */
 	return 1;
 }
@@ -144,7 +190,7 @@ int jpegtest()
 	if( ReadJPEG( infilename , 0 ) > 0 )
 	{
 		/* then copy it to another file */
-		if( WriteJPEG( outfilename ,0 ) < 0 ) return -1;
+		if( WriteJPEG( outfilename ,0 ,0,0 ) < 0 ) return -1;
 	}
 	else return -1;
 	return 0;

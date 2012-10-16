@@ -41,7 +41,7 @@ int main()
     feedsettings.PixelFormat=V4L2_PIX_FMT_RGB24; BITRATE=24;
 
     printf("Starting Video Feed\n");
-    if ( InitVideoFeed(0,(char *) "/dev/video0",320,240,BITRATE,1,feedsettings)==1  ) { printf(" .. done \n"); } else
+    if ( InitVideoFeed(0,(char *) "/dev/video0",320,240,BITRATE,25,1,feedsettings)==1  ) { printf(" .. done \n"); } else
                                                                                       { printf(" .. failed \n"); return 0; }
 
     unsigned int milliseconds=0;

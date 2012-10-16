@@ -58,7 +58,7 @@ int main()
 
     struct timespec feed_start,feed_end;
     clock_gettime(CLOCK_REALTIME,&feed_start);
-    if ( InitVideoFeed(0,(char *) "/dev/video0",320,240,BITRATE,SNAPSHOTS_ON,feedsettings)==1  ) { printf(" .. done \n"); } else
+    if ( InitVideoFeed(0,(char *) "/dev/video0",320,240,BITRATE,25,SNAPSHOTS_ON,feedsettings)==1  ) { printf(" .. done \n"); } else
                                                                                             { printf(" .. failed \n"); return 0; }
 
     printf("Waiting for loop to begin receiving video ");
@@ -146,6 +146,16 @@ int main()
     RecordOne((char*) "raw",0,0);
     sleep(1);
     printf("Done\n");
+
+   unsigned long pic_size=320*240*3;
+   char * pic = (char * ) malloc(sizeof(char) * pic_size);
+   if ( pic != 0 )
+   {
+      RecordOneInMem((char*) "raw",0,1,pic,&pic_size);
+      sleep(1);
+      printf("Done\n");
+      free(pic);
+  }
 
     printf ("I Will now try to emulate camera input using the written file called raw.ppm  ... ");
     Play((char*) "raw");

@@ -1,3 +1,27 @@
-#!/bin/bash
-g++ main.c ../libVideoInput.a -L. -pthread -lpng -ljpeg -lrt -o bin/Release/VideoInputTester
+#!/bin/bash 
+
+OUTPUT="bin/Release/VideoInputTester"
+
+if [ -e $OUTPUT ]
+then
+  rm $OUTPUT
+fi 
+
+CFLAGS="-s -O3 -fexpensive-optimizations" 
+OURLIBRARIES="../libVideoInput.a" 
+LIBRARIES="-pthread -lpng -ljpeg -lrt"
+
+g++  main.c -L. $OURLIBRARIES $LIBRARIES -o $OUTPUT
+
+
+if [ -e $OUTPUT ]
+then
+  echo "Success.."
+else
+  echo "Failure.."
+fi
+
 exit 0
+
+#g++ main.c ../libVideoInput.a -L. -pthread -lpng -ljpeg -lrt -o 
+#exit 0

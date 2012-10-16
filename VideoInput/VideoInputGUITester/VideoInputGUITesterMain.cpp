@@ -88,7 +88,7 @@ VideoInputGUITesterDialog::VideoInputGUITesterDialog(wxWindow* parent,wxWindowID
     //videosettings.PixelFormat=V4L2_PIX_FMT_YUYV; BITRATE=16; // <- Common compressed setting for UVC webcams
     videosettings.PixelFormat=V4L2_PIX_FMT_RGB24; BITRATE=24;   //   <- Common raw setting for UVC webcams ( Run Compat )
 
-    InitVideoFeed(0,(char *) "/dev/video0",320,240,BITRATE,1,videosettings);
+    InitVideoFeed(0,(char *) "/dev/video0",320,240,BITRATE,25,1,videosettings);
 }
 
 VideoInputGUITesterDialog::~VideoInputGUITesterDialog()

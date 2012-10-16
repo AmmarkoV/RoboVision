@@ -21,6 +21,32 @@ else
 fi
 
 
+
+  if [ -d AmmarServer ] 
+   then
+     echo "AmmarServer dir already exists.."
+     else
+     echo "Could not find AmmarServer , cloning a fresh copy from github!"
+     git clone git://github.com/AmmarkoV/AmmarServer.git
+   fi
+
+
+  if [ -e AmmarServer/make ] 
+   then
+     echo "Make bash script for AmmarServer is OK !"
+   
+     cd AmmarServer
+     ./make
+     cd ..
+
+   else
+     echo "The script was unable to find the VideoInput library or to automatically download it "
+     echo "Please try installing git ( sudo apt-get install git ) or unzipping manually a recent version of VideoInput"
+     echo "https://github.com/AmmarkoV/VideoInput   or http://ammar.gr"
+     exit 1  
+fi
+
+
 if [ -d "VideoInput" ]; then
 echo "Compiling VideoInput.."
 notify-send "Compiling VideoInput.."

@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/bin/bash
 echo "Hand made make script for RoboVisionX binary .."
 echo "Should provide bin/Release/VideoInputGUITester " 
 echo "Compiling files.."

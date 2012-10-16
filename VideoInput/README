@@ -2,10 +2,12 @@
 http://github.com/AmmarkoV/VideoInput/
 
 This is a V4L2 C/C++ library! 
-It also has a Tester app in the VideoInputTester dir
+It also has a Console Tester app in the VideoInputTester dir
+and a GUI (wxWidgets) for testing the application in VideoInputGUITester
 You can easily compile the project using Code::Blocks and openning the .cbp 
+ 
+Libraries used are libpng , libjpeg , pthreads and wxWidgets as the IDE
 
-The binaries libVideoInput.a and VideoInputTester/bin/Debug/VideoInputTester are compiled for x64 architecture ( you can check it using "file libVideoInput.a" from your terminal )
-Will add more to the readme file and the main lib to fix compatibility with V4L ( not only V4L2 devices )
+to make all the components just type ./make from the root directory of the project..! 
 
-Ammar Qammaz - 2010
+Ammar Qammaz - 2010-2012

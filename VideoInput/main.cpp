@@ -40,7 +40,7 @@
 #define NO_VIDEO_AVAILIABLE 6
 
 
-char * VIDEOINPT_VERSION=(char *) "0.247 RGB24/YUYV compatible";
+char * VIDEOINPT_VERSION=(char *) "0.248 RGB24/YUYV compatible";
 int do_not_return_zero_pointers=1;
 int increase_priority=0;
 
@@ -77,6 +77,8 @@ struct Video
   int video_simulation;
   int keep_timestamp;
   int compress;
+  char * mem_buffer_for_recording;
+  unsigned long * mem_buffer_for_recording_size;
 
   /* THREADING DATA */
   int thread_alive_flag;
@@ -277,7 +279,7 @@ int CloseVideoFeed( int inpt )
 }
 
 
-int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,char snapshots_on,struct VideoFeedSettings videosettings)
+int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,int framespersecond,char snapshots_on,struct VideoFeedSettings videosettings)
 {
    camera_feeds[inpt].video_simulation=NO_VIDEO_AVAILIABLE;
    printf("Initializing Video Feed %u ( %s ) @ %u/%u \n",inpt,viddev,width,height);
@@ -369,7 +371,7 @@ int InitVideoFeed(int inpt,char * viddev,int width,int height,int bitdepth,char 
     camera_feeds[inpt].stop_snap_loop=0;
     camera_feeds[inpt].loop_thread=0;
 
-    ChooseDifferentSoftFramerate(inpt,25); // Go for a good old solid PAL 25 fps , ( the PS3 cameras may be snapping at 120fps , but VisualCortex without
+    ChooseDifferentSoftFramerate(inpt,framespersecond); // Go for a good old solid PAL 25 fps , ( the PS3 cameras may be snapping at 120fps , but VisualCortex without
                                            // hardware acceleration can`t go more than 6-8 fps )
 
     struct ThreadPassParam param={0};
@@ -636,7 +638,7 @@ void RecordInLoop(int feed_num)
      char last_part[7]="0.jpg";
      last_part[0]='0'+feed_num;
      strcat(store_path,last_part);
-     WriteJPEG(store_path,&camera_feeds[feed_num].rec_video);
+     WriteJPEG(store_path,&camera_feeds[feed_num].rec_video,camera_feeds[feed_num].mem_buffer_for_recording,camera_feeds[feed_num].mem_buffer_for_recording_size);
     }
 /*    else
     {
@@ -776,7 +778,8 @@ void Record(char * filename,int timestamp_filename,int compress)
     strcpy(video_simulation_path,filename);
 }
 
-void RecordOne(char * filename,int timestamp_filename,int compress)
+
+void RecordOneInMem(char * filename,int timestamp_filename,int compress,char * mem,unsigned long * mem_size)
 {
   if (!VideoInputsOk()) return;
 
@@ -789,9 +792,18 @@ void RecordOne(char * filename,int timestamp_filename,int compress)
           camera_feeds[i].video_simulation = RECORDING_ONE_ON;
           camera_feeds[i].keep_timestamp = timestamp_filename;
           camera_feeds[i].compress = compress;
+          camera_feeds[i].mem_buffer_for_recording=mem;
+          camera_feeds[i].mem_buffer_for_recording_size=mem_size;
+
         UnpauseFeed(i);
       }
     strcpy(video_simulation_path,filename);
+}
+
+
+void RecordOne(char * filename,int timestamp_filename,int compress)
+{
+   return RecordOneInMem(filename,timestamp_filename,compress,0,0);
 }
 
 void Stop()
