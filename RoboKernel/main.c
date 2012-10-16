@@ -67,7 +67,8 @@ void InitSenses()
 
    InitMotorSystem();
    InitVisualSystem();
-   OpenWebInterface();
+   OpenWebInterface(); //<- this will get discontinued..!
+   StartEmbeddedWebInterface();
    StartIRCInterface();
 
    StartJoystickControl();
@@ -84,7 +85,8 @@ void CloseSenses()
 
 
    StopIRCInterface();
-   CloseWebInterface();
+   StopEmbeddedWebInterface();
+   CloseWebInterface();  //<- this will get discontinued..!
    CloseMotorSystem();
    CloseVisualSystem();
 

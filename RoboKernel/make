@@ -9,6 +9,7 @@ fi
 gcc -c main.c -o main.o
 gcc -c configuration.c -o configuration.o
 gcc -c webinterface.c -o webinterface.o
+gcc -c embedded_webinterface.c -o embedded_webinterface.o
 gcc -c irc_interface.c -o irc_interface.o
 gcc -c visual_system.c -o visual_system.o
 gcc -c motor_system.c -o motor_system.o 
@@ -20,7 +21,7 @@ gcc -c gsm_modem.c -o gsm_modem.o
 gcc -c activity_coordination.c -o activity_coordination.o 
 gcc -c script_runner.c -o script_runner.o 
 
-ar  rcs libRoboKernel.a main.o configuration.o webinterface.o irc_interface.o visual_system.o motor_system.o mapping_system.o joystick.o command_hal.o command_implementation.o gsm_modem.o activity_coordination.o script_runner.o
+ar  rcs libRoboKernel.a main.o configuration.o webinterface.o embedded_webinterface.o irc_interface.o visual_system.o motor_system.o mapping_system.o joystick.o command_hal.o command_implementation.o gsm_modem.o activity_coordination.o script_runner.o
 
 rm main.o configuration.o webinterface.o irc_interface.o visual_system.o motor_system.o mapping_system.o joystick.o command_hal.o command_implementation.o gsm_modem.o activity_coordination.o script_runner.o
 

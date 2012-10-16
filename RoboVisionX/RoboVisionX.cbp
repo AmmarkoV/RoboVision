@@ -44,6 +44,7 @@
 			<Add option="../RoboKernel/libRoboKernel.a" />
 			<Add option="../VideoInput/libVideoInput.a" />
 			<Add option="../VisualCortex/libVisualCortex.a" />
+			<Add option="../AmmarServer/src/AmmServerlib/libAmmServerlib.a" />
 			<Add option="../InputParser/libInputParser_C.a" />
 			<Add option="../MotorFoundation/libMotorHAL.a" />
 			<Add option="../MotorFoundation/MD23/libMD23.a" />

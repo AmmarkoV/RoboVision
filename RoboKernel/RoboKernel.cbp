@@ -60,6 +60,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="configuration.h" />
+		<Unit filename="embedded_webinterface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="embedded_webinterface.h" />
 		<Unit filename="gsm_modem.c">
 			<Option compilerVar="CC" />
 		</Unit>
