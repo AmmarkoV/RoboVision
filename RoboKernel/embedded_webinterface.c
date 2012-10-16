@@ -66,6 +66,9 @@ void close_dynamic_content()
 
 int StartEmbeddedWebInterface()
 {
+    printf("Ammar Server binding is currently disabled..\n");
+    return 0;
+
     printf("Ammar Server starting up\n");
 
    //Kick start AmmarServer , bind the ports , create the threads and get things going..!
@@ -84,6 +87,8 @@ int EmbeddedWebInterfaceRunning()
 
 int StopEmbeddedWebInterface()
 {
+    printf("Ammar Server binding is currently disabled..\n");
+    return 0;
     //Delete dynamic content allocations and remove stats.html and formtest.html from the server
     close_dynamic_content();
 

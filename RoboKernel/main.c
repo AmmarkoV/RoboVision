@@ -83,7 +83,6 @@ void CloseSenses()
    StopScriptRunnerServer();
    StopJoystickControl();
 
-
    StopIRCInterface();
    StopEmbeddedWebInterface();
    CloseWebInterface();  //<- this will get discontinued..!
