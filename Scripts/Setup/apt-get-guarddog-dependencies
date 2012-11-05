@@ -14,7 +14,9 @@ echo "Starting downloads "
 echo "What is basically needed is GCC and libs , WxWidgets , LibV4L development headers , OpenAL , OpenGL/GLUT , Festival (TTS) , OpenCV "
 
 
-sudo apt-get install build-essential cmake libv4l-dev festival wx-common g++ libwxgtk2.8-0 libwxgtk2.8-dev libalut0 libalut-dev freeglut3 freeglut3-dev libxxf86vm-dev libcv-dev libcvaux-dev libhighgui-dev opencv-doc imagemagick libusb-dev libusb-1.0-0-dev libgsl0-dev wget imagemagick libxmu-dev libxi-dev guvcview libxxf86vm-dev sysv-rc-conf libportaudio-dev vorbis-tools gsm-utils fortune pocketsphinx-utils pocketsphinx-hmm-wsj1 pocketsphinx-hmm-tidigits pocketsphinx-lm-wsj gnuplot
+sudo apt-get install build-essential cmake pkg-config libv4l-dev festival wx-common g++ libwxgtk2.8-0 libwxgtk2.8-dev libalut0 libalut-dev freeglut3 freeglut3-dev libxxf86vm-dev libopencv-dev libcv-dev libcvaux-dev libhighgui-dev opencv-doc imagemagick libusb-dev libusb-1.0-0-dev libgsl0-dev wget imagemagick libxmu-dev libxi-dev guvcview libxxf86vm-dev sysv-rc-conf libportaudio-dev vorbis-tools gsm-utils fortune gnuplot
+
+#pocketsphinx-utils pocketsphinx-hmm-wsj1 pocketsphinx-hmm-tidigits pocketsphinx-lm-wsj  <- These dont seem to exist any more..
 
 #For Gnome messages while compiling libnotify-bin
 

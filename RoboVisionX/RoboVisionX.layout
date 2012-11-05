@@ -19,10 +19,10 @@
 	<File name="FramesOSD.h" open="1" top="0" tabpos="13">
 		<Cursor position="475" topLine="0" />
 	</File>
-	<File name="MapOverview.cpp" open="1" top="1" tabpos="14">
+	<File name="MapOverview.cpp" open="1" top="0" tabpos="14">
 		<Cursor position="13280" topLine="367" />
 	</File>
-	<File name="MapOverview.h" open="1" top="0" tabpos="15">
+	<File name="MapOverview.h" open="1" top="1" tabpos="15">
 		<Cursor position="1386" topLine="22" />
 	</File>
 	<File name="RememberImage.cpp" open="1" top="0" tabpos="8">

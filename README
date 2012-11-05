@@ -24,9 +24,9 @@ Once you download the project ..
 
 To automatically resolve the dependencies of the project run .Scripts/Setup/apt-get-guarddog-dependencies if you have a Debian/Ubuntu based distro ( package names may vary from version to version  , but I try to update them to the last possible version ) , or using .Scripts/Setup/pacman-guarddog-dependencies for Arch and pacman based distros.. 
 
-To compile it you will need to run the custom make bash script in the parent directory typing ./make from the shell while beeing on the root directory of the project ( NOT "make" BUT "./make" it is not a standard makefile but a bash script  ) 
+To compile it you will need to run the custom make bash script in the parent directory typing ./make from the shell while being on the root directory of the project ( NOT "make" BUT "./make" it is not a standard makefile but a bash script  ) 
 
 The IDE used for the development of the Project is  Code::Blocks , and you can use the workspaces on the root directory that open the sub projects , in any case , once you download a fresh copy of the project be sure to run ./make first to compile any libraries that may be needed and are not part of the workspace
  
 
-I Hope you'll find this project/repository usefull ..!
+I Hope you'll find this project/repository useful ..!

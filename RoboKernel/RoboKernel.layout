@@ -28,6 +28,12 @@
 	<File name="configuration.h" open="1" top="0" tabpos="10">
 		<Cursor position="795" topLine="8" />
 	</File>
+	<File name="embedded_webinterface.c" open="1" top="1" tabpos="97">
+		<Cursor position="1659" topLine="22" />
+	</File>
+	<File name="embedded_webinterface.h" open="1" top="0" tabpos="98">
+		<Cursor position="185" topLine="0" />
+	</File>
 	<File name="gsm_modem.c" open="1" top="0" tabpos="19">
 		<Cursor position="2713" topLine="75" />
 	</File>
@@ -47,7 +53,7 @@
 		<Cursor position="1838" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="6546" topLine="62" />
+		<Cursor position="1896" topLine="53" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
 		<Cursor position="1020" topLine="0" />
@@ -74,7 +80,7 @@
 		<Cursor position="175" topLine="0" />
 	</File>
 	<File name="webinterface.c" open="1" top="0" tabpos="7">
-		<Cursor position="1133" topLine="34" />
+		<Cursor position="5993" topLine="211" />
 	</File>
 	<File name="webinterface.h" open="1" top="0" tabpos="8">
 		<Cursor position="496" topLine="0" />

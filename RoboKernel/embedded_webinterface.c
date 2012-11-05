@@ -24,7 +24,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "../AmmarServer/src/AmmServerlib/AmmServerlib.h"
 #include "embedded_webinterface.h"
 
-char webserver_root[512]="../robot/permfs/www";
+#define DISABLE_EMBEDDED_WEB_INTERFACE 1 //Until it is in working order..
+
+char webserver_root[512]="../robot/permfs/public_html";
 char templates_root[512]="../AmmarServer/public_html/templates";
 
 
@@ -42,7 +44,7 @@ void * prepare_helloworld_content_callback(unsigned int associated_vars)
   ++helloworld_times_shown;
 
   // We fill helloworld.content with the page
-  sprintf(helloworld.content,"<html><body><center>Hello World<br>for the %u time</center></body></html>",helloworld_times_shown);
+  sprintf(helloworld.content,"<html><body><center>GuarddoG Web Interface<br>for the %u time</center></body></html>",helloworld_times_shown);
 
   // We signal the size of helloworld.content
   helloworld.content_size=strlen(helloworld.content);
@@ -53,26 +55,29 @@ void * prepare_helloworld_content_callback(unsigned int associated_vars)
 void init_dynamic_content()
 {
   //We create a virtual file called "index.html" , when this gets requested our prepare_helloworld_content_callback gets called!
-  if (! AmmServer_AddResourceHandler(&helloworld,"/index.html",webserver_root,4096,0,&prepare_helloworld_content_callback) ) { fprintf(stderr,"Failed adding helloworld page\n"); }
+  //if (! AmmServer_AddResourceHandler(&helloworld,"/index.html",webserver_root,4096,0,&prepare_helloworld_content_callback) ) { fprintf(stderr,"Failed adding helloworld page\n"); }
 }
 
 //This function destroys all Resource Handlers and free's all allocated memory..!
 void close_dynamic_content()
 {
-    AmmServer_RemoveResourceHandler(&helloworld,1);
+   // AmmServer_RemoveResourceHandler(&helloworld,1);
 }
 /*! Dynamic content code ..! END ------------------------*/
 
 
 int StartEmbeddedWebInterface()
 {
+   if (DISABLE_EMBEDDED_WEB_INTERFACE)
+   {
     printf("Ammar Server binding is currently disabled..\n");
     return 0;
+   }
 
     printf("Ammar Server starting up\n");
 
    //Kick start AmmarServer , bind the ports , create the threads and get things going..!
-   AmmServer_Start("0.0.0.0",80,0,webserver_root,templates_root);
+   AmmServer_Start("0.0.0.0",8080,0,webserver_root,templates_root);
 
     //Create dynamic content allocations and associate context to the correct files
     init_dynamic_content();
@@ -87,8 +92,11 @@ int EmbeddedWebInterfaceRunning()
 
 int StopEmbeddedWebInterface()
 {
+   if (DISABLE_EMBEDDED_WEB_INTERFACE)
+   {
     printf("Ammar Server binding is currently disabled..\n");
     return 0;
+   }
     //Delete dynamic content allocations and remove stats.html and formtest.html from the server
     close_dynamic_content();
 
