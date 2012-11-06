@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "embedded_webinterface.h"
 
 #define DISABLE_EMBEDDED_WEB_INTERFACE 1 //Until it is in working order..
+#define MAX_WEB_COMMAND_SIZE 512
 
 char webserver_root[512]="../robot/permfs/public_html";
 char templates_root[512]="../AmmarServer/public_html/templates";
@@ -34,34 +35,71 @@ char templates_root[512]="../AmmarServer/public_html/templates";
 /* This is the dynamic Hello World example , as shown here : https://github.com/AmmarkoV/AmmarServer/wiki/Howto */
 
 //The decleration of hello world dynamic content resources..
-struct AmmServer_RH_Context helloworld={0};
+struct AmmServer_RH_Context execute_web_command={0};
+struct AmmServer_RH_Context camera_feed_image={0};
+
 unsigned int helloworld_times_shown=0;
 
-//This function prepares the content of  helloworld context , ( helloworld.content ) whenever the index page is requested
-void * prepare_helloworld_content_callback(unsigned int associated_vars)
+
+
+//This function prepares the content of  execute_web_command context , ( execute_web_command.content ) whenever the index page is requested
+void * prepare_execute_web_command_content_callback(unsigned int associated_vars)
 {
-  //Our Counter
-  ++helloworld_times_shown;
+  //After receiving the command we just want to redirect back to control.html
+  strcpy(execute_web_command.content,"<html><meta http-equiv=\"refresh\" content=\"5;URL='control.html'\"><body>Executed</body></html>");
 
-  // We fill helloworld.content with the page
-  sprintf(helloworld.content,"<html><body><center>GuarddoG Web Interface<br>for the %u time</center></body></html>",helloworld_times_shown);
+  char command[MAX_WEB_COMMAND_SIZE]={0};
+  char output_string[512]={0};
+  if ( _GET(&execute_web_command,"go",command,MAX_WEB_COMMAND_SIZE) )
+             {
+                  IssueCommandInternal(command,"WEBINTERFACE",output_string,512);
+             } else
+  if ( _GET(&execute_web_command,"commandline",command,MAX_WEB_COMMAND_SIZE) )
+             {
+                  IssueCommandInternal(command,"WEBINTERFACE",output_string,512);
+             }
 
-  // We signal the size of helloworld.content
-  helloworld.content_size=strlen(helloworld.content);
+  // We signal the size of execute_web_command.content
+  execute_web_command.content_size=strlen(execute_web_command.content);
   return 0;
 }
+
+//This function prepares the content of  camera_feed_image context , ( camera_feed_image.content ) whenever a camera image is requested
+void * prepare_camera_feed_content_callback(unsigned int associated_vars)
+{
+  //After receiving the command we just want to redirect back to control.html
+
+  char feed[123]={0};
+  if ( _GET(&camera_feed_image,"feed",feed,123) )
+             {
+                   // To do strcpy feed here..!
+             } else
+             {
+                  strcpy(camera_feed_image.content," ");
+             }
+
+  // We signal the size of camera_feed_image.content
+  camera_feed_image.content_size=strlen(camera_feed_image.content);
+  return 0;
+}
+
+
 
 //This function adds a Resource Handler for the page index.html and its callback function
 void init_dynamic_content()
 {
   //We create a virtual file called "index.html" , when this gets requested our prepare_helloworld_content_callback gets called!
-  //if (! AmmServer_AddResourceHandler(&helloworld,"/index.html",webserver_root,4096,0,&prepare_helloworld_content_callback) ) { fprintf(stderr,"Failed adding helloworld page\n"); }
+  if (! AmmServer_AddResourceHandler(&execute_web_command,"/execute.html",webserver_root,4096,0,&prepare_execute_web_command_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  if (! AmmServer_AddResourceHandler(&camera_feed_image,"/feed.jpg",webserver_root,4096,0,&prepare_camera_feed_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
+
 }
 
 //This function destroys all Resource Handlers and free's all allocated memory..!
 void close_dynamic_content()
 {
    // AmmServer_RemoveResourceHandler(&helloworld,1);
+    AmmServer_RemoveResourceHandler(&execute_web_command,1);
+    AmmServer_RemoveResourceHandler(&camera_feed_image,1);
 }
 /*! Dynamic content code ..! END ------------------------*/
 
