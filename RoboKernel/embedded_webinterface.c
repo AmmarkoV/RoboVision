@@ -25,7 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "embedded_webinterface.h"
 #include "configuration.h"
 
-#define DISABLE_EMBEDDED_WEB_INTERFACE 1 //Until it is in working order..
+#define DISABLE_EMBEDDED_WEB_INTERFACE 0 //Until it is in working order..
 #define MAX_WEB_COMMAND_SIZE 512
 
 char webserver_root[512]="../robot/permfs/public_html";
@@ -53,10 +53,12 @@ void * prepare_execute_web_command_content_callback(unsigned int associated_vars
   char output_string[512]={0};
   if ( _GET(&execute_web_command,"go",command,MAX_WEB_COMMAND_SIZE) )
              {
+                  fprintf(stderr,"Executing command %s from webinterface\n",command);
                   IssueCommandInternal(command,"WEBINTERFACE",output_string,512);
              } else
   if ( _GET(&execute_web_command,"do",command,MAX_WEB_COMMAND_SIZE) )
              {
+                  fprintf(stderr,"Executing command %s from webinterface\n",command);
                   IssueCommandInternal(command,"WEBINTERFACE",output_string,512);
              }
 
@@ -94,13 +96,10 @@ void init_dynamic_content()
 {
   //We create a virtual file called "index.html" , when this gets requested our prepare_helloworld_content_callback gets called!
   if (! AmmServer_AddResourceHandler(&execute_web_command,"/execute.html",webserver_root,4096,0,&prepare_execute_web_command_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  //This doesnt work , it needs to be /public_html/path_etc/execute.html..
-  AmmServer_DoNOTCacheResource("/execute.html"); // Chat Html will be changing all the time , so we don't want to cache it..!
+  AmmServer_DoNOTCacheResourceHandler(&execute_web_command);
 
   if (! AmmServer_AddResourceHandler(&camera_feed_image,"/feed.jpg",webserver_root,4096,0,&prepare_camera_feed_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  //This doesnt work , it needs to be /public_html/path_etc/feed.jpg..
-  AmmServer_DoNOTCacheResource("/feed.jpg"); // Chat Html will be changing all the time , so we don't want to cache it..!
-
+  AmmServer_DoNOTCacheResourceHandler(&camera_feed_image);
 
 }
 
