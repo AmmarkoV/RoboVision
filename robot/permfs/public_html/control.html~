@@ -7,7 +7,7 @@
           <!-- THIS IS THE COMMAND LINE INPUT.. -->
           <td> 
             <form action="execute.html" method="get">
-              Command Line : <input name="commandline" maxlength="30" size="30" type="text"><button type="submit">OK</button> 
+              Command Line : <input name="do" maxlength="30" size="30" type="text"><button type="submit">OK</button> 
             </form>
           </td>
 
@@ -53,7 +53,7 @@
           <td><!--NOTHING HERE--></td> 
           <td  style="vertical-align: center; text-align: center;"> 
            <form action="execute.html" method="get"> 
-             <input type="hidden" name="go" value="back">
+             <input type="hidden" name="go" value="backward">
              <button type="submit">BACKWARD</button>
             </form>  
           </td>
