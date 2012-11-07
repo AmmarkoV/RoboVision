@@ -23,6 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include "../AmmarServer/src/AmmServerlib/AmmServerlib.h"
 #include "embedded_webinterface.h"
+#include "configuration.h"
 
 #define DISABLE_EMBEDDED_WEB_INTERFACE 1 //Until it is in working order..
 #define MAX_WEB_COMMAND_SIZE 512
@@ -111,6 +112,14 @@ int StartEmbeddedWebInterface()
     printf("Ammar Server binding is currently disabled..\n");
     return 0;
    }
+
+  char * env_directory = get_environment_robot_directory();
+  strcpy(webserver_root,env_directory);
+  strcat(webserver_root,"permfs/public_html");
+
+  strcpy(templates_root,env_directory);
+  strcat(templates_root,"permfs/public_html/templates");
+
 
     printf("Ammar Server starting up\n");
 

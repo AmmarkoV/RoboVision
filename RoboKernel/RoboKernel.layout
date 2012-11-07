@@ -5,19 +5,19 @@
 		<Cursor position="640" topLine="0" />
 	</File>
 	<File name="activity_coordination.c" open="1" top="0" tabpos="18">
-		<Cursor position="74" topLine="0" />
+		<Cursor position="74" topLine="107" />
 	</File>
 	<File name="activity_coordination.h" open="1" top="0" tabpos="17">
 		<Cursor position="344" topLine="0" />
 	</File>
 	<File name="command_hal.c" open="1" top="0" tabpos="3">
-		<Cursor position="9411" topLine="58" />
+		<Cursor position="19711" topLine="425" />
 	</File>
 	<File name="command_hal.h" open="1" top="0" tabpos="4">
 		<Cursor position="195" topLine="0" />
 	</File>
 	<File name="command_implementation.c" open="1" top="0" tabpos="11">
-		<Cursor position="2650" topLine="70" />
+		<Cursor position="2650" topLine="237" />
 	</File>
 	<File name="command_implementation.h" open="1" top="0" tabpos="12">
 		<Cursor position="524" topLine="0" />
@@ -29,7 +29,7 @@
 		<Cursor position="795" topLine="8" />
 	</File>
 	<File name="embedded_webinterface.c" open="1" top="1" tabpos="27">
-		<Cursor position="921" topLine="2" />
+		<Cursor position="781" topLine="0" />
 	</File>
 	<File name="embedded_webinterface.h" open="1" top="0" tabpos="28">
 		<Cursor position="185" topLine="0" />
@@ -53,7 +53,7 @@
 		<Cursor position="1838" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="478" topLine="4" />
+		<Cursor position="478" topLine="187" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
 		<Cursor position="1020" topLine="0" />
@@ -80,7 +80,7 @@
 		<Cursor position="175" topLine="0" />
 	</File>
 	<File name="webinterface.c" open="1" top="0" tabpos="7">
-		<Cursor position="5993" topLine="73" />
+		<Cursor position="2878" topLine="93" />
 	</File>
 	<File name="webinterface.h" open="1" top="0" tabpos="8">
 		<Cursor position="496" topLine="0" />

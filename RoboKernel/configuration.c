@@ -94,12 +94,45 @@ int quickcat(char * outfilename,char *infilename1,char * infilename2)
   return 1;
 }
 
+
+char * get_environment_robot_directory()
+{
+  return ENVDIR;
+}
+
 int find_environment_robot_directory()
 {
-   if (ENVDIR==0) { fprintf(stderr,"find_environment_robot_directory called with empty string.. \n"); return 0; }
-   if (FileExistsConf("/robot/guard.ini"))   { strcpy(ENVDIR,"/robot/"); }   else
-   if (FileExistsConf("../robot/guard.ini")) { strcpy(ENVDIR,"../robot/"); } else
-                                             { ENVDIR[0]=0; ENVDIR[1]=0; }
+  if (ENVDIR==0) { fprintf(stderr,"find_environment_robot_directory called with empty string.. \n"); return 0; }
+
+  //This means an installation on the actual guarddog Robot ( /robot/ )
+  if (FileExistsConf("/robot/guard.ini"))   { strcpy(ENVDIR,"/robot/"); }   else
+  {
+   int found_dir_using_getcwd=0;
+   char cwd_guard_file[1024]={0};
+   char cwd[1024]={0};
+   if (getcwd(cwd, sizeof(cwd)) != 0 )
+     {
+       fprintf(stdout, "Current working dir: %s\n", cwd);
+       int where_to_check_for_slash=strlen(cwd);
+       if (where_to_check_for_slash>0) { --where_to_check_for_slash;}
+       if (cwd[where_to_check_for_slash]!='/')
+         {
+           ++where_to_check_for_slash;
+           cwd[where_to_check_for_slash]='/';
+           cwd[where_to_check_for_slash+1]=0;
+           strcpy(cwd_guard_file,cwd);
+           strcat(cwd_guard_file,"guard.ini");
+
+           if (FileExistsConf(cwd_guard_file))   { strcpy(ENVDIR,cwd); found_dir_using_getcwd=1; }
+         }
+      }
+
+    if (found_dir_using_getcwd)               { /* We found ENVDIR after a successfull getcwd call */ } else
+    if (FileExistsConf("../robot/guard.ini")) { strcpy(ENVDIR,"../robot/"); } else
+    if (FileExistsConf("../robot/guard.ini")) { strcpy(ENVDIR,"../robot/"); } else
+                                              { ENVDIR[0]=0; ENVDIR[1]=0; }
+   }
+
 
    fprintf(stderr,"Setting Environment directory to : %s \n",ENVDIR);
 

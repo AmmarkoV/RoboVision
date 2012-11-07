@@ -53,6 +53,10 @@ extern unsigned int swap_inputs;
 
 int quickcat(char * outfilename,char *infilename1,char * infilename2);
 int filename_stripper_found_attack(char * filename);
+
+char * get_environment_robot_directory();
+int find_environment_robot_directory();
+
 void LoadConfiguration();
 int RefreshDeviceNumbering();
 
