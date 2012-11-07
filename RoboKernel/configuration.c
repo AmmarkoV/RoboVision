@@ -121,14 +121,33 @@ int find_environment_robot_directory()
            cwd[where_to_check_for_slash]='/';
            cwd[where_to_check_for_slash+1]=0;
            strcpy(cwd_guard_file,cwd);
-           strcat(cwd_guard_file,"guard.ini");
+           strcat(cwd_guard_file,"robot/guard.ini");
 
-           if (FileExistsConf(cwd_guard_file))   { strcpy(ENVDIR,cwd); found_dir_using_getcwd=1; }
+           fprintf(stdout, "Testing for guard.ini @ %s , dir is %s \n",cwd_guard_file,cwd);
+           //Ok what this code segment does is check for /home/ammar/Documents/Programming/RoboVision/robot/guard.ini
+           //if we cwd is /home/ammar/Documents/Programming/RoboVision/ we will be ok , but what if we are on /home/ammar/Documents/Programming/RoboVision/RoboVisionX ?
+           //The next step resolves this case
+           if (FileExistsConf(cwd_guard_file))   { strcpy(ENVDIR,cwd); strcat(ENVDIR,"robot/"); found_dir_using_getcwd=1; }
+
+          if (!found_dir_using_getcwd)
+          {
+              //We didnt find the guard.ini so checking one more time on the parent directory , if we cd'd to RoboVisionX or RoboVisionCLI dirs this will be the correct dir..!
+              --where_to_check_for_slash;
+              while ( (where_to_check_for_slash>0)&&(cwd[where_to_check_for_slash]!='/') ) {  --where_to_check_for_slash; }
+              if (where_to_check_for_slash>0)
+                 {
+                    //the slash of the parent dir is in  where_to_check_for_slash so appending null termination..
+                    cwd[where_to_check_for_slash+1]=0;
+                    strcpy(cwd_guard_file,cwd);
+                    strcat(cwd_guard_file,"robot/guard.ini");
+                    fprintf(stdout, "Testing for guard.ini @ %s , dir is %s \n",cwd_guard_file,cwd);
+                    if (FileExistsConf(cwd_guard_file))   { strcpy(ENVDIR,cwd); strcat(ENVDIR,"robot/"); found_dir_using_getcwd=1; }
+                 }
+          }
          }
       }
 
     if (found_dir_using_getcwd)               { /* We found ENVDIR after a successfull getcwd call */ } else
-    if (FileExistsConf("../robot/guard.ini")) { strcpy(ENVDIR,"../robot/"); } else
     if (FileExistsConf("../robot/guard.ini")) { strcpy(ENVDIR,"../robot/"); } else
                                               { ENVDIR[0]=0; ENVDIR[1]=0; }
    }

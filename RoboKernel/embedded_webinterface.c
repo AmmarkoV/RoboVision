@@ -25,7 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "embedded_webinterface.h"
 #include "configuration.h"
 
-#define DISABLE_EMBEDDED_WEB_INTERFACE 1 //Until it is in working order..
+#define DISABLE_EMBEDDED_WEB_INTERFACE 0 //Until it is in working order..
 #define MAX_WEB_COMMAND_SIZE 512
 
 char webserver_root[512]="../robot/permfs/public_html";
@@ -47,7 +47,7 @@ unsigned int helloworld_times_shown=0;
 void * prepare_execute_web_command_content_callback(unsigned int associated_vars)
 {
   //After receiving the command we just want to redirect back to control.html
-  strcpy(execute_web_command.content,"<html><meta http-equiv=\"refresh\" content=\"5;URL='control.html'\"><body>Executed</body></html>");
+  strcpy(execute_web_command.content,"<html><meta http-equiv=\"refresh\" content=\"0;URL='control.html'\"><body>Executed</body></html>");
 
   char command[MAX_WEB_COMMAND_SIZE]={0};
   char output_string[512]={0};
