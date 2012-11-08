@@ -70,11 +70,11 @@ int PlaySound(char * sndname)
 
 
   char command_s[1024]={0};
-  sprintf(command_s,"../DataSets/Sounds/%s.wav",sndname);
-  if (!FileExists(command_s)) { return 1; }
+  sprintf(command_s,"%s/permfs/Sounds/%s.wav",get_environment_robot_directory(),sndname);
+  if (!FileExists(command_s)) { fprintf(stderr,"Sound %s does not exist\n",command_s); return 1; }
 
 
-  sprintf(command_s,"%s ../DataSets/Sounds/%s.wav&",sound_play_command,sndname);
+  sprintf(command_s,"%s %s/permfs/Sounds/%s.wav&",sound_play_command,get_environment_robot_directory(),sndname);
   fprintf(stderr," %s \n ",command_s);
   int i=system((const char * ) command_s);
   return i;

@@ -1,3 +1,6 @@
 #!/bin/bash
-echo "$@" >> /robot/memfs/www/commands.dat 
+#The old way to pass  pass commands to the program was  echo "$@" >> /robot/memfs/www/commands.dat 
+#We now use the webinterface and wget :P
+INPUT_VAR="$@"
+wget -qO- "http://127.0.0.1:8080/execute.html?console=1&do=$INPUT_VAR"
 exit 0

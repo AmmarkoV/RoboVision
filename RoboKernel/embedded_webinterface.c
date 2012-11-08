@@ -49,21 +49,35 @@ unsigned long JPEG_MAX_FILE_SIZE_IN_BYTES = 100 /*KB*/ * 1024;
 //This function prepares the content of  execute_web_command context , ( execute_web_command.content ) whenever the index page is requested
 void * prepare_execute_web_command_content_callback(unsigned int associated_vars)
 {
-  //After receiving the command we just want to redirect back to control.html
-  strcpy(execute_web_command.content,"<html><meta http-equiv=\"refresh\" content=\"0;URL='control.html'\"><body>Executed</body></html>");
-
   char command[MAX_WEB_COMMAND_SIZE]={0};
   char output_string[512]={0};
+  unsigned int html_output = 1 ;
+
+  //If we have the console argument set this means we dont want the html output enabled so we switch it off
+  if ( _GET(&execute_web_command,"console",command,MAX_WEB_COMMAND_SIZE) ) { html_output = 0; }
+
+  execute_web_command.content[0]=0;
+
+  //After receiving the command and if we want html output we just want to redirect back to control.html
+  if (html_output) { strcpy(execute_web_command.content,"<html><meta http-equiv=\"refresh\" content=\"0;URL='control.html'\"><body>Executed<br>"); }
+
+
   if ( _GET(&execute_web_command,"go",command,MAX_WEB_COMMAND_SIZE) )
              {
                   fprintf(stderr,"Executing command %s from webinterface\n",command);
                   IssueCommandInternal(command,"WEBINTERFACE",output_string,512);
+                  strcat(execute_web_command.content,output_string); // Append output
              } else
   if ( _GET(&execute_web_command,"do",command,MAX_WEB_COMMAND_SIZE) )
              {
                   fprintf(stderr,"Executing command %s from webinterface\n",command);
                   IssueCommandInternal(command,"WEBINTERFACE",output_string,512);
+                  strcat(execute_web_command.content,output_string); // Append output
              }
+
+
+  if (html_output) {  strcat(execute_web_command.content,"</body></html>"); }
+
 
   // We signal the size of execute_web_command.content
   execute_web_command.content_size=strlen(execute_web_command.content);
@@ -164,6 +178,8 @@ int StartEmbeddedWebInterface()
     printf("Ammar Server starting up\n");
 
    //Kick start AmmarServer , bind the ports , create the threads and get things going..!
+   
+   // If i ever change the port from 8080 to 80 I will have to also change the guarddog Script to redirect wget requests to the correct port..!
    AmmServer_Start("0.0.0.0",8080,0,webserver_root,templates_root);
 
     //Create dynamic content allocations and associate context to the correct files

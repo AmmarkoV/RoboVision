@@ -130,6 +130,12 @@
 	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="23">
 		<Cursor position="324" topLine="0" />
 	</File>
+	<File name="VisCortexJPEG.c" open="1" top="0" tabpos="69">
+		<Cursor position="512" topLine="0" />
+	</File>
+	<File name="VisCortexJPEG.h" open="1" top="0" tabpos="70">
+		<Cursor position="74" topLine="0" />
+	</File>
 	<File name="VisCortexOptimizedConvolutionFilters.c" open="1" top="0" tabpos="39">
 		<Cursor position="1394" topLine="0" />
 	</File>
@@ -143,16 +149,16 @@
 		<Cursor position="183" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="1642" topLine="0" />
+		<Cursor position="1642" topLine="318" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="2766" topLine="108" />
+		<Cursor position="1535" topLine="54" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="1" tabpos="1">
-		<Cursor position="4305" topLine="105" />
+		<Cursor position="16738" topLine="369" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="6248" topLine="343" />
+		<Cursor position="4989" topLine="208" />
 	</File>
 	<File name="fastmemcpy.h" open="0" top="0" tabpos="0">
 		<Cursor position="1365" topLine="0" />
