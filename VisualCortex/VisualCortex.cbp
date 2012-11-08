@@ -47,6 +47,7 @@
 		<Linker>
 			<Add option="-s" />
 			<Add option="`pkg-config --libs opencv`" />
+			<Add option="-ljpeg" />
 		</Linker>
 		<Unit filename="ArchOptimizations/ArchOptimizations.c">
 			<Option compilerVar="CC" />
@@ -136,6 +137,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="VisCortexHeuristics.h" />
+		<Unit filename="VisCortexJPEG.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="VisCortexJPEG.h" />
 		<Unit filename="VisCortexOptimizedConvolutionFilters.c">
 			<Option compilerVar="CC" />
 		</Unit>

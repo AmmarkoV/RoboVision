@@ -40,6 +40,7 @@ char templates_root[512]="../AmmarServer/public_html/templates";
 //The decleration of hello world dynamic content resources..
 struct AmmServer_RH_Context execute_web_command={0};
 struct AmmServer_RH_Context camera_feed_image={0};
+struct AmmServer_RH_Context camera_feed_page={0};
 
 unsigned int helloworld_times_shown=0;
 unsigned long JPEG_MAX_FILE_SIZE_IN_BYTES = 100 /*KB*/ * 1024;
@@ -78,6 +79,8 @@ void * prepare_camera_feed_content_callback(unsigned int associated_vars)
                  camera_feed_image.content_size = JPEG_MAX_FILE_SIZE_IN_BYTES; // This to indicate what is the maximum size..!
                  if ( strcmp(feed,"left")==0 ) {  VisCortX_SaveVideoRegisterToJPEGMemory(LEFT_EYE,camera_feed_image.content,&camera_feed_image.content_size); } else
                  if ( strcmp(feed,"right")==0 ) {  VisCortX_SaveVideoRegisterToJPEGMemory(RIGHT_EYE,camera_feed_image.content,&camera_feed_image.content_size); } else
+                 if ( strcmp(feed,"depth_left")==0 ) {  VisCortX_SaveVideoRegisterToJPEGMemory(DEPTH_LEFT_VIDEO,camera_feed_image.content,&camera_feed_image.content_size); } else
+                 if ( strcmp(feed,"depth_right")==0 ) {  VisCortX_SaveVideoRegisterToJPEGMemory(DEPTH_RIGHT_VIDEO,camera_feed_image.content,&camera_feed_image.content_size); } else
                                                   {
                                                     //Incorrect feed id
                                                     fprintf(stderr,"Error sending feed.jpg , incorrect feed id %s \n",feed);
@@ -92,6 +95,30 @@ void * prepare_camera_feed_content_callback(unsigned int associated_vars)
   return 0;
 }
 
+//This function prepares the content of  camera_feed_page context , ( execute_web_command.content ) whenever the index page is requested
+void * prepare_camera_page_content_callback(unsigned int associated_vars)
+{
+  //After receiving the command we just want to redirect back to control.html
+  strcpy(camera_feed_page.content,"<html><meta http-equiv=\"refresh\" content=\"1\"><body>");
+
+
+  char feed[123]={0};
+  if ( _GET(&camera_feed_page,"feed",feed,123) )
+             {
+               strcat(camera_feed_page.content,"<div style=\"vertical-align: center; text-align: center; width: 100%%; height: 100%%;\"><img src=\"feed.jpg?feed=");
+               strcat(camera_feed_page.content,feed); // This is not very safe to be dropped raw on the html page returned.. :P On the other hand it will only be visible on the person who sent it so who cares..
+               strcat(camera_feed_page.content,"\"></div>");
+             }  else
+             {
+               strcat(camera_feed_page.content,"<div style=\"vertical-align: center; text-align: center; width: 100%%; height: 100%%;\"><img src=\"empty_feed.jpeg\"></div>");
+             }
+
+  strcat(camera_feed_page.content,"</body></html>");
+
+  // We signal the size of camera_feed_page.content
+  camera_feed_page.content_size=strlen(camera_feed_page.content);
+  return 0;
+}
 
 //This function adds a Resource Handler for the page index.html and its callback function
 void init_dynamic_content()
@@ -102,6 +129,9 @@ void init_dynamic_content()
 
   if (! AmmServer_AddResourceHandler(&camera_feed_image,"/feed.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
   AmmServer_DoNOTCacheResourceHandler(&camera_feed_image);
+
+  if (! AmmServer_AddResourceHandler(&camera_feed_page,"/feed.html",webserver_root,4096,0,&prepare_camera_page_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  AmmServer_DoNOTCacheResourceHandler(&camera_feed_page);
 
 }
 
