@@ -25,6 +25,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "VisCortexFilters.h"
 #include "VisCortexConvolutionFilters.h"
 #include "VisCortexOptimizedConvolutionFilters.h"
+#include "VisCortexJPEG.h"
 #include "FeatureExtraction.h"
 #include "PatternRecognition.h"
 #include "FeatureTracking.h"
@@ -400,6 +401,17 @@ unsigned int VisCortX_SaveVideoRegisterToFile(unsigned int reg_num,char * filena
 {
    return SaveRegisterToFile(filename,reg_num);
 }
+
+unsigned int VisCortX_SaveVideoRegisterToJPEGFile(unsigned int reg_num,char * filename)
+{
+   return WriteJPEG(filename,&video_register[reg_num],0,0);
+}
+
+unsigned int VisCortX_SaveVideoRegisterToJPEGMemory(unsigned int reg_num,char *mem,unsigned long * mem_size)
+{
+   return WriteJPEG(0,&video_register[reg_num],mem,mem_size);
+}
+
 
 unsigned int VisCortx_WriteToVideoRegister(unsigned int reg_num,unsigned int size_x,unsigned int size_y,unsigned int depth,unsigned char * rgbdata)
 {

@@ -23,10 +23,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string.h>
 #include "../AmmarServer/src/AmmServerlib/AmmServerlib.h"
 #include "embedded_webinterface.h"
+#include "visual_system.h"
 #include "configuration.h"
 
 #define DISABLE_EMBEDDED_WEB_INTERFACE 0 //Until it is in working order..
 #define MAX_WEB_COMMAND_SIZE 512
+
 
 char webserver_root[512]="../robot/permfs/public_html";
 char templates_root[512]="../AmmarServer/public_html/templates";
@@ -40,7 +42,7 @@ struct AmmServer_RH_Context execute_web_command={0};
 struct AmmServer_RH_Context camera_feed_image={0};
 
 unsigned int helloworld_times_shown=0;
-
+unsigned long JPEG_MAX_FILE_SIZE_IN_BYTES = 100 /*KB*/ * 1024;
 
 
 //This function prepares the content of  execute_web_command context , ( execute_web_command.content ) whenever the index page is requested
@@ -70,25 +72,25 @@ void * prepare_execute_web_command_content_callback(unsigned int associated_vars
 //This function prepares the content of  camera_feed_image context , ( camera_feed_image.content ) whenever a camera image is requested
 void * prepare_camera_feed_content_callback(unsigned int associated_vars)
 {
-  //After receiving the command we just want to redirect back to control.html
-  camera_feed_image.content[0]=0;
-  camera_feed_image.content_size=0;
-  return 0;
-
   char feed[123]={0};
   if ( _GET(&camera_feed_image,"feed",feed,123) )
              {
-                   // To do strcpy feed here..!
+                 camera_feed_image.content_size = JPEG_MAX_FILE_SIZE_IN_BYTES; // This to indicate what is the maximum size..!
+                 if ( strcmp(feed,"left")==0 ) {  VisCortX_SaveVideoRegisterToJPEGMemory(LEFT_EYE,camera_feed_image.content,&camera_feed_image.content_size); } else
+                 if ( strcmp(feed,"right")==0 ) {  VisCortX_SaveVideoRegisterToJPEGMemory(RIGHT_EYE,camera_feed_image.content,&camera_feed_image.content_size); } else
+                                                  {
+                                                    //Incorrect feed id
+                                                    fprintf(stderr,"Error sending feed.jpg , incorrect feed id %s \n",feed);
+                                                    camera_feed_image.content_size =  0;
+                                                  }
+
              } else
              {
-                  strcpy(camera_feed_image.content," ");
+                  camera_feed_image.content[0] = 0;
+                  camera_feed_image.content_size =  0;
              }
-
-  // We signal the size of camera_feed_image.content
-  camera_feed_image.content_size=strlen(camera_feed_image.content);
   return 0;
 }
-
 
 
 //This function adds a Resource Handler for the page index.html and its callback function
@@ -98,7 +100,7 @@ void init_dynamic_content()
   if (! AmmServer_AddResourceHandler(&execute_web_command,"/execute.html",webserver_root,4096,0,&prepare_execute_web_command_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
   AmmServer_DoNOTCacheResourceHandler(&execute_web_command);
 
-  if (! AmmServer_AddResourceHandler(&camera_feed_image,"/feed.jpg",webserver_root,4096,0,&prepare_camera_feed_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  if (! AmmServer_AddResourceHandler(&camera_feed_image,"/feed.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
   AmmServer_DoNOTCacheResourceHandler(&camera_feed_image);
 
 }

@@ -2,16 +2,9 @@
 #include <string.h>
 #include <jpeglib.h>
 #include <stdlib.h>
-#include "image_storage.h"
-#include "image_storage_jpg.h"
 
-/* we will be using this uninitialized pointer later to store raw, uncompressd image */
-//unsigned char *raw_image = NULL;
+#include "VisionMemory.h"
 
-/* dimensions of the image we want to write */
-//int JPEGwidth = 1600;
-//int JPEGheight = 1200;
-//int JPEGbytes_per_pixel = 3;   /* or 1 for GRACYSCALE images */
 
 /**
  * read_jpeg_file Reads from a jpeg file on disk specified by filename and saves into the
@@ -23,18 +16,18 @@
  */
 
 /* setup the buffer but we did that in the main function */
-void init_buffer(struct jpeg_compress_struct* cinfo) { return ; }
+void init_buffer(struct jpeg_compress_struct * cinfo) { return; }
 
 /* what to do when the buffer is full; this should almost never
  * happen since we allocated our buffer to be big to start with
  */
-int empty_buffer(struct jpeg_compress_struct* cinfo) { return 1; }
+int empty_buffer(struct jpeg_compress_struct * cinfo) { return 1; }
 
 /* finalize the buffer and do any cleanup stuff */
-void term_buffer(struct jpeg_compress_struct* cinfo) { return ; }
+void term_buffer(struct jpeg_compress_struct * cinfo) { return; }
 
 
-int ReadJPEG( char *filename,struct Image * pic)
+int ReadJPEG(char *filename,struct VideoRegister * reg_num)
 {
 	/* these are standard libjpeg structures for reading(decompression) */
 	struct jpeg_decompress_struct cinfo;
@@ -61,8 +54,8 @@ int ReadJPEG( char *filename,struct Image * pic)
 	jpeg_read_header( &cinfo, TRUE );
 	/* Uncomment the following to output image information, if needed. */
 
-	pic->size_x=cinfo.image_width;
-	pic->size_y=cinfo.image_height;
+	reg_num->size_x=cinfo.image_width;
+	reg_num->size_y=cinfo.image_height;
 	/*--
 	printf( "JPEG File Information: \n" );
 	printf( "Image width and height: %d pixels and %d pixels.\n", cinfo.image_width, cinfo.image_height );
@@ -84,7 +77,7 @@ int ReadJPEG( char *filename,struct Image * pic)
 			raw_image[location++] = row_pointer[0][i];
 	}
 	/* wrap up decompression, destroy objects, free pointers and close open files */
-	strncpy(pic->pixels,(char *) raw_image,cinfo.output_width*cinfo.output_height*cinfo.num_components);
+	strncpy((char *) reg_num->pixels,(char *) raw_image,cinfo.output_width*cinfo.output_height*cinfo.num_components);
 	free(raw_image);
 	raw_image=0;
 
@@ -105,7 +98,7 @@ int ReadJPEG( char *filename,struct Image * pic)
  * \param *filename char string specifying the file name to save to
  *
  */
-int WriteJPEG( char *filename,struct Image * pic,char *mem,unsigned long * mem_size)
+int WriteJPEG( char *filename,struct VideoRegister * reg_num,char *mem,unsigned long * mem_size)
 {
 	struct jpeg_compress_struct cinfo;
 	struct jpeg_error_mgr jerr;
@@ -143,15 +136,15 @@ int WriteJPEG( char *filename,struct Image * pic,char *mem,unsigned long * mem_s
 	   jpeg_stdio_dest(&cinfo, outfile);
 	 }
 
-	unsigned char * raw_image = (unsigned char * ) pic->pixels;
-	cinfo.image_width = pic->size_x;
-	cinfo.image_height = pic->size_y;
-	cinfo.input_components = 3;//pic.depth bytes_per_pixel;
+	unsigned char * raw_image = (unsigned char * ) reg_num->pixels;
+	cinfo.image_width = reg_num->size_x;
+	cinfo.image_height = reg_num->size_y;
+	cinfo.input_components = 3;//reg_num.depth bytes_per_pixel;
     int JPEGcolor_space = JCS_RGB; /* or JCS_GRAYSCALE for grayscale images */
 	cinfo.in_color_space = (J_COLOR_SPACE) JPEGcolor_space;
     /* default compression parameters, we shouldn't be worried about these */
 	jpeg_set_defaults( &cinfo );
-	jpeg_set_quality (&cinfo, 75, true);
+	jpeg_set_quality (&cinfo, 75, 1);
 	/* Now do the compression .. */
 	jpeg_start_compress( &cinfo, TRUE );
 	/* like reading a file, this time write one row at a time */

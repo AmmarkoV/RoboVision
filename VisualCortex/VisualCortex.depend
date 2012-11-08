@@ -18,14 +18,14 @@
 1333806683 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap.h
 	"VisionMemory.h"
 
-1333839636 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
+1343131815 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.h
 	"FeatureLists.h"
 	"VisualCortex.h"
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1333557760 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1352392566 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
 1333557760 /home/ammar/Documents/Programming/RoboVision/VisualCortex/DisparityDepthMap_Heuristics.h
 
@@ -48,7 +48,7 @@
 	"Precalculations.h"
 	"../WorldMapping/MasterWorld/MasterWorld.h"
 
-1327701769 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.c
+1343131837 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/FaceDetection.c
 	"FaceDetection.h"
 	<stdio.h>
 	<stdlib.h>
@@ -129,7 +129,7 @@
 1333557760 /home/ammar/Documents/Programming/RoboVision/VisualCortex/PatternRecognition.h
 	"VisualCortex.h"
 
-1341502285 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.c
+1343140227 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/Precalculations.c
 	"Precalculations.h"
 	"VisionMemory.h"
 	<limits.h>
@@ -180,14 +180,14 @@
 	"VisCortexHeuristics.h"
 	"VisionMemory.h"
 
-1333839590 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
+1343131837 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisionMemory.c
 	"VisionMemory.h"
 	"Precalculations.h"
 	"VisCortexFilters.h"
 	"VisCortexTimer.h"
 	"StateSetting.h"
 
-1341501914 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
+1352394896 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.c
 	"VisualCortex.h"
 	"VisionMemory.h"
 	"Precalculations.h"
@@ -197,6 +197,7 @@
 	"VisCortexFilters.h"
 	"VisCortexConvolutionFilters.h"
 	"VisCortexOptimizedConvolutionFilters.h"
+	"VisCortexJPEG.h"
 	"FeatureExtraction.h"
 	"PatternRecognition.h"
 	"FeatureTracking.h"
@@ -558,7 +559,7 @@
 	"opencv2/core/core.hpp"
 	"opencv2/highgui/highgui_c.h"
 
-1341450490 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.c
+1350416540 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.c
 	"VisCortexOptimizedConvolutionFilters.h"
 	"VisCortexConvolutionFilters.h"
 	"VisCortexFilters.h"
@@ -568,7 +569,7 @@
 	<stdio.h>
 	<string.h>
 
-1341502419 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
+1352395000 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexOptimizedConvolutionFilters.h
 	"VisionMemory.h"
 
 1333557760 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexTimer.c
@@ -695,7 +696,7 @@
 
 1333557760 /home/ammar/Documents/Programming/RoboVision/VisualCortex/StatisticsGeneration.h
 
-1333557760 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StatisticsGeneration.c
+1342314455 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/StatisticsGeneration.c
 	"StatisticsGeneration.h"
 	"VisionMemory.h"
 	<stdio.h>
@@ -744,11 +745,20 @@
 1341499910 /home/ammar/Documents/Programming/RoboVision/VisualCortex/fastmemcpy.h
 	<stddef.h>
 
-1341502198 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/ArchOptimizations/ArchOptimizations.c
+1343140197 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/ArchOptimizations/ArchOptimizations.c
 	"ArchOptimizations.h"
 	<stdio.h>
 	<string.h>
 
 1341449325 /home/ammar/Documents/Programming/RoboVision/VisualCortex/ArchOptimizations/ArchOptimizations.h
 	<string.h>
+
+1352392280 source:/home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexJPEG.c
+	<stdio.h>
+	<string.h>
+	<jpeglib.h>
+	<stdlib.h>
+	"VisionMemory.h"
+
+1352392518 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisCortexJPEG.h
 

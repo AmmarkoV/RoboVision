@@ -335,6 +335,8 @@ unsigned char * VisCortx_ReadFromVideoRegister(unsigned int reg_num,unsigned int
 
 unsigned int VisCortX_LoadVideoRegisterFromFile(unsigned int reg_num,char * filename);
 unsigned int VisCortX_SaveVideoRegisterToFile(unsigned int reg_num,char * filename);
+unsigned int VisCortX_SaveVideoRegisterToJPEGFile(unsigned int reg_num,char * filename);
+unsigned int VisCortX_SaveVideoRegisterToJPEGMemory(unsigned int reg_num,char *mem,unsigned long * mem_size);
 
 int VisCortx_OperationLockFramesLeftRight();
 int VisCortx_OperationUnLockFramesLeftRight();

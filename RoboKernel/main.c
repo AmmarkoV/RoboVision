@@ -6,6 +6,7 @@
 #include "mapping_system.h"
 #include "motor_system.h"
 #include "webinterface.h"
+#include "embedded_webinterface.h"
 #include "configuration.h"
 #include "activity_coordination.h"
 #include "script_runner.h"

@@ -19,11 +19,11 @@
 	"../VideoInput/VideoInput.h"
 	"../VisualCortex/VisualCortex.h"
 
-1324008661 /home/ammar/Documents/Programming/RoboVision/VideoInput/VideoInput.h
+1344879069 /home/ammar/Documents/Programming/RoboVision/VideoInput/VideoInput.h
 
-1343131916 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
+1352392566 /home/ammar/Documents/Programming/RoboVision/VisualCortex/VisualCortex.h
 
-1343127742 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.c
+1352254836 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.c
 	"configuration.h"
 	<stdio.h>
 	<stdlib.h>
@@ -31,7 +31,7 @@
 	"../VisualCortex/VisualCortex.h"
 	"../VideoInput/VideoInput.h"
 
-1343128112 /home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.h
+1352249971 /home/ammar/Documents/Programming/RoboVision/RoboKernel/configuration.h
 
 1323383489 /home/ammar/Documents/Programming/RoboVision/InputParser/InputParser_C.h
 	<stdlib.h>
@@ -39,7 +39,7 @@
 	<string.h>
 	<ctype.h>
 
-1343130046 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
+1352393384 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/main.c
 	<pthread.h>
 	"RoboKernel.h"
 	"command_hal.h"
@@ -48,6 +48,7 @@
 	"mapping_system.h"
 	"motor_system.h"
 	"webinterface.h"
+	"embedded_webinterface.h"
 	"configuration.h"
 	"activity_coordination.h"
 	"script_runner.h"
@@ -87,7 +88,7 @@
 	"motor_system.h"
 	"configuration.h"
 
-1343137883 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/visual_system.c
+1344879148 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/visual_system.c
 	"visual_system.h"
 	"configuration.h"
 	<stdio.h>
@@ -194,4 +195,20 @@
 	"command_hal.h"
 	"configuration.h"
 	"../InputParser/InputParser_C.h"
+
+1352394569 source:/home/ammar/Documents/Programming/RoboVision/RoboKernel/embedded_webinterface.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"../AmmarServer/src/AmmServerlib/AmmServerlib.h"
+	"embedded_webinterface.h"
+	"visual_system.h"
+	"configuration.h"
+
+1352257086 /home/ammar/Documents/Programming/RoboVision/AmmarServer/src/AmmServerlib/AmmServerlib.h
+	"configuration.h"
+
+1352151602 /home/ammar/Documents/Programming/RoboVision/AmmarServer/src/AmmServerlib/configuration.h
+
+1350414315 /home/ammar/Documents/Programming/RoboVision/RoboKernel/embedded_webinterface.h
 

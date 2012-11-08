@@ -44,12 +44,13 @@ gcc  $Optimizations $CPU -c VisCortexOptimizedConvolutionFilters.c -o VisCortexO
 gcc  $Optimizations $CPU -c VisCortexTimer.c -o VisCortexTimer.o
 gcc  $Optimizations $CPU -c VisCortexFilters.c -o VisCortexFilters.o
 gcc  $Optimizations $CPU -c VisCortexHeuristics.c -o VisCortexHeuristics.o 
+gcc  $Optimizations $CPU -c VisCortexJPEG.c -o VisCortexJPEG.o 
 gcc  $Optimizations $CPU -c VisionMemory.c -o VisionMemory.o
 gcc  $Optimizations $CPU -c VideoInputAdapter.c -o VideoInputAdapter.o 
 gcc  $OpenCVStuff $Optimizations $CPU -c LinearAlgebra.c -o LinearAlgebra.o  
 gcc  $Optimizations $CPU -c VisualCortex.c -o VisualCortex.o
 
-FILESTOLINK="DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o ArchOptimizations.o CameraPose.o Matrix.o StatisticsGeneration.o FeatureTracking.o ObjectRecognition.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o"
+FILESTOLINK="DisparityDepthMap.o DisparityDepthMap_Heuristics.o MovementRegistration.o FaceDetection.o FeatureLists.o FeatureExtraction.o PatchComparison.o PatternRecognition.o ArchOptimizations.o CameraPose.o Matrix.o StatisticsGeneration.o FeatureTracking.o ObjectRecognition.o IntegralImageConversion.o Precalculations.o StateSetting.o VisCortexConvolutionFilters.o VisCortexOptimizedConvolutionFilters.o VisCortexTimer.o VisCortexFilters.o VisCortexHeuristics.o VisCortexJPEG.o VisionMemory.o VideoInputAdapter.o LinearAlgebra.o VisualCortex.o"
 
 ar  rcs libVisualCortex.a $FILESTOLINK
 
