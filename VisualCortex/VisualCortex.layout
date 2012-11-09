@@ -130,10 +130,10 @@
 	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="23">
 		<Cursor position="324" topLine="0" />
 	</File>
-	<File name="VisCortexJPEG.c" open="1" top="0" tabpos="69">
+	<File name="VisCortexJPEG.c" open="1" top="0" tabpos="53">
 		<Cursor position="512" topLine="0" />
 	</File>
-	<File name="VisCortexJPEG.h" open="1" top="0" tabpos="70">
+	<File name="VisCortexJPEG.h" open="1" top="0" tabpos="54">
 		<Cursor position="74" topLine="0" />
 	</File>
 	<File name="VisCortexOptimizedConvolutionFilters.c" open="1" top="0" tabpos="39">

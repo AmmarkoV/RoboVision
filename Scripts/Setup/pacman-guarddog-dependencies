@@ -16,20 +16,7 @@ echo "What is basically needed is GCC and libs , WxWidgets , LibV4L development 
 
 sudo pacman -S gcc pkg-config wxgtk openal freealut freeglut imagemagick zenity opencv cmake gsl festival festival-english wget gnuplot
 
- 
-echo -n "               Would you like apache / php installed ? (Y/N)?"
-read answer
-if test "$answer" != "Y" -a "$answer" != "y";
-then exit 0;
-fi
-
-#to install a webserver
-sudo pacman -S apache
-
-echo "Probing for http user.."
-grep http /etc/passwd
-
-echo "Dont forget to add httpd to rc.conf
+   
 echo "Dont forget to add 127.0.0.1 localhost.localdomain localhost myhostname to /etc/hosts myhostname should probably be guarddog"
 #For Speech Recognition libpocketsphinx1 libpocketsphinx-dev libsphinxbase1
 

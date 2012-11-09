@@ -26,11 +26,5 @@ BINARY="robovisionx"
   else 
    echo "No $BINARY Binary detected"
   fi
-exit 0
 
-
-#make /robot/ etc..
-#sudo chmod 744 /usr/share/flashyslideshows/app_clipart/*  
-#sudo chmod 744 /usr/share/flashyslideshows/app_clipart/*  
-
-exit 0
+exit 0 

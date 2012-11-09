@@ -26,12 +26,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "visual_system.h"
 #include "configuration.h"
 
-#define DISABLE_EMBEDDED_WEB_INTERFACE 0 //Until it is in working order..
+#define ENABLE_PASSWORD_PROTECTION 1
 #define MAX_WEB_COMMAND_SIZE 512
 
 
 char webserver_root[512]="../robot/permfs/public_html";
-char templates_root[512]="../AmmarServer/public_html/templates";
+char templates_root[512]="../AmmarServer/public_html/templates/";
 
 
 /*! Dynamic content code ..! START!*/
@@ -39,8 +39,6 @@ char templates_root[512]="../AmmarServer/public_html/templates";
 
 //The decleration of hello world dynamic content resources..
 struct AmmServer_RH_Context execute_web_command={0};
-struct AmmServer_RH_Context camera_feed_image={0};
-struct AmmServer_RH_Context camera_feed_page={0};
 
 struct AmmServer_RH_Context camera_feed_image_LEFT={0};
 struct AmmServer_RH_Context camera_feed_image_RIGHT={0};
@@ -90,33 +88,6 @@ void * prepare_execute_web_command_content_callback(unsigned int associated_vars
   return 0;
 }
 
-//This function prepares the content of  camera_feed_image context , ( camera_feed_image.content ) whenever a camera image is requested
-void * prepare_camera_feed_content_callback(unsigned int associated_vars)
-{
-  char feed[123]={0};
-  if ( _GET(&camera_feed_image,"feed",feed,123) )
-             {
-                 camera_feed_image.content_size = JPEG_MAX_FILE_SIZE_IN_BYTES; // This to indicate what is the maximum size..!
-                 if ( strcmp(feed,"left")==0 ) {  VisCortX_SaveVideoRegisterToJPEGMemory(LEFT_EYE,camera_feed_image.content,&camera_feed_image.content_size); } else
-                 if ( strcmp(feed,"right")==0 ) {  VisCortX_SaveVideoRegisterToJPEGMemory(RIGHT_EYE,camera_feed_image.content,&camera_feed_image.content_size); } else
-                 if ( strcmp(feed,"depth_left")==0 ) {  VisCortX_SaveVideoRegisterToJPEGMemory(DEPTH_LEFT_VIDEO,camera_feed_image.content,&camera_feed_image.content_size); } else
-                 if ( strcmp(feed,"depth_right")==0 ) {  VisCortX_SaveVideoRegisterToJPEGMemory(DEPTH_RIGHT_VIDEO,camera_feed_image.content,&camera_feed_image.content_size); } else
-                                                  {
-                                                    //Incorrect feed id
-                                                    fprintf(stderr,"Error sending feed.jpg , incorrect feed id %s \n",feed);
-                                                    camera_feed_image.content_size =  0;
-                                                  }
-
-             } else
-             {
-                  camera_feed_image.content[0] = 0;
-                  camera_feed_image.content_size =  0;
-             }
-  return 0;
-}
-
-
-
 
 void * prepare_camera_feed_content_LEFT(unsigned int associated_vars)
 {
@@ -147,30 +118,6 @@ void * prepare_camera_feed_content_PROC2(unsigned int associated_vars)
 }
 
 
-//This function prepares the content of  camera_feed_page context , ( execute_web_command.content ) whenever the index page is requested
-void * prepare_camera_page_content_callback(unsigned int associated_vars)
-{
-  //After receiving the command we just want to redirect back to control.html
-  strcpy(camera_feed_page.content,"<html><meta http-equiv=\"refresh\" content=\"1\"><body>");
-
-
-  char feed[123]={0};
-  if ( _GET(&camera_feed_page,"feed",feed,123) )
-             {
-               strcat(camera_feed_page.content,"<div style=\"vertical-align: center; text-align: center; width: 100%%; height: 100%%;\"><img src=\"feed.jpg?feed=");
-               strcat(camera_feed_page.content,feed); // This is not very safe to be dropped raw on the html page returned.. :P On the other hand it will only be visible on the person who sent it so who cares..
-               strcat(camera_feed_page.content,"\"></div>");
-             }  else
-             {
-               strcat(camera_feed_page.content,"<div style=\"vertical-align: center; text-align: center; width: 100%%; height: 100%%;\"><img src=\"empty_feed.jpeg\"></div>");
-             }
-
-  strcat(camera_feed_page.content,"</body></html>");
-
-  // We signal the size of camera_feed_page.content
-  camera_feed_page.content_size=strlen(camera_feed_page.content);
-  return 0;
-}
 
 //This function adds a Resource Handler for the page index.html and its callback function
 void init_dynamic_content()
@@ -178,13 +125,6 @@ void init_dynamic_content()
   //We create a virtual file called "index.html" , when this gets requested our prepare_helloworld_content_callback gets called!
   if (! AmmServer_AddResourceHandler(&execute_web_command,"/execute.html",webserver_root,4096,0,&prepare_execute_web_command_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
   AmmServer_DoNOTCacheResourceHandler(&execute_web_command);
-
-  if (! AmmServer_AddResourceHandler(&camera_feed_image,"/feed.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  AmmServer_DoNOTCacheResourceHandler(&camera_feed_image);
-
-  if (! AmmServer_AddResourceHandler(&camera_feed_page,"/feed.html",webserver_root,4096,0,&prepare_camera_page_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  AmmServer_DoNOTCacheResourceHandler(&camera_feed_page);
-
 
     if (! AmmServer_AddResourceHandler(&camera_feed_image_LEFT,"/feed_left.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_LEFT) ) { fprintf(stderr,"Failed adding execute page\n"); }
   AmmServer_DoNOTCacheResourceHandler(&camera_feed_image_LEFT);
@@ -204,19 +144,16 @@ void close_dynamic_content()
 {
    // AmmServer_RemoveResourceHandler(&helloworld,1);
     AmmServer_RemoveResourceHandler(&execute_web_command,1);
-    AmmServer_RemoveResourceHandler(&camera_feed_image,1);
+    AmmServer_RemoveResourceHandler(&camera_feed_image_LEFT,1);
+    AmmServer_RemoveResourceHandler(&camera_feed_image_RIGHT,1);
+    AmmServer_RemoveResourceHandler(&camera_feed_image_PROC1,1);
+    AmmServer_RemoveResourceHandler(&camera_feed_image_PROC2,1);
 }
 /*! Dynamic content code ..! END ------------------------*/
 
 
 int StartEmbeddedWebInterface()
 {
-   if (DISABLE_EMBEDDED_WEB_INTERFACE)
-   {
-    printf("Ammar Server binding is currently disabled..\n");
-    return 0;
-   }
-
   char * env_directory = get_environment_robot_directory();
   strcpy(webserver_root,env_directory);
   strcat(webserver_root,"permfs/public_html");
@@ -235,6 +172,18 @@ int StartEmbeddedWebInterface()
     //Create dynamic content allocations and associate context to the correct files
     init_dynamic_content();
 
+    //If we want password protection ( variable defined in the start of this file ) we will have to set a username and a password
+    //and then enable password protection
+    if (ENABLE_PASSWORD_PROTECTION)
+    {
+      fprintf(stderr,"\nEnabling password protection\n");
+      AmmServer_SetStrSettingValue(AMMSET_USERNAME_STR,"admin");
+      AmmServer_SetStrSettingValue(AMMSET_PASSWORD_STR,"admin"); //these 2 calls should change BASE64PASSWORD in configuration.c to YWRtaW46YW1tYXI= (or something else)
+      /* To avoid the rare race condition of logging only with username and keep a proper state ( i.e. when password hasn't been declared )
+         It is best to enable password protection after correctly setting both username and password */
+      AmmServer_SetIntSettingValue(AMMSET_PASSWORD_PROTECTION,1);
+    }
+
     return 1;
 }
 
@@ -245,11 +194,6 @@ int EmbeddedWebInterfaceRunning()
 
 int StopEmbeddedWebInterface()
 {
-   if (DISABLE_EMBEDDED_WEB_INTERFACE)
-   {
-    printf("Ammar Server binding is currently disabled..\n");
-    return 0;
-   }
     //Delete dynamic content allocations and remove stats.html and formtest.html from the server
     close_dynamic_content();
 
