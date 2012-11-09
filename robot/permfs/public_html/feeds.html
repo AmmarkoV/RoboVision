@@ -1,0 +1,35 @@
+<html>
+ <body>
+   <script language="JavaScript">
+    var refresh_delay=3000;
+
+    function reloadImage() 
+    {
+       if (document.images) 
+        {
+              document.images.Feed0.src = 'feed_left.jpg?re=' + (new Date()).getTime();
+              document.images.Feed1.src = 'feed_right.jpg?re=' + (new Date()).getTime();
+              document.images.Feed2.src = 'feed_proc1.jpg?re=' + (new Date()).getTime();
+              document.images.Feed3.src = 'feed_proc2.jpg?re=' + (new Date()).getTime();
+        }
+       setTimeout('reloadImage()',refresh_delay);
+    }
+    setTimeout('reloadImage()',refresh_delay);
+</script>
+
+   
+   <table> 
+    <tbody>
+     <tr>
+       <td><img name="Feed0" src="feed_left.jpg"></td> 
+       <td><img name="Feed1" src="feed_right.jpg"></td>
+     </tr>
+    <tr>
+       <td><img name="Feed2" src="feed_proc1.jpg"></td> 
+       <td><img name="Feed3" src="feed_proc2.jpg"></td>
+     </tr>
+    </tbody>
+   </table>
+ </body>
+</html>
+

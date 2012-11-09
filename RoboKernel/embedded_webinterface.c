@@ -42,6 +42,12 @@ struct AmmServer_RH_Context execute_web_command={0};
 struct AmmServer_RH_Context camera_feed_image={0};
 struct AmmServer_RH_Context camera_feed_page={0};
 
+struct AmmServer_RH_Context camera_feed_image_LEFT={0};
+struct AmmServer_RH_Context camera_feed_image_RIGHT={0};
+struct AmmServer_RH_Context camera_feed_image_PROC1={0};
+struct AmmServer_RH_Context camera_feed_image_PROC2={0};
+
+
 unsigned int helloworld_times_shown=0;
 unsigned long JPEG_MAX_FILE_SIZE_IN_BYTES = 100 /*KB*/ * 1024;
 
@@ -109,6 +115,38 @@ void * prepare_camera_feed_content_callback(unsigned int associated_vars)
   return 0;
 }
 
+
+
+
+void * prepare_camera_feed_content_LEFT(unsigned int associated_vars)
+{
+  camera_feed_image_LEFT.content_size = JPEG_MAX_FILE_SIZE_IN_BYTES; // This to indicate what is the maximum size..!
+  VisCortX_SaveVideoRegisterToJPEGMemory(LEFT_EYE,camera_feed_image_LEFT.content,&camera_feed_image_LEFT.content_size);
+  return 0;
+}
+
+void * prepare_camera_feed_content_RIGHT(unsigned int associated_vars)
+{
+  camera_feed_image_RIGHT.content_size = JPEG_MAX_FILE_SIZE_IN_BYTES; // This to indicate what is the maximum size..!
+  VisCortX_SaveVideoRegisterToJPEGMemory(RIGHT_EYE,camera_feed_image_RIGHT.content,&camera_feed_image_RIGHT.content_size);
+  return 0;
+}
+
+void * prepare_camera_feed_content_PROC1(unsigned int associated_vars)
+{
+  camera_feed_image_PROC1.content_size = JPEG_MAX_FILE_SIZE_IN_BYTES; // This to indicate what is the maximum size..!
+  VisCortX_SaveVideoRegisterToJPEGMemory(DEPTH_LEFT_VIDEO,camera_feed_image_PROC1.content,&camera_feed_image_PROC1.content_size);
+  return 0;
+}
+
+void * prepare_camera_feed_content_PROC2(unsigned int associated_vars)
+{
+  camera_feed_image_PROC2.content_size = JPEG_MAX_FILE_SIZE_IN_BYTES; // This to indicate what is the maximum size..!
+  VisCortX_SaveVideoRegisterToJPEGMemory(DEPTH_RIGHT_VIDEO,camera_feed_image_PROC2.content,&camera_feed_image_PROC2.content_size);
+  return 0;
+}
+
+
 //This function prepares the content of  camera_feed_page context , ( execute_web_command.content ) whenever the index page is requested
 void * prepare_camera_page_content_callback(unsigned int associated_vars)
 {
@@ -147,6 +185,18 @@ void init_dynamic_content()
   if (! AmmServer_AddResourceHandler(&camera_feed_page,"/feed.html",webserver_root,4096,0,&prepare_camera_page_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
   AmmServer_DoNOTCacheResourceHandler(&camera_feed_page);
 
+
+    if (! AmmServer_AddResourceHandler(&camera_feed_image_LEFT,"/feed_left.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_LEFT) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  AmmServer_DoNOTCacheResourceHandler(&camera_feed_image_LEFT);
+    if (! AmmServer_AddResourceHandler(&camera_feed_image_RIGHT,"/feed_right.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_RIGHT) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  AmmServer_DoNOTCacheResourceHandler(&camera_feed_image_RIGHT);
+    if (! AmmServer_AddResourceHandler(&camera_feed_image_PROC1,"/feed_proc1.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_PROC1) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  AmmServer_DoNOTCacheResourceHandler(&camera_feed_image_PROC1);
+    if (! AmmServer_AddResourceHandler(&camera_feed_image_PROC2,"/feed_proc2.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_PROC2) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  AmmServer_DoNOTCacheResourceHandler(&camera_feed_image_PROC2);
+
+
+
 }
 
 //This function destroys all Resource Handlers and free's all allocated memory..!
@@ -178,7 +228,7 @@ int StartEmbeddedWebInterface()
     printf("Ammar Server starting up\n");
 
    //Kick start AmmarServer , bind the ports , create the threads and get things going..!
-   
+
    // If i ever change the port from 8080 to 80 I will have to also change the guarddog Script to redirect wget requests to the correct port..!
    AmmServer_Start("0.0.0.0",8080,0,webserver_root,templates_root);
 
