@@ -38,11 +38,11 @@ int main()
 
 
     printf("I Will now attempt to start Video Devices with a total maximum number of 3 video devices! :) ..");
-    if ( InitVideoInputs(3)==1 ) { printf(" .. done \n"); } else
-                                 { printf(" .. failed \n"); return 0; }
+    if ( VideoInput_InitializeLibrary(3)==1 ) { printf(" .. done \n"); } else
+                                              { printf(" .. failed \n"); return 0; }
 
     printf("I Will now attempt to start sampling on VideoDevice slot 0  :) \n");
-    printf("The function called will be : InitVideoFeed(0,\"/dev/video0\",320,240,1);\n");
+    printf("The function called will be : VideoInput_OpenFeed(0,\"/dev/video0\",320,240,1);\n");
     printf("0 is the first device , /dev/video0 the linux location of the device , 320x240 the size of the picture and 1 means enable snapshots!\n");
 
     printf("Creating setting structure \n");
@@ -58,14 +58,14 @@ int main()
 
     struct timespec feed_start,feed_end;
     clock_gettime(CLOCK_REALTIME,&feed_start);
-    if ( InitVideoFeed(0,(char *) "/dev/video0",320,240,BITRATE,25,SNAPSHOTS_ON,feedsettings)==1  ) { printf(" .. done \n"); } else
-                                                                                            { printf(" .. failed \n"); return 0; }
+    if ( VideoInput_OpenFeed(0,(char *) "/dev/video0",320,240,BITRATE,25,SNAPSHOTS_ON,feedsettings)==1  ) { printf(" .. done \n"); } else
+                                                                                                           { printf(" .. failed \n"); return 0; }
 
     printf("Waiting for loop to begin receiving video ");
 
     int MAX_waittime=10000;
     int waittime=0;
-    while ( ( !FeedReceiveLoopAlive(0) )&& (waittime<MAX_waittime) )
+    while ( ( !VideoInput_FeedReceiveLoopAlive(0) )&& (waittime<MAX_waittime) )
       {
         printf(".");
         ++waittime;
@@ -91,7 +91,7 @@ int main()
     clock_gettime(CLOCK_REALTIME,&start);
     for ( i=0; i<ilim; i++)
      {
-       pixels = (unsigned char *) GetFrame(0);
+       pixels = (unsigned char *) VideoInput_GetFrame(0);
      }
     clock_gettime(CLOCK_REALTIME,&end);
     unsigned int achieved_nsecs = end.tv_nsec-start.tv_nsec;
@@ -108,7 +108,7 @@ int main()
 
 
     if (pixels == 0 ) { printf("Something was not right and we got back a zero frame , test failed\n");
-                        CloseVideoInputs();
+                        VideoInput_DeinitializeLibrary();
                         return 1;}
 
 
@@ -174,7 +174,7 @@ int main()
 
 
     printf("All tests are complete , closing video inputs!\n");
-    CloseVideoInputs();
+    VideoInput_DeinitializeLibrary();
     printf("Done..!\n");
 
     clock_gettime(CLOCK_REALTIME,&prog_end);

@@ -162,9 +162,10 @@ unsigned int SanityCheck()
 {
   unsigned int check_returned_ok=1;
   char message[1024]={0};
-  if (  (GetEmptyFrame() ==  GetFrame(1)) && (GetEmptyFrame() ==  GetFrame(0)) ) { strcat(message," I cannot see anything."); } else
-  if (  GetEmptyFrame() ==  GetFrame(0)) { strcat(message," Camera 0 is dead."); } else
-  if (  GetEmptyFrame() ==  GetFrame(1)) { strcat(message," Camera 1 is dead."); }
+
+  if (  (VideoInput_GetEmptyFrame() ==  VideoInput_GetFrame(1)) && (VideoInput_GetEmptyFrame() ==  VideoInput_GetFrame(0)) ) { strcat(message," I cannot see anything."); } else
+  if (  VideoInput_GetEmptyFrame() ==  VideoInput_GetFrame(0)) { strcat(message," Camera 0 is dead."); } else
+  if (  VideoInput_GetEmptyFrame() ==  VideoInput_GetFrame(1)) { strcat(message," Camera 1 is dead."); }
 
   if (  !RobotBaseOk() ) {  strcat(message," I Cannot move my body."); }
   if (  !RobotHeadOk() ) {  strcat(message," I Cannot move my head or receive input from sensors."); }

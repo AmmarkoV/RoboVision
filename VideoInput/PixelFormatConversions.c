@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "state.h"
 #include <linux/videodev2.h>
 
 int YUYVY_ImplementationCheck_OK()
@@ -9,6 +10,68 @@ int YUYVY_ImplementationCheck_OK()
   if ( sizeof(unsigned int)!=4 ) { fprintf(stderr,"YUYVY_Implementation ERROR unsigned int not 4 bytes long!!\n"); }
   return 1;
 }
+
+
+
+
+
+
+
+
+int DecodePixels(int webcam_id)
+{
+if ( camera_feeds[webcam_id].frame_decoded==0)
+                                             { /*THIS FRAME HASN`T BEEN DECODED YET!*/
+                                               int i=Convert2RGB24( (unsigned char*)camera_feeds[webcam_id].frame,
+                                                                    (unsigned char*)camera_feeds[webcam_id].decoded_pixels,
+                                                                    camera_feeds[webcam_id].width,
+                                                                    camera_feeds[webcam_id].height,
+                                                                    camera_feeds[webcam_id].input_pixel_format,
+                                                                    camera_feeds[webcam_id].input_pixel_format_bitdepth );
+
+                                               if ( i == 0 ) { /* UNABLE TO PERFORM CONVERSION */
+                                                                return 0; } else
+
+                                                              { /* SUCCESSFUL CONVERSION */
+                                                                  camera_feeds[webcam_id].frame_decoded=1;
+                                                              }
+                                             }
+ return 1;
+}
+
+
+
+
+
+unsigned char * ReturnDecodedLiveFrame(int webcam_id)
+{
+   /*
+          THIS FRAME DECIDES IF THE VIDEO FORMAT NEEDS DECODING OR CAN BE RETURNED RAW FROM THE DEVICE
+          SEE PixelFormats.cpp / PixelFormatConversions.cpp
+   */
+
+   if (VideoFormatNeedsDecoding(camera_feeds[webcam_id].input_pixel_format,camera_feeds[webcam_id].input_pixel_format_bitdepth)==1)
+                                          {
+                                            /*VIDEO COMES IN A FORMAT THAT NEEDS DECODING TO RGB 24*/
+                                            if ( DecodePixels(webcam_id)==0 ) return empty_frame;
+
+                                            return (unsigned char *) camera_feeds[webcam_id].decoded_pixels;
+                                          } else
+                                          {
+                                            /* The frame is ready so we mark it as decoded*/
+                                            camera_feeds[webcam_id].frame_decoded=1;
+
+                                            if ( camera_feeds[webcam_id].frame == 0 )
+                                               {
+                                                   /*Handler for when the frame does not exist */
+                                                   return empty_frame;
+                                               }
+                                            return (unsigned char *) camera_feeds[webcam_id].frame;
+                                          }
+   return empty_frame;
+}
+
+
 
 /*
   -----------------------------------------

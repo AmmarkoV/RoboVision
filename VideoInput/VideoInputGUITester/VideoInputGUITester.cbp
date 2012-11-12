@@ -35,8 +35,12 @@
 			<Add option="`wx-config --cflags`" />
 		</Compiler>
 		<Linker>
+			<Add option="../libVideoInput.a" />
 			<Add option="`wx-config --libs`" />
-			<Add library="../libVideoInput.a" />
+			<Add option="-lpthread" />
+			<Add option="-lpng" />
+			<Add option="-ljpeg" />
+			<Add option="-lrt" />
 		</Linker>
 		<Unit filename="VideoInputGUITesterApp.cpp" />
 		<Unit filename="VideoInputGUITesterApp.h" />

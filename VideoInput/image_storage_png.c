@@ -51,7 +51,9 @@ unsigned int width, height;
         FILE *fp = fopen(filename, "rb");
         if (!fp)
                 abort_("[read_png_file] File %s could not be opened for reading", filename);
-        fread(header, 1, 8, fp);
+        int i=fread(header, 1, 8, fp);
+        if (i!=8) { fprintf(stderr,"error reading png header..\n"); }
+
         if (png_sig_cmp((png_byte*) header, 0, 8))
                 abort_("[read_png_file] File %s is not recognized as a PNG file", filename);
 

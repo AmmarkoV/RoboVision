@@ -151,9 +151,9 @@ int WriteJPEG( char *filename,struct Image * pic,char *mem,unsigned long * mem_s
 	cinfo.in_color_space = (J_COLOR_SPACE) JPEGcolor_space;
     /* default compression parameters, we shouldn't be worried about these */
 	jpeg_set_defaults( &cinfo );
-	jpeg_set_quality (&cinfo, 75, true);
+	jpeg_set_quality (&cinfo, 75,1/*TRUE*/);
 	/* Now do the compression .. */
-	jpeg_start_compress( &cinfo, TRUE );
+	jpeg_start_compress( &cinfo, 1/*TRUE*/ );
 	/* like reading a file, this time write one row at a time */
 
      while( cinfo.next_scanline < cinfo.image_height )

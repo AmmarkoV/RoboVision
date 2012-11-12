@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
+#include "state.h"
 
 #define PPMREADBUFLEN 256
 
@@ -231,3 +231,38 @@ int DrawLine_inFrame( unsigned int x1,unsigned int y1,unsigned int x2,unsigned i
 
 
 
+int ReallocEmptyFrame(unsigned int new_size_x,unsigned int new_size_y)
+
+/*This function reallocates empty_frame in order to make it point to a usable black screen buffer
+  this will help applications that wait for video always get a video frame instead of a zero pointer
+  that needs to be managed carefully..!
+ */
+{
+    if ( !DO_NOT_RETURN_NULL_POINTERS )
+      {
+          return 0;
+      }
+
+    int change_made = 0;
+    if ( largest_feed_x < new_size_x ) { change_made = 1; largest_feed_x = new_size_x; }
+    if ( largest_feed_y < new_size_y ) { change_made = 1; largest_feed_y = new_size_y; }
+
+
+    if (  (change_made) || (empty_frame == 0) )
+      {
+          if ( empty_frame != 0 ) { free(empty_frame); }
+          empty_frame=(unsigned char * ) malloc(largest_feed_x * largest_feed_y * 3 * sizeof ( unsigned char) );
+          if (empty_frame==0) { fprintf(stderr,"Error allocating memory for empty_frame structure"); return 0; }
+
+          unsigned int i=0;
+          for (i=0; i<largest_feed_x * largest_feed_y * 3; i++) { empty_frame[i]=0;}
+
+          DrawLine_inFrame(0,0,largest_feed_x-1,largest_feed_y-1,255,0,0,empty_frame,3,largest_feed_x,largest_feed_y);
+          DrawLine_inFrame(0,largest_feed_y-1,largest_feed_x-1,0,255,0,0,empty_frame,3,largest_feed_x,largest_feed_y);
+
+
+          if (VIDEOINPUT_DEBUG) { fprintf(stderr,"Reallocating new `empty` frame with size %ux%u \n",largest_feed_x,largest_feed_y); }
+      }
+
+    return 1;
+}

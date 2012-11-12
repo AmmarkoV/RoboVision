@@ -82,13 +82,13 @@ VideoInputGUITesterDialog::VideoInputGUITesterDialog(wxWindow* parent,wxWindowID
     //*)
 
     default_feed=new wxBitmap(wxT("empty.bmp"),wxBITMAP_TYPE_BMP);
-    InitVideoInputs(1);
-    
+    VideoInput_InitializeLibrary(1);
+
     unsigned int BITRATE = 0;
     //videosettings.PixelFormat=V4L2_PIX_FMT_YUYV; BITRATE=16; // <- Common compressed setting for UVC webcams
     videosettings.PixelFormat=V4L2_PIX_FMT_RGB24; BITRATE=24;   //   <- Common raw setting for UVC webcams ( Run Compat )
 
-    InitVideoFeed(0,(char *) "/dev/video0",320,240,BITRATE,25,1,videosettings);
+    VideoInput_OpenFeed(0,(char *) "/dev/video0",320,240,BITRATE,25,1,videosettings);
 }
 
 VideoInputGUITesterDialog::~VideoInputGUITesterDialog()
@@ -102,7 +102,7 @@ VideoInputGUITesterDialog::~VideoInputGUITesterDialog()
 void VideoInputGUITesterDialog::OnQuit(wxCommandEvent& event)
 {
     Close();
-    CloseVideoInputs();
+    VideoInput_DeinitializeLibrary();
 }
 
 unsigned char * GetFrame(int webcam_id);
@@ -121,11 +121,11 @@ void VideoInputGUITesterDialog::OnDrawTimerTrigger(wxTimerEvent& event)
 
 void UpdateImageOfCamera()
 {
-  if (NewFrameAvailiable(0))
+  if (VideoInput_NewFrameAvailiable(0))
    {
      if ( camera_feed != 0 ) { delete camera_feed; camera_feed=0; }
 
-     void *frame=GetFrame(0);
+     void *frame=VideoInput_GetFrame(0);
        if ( frame != 0)
         {
             img.SetData((unsigned char *)frame,320,240,true);

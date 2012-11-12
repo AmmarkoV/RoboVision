@@ -32,9 +32,11 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Linker>
+			<Add option="../libVideoInput.a" />
 			<Add option="-pthread" />
 			<Add option="-lrt" />
-			<Add library="../libVideoInput.a" />
+			<Add option="-lpng" />
+			<Add option="-ljpeg" />
 		</Linker>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />

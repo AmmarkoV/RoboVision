@@ -1,33 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+#ifndef V4L2_H_INCLUDED
+#define V4L2_H_INCLUDED
+
 //#include <asm-i386/types.h>
 #include <linux/types.h>
 #include <linux/videodev2.h>
 #include "PrintV4L2.h"
+#include "V4L2_c.h"
 
-#define CLEAR(x) memset (&(x), 0, sizeof (x))
-
-typedef enum
-{
-  IO_METHOD_READ,
-  IO_METHOD_MMAP,
-  IO_METHOD_USERPTR,
-} io_method;
-
-struct buffer {
-  void * start;
-  size_t length;
-};
 
 /**
  * Class for getting frames from a camera via the Video For Linux library. This
  * is just an object oriented wrapper class. See
  * http://staff.science.uva.nl/~bterwijn/Projects/V4L2/v4l2_website/v4l2spec.bytesex.org/spec-single/v4l2.html for Video For Linux documentation.
  */
-
-#define TIMEOUT_SEC 10
-#define TIMEOUT_USEC 0
 
 class V4L2
 {
@@ -63,3 +52,5 @@ class V4L2
   void init_mmap(void);
   void init_userp(unsigned int buffer_size);
 };
+
+#endif

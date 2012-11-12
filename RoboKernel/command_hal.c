@@ -242,8 +242,8 @@ int ExecuteCommandInternal(unsigned int opcode,unsigned int words_count,struct I
      break;
 
      case CMD_RECORD_COMPRESSED :
-                 sprintf(outptstr,"From %s : Changing Recording Compression setting to %u \n",from,cmdi_1);
-                 CompressRecordWithImageMagick(cmdi_1);
+                 sprintf(outptstr,"From %s : \n\n  DEPRECIATED!!!  \n\n Changing Recording Compression setting to %u \n",from,cmdi_1);
+                 //CompressRecordWithImageMagick(cmdi_1);
      break;
 
      case CMD_RECORD_SNAPSHOT :

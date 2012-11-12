@@ -33,23 +33,22 @@ int main()
     printf("Sample program that snaps an image every 10 seconds if a viewers.dat file exists and outputs it at /home/ammar/public_html/snap0.jpg \n");
     printf("Needs imagemagick for conversions :)\n\n\n");
     printf("Starting Video Input\n");
-    if ( InitVideoInputs(1)==1 ) { printf(" .. done \n"); } else
-                                 { printf(" .. failed \n"); return 0; }
+    if ( VideoInput_InitializeLibrary(1)==1 ) { printf(" .. done \n"); } else
+                                              { printf(" .. failed \n"); return 0; }
 
     char BITRATE=32;
     struct VideoFeedSettings feedsettings={0};
     feedsettings.PixelFormat=V4L2_PIX_FMT_RGB24; BITRATE=24;
 
     printf("Starting Video Feed\n");
-    if ( InitVideoFeed(0,(char *) "/dev/video0",320,240,BITRATE,25,1,feedsettings)==1  ) { printf(" .. done \n"); } else
-                                                                                      { printf(" .. failed \n"); return 0; }
+    if ( VideoInput_OpenFeed(0,(char *) "/dev/video0",320,240,BITRATE,25,1,feedsettings)==1  ) { printf(" .. done \n"); } else
+                                                                                                 { printf(" .. failed \n"); return 0; }
 
     unsigned int milliseconds=0;
     unsigned int snapit=0;
-    signed int i;
     while (1)
      {
-       GetFrame(0);
+       VideoInput_GetFrame(0);
        usleep(1000);
        ++milliseconds;
 
@@ -68,6 +67,6 @@ int main()
 
 
     printf("Closing Video Feeds\n");
-    CloseVideoInputs();
+    VideoInput_DeinitializeLibrary();
     return 0;
 }

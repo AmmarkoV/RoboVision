@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="VideoInput" />
+		<Option title="VideoInput_C" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -13,10 +13,7 @@
 				<Option type="2" />
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
-				<Option projectCompilerOptionsRelation="0" />
 				<Compiler>
-					<Add option="-march=nocona" />
-					<Add option="-O3" />
 					<Add option="-Wall" />
 					<Add option="-g" />
 				</Compiler>
@@ -29,36 +26,57 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
-					<Add option="-O3" />
 					<Add option="-Wall" />
+					<Add option="-O2" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
 				</Linker>
 			</Target>
 		</Build>
-		<Linker>
-			<Add option="-pthread" />
-		</Linker>
-		<Unit filename="PixelFormatConversions.cpp" />
+		<Unit filename="PixelFormatConversions.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="PixelFormatConversions.h" />
-		<Unit filename="PixelFormats.cpp" />
+		<Unit filename="PixelFormats.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="PixelFormats.h" />
-		<Unit filename="PrintV4L2.cpp" />
+		<Unit filename="PrintV4L2.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="PrintV4L2.h" />
-		<Unit filename="V4L2.cpp" />
-		<Unit filename="V4L2.h" />
+		<Unit filename="V4L2_c.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="V4L2_c.h" />
 		<Unit filename="VideoInput.h" />
-		<Unit filename="image_storage.cpp" />
+		<Unit filename="image_storage.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="image_storage.h" />
-		<Unit filename="image_storage_jpg.cpp" />
+		<Unit filename="image_storage_jpg.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="image_storage_jpg.h" />
-		<Unit filename="image_storage_png.cpp" />
+		<Unit filename="image_storage_png.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="image_storage_png.h" />
-		<Unit filename="main.cpp" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="state.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="state.h" />
+		<Unit filename="tools.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tools.h" />
 		<Extensions>
-			<code_completion />
 			<envvars />
+			<code_completion />
 			<lib_finder disable_auto="1" />
 			<debugger />
 		</Extensions>
