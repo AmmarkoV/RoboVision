@@ -28,8 +28,8 @@
 	<File name="configuration.h" open="1" top="0" tabpos="10">
 		<Cursor position="1508" topLine="12" />
 	</File>
-	<File name="embedded_webinterface.c" open="1" top="0" tabpos="27">
-		<Cursor position="1126" topLine="24" />
+	<File name="embedded_webinterface.c" open="1" top="1" tabpos="27">
+		<Cursor position="8515" topLine="155" />
 	</File>
 	<File name="embedded_webinterface.h" open="1" top="0" tabpos="28">
 		<Cursor position="185" topLine="0" />
@@ -52,7 +52,7 @@
 	<File name="joystick.h" open="1" top="0" tabpos="24">
 		<Cursor position="1838" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="1" tabpos="1">
+	<File name="main.c" open="1" top="0" tabpos="1">
 		<Cursor position="4143" topLine="175" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">

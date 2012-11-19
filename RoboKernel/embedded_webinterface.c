@@ -37,6 +37,8 @@ char templates_root[512]="../AmmarServer/public_html/templates/";
 /*! Dynamic content code ..! START!*/
 /* This is the dynamic Hello World example , as shown here : https://github.com/AmmarkoV/AmmarServer/wiki/Howto */
 
+struct AmmServer_Instance guarddog_web_intf={0};
+
 //The decleration of hello world dynamic content resources..
 struct AmmServer_RH_Context execute_web_command={0};
 
@@ -58,7 +60,7 @@ void * prepare_execute_web_command_content_callback(unsigned int associated_vars
   unsigned int html_output = 1 ;
 
   //If we have the console argument set this means we dont want the html output enabled so we switch it off
-  if ( _GET(&execute_web_command,"console",command,MAX_WEB_COMMAND_SIZE) ) { html_output = 0; }
+  if ( _GET(&guarddog_web_intf,&execute_web_command,"console",command,MAX_WEB_COMMAND_SIZE) ) { html_output = 0; }
 
   execute_web_command.content[0]=0;
 
@@ -66,13 +68,13 @@ void * prepare_execute_web_command_content_callback(unsigned int associated_vars
   if (html_output) { strcpy(execute_web_command.content,"<html><meta http-equiv=\"refresh\" content=\"0;URL='control.html'\"><body>Executed<br>"); }
 
 
-  if ( _GET(&execute_web_command,"go",command,MAX_WEB_COMMAND_SIZE) )
+  if ( _GET(&guarddog_web_intf,&execute_web_command,"go",command,MAX_WEB_COMMAND_SIZE) )
              {
                   fprintf(stderr,"Executing command %s from webinterface\n",command);
                   IssueCommandInternal(command,"WEBINTERFACE",output_string,512);
                   strcat(execute_web_command.content,output_string); // Append output
              } else
-  if ( _GET(&execute_web_command,"do",command,MAX_WEB_COMMAND_SIZE) )
+  if ( _GET(&guarddog_web_intf,&execute_web_command,"do",command,MAX_WEB_COMMAND_SIZE) )
              {
                   fprintf(stderr,"Executing command %s from webinterface\n",command);
                   IssueCommandInternal(command,"WEBINTERFACE",output_string,512);
@@ -123,17 +125,17 @@ void * prepare_camera_feed_content_PROC2(unsigned int associated_vars)
 void init_dynamic_content()
 {
   //We create a virtual file called "index.html" , when this gets requested our prepare_helloworld_content_callback gets called!
-  if (! AmmServer_AddResourceHandler(&execute_web_command,"/execute.html",webserver_root,4096,0,&prepare_execute_web_command_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  AmmServer_DoNOTCacheResourceHandler(&execute_web_command);
+  if (! AmmServer_AddResourceHandler(&guarddog_web_intf,&execute_web_command,"/execute.html",webserver_root,4096,0,&prepare_execute_web_command_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&execute_web_command);
 
-    if (! AmmServer_AddResourceHandler(&camera_feed_image_LEFT,"/feed_left.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_LEFT) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  AmmServer_DoNOTCacheResourceHandler(&camera_feed_image_LEFT);
-    if (! AmmServer_AddResourceHandler(&camera_feed_image_RIGHT,"/feed_right.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_RIGHT) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  AmmServer_DoNOTCacheResourceHandler(&camera_feed_image_RIGHT);
-    if (! AmmServer_AddResourceHandler(&camera_feed_image_PROC1,"/feed_proc1.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_PROC1) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  AmmServer_DoNOTCacheResourceHandler(&camera_feed_image_PROC1);
-    if (! AmmServer_AddResourceHandler(&camera_feed_image_PROC2,"/feed_proc2.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_PROC2) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  AmmServer_DoNOTCacheResourceHandler(&camera_feed_image_PROC2);
+    if (! AmmServer_AddResourceHandler(&guarddog_web_intf,&camera_feed_image_LEFT,"/feed_left.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_LEFT) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&camera_feed_image_LEFT);
+    if (! AmmServer_AddResourceHandler(&guarddog_web_intf,&camera_feed_image_RIGHT,"/feed_right.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_RIGHT) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&camera_feed_image_RIGHT);
+    if (! AmmServer_AddResourceHandler(&guarddog_web_intf,&camera_feed_image_PROC1,"/feed_proc1.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_PROC1) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&camera_feed_image_PROC1);
+    if (! AmmServer_AddResourceHandler(&guarddog_web_intf,&camera_feed_image_PROC2,"/feed_proc2.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_PROC2) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&camera_feed_image_PROC2);
 
 
 
@@ -143,11 +145,11 @@ void init_dynamic_content()
 void close_dynamic_content()
 {
    // AmmServer_RemoveResourceHandler(&helloworld,1);
-    AmmServer_RemoveResourceHandler(&execute_web_command,1);
-    AmmServer_RemoveResourceHandler(&camera_feed_image_LEFT,1);
-    AmmServer_RemoveResourceHandler(&camera_feed_image_RIGHT,1);
-    AmmServer_RemoveResourceHandler(&camera_feed_image_PROC1,1);
-    AmmServer_RemoveResourceHandler(&camera_feed_image_PROC2,1);
+    AmmServer_RemoveResourceHandler(&guarddog_web_intf,&execute_web_command,1);
+    AmmServer_RemoveResourceHandler(&guarddog_web_intf,&camera_feed_image_LEFT,1);
+    AmmServer_RemoveResourceHandler(&guarddog_web_intf,&camera_feed_image_RIGHT,1);
+    AmmServer_RemoveResourceHandler(&guarddog_web_intf,&camera_feed_image_PROC1,1);
+    AmmServer_RemoveResourceHandler(&guarddog_web_intf,&camera_feed_image_PROC2,1);
 }
 /*! Dynamic content code ..! END ------------------------*/
 
@@ -167,7 +169,7 @@ int StartEmbeddedWebInterface()
    //Kick start AmmarServer , bind the ports , create the threads and get things going..!
 
    // If i ever change the port from 8080 to 80 I will have to also change the guarddog Script to redirect wget requests to the correct port..!
-   AmmServer_Start("0.0.0.0",8080,0,webserver_root,templates_root);
+   AmmServer_Start(&guarddog_web_intf,"0.0.0.0",8080,0,webserver_root,templates_root);
 
     //Create dynamic content allocations and associate context to the correct files
     init_dynamic_content();
@@ -177,11 +179,11 @@ int StartEmbeddedWebInterface()
     if (ENABLE_PASSWORD_PROTECTION)
     {
       fprintf(stderr,"\nEnabling password protection\n");
-      AmmServer_SetStrSettingValue(AMMSET_USERNAME_STR,"admin");
-      AmmServer_SetStrSettingValue(AMMSET_PASSWORD_STR,"admin"); //these 2 calls should change BASE64PASSWORD in configuration.c to YWRtaW46YW1tYXI= (or something else)
+      AmmServer_SetStrSettingValue(&guarddog_web_intf,AMMSET_USERNAME_STR,"admin");
+      AmmServer_SetStrSettingValue(&guarddog_web_intf,AMMSET_PASSWORD_STR,"admin"); //these 2 calls should change BASE64PASSWORD in configuration.c to YWRtaW46YW1tYXI= (or something else)
       /* To avoid the rare race condition of logging only with username and keep a proper state ( i.e. when password hasn't been declared )
          It is best to enable password protection after correctly setting both username and password */
-      AmmServer_SetIntSettingValue(AMMSET_PASSWORD_PROTECTION,1);
+      AmmServer_SetIntSettingValue(&guarddog_web_intf,AMMSET_PASSWORD_PROTECTION,1);
     }
 
     return 1;
@@ -189,7 +191,7 @@ int StartEmbeddedWebInterface()
 
 int EmbeddedWebInterfaceRunning()
 {
-    return AmmServer_Running();
+    return AmmServer_Running(&guarddog_web_intf);
 }
 
 int StopEmbeddedWebInterface()
@@ -198,7 +200,7 @@ int StopEmbeddedWebInterface()
     close_dynamic_content();
 
     //Stop the server and clean state
-    AmmServer_Stop();
+    AmmServer_Stop(&guarddog_web_intf);
 
     return 1;
 }
