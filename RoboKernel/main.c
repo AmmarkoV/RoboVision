@@ -15,6 +15,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include "../MotorFoundation/MotorHAL.h"
 
@@ -183,6 +184,21 @@ unsigned int SanityCheck()
 }
 
 
+
+void termination_handler (int signum)
+     {
+        fprintf(stderr,"Terminating RoboKernel.. ");
+        go_to_sleep = 1;
+        // W8 it out for a little here..
+        int wait_timer=0;
+
+        while ((go_to_sleep!=2) && (wait_timer<10) ) { usleep(1000); fprintf(stderr,"."); }
+
+        fprintf(stderr," done\n");
+        exit(0);
+     }
+
+
 void * KernelLoop(void *ptr )
 {
   InitSenses();
@@ -192,6 +208,13 @@ void * KernelLoop(void *ptr )
 
 
   SanityCheck();
+
+
+  if (signal(SIGINT, termination_handler) == SIG_ERR)   printf("Cannot handle SIGINT!\n");
+  if (signal(SIGHUP, termination_handler) == SIG_ERR)   printf("Cannot handle SIGHUP!\n");
+  if (signal(SIGTERM, termination_handler) == SIG_ERR)  printf("Cannot handle SIGTERM!\n");
+  if (signal(SIGKILL, termination_handler) == SIG_ERR)  printf("Cannot handle SIGKILL!\n");
+
 
   DropRootUID();
 
