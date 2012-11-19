@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="MotorHAL.c" open="1" top="0" tabpos="1">
+	<File name="MotorHAL.c" open="1" top="0" tabpos="22">
 		<Cursor position="361" topLine="426" />
 	</File>
-	<File name="MotorHAL.h" open="1" top="0" tabpos="2">
+	<File name="MotorHAL.h" open="1" top="0" tabpos="23">
 		<Cursor position="1316" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

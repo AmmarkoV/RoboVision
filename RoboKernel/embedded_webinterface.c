@@ -21,10 +21,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "configuration.h"
+
 #include "../AmmarServer/src/AmmServerlib/AmmServerlib.h"
 #include "embedded_webinterface.h"
 #include "visual_system.h"
-#include "configuration.h"
+#include "command_hal.h"
 
 #define ENABLE_PASSWORD_PROTECTION 1
 #define MAX_WEB_COMMAND_SIZE 512
@@ -129,13 +131,16 @@ void init_dynamic_content()
   AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&execute_web_command);
 
     if (! AmmServer_AddResourceHandler(&guarddog_web_intf,&camera_feed_image_LEFT,"/feed_left.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_LEFT) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&camera_feed_image_LEFT);
+   AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&camera_feed_image_LEFT);
+
     if (! AmmServer_AddResourceHandler(&guarddog_web_intf,&camera_feed_image_RIGHT,"/feed_right.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_RIGHT) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&camera_feed_image_RIGHT);
+   AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&camera_feed_image_RIGHT);
+
     if (! AmmServer_AddResourceHandler(&guarddog_web_intf,&camera_feed_image_PROC1,"/feed_proc1.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_PROC1) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&camera_feed_image_PROC1);
+   AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&camera_feed_image_PROC1);
+
     if (! AmmServer_AddResourceHandler(&guarddog_web_intf,&camera_feed_image_PROC2,"/feed_proc2.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_PROC2) ) { fprintf(stderr,"Failed adding execute page\n"); }
-  AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&camera_feed_image_PROC2);
+   AmmServer_DoNOTCacheResourceHandler(&guarddog_web_intf,&camera_feed_image_PROC2);
 
 
 
@@ -156,6 +161,8 @@ void close_dynamic_content()
 
 int StartEmbeddedWebInterface()
 {
+  if ( ! Web_Interface_Enabled ) { fprintf(stderr,"Embedded Web Interface is disabled.. ( this means console as well.. )");  return 0; }
+
   char * env_directory = get_environment_robot_directory();
   strcpy(webserver_root,env_directory);
   strcat(webserver_root,"permfs/public_html");
@@ -191,11 +198,14 @@ int StartEmbeddedWebInterface()
 
 int EmbeddedWebInterfaceRunning()
 {
+    if (!Web_Interface_Enabled) { return 0; }
     return AmmServer_Running(&guarddog_web_intf);
 }
 
 int StopEmbeddedWebInterface()
 {
+    if (!Web_Interface_Enabled) { return 0; }
+
     //Delete dynamic content allocations and remove stats.html and formtest.html from the server
     close_dynamic_content();
 

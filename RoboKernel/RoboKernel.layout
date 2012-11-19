@@ -22,14 +22,14 @@
 	<File name="command_implementation.h" open="1" top="0" tabpos="12">
 		<Cursor position="524" topLine="0" />
 	</File>
-	<File name="configuration.c" open="1" top="0" tabpos="9">
-		<Cursor position="3956" topLine="26" />
+	<File name="configuration.c" open="1" top="1" tabpos="9">
+		<Cursor position="1227" topLine="17" />
 	</File>
 	<File name="configuration.h" open="1" top="0" tabpos="10">
-		<Cursor position="1508" topLine="12" />
+		<Cursor position="496" topLine="13" />
 	</File>
-	<File name="embedded_webinterface.c" open="1" top="1" tabpos="27">
-		<Cursor position="8515" topLine="155" />
+	<File name="embedded_webinterface.c" open="1" top="0" tabpos="27">
+		<Cursor position="9377" topLine="163" />
 	</File>
 	<File name="embedded_webinterface.h" open="1" top="0" tabpos="28">
 		<Cursor position="185" topLine="0" />
@@ -41,7 +41,7 @@
 		<Cursor position="275" topLine="0" />
 	</File>
 	<File name="irc_interface.c" open="1" top="0" tabpos="25">
-		<Cursor position="1583" topLine="52" />
+		<Cursor position="1583" topLine="186" />
 	</File>
 	<File name="irc_interface.h" open="1" top="0" tabpos="26">
 		<Cursor position="154" topLine="0" />
@@ -53,7 +53,7 @@
 		<Cursor position="1838" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="4143" topLine="175" />
+		<Cursor position="1598" topLine="50" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
 		<Cursor position="1020" topLine="0" />
@@ -80,7 +80,7 @@
 		<Cursor position="175" topLine="0" />
 	</File>
 	<File name="webinterface.c" open="1" top="0" tabpos="7">
-		<Cursor position="2878" topLine="93" />
+		<Cursor position="2878" topLine="211" />
 	</File>
 	<File name="webinterface.h" open="1" top="0" tabpos="8">
 		<Cursor position="496" topLine="0" />

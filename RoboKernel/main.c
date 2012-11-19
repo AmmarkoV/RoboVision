@@ -187,12 +187,13 @@ unsigned int SanityCheck()
 
 void termination_handler (int signum)
      {
-        fprintf(stderr,"Terminating RoboKernel.. ");
-        go_to_sleep = 1;
+        if ( (go_to_sleep==1) || (go_to_sleep==2) ) { fprintf(stderr,"Robokernel already terminating/ed ( by an outside cause , we'll leave it alone ) .. "); return 1; }
+                                                    { fprintf(stderr,"Terminating RoboKernel.. "); go_to_sleep = 1; }
+
         // W8 it out for a little here..
         int wait_timer=0;
 
-        while ((go_to_sleep!=2) && (wait_timer<10) ) { usleep(1000); fprintf(stderr,"."); }
+        while ((go_to_sleep!=2) && (wait_timer<10) ) { usleep(10000); fprintf(stderr,"."); }
 
         fprintf(stderr," done\n");
         exit(0);

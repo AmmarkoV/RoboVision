@@ -1,6 +1,7 @@
 #include "configuration.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "../InputParser/InputParser_C.h"
 #include "../VisualCortex/VisualCortex.h"
@@ -40,6 +41,7 @@ char tts_command[MAX_STR]="\" | festival";
 char tts_command_parameter[MAX_STR]="--tts";
 
 unsigned int IRC_Interface_Enabled=0;
+unsigned int Web_Interface_Enabled=0;
 
 
 
