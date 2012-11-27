@@ -11,7 +11,7 @@
 		<Cursor position="862" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="8860" topLine="651" />
+		<Cursor position="8860" topLine="453" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="570" topLine="0" />
@@ -47,7 +47,7 @@
 		<Cursor position="571" topLine="0" />
 	</File>
 	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
-		<Cursor position="4447" topLine="132" />
+		<Cursor position="1129" topLine="225" />
 	</File>
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
 		<Cursor position="1084" topLine="0" />

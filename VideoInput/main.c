@@ -480,7 +480,10 @@ void RecordInLoop(int feed_num)
      char last_part[7]="0.jpg";
      last_part[0]='0'+feed_num;
      strcat(store_path,last_part);
-     WriteJPEG(store_path,&camera_feeds[feed_num].rec_video,camera_feeds[feed_num].mem_buffer_for_recording,camera_feeds[feed_num].mem_buffer_for_recording_size);
+     camera_feeds[feed_num].jpeg_compressor_running=1;
+     WriteJPEG(store_path,&camera_feeds[feed_num].rec_video,camera_feeds[feed_num].mem_buffer_for_recording,&camera_feeds[feed_num].mem_buffer_for_recording_size);
+     camera_feeds[feed_num].jpeg_compressor_running=0;
+     //fprintf(stderr,"WriteJPEG returned %u bytes\n",camera_feeds[feed_num].mem_buffer_for_recording_size);
     }
 /*    else
     {
@@ -490,10 +493,10 @@ void RecordInLoop(int feed_num)
      WritePNG(store_path,&camera_feeds[feed_num].rec_video);
     }
 */
+    fprintf(stderr,"Writing Snapshot ( %s ) \n",store_path);
+
 
     if ( mode_started == RECORDING_ONE_ON) { camera_feeds[feed_num].video_simulation = LIVE_ON; }
-
-    fprintf(stderr,"Writing Snapshot ( %s ) \n",store_path);
 
     return;
 }
