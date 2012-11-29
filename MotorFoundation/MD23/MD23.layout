@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="MD23.c" open="1" top="0" tabpos="17">
+	<File name="MD23.c" open="1" top="0" tabpos="1">
 		<Cursor position="13434" topLine="372" />
 	</File>
-	<File name="MD23.h" open="1" top="0" tabpos="18">
+	<File name="MD23.h" open="1" top="0" tabpos="2">
 		<Cursor position="1385" topLine="13" />
 	</File>
-	<File name="MD23_commands.c" open="1" top="0" tabpos="19">
+	<File name="MD23_commands.c" open="1" top="0" tabpos="3">
 		<Cursor position="90" topLine="113" />
 	</File>
-	<File name="usb_2_i2c.c" open="1" top="0" tabpos="20">
+	<File name="usb_2_i2c.c" open="1" top="0" tabpos="4">
 		<Cursor position="415" topLine="0" />
 	</File>
-	<File name="usb_2_i2c.h" open="1" top="0" tabpos="21">
+	<File name="usb_2_i2c.h" open="1" top="0" tabpos="5">
 		<Cursor position="242" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

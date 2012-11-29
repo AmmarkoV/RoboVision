@@ -127,19 +127,19 @@ void * prepare_camera_feed_content_PROC2(char * content)
 void init_dynamic_content()
 {
   //We create a virtual file called "index.html" , when this gets requested our prepare_helloworld_content_callback gets called!
-  if (! AmmServer_AddResourceHandler(guarddog_web_intf,&execute_web_command,"/execute.html",webserver_root,4096,0,&prepare_execute_web_command_content_callback) ) { fprintf(stderr,"Failed adding execute page\n"); }
+  if (! AmmServer_AddResourceHandler(guarddog_web_intf,&execute_web_command,"/execute.html",webserver_root,4096,0,&prepare_execute_web_command_content_callback,SAME_PAGE_FOR_ALL_CLIENTS) ) { fprintf(stderr,"Failed adding execute page\n"); }
   AmmServer_DoNOTCacheResourceHandler(guarddog_web_intf,&execute_web_command);
 
-    if (! AmmServer_AddResourceHandler(guarddog_web_intf,&camera_feed_image_LEFT,"/feed_left.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_LEFT) ) { fprintf(stderr,"Failed adding execute page\n"); }
+    if (! AmmServer_AddResourceHandler(guarddog_web_intf,&camera_feed_image_LEFT,"/feed_left.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_LEFT,SAME_PAGE_FOR_ALL_CLIENTS) ) { fprintf(stderr,"Failed adding execute page\n"); }
    AmmServer_DoNOTCacheResourceHandler(guarddog_web_intf,&camera_feed_image_LEFT);
 
-    if (! AmmServer_AddResourceHandler(guarddog_web_intf,&camera_feed_image_RIGHT,"/feed_right.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_RIGHT) ) { fprintf(stderr,"Failed adding execute page\n"); }
+    if (! AmmServer_AddResourceHandler(guarddog_web_intf,&camera_feed_image_RIGHT,"/feed_right.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_RIGHT,SAME_PAGE_FOR_ALL_CLIENTS) ) { fprintf(stderr,"Failed adding execute page\n"); }
    AmmServer_DoNOTCacheResourceHandler(guarddog_web_intf,&camera_feed_image_RIGHT);
 
-    if (! AmmServer_AddResourceHandler(guarddog_web_intf,&camera_feed_image_PROC1,"/feed_proc1.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_PROC1) ) { fprintf(stderr,"Failed adding execute page\n"); }
+    if (! AmmServer_AddResourceHandler(guarddog_web_intf,&camera_feed_image_PROC1,"/feed_proc1.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_PROC1,SAME_PAGE_FOR_ALL_CLIENTS) ) { fprintf(stderr,"Failed adding execute page\n"); }
    AmmServer_DoNOTCacheResourceHandler(guarddog_web_intf,&camera_feed_image_PROC1);
 
-    if (! AmmServer_AddResourceHandler(guarddog_web_intf,&camera_feed_image_PROC2,"/feed_proc2.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_PROC2) ) { fprintf(stderr,"Failed adding execute page\n"); }
+    if (! AmmServer_AddResourceHandler(guarddog_web_intf,&camera_feed_image_PROC2,"/feed_proc2.jpg",webserver_root,JPEG_MAX_FILE_SIZE_IN_BYTES,100 /*MS second cooldown*/,&prepare_camera_feed_content_PROC2,SAME_PAGE_FOR_ALL_CLIENTS) ) { fprintf(stderr,"Failed adding execute page\n"); }
    AmmServer_DoNOTCacheResourceHandler(guarddog_web_intf,&camera_feed_image_PROC2);
 
 
