@@ -55,7 +55,7 @@ unsigned long JPEG_MAX_FILE_SIZE_IN_BYTES = 100 /*KB*/ * 1024;
 
 
 //This function prepares the content of  execute_web_command context , ( execute_web_command.content ) whenever the index page is requested
-void * prepare_execute_web_command_content_callback(unsigned int associated_vars)
+void * prepare_execute_web_command_content_callback(char * content)
 {
   char command[MAX_WEB_COMMAND_SIZE]={0};
   char output_string[512]={0};
@@ -64,60 +64,60 @@ void * prepare_execute_web_command_content_callback(unsigned int associated_vars
   //If we have the console argument set this means we dont want the html output enabled so we switch it off
   if ( _GET(guarddog_web_intf,&execute_web_command,"console",command,MAX_WEB_COMMAND_SIZE) ) { html_output = 0; }
 
-  execute_web_command.content[0]=0;
+  content[0]=0;
 
   //After receiving the command and if we want html output we just want to redirect back to control.html
-  if (html_output) { strcpy(execute_web_command.content,"<html><meta http-equiv=\"refresh\" content=\"0;URL='control.html'\"><body>Executed<br>"); }
+  if (html_output) { strcpy(content,"<html><meta http-equiv=\"refresh\" content=\"0;URL='control.html'\"><body>Executed<br>"); }
 
 
   if ( _GET(guarddog_web_intf,&execute_web_command,"go",command,MAX_WEB_COMMAND_SIZE) )
              {
                   fprintf(stderr,"Executing command %s from webinterface\n",command);
                   IssueCommandInternal(command,"WEBINTERFACE",output_string,512);
-                  strcat(execute_web_command.content,output_string); // Append output
+                  strcat(content,output_string); // Append output
              } else
   if ( _GET(guarddog_web_intf,&execute_web_command,"do",command,MAX_WEB_COMMAND_SIZE) )
              {
                   fprintf(stderr,"Executing command %s from webinterface\n",command);
                   IssueCommandInternal(command,"WEBINTERFACE",output_string,512);
-                  strcat(execute_web_command.content,output_string); // Append output
+                  strcat(content,output_string); // Append output
              }
 
 
-  if (html_output) {  strcat(execute_web_command.content,"</body></html>"); }
+  if (html_output) {  strcat(content,"</body></html>"); }
 
 
   // We signal the size of execute_web_command.content
-  execute_web_command.content_size=strlen(execute_web_command.content);
+  execute_web_command.content_size=strlen(content);
   return 0;
 }
 
 
-void * prepare_camera_feed_content_LEFT(unsigned int associated_vars)
+void * prepare_camera_feed_content_LEFT(char * content)
 {
   camera_feed_image_LEFT.content_size = JPEG_MAX_FILE_SIZE_IN_BYTES; // This to indicate what is the maximum size..!
-  VisCortX_SaveVideoRegisterToJPEGMemory(LEFT_EYE,camera_feed_image_LEFT.content,&camera_feed_image_LEFT.content_size);
+  VisCortX_SaveVideoRegisterToJPEGMemory(LEFT_EYE,content,&camera_feed_image_LEFT.content_size);
   return 0;
 }
 
-void * prepare_camera_feed_content_RIGHT(unsigned int associated_vars)
+void * prepare_camera_feed_content_RIGHT(char * content)
 {
   camera_feed_image_RIGHT.content_size = JPEG_MAX_FILE_SIZE_IN_BYTES; // This to indicate what is the maximum size..!
-  VisCortX_SaveVideoRegisterToJPEGMemory(RIGHT_EYE,camera_feed_image_RIGHT.content,&camera_feed_image_RIGHT.content_size);
+  VisCortX_SaveVideoRegisterToJPEGMemory(RIGHT_EYE,content,&camera_feed_image_RIGHT.content_size);
   return 0;
 }
 
-void * prepare_camera_feed_content_PROC1(unsigned int associated_vars)
+void * prepare_camera_feed_content_PROC1(char * content)
 {
   camera_feed_image_PROC1.content_size = JPEG_MAX_FILE_SIZE_IN_BYTES; // This to indicate what is the maximum size..!
-  VisCortX_SaveVideoRegisterToJPEGMemory(DEPTH_LEFT_VIDEO,camera_feed_image_PROC1.content,&camera_feed_image_PROC1.content_size);
+  VisCortX_SaveVideoRegisterToJPEGMemory(DEPTH_LEFT_VIDEO,content,&camera_feed_image_PROC1.content_size);
   return 0;
 }
 
-void * prepare_camera_feed_content_PROC2(unsigned int associated_vars)
+void * prepare_camera_feed_content_PROC2(char * content)
 {
   camera_feed_image_PROC2.content_size = JPEG_MAX_FILE_SIZE_IN_BYTES; // This to indicate what is the maximum size..!
-  VisCortX_SaveVideoRegisterToJPEGMemory(DEPTH_RIGHT_VIDEO,camera_feed_image_PROC2.content,&camera_feed_image_PROC2.content_size);
+  VisCortX_SaveVideoRegisterToJPEGMemory(DEPTH_RIGHT_VIDEO,content,&camera_feed_image_PROC2.content_size);
   return 0;
 }
 
