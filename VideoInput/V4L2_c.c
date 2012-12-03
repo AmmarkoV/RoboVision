@@ -22,21 +22,24 @@ static int xioctl(int fd,int request,void * arg)
 
 int populate_v4l2intf(struct V4L2_c_interface * v4l2_interface,char * device,int method_used)
 {
+  if (v4l2_interface==0) { fprintf(stderr,"Populate populate_v4l2intf called with an unallocated v4l2intf \n"); return 0; }
+  memset(v4l2_interface,0,sizeof(struct V4L2_c_interface));
+
+
   if (method_used==MMAP) { v4l2_interface->io=IO_METHOD_MMAP; } else
                          { v4l2_interface->io=IO_METHOD_MMAP; } /*If method used is incorrect just use MMAP :P*/
+
   v4l2_interface->fd=-1;
-  v4l2_interface->buffers=0;
-  v4l2_interface->n_buffers= 0;
 
   strncpy(v4l2_interface->device,device,MAX_DEVICE_FILENAME);
   fprintf(stderr,"opening device: %s\n",device);
 
-  struct stat st;
+  struct stat st={0};
   if (-1 == stat (device, &st)) { fprintf (stderr, "Cannot identify '%s': %d, %s\n",device, errno, strerror (errno)); return 0;  }
   if (!S_ISCHR (st.st_mode))    { fprintf (stderr, "%s is no device\n", device); return 0; }
 
   //We just open the /dev/videoX file descriptor and start reading..!
-  v4l2_interface->fd = open (device, O_RDWR /* required */ | O_NONBLOCK, 0);
+  v4l2_interface->fd = open (v4l2_interface->device, O_RDWR /* required */ | O_NONBLOCK, 0);
   if (-1 == v4l2_interface->fd)
    {
         fprintf (stderr, "Cannot open '%s': %d, %s\n",device, errno, strerror (errno));

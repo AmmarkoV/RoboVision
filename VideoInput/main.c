@@ -38,7 +38,7 @@
 
 //See state.h for some #defines that change  the library configuration
 
-char * VIDEOINPT_VERSION=(char *) "0.258 RGB24/YUYV compatible";
+char * VIDEOINPT_VERSION=(char *) "0.259 RGB24/YUYV compatible";
 
 
 io_method io=IO_METHOD_MMAP; /*IO_METHOD_MMAP;  IO_METHOD_READ; IO_METHOD_USERPTR;*/
@@ -170,7 +170,7 @@ int ChooseDifferentSoftFramerate(int inpt,unsigned int new_framerate_per_second)
     camera_feeds[inpt].sleep_time_per_frame_microseconds = (unsigned int ) 1000 / new_framerate_per_second;
     camera_feeds[inpt].sleep_time_per_frame_microseconds = camera_feeds[inpt].sleep_time_per_frame_microseconds * 1000;
 
-    camera_feeds[inpt].sleep_time_per_frame_microseconds = camera_feeds[inpt].sleep_time_per_frame_microseconds / 4;
+    camera_feeds[inpt].sleep_time_per_frame_microseconds = camera_feeds[inpt].sleep_time_per_frame_microseconds ;
     fprintf(stderr,"SleepTime per snapshot is %u microsecs\n",camera_feeds[inpt].sleep_time_per_frame_microseconds);
     return 1;
 }
@@ -583,6 +583,7 @@ void * SnapLoop( void * ptr)
 
 void VideoInput_SaveFrameJPEGMemory(int webcam_id,char * mem,unsigned long * mem_size)
 {
+   if ( (mem==0) || (mem_size==0) ) { fprintf(stderr,"VideoInput_SaveFrameJPEGMemory called with incorrect parameters\n"); return; }
    StateManagement_SetToWebcamRecordOneInMem(webcam_id,(char*) "internal.jpg",0,1,mem,mem_size);
 }
 

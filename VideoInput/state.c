@@ -98,18 +98,47 @@ void StateManagement_SetToWebcamRecordOneInMem(int i,char * filename,int timesta
           camera_feeds[i].keep_timestamp = timestamp_filename;
           camera_feeds[i].compress = compress;
           camera_feeds[i].mem_buffer_for_recording=mem;
-          camera_feeds[i].mem_buffer_for_recording_size=*mem_size;
+          if (mem_size==0) { camera_feeds[i].mem_buffer_for_recording_size=0; } else
+                           { camera_feeds[i].mem_buffer_for_recording_size= (unsigned long) *mem_size; }
           camera_feeds[i].jpeg_compressor_running=1;
           camera_feeds[i].video_simulation = RECORDING_ONE_ON;
 
         StateManagement_UnpauseFeed(i);
 
-        while (camera_feeds[i].jpeg_compressor_running) { usleep(1); }
-        while (camera_feeds[i].video_simulation == RECORDING_ONE_ON) { usleep(1); }
+
+        unsigned int loops = 0;
+        unsigned int time_per_loop = 10;
+        unsigned int max_time_to_wait_for_ms = 200 /*Milliseconds*/ * 1000;
+
+        if (compress)
+         {
+           fprintf(stderr,"Waiting for compressor to stop ");
+           loops=0;
+           while ( (camera_feeds[i].jpeg_compressor_running) &&  (loops*time_per_loop<max_time_to_wait_for_ms) )
+                    {
+                      fprintf(stderr,".");
+                      usleep(time_per_loop);
+                      ++loops;
+                    }
+           if (!(loops*time_per_loop<max_time_to_wait_for_ms)) { fprintf(stderr,"Timed out..\n"); }
+         }
+
+        fprintf(stderr,"Waiting for recording to be marked as complete..");
+        loops=0;
+        while ( (camera_feeds[i].video_simulation == RECORDING_ONE_ON)&&  (loops*time_per_loop<max_time_to_wait_for_ms) )
+            {
+              fprintf(stderr,".");
+              usleep(time_per_loop);
+              ++loops;
+            }
+        if (!(loops*time_per_loop<max_time_to_wait_for_ms)) { fprintf(stderr,"Timed out..\n"); }
 
         //Copy back result..
         //fprintf(stderr,"StateManagement_SetToWebcamRecordOneInMem copies back %u bytes\n",camera_feeds[i].mem_buffer_for_recording_size);
-        *mem_size = camera_feeds[i].mem_buffer_for_recording_size;
+        if ( (mem_size!=0) && (camera_feeds[i].mem_buffer_for_recording_size!=0) )
+         {
+           *mem_size = camera_feeds[i].mem_buffer_for_recording_size;
+         }
 }
 
 

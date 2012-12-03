@@ -107,10 +107,19 @@ int ReadJPEG( char *filename,struct Image * pic)
  */
 int WriteJPEG( char *filename,struct Image * pic,char *mem,unsigned long * mem_size)
 {
-	struct jpeg_compress_struct cinfo;
-	struct jpeg_error_mgr jerr;
-    struct jpeg_destination_mgr dmgr;
-    unsigned long initial_mem_size = *mem_size;
+    fprintf(stderr,"WriteJPEG(%s,%p,%p,%p); called \n",filename,pic,mem,mem_size);
+
+    if (pic==0) { fprintf(stderr,"WriteJPEG called with an incorrect image structure \n "); return 0; }
+
+	unsigned char * raw_image = (unsigned char * ) pic->pixels;
+	if (raw_image==0) { fprintf(stderr,"WriteJPEG called with a problematic raw image..\n "); return 0; }
+
+
+
+	struct jpeg_compress_struct cinfo; memset(&cinfo,0,sizeof(struct jpeg_compress_struct));
+	struct jpeg_error_mgr jerr; memset(&jerr,0,sizeof(struct jpeg_error_mgr));
+    struct jpeg_destination_mgr dmgr; memset(&dmgr,0,sizeof(struct jpeg_destination_mgr));
+    unsigned long initial_mem_size = 0; //*mem_size; can crash with a zero mem_size because it tries for the value of a zero pointer..
 
     FILE *outfile =0;
 
@@ -130,6 +139,7 @@ int WriteJPEG( char *filename,struct Image * pic,char *mem,unsigned long * mem_s
 	   dmgr.term_destination    = term_buffer;
 	   dmgr.next_output_byte    = (JOCTET*) mem;
 	   dmgr.free_in_buffer      = *mem_size;
+       initial_mem_size = *mem_size;
 
 	   cinfo.dest = &dmgr;
 	 } else
@@ -143,7 +153,6 @@ int WriteJPEG( char *filename,struct Image * pic,char *mem,unsigned long * mem_s
 	   jpeg_stdio_dest(&cinfo, outfile);
 	 }
 
-	unsigned char * raw_image = (unsigned char * ) pic->pixels;
 	cinfo.image_width = pic->size_x;
 	cinfo.image_height = pic->size_y;
 	cinfo.input_components = 3;//pic.depth bytes_per_pixel;

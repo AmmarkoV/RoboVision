@@ -25,6 +25,36 @@
 #include "../VideoInput.h"
 #include <linux/videodev2.h>
 
+
+
+
+
+
+int test_jpeg_encoding(unsigned int width,unsigned int height)
+{
+  unsigned long allocation_size = width * height * 3;
+  unsigned long jpeg_picture_size = 0;
+  char * jpeg_picture = (char*) malloc(allocation_size);
+
+  fprintf(stderr,"Crash Testing JPEG Encoder.. ");
+  int i=0;
+  for (i=0; i<100; i++)
+   {
+      jpeg_picture_size = allocation_size;
+      VideoInput_SaveFrameJPEGMemory(0,jpeg_picture,&jpeg_picture_size);
+      if (i%10==0) { fprintf(stderr,"."); }
+   }
+  fprintf(stderr,"done\n");
+
+  free(jpeg_picture);
+  return 1;
+}
+
+
+
+
+
+
 int main()
 {
     struct timespec prog_start,prog_end;
@@ -112,6 +142,8 @@ int main()
                         return 1;}
 
 
+    test_jpeg_encoding(320,240);
+
     printf("I Will now extract the RGB value from pixel 0,0 and pixel 10,40 and 11,40 \n");
     int x=0,y=0;
 
@@ -133,19 +165,21 @@ int main()
     printf("The RGB value of pixel %u,%u is %u %u %u \n",x+1,y,*r,*g,*b);
 
 
+
+
     printf ("I Will now try to write what the camera is seeing in a file called raw.ppm  ... ");
     fflush(0);
 
     RecordOne((char*) "raw",0,0);
-    sleep(1);
     printf("Done\n");
 
     printf ("I Will now try to write what the camera is seeing in a file again in a file called raw.ppm  ... ");
     fflush(0);
 
     RecordOne((char*) "raw",0,0);
-    sleep(1);
     printf("Done\n");
+
+
 
    unsigned long pic_size=320*240*3;
    char * pic = (char * ) malloc(sizeof(char) * pic_size);
