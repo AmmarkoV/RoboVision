@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+CUDA_PATH="/usr/local/cuda-5.0"
+CUDA_INC_PATH="$CUDA_PATH/include"
+CUDA_BIN_PATH="$CUDA_PATH/bin"
+
+
+# Common includes and paths for CUDA
+INCLUDES="-I$CUDA_INC_PATH -I."
+
+nvcc $INCLUDES vecadd.cu -o test
+nvcc $INCLUDES vecadd.cu -lib -o test.a
+
+exit 0
