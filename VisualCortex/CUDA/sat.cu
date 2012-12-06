@@ -1,6 +1,6 @@
 
 //CUDA Kernel..
-__global__  void verticalAddRow(char * pixel,unsigned int * SAT)
+__global__  void addUpRow(char * pixel,unsigned int * SAT)
        {
           // threadIdx.x is a built-in variable  provided by CUDA at runtime
           int row = threadIdx.x;
@@ -15,6 +15,24 @@ __global__  void verticalAddRow(char * pixel,unsigned int * SAT)
              ++pixel;
              ++next_SAT;
              ++SAT;
+             --pixels_remaining;
+           }
+       }
+
+__global__  void addUpColumn(unsigned int * SAT)
+       {
+          // threadIdx.x is a built-in variable  provided by CUDA at runtime
+          int column = threadIdx.x;
+
+          SAT += column;
+
+          int pixels_remaining = 239;
+          unsigned int  * next_SAT = SAT + 320;
+          while (pixels_remaining!=0)
+           {
+             *next_SAT += *SAT ;
+             next_SAT+=320;
+             SAT+=320;
              --pixels_remaining;
            }
        }
@@ -131,7 +149,8 @@ int  main()
 
  cudaMemcpy(pixels, input_img.pixels , pixels_size,  cudaMemcpyHostToDevice);
  //CUDA
- verticalAddRow<<<1,320>>>(pixels, SAT);
+ addUpRow<<<1,320>>>(pixels, SAT);
+ addUpColumn<<<1,240>>>(SAT);
 
  cudaMemcpy(SAT_Local, &SAT, SAT_size,  cudaMemcpyDeviceToHost);
 
