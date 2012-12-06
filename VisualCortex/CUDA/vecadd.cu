@@ -1,17 +1,25 @@
-   //  Kernel definition, see also section 4.2.3 of Nvidia Cuda Programming Guide
-       __global__  void vecAdd(float* A, float* B, float* C)
+
+//CUDA Kernel..
+__global__  void verticalAddRow(char * pixel,unsigned int * SAT)
        {
           // threadIdx.x is a built-in variable  provided by CUDA at runtime
-          int i = threadIdx.x;
-          A[i]=0;
-          B[i]=i;
-          C[i] = A[i] + B[i];
+          int row = threadIdx.x;
+
+          pixel += row * 320;
+
+          int pixels_remaining = 319;
+          unsigned int  * next_SAT = SAT + 1;
+          while (pixels_remaining!=0)
+           {
+             *next_SAT = *SAT + *pixel;
+             ++pixel;
+             ++next_SAT;
+             ++SAT;
+             --pixels_remaining;
+           }
        }
 
-
-
 #include  <stdio.h>
-#define  SIZE 100
 
 #define PPMREADBUFLEN 256
 
@@ -103,34 +111,30 @@ int WritePPM(char * filename,struct Image * pic)
 
 int  main()
 {
+ fprintf(stderr,"CUDA Enabled Summed Area Table implementation..\n");
  struct Image input_img={0};
  input_img.size_x=320;
  input_img.size_y=240;
  ReadPPM("cudatest.ppm",&input_img);
 
- int N=SIZE;
- float A[SIZE], B[SIZE], C[SIZE];
  char * pixels;
  int pixels_size= input_img.size_x * input_img.size_y * 3 * sizeof(char);
 
- float *devPtrA; float *devPtrB; float *devPtrC;
- int memsize= SIZE * sizeof(float);
+ unsigned int * SAT;
+ int SAT_size= input_img.size_x * input_img.size_y * 3 * sizeof(unsigned int);
+
+ unsigned int SAT_Local[320*240];
 
 
- cudaMalloc((void**)&pixels, memsize);
- cudaMalloc((void**)&devPtrA, memsize);
- cudaMalloc((void**)&devPtrB, memsize);
- cudaMalloc((void**)&devPtrC, memsize);
- cudaMemcpy(devPtrA, A, memsize,  cudaMemcpyHostToDevice);
- cudaMemcpy(devPtrB, B, memsize,  cudaMemcpyHostToDevice);
- // __global__ functions are called:  Func<<< Dg, Db, Ns  >>>(parameter);
- vecAdd<<<1, N>>>(devPtrA,  devPtrB, devPtrC);
- cudaMemcpy(C, devPtrC, memsize,  cudaMemcpyDeviceToHost);
+ cudaMalloc((void**)&pixels, pixels_size);
+ cudaMalloc((void**)& SAT, SAT_size);
 
-  for (int i=0; i<SIZE; i++)
-            printf("C[%d]=%f\n",i,C[i]);
+ cudaMemcpy(pixels, input_img.pixels , pixels_size,  cudaMemcpyHostToDevice);
+ //CUDA
+ verticalAddRow<<<1,320>>>(pixels, SAT);
 
-            cudaFree(devPtrA);
-           cudaFree(devPtrA);
-           cudaFree(devPtrA);
+ cudaMemcpy(SAT_Local, &SAT, SAT_size,  cudaMemcpyDeviceToHost);
+
+ cudaFree(pixels);
+ cudaFree(SAT);
 }
