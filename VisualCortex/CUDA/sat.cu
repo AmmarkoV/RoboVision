@@ -1,159 +1,206 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
-//CUDA Kernel..
-__global__  void addUpRow(char * pixel,unsigned int * SAT)
-       {
-          // threadIdx.x is a built-in variable  provided by CUDA at runtime
-          int row = threadIdx.x;
+ * main.c
 
-          pixel += row * 320;
+int WIDTH = 1920;
+int HEIGHT = 1080;
+int THREADS_PER_BLOCK_1 = 256;
+int THREADS_PER_BLOCK_2 = 128;
+#define REPEAT_TIMES 177
 
-          int pixels_remaining = 319;
-          unsigned int  * next_SAT = SAT + 1;
-          while (pixels_remaining!=0)
-           {
-             *next_SAT = *SAT + *pixel;
-             ++pixel;
-             ++next_SAT;
-             ++SAT;
-             --pixels_remaining;
-           }
-       }
+char * device_inputArray;
+unsigned int * device_outputArray;
 
-__global__  void addUpColumn(unsigned int * SAT)
-       {
-          // threadIdx.x is a built-in variable  provided by CUDA at runtime
-          int column = threadIdx.x;
-
-          SAT += column;
-
-          int pixels_remaining = 239;
-          unsigned int  * next_SAT = SAT + 320;
-          while (pixels_remaining!=0)
-           {
-             *next_SAT += *SAT ;
-             next_SAT+=320;
-             SAT+=320;
-             --pixels_remaining;
-           }
-       }
-
-#include  <stdio.h>
-
-#define PPMREADBUFLEN 256
-
-struct Image
+__global__
+void sumRow1(char *inputArray, unsigned int inputByteSize, unsigned int rowSize,
+		unsigned int *outputArray)
 {
-  char * pixels;
-  unsigned int size_x;
-  unsigned int size_y;
-  unsigned int depth;
-  unsigned int image_size;
-};
+	int row = blockIdx.x * blockDim.x + threadIdx.x;
+	int index = row * rowSize;
 
-int ReadPPM(char * filename,struct Image * pic)
-{
-    FILE *pf=0;
-    pf = fopen(filename,"rb");
+	char * rowPos = inputArray + index;
 
-    if (pf!=0 )
-    {
-        char buf[PPMREADBUFLEN], *t;
-        unsigned int w=0, h=0, d=0;
-        int r=0;
+	if (rowPos + rowSize < inputArray + inputByteSize)
+	{
+		outputArray[index] = inputArray[index];
 
-        t = fgets(buf, PPMREADBUFLEN, pf);
-        if ( (t == 0) || ( strncmp(buf, "P6\n", 3) != 0 ) ) { fclose(pf); return 0; }
-        do
-        { /* Px formats can have # comments after first line */
-           t = fgets(buf, PPMREADBUFLEN, pf);
-           if ( t == 0 ) { fclose(pf); return 0; }
-        } while ( strncmp(buf, "#", 1) == 0 );
-        r = sscanf(buf, "%u %u", &w, &h);
-        if ( r < 2 ) { fclose(pf); return 0; }
-        // The program fails if the first byte of the image is equal to 32. because
-        // the fscanf eats the space and the image is read with some bit less
-        r = fscanf(pf, "%u\n", &d);
-        if ( (r < 1) || ( d != 255 ) ) { fclose(pf); return 0; }
-
-        if ( (w!=pic->size_x) || (h!=pic->size_y) )
-           {
-             fprintf(stderr,"Incorrect file size ( %s ) :P\n",filename);
-             if ( w * h > pic->size_x * pic->size_y )
-               {
-                 fprintf(stderr,"File %s will lead to overflow stopping read..\n",filename);
-                 fclose(pf);
-                 return 0;
-               }
-           }
-
-        if ( pic->pixels != 0 )
-        {
-            size_t rd = fread(pic->pixels,3, w*h, pf);
-            fclose(pf);
-            if ( rd < w*h )
-            {
-               return 0;
-            }
-            return 1;
-        }
-        fclose(pf);
-    }
-  return 0;
+		int i;
+		int idx;
+		for (i = 1; i < rowSize; i++)
+		{
+			idx = index + i;
+			outputArray[idx] = outputArray[idx - 1] + inputArray[idx];
+		}
+	}
 }
 
-int WritePPM(char * filename,struct Image * pic)
+__global__
+void sumColumn1(unsigned int *outputArray, unsigned int outputByteSize,
+		unsigned int rowSize, unsigned int columnSize)
 {
+	int column = blockIdx.x * blockDim.x + threadIdx.x;
+	int index = column;
 
-    FILE *fd=0;
-    fd = fopen(filename,"wb");
+	unsigned int * columnPos = outputArray + index;
+	unsigned int * columnLimit = columnPos + (rowSize * (columnSize - 1));
 
-    if (fd!=0)
+	if (columnLimit < outputArray + outputByteSize)
 	{
-     unsigned int n=0;
+		int i;
+		int idx;
+		int offset;
+		for (i = 1; i < columnSize; i++)
+		{
+			offset = i * rowSize;
+			idx = index + offset;
+			outputArray[idx] = outputArray[idx - offset] + outputArray[idx];
+		}
+	}
+}
 
-     fprintf(fd, "P6\n%d %d\n255\n", pic->size_x, pic->size_y);
-     n = (unsigned int ) ( pic->size_x * pic->size_y ) ;
+__global__
+void sumRow2(char *inputArray, unsigned int inputByteSize, unsigned int rowSize,
+		unsigned int columnSize, unsigned int *outputArray)
+{
+	//         BLOCKID        32         THREADID
+	int row = blockIdx.x * blockDim.x + threadIdx.x;
+	if (row < columnSize)
+	{
+		char * rowPos = inputArray + row * rowSize;
+		char * rowLimit = rowPos + rowSize;
 
-     fwrite(pic->pixels, 3, n, fd);
+		unsigned int * outPrev = outputArray + row * rowSize;
+		unsigned int * out = outPrev + 1;
 
-     fflush(fd);
-     fclose(fd);
+		*outPrev = *rowPos;
+		++rowPos;
 
-     return 1;
+		while (rowPos < rowLimit)
+		{
+			*out = *outPrev + *rowPos;
+			++out;
+			++outPrev;
+			++rowPos;
+		}
+	}
+}
+
+__global__
+void sumColumn2(unsigned int *outputArray, unsigned int outputByteSize,
+		unsigned int rowSize, unsigned int columnSize)
+{
+	int column = blockIdx.x * blockDim.x + threadIdx.x;
+	if (column < rowSize)
+	{
+		unsigned int * columnPos = outputArray + column;
+		unsigned int * columnLimit = columnPos + (rowSize * (columnSize - 1));
+
+		//rowSizeCONST
+		unsigned int * outPrev = columnPos;
+		unsigned int * out = columnPos + rowSize;
+
+		while (out < columnLimit)
+		{
+			*out += *outPrev;
+			out += rowSize;
+			outPrev += rowSize;
+		}
+	}
+}
+
+void Preconditions_checkMemoryAllocation(void * array)
+{
+	if (!array)
+	{
+		printf("Memory allocation was not successful\n");
+		exit(1);
+	}
+}
+
+
+void printOutput(unsigned int * output, unsigned int width, unsigned int height)
+{
+	printf("Output \n");
+	int x, y;
+	for (y = 0; y < 7; y++)
+	{
+		for (x = 0; x < width; x++)
+		{
+			printf("%u ", output[y * width + x]);
+		}
+		printf("\n");
+	}
+}
+
+int InitializeCUDASAT(int height, int width, int threads1, int threads2)
+{
+	WIDTH = width;
+	HEIGHT = height;
+	THREADS_PER_BLOCK_1 = threads1;
+	THREADS_PER_BLOCK_2 = threads2;
+
+	unsigned int inputByteSize = WIDTH * HEIGHT * sizeof(char);
+	cudaMalloc((void**) &device_inputArray, inputByteSize);
+
+	unsigned int outputByteSize = WIDTH * HEIGHT * sizeof(unsigned int);
+	cudaMalloc((void**) &device_outputArray, outputByteSize);
+
+	return 1;
+}
+
+int closeCUDASAT()
+{
+	cudaFree(device_inputArray);
+	cudaFree(device_outputArray);
+
+	return 1;
+}
+
+int main()
+{
+	InitializeCUDASAT(WIDTH, HEIGHT, THREADS_PER_BLOCK_1, THREADS_PER_BLOCK_2);
+
+	unsigned int inputByteSize = WIDTH * HEIGHT * sizeof(char);
+	char * inputArray = (char *) malloc(inputByteSize);
+	Preconditions_checkMemoryAllocation((void*) inputArray);
+
+	unsigned int outputByteSize = WIDTH * HEIGHT * sizeof(unsigned int);
+	unsigned int * outputArray = (unsigned int *) malloc(outputByteSize);
+	Preconditions_checkMemoryAllocation((void*) outputArray);
+
+	int i = 0;
+
+	for (i = 0; i < REPEAT_TIMES; i++)
+	{
+
+		memset(inputArray, 1, inputByteSize);
+		cudaMemcpy(device_inputArray, inputArray, inputByteSize,
+				cudaMemcpyHostToDevice);
+
+		int Blocks = (HEIGHT - 1) / THREADS_PER_BLOCK_1 + 1;
+		printf("Gonna use %u blocks and %u threads for sumRow\n", Blocks,
+				THREADS_PER_BLOCK_1);
+		sumRow2<<<Blocks, THREADS_PER_BLOCK_1>>>(device_inputArray,
+				inputByteSize, WIDTH, HEIGHT, device_outputArray);
+
+		Blocks = (WIDTH - 1) / THREADS_PER_BLOCK_2 + 1;
+		printf("Gonna use %u blocks and %u threads for sumRow\n", Blocks,
+				THREADS_PER_BLOCK_2);
+		sumColumn2<<<Blocks, THREADS_PER_BLOCK_2>>>(device_outputArray,
+				outputByteSize, WIDTH, HEIGHT);
+
+		cudaMemcpy(outputArray, device_outputArray, outputByteSize,
+				cudaMemcpyDeviceToHost);
+
 	}
 
-  return 0;
+	printOutput(outputArray, WIDTH, HEIGHT);
+
+	closeCUDASAT();
+
+	free(inputArray);
+	free(outputArray);
 }
 
-
-
-int  main()
-{
- fprintf(stderr,"CUDA Enabled Summed Area Table implementation..\n");
- struct Image input_img={0};
- input_img.size_x=320;
- input_img.size_y=240;
- ReadPPM("cudatest.ppm",&input_img);
-
- char * pixels;
- int pixels_size= input_img.size_x * input_img.size_y * 3 * sizeof(char);
-
- unsigned int * SAT;
- int SAT_size= input_img.size_x * input_img.size_y * 3 * sizeof(unsigned int);
-
- unsigned int SAT_Local[320*240];
-
-
- cudaMalloc((void**)&pixels, pixels_size);
- cudaMalloc((void**)& SAT, SAT_size);
-
- cudaMemcpy(pixels, input_img.pixels , pixels_size,  cudaMemcpyHostToDevice);
- //CUDA
- addUpRow<<<1,320>>>(pixels, SAT);
- addUpColumn<<<1,240>>>(SAT);
-
- cudaMemcpy(SAT_Local, &SAT, SAT_size,  cudaMemcpyDeviceToHost);
-
- cudaFree(pixels);
- cudaFree(SAT);
-}
