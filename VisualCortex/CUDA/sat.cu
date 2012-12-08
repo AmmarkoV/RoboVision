@@ -2,13 +2,12 @@
 #include <string.h>
 #include <stdlib.h>
 
- * main.c
 
 int WIDTH = 1920;
 int HEIGHT = 1080;
 int THREADS_PER_BLOCK_1 = 256;
 int THREADS_PER_BLOCK_2 = 128;
-#define REPEAT_TIMES 177
+#define REPEAT_TIMES 1
 
 char * device_inputArray;
 unsigned int * device_outputArray;
@@ -173,14 +172,16 @@ int main()
 		int Blocks = (HEIGHT - 1) / THREADS_PER_BLOCK_1 + 1;
 		printf("Gonna use %u blocks and %u threads for sumRow\n", Blocks,
 				THREADS_PER_BLOCK_1);
-		sumRow1<<<Blocks, THREADS_PER_BLOCK_1>>>(device_inputArray,
-				inputByteSize, HEIGHT, WIDTH, device_outputArray);
+		sumRow1<<<(HEIGHT - 1) / THREADS_PER_BLOCK_1 + 1, THREADS_PER_BLOCK_1>>>( device_inputArray, inputByteSize, HEIGHT, WIDTH, device_outputArray);
 
 		Blocks = (WIDTH - 1) / THREADS_PER_BLOCK_2 + 1;
 		printf("Gonna use %u blocks and %u threads for sumRow\n", Blocks,
 				THREADS_PER_BLOCK_2);
-		sumColumn1<<<Blocks, THREADS_PER_BLOCK_2>>>(device_outputArray,
-				outputByteSize, HEIGHT, WIDTH);
+		sumColumn1<<<(WIDTH - 1) / THREADS_PER_BLOCK_2 + 1, THREADS_PER_BLOCK_2>>>( device_outputArray, outputByteSize, HEIGHT, WIDTH);
+
+
+
+
 
 		cudaMemcpy(outputArray, device_outputArray, outputByteSize,
 				cudaMemcpyDeviceToHost);
