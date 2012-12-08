@@ -12,23 +12,20 @@ int THREADS_PER_BLOCK_2 = 128;
 
 char * device_inputArray;
 unsigned int * device_outputArray;
-
 __global__
-void sumRow1(char *inputArray, unsigned int inputByteSize, unsigned int rowSize,
+void sumRow1(char *inputArray, unsigned int inputByteSize,
+		unsigned int totalRows, unsigned int totalColumns,
 		unsigned int *outputArray)
 {
 	int row = blockIdx.x * blockDim.x + threadIdx.x;
-	int index = row * rowSize;
-
-	char * rowPos = inputArray + index;
-
-	if (rowPos + rowSize < inputArray + inputByteSize)
+	if (row < totalRows)
 	{
+		int index = row * totalColumns;
 		outputArray[index] = inputArray[index];
 
 		int i;
 		int idx;
-		for (i = 1; i < rowSize; i++)
+		for (i = 1; i < totalColumns; i++)
 		{
 			idx = index + i;
 			outputArray[idx] = outputArray[idx - 1] + inputArray[idx];
@@ -38,40 +35,35 @@ void sumRow1(char *inputArray, unsigned int inputByteSize, unsigned int rowSize,
 
 __global__
 void sumColumn1(unsigned int *outputArray, unsigned int outputByteSize,
-		unsigned int rowSize, unsigned int columnSize)
+		unsigned int totalRows, unsigned int totalColumns)
 {
 	int column = blockIdx.x * blockDim.x + threadIdx.x;
-	int index = column;
-
-	unsigned int * columnPos = outputArray + index;
-	unsigned int * columnLimit = columnPos + (rowSize * (columnSize - 1));
-
-	if (columnLimit < outputArray + outputByteSize)
+	if (column < totalColumns)
 	{
 		int i;
-		int idx;
 		int offset;
-		for (i = 1; i < columnSize; i++)
+		int prevOffset;
+		for (i = 1; i < totalRows; i++)
 		{
-			offset = i * rowSize;
-			idx = index + offset;
-			outputArray[idx] = outputArray[idx - offset] + outputArray[idx];
+			prevOffset = (i - 1) * totalColumns;
+			offset = prevOffset + totalColumns;
+			outputArray[column + offset] = outputArray[column + prevOffset]
+					+ outputArray[column + offset];
 		}
 	}
 }
-
 __global__
-void sumRow2(char *inputArray, unsigned int inputByteSize, unsigned int rowSize,
-		unsigned int columnSize, unsigned int *outputArray)
+void sumRow2(char *inputArray, unsigned int inputByteSize,
+		unsigned int totalRows, unsigned int totalColumns,
+		unsigned int *outputArray)
 {
-	//         BLOCKID        32         THREADID
 	int row = blockIdx.x * blockDim.x + threadIdx.x;
-	if (row < columnSize)
+	if (row < totalRows)
 	{
-		char * rowPos = inputArray + row * rowSize;
-		char * rowLimit = rowPos + rowSize;
+		char * rowPos = inputArray + row * totalColumns;
+		char * rowLimit = rowPos + totalColumns;
 
-		unsigned int * outPrev = outputArray + row * rowSize;
+		unsigned int * outPrev = outputArray + row * totalColumns;
 		unsigned int * out = outPrev + 1;
 
 		*outPrev = *rowPos;
@@ -89,23 +81,23 @@ void sumRow2(char *inputArray, unsigned int inputByteSize, unsigned int rowSize,
 
 __global__
 void sumColumn2(unsigned int *outputArray, unsigned int outputByteSize,
-		unsigned int rowSize, unsigned int columnSize)
+		unsigned int totalRows, unsigned int totalColumns)
 {
 	int column = blockIdx.x * blockDim.x + threadIdx.x;
-	if (column < rowSize)
+	if (column < totalColumns)
 	{
 		unsigned int * columnPos = outputArray + column;
-		unsigned int * columnLimit = columnPos + (rowSize * (columnSize - 1));
+		unsigned int * columnLimit = columnPos
+				+ (totalColumns * (totalRows - 1));
 
-		//rowSizeCONST
 		unsigned int * outPrev = columnPos;
-		unsigned int * out = columnPos + rowSize;
+		unsigned int * out = columnPos + totalColumns;
 
-		while (out < columnLimit)
+		while (out <= columnLimit)
 		{
 			*out += *outPrev;
-			out += rowSize;
-			outPrev += rowSize;
+			out += totalColumns;
+			outPrev += totalColumns;
 		}
 	}
 }
@@ -119,12 +111,11 @@ void Preconditions_checkMemoryAllocation(void * array)
 	}
 }
 
-
 void printOutput(unsigned int * output, unsigned int width, unsigned int height)
 {
 	printf("Output \n");
 	int x, y;
-	for (y = 0; y < 7; y++)
+	for (y = 0; y < height; y++)
 	{
 		for (x = 0; x < width; x++)
 		{
@@ -182,21 +173,21 @@ int main()
 		int Blocks = (HEIGHT - 1) / THREADS_PER_BLOCK_1 + 1;
 		printf("Gonna use %u blocks and %u threads for sumRow\n", Blocks,
 				THREADS_PER_BLOCK_1);
-		sumRow2<<<Blocks, THREADS_PER_BLOCK_1>>>(device_inputArray,
-				inputByteSize, WIDTH, HEIGHT, device_outputArray);
+		sumRow1<<<Blocks, THREADS_PER_BLOCK_1>>>(device_inputArray,
+				inputByteSize, HEIGHT, WIDTH, device_outputArray);
 
 		Blocks = (WIDTH - 1) / THREADS_PER_BLOCK_2 + 1;
 		printf("Gonna use %u blocks and %u threads for sumRow\n", Blocks,
 				THREADS_PER_BLOCK_2);
-		sumColumn2<<<Blocks, THREADS_PER_BLOCK_2>>>(device_outputArray,
-				outputByteSize, WIDTH, HEIGHT);
+		sumColumn1<<<Blocks, THREADS_PER_BLOCK_2>>>(device_outputArray,
+				outputByteSize, HEIGHT, WIDTH);
 
 		cudaMemcpy(outputArray, device_outputArray, outputByteSize,
 				cudaMemcpyDeviceToHost);
 
 	}
 
-	printOutput(outputArray, WIDTH, HEIGHT);
+	//printOutput(outputArray, WIDTH, HEIGHT);
 
 	closeCUDASAT();
 
