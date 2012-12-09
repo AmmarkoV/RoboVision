@@ -34,27 +34,6 @@ unsigned int CameraDistanceInMM = 65;
 
 
 
-
-inline unsigned char AbsUCharVDiff(unsigned char param1,unsigned char param2)
-{
-    if ( param1<param2 ) { return param2-param1; }
-    return param1-param2;
-}
-
-inline unsigned char AbsUCharDiff(unsigned char * param1,unsigned char * param2)
-{
-    if ( *param1<*param2 ) { return *param2-*param1; }
-    return *param1-*param2;
-}
-
-
-inline unsigned int AbsUIntDiff(unsigned int num1,unsigned int num2)
-{
-    if (num1>num2 ) { return num1-num2;}
-    return num2-num1;
-}
-
-
 /*
 
    RectifiedPoint = M * OriginalPoint
@@ -237,10 +216,11 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
 
 }
 
+/*
 unsigned int RGB(unsigned char R,unsigned char G,unsigned char B)
 {
   return (B + (G * 256) + (R * 65536) );
-}
+} */
 
 void TestPrecalculations()
 {
