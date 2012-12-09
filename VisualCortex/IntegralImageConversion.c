@@ -292,7 +292,7 @@ unsigned int inline GetRegisterPatchSum(int comp_register, unsigned int x , unsi
     {
       if ( depth == 1 )
         {
-          px= (BYTE *) in_ptr_start+precalc_memplace_1byte[x_c][y_c];
+          px= (BYTE *) in_ptr_start+ ( y_c * ( metrics[RESOLUTION_X] ) + x_c ) ;
         }
       else if ( depth == 3 )
         {

@@ -523,13 +523,13 @@ StartTimer(FIRST_DERIVATIVE_DELAY); // STATISTICS KEEPER FOR HYPERVISOR | START
  while (output_px<output_end_px)
  {
          //THIS IS THE OUTPUT FRAME ( 1byte [ monochrome ] )
-         px_x_y = output_px; //(BYTE *)  target + precalc_memplace_1byte[x][y];
+         px_x_y = output_px;
 
 
          //THESE ARE POINTERS ON THE INPUT FRAME ( 3byte [ RGB ] )
-         px_xMin1_y = input_px-3;//(BYTE *)  source + precalc_memplace_3byte[x-1][y];
-         px_xMin1_yMin1 = px_xMin1_y-line_width;//(BYTE *)  source + precalc_memplace_3byte[x-1][y-1];
-         px_xMin1_yAdd1 = px_xMin1_y+line_width;//(BYTE *)  source + precalc_memplace_3byte[x-1][y+1];
+         px_xMin1_y = input_px-3;
+         px_xMin1_yMin1 = px_xMin1_y-line_width;
+         px_xMin1_yAdd1 = px_xMin1_y+line_width;
 
 
 

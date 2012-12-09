@@ -23,8 +23,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <math.h>
 #include "ArchOptimizations/ArchOptimizations.h"
 
-unsigned int resection_left_precalc[321*241*3];
-unsigned int resection_right_precalc[321*241*3];
+unsigned int resection_left_precalc[(ABSOLUTE_MAX_WIDTH+1)*(ABSOLUTE_MAX_HEIGHT+1)*3];
+unsigned int resection_right_precalc[(ABSOLUTE_MAX_WIDTH+1)*(ABSOLUTE_MAX_HEIGHT+1)*3];
 
 unsigned int precalc_group_block_belong[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
 unsigned long precalc_memplace_3byte[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
@@ -70,7 +70,7 @@ inline unsigned int AbsUIntDiff(unsigned int num1,unsigned int num2)
          |0   0   1 |       g   h   i
 */
 unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , double cx,double cy ,
-                                                         double k1,double k2 , double p1,double p2 , double k3   )
+                                                            double k1,double k2 , double p1,double p2 , double k3   )
 {
  /*   ALLOW PRECALCULATIONS FOR RESECTIONING , BECAUSE IT MAY BE ENABLED LATER
   if ( settings[INPUT_CALIBRATION]==0)

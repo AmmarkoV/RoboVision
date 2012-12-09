@@ -1,0 +1,28 @@
+This is a planned addition to the visual cortex part of the project..
+For the current GuarddoG ( 2008-2012 ) that works on 320x240 images , CUDA code should actually be slower than CPU code ( with its many years of optimization )
+
+For example CPU code has this kind of performance on an Intel i7 ( generated issuing HYPERVISOR STATISTICS  from the commandline of GuarddoG )
+-=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-
+Visual Cortex HyperVisor status -=-=-=-=-=-=-=-=-=-=-=-=-=-
+ FUNCTION             TIME  IN  MICROSECONDS  SAMPLES! !
+ MEMCPY TO REGISTER , AVERAGE 36 , LAST 31 , SAMPLES 5878 
+ CALIBRATION , AVERAGE 0 , LAST 0 , SAMPLES 0 
+ BLUR , AVERAGE 1119 , LAST 1295 , SAMPLES 14 
+ FIRST DERIV. , AVERAGE 1024 , LAST 1286 , SAMPLES 14 
+ SECOND DERIV. , AVERAGE 1317 , LAST 1726 , SAMPLES 14 
+ PIXEL OV THR , AVERAGE 0 , LAST 0 , SAMPLES 0 
+ MOVEMENT RAW , AVERAGE 2615 , LAST 2677 , SAMPLES 326 
+ COMPRESS IMAGE , AVERAGE 653 , LAST 679 , SAMPLES 1067 
+ Gauss+Sob+Sec+... , AVERAGE 3864 , LAST 4751 , SAMPLES 14 
+ DETECT FACES , AVERAGE 47160 , LAST 51819 , SAMPLES 17 
+ FIND CORNERS , AVERAGE 29205 , LAST 31715 , SAMPLES 17 
+ TRACK CORNERS , AVERAGE 1270 , LAST 1322 , SAMPLES 115 
+ DEPTH MAP , AVERAGE 254739 , LAST 248859 , SAMPLES 2 
+ CAMERA POSE TR , AVERAGE 600 , LAST 503 , SAMPLES 113 
+     -=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-
+PER FRAME , ALL TIMES ARE IN ! ! MILLISECONDS ! !
+From GUI : Hypervisor Statistics  ! 
+
+My DepthMap could probably benefit a lot from the parallel cuda processing  since it takes a very large portion of the CPU time..
+But all of these numbers will not scale well if we increase our working size to  say 1920x1080
+In such high resolution scenarios , cuda will certainly be better so this is the target of this part of the library.. 
