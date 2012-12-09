@@ -37,7 +37,7 @@ unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned
 
 	     while (y_c<y+size_y)
 				{
-                  px= (BYTE *) edge_array+precalc_memplace_3byte[x_c][y_c];
+                  px= (BYTE *) edge_array+ MEMPLACE3(x_c,y_c,metrics[RESOLUTION_X]);
 				  stopx=px+(size_x*3);
 				  while (px<stopx) { if ( *px!=0 ) { ++counted_edges; }  px+=3;  }
 				  if ( edges_required_to_process < counted_edges ) { return counted_edges+1; } // ++PERFORMANCE --RESULT
@@ -87,7 +87,7 @@ unsigned int HistogramPatch(struct Histogram *hist_data,struct VideoRegister * r
     unsigned int y=0;
     while (y<patch_y)
 	{
-      image_px= (BYTE *) img+precalc_memplace_3byte[px][y+py];
+      image_px= (BYTE *) img + MEMPLACE3(px,y+py,metrics[RESOLUTION_X]);
       image_stopx=image_px+3*patch_x;
 
       while (image_px<image_stopx)

@@ -501,14 +501,14 @@ void CopyPartOfImageToImage(unsigned char * input_img,unsigned char * output_img
 
   unsigned int line_size =size_x * 3;
 
-  input_pointer=(BYTE *) input_img+precalc_memplace_3byte[px][py];
+  input_pointer=(BYTE *) input_img+  MEMPLACE3(px,py,metrics[RESOLUTION_X]);
   input_pointer_startline=input_pointer;
   input_pointer_endline=input_pointer_startline+line_size;
-  input_pointer_stop=(BYTE *) input_img+precalc_memplace_3byte[px+size_x][py+size_y];
+  input_pointer_stop=(BYTE *) input_img+ MEMPLACE3(px+size_x,py+size_y,metrics[RESOLUTION_X]);
 
-  output_pointer=(BYTE *) output_img+precalc_memplace_3byte[tx][ty];
+  output_pointer=(BYTE *) output_img+ MEMPLACE3(tx,ty,metrics[RESOLUTION_X]);
   output_pointer_startline=output_pointer;
-  output_pointer_stop=(BYTE *) output_img+precalc_memplace_3byte[tx+size_x][ty+size_y];
+  output_pointer_stop=(BYTE *) output_img+ MEMPLACE3(tx+size_x,ty+size_y,metrics[RESOLUTION_X]);
 
   register unsigned char *r,*g,*b;
   while ( (input_pointer<input_pointer_stop) && (input_pointer<input_pointer_stop)  && (output_pointer<output_pointer_stop) )

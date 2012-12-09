@@ -292,11 +292,11 @@ unsigned int inline GetRegisterPatchSum(int comp_register, unsigned int x , unsi
     {
       if ( depth == 1 )
         {
-          px= (BYTE *) in_ptr_start+ ( y_c * ( metrics[RESOLUTION_X] ) + x_c ) ;
+          px= (BYTE *) in_ptr_start + MEMPLACE1(x_c,y_c,metrics[RESOLUTION_X]); //( y_c * ( metrics[RESOLUTION_X] ) + x_c ) ;
         }
       else if ( depth == 3 )
         {
-          px= (BYTE *) in_ptr_start+precalc_memplace_3byte[x_c][y_c];
+          px= (BYTE *) in_ptr_start + MEMPLACE3(x_c,y_c,metrics[RESOLUTION_X]);
         }
       else
         {
@@ -327,8 +327,8 @@ unsigned int inline GetRegisterPatchPresenceSum(int comp_register, unsigned int 
 
   while (y_c<end_y)
     {
-      if ( depth == 1 ) { px= (BYTE *) in_ptr_start+precalc_memplace_1byte[x_c][y_c]; stopx=px+width;     } else
-      if ( depth == 3 ) { px= (BYTE *) in_ptr_start+precalc_memplace_3byte[x_c][y_c]; stopx=px+(width*3); } else
+      if ( depth == 1 ) { px= (BYTE *) in_ptr_start + MEMPLACE1(x_c,y_c,metrics[RESOLUTION_X]);  stopx=px+width;     } else
+      if ( depth == 3 ) { px= (BYTE *) in_ptr_start + MEMPLACE3(x_c,y_c,metrics[RESOLUTION_X]); stopx=px+(width*3); } else
                         { return 0; }
 
 

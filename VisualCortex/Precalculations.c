@@ -27,9 +27,6 @@ unsigned int resection_left_precalc[(ABSOLUTE_MAX_WIDTH+1)*(ABSOLUTE_MAX_HEIGHT+
 unsigned int resection_right_precalc[(ABSOLUTE_MAX_WIDTH+1)*(ABSOLUTE_MAX_HEIGHT+1)*3];
 
 unsigned int precalc_group_block_belong[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
-unsigned long precalc_memplace_3byte[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
-unsigned long precalc_memplace_1byte[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
-
 
 struct CameraCalibrationData left_calibration_data;
 struct CameraCalibrationData right_calibration_data;
@@ -298,8 +295,6 @@ void Precalculations()
    { for (y=0; y<=ABSOLUTE_MAX_HEIGHT; y++)
      {
 		  precalc_group_block_belong[x][y]= (unsigned int) (       (  ( y/metrics[VERTICAL_BUFFER] ) * total_blocks_x    ) + (x/metrics[HORIZONTAL_BUFFER])   );
-		  precalc_memplace_3byte[x][y] = (unsigned long) ( y * ( metrics[RESOLUTION_X] * 3 ) + x*3 ) ;
-		  precalc_memplace_1byte[x][y] = (unsigned long) ( y * ( metrics[RESOLUTION_X] ) + x ) ;
 	 }
    }
 

@@ -84,10 +84,10 @@ inline unsigned int ComparePatchesOLD(       struct ImageRegion * source_block, 
 	register BYTE *move_px1, *move_px2;
 	register BYTE *stopx1;
 
-    unsigned int source_start_memory_point_3byte=(unsigned int) precalc_memplace_3byte[source_block->x1][source_block->y1];
-	unsigned int target_start_memory_point_3byte=(unsigned int) precalc_memplace_3byte[target_block->x1][target_block->y1];
-	unsigned int source_start_memory_point_1byte=(unsigned int) ( source_block->y1 * ( metrics[RESOLUTION_X] ) + source_block->x1 );
-	unsigned int target_start_memory_point_1byte=(unsigned int) ( target_block->y1 * ( metrics[RESOLUTION_X] ) + target_block->x1 );
+    unsigned int source_start_memory_point_3byte=(unsigned int) MEMPLACE3(source_block->x1,source_block->y1,metrics[RESOLUTION_X]);
+	unsigned int target_start_memory_point_3byte=(unsigned int) MEMPLACE3(target_block->x1,target_block->y1,metrics[RESOLUTION_X]);
+	unsigned int source_start_memory_point_1byte=(unsigned int) MEMPLACE1(source_block->x1,source_block->y1,metrics[RESOLUTION_X]);
+	unsigned int target_start_memory_point_1byte=(unsigned int) MEMPLACE1(target_block->x1,target_block->y1,metrics[RESOLUTION_X]);
 	unsigned int incrementation_3byte_step = 3 * ( image_x-width );
     unsigned int incrementation_1byte_step = 1 * ( image_x-width );
 
