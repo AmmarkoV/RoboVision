@@ -268,30 +268,22 @@ void InitPrecalculations()
   //fprintf(stderr,"Signed/Unsigned int max %u/%u \n",INT_MAX,UINT_MAX);
   //fprintf(stderr,"Signed/Unsigned long max %u/%u \n",LONG_MAX,ULONG_MAX);
 
-    /* THESE LINES CRASH AT THE MOMMENT :S With an Invalid write of size 8 for *clear_it=(unsigned int) mem;
   unsigned int mem_required_for_calibration = metrics[RESOLUTION_X] * metrics[RESOLUTION_Y] * 3 ;
-  resection_left_precalc = (unsigned int *) malloc( mem_required_for_calibration );
+  resection_left_precalc = (unsigned int *) malloc( mem_required_for_calibration * sizeof(unsigned int) );
   if (resection_left_precalc==0) { fprintf(stderr,"Failed to allocate enough memory for calibration of left view (%u bytes) \n",mem_required_for_calibration); }
-  resection_right_precalc = (unsigned int *) malloc( mem_required_for_calibration );
+  resection_right_precalc = (unsigned int *) malloc( mem_required_for_calibration * sizeof(unsigned int) );
   if (resection_right_precalc==0) { fprintf(stderr,"Failed to allocate enough memory for calibration of right view (%u bytes) \n",mem_required_for_calibration); }
 
 
 
-  unsigned int mem=0; unsigned int * clear_it=resection_left_precalc; unsigned int * clear_limit = clear_it + mem_required_for_calibration - sizeof(unsigned int);
+  unsigned int mem=0; unsigned int * clear_it=resection_left_precalc; unsigned int * clear_limit = clear_it + mem_required_for_calibration;
   fprintf(stderr,"Will clear from %p to %p ( %u ) for left eye \n",clear_it,clear_limit,clear_limit-clear_it);
   while (clear_it<clear_limit) { *clear_it=(unsigned int) mem; ++clear_it; ++mem; }
 
-  mem=0; clear_it=resection_right_precalc; clear_limit = clear_it + mem_required_for_calibration - sizeof(unsigned int);
+  mem=0; clear_it=resection_right_precalc; clear_limit = clear_it + mem_required_for_calibration;
   fprintf(stderr,"Will clear from %p to %p ( %u ) for right array eye \n",clear_it,clear_limit,clear_limit-clear_it);
   while (clear_it<clear_limit) { *clear_it=(unsigned int) mem; ++clear_it; ++mem; }
-  */
 
-/*
-   for (mem=0; mem<metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]; mem++)
-   {
-      resection_left_precalc[mem]=mem;
-      resection_right_precalc[mem]=mem;
-   }*/
 
 
    if ((metrics[HORIZONTAL_BUFFER]==0)||(metrics[VERTICAL_BUFFER]==0)) { fprintf(stderr,"Problematic Group Block Size , may crash me :(  (division by 0) !"); return; }
@@ -301,15 +293,6 @@ void InitPrecalculations()
 
    if ( (total_blocks_x==0)||(total_blocks_y==0)) { fprintf(stderr,"Problematic Group Block Size , Something went wrong dividing MaxResX/horizontal Block , MaxResY/vertical Block!"); }
 
-   unsigned int x,y;
-
-  /*
-   for (x=0; x<=ABSOLUTE_MAX_WIDTH; x++)
-   { for (y=0; y<=ABSOLUTE_MAX_HEIGHT; y++)
-     {
-		//  precalc_group_block_belong[x][y]= (unsigned int) (       (  ( y/metrics[VERTICAL_BUFFER] ) * total_blocks_x    ) + (x/metrics[HORIZONTAL_BUFFER])   );
-	 }
-   }*/
 
  TestPrecalculations();
 }
