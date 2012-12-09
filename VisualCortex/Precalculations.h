@@ -28,16 +28,17 @@ struct CameraCalibrationData
 #define RGB(r,g,b)  B + (G * 256) + (R * 65536) )
 #define ABSDIFF(num1,num2)  ( (num1-num2) >=0 ? (num1-num2) : (num2 - num1) )
 
-extern unsigned int resection_left_precalc[321*241*3];
-extern unsigned int resection_right_precalc[321*241*3];
+
+
+extern unsigned int * resection_left_precalc;
+extern unsigned int * resection_right_precalc;
+//extern unsigned int resection_left_precalc[321*241*3];
+//extern unsigned int resection_right_precalc[321*241*3];
+
 extern unsigned int CameraDistanceInMM;
 extern float CameraDistanceMultipliedByFocalLength;
 
-extern unsigned int precalc_group_block_belong[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
 
-
-
-//unsigned int RGB(unsigned char R,unsigned char G,unsigned char B);
 unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , double cx,double cy ,
                                                          double k1,double k2 , double p1,double p2 , double k3   );
 
@@ -46,6 +47,7 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
 extern struct CameraCalibrationData left_calibration_data;
 extern struct CameraCalibrationData right_calibration_data;
 
-void Precalculations();
+void InitPrecalculations();
+void ReleasePrecalculations();
 
 #endif // PRECALCULATIONS_H_INCLUDED

@@ -1,0 +1,5 @@
+#!/bin/bash
+cd RoboVisionCLI
+./DebugRoboVisionCLICompat 2> ../RVCLI.log&
+cd ..
+exit 0

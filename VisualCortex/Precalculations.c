@@ -23,10 +23,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <math.h>
 #include "ArchOptimizations/ArchOptimizations.h"
 
-unsigned int resection_left_precalc[(ABSOLUTE_MAX_WIDTH+1)*(ABSOLUTE_MAX_HEIGHT+1)*3];
-unsigned int resection_right_precalc[(ABSOLUTE_MAX_WIDTH+1)*(ABSOLUTE_MAX_HEIGHT+1)*3];
 
-unsigned int precalc_group_block_belong[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
+unsigned int * resection_left_precalc = 0;
+unsigned int * resection_right_precalc = 0;
+
+//unsigned int resection_left_precalc[(ABSOLUTE_MAX_WIDTH+1)*(ABSOLUTE_MAX_HEIGHT+1)*3];
+//unsigned int resection_right_precalc[(ABSOLUTE_MAX_WIDTH+1)*(ABSOLUTE_MAX_HEIGHT+1)*3];
+
+//unsigned int precalc_group_block_belong[ABSOLUTE_MAX_WIDTH+1][ABSOLUTE_MAX_HEIGHT+1];
 
 struct CameraCalibrationData left_calibration_data;
 struct CameraCalibrationData right_calibration_data;
@@ -55,6 +59,14 @@ unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , d
         return 0;
     }
 */
+  if ( frame == 0 )
+    {
+       fprintf(stderr , "WARNING : PrecalcResectioning called with a zero frame to work on..!\n");
+       fprintf(stderr , "WARNING : This means that precalculations haven't been made..!\n");
+       fprintf(stderr , "WARNING : PrecalcResectioning code will now return without doing anything..\n");
+       return 0;
+    }
+
 
   fprintf(stderr,"Calibrating fx=%f fy=%f cx=%f cy=%f\n",fx,fy,cx,cy);
   fprintf(stderr,"k1=%f k2=%f p1=%f p2=%f k3=%f \n",k1,k2,p1,p2,k3);
@@ -248,18 +260,38 @@ void TestPrecalculations()
 
 
 
-void Precalculations()
+void InitPrecalculations()
 {
+
 
   //fprintf(stderr,"Signed/Unsigned short max %u/%u \n",SHRT_MAX,USHRT_MAX);
   //fprintf(stderr,"Signed/Unsigned int max %u/%u \n",INT_MAX,UINT_MAX);
   //fprintf(stderr,"Signed/Unsigned long max %u/%u \n",LONG_MAX,ULONG_MAX);
-  unsigned int mem;
+
+    /* THESE LINES CRASH AT THE MOMMENT :S With an Invalid write of size 8 for *clear_it=(unsigned int) mem;
+  unsigned int mem_required_for_calibration = metrics[RESOLUTION_X] * metrics[RESOLUTION_Y] * 3 ;
+  resection_left_precalc = (unsigned int *) malloc( mem_required_for_calibration );
+  if (resection_left_precalc==0) { fprintf(stderr,"Failed to allocate enough memory for calibration of left view (%u bytes) \n",mem_required_for_calibration); }
+  resection_right_precalc = (unsigned int *) malloc( mem_required_for_calibration );
+  if (resection_right_precalc==0) { fprintf(stderr,"Failed to allocate enough memory for calibration of right view (%u bytes) \n",mem_required_for_calibration); }
+
+
+
+  unsigned int mem=0; unsigned int * clear_it=resection_left_precalc; unsigned int * clear_limit = clear_it + mem_required_for_calibration - sizeof(unsigned int);
+  fprintf(stderr,"Will clear from %p to %p ( %u ) for left eye \n",clear_it,clear_limit,clear_limit-clear_it);
+  while (clear_it<clear_limit) { *clear_it=(unsigned int) mem; ++clear_it; ++mem; }
+
+  mem=0; clear_it=resection_right_precalc; clear_limit = clear_it + mem_required_for_calibration - sizeof(unsigned int);
+  fprintf(stderr,"Will clear from %p to %p ( %u ) for right array eye \n",clear_it,clear_limit,clear_limit-clear_it);
+  while (clear_it<clear_limit) { *clear_it=(unsigned int) mem; ++clear_it; ++mem; }
+  */
+
+/*
    for (mem=0; mem<metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]; mem++)
    {
       resection_left_precalc[mem]=mem;
       resection_right_precalc[mem]=mem;
-   }
+   }*/
 
 
    if ((metrics[HORIZONTAL_BUFFER]==0)||(metrics[VERTICAL_BUFFER]==0)) { fprintf(stderr,"Problematic Group Block Size , may crash me :(  (division by 0) !"); return; }
@@ -271,12 +303,25 @@ void Precalculations()
 
    unsigned int x,y;
 
+  /*
    for (x=0; x<=ABSOLUTE_MAX_WIDTH; x++)
    { for (y=0; y<=ABSOLUTE_MAX_HEIGHT; y++)
      {
-		  precalc_group_block_belong[x][y]= (unsigned int) (       (  ( y/metrics[VERTICAL_BUFFER] ) * total_blocks_x    ) + (x/metrics[HORIZONTAL_BUFFER])   );
+		//  precalc_group_block_belong[x][y]= (unsigned int) (       (  ( y/metrics[VERTICAL_BUFFER] ) * total_blocks_x    ) + (x/metrics[HORIZONTAL_BUFFER])   );
 	 }
-   }
+   }*/
 
  TestPrecalculations();
 }
+
+
+
+
+void ReleasePrecalculations()
+{
+    if (resection_left_precalc!=0)  { free(resection_left_precalc); resection_left_precalc=0; }
+    if (resection_right_precalc!=0) { free(resection_right_precalc); resection_right_precalc=0; }
+
+
+}
+

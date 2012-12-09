@@ -430,7 +430,7 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
     if (depth_data_array==0) { fprintf(stderr,"Error allocating depth_data_array memory \n"); return 1; }
 
 
-    Precalculations();
+    InitPrecalculations();
 
     SetGuardBytes(); // Preferably after everything settings..!
 
@@ -441,6 +441,10 @@ int InitVisionMemory(unsigned int res_x,unsigned int res_y)
 
 int CloseVisionMemory()
 {
+
+    ReleasePrecalculations();
+
+
    fprintf(stderr,"Deinitializing Vision Memory .. ");
    int i=0;
     for ( i=0; i<REGISTERS_COUNT; i++)

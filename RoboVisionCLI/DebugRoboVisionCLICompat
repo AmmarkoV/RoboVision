@@ -4,30 +4,33 @@ echo RoboVisionCLICompat parameter is $1
 BINFOLDERPATH="."
 BINPATH="robovision"
 PARAMS="$@"
+VALGRIND="valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes  --track-origins=yes"
+SAVETOFILE=" "
+
 
 echo "starting $BINPATH with parameters $PARAMS"
 
 if [ -e /usr/lib/x86_64-linux-gnu/libv4l/v4l2convert.so ]
 then
-  LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libv4l/v4l2convert.so $BINFOLDERPATH/$BINPATH $PARAMS
+  LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libv4l/v4l2convert.so $VALGRIND $BINFOLDERPATH/$BINPATH $PARAMS $SAVETOFILE
   exit 0
 fi
 
 if [ -e /usr/lib/libv4l/v4l2convert.so ]
 then
-  LD_PRELOAD=/usr/lib/libv4l/v4l2convert.so $BINFOLDERPATH/$BINPATH $PARAMS
+  LD_PRELOAD=/usr/lib/libv4l/v4l2convert.so $VALGRIND $BINFOLDERPATH/$BINPATH $PARAMS $SAVETOFILE
   exit 0
 fi
 
 if [ -e /usr/lib32/libv4l/v4l2convert.so ]
 then
-  LD_PRELOAD=/usr/lib32/libv4l/v4l2convert.so $BINFOLDERPATH/$BINPATH $PARAMS
+  LD_PRELOAD=/usr/lib32/libv4l/v4l2convert.so $VALGRIND $BINFOLDERPATH/$BINPATH $PARAMS $SAVETOFILE
   exit 0
 fi
 
 if [ -e /usr/lib/i386-linux-gnu/libv4l/v4l2convert.so ]
 then
-  LD_PRELOAD=/usr/lib/i386-linux-gnu/libv4l/v4l2convert.so $BINFOLDERPATH/$BINPATH $PARAMS
+  LD_PRELOAD=/usr/lib/i386-linux-gnu/libv4l/v4l2convert.so $VALGRIND $BINFOLDERPATH/$BINPATH $PARAMS $SAVETOFILE
   exit 0
 fi
  
@@ -38,9 +41,8 @@ CUSTOM_PLACE=`sudo find /usr -name v4l2convert.so  | grep v4l2convert`
 
 if [ -e "$CUSTOM_PLACE" ]
 then
-  LD_PRELOAD=$CUSTOM_PLACE $BINFOLDERPATH/$BINPATH $PARAMS
+  LD_PRELOAD=$CUSTOM_PLACE $VALGRIND $BINFOLDERPATH/$BINPATH $PARAMS $SAVETOFILE
   exit 0
 fi
 
 exit 0
- 

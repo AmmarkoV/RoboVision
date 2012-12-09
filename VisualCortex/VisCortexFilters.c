@@ -693,11 +693,16 @@ void PrepareCleanSobeledGaussianAndDerivative(struct VideoRegister * rgb_reg,str
 int CalibrateImage(struct VideoRegister * rgb_reg,struct VideoRegister * rgb_calibrated_reg,unsigned int * M)
 {
 
+
   MarkVideoRegistersAsUnsynced(rgb_calibrated_reg , rgb_reg);
 
 
+  if ( (M==0) /*Calibration transformation not allocated*/ && ( settings[INPUT_CALIBRATION] ) )
+    { fprintf(stderr,"WARNING : CalibrateImage , hasn't got an array to use , no calibration will be done despite beeing enabled..! \n"); }
+
+
     /* TODO , For now the full register is returned!*/
-       if ( settings[INPUT_CALIBRATION]==0 )
+       if ( ( settings[INPUT_CALIBRATION]==0 )||(M==0) )
          {
            int i = CopyRegister(rgb_reg,rgb_calibrated_reg,1,1);
            MarkRegistersAsSynced(rgb_reg,rgb_calibrated_reg);
