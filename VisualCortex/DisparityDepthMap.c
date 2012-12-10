@@ -382,6 +382,8 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
 
     uint edges_required_to_process_image_region=( (uint) ( depthmap_vars->vertical_buffer * depthmap_vars->horizontal_buffer * settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] )  / 100 );
 
+    depthmap_vars->blocks_filled=0;
+
     struct DepthData best_match={0};
     best_match.patch_size_x=(unsigned short) depthmap_vars->horizontal_buffer;
 	best_match.patch_size_y=(unsigned short) depthmap_vars->vertical_buffer;
@@ -437,6 +439,7 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
                                        &best_match,
                                        metrics[RESOLUTION_X],metrics[RESOLUTION_Y]
                                       );
+                 ++depthmap_vars->blocks_filled;
                } else
                {
                  /* AREA IS NOT MATCHED :P
@@ -453,7 +456,23 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
   MarkRegistersAsSynced(&video_register[depthmap_vars->left_view_reg],&video_register[depthmap_vars->left_depth_reg]);
   MarkRegistersAsSynced(&video_register[depthmap_vars->right_view_reg],&video_register[depthmap_vars->right_depth_reg]);
 
-  fprintf(stderr,"Depth Map did a total of %u Patch Comparisons , %u reverse , %u immediate \n",metrics[COMPAREPATCH_TOTAL_CALLS] , metrics[COMPAREPATCH_REVERSE_ACCEPTS] , metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS]);
+  fprintf(stderr,"Depth Map for size %ux%u , filled %u blocks , did a total of %u Patch Comparisons , %u reverse , %u immediate \n",
+                     depthmap_vars->horizontal_buffer,
+                     depthmap_vars->vertical_buffer,
+                     depthmap_vars->blocks_filled ,
+                     metrics[COMPAREPATCH_TOTAL_CALLS] ,
+                     metrics[COMPAREPATCH_REVERSE_ACCEPTS] ,
+                     metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS]);
+
+  //Ok so we went in the trouble of performing all these calculations but was it any good ?
+  unsigned int result_of_doing_the_calculations = depthmap_vars->horizontal_buffer * depthmap_vars->vertical_buffer * depthmap_vars->blocks_filled;
+
+  if (result_of_doing_the_calculations>0)
+  { fprintf(stderr,"Effiency thoughts : We did %u comparisons with %u result , that means %0.2f comparisons for each pixel , or %0.2f comparisons for each block\n",
+                     metrics[COMPAREPATCH_TOTAL_CALLS] , result_of_doing_the_calculations , (float) metrics[COMPAREPATCH_TOTAL_CALLS]/result_of_doing_the_calculations
+                                                                                          , (float) metrics[COMPAREPATCH_TOTAL_CALLS]/depthmap_vars->blocks_filled
+           );
+  }
 
   if ( settings[DEPTHMAP_IMPROVE_FILLING_HOLES]!=0 )  EnhanceDepthMapFillHoles(video_register[LEFT_EYE].pixels, l_video_register[depthmap_vars->left_depth_reg].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
   if ( settings[DEPTHMAP_IMPROVE_USING_EDGES]!=0 )    EnhanceDepthMapWithEdges(video_register[LEFT_EYE].pixels, l_video_register[depthmap_vars->left_depth_reg].pixels,video_register[EDGES_LEFT].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);

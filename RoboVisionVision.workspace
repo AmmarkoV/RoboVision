@@ -2,9 +2,9 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
 		<Project filename="VideoInput/VideoInput.cbp" />
-		<Project filename="RoboKernel/RoboKernel.cbp" active="1" />
+		<Project filename="RoboKernel/RoboKernel.cbp" />
 		<Project filename="WorldMapping/MasterWorld/MasterWorld.cbp" />
-		<Project filename="VisualCortex/VisualCortex.cbp" />
+		<Project filename="VisualCortex/VisualCortex.cbp" active="1" />
 		<Project filename="RoboVisionCLI/RoboVisionCLI.cbp" />
 		<Project filename="RoboVisionX/RoboVisionX.cbp" />
 	</Workspace>

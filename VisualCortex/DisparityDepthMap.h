@@ -12,6 +12,8 @@ struct DisparityMappingContext
   unsigned int right_depth_reg;
   unsigned char clear_and_calculate;
 
+  unsigned int blocks_filled;
+
   unsigned int detail;
   unsigned int comparison_threshold;
   unsigned int patch_comparison_edges_percent_required;
