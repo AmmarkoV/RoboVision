@@ -15,7 +15,7 @@ OPENCV_LABEL="_opencv"
 OPENCV_OPTIONS="--no-display=1 -o"
 
 
-samples=( flowerpots gddg bowling cloth lampshade1_ middlebury wood aloe tsukuba cones teddy room )
+samples=( flowerpots gddg bowlingA cloth lampshade1_ middlebury wood aloe tsukuba cones teddy room middle bowlingB )
 
 
 for TRIAL_NAME in "${samples[@]}"; do

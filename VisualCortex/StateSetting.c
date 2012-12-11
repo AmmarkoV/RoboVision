@@ -134,7 +134,7 @@ unsigned int CloseEverything()
 
 unsigned int SelfCheckEverything()
 {
-    fprintf(stderr,"VisCortx_SelfCheck starting!\n");
+    fprintf(stderr,"VisCortx_SelfCheck starting .. ");
     TestIntegralImaging();
 
 
@@ -164,8 +164,9 @@ unsigned int SelfCheckEverything()
      fprintf(stderr,"Success\n ");
     }
    }
+
    */
-   fprintf(stderr,"VisCortx_SelfCheck is done!\n");
+   fprintf(stderr,"ok\n");
    return 0;
 }
 

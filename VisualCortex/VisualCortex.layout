@@ -1,169 +1,169 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="ArchOptimizations/ArchOptimizations.c" open="1" top="0" tabpos="52">
+	<File name="ArchOptimizations/ArchOptimizations.c" open="1" top="0" tabpos="53">
 		<Cursor position="467" topLine="0" />
 	</File>
-	<File name="CameraPose.c" open="1" top="0" tabpos="44">
+	<File name="CameraPose.c" open="1" top="0" tabpos="45">
 		<Cursor position="24" topLine="6" />
 	</File>
-	<File name="CameraPose.h" open="1" top="0" tabpos="43">
+	<File name="CameraPose.h" open="1" top="0" tabpos="44">
 		<Cursor position="862" topLine="0" />
 	</File>
-	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
+	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="8">
 		<Cursor position="23216" topLine="567" />
 	</File>
-	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
+	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="9">
 		<Cursor position="302" topLine="0" />
 	</File>
-	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
+	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="27">
 		<Cursor position="3769" topLine="84" />
 	</File>
-	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
+	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="35">
 		<Cursor position="1348" topLine="0" />
 	</File>
-	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
+	<File name="FaceDetection.c" open="1" top="0" tabpos="13">
 		<Cursor position="556" topLine="0" />
 	</File>
-	<File name="FaceDetection.h" open="1" top="0" tabpos="13">
+	<File name="FaceDetection.h" open="1" top="0" tabpos="14">
 		<Cursor position="209" topLine="0" />
 	</File>
-	<File name="FeatureExtraction.c" open="1" top="0" tabpos="14">
+	<File name="FeatureExtraction.c" open="1" top="0" tabpos="15">
 		<Cursor position="5307" topLine="158" />
 	</File>
-	<File name="FeatureExtraction.h" open="1" top="0" tabpos="15">
+	<File name="FeatureExtraction.h" open="1" top="0" tabpos="16">
 		<Cursor position="162" topLine="0" />
 	</File>
-	<File name="FeatureLists.c" open="1" top="0" tabpos="38">
+	<File name="FeatureLists.c" open="1" top="0" tabpos="39">
 		<Cursor position="8403" topLine="180" />
 	</File>
-	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
+	<File name="FeatureLists.h" open="1" top="0" tabpos="31">
 		<Cursor position="647" topLine="0" />
 	</File>
-	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
+	<File name="FeatureTracking.c" open="1" top="0" tabpos="21">
 		<Cursor position="15232" topLine="358" />
 	</File>
-	<File name="FeatureTracking.h" open="1" top="0" tabpos="29">
+	<File name="FeatureTracking.h" open="1" top="0" tabpos="30">
 		<Cursor position="571" topLine="0" />
 	</File>
-	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
+	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="22">
 		<Cursor position="10152" topLine="305" />
 	</File>
-	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
+	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="23">
 		<Cursor position="1084" topLine="0" />
 	</File>
-	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
+	<File name="LinearAlgebra.c" open="1" top="0" tabpos="26">
 		<Cursor position="13921" topLine="304" />
 	</File>
-	<File name="LinearAlgebra.h" open="1" top="0" tabpos="31">
+	<File name="LinearAlgebra.h" open="1" top="0" tabpos="32">
 		<Cursor position="261" topLine="0" />
 	</File>
-	<File name="Matrix.c" open="1" top="0" tabpos="45">
+	<File name="Matrix.c" open="1" top="0" tabpos="46">
 		<Cursor position="614" topLine="269" />
 	</File>
-	<File name="Matrix.h" open="1" top="0" tabpos="46">
+	<File name="Matrix.h" open="1" top="0" tabpos="47">
 		<Cursor position="180" topLine="0" />
 	</File>
-	<File name="MovementRegistration.c" open="1" top="0" tabpos="9">
+	<File name="MovementRegistration.c" open="1" top="0" tabpos="10">
 		<Cursor position="2234" topLine="36" />
 	</File>
-	<File name="MovementRegistration.h" open="1" top="0" tabpos="10">
+	<File name="MovementRegistration.h" open="1" top="0" tabpos="11">
 		<Cursor position="633" topLine="0" />
 	</File>
-	<File name="ObjectRecognition.c" open="1" top="0" tabpos="50">
+	<File name="ObjectRecognition.c" open="1" top="0" tabpos="51">
 		<Cursor position="848" topLine="0" />
 	</File>
-	<File name="ObjectRecognition.h" open="1" top="0" tabpos="51">
+	<File name="ObjectRecognition.h" open="1" top="0" tabpos="52">
 		<Cursor position="105" topLine="0" />
 	</File>
-	<File name="PatchComparison.c" open="1" top="0" tabpos="32">
+	<File name="PatchComparison.c" open="1" top="0" tabpos="33">
 		<Cursor position="14750" topLine="289" />
 	</File>
-	<File name="PatchComparison.h" open="1" top="0" tabpos="33">
+	<File name="PatchComparison.h" open="1" top="0" tabpos="34">
 		<Cursor position="99" topLine="0" />
 	</File>
-	<File name="PatternRecognition.c" open="1" top="0" tabpos="16">
+	<File name="PatternRecognition.c" open="1" top="0" tabpos="17">
 		<Cursor position="6503" topLine="165" />
 	</File>
-	<File name="PatternRecognition.h" open="1" top="0" tabpos="17">
+	<File name="PatternRecognition.h" open="1" top="0" tabpos="18">
 		<Cursor position="299" topLine="0" />
 	</File>
-	<File name="Precalculations.c" open="1" top="0" tabpos="11">
-		<Cursor position="9558" topLine="259" />
+	<File name="Precalculations.c" open="1" top="0" tabpos="12">
+		<Cursor position="9448" topLine="221" />
 	</File>
-	<File name="Precalculations.h" open="1" top="0" tabpos="35">
+	<File name="Precalculations.h" open="1" top="0" tabpos="36">
 		<Cursor position="345" topLine="0" />
 	</File>
-	<File name="StateSetting.c" open="1" top="0" tabpos="18">
-		<Cursor position="3673" topLine="10" />
+	<File name="StateSetting.c" open="1" top="0" tabpos="19">
+		<Cursor position="4974" topLine="130" />
 	</File>
-	<File name="StateSetting.h" open="1" top="0" tabpos="19">
+	<File name="StateSetting.h" open="1" top="0" tabpos="20">
 		<Cursor position="141" topLine="0" />
 	</File>
-	<File name="StatisticsGeneration.c" open="1" top="0" tabpos="47">
+	<File name="StatisticsGeneration.c" open="1" top="0" tabpos="48">
 		<Cursor position="347" topLine="0" />
 	</File>
-	<File name="StatisticsGeneration.h" open="1" top="0" tabpos="48">
+	<File name="StatisticsGeneration.h" open="1" top="0" tabpos="49">
 		<Cursor position="386" topLine="0" />
 	</File>
-	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="36">
+	<File name="VideoInputAdapter.c" open="1" top="0" tabpos="37">
 		<Cursor position="3043" topLine="72" />
 	</File>
-	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="37">
+	<File name="VideoInputAdapter.h" open="1" top="0" tabpos="38">
 		<Cursor position="409" topLine="0" />
 	</File>
-	<File name="VisCortexConvolutionFilters.c" open="1" top="0" tabpos="27">
+	<File name="VisCortexConvolutionFilters.c" open="1" top="0" tabpos="28">
 		<Cursor position="5447" topLine="37" />
 	</File>
-	<File name="VisCortexConvolutionFilters.h" open="1" top="0" tabpos="28">
+	<File name="VisCortexConvolutionFilters.h" open="1" top="0" tabpos="29">
 		<Cursor position="122" topLine="0" />
 	</File>
-	<File name="VisCortexFilters.c" open="1" top="0" tabpos="3">
+	<File name="VisCortexFilters.c" open="1" top="0" tabpos="4">
 		<Cursor position="21193" topLine="379" />
 	</File>
-	<File name="VisCortexFilters.h" open="1" top="0" tabpos="4">
+	<File name="VisCortexFilters.h" open="1" top="0" tabpos="5">
 		<Cursor position="698" topLine="0" />
 	</File>
-	<File name="VisCortexHeuristics.c" open="1" top="0" tabpos="24">
+	<File name="VisCortexHeuristics.c" open="1" top="0" tabpos="25">
 		<Cursor position="271" topLine="0" />
 	</File>
-	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="23">
+	<File name="VisCortexHeuristics.h" open="1" top="0" tabpos="24">
 		<Cursor position="324" topLine="0" />
 	</File>
-	<File name="VisCortexJPEG.c" open="1" top="0" tabpos="53">
-		<Cursor position="512" topLine="0" />
+	<File name="VisCortexJPEG.c" open="1" top="0" tabpos="54">
+		<Cursor position="512" topLine="17" />
 	</File>
-	<File name="VisCortexJPEG.h" open="1" top="0" tabpos="54">
+	<File name="VisCortexJPEG.h" open="1" top="0" tabpos="55">
 		<Cursor position="74" topLine="0" />
 	</File>
-	<File name="VisCortexOptimizedConvolutionFilters.c" open="1" top="0" tabpos="39">
+	<File name="VisCortexOptimizedConvolutionFilters.c" open="1" top="0" tabpos="40">
 		<Cursor position="1394" topLine="0" />
 	</File>
-	<File name="VisCortexOptimizedConvolutionFilters.h" open="1" top="0" tabpos="40">
+	<File name="VisCortexOptimizedConvolutionFilters.h" open="1" top="0" tabpos="41">
 		<Cursor position="138" topLine="0" />
 	</File>
-	<File name="VisCortexTimer.c" open="1" top="0" tabpos="41">
+	<File name="VisCortexTimer.c" open="1" top="0" tabpos="42">
 		<Cursor position="1162" topLine="4" />
 	</File>
-	<File name="VisCortexTimer.h" open="1" top="0" tabpos="42">
+	<File name="VisCortexTimer.h" open="1" top="0" tabpos="43">
 		<Cursor position="183" topLine="0" />
 	</File>
-	<File name="VisionMemory.c" open="1" top="1" tabpos="5">
-		<Cursor position="4723" topLine="95" />
+	<File name="VisionMemory.c" open="1" top="0" tabpos="6">
+		<Cursor position="31990" topLine="841" />
 	</File>
-	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
+	<File name="VisionMemory.h" open="1" top="0" tabpos="7">
 		<Cursor position="1535" topLine="54" />
 	</File>
-	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="12081" topLine="267" />
+	<File name="VisualCortex.c" open="1" top="0" tabpos="2">
+		<Cursor position="4786" topLine="129" />
 	</File>
-	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="4989" topLine="208" />
+	<File name="VisualCortex.h" open="1" top="0" tabpos="3">
+		<Cursor position="8479" topLine="295" />
 	</File>
 	<File name="fastmemcpy.h" open="0" top="0" tabpos="0">
 		<Cursor position="1365" topLine="0" />
 	</File>
-	<File name="version.h" open="1" top="0" tabpos="49">
+	<File name="version.h" open="1" top="0" tabpos="50">
 		<Cursor position="0" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

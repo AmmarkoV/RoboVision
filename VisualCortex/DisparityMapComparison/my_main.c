@@ -5,6 +5,7 @@
 #include <string.h>
 
 #define PPMREADBUFLEN 512
+#define FORGIVEUNREADBYTES 2
 
 unsigned int resolution_height=320 , resolution_width=240 ;
 
@@ -30,18 +31,18 @@ char * LoadRegisterFromFileInternal(char * filename,unsigned int * width,unsigne
         int r=0;
 
         t = fgets(buf, PPMREADBUFLEN, pf);
-        if ( (t == 0) || ( strncmp(buf, "P6\n", 3) != 0 ) ) { fclose(pf); return 0; }
+        if ( (t == 0) || ( strncmp(buf, "P6\n", 3) != 0 ) ) { fclose(pf); fprintf(stderr,"Could not read first chars\n"); return 0; }
         do
         { /* Px formats can have # comments after first line */
            t = fgets(buf, PPMREADBUFLEN, pf);
-           if ( t == 0 ) { fclose(pf); return 0; }
+           if ( t == 0 ) { fclose(pf); fprintf(stderr,"Could not read while discarding comments\n"); return 0; }
         } while ( strncmp(buf, "#", 1) == 0 );
         r = sscanf(buf, "%u %u", &w, &h);
-        if ( r < 2 ) { fclose(pf); return 0; }
+        if ( r < 2 ) { fclose(pf); fprintf(stderr,"Could not read size dimensions\n"); return 0; }
         // The program fails if the first byte of the image is equal to 32. because
         // the fscanf eats the space and the image is read with some bit less
         r = fscanf(pf, "%u\n", &d);
-        if ( (r < 1) || ( d != 255 ) ) { fclose(pf); return 0; }
+        if ( (r < 1) || ( d != 255 ) ) { fclose(pf); fprintf(stderr,"the first byte of the image is equal to 32\n"); return 0; }
 
 
         *width=w;
@@ -52,12 +53,16 @@ char * LoadRegisterFromFileInternal(char * filename,unsigned int * width,unsigne
         {
             size_t rd = fread(new_reg,3, w*h, pf);
             fclose(pf);
-            if ( rd < w*h )
+            if ( rd < (w*h) - FORGIVEUNREADBYTES )
             {
+               fprintf(stderr,"Read %u bytes instead of %u (that we expected)\n",rd,w*h);
                free(new_reg);
                return 0;
             }
             return new_reg;
+        } else
+        {
+          fprintf(stderr,"Could not allocate enough memory for the image (%ux%u) \n",w,h);
         }
       fclose(pf);
     }
@@ -84,9 +89,9 @@ int main(int argc, const char* argv[])
 
 
     vid0 = LoadRegisterFromFileInternal(filename0,&resolution_width,&resolution_height);
-    if (vid0==0) { fprintf(stderr,"Could not load image %s ",filename0); }
+    if (vid0==0) { fprintf(stderr,"Could not load image %s ",filename0); return 1; }
     vid1 = LoadRegisterFromFileInternal(filename1,&resolution_width,&resolution_height);
-    if (vid1==1) { fprintf(stderr,"Could not load image %s ",filename1); }
+    if (vid1==0) { fprintf(stderr,"Could not load image %s ",filename1); return 1; }
 
     VisCortx_Start(resolution_width,resolution_height,"./");
 

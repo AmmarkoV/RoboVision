@@ -277,11 +277,9 @@ void InitPrecalculations()
 
 
   unsigned int mem=0; unsigned int * clear_it=resection_left_precalc; unsigned int * clear_limit = clear_it + mem_required_for_calibration;
-  fprintf(stderr,"Will clear from %p to %p ( %u ) for left eye \n",clear_it,clear_limit,clear_limit-clear_it);
   while (clear_it<clear_limit) { *clear_it=(unsigned int) mem; ++clear_it; ++mem; }
 
   mem=0; clear_it=resection_right_precalc; clear_limit = clear_it + mem_required_for_calibration;
-  fprintf(stderr,"Will clear from %p to %p ( %u ) for right array eye \n",clear_it,clear_limit,clear_limit-clear_it);
   while (clear_it<clear_limit) { *clear_it=(unsigned int) mem; ++clear_it; ++mem; }
 
 
