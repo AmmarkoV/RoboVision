@@ -128,7 +128,7 @@ void DefaultSettings()
     settings[DEPTHMAP_IMPROVE_USING_MOVEMENT]=1;
 
 
-    settings[PATCH_COMPARISON_LEVELS]=3;//3; /* It will use 3 different size block levels for comparison */
+    settings[PATCH_COMPARISON_LEVELS]=2;/*! 3=default It will use 3 different size block levels for comparison */
     settings[PATCH_COMPARISON_SCORE_MIN]=33000; // <- This is not used ..
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=2;
     settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH]=5;

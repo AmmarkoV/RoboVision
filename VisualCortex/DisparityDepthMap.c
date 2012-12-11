@@ -364,6 +364,7 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
   metrics[COMPAREPATCH_REVERSE_ACCEPTS]=0;
   metrics[HISTOGRAM_DENIES]=0;
   metrics[COMPAREPATCH_ALGORITHM_DENIES]=0;
+  depthmap_vars->blocks_filled=0;
 
   // PREPARE REGISTERS FOR OPERATION!
   PrepareRegistersForDepthMapping(depthmap_vars->left_depth_reg , depthmap_vars->right_depth_reg , depthmap_vars->clear_and_calculate);
@@ -382,7 +383,6 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
 
     uint edges_required_to_process_image_region=( (uint) ( depthmap_vars->vertical_buffer * depthmap_vars->horizontal_buffer * settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] )  / 100 );
 
-    depthmap_vars->blocks_filled=0;
 
     struct DepthData best_match={0};
     best_match.patch_size_x=(unsigned short) depthmap_vars->horizontal_buffer;
@@ -468,7 +468,7 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
   unsigned int result_of_doing_the_calculations = depthmap_vars->horizontal_buffer * depthmap_vars->vertical_buffer * depthmap_vars->blocks_filled;
 
   if (result_of_doing_the_calculations>0)
-  { fprintf(stderr,"Effiency thoughts : We did %u comparisons with %u result , that means %0.2f comparisons for each pixel , or %0.2f comparisons for each block\n",
+  { fprintf(stderr,"Efficiency thoughts : We did %u comparisons with %u result , that means %0.2f comparisons for each pixel , or %0.2f comparisons for each block\n",
                      metrics[COMPAREPATCH_TOTAL_CALLS] , result_of_doing_the_calculations , (float) metrics[COMPAREPATCH_TOTAL_CALLS]/result_of_doing_the_calculations
                                                                                           , (float) metrics[COMPAREPATCH_TOTAL_CALLS]/depthmap_vars->blocks_filled
            );

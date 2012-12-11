@@ -1,3 +1,29 @@
 #!/bin/bash
-g++ `pkg-config --cflags --libs opencv` main.c ../libVisualCortex.a ../../3dpartylibs/fast/libFast.a ../../WorldMapping/MasterWorld/libMasterWorld.a -L.  -lgsl -lgslcblas -s -O3 -o bin/Release/VisCortx_Tester
+echo "RoboVisionCLI  / Provides Headless Lite Executable  / Author : Ammar Qammaz"  
+
+OUTPUT="VisCortx_Tester"
+
+if [ -e $OUTPUT ]
+then
+  rm $OUTPUT
+fi 
+
+CFLAGS="-s -O3 -fexpensive-optimizations"
+
+OURLIBRARIES=" ../libVisualCortex.a ../../WorldMapping/MasterWorld/libMasterWorld.a ../../3dpartylibs/fast/libFast.a"
+
+OPENCVSTUFF="`pkg-config --cflags --libs opencv`"
+
+LIBRARIES="-pthread -lgsl -lpng -ljpeg -lgslcblas -lm -lrt"
+
+gcc main.c $OURLIBRARIES $OPENCVSTUFF -L. $LIBRARIES -o $OUTPUT
+
+
+if [ -e $OUTPUT ]
+then
+  echo "Success.."
+else
+  echo "Failure.."
+fi
+
 exit 0

@@ -2,49 +2,125 @@
 #include <stdlib.h>
 #include "../VisualCortex.h"
 #include <time.h>
-unsigned char vid[320*240*3]={0};
+#include <string.h>
 
-void FillPATCHColor(unsigned int px, unsigned int py , unsigned int patch_x,unsigned int patch_y,unsigned char color)
+#define PPMREADBUFLEN 256
+
+unsigned int resolution_height , resolution_width ;
+
+char out_filename[256]={0};
+
+char filename0[256]={0};
+unsigned char * vid0=0; //[320*240*3]={0};
+
+char filename1[256]={0};
+unsigned char * vid1=0; //[320*240*3]={0};
+
+
+int LoadRegisterFromFileInternal(char * filename,unsigned int size_x,unsigned int size_y,unsigned char * pixels)
 {
-        int x=px,y=py,i=0;
-        for (y=py; y<py+patch_y; y++)
+FILE *pf=0;
+    pf = fopen(filename,"rb");
+
+    if (pf!=0 )
+    {
+        char buf[PPMREADBUFLEN], *t;
+        unsigned int w=0, h=0, d=0;
+        int r=0;
+
+        t = fgets(buf, PPMREADBUFLEN, pf);
+        if ( (t == 0) || ( strncmp(buf, "P6\n", 3) != 0 ) ) { fclose(pf); return 0; }
+        do
+        { /* Px formats can have # comments after first line */
+           t = fgets(buf, PPMREADBUFLEN, pf);
+           if ( t == 0 ) { fclose(pf); return 0; }
+        } while ( strncmp(buf, "#", 1) == 0 );
+        r = sscanf(buf, "%u %u", &w, &h);
+        if ( r < 2 ) { fclose(pf); return 0; }
+        // The program fails if the first byte of the image is equal to 32. because
+        // the fscanf eats the space and the image is read with some bit less
+        r = fscanf(pf, "%u\n", &d);
+        if ( (r < 1) || ( d != 255 ) ) { fclose(pf); return 0; }
+
+        if ( (w!=size_x) || (h!=size_y) )
+           {
+             fprintf(stderr,"Incorrect file size ( %s ) :P\n",filename);
+             if ( w * h > size_x * size_y )
+               {
+                 fprintf(stderr,"File %s will lead to overflow stopping read..\n",filename);
+                 fclose(pf);
+                 return 0;
+               }
+           }
+
+        if ( pixels != 0 )
         {
-         i = y * 320 * 3 + ( px*3 );
-         for (x=px; x<px+patch_x; x++)
-         {
-           vid[i++]=color;
-           vid[i++]=color;
-           vid[i++]=color;
-         }
+            size_t rd = fread(pixels,3, w*h, pf);
+            fclose(pf);
+            if ( rd < w*h )
+            {
+               return 0;
+            }
+            return 1;
         }
+      fclose(pf);
+    }
+  return 0;
 }
 
-void FillRandom()
-{
-    srand ( time(NULL) );
 
-
-        int i=0;
-        for (i=0; i<320*240*3; i++)
-        {
-         vid[i]=rand() % 256;
-        }
-}
-
-int main()
+int main(int argc, const char* argv[])
 {
     printf("Visual Cortex %s !\n",VisCortx_Version());
 
-    VisCortx_Start(320,240);
 
-         FillRandom();
-        //FillPATCHColor(0,0,30,30,255);
-        //FillPATCHColor(0,30,30,30,212);
-        //FillPATCHColor(30,0,30,30,123);
+   if ( argc > 5 )
+     {
+       resolution_width = atoi(argv[1]);
+       resolution_height = atoi(argv[2]);
+       strcpy(filename0,argv[3]);
+       strcpy(filename1,argv[4]);
+       strcpy(out_filename,argv[5]);
+     } else
+     {
+        fprintf(stderr,"Usage : VisCortx_Tester RESOLUTIONX RESOLUTIONY left_image.ppm right_image.ppm output.ppm\n");
+        fprintf(stderr,"ie : VisCortx_Tester 320 240 image0.ppm image1.ppm depth.ppm\n");
+        return 1;
+     }
 
-        VisCortx_WriteToVideoRegister(LEFT_EYE,320,240,3,(unsigned char * ) &vid);
-        VisCortx_SelfCheck();
+
+    fprintf(stderr,"VisCortx_Tester will be using an input of size %ux%u \n",resolution_width,resolution_height);
+    vid0 = (char *) malloc(resolution_height*resolution_width*3 * sizeof(char));
+    vid1 = (char *) malloc(resolution_height*resolution_width*3 * sizeof(char));
+    if ((vid0==0)||(vid1==0)) { fprintf(stderr,"Could not allocate enough memory for 2 frames %ux%u \n",resolution_width,resolution_height); }
+
+    VisCortx_Start(resolution_width,resolution_height,"./");
+
+    //DISABLE STUFF THAT ARE NOT NEEDED FOR DISPARITY MAPPING..
+    VisCortx_SetSetting(PASS_TO_FACE_DETECTOR,0);
+    VisCortx_SetSetting(PASS_TO_FEATURE_DETECTOR,0);
+    VisCortx_SetSetting(DEPTHMAP_USE_OPENCV,0);
+    VisCortx_SetSetting(USE_OPENCV,0);
+    VisCortx_SetSetting(DEPTHMAP_OPENCV_LIKE_OUTPUT,1);
+    VisCortx_SetSetting(CALCULATE_MOVEMENT_FLOW,0);
+
+    VisCortx_SetTime(10);
+
+    if (!LoadRegisterFromFileInternal(filename0,resolution_width,resolution_height,(unsigned char * ) &vid0)) { fprintf(stderr,"Could not load image %s ",filename0); }
+    VisCortX_NewFrame(LEFT_EYE,resolution_width,resolution_height,3,(unsigned char * ) &vid0);
+
+    if (!LoadRegisterFromFileInternal(filename1,resolution_width,resolution_height,(unsigned char * ) &vid1)) { fprintf(stderr,"Could not load image %s ",filename1); }
+    VisCortX_NewFrame(RIGHT_EYE,resolution_width,resolution_height,3,(unsigned char * ) &vid1);
+
+    VisCortx_FullDepthMap(0);
+
+    ExecutePipeline();
+
+    VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,out_filename);
 
     VisCortx_Stop();
+
+    free(vid0);
+    free(vid1);
     return 0;
 }
