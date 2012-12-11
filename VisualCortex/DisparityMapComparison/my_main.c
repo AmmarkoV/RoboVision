@@ -4,18 +4,19 @@
 #include <time.h>
 #include <string.h>
 
+#define MAXIMUM_INPUT 2048
 #define PPMREADBUFLEN 512
 #define FORGIVEUNREADBYTES 2
 
 unsigned int resolution_height=320 , resolution_width=240 ;
 
-char out_filename[256]={0};
+char out_filename[MAXIMUM_INPUT]={0};
 
-char filename0[256]={0};
-unsigned char * vid0=0; //[320*240*3]={0};
+char filename0[MAXIMUM_INPUT]={0};
+unsigned char * vid0=0;  
 
-char filename1[256]={0};
-unsigned char * vid1=0; //[320*240*3]={0};
+char filename1[MAXIMUM_INPUT]={0};
+unsigned char * vid1=0;  
 
 
 char * LoadRegisterFromFileInternal(char * filename,unsigned int * width,unsigned int * height)
@@ -77,9 +78,9 @@ int main(int argc, const char* argv[])
 
    if ( argc > 3 )
      {
-       strcpy(filename0,argv[1]);
-       strcpy(filename1,argv[2]);
-       strcpy(out_filename,argv[3]);
+       strncpy(filename0,argv[1],MAXIMUM_INPUT);
+       strncpy(filename1,argv[2],MAXIMUM_INPUT);
+       strncpy(out_filename,argv[3],MAXIMUM_INPUT);
      } else
      {
         fprintf(stderr,"Usage : VisCortx_Tester RESOLUTIONX RESOLUTIONY left_image.ppm right_image.ppm output.ppm\n");
