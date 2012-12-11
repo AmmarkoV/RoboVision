@@ -1,4 +1,4 @@
 #!/bin/bash
-g++ `pkg-config --cflags --libs opencv` my_main.c ../libVisualCortex.a ../../3dpartylibs/fast/libFast.a ../../WorldMapping/MasterWorld/libMasterWorld.a -L.  -lgsl -lgslcblas -s -O3 -o stereo_disparity_my_tester
-g++ `pkg-config --cflags --libs opencv` opencv_main.cpp  -L. -s -O3 -o stereo_disparity_opencv_tester
+gcc my_main.c  ../libVisualCortex.a ../../3dpartylibs/fast/libFast.a ../../WorldMapping/MasterWorld/libMasterWorld.a `pkg-config --cflags --libs opencv` -L.  -pthread -lgsl -lpng -ljpeg -lgslcblas -lm -lrt -s -O3 -o stereo_disparity_my_tester
+g++  opencv_main.cpp  `pkg-config --cflags --libs opencv` -L.  -lm -lrt -s -O3 -o stereo_disparity_opencv_tester
 exit 0

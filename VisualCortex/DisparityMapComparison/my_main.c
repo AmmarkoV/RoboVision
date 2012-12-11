@@ -4,22 +4,23 @@
 #include <time.h>
 #include <string.h>
 
-#define PPMREADBUFLEN 256
- 
-unsigned int resolution_height , resolution_width ;
+#define PPMREADBUFLEN 512
+
+unsigned int resolution_height=320 , resolution_width=240 ;
 
 char out_filename[256]={0};
 
 char filename0[256]={0};
-unsigned char vid0[320*240*3]={0};
+unsigned char * vid0=0; //[320*240*3]={0};
 
 char filename1[256]={0};
-unsigned char vid1[320*240*3]={0};
+unsigned char * vid1=0; //[320*240*3]={0};
 
- 
-int LoadRegisterFromFile(char * filename,unsigned int size_x,unsigned int size_y,unsigned char * pixels)
+
+char * LoadRegisterFromFileInternal(char * filename,unsigned int * width,unsigned int * height)
 {
-FILE *pf=0;
+    char * new_reg = 0;
+    FILE *pf=0;
     pf = fopen(filename,"rb");
 
     if (pf!=0 )
@@ -42,26 +43,21 @@ FILE *pf=0;
         r = fscanf(pf, "%u\n", &d);
         if ( (r < 1) || ( d != 255 ) ) { fclose(pf); return 0; }
 
-        if ( (w!=size_x) || (h!=size_y) )
-           {
-             fprintf(stderr,"Incorrect file size ( %s ) :P\n",filename);
-             if ( w * h > size_x * size_y )
-               {
-                 fprintf(stderr,"File %s will lead to overflow stopping read..\n",filename);
-                 fclose(pf);
-                 return 0;
-               }
-           }
 
-        if ( pixels != 0 )
+        *width=w;
+        *height=h;
+        new_reg  = (char *) malloc(w*h*3 * sizeof(char));
+
+        if ( new_reg != 0 )
         {
-            size_t rd = fread(pixels,3, w*h, pf);
+            size_t rd = fread(new_reg,3, w*h, pf);
             fclose(pf);
             if ( rd < w*h )
             {
+               free(new_reg);
                return 0;
             }
-            return 1;
+            return new_reg;
         }
       fclose(pf);
     }
@@ -74,46 +70,50 @@ int main(int argc, const char* argv[])
     printf("Visual Cortex %s !\n",VisCortx_Version());
 
 
-   if ( argc > 5 )
+   if ( argc > 3 )
      {
-       resolution_width = atoi(argv[1]);
-       resolution_height = atoi(argv[2]);
-       strcpy(filename0,argv[3]);
-       strcpy(filename1,argv[4]);
-       strcpy(out_filename,argv[5]); 
+       strcpy(filename0,argv[1]);
+       strcpy(filename1,argv[2]);
+       strcpy(out_filename,argv[3]);
      } else
      {
-        fprintf(stderr,"Usage : stereo_disparity_my_tester RESOLUTIONX RESOLUTIONY left_image.ppm right_image.ppm output.ppm\n");
-        fprintf(stderr,"ie : stereo_disparity_my_tester 320 240 image0.ppm image1.ppm depth.ppm\n");
+        fprintf(stderr,"Usage : VisCortx_Tester RESOLUTIONX RESOLUTIONY left_image.ppm right_image.ppm output.ppm\n");
+        fprintf(stderr,"ie : VisCortx_Tester imageLEFT.ppm imageRIGHT.ppm depth.ppm\n");
         return 1;
      }
-     
-    if ( (resolution_width!=320) || (resolution_height!=240) ) { fprintf(stderr,"Visual Cortex only works for 320x240 images\n"); return 1; }
-    
-    VisCortx_Start(resolution_width,resolution_height); 
-    
+
+
+    vid0 = LoadRegisterFromFileInternal(filename0,&resolution_width,&resolution_height);
+    if (vid0==0) { fprintf(stderr,"Could not load image %s ",filename0); }
+    vid1 = LoadRegisterFromFileInternal(filename1,&resolution_width,&resolution_height);
+    if (vid1==1) { fprintf(stderr,"Could not load image %s ",filename1); }
+
+    VisCortx_Start(resolution_width,resolution_height,"./");
+
     //DISABLE STUFF THAT ARE NOT NEEDED FOR DISPARITY MAPPING..
     VisCortx_SetSetting(PASS_TO_FACE_DETECTOR,0);
     VisCortx_SetSetting(PASS_TO_FEATURE_DETECTOR,0);
     VisCortx_SetSetting(DEPTHMAP_USE_OPENCV,0);
     VisCortx_SetSetting(USE_OPENCV,0);
     VisCortx_SetSetting(DEPTHMAP_OPENCV_LIKE_OUTPUT,1);
-    VisCortx_SetSetting(CALCULATE_MOVEMENT_FLOW,0); 
-    
-    VisCortx_SetTime(10);
-  
-    if (!LoadRegisterFromFile(filename0,resolution_width,resolution_height,(unsigned char * ) &vid0)) { fprintf(stderr,"Could not load image %s ",filename0); }
-    VisCortX_NewFrame(LEFT_EYE,resolution_width,resolution_height,3,(unsigned char * ) &vid0); 
+    VisCortx_SetSetting(CALCULATE_MOVEMENT_FLOW,0);
 
-    if (!LoadRegisterFromFile(filename1,resolution_width,resolution_height,(unsigned char * ) &vid1)) { fprintf(stderr,"Could not load image %s ",filename1); }
-    VisCortX_NewFrame(RIGHT_EYE,resolution_width,resolution_height,3,(unsigned char * ) &vid1);
-    
+    VisCortx_SetTime(10);
+
+    VisCortX_NewFrame(LEFT_EYE,resolution_width,resolution_height,3,(unsigned char * ) vid0);
+
+    VisCortX_NewFrame(RIGHT_EYE,resolution_width,resolution_height,3,(unsigned char * ) vid1);
+
     VisCortx_FullDepthMap(0);
- 
+
     ExecutePipeline();
 
     VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,out_filename);
-    
+
     VisCortx_Stop();
+
+    free(vid0);
+    free(vid1);
     return 0;
 }
+

@@ -15,13 +15,13 @@ OPENCV_LABEL="_opencv"
 OPENCV_OPTIONS="--no-display=1 -o"
 
 
-samples=( flowerpots gddg bowling cloth lampshade1_ middlebury wood aloe tsukuba cones teddy )
+samples=( flowerpots gddg bowling cloth lampshade1_ middlebury wood aloe tsukuba cones teddy room )
 
 
 for TRIAL_NAME in "${samples[@]}"; do
 echo "Executing $TRIAL_NAME test"
 # GUARDDOG VISUAL CORTEX PART
-time ./stereo_disparity_my_tester 320 240 "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" "$TRIAL_NUMBER$SP$TRIAL_NAME$GUARDDOG_LABEL$PPM"
+time ./stereo_disparity_my_tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" "$TRIAL_NUMBER$SP$TRIAL_NAME$GUARDDOG_LABEL$PPM"
 # OPENCV PART
 time ./stereo_disparity_opencv_tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" --no-display=1 -o "$TRIAL_NUMBER$SP$TRIAL_NAME$OPENCV_LABEL$PPM"
 # LIBELAS PART
