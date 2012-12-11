@@ -20,15 +20,27 @@ samples=( flowerpots gddg bowlingA cloth lampshade1_ middlebury wood aloe tsukub
 
 for TRIAL_NAME in "${samples[@]}"; do
 echo "Executing $TRIAL_NAME test"
+
+
 # GUARDDOG VISUAL CORTEX PART
 time ./stereo_disparity_my_tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" "$TRIAL_NUMBER$SP$TRIAL_NAME$GUARDDOG_LABEL$PPM"
-# OPENCV PART
-time ./stereo_disparity_opencv_tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" --no-display=1 -o "$TRIAL_NUMBER$SP$TRIAL_NAME$OPENCV_LABEL$PPM"
+
+
+
+# OPENCV PART , There are two implementations.. 
+# one stand alone and one through VisualCortex , the stand alone one has some compilation and possible copyright issues so if it exists use it 
+# if not , use openCV through VisualCortex 
+if [ -e stereo_disparity_opencv_tester ] 
+ then
+    time ./stereo_disparity_opencv_tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" --no-display=1 -o "$TRIAL_NUMBER$SP$TRIAL_NAME$OPENCV_LABEL$PPM"
+  else
+  time ./stereo_disparity_opencv_tester_viscrtx "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" "$TRIAL_NUMBER$SP$TRIAL_NAME$OPENCV_LABEL$PPM"
+fi
+
 # LIBELAS PART
 time ./elas "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1"
 mv "$TRIAL_NAME"0_disp.ppm "$TRIAL_NUMBER$SP$TRIAL_NAME$LIBELAS_LABEL$PPM"
 rm "$TRIAL_NAME"1_disp.ppm   
-
 
 convert "$TRIAL_NUMBER$SP$TRIAL_NAME$GUARDDOG_LABEL$PPM" "$TRIAL_NUMBER$SP$TRIAL_NAME$GUARDDOG_LABEL$PNG"
 rm "$TRIAL_NUMBER$SP$TRIAL_NAME$GUARDDOG_LABEL$PPM"

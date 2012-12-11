@@ -650,10 +650,10 @@ unsigned int ExecuteDisparityMappingOpenCV()
 
   fprintf(stderr,"ExecuteDisparityMappingOpenCV \n");
 
-  IplImage* srcLeft = cvCreateImage(cvSize(320,240), IPL_DEPTH_8U, 3);
-  IplImage* srcRight = cvCreateImage(cvSize(320,240), IPL_DEPTH_8U, 3);
-  IplImage* leftImage = cvCreateImage(cvSize(320,240), IPL_DEPTH_8U, 1);
-  IplImage* rightImage = cvCreateImage(cvSize(320,240), IPL_DEPTH_8U, 1);
+  IplImage* srcLeft = cvCreateImage(cvSize(metrics[RESOLUTION_X],metrics[RESOLUTION_Y]), IPL_DEPTH_8U, 3);
+  IplImage* srcRight = cvCreateImage(cvSize(metrics[RESOLUTION_X],metrics[RESOLUTION_Y]), IPL_DEPTH_8U, 3);
+  IplImage* leftImage = cvCreateImage(cvSize(metrics[RESOLUTION_X],metrics[RESOLUTION_Y]), IPL_DEPTH_8U, 1);
+  IplImage* rightImage = cvCreateImage(cvSize(metrics[RESOLUTION_X],metrics[RESOLUTION_Y]), IPL_DEPTH_8U, 1);
 
   char * srcLeftPointer = srcLeft->imageData; // UGLY HACK
   char * srcRightPointer = srcRight->imageData; // UGLY HACK
@@ -666,10 +666,10 @@ unsigned int ExecuteDisparityMappingOpenCV()
 
 
 
-  CvMat* left = 0;//cvCreateMat( 320,240, CV_8U );
-  CvMat* right = 0;//cvCreateMat( 320,240, CV_8U );
-  CvMat* disp = cvCreateMat( 240,320, CV_16S );
-  CvMat* vdisp = cvCreateMat( 240,320, CV_8U );
+  CvMat* left = 0;
+  CvMat* right = 0;
+  CvMat* disp = cvCreateMat( metrics[RESOLUTION_Y],metrics[RESOLUTION_X], CV_16S );
+  CvMat* vdisp = cvCreateMat( metrics[RESOLUTION_Y],metrics[RESOLUTION_X], CV_8U );
   CvMat stub1,stub2;
   left = cvGetMat(leftImage, &stub1, 0, 0);
   right = cvGetMat(rightImage, &stub2, 0, 0);

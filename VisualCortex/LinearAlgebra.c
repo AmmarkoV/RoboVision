@@ -321,7 +321,7 @@ int ComputeHomographyFromPointCorrespondanceOpenCV ( struct FeatureList * source
    //  THIS OVERLAYS WARPED IMAGE OF LAST VIEW
  if (render_warped_image)
  {
-   IplImage  * image = cvCreateImage( cvSize(320,240), IPL_DEPTH_8U, 3 );
+   IplImage  * image = cvCreateImage( cvSize(metrics[RESOLUTION_X],metrics[RESOLUTION_Y]), IPL_DEPTH_8U, 3 );
    memcpy(image->imageData , video_register[CALIBRATED_LEFT_EYE].pixels , metrics[RESOLUTION_MEMORY_LIMIT_3BYTE]);
    IplImage  * dstImg = cvCloneImage(image);
 

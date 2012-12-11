@@ -17,8 +17,6 @@ struct CameraCalibrationData
   double intrinsic_parameters_array[9];
 };
 
-#define ABSOLUTE_MAX_WIDTH 320
-#define ABSOLUTE_MAX_HEIGHT 240
 
 
 //These are some calculations that are very frequently used
