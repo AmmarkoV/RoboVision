@@ -76,9 +76,8 @@ int DisparityMappingSettingsBenchmark()
     VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD,4000);
     VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH,4000);
     VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH,4000);
-    VisCortx_SetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT,9);
-    VisCortx_SetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN,18);
-    VisCortx_SetSetting(DEPTHMAP_INSTANT_DETAIL,2);
+
+
     VisCortx_SetSetting(PATCH_COMPARISON_SCORE_MIN,33000);
     VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED,3);
     VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH,5);
@@ -112,12 +111,26 @@ int DisparityMappingSettingsBenchmark()
     unsigned int wndx_xl=VisCortx_GetMetric(HORIZONTAL_BUFFER_EXTRALARGE);
     unsigned int wndy_xl=VisCortx_GetMetric(VERTICAL_BUFFER_EXTRALARGE);
 
-    unsigned int best_window_step=0;
-    unsigned int window_step=0;
 
-    unsigned int best_detail=1;
-    unsigned int detail=1;
 
+    unsigned int best_hist_thres=7; unsigned int hist_thres=7;
+
+    unsigned int best_edges_percent=0; unsigned int edges_percent=0;
+
+    unsigned int best_window_step=0; unsigned int window_step=0;
+
+    unsigned int best_detail=1; unsigned int detail=1;
+
+    unsigned int best_generalization=1; unsigned int generalization=1;
+
+
+
+for (generalization=6; generalization<12; generalization++)
+{
+for (hist_thres=6; hist_thres<15; hist_thres++)
+ {
+for (edges_percent=1; edges_percent<10; edges_percent++)
+{
  for (detail=1; detail<10; detail++)
    {
     for (window_step=1; window_step<10; window_step++)
@@ -126,6 +139,17 @@ int DisparityMappingSettingsBenchmark()
         VisCortx_SetMetric(HORIZONTAL_BUFFER_LARGE,wndx_l+2*window_step);       VisCortx_SetMetric(VERTICAL_BUFFER_LARGE,wndy_l+2*window_step);
         VisCortx_SetMetric(HORIZONTAL_BUFFER_EXTRALARGE,wndx_xl+3*window_step); VisCortx_SetMetric(VERTICAL_BUFFER_EXTRALARGE,wndy_xl+3*window_step);
 
+        VisCortx_SetSetting(DEPTHMAP_DETAIL,detail);
+        VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED,edges_percent);
+        VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH,edges_percent*2);
+        VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH,edges_percent*3);
+
+
+        VisCortx_SetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT,generalization);
+        VisCortx_SetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN,generalization*2);
+
+
+        VisCortx_SetSetting(PATCH_HIST_THRESHOLD_R,hist_thres);     VisCortx_SetSetting(PATCH_HIST_THRESHOLD_R,hist_thres);     VisCortx_SetSetting(PATCH_HIST_THRESHOLD_R,hist_thres);
 
         VisCortx_FullDepthMap(0);
 
@@ -133,9 +157,9 @@ int DisparityMappingSettingsBenchmark()
 
 
         if (
-              ( delay < VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS) ) &&
-              ( coverage < VisCortx_GetMetric(LAST_DEPTH_MAP_COVERAGE) ) &&
-              ( too_close < VisCortx_GetMetric(LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE) )
+                 ( delay <= VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS) )
+              && ( coverage <= VisCortx_GetMetric(LAST_DEPTH_MAP_COVERAGE) )
+              //&& ( too_close <= VisCortx_GetMetric(LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE) )
             )
             {
                 VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,out_filename);
@@ -144,16 +168,23 @@ int DisparityMappingSettingsBenchmark()
                 coverage  = VisCortx_GetMetric(LAST_DEPTH_MAP_COVERAGE);
                 too_close  = VisCortx_GetMetric(LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE);
 
+                best_generalization = generalization;
+                best_hist_thres = hist_thres;
                 best_detail=detail;
                 best_window_step=window_step;
             }
      }
    }
-
+}
+ }
+}
 
   VisCortx_GetHyperVisorStatus(1,0,0);
 
 
+  fprintf(stderr,"Best Generalization = %u \n",best_generalization);
+  fprintf(stderr,"Best Histogram Threshold = %u \n",best_hist_thres);
+  fprintf(stderr,"Best Edges Percent = %u \n",edges_percent);
   fprintf(stderr,"Best Detail = %u \n",best_detail);
   fprintf(stderr,"Best Window Step = %u \n",best_window_step);
   fprintf(stderr,"Best output delay %u ms , coverage %u %% , too close %u %%\n",delay,coverage,too_close);
