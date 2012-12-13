@@ -116,6 +116,8 @@ int main(int argc, const char* argv[])
 
     VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,out_filename);
 
+    VisCortx_GetHyperVisorStatus(1,0,0);
+
     VisCortx_Stop();
 
     free(vid0);

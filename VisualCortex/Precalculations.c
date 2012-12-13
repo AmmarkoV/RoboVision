@@ -253,7 +253,7 @@ void TestPrecalculations()
 
   errors=0;
    /*Etc code*/
-  if (errors>0) { fprintf(stderr,"Precalculation errors, %u in etc code\n"); }
+  if (errors>0) { fprintf(stderr,"Precalculation errors, %u in etc code\n",errors); }
 
 
 }

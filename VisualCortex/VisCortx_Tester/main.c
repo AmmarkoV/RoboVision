@@ -70,6 +70,24 @@ char * LoadRegisterFromFileInternal(char * filename,unsigned int * width,unsigne
 }
 
 
+int DisparityMappingSettingsBenchmark()
+{
+    VisCortx_FullDepthMap(0);
+
+    ExecutePipeline();
+
+    VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,out_filename);
+
+    VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS);
+
+    VisCortx_GetHyperVisorStatus(1,0,0);
+
+
+}
+
+
+
+
 int main(int argc, const char* argv[])
 {
     printf("Visual Cortex %s !\n",VisCortx_Version());
@@ -109,11 +127,11 @@ int main(int argc, const char* argv[])
 
     VisCortX_NewFrame(RIGHT_EYE,resolution_width,resolution_height,3,(unsigned char * ) vid1);
 
-    VisCortx_FullDepthMap(0);
+    //Frames Are loaded and ready for our processing ..
 
-    ExecutePipeline();
+    DisparityMappingSettingsBenchmark();
 
-    VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,out_filename);
+    //Our processing is done ....
 
     VisCortx_Stop();
 

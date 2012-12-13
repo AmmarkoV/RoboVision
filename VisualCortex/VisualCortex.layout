@@ -5,19 +5,19 @@
 		<Cursor position="467" topLine="0" />
 	</File>
 	<File name="CameraPose.c" open="1" top="0" tabpos="44">
-		<Cursor position="24" topLine="6" />
+		<Cursor position="24" topLine="0" />
 	</File>
 	<File name="CameraPose.h" open="1" top="0" tabpos="43">
 		<Cursor position="862" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="30799" topLine="643" />
+		<Cursor position="30799" topLine="72" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="302" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
-		<Cursor position="3769" topLine="84" />
+		<Cursor position="3769" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
 		<Cursor position="1348" topLine="0" />
@@ -29,43 +29,43 @@
 		<Cursor position="209" topLine="0" />
 	</File>
 	<File name="FeatureExtraction.c" open="1" top="0" tabpos="14">
-		<Cursor position="5307" topLine="158" />
+		<Cursor position="5307" topLine="0" />
 	</File>
 	<File name="FeatureExtraction.h" open="1" top="0" tabpos="15">
 		<Cursor position="162" topLine="0" />
 	</File>
 	<File name="FeatureLists.c" open="1" top="0" tabpos="38">
-		<Cursor position="8403" topLine="180" />
+		<Cursor position="8403" topLine="0" />
 	</File>
 	<File name="FeatureLists.h" open="1" top="0" tabpos="30">
 		<Cursor position="647" topLine="0" />
 	</File>
 	<File name="FeatureTracking.c" open="1" top="0" tabpos="20">
-		<Cursor position="15232" topLine="358" />
+		<Cursor position="15232" topLine="0" />
 	</File>
 	<File name="FeatureTracking.h" open="1" top="0" tabpos="29">
 		<Cursor position="571" topLine="0" />
 	</File>
 	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
-		<Cursor position="10152" topLine="305" />
+		<Cursor position="10152" topLine="0" />
 	</File>
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
 		<Cursor position="1084" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
-		<Cursor position="13557" topLine="295" />
+		<Cursor position="13557" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.h" open="1" top="0" tabpos="31">
 		<Cursor position="261" topLine="0" />
 	</File>
 	<File name="Matrix.c" open="1" top="0" tabpos="45">
-		<Cursor position="614" topLine="269" />
+		<Cursor position="614" topLine="0" />
 	</File>
 	<File name="Matrix.h" open="1" top="0" tabpos="46">
 		<Cursor position="180" topLine="0" />
 	</File>
 	<File name="MovementRegistration.c" open="1" top="0" tabpos="9">
-		<Cursor position="2234" topLine="36" />
+		<Cursor position="3435" topLine="0" />
 	</File>
 	<File name="MovementRegistration.h" open="1" top="0" tabpos="10">
 		<Cursor position="633" topLine="0" />
@@ -76,8 +76,8 @@
 	<File name="ObjectRecognition.h" open="1" top="0" tabpos="51">
 		<Cursor position="105" topLine="0" />
 	</File>
-	<File name="PatchComparison.c" open="1" top="0" tabpos="32">
-		<Cursor position="14750" topLine="289" />
+	<File name="PatchComparison.c" open="1" top="1" tabpos="32">
+		<Cursor position="18599" topLine="278" />
 	</File>
 	<File name="PatchComparison.h" open="1" top="0" tabpos="33">
 		<Cursor position="99" topLine="0" />
@@ -89,9 +89,9 @@
 		<Cursor position="299" topLine="0" />
 	</File>
 	<File name="Precalculations.c" open="1" top="0" tabpos="11">
-		<Cursor position="9448" topLine="221" />
+		<Cursor position="8229" topLine="230" />
 	</File>
-	<File name="Precalculations.h" open="1" top="1" tabpos="35">
+	<File name="Precalculations.h" open="1" top="0" tabpos="35">
 		<Cursor position="284" topLine="0" />
 	</File>
 	<File name="StateSetting.c" open="1" top="0" tabpos="18">
