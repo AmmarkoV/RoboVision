@@ -96,7 +96,7 @@ void DefaultSettings()
 
     settings[DEPTHMAP_STARTLEFT_X]=48;// Just like OpenCV :P 16;
     settings[DEPTHMAP_DETAIL]=4;
-    settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=35;
+    settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=40;
     settings[DEPTHMAP_EDGE_HIGH_STRICTNESS]=255; // 255
     settings[DEPTHMAP_INSTANT_DETAIL]=2;
 

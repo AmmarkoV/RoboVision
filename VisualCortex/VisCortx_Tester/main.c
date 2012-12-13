@@ -72,15 +72,92 @@ char * LoadRegisterFromFileInternal(char * filename,unsigned int * width,unsigne
 
 int DisparityMappingSettingsBenchmark()
 {
+    /*
+    VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD,4000);
+    VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH,4000);
+    VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH,4000);
+    VisCortx_SetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT,9);
+    VisCortx_SetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN,18);
+    VisCortx_SetSetting(DEPTHMAP_INSTANT_DETAIL,2);
+    VisCortx_SetSetting(PATCH_COMPARISON_SCORE_MIN,33000);
+    VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED,3);
+    VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH,5);
+    VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH,8);
+    VisCortx_SetSetting(PATCH_HIST_THRESHOLD_R,7);
+    VisCortx_SetSetting(PATCH_HIST_THRESHOLD_G,7);
+    VisCortx_SetSetting(PATCH_HIST_THRESHOLD_B,7);
+
+
+    VisCortx_SetMetric(HORIZONTAL_BUFFER,9);
+    VisCortx_SetMetric(VERTICAL_BUFFER,9);
+    VisCortx_SetMetric(HORIZONTAL_BUFFER_LARGE,15);
+    VisCortx_SetMetric(VERTICAL_BUFFER_LARGE,15);
+    VisCortx_SetMetric(HORIZONTAL_BUFFER_EXTRALARGE,21);
+    VisCortx_SetMetric(VERTICAL_BUFFER_EXTRALARGE,21);*/
+
     VisCortx_FullDepthMap(0);
 
     ExecutePipeline();
 
     VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,out_filename);
 
-    VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS);
+    unsigned int delay  = VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS);
+    unsigned int coverage  = VisCortx_GetMetric(LAST_DEPTH_MAP_COVERAGE);
+    unsigned int too_close  = VisCortx_GetMetric(LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE);
 
-    VisCortx_GetHyperVisorStatus(1,0,0);
+    unsigned int wndx=VisCortx_GetMetric(HORIZONTAL_BUFFER);
+    unsigned int wndy=VisCortx_GetMetric(VERTICAL_BUFFER);
+    unsigned int wndx_l=VisCortx_GetMetric(HORIZONTAL_BUFFER_LARGE);
+    unsigned int wndy_l=VisCortx_GetMetric(VERTICAL_BUFFER_LARGE);
+    unsigned int wndx_xl=VisCortx_GetMetric(HORIZONTAL_BUFFER_EXTRALARGE);
+    unsigned int wndy_xl=VisCortx_GetMetric(VERTICAL_BUFFER_EXTRALARGE);
+
+    unsigned int best_window_step=0;
+    unsigned int window_step=0;
+
+    unsigned int best_detail=1;
+    unsigned int detail=1;
+
+ for (detail=1; detail<10; detail++)
+   {
+    for (window_step=1; window_step<10; window_step++)
+     {
+        VisCortx_SetMetric(HORIZONTAL_BUFFER,wndx+window_step);                 VisCortx_SetMetric(VERTICAL_BUFFER,wndy+window_step);
+        VisCortx_SetMetric(HORIZONTAL_BUFFER_LARGE,wndx_l+2*window_step);       VisCortx_SetMetric(VERTICAL_BUFFER_LARGE,wndy_l+2*window_step);
+        VisCortx_SetMetric(HORIZONTAL_BUFFER_EXTRALARGE,wndx_xl+3*window_step); VisCortx_SetMetric(VERTICAL_BUFFER_EXTRALARGE,wndy_xl+3*window_step);
+
+
+        VisCortx_FullDepthMap(0);
+
+        ExecutePipeline();
+
+
+        if (
+              ( delay < VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS) ) &&
+              ( coverage < VisCortx_GetMetric(LAST_DEPTH_MAP_COVERAGE) ) &&
+              ( too_close < VisCortx_GetMetric(LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE) )
+            )
+            {
+                VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,out_filename);
+
+                delay  = VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS);
+                coverage  = VisCortx_GetMetric(LAST_DEPTH_MAP_COVERAGE);
+                too_close  = VisCortx_GetMetric(LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE);
+
+                best_detail=detail;
+                best_window_step=window_step;
+            }
+     }
+   }
+
+
+  VisCortx_GetHyperVisorStatus(1,0,0);
+
+
+  fprintf(stderr,"Best Detail = %u \n",best_detail);
+  fprintf(stderr,"Best Window Step = %u \n",best_window_step);
+  fprintf(stderr,"Best output delay %u ms , coverage %u %% , too close %u %%\n",delay,coverage,too_close);
+
 
 
 }

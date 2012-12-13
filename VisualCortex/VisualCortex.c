@@ -161,6 +161,7 @@ void VisCortx_SetSetting(unsigned int set_num,unsigned int set_val)
     SetSetting(set_num,set_val);
 }
 
+
 void VisCortx_SetDefaultSettings()
 {
     SetDefaultSettings();
