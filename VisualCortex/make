@@ -57,10 +57,19 @@ ar  rcs libVisualCortex.a $FILESTOLINK
 
 rm $FILESTOLINK
 
-
+if [ -d VisCortx_Tester ]
+then 
 cd VisCortx_Tester
 ./make
 cd ..
+fi
+
+if [ -d DisparityMapComparison ]
+then 
+cd DisparityMapComparison
+./make
+cd ..
+fi
 
 
 if [ -e libVisualCortex.a ]

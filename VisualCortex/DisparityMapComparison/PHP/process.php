@@ -10,8 +10,18 @@ $dispdir = "/home/ammar/RoboVision/VisualCortex/DisparityMapComparison";
 $origdir = getcwd();
 $outdir = $origdir."/tmp/";
 $left = "left";
+$right = "right";
 $leftfile = "0";
 $rightfile = "1";
+
+if ( 
+       ( !isset( $_FILES[$left]["name"]) ) ||
+       ( !isset( $_FILES[$right]["name"]) )
+    )
+ { 
+     echo "<br><br><h1>Bad Request <a href=\"index.php\">Go Back</a></h1>";
+     return(0) ;
+ }
 
 echo "<br><center><h1>Processing Stereo Disparity</h1><br><a href=\"javascript:history.go(-1)\">Go back</a><br><br><br>";
 
@@ -29,7 +39,6 @@ else
 
 echo "</td><td>&nbsp;</td><td>";
 
-$right = "right";
 if ($_FILES[$right]["error"] > 0) { echo "Error: " . $_FILES[$right]["error"] . "<br>"; return 1; }
 else
   {

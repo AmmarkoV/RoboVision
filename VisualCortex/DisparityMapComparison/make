@@ -7,5 +7,7 @@ gcc my_main.c  ../libVisualCortex.a ../../3dpartylibs/fast/libFast.a ../../World
 gcc opencv_throughgddg_main.c  ../libVisualCortex.a ../../3dpartylibs/fast/libFast.a ../../WorldMapping/MasterWorld/libMasterWorld.a `pkg-config --cflags --libs opencv` -L.  -pthread -lgsl -lpng -ljpeg -lgslcblas -lm -lrt -s -O3 -o stereo_disparity_opencv_tester_viscrtx
 
 #COMPILE  OPENCV BINARY
-g++  opencv_main.cpp  `pkg-config --cflags --libs opencv` -L.  -lm -lrt -s -O3 -o stereo_disparity_opencv_tester
+#g++  opencv_main.cpp  `pkg-config --cflags --libs opencv` -L.  -lm -lrt -s -O3 -o stereo_disparity_opencv_tester
+
+
 exit 0
