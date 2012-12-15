@@ -10,6 +10,9 @@
 unsigned int resolution_height=320 , resolution_width=240 ;
 
 char out_filename[256]={0};
+char out_filenameedges[256]={0};
+char out_filenamedepthedges[256]={0};
+char out_filename2nd[256]={0};
 
 char filename0[256]={0};
 unsigned char * vid0=0;
@@ -125,12 +128,12 @@ int DisparityMappingSettingsBenchmark()
     int processed = 0;
 
 locbestsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=VisCortx_GetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT);
-locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=8;
-locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=12;
+locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=11;
+locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=11;
 
-locbestsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=VisCortx_GetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN);
-locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=9;
-locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=12;
+//locbestsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=VisCortx_GetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN);
+//locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=9;
+//locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=12;
 
 locbestsettings[DEPTHMAP_DETAIL]=VisCortx_GetSetting(DEPTHMAP_DETAIL);
 locminsettings[DEPTHMAP_DETAIL]=5;
@@ -148,20 +151,20 @@ locmaxsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=13;
 
 
 locbestmetrics[HORIZONTAL_BUFFER]=VisCortx_GetMetric(HORIZONTAL_BUFFER);
-locminmetrics[HORIZONTAL_BUFFER]=7;
+locminmetrics[HORIZONTAL_BUFFER]=9;
 locmaxmetrics[HORIZONTAL_BUFFER]=10;
 
-locbestmetrics[VERTICAL_BUFFER]=VisCortx_GetMetric(VERTICAL_BUFFER);
-locminmetrics[VERTICAL_BUFFER]=7;
-locmaxmetrics[VERTICAL_BUFFER]=10;
+//locbestmetrics[VERTICAL_BUFFER]=VisCortx_GetMetric(VERTICAL_BUFFER);
+//locminmetrics[VERTICAL_BUFFER]=7;
+//locmaxmetrics[VERTICAL_BUFFER]=10;
 
 
 
-unsigned int totalloops =  ( locmaxmetrics[VERTICAL_BUFFER] - locminmetrics[VERTICAL_BUFFER] );
-totalloops *=   ( locmaxsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] - locminsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] );
-totalloops *=   ( locmaxsettings[PATCH_HIST_THRESHOLD_R] - locminsettings[PATCH_HIST_THRESHOLD_R] );
-totalloops *=   ( locmaxsettings[DEPTHMAP_DETAIL] - locminsettings[DEPTHMAP_DETAIL] );
-totalloops *=   ( locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT] - locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT] );
+unsigned int totalloops =  1+( locmaxmetrics[HORIZONTAL_BUFFER] - locminmetrics[HORIZONTAL_BUFFER] );
+totalloops *=   1+( locmaxsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] - locminsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] );
+totalloops *=   1+( locmaxsettings[PATCH_HIST_THRESHOLD_R] - locminsettings[PATCH_HIST_THRESHOLD_R] );
+totalloops *=   1+( locmaxsettings[DEPTHMAP_DETAIL] - locminsettings[DEPTHMAP_DETAIL] );
+totalloops *=   1+( locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT] - locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT] );
 
 fprintf(stderr,"\n\n\n\nWill Perform a total of %u loops , assuming 1second per loop we will wait for %u seconds or %0.2f minutes\n\n\n\n",totalloops,totalloops,(float) totalloops/60);
 usleep(1000);
@@ -169,23 +172,23 @@ usleep(1000);
 
 //THE MAIN LOOP
 for ( locsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT];
-      locsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]<locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT];
+      locsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]<=locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT];
       locsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]++ )
 {
 for ( locsettings[PATCH_HIST_THRESHOLD_R]=locminsettings[PATCH_HIST_THRESHOLD_R];
-       locsettings[PATCH_HIST_THRESHOLD_R]<locmaxsettings[PATCH_HIST_THRESHOLD_R];
+       locsettings[PATCH_HIST_THRESHOLD_R]<=locmaxsettings[PATCH_HIST_THRESHOLD_R];
        locsettings[PATCH_HIST_THRESHOLD_R]++)
  {
 for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED];
-       locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]<locmaxsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED];
+       locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]<=locmaxsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED];
        locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]++)
 {
  for ( locsettings[DEPTHMAP_DETAIL]=locminsettings[DEPTHMAP_DETAIL];
-       locsettings[DEPTHMAP_DETAIL]<locmaxsettings[DEPTHMAP_DETAIL];
+       locsettings[DEPTHMAP_DETAIL]<=locmaxsettings[DEPTHMAP_DETAIL];
        locsettings[DEPTHMAP_DETAIL]++)
    {
     for ( locmetrics[HORIZONTAL_BUFFER]=locminmetrics[HORIZONTAL_BUFFER];
-          locmetrics[HORIZONTAL_BUFFER]<locmaxmetrics[HORIZONTAL_BUFFER];
+          locmetrics[HORIZONTAL_BUFFER]<=locmaxmetrics[HORIZONTAL_BUFFER];
           locmetrics[HORIZONTAL_BUFFER]++)
      {
 
@@ -209,8 +212,13 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
 
         VisCortx_FullDepthMap(0);
 
+
+       //int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,signed int divisor,unsigned int table_size);
+
         ExecutePipeline();
         ++processed;
+
+
 
         if (processed % 10 == 0) {  fprintf(stderr,"\n\n DONE WITH %u/%u \n\n",processed,totalloops); }
 
@@ -221,6 +229,9 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
             )
             {
                 VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,out_filename);
+
+                VisCortX_SaveVideoRegisterToFile(EDGES_LEFT,out_filenameedges);
+                VisCortX_SaveVideoRegisterToFile(SECOND_DERIVATIVE_LEFT,out_filename2nd);
 
                 delay  = VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS);
                 coverage  = VisCortx_GetMetric(LAST_DEPTH_MAP_COVERAGE);
@@ -276,6 +287,10 @@ int main(int argc, const char* argv[])
        strcpy(filename0,argv[1]);
        strcpy(filename1,argv[2]);
        strcpy(out_filename,argv[3]);
+       strcpy(out_filename2nd,argv[3]); strcat(out_filename2nd,(char*)"_2nd");
+       strcpy(out_filenameedges,argv[3]); strcat(out_filenameedges,(char*)"_edges");
+       strcpy(out_filenamedepthedges,argv[3]); strcat(out_filenamedepthedges,(char*)"_edges_depth");
+
      } else
      {
         fprintf(stderr,"Usage : VisCortx_Tester RESOLUTIONX RESOLUTIONY left_image.ppm right_image.ppm output.ppm\n");
