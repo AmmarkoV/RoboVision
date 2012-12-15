@@ -76,7 +76,7 @@
 	<File name="ObjectRecognition.h" open="1" top="0" tabpos="51">
 		<Cursor position="105" topLine="0" />
 	</File>
-	<File name="PatchComparison.c" open="1" top="1" tabpos="32">
+	<File name="PatchComparison.c" open="1" top="0" tabpos="32">
 		<Cursor position="18599" topLine="278" />
 	</File>
 	<File name="PatchComparison.h" open="1" top="0" tabpos="33">
@@ -137,7 +137,7 @@
 		<Cursor position="74" topLine="0" />
 	</File>
 	<File name="VisCortexOptimizedConvolutionFilters.c" open="1" top="0" tabpos="39">
-		<Cursor position="1394" topLine="0" />
+		<Cursor position="1163" topLine="0" />
 	</File>
 	<File name="VisCortexOptimizedConvolutionFilters.h" open="1" top="0" tabpos="40">
 		<Cursor position="138" topLine="0" />
@@ -149,16 +149,16 @@
 		<Cursor position="183" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="31990" topLine="841" />
+		<Cursor position="31990" topLine="356" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="1535" topLine="54" />
+		<Cursor position="2221" topLine="96" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
 		<Cursor position="4786" topLine="129" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="8479" topLine="295" />
+		<Cursor position="8479" topLine="0" />
 	</File>
 	<File name="fastmemcpy.h" open="0" top="0" tabpos="0">
 		<Cursor position="1365" topLine="0" />

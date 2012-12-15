@@ -133,18 +133,18 @@ locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=9;
 locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=12;
 
 locbestsettings[DEPTHMAP_DETAIL]=VisCortx_GetSetting(DEPTHMAP_DETAIL);
-locminsettings[DEPTHMAP_DETAIL]=4;
+locminsettings[DEPTHMAP_DETAIL]=5;
 locmaxsettings[DEPTHMAP_DETAIL]=6;
 
 
 locbestsettings[PATCH_HIST_THRESHOLD_R]=VisCortx_GetSetting(PATCH_HIST_THRESHOLD_R);
-locminsettings[PATCH_HIST_THRESHOLD_R]=4;
+locminsettings[PATCH_HIST_THRESHOLD_R]=7;
 locmaxsettings[PATCH_HIST_THRESHOLD_R]=12;
 
 
 locbestsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=VisCortx_GetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED);
-locminsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=7;
-locmaxsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=12;
+locminsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=10;
+locmaxsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=13;
 
 
 locbestmetrics[HORIZONTAL_BUFFER]=VisCortx_GetMetric(HORIZONTAL_BUFFER);
@@ -211,6 +211,8 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
 
         ExecutePipeline();
         ++processed;
+
+        if (processed % 10 == 0) {  fprintf(stderr,"\n\n DONE WITH %u/%u \n\n",processed,totalloops); }
 
         if (
                  ( delay <= VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS) )
