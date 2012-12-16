@@ -349,7 +349,8 @@ void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error);
 unsigned int  VisCortx_Get_DepthMapData(unsigned int typeofdata,unsigned int px,unsigned int py);
 unsigned int  VisCortx_GetPatchDescriptor(unsigned int vid_register,unsigned int x,unsigned int y,unsigned int patch_x,unsigned int patch_y,struct PatchSignature * result);
 
- int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,signed int divisor,unsigned int table_size);
+int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,signed int divisor,unsigned int table_size);
+void VisCortx_PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_reg,unsigned int target_sobel_reg,unsigned int target_derivative_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold);
 
 int VisCortx_Movement_Detection(unsigned int left_cam,unsigned int right_cam);
 int VisCortx_Movement_At_Rectangle(unsigned int reg_num , unsigned int x, unsigned int y , unsigned int width , unsigned int height );

@@ -213,10 +213,12 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
         VisCortx_FullDepthMap(0);
 
 
-       //int VisCortx_ConvolutionFilter(unsigned int reg_in,unsigned int reg_out,signed char * table,signed int divisor,unsigned int table_size);
 
         ExecutePipeline();
         ++processed;
+
+
+        VisCortx_PrepareCleanSobeledGaussianAndDerivative(DEPTH_LEFT_VIDEO,GENERAL_4,GENERAL_5,30,255);
 
 
 
@@ -232,6 +234,7 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
 
                 VisCortX_SaveVideoRegisterToFile(EDGES_LEFT,out_filenameedges);
                 VisCortX_SaveVideoRegisterToFile(SECOND_DERIVATIVE_LEFT,out_filename2nd);
+                VisCortX_SaveVideoRegisterToFile(GENERAL_4,out_filenamedepthedges);
 
                 delay  = VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS);
                 coverage  = VisCortx_GetMetric(LAST_DEPTH_MAP_COVERAGE);

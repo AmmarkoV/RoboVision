@@ -659,6 +659,10 @@ void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error)
 
 
 
+void VisCortx_PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_reg,unsigned int target_sobel_reg,unsigned int target_derivative_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
+{
+  PrepareCleanSobeledGaussianAndDerivative(&video_register[rgb_reg],&video_register[target_sobel_reg],&video_register[target_derivative_reg],kill_lower_edges_threshold,kill_higher_edges_threshold);
+}
 
 
 /*
