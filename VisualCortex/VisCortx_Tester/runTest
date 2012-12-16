@@ -6,17 +6,23 @@ SP="_"
 
 PPM=".ppm"
 PNG=".png"
-
-GUARDDOG_LABEL="_guarddog"
+ 
 
 TRIAL_NAME="room"
 TRIAL_NUMBER="0"
 
-time ./VisCortx_Tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" "$TRIAL_NUMBER$SP$TRIAL_NAME$GUARDDOG_LABEL$PPM" 2> VisCortx.log&
+#time ./VisCortx_Tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" "$TRIAL_NUMBER$SP$TRIAL_NAME$PPM" 2> VisCortx.log&
 
-TRIAL_NAME="huge"
+
+TRIAL_NAME="cones"
 TRIAL_NUMBER="1"
 
-#time ./VisCortx_Tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" "$TRIAL_NUMBER$SP$TRIAL_NAME$GUARDDOG_LABEL$PPM"
+time ./VisCortx_Tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" "$TRIAL_NUMBER$SP$TRIAL_NAME$PPM" 2> VisCortx.log&
+
+
+TRIAL_NAME="huge"
+TRIAL_NUMBER="2"
+
+#time ./VisCortx_Tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" "$TRIAL_NUMBER$SP$TRIAL_NAME$PPM"
 
 exit 0

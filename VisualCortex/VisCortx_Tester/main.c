@@ -9,6 +9,11 @@
 
 unsigned int resolution_height=320 , resolution_width=240 ;
 
+
+char opencv_filename[256]={0};
+char opencv_filenamedepthedges[256]={0};
+
+
 char out_filename[256]={0};
 char out_filenameedges[256]={0};
 char out_filenamedepthedges[256]={0};
@@ -280,6 +285,31 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
 
 
 
+int DisparityOpenCV()
+{
+
+
+    VisCortx_SetSetting(DEPTHMAP_USE_OPENCV,1);
+    VisCortx_SetSetting(USE_OPENCV,1);
+
+    VisCortx_FullDepthMap(0);
+
+    ExecutePipeline();
+
+    VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,opencv_filename);
+    VisCortx_PrepareCleanSobeledGaussianAndDerivative(DEPTH_LEFT_VIDEO,GENERAL_4,GENERAL_5,30,255);
+    VisCortX_SaveVideoRegisterToFile(GENERAL_4,opencv_filenamedepthedges);
+
+
+    VisCortx_SetSetting(DEPTHMAP_USE_OPENCV,0);
+    VisCortx_SetSetting(USE_OPENCV,0);
+
+}
+
+
+
+
+
 int main(int argc, const char* argv[])
 {
     printf("Visual Cortex %s !\n",VisCortx_Version());
@@ -289,10 +319,15 @@ int main(int argc, const char* argv[])
      {
        strcpy(filename0,argv[1]);
        strcpy(filename1,argv[2]);
-       strcpy(out_filename,argv[3]);
-       strcpy(out_filename2nd,argv[3]); strcat(out_filename2nd,(char*)"_2nd");
-       strcpy(out_filenameedges,argv[3]); strcat(out_filenameedges,(char*)"_edges");
-       strcpy(out_filenamedepthedges,argv[3]); strcat(out_filenamedepthedges,(char*)"_edges_depth");
+       strcpy(out_filename,argv[3]); strcat(out_filename2nd,(char*)"_gddg_2nd");
+       strcpy(out_filename2nd,argv[3]); strcat(out_filename2nd,(char*)"_gddg_2nd");
+       strcpy(out_filenameedges,argv[3]); strcat(out_filenameedges,(char*)"_gddg_edges");
+       strcpy(out_filenamedepthedges,argv[3]); strcat(out_filenamedepthedges,(char*)"_gddg_edges_depth");
+
+
+       strcpy(opencv_filename,argv[3]);           strcat(opencv_filename,(char*)"_opencv");
+       strcpy(opencv_filenamedepthedges,argv[3]); strcat(opencv_filenamedepthedges,(char*)"_opencv_edges_depth");
+
 
      } else
      {
@@ -324,6 +359,7 @@ int main(int argc, const char* argv[])
     VisCortX_NewFrame(RIGHT_EYE,resolution_width,resolution_height,3,(unsigned char * ) vid1);
 
     //Frames Are loaded and ready for our processing ..
+    DisparityOpenCV(); //This is used as a guide
 
     DisparityMappingSettingsBenchmark();
 
