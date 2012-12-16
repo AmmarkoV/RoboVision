@@ -19,6 +19,11 @@ char out_filenameedges[256]={0};
 char out_filenamedepthedges[256]={0};
 char out_filename2nd[256]={0};
 
+
+unsigned int rgb_edges = 0;
+unsigned int opencv_depth_edges = 0;
+
+
 char filename0[256]={0};
 unsigned char * vid0=0;
 
@@ -102,13 +107,6 @@ int DisparityMappingSettingsBenchmark()
     VisCortx_SetMetric(HORIZONTAL_BUFFER_EXTRALARGE,21);
     VisCortx_SetMetric(VERTICAL_BUFFER_EXTRALARGE,21);*/
 
-    VisCortx_FullDepthMap(0);
-
-    ExecutePipeline();
-
-    VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,out_filename);
-
-
     unsigned int locsettings[SETTINGS_COUNT];
     unsigned int locminsettings[SETTINGS_COUNT];
     unsigned int locmaxsettings[SETTINGS_COUNT];
@@ -119,6 +117,7 @@ int DisparityMappingSettingsBenchmark()
     unsigned int locmaxmetrics[METRICS_COUNT];
     unsigned int locbestmetrics[METRICS_COUNT];
 
+    unsigned int best_edge_count = VisCortx_GetMetric(RESOLUTION_MEMORY_LIMIT_1BYTE) , edge_count = 0;
     unsigned int delay  = VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS);
     unsigned int coverage  = VisCortx_GetMetric(LAST_DEPTH_MAP_COVERAGE);
     unsigned int too_close  = VisCortx_GetMetric(LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE);
@@ -134,30 +133,30 @@ int DisparityMappingSettingsBenchmark()
 
 locbestsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=VisCortx_GetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT);
 locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=11;
-locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=11;
+locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=13;
 
 //locbestsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=VisCortx_GetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN);
 //locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=9;
 //locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=12;
 
 locbestsettings[DEPTHMAP_DETAIL]=VisCortx_GetSetting(DEPTHMAP_DETAIL);
-locminsettings[DEPTHMAP_DETAIL]=5;
-locmaxsettings[DEPTHMAP_DETAIL]=6;
+locminsettings[DEPTHMAP_DETAIL]=6;
+locmaxsettings[DEPTHMAP_DETAIL]=7;
 
 
 locbestsettings[PATCH_HIST_THRESHOLD_R]=VisCortx_GetSetting(PATCH_HIST_THRESHOLD_R);
-locminsettings[PATCH_HIST_THRESHOLD_R]=7;
-locmaxsettings[PATCH_HIST_THRESHOLD_R]=12;
+locminsettings[PATCH_HIST_THRESHOLD_R]=6;
+locmaxsettings[PATCH_HIST_THRESHOLD_R]=8;
 
 
 locbestsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=VisCortx_GetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED);
-locminsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=10;
-locmaxsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=13;
+locminsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=9;
+locmaxsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=12;
 
 
 locbestmetrics[HORIZONTAL_BUFFER]=VisCortx_GetMetric(HORIZONTAL_BUFFER);
-locminmetrics[HORIZONTAL_BUFFER]=9;
-locmaxmetrics[HORIZONTAL_BUFFER]=10;
+locminmetrics[HORIZONTAL_BUFFER]=7;
+locmaxmetrics[HORIZONTAL_BUFFER]=9;
 
 //locbestmetrics[VERTICAL_BUFFER]=VisCortx_GetMetric(VERTICAL_BUFFER);
 //locminmetrics[VERTICAL_BUFFER]=7;
@@ -224,6 +223,7 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
 
 
         VisCortx_PrepareCleanSobeledGaussianAndDerivative(DEPTH_LEFT_VIDEO,GENERAL_4,GENERAL_5,30,255);
+        edge_count = VisCortx_CountEdges(GENERAL_4,0,0,VisCortx_GetMetric(LEFT_EYE),VisCortx_GetMetric(RIGHT_EYE));
 
 
 
@@ -232,6 +232,7 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
         if (
                  ( delay <= VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS) )
               && ( coverage <= VisCortx_GetMetric(LAST_DEPTH_MAP_COVERAGE) )
+              && ( edge_count <= best_edge_count )
               //&& ( too_close <= VisCortx_GetMetric(LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE) )
             )
             {
@@ -241,6 +242,7 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
                 VisCortX_SaveVideoRegisterToFile(SECOND_DERIVATIVE_LEFT,out_filename2nd);
                 VisCortX_SaveVideoRegisterToFile(GENERAL_4,out_filenamedepthedges);
 
+                best_edge_count = edge_count;
                 delay  = VisCortx_GetMetric(DEPTHMAP_DELAY_MICROSECONDS);
                 coverage  = VisCortx_GetMetric(LAST_DEPTH_MAP_COVERAGE);
                 too_close  = VisCortx_GetMetric(LAST_DEPTH_MAP_TOO_CLOSE_COVERAGE);
@@ -276,6 +278,7 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
   fprintf(stderr,"Best Edges Percent = %u \n",locbestsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]);
   fprintf(stderr,"Best Detail = %u \n",locbestsettings[DEPTHMAP_DETAIL]);
   fprintf(stderr,"Best Window size = %u x %u \n",locbestmetrics[HORIZONTAL_BUFFER],locbestmetrics[VERTICAL_BUFFER]);
+  fprintf(stderr,"Best Edge Count = %u , OpenCV count = %u , RGB count = %u \n",best_edge_count,opencv_depth_edges,rgb_edges);
   fprintf(stderr,"Best output delay %u ms , coverage %u %% , too close %u %%\n",delay,coverage,too_close);
 
 
@@ -299,6 +302,8 @@ int DisparityOpenCV()
     VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,opencv_filename);
     VisCortx_PrepareCleanSobeledGaussianAndDerivative(DEPTH_LEFT_VIDEO,GENERAL_4,GENERAL_5,30,255);
     VisCortX_SaveVideoRegisterToFile(GENERAL_4,opencv_filenamedepthedges);
+
+    opencv_depth_edges = VisCortx_CountEdges(GENERAL_4,0,0,VisCortx_GetMetric(LEFT_EYE),VisCortx_GetMetric(RIGHT_EYE));
 
 
     VisCortx_SetSetting(DEPTHMAP_USE_OPENCV,0);
@@ -357,6 +362,16 @@ int main(int argc, const char* argv[])
     VisCortX_NewFrame(LEFT_EYE,resolution_width,resolution_height,3,(unsigned char * ) vid0);
 
     VisCortX_NewFrame(RIGHT_EYE,resolution_width,resolution_height,3,(unsigned char * ) vid1);
+
+
+    //Fire Depth map one time to get edges .. etc
+    VisCortx_FullDepthMap(0);
+    ExecutePipeline();
+    VisCortX_SaveVideoRegisterToFile(DEPTH_LEFT_VIDEO,out_filename);
+    //Store edge count
+    rgb_edges = VisCortx_CountEdges(EDGES_LEFT,0,0,VisCortx_GetMetric(LEFT_EYE),VisCortx_GetMetric(RIGHT_EYE));
+
+
 
     //Frames Are loaded and ready for our processing ..
     DisparityOpenCV(); //This is used as a guide

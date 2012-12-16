@@ -658,6 +658,12 @@ void VisCorteX_DisparityMapAutoCalibrate(unsigned int max_vertical_error)
  }
 
 
+unsigned int VisCortx_CountEdges(unsigned int edge_reg,unsigned int x,unsigned int y,unsigned int width,unsigned int height)
+{
+   return  CountEdgesNew(&video_register[edge_reg] ,(width-x)*(height-y)*255, x , y , width , height );
+}
+
+
 
 void VisCortx_PrepareCleanSobeledGaussianAndDerivative(unsigned int rgb_reg,unsigned int target_sobel_reg,unsigned int target_derivative_reg,unsigned int kill_lower_edges_threshold,unsigned int kill_higher_edges_threshold)
 {

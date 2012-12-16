@@ -26,25 +26,44 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <string.h>
 
-unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned int x , unsigned int y,unsigned int size_x , unsigned int size_y,unsigned char * edge_array)
+
+
+unsigned int inline CountEdgesNew(struct VideoRegister *   edges_reg , unsigned int edges_required_to_process , unsigned int x , unsigned int y,unsigned int size_x , unsigned int size_y)
 {
     /* THIS CAN BE DONE MUCH FASTER , SEE IntegralImageConversion.c
        THIS FUNCTION IS DEPRECIATED , USED ONLY FOR DEBUGGING THE NEW ONES */
+   unsigned char * edge_array = edges_reg->pixels;
+   unsigned int edge_array_width=edges_reg->size_x;
    unsigned int counted_edges=0;
    unsigned int x_c=x ,  y_c=y;
    register BYTE *px;
    register BYTE *stopx;
 
+    if (ThisIsA1ByteRegister(edges_reg))
+      {
 	     while (y_c<y+size_y)
 				{
-                  px= (BYTE *) edge_array+ MEMPLACE3(x_c,y_c,metrics[RESOLUTION_X]);
+                  px= (BYTE *) edge_array+ MEMPLACE1(x_c,y_c,edge_array_width);
+				  stopx=px+(size_x);
+				  while (px<stopx) { if ( *px!=0 ) { ++counted_edges; }  ++px;  }
+				  if ( edges_required_to_process < counted_edges ) { return counted_edges+1; } // ++PERFORMANCE --RESULT
+				  ++y_c;
+			 	}
+      } else
+    if (ThisIsA3ByteRegister(edges_reg))
+      {
+	     while (y_c<y+size_y)
+				{
+                  px= (BYTE *) edge_array+ MEMPLACE3(x_c,y_c,edge_array_width);
 				  stopx=px+(size_x*3);
 				  while (px<stopx) { if ( *px!=0 ) { ++counted_edges; }  px+=3;  }
 				  if ( edges_required_to_process < counted_edges ) { return counted_edges+1; } // ++PERFORMANCE --RESULT
 				  ++y_c;
 			 	}
+      }
   return counted_edges;
 }
+
 
 
 

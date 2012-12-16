@@ -6,7 +6,7 @@
 
 void GenerateCompressHistogramOfImage(unsigned char * input_img,unsigned short * output_img,unsigned int block_x,unsigned int block_y);
 unsigned int HistogramPatch(struct Histogram *hist_data,struct VideoRegister * reg,unsigned int px,unsigned int py,unsigned int patch_x,unsigned int patch_y);
-unsigned int inline CountEdges(unsigned int edges_required_to_process , unsigned int x , unsigned int y,unsigned int size_x , unsigned int size_y,unsigned char * edge_array);
+unsigned int inline CountEdgesNew(struct VideoRegister *   edges_reg , unsigned int edges_required_to_process , unsigned int x , unsigned int y,unsigned int size_x , unsigned int size_y);
 unsigned int inline PixelsOverThresholdSetAsOne(struct VideoRegister * reg,unsigned int threshold);
 
 
