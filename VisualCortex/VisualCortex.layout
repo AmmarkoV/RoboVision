@@ -10,8 +10,8 @@
 	<File name="CameraPose.h" open="1" top="0" tabpos="43">
 		<Cursor position="862" topLine="0" />
 	</File>
-	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="30799" topLine="72" />
+	<File name="DisparityDepthMap.c" open="1" top="1" tabpos="7">
+		<Cursor position="23452" topLine="443" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="302" topLine="0" />
@@ -47,7 +47,7 @@
 		<Cursor position="571" topLine="0" />
 	</File>
 	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
-		<Cursor position="10152" topLine="0" />
+		<Cursor position="13053" topLine="371" />
 	</File>
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
 		<Cursor position="1084" topLine="0" />
@@ -92,7 +92,7 @@
 		<Cursor position="8229" topLine="230" />
 	</File>
 	<File name="Precalculations.h" open="1" top="0" tabpos="35">
-		<Cursor position="284" topLine="0" />
+		<Cursor position="590" topLine="0" />
 	</File>
 	<File name="StateSetting.c" open="1" top="0" tabpos="18">
 		<Cursor position="4974" topLine="130" />
@@ -119,10 +119,10 @@
 		<Cursor position="122" topLine="0" />
 	</File>
 	<File name="VisCortexFilters.c" open="1" top="0" tabpos="3">
-		<Cursor position="19312" topLine="664" />
+		<Cursor position="987" topLine="12" />
 	</File>
 	<File name="VisCortexFilters.h" open="1" top="0" tabpos="4">
-		<Cursor position="698" topLine="0" />
+		<Cursor position="409" topLine="0" />
 	</File>
 	<File name="VisCortexHeuristics.c" open="1" top="0" tabpos="24">
 		<Cursor position="271" topLine="0" />
@@ -149,16 +149,16 @@
 		<Cursor position="183" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="31990" topLine="356" />
+		<Cursor position="31990" topLine="92" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="2221" topLine="0" />
+		<Cursor position="381" topLine="0" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="26851" topLine="638" />
+		<Cursor position="27182" topLine="637" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="4412" topLine="183" />
+		<Cursor position="3215" topLine="111" />
 	</File>
 	<File name="fastmemcpy.h" open="0" top="0" tabpos="0">
 		<Cursor position="1365" topLine="0" />

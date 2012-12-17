@@ -33,6 +33,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <string.h>
 
+
+
 typedef unsigned int uint;
 
 
@@ -165,7 +167,7 @@ void PassGuessNextDepthMem(unsigned int prox,unsigned int patch_x,unsigned int p
 
 
 
-inline void MatchInHorizontalScanline(
+inline unsigned int MatchInHorizontalScanline(
                                           struct DisparityMappingContext * depthmap_vars,
 
                                           unsigned char *rgb1,
@@ -273,7 +275,7 @@ inline void MatchInHorizontalScanline(
                                    {
                                      ++metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS];
                                      *has_match=1;
-                                     return ;
+                                     return depth_act;
                                    }
                                 }
 
@@ -342,7 +344,9 @@ inline void MatchInHorizontalScanline(
          }
     }
 
-  return;
+
+  if ( *has_match == 1 ) { return  best_match->depth; }
+  return 0;
 }
   /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
      >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -406,9 +410,21 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
     uint yl_lim=metrics[RESOLUTION_Y]-depthmap_vars->vertical_buffer-settings[DEPTHMAP_VERT_OFFSET_UP]; // Added 5/3/2010 :) SPEED++ Quality ++
 
 
-    unsigned char patch_has_match=0;
+    //We process 3 "parallel blocks" to reduce noise!
+    struct ImageRegion left_rgn_up=left_rgn;
+    struct ImageRegion left_rgn_down=left_rgn;
+    left_rgn_up.y1=0; left_rgn.y1=1*y_vima; left_rgn_down.y1=2*y_vima;
 
-     while ( left_rgn.y1 < yl_lim )
+    unsigned int disparity_up;
+    unsigned int disparity;
+    unsigned int disparity_down;
+
+    unsigned char patch_has_match_up=0;
+    unsigned char patch_has_match=0;
+    unsigned char patch_has_match_down=0;
+    unsigned char write_the_whole_damn_thing=0;
+
+     while ( left_rgn_down.y1 < yl_lim )
       {
         left_rgn.x1 = settings[DEPTHMAP_STARTLEFT_X];
         while ( left_rgn.x1 < xl_lim )
@@ -423,6 +439,17 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
              //THIS WILL NOW CHANGE :P
 
              // COMMENCE COMPARISON WITH THE SCANLINE AT THE RIGHT FRAME
+             disparity_up =
+             MatchInHorizontalScanline(
+                                         depthmap_vars ,
+
+                                         video_register[depthmap_vars->left_view_reg].pixels , video_register[depthmap_vars->right_view_reg].pixels,
+                                         &left_rgn,
+                                         &best_match,
+                                         &patch_has_match_up // This returns 1 if we get a match..
+                                      );
+
+             disparity =
              MatchInHorizontalScanline(
                                          depthmap_vars ,
 
@@ -432,9 +459,38 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
                                          &patch_has_match // This returns 1 if we get a match..
                                       );
 
-             if ( patch_has_match )
+
+             disparity_down =
+             MatchInHorizontalScanline(
+                                         depthmap_vars ,
+
+                                         video_register[depthmap_vars->left_view_reg].pixels , video_register[depthmap_vars->right_view_reg].pixels,
+                                         &left_rgn,
+                                         &best_match,
+                                         &patch_has_match_down // This returns 1 if we get a match..
+                                      );
+
+             write_the_whole_damn_thing=1;
+             if ( ( patch_has_match_up ) && (patch_has_match) && ( patch_has_match_down ) )
+               {
+                 if ( (disparity_up==disparity_down) ) { disparity = disparity_up; } else
+                 if ( (disparity_up==disparity )||(disparity_down==disparity ) ) {  }
+                 best_match.depth_raw = disparity; best_match.depth = disparity;
+
+                 write_the_whole_damn_thing = 1;
+               } else
+            if (patch_has_match_up)     { best_match.depth_raw = disparity_up; best_match.depth = disparity_up; }
+            else if (patch_has_match)   { best_match.depth_raw = disparity; best_match.depth = disparity; }
+            //Best_match already holds the down value so no need to do the next line
+            //else if (patch_has_match_down)   { best_match.depth_raw = disparity_down; best_match.depth = disparity_down; }
+
+
+             if ( write_the_whole_damn_thing )
                {
                  /* WE FOUND A MATCH */
+                 best_match.y1_patch=left_rgn_up.y1;
+                 best_match.patch_size_y=2*y_vima;
+
                  FillDepthMemWithData(
                                        l_video_register[depthmap_vars->left_depth_reg].pixels, l_video_register[depthmap_vars->right_depth_reg].pixels,
                                        depth_data_array,
@@ -450,9 +506,14 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
                }
            }
 
+            left_rgn_up.x1+=x_vima;
             left_rgn.x1+=x_vima;
+         left_rgn_down.x1+=x_vima;
          }
+         left_rgn_up.y1+=y_vima;
          left_rgn.y1+=y_vima;
+         left_rgn_down.y1+=y_vima;
+
        }
 
   MarkRegistersAsSynced(&video_register[depthmap_vars->left_view_reg],&video_register[depthmap_vars->left_depth_reg]);
