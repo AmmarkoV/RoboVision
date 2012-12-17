@@ -420,6 +420,8 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
              //STARTING AT ( xl,yl ) with size depthmap_vars->horizontal_buffer,depthmap_vars->vertical_buffer has enough edges
              //THATS WHY WE WANT TO PROCESS IT ..!!!
 
+             //THIS WILL NOW CHANGE :P
+
              // COMMENCE COMPARISON WITH THE SCANLINE AT THE RIGHT FRAME
              MatchInHorizontalScanline(
                                          depthmap_vars ,
