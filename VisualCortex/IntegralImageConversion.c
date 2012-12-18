@@ -226,18 +226,6 @@ void GenerateCompressHistogramOfImage(unsigned char * input_img,unsigned short *
 }
 
 
-unsigned int CompressedHistogramPatch(unsigned short * compimg,struct Histogram * hist , unsigned int x,unsigned int y)
-{
-  unsigned short * histpx;
-  unsigned int ptr_push = metrics[RESOLUTION_X_3_BYTE]*y+(x*3);
-  histpx = compimg + ptr_push;
-  hist->median_r = *histpx;
-  histpx++;
-  hist->median_g = *histpx;
-  histpx++;
-  hist->median_b = *histpx;
-  return 1;
-}
 
 
 /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

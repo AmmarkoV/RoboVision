@@ -282,7 +282,7 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
   fprintf(stderr,"Best output delay %u ms , coverage %u %% , too close %u %%\n",delay,coverage,too_close);
 
 
-
+ return 1;
 }
 
 
@@ -308,7 +308,7 @@ int DisparityOpenCV()
 
     VisCortx_SetSetting(DEPTHMAP_USE_OPENCV,0);
     VisCortx_SetSetting(USE_OPENCV,0);
-
+    return 1;
 }
 
 

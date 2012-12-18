@@ -510,9 +510,9 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
             left_rgn.x1+=x_vima;
             left_rgn_down.x1+=x_vima;
          }
-         left_rgn_up.y1+=y_vima;
-         left_rgn.y1+=y_vima;
-         left_rgn_down.y1+=y_vima;
+         left_rgn_up.y1+=3*y_vima;    //The 3 is 1 on normal circumstances.. TODO:
+         left_rgn.y1+=3*y_vima;       //The 3 is 1 on normal circumstances.. TODO:
+         left_rgn_down.y1+=3*y_vima;  //The 3 is 1 on normal circumstances.. TODO:
 
        }
 

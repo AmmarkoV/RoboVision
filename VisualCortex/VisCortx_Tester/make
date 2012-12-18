@@ -16,7 +16,7 @@ OPENCVSTUFF="`pkg-config --cflags --libs opencv`"
 
 LIBRARIES="-pthread -lgsl -lpng -ljpeg -lgslcblas -lm -lrt"
 
-gcc main.c $OURLIBRARIES $OPENCVSTUFF -L. $LIBRARIES -o $OUTPUT
+gcc -pg main.c $OURLIBRARIES $OPENCVSTUFF -L. $LIBRARIES -o $OUTPUT
 
 
 if [ -e $OUTPUT ]

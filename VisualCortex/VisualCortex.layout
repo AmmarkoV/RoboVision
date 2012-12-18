@@ -10,14 +10,14 @@
 	<File name="CameraPose.h" open="1" top="0" tabpos="43">
 		<Cursor position="862" topLine="0" />
 	</File>
-	<File name="DisparityDepthMap.c" open="1" top="1" tabpos="7">
-		<Cursor position="23452" topLine="443" />
+	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
+		<Cursor position="20802" topLine="406" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
-		<Cursor position="302" topLine="0" />
+		<Cursor position="499" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
-		<Cursor position="3769" topLine="0" />
+		<Cursor position="10188" topLine="265" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
 		<Cursor position="1348" topLine="0" />
@@ -47,10 +47,10 @@
 		<Cursor position="571" topLine="0" />
 	</File>
 	<File name="IntegralImageConversion.c" open="1" top="0" tabpos="21">
-		<Cursor position="13053" topLine="371" />
+		<Cursor position="7061" topLine="199" />
 	</File>
 	<File name="IntegralImageConversion.h" open="1" top="0" tabpos="22">
-		<Cursor position="1084" topLine="0" />
+		<Cursor position="1199" topLine="0" />
 	</File>
 	<File name="LinearAlgebra.c" open="1" top="0" tabpos="25">
 		<Cursor position="13557" topLine="0" />
@@ -76,11 +76,11 @@
 	<File name="ObjectRecognition.h" open="1" top="0" tabpos="51">
 		<Cursor position="105" topLine="0" />
 	</File>
-	<File name="PatchComparison.c" open="1" top="0" tabpos="32">
-		<Cursor position="18599" topLine="278" />
+	<File name="PatchComparison.c" open="1" top="1" tabpos="32">
+		<Cursor position="12514" topLine="217" />
 	</File>
 	<File name="PatchComparison.h" open="1" top="0" tabpos="33">
-		<Cursor position="99" topLine="0" />
+		<Cursor position="1127" topLine="0" />
 	</File>
 	<File name="PatternRecognition.c" open="1" top="0" tabpos="16">
 		<Cursor position="6503" topLine="165" />
@@ -92,7 +92,7 @@
 		<Cursor position="8229" topLine="230" />
 	</File>
 	<File name="Precalculations.h" open="1" top="0" tabpos="35">
-		<Cursor position="590" topLine="0" />
+		<Cursor position="653" topLine="0" />
 	</File>
 	<File name="StateSetting.c" open="1" top="0" tabpos="18">
 		<Cursor position="4974" topLine="130" />
@@ -149,13 +149,13 @@
 		<Cursor position="183" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="31990" topLine="92" />
+		<Cursor position="15527" topLine="327" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="381" topLine="0" />
+		<Cursor position="381" topLine="124" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="27182" topLine="637" />
+		<Cursor position="17744" topLine="259" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
 		<Cursor position="3215" topLine="111" />

@@ -2,7 +2,8 @@
 #define PATCHCOMPARISON_H_INCLUDED
 
 #include "VisionMemory.h"
-
+#include "IntegralImageConversion.h"
+#include "Precalculations.h"
 
 inline int ComparePatchesUsingHistogram(int hist_reg_left,int hist_reg_right,unsigned int *source_x1,unsigned int *source_y1,unsigned int *target_x1,unsigned int *target_y1);
 
@@ -16,5 +17,8 @@ inline unsigned int ComparePatches(       struct ImageRegion * source_block,    
                                    unsigned int image_x,unsigned int image_y,
                                    unsigned int best_result_yet
                                   );
+
+
+
 
 #endif // PATCHCOMPARISON_H_INCLUDED
