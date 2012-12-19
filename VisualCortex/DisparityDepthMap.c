@@ -167,9 +167,9 @@ void PassGuessNextDepthMem(unsigned int prox,unsigned int patch_x,unsigned int p
 
 
 
-inline unsigned int MatchInHorizontalScanline(
+inline static unsigned int MatchInHorizontalScanline(
                                           struct DisparityMappingContext * depthmap_vars,
-
+                                          unsigned short could_be_depth,
                                           unsigned char *rgb1,
                                           unsigned char *rgb2,
                                           struct ImageRegion * left_rgn,
@@ -207,17 +207,17 @@ inline unsigned int MatchInHorizontalScanline(
 
 
 
-
-  uint PREVIOUS_PATCH_SIZE_DISTANCE = 10;
   if ( settings[DEPTHMAP_COMPARISON_DO_NOT_PROCESS_FURTHER_THAN_PREVIOUS_PATCH_SIZE_DEPTH] )
   {
       //TODO : THIS COULD BE IMPROVED
      uint depth_at_point = VisCortx_Get_DepthMapData(1,left_rgn->x1,left_rgn->y1);
+     if ( (depth_at_point == 0) && (could_be_depth != 0 ) ) {  depth_at_point = could_be_depth; }
+
       if ( depth_at_point > 1 )
        {
-         if (left_rgn->x1-depth_at_point-PREVIOUS_PATCH_SIZE_DISTANCE>0)
+         if (left_rgn->x1-depth_at_point-settings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]>0)
          {
-            xr_start=left_rgn->x1-depth_at_point-PREVIOUS_PATCH_SIZE_DISTANCE;
+            xr_start=left_rgn->x1-depth_at_point-settings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE];
          }
        }
   }
@@ -354,12 +354,138 @@ inline unsigned int MatchInHorizontalScanline(
 
 
 
+/*
+unsigned int DepthMapFull ( struct DisparityMappingContext * depthmap_vars )
+{
+  //THESE ARE USED FOR DOCUMENTATION / STATISTICS / DEBUGGING
+  metrics[COMPAREPATCH_TOTAL_CALLS]=0;
+  metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS]=0;
+  metrics[COMPAREPATCH_REVERSE_ACCEPTS]=0;
+  metrics[HISTOGRAM_DENIES]=0;
+  metrics[COMPAREPATCH_ALGORITHM_DENIES]=0;
+  depthmap_vars->blocks_filled=0;
+
+  // PREPARE REGISTERS FOR OPERATION!
+  PrepareRegistersForDepthMapping(depthmap_vars->left_depth_reg , depthmap_vars->right_depth_reg , depthmap_vars->clear_and_calculate);
+
+  if ( settings[DEPTHMAP_DEBUG] )
+    { //DEBUG THINGS ON HDD WILL BE REMOVED ENTIRELY WHEN LOCKING PROBLEMS ARE SOLVED..
+       SaveRegistersStateRequiredForDisparityMapping();
+    }
 
 
+    if (!CheckRegistersForSynchronization(&video_register[depthmap_vars->left_view_reg],&video_register[EDGES_LEFT])) { fprintf(stderr,"EDGES LEFT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(&video_register[depthmap_vars->left_view_reg],&video_register[SECOND_DERIVATIVE_LEFT])) { fprintf(stderr,"SECOND DERIV LEFT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(&video_register[depthmap_vars->right_view_reg],&video_register[EDGES_RIGHT])) { fprintf(stderr,"EDGES RIGHT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(&video_register[depthmap_vars->right_view_reg],&video_register[SECOND_DERIVATIVE_RIGHT])) { fprintf(stderr,"SECOND DERIV RIGHT NOT IN SYNC\n"); }
 
 
+    uint edges_required_to_process_image_region=( (uint) ( depthmap_vars->vertical_buffer * depthmap_vars->horizontal_buffer * settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] ) / 100 );
 
 
+    struct DepthData best_match={0};
+    best_match.patch_size_x=(unsigned short) depthmap_vars->horizontal_buffer;
+best_match.patch_size_y=(unsigned short) depthmap_vars->vertical_buffer;
+
+unsigned int x_vima=depthmap_vars->horizontal_buffer , y_vima=depthmap_vars->vertical_buffer;
+if ( depthmap_vars->detail <= 0 ) { depthmap_vars->detail=1; } // :D , swstos programmatismos!
+    x_vima= (unsigned int) (depthmap_vars->horizontal_buffer / depthmap_vars->detail);
+    y_vima= (unsigned int) (depthmap_vars->vertical_buffer / depthmap_vars->detail);
+    if ( depthmap_vars->horizontal_buffer<depthmap_vars->vertical_buffer ) { y_vima = y_vima / 2; } else
+    if ( depthmap_vars->horizontal_buffer>depthmap_vars->vertical_buffer ) { x_vima = x_vima / 2; }
+    if ( y_vima < 1 ) { y_vima = 1;}
+    if ( x_vima < 1 ) { x_vima = 1;}
+
+    struct ImageRegion left_rgn={0};
+    left_rgn.width=depthmap_vars->horizontal_buffer;
+    left_rgn.height=depthmap_vars->vertical_buffer; // These are standard
+
+    left_rgn.y1=settings[DEPTHMAP_VERT_OFFSET_DOWN]; // Coords on LeftFrame
+    uint xl_lim=metrics[RESOLUTION_X]-depthmap_vars->horizontal_buffer;
+    uint yl_lim=metrics[RESOLUTION_Y]-depthmap_vars->vertical_buffer-settings[DEPTHMAP_VERT_OFFSET_UP]; // Added 5/3/2010 :) SPEED++ Quality ++
+
+
+    unsigned char patch_has_match=0;
+    unsigned short last_depth = 0;
+
+     while ( left_rgn.y1 < yl_lim )
+      {
+        last_depth = 0;
+        left_rgn.x1 = settings[DEPTHMAP_STARTLEFT_X];
+        while ( left_rgn.x1 < xl_lim )
+         {
+           best_match.edge_count = GetCompressedRegisterPatchSum1Byte(EDGES_PRESENCE_GROUPED_LEFT,left_rgn.x1,left_rgn.y1,depthmap_vars->horizontal_buffer,depthmap_vars->vertical_buffer);
+           if ( best_match.edge_count > edges_required_to_process_image_region )
+           {
+             //THE PATCH OF THE LEFT FRAME
+             //STARTING AT ( xl,yl ) with size depthmap_vars->horizontal_buffer,depthmap_vars->vertical_buffer has enough edges
+             //THATS WHY WE WANT TO PROCESS IT ..!!!
+
+             //THIS WILL NOW CHANGE :P
+
+             // COMMENCE COMPARISON WITH THE SCANLINE AT THE RIGHT FRAME
+             MatchInHorizontalScanline(
+                                         depthmap_vars , last_depth,
+
+                                         video_register[depthmap_vars->left_view_reg].pixels , video_register[depthmap_vars->right_view_reg].pixels,
+                                         &left_rgn,
+                                         &best_match,
+                                         &patch_has_match // This returns 1 if we get a match..
+                                      );
+
+             if ( patch_has_match )
+               {
+                 // WE FOUND A MATCH
+                 last_depth=best_match.depth_raw;
+                 FillDepthMemWithData(
+                                       l_video_register[depthmap_vars->left_depth_reg].pixels, l_video_register[depthmap_vars->right_depth_reg].pixels,
+                                       depth_data_array,
+                                       &best_match,
+                                       metrics[RESOLUTION_X],metrics[RESOLUTION_Y]
+                                      );
+                 ++depthmap_vars->blocks_filled;
+               } else
+               {
+                 // AREA IS NOT MATCHED :P Code can be added here to maybe try something else :P
+
+               }
+           }
+
+            left_rgn.x1+=x_vima;
+         }
+         left_rgn.y1+=y_vima;
+       }
+
+  MarkRegistersAsSynced(&video_register[depthmap_vars->left_view_reg],&video_register[depthmap_vars->left_depth_reg]);
+  MarkRegistersAsSynced(&video_register[depthmap_vars->right_view_reg],&video_register[depthmap_vars->right_depth_reg]);
+
+  fprintf(stderr,"Depth Map for size %ux%u , filled %u blocks , did a total of %u Patch Comparisons , %u reverse , %u immediate \n",
+                     depthmap_vars->horizontal_buffer,
+                     depthmap_vars->vertical_buffer,
+                     depthmap_vars->blocks_filled ,
+                     metrics[COMPAREPATCH_TOTAL_CALLS] ,
+                     metrics[COMPAREPATCH_REVERSE_ACCEPTS] ,
+                     metrics[COMPAREPATCH_IMMEDIATE_ACCEPTS]);
+
+  //Ok so we went in the trouble of performing all these calculations but was it any good ?
+  unsigned int result_of_doing_the_calculations = depthmap_vars->horizontal_buffer * depthmap_vars->vertical_buffer * depthmap_vars->blocks_filled;
+
+  if (result_of_doing_the_calculations>0)
+  { fprintf(stderr,"Efficiency thoughts : We did %u comparisons with %u result , that means %0.2f comparisons for each pixel , or %0.2f comparisons for each block\n",
+                     metrics[COMPAREPATCH_TOTAL_CALLS] , result_of_doing_the_calculations , (float) metrics[COMPAREPATCH_TOTAL_CALLS]/result_of_doing_the_calculations
+                                                                                          , (float) metrics[COMPAREPATCH_TOTAL_CALLS]/depthmap_vars->blocks_filled
+           );
+  }
+
+  if ( settings[DEPTHMAP_IMPROVE_FILLING_HOLES]!=0 ) EnhanceDepthMapFillHoles(video_register[LEFT_EYE].pixels, l_video_register[depthmap_vars->left_depth_reg].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+  if ( settings[DEPTHMAP_IMPROVE_USING_EDGES]!=0 ) EnhanceDepthMapWithEdges(video_register[LEFT_EYE].pixels, l_video_register[depthmap_vars->left_depth_reg].pixels,video_register[EDGES_LEFT].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+  return metrics[COMPAREPATCH_TOTAL_CALLS];
+}
+
+*/
+
+
+//NEW MULTIPLE DEPTHMAPS
 unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
 {
   //THESE ARE USED FOR DOCUMENTATION / STATISTICS / DEBUGGING
@@ -424,9 +550,12 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
     unsigned char patch_has_match_down=0;
     unsigned char write_the_whole_damn_thing=0;
 
+    unsigned short last_depth=0;
+
      while ( left_rgn_down.y1 < yl_lim )
       {
         left_rgn.x1 = settings[DEPTHMAP_STARTLEFT_X];
+        last_depth=0;
         while ( left_rgn.x1 < xl_lim )
          {
            best_match.edge_count = GetCompressedRegisterPatchSum1Byte(EDGES_PRESENCE_GROUPED_LEFT,left_rgn.x1,left_rgn.y1,depthmap_vars->horizontal_buffer,depthmap_vars->vertical_buffer);
@@ -441,7 +570,7 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
              // COMMENCE COMPARISON WITH THE SCANLINE AT THE RIGHT FRAME
              disparity_up =
              MatchInHorizontalScanline(
-                                         depthmap_vars ,
+                                         depthmap_vars , last_depth ,
 
                                          video_register[depthmap_vars->left_view_reg].pixels , video_register[depthmap_vars->right_view_reg].pixels,
                                          &left_rgn_up,
@@ -452,7 +581,7 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
 
              disparity_down =
              MatchInHorizontalScanline(
-                                         depthmap_vars ,
+                                         depthmap_vars , last_depth ,
 
                                          video_register[depthmap_vars->left_view_reg].pixels , video_register[depthmap_vars->right_view_reg].pixels,
                                          &left_rgn_down,
@@ -462,7 +591,7 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
 
              disparity =
              MatchInHorizontalScanline(
-                                         depthmap_vars ,
+                                         depthmap_vars , last_depth ,
 
                                          video_register[depthmap_vars->left_view_reg].pixels , video_register[depthmap_vars->right_view_reg].pixels,
                                          &left_rgn,
@@ -487,10 +616,11 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
 
              if ( write_the_whole_damn_thing )
                {
-                 /* WE FOUND A MATCH */
+                 // WE FOUND A MATCH
                  best_match.y1_patch=left_rgn_up.y1;
                  best_match.patch_size_y=2*y_vima;
 
+                 last_depth=best_match.depth_raw;
                  FillDepthMemWithData(
                                        l_video_register[depthmap_vars->left_depth_reg].pixels, l_video_register[depthmap_vars->right_depth_reg].pixels,
                                        depth_data_array,
@@ -500,9 +630,9 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
                  ++depthmap_vars->blocks_filled;
                } else
                {
-                 /* AREA IS NOT MATCHED :P
-                    Code can be added here to maybe try something else :P
-                 */
+                 // AREA IS NOT MATCHED :P
+                 // Code can be added here to maybe try something else :P
+                 //
                }
            }
 
@@ -563,9 +693,8 @@ int EndDisparityMapping(unsigned int convert_to_video,unsigned int comparisons_s
   l_video_register[DEPTH_LEFT].time = video_register[CALIBRATED_LEFT_EYE].time;
   l_video_register[DEPTH_RIGHT].time = video_register[CALIBRATED_RIGHT_EYE].time;
 
-  /*
-    CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
-   */
+  // CONVERTING DEPTH DATA TO RGB VIDEO FORMAT ( FOR USER VIEWING )
+
      if (convert_to_video) { DepthMapToVideo(DEPTH_LEFT,DEPTH_LEFT_VIDEO,1); }
      //DepthMapToVideo(DEPTH_RIGHT,DEPTH_RIGHT_VIDEO,1);
     CopyRegister(&video_register[EDGES_LEFT],&video_register[DEPTH_RIGHT_VIDEO],0,0);
@@ -575,7 +704,7 @@ int EndDisparityMapping(unsigned int convert_to_video,unsigned int comparisons_s
       {
         PassDepthMapToCameraSystem();
       }
-  /* -------------------------------------------------------------- */
+  //--------------------------------------------------------------
 
 
 
@@ -701,6 +830,20 @@ return EndDisparityMapping(1,comparisons_small,comparisons_medium,comparisons_la
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                             DISPARITY MAPPING USING OPENCV LIBRARY
    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
@@ -754,22 +897,8 @@ unsigned int ExecuteDisparityMappingOpenCV()
     state->speckleRange = 32;
     state->disp12MaxDiff = 1;*/
 
-
-
-
    cvFindStereoCorrespondenceBM(left, right ,disp ,state);
    cvNormalize(disp,vdisp,0,256,CV_MINMAX,0);
-
-/*   cvShowImage("srcLeft", srcLeft);
-   cvShowImage("srcRight", srcRight );
-   cvShowImage("leftImage", leftImage);
-   cvShowImage("rightImage", rightImage );
-   cvShowImage("left", left);
-   cvShowImage("right", right );
-     cvShowImage("disp", disp );
-      cvShowImage("vdisp", vdisp );
-  cvWaitKey(0);
-      */
 
    cvReleaseStereoBMState(&state);
 

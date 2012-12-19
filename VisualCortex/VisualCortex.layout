@@ -11,7 +11,7 @@
 		<Cursor position="862" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="20802" topLine="406" />
+		<Cursor position="34840" topLine="573" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="499" topLine="0" />
@@ -76,7 +76,7 @@
 	<File name="ObjectRecognition.h" open="1" top="0" tabpos="51">
 		<Cursor position="105" topLine="0" />
 	</File>
-	<File name="PatchComparison.c" open="1" top="1" tabpos="32">
+	<File name="PatchComparison.c" open="1" top="0" tabpos="32">
 		<Cursor position="12514" topLine="217" />
 	</File>
 	<File name="PatchComparison.h" open="1" top="0" tabpos="33">
@@ -149,16 +149,16 @@
 		<Cursor position="183" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="15527" topLine="327" />
+		<Cursor position="3152" topLine="58" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="381" topLine="124" />
+		<Cursor position="381" topLine="54" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="17744" topLine="259" />
+		<Cursor position="1468" topLine="6" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="3215" topLine="111" />
+		<Cursor position="2069" topLine="39" />
 	</File>
 	<File name="fastmemcpy.h" open="0" top="0" tabpos="0">
 		<Cursor position="1365" topLine="0" />

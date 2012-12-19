@@ -94,6 +94,7 @@ void DefaultSettings()
    settings[DEPTHMAP_SECOND_DERIVATIVE_MULTIPLIER]=40;
 
 
+    settings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=10;
     settings[DEPTHMAP_STARTLEFT_X]=48;// Just like OpenCV :P 16;
     settings[DEPTHMAP_DETAIL]=4;
     settings[DEPTHMAP_EDGE_LOW_STRICTNESS]=40;
