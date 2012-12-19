@@ -485,8 +485,10 @@ if ( depthmap_vars->detail <= 0 ) { depthmap_vars->detail=1; } // :D , swstos pr
 */
 
 
+
+
 //NEW MULTIPLE DEPTHMAPS
-unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
+unsigned int DepthMapFull ( struct DisparityMappingContext * depthmap_vars )
 {
   //THESE ARE USED FOR DOCUMENTATION / STATISTICS / DEBUGGING
   metrics[COMPAREPATCH_TOTAL_CALLS]=0;
@@ -500,30 +502,38 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
   PrepareRegistersForDepthMapping(depthmap_vars->left_depth_reg , depthmap_vars->right_depth_reg , depthmap_vars->clear_and_calculate);
 
   if ( settings[DEPTHMAP_DEBUG] )
-    {  //DEBUG THINGS ON HDD WILL BE REMOVED ENTIRELY WHEN LOCKING PROBLEMS ARE SOLVED..
+    { //DEBUG THINGS ON HDD WILL BE REMOVED ENTIRELY WHEN LOCKING PROBLEMS ARE SOLVED..
        SaveRegistersStateRequiredForDisparityMapping();
     }
 
 
-    if (!CheckRegistersForSynchronization(&video_register[depthmap_vars->left_view_reg],&video_register[EDGES_LEFT]))               { fprintf(stderr,"EDGES LEFT NOT IN SYNC\n"); }
-    if (!CheckRegistersForSynchronization(&video_register[depthmap_vars->left_view_reg],&video_register[SECOND_DERIVATIVE_LEFT]))   { fprintf(stderr,"SECOND DERIV LEFT NOT IN SYNC\n"); }
-    if (!CheckRegistersForSynchronization(&video_register[depthmap_vars->right_view_reg],&video_register[EDGES_RIGHT]))             { fprintf(stderr,"EDGES RIGHT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(&video_register[depthmap_vars->left_view_reg],&video_register[EDGES_LEFT])) { fprintf(stderr,"EDGES LEFT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(&video_register[depthmap_vars->left_view_reg],&video_register[SECOND_DERIVATIVE_LEFT])) { fprintf(stderr,"SECOND DERIV LEFT NOT IN SYNC\n"); }
+    if (!CheckRegistersForSynchronization(&video_register[depthmap_vars->right_view_reg],&video_register[EDGES_RIGHT])) { fprintf(stderr,"EDGES RIGHT NOT IN SYNC\n"); }
     if (!CheckRegistersForSynchronization(&video_register[depthmap_vars->right_view_reg],&video_register[SECOND_DERIVATIVE_RIGHT])) { fprintf(stderr,"SECOND DERIV RIGHT NOT IN SYNC\n"); }
 
 
-    uint edges_required_to_process_image_region=( (uint) ( depthmap_vars->vertical_buffer * depthmap_vars->horizontal_buffer * settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] )  / 100 );
+    uint edges_required_to_process_image_region=( (uint) ( depthmap_vars->vertical_buffer * depthmap_vars->horizontal_buffer * settings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED] ) / 100 );
 
+    struct DepthData best_match_up={0};
+    best_match_up.patch_size_x=(unsigned short) depthmap_vars->horizontal_buffer;
+    best_match_up.patch_size_y=(unsigned short) depthmap_vars->vertical_buffer;
 
     struct DepthData best_match={0};
     best_match.patch_size_x=(unsigned short) depthmap_vars->horizontal_buffer;
-	best_match.patch_size_y=(unsigned short) depthmap_vars->vertical_buffer;
+    best_match.patch_size_y=(unsigned short) depthmap_vars->vertical_buffer;
 
-	unsigned int x_vima=depthmap_vars->horizontal_buffer , y_vima=depthmap_vars->vertical_buffer;
-	if ( depthmap_vars->detail <= 0 ) { depthmap_vars->detail=1; } // :D , swstos programmatismos!
+    struct DepthData best_match_down={0};
+    best_match_down.patch_size_x=(unsigned short) depthmap_vars->horizontal_buffer;
+    best_match_down.patch_size_y=(unsigned short) depthmap_vars->vertical_buffer;
+
+
+unsigned int x_vima=depthmap_vars->horizontal_buffer , y_vima=depthmap_vars->vertical_buffer;
+if ( depthmap_vars->detail <= 0 ) { depthmap_vars->detail=1; } // :D , swstos programmatismos!
     x_vima= (unsigned int) (depthmap_vars->horizontal_buffer / depthmap_vars->detail);
     y_vima= (unsigned int) (depthmap_vars->vertical_buffer / depthmap_vars->detail);
-    if ( depthmap_vars->horizontal_buffer<depthmap_vars->vertical_buffer  ) { y_vima = y_vima / 2; } else
-    if ( depthmap_vars->horizontal_buffer>depthmap_vars->vertical_buffer  ) { x_vima = x_vima / 2; }
+    if ( depthmap_vars->horizontal_buffer<depthmap_vars->vertical_buffer ) { y_vima = y_vima / 2; } else
+    if ( depthmap_vars->horizontal_buffer>depthmap_vars->vertical_buffer ) { x_vima = x_vima / 2; }
     if ( y_vima < 1 ) { y_vima = 1;}
     if ( x_vima < 1 ) { x_vima = 1;}
 
@@ -549,6 +559,7 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
     unsigned char patch_has_match=0;
     unsigned char patch_has_match_down=0;
     unsigned char write_the_whole_damn_thing=0;
+    unsigned char write_everything_seperate=0;
 
     unsigned short last_depth=0;
 
@@ -574,7 +585,7 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
 
                                          video_register[depthmap_vars->left_view_reg].pixels , video_register[depthmap_vars->right_view_reg].pixels,
                                          &left_rgn_up,
-                                         &best_match,
+                                         &best_match_up,
                                          &patch_has_match_up // This returns 1 if we get a match..
                                       );
 
@@ -595,11 +606,12 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
 
                                          video_register[depthmap_vars->left_view_reg].pixels , video_register[depthmap_vars->right_view_reg].pixels,
                                          &left_rgn,
-                                         &best_match,
+                                         &best_match_down,
                                          &patch_has_match // This returns 1 if we get a match..
                                       );
 
-             write_the_whole_damn_thing=0;
+             write_everything_seperate=1;
+             write_the_whole_damn_thing=0;/*
              if ( ( patch_has_match_up ) && (patch_has_match) && ( patch_has_match_down ) )
                {
                  if ( (disparity_up==disparity_down) ) { disparity = disparity_up; write_the_whole_damn_thing = 1;} else
@@ -608,12 +620,35 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
 
 
                } else
-            if (patch_has_match_up)     { best_match.depth_raw = disparity_up; best_match.depth = disparity_up; write_the_whole_damn_thing = 1; }
-            else if (patch_has_match_down)   { best_match.depth_raw = disparity_down; best_match.depth = disparity_down; write_the_whole_damn_thing = 1; }
+            if (patch_has_match_up) { best_match.depth_raw = disparity_up; best_match.depth = disparity_up; write_the_whole_damn_thing = 1; }
+            else if (patch_has_match_down) { best_match.depth_raw = disparity_down; best_match.depth = disparity_down; write_the_whole_damn_thing = 1; }
             //Best_match already holds the down value so no need to do the next line
-            //else if (patch_has_match)   { best_match.depth_raw = disparity; best_match.depth = disparity; write_the_whole_damn_thing = 1; }
+            //else if (patch_has_match) { best_match.depth_raw = disparity; best_match.depth = disparity; write_the_whole_damn_thing = 1; }
 
+          */
+             if (write_everything_seperate)
+                {
+                  FillDepthMemWithData(
+                                       l_video_register[depthmap_vars->left_depth_reg].pixels, l_video_register[depthmap_vars->right_depth_reg].pixels,
+                                       depth_data_array,
+                                       &best_match_up,
+                                       metrics[RESOLUTION_X],metrics[RESOLUTION_Y]
+                                      );
+                  FillDepthMemWithData(
+                                       l_video_register[depthmap_vars->left_depth_reg].pixels, l_video_register[depthmap_vars->right_depth_reg].pixels,
+                                       depth_data_array,
+                                       &best_match,
+                                       metrics[RESOLUTION_X],metrics[RESOLUTION_Y]
+                                      );
+                  FillDepthMemWithData(
+                                       l_video_register[depthmap_vars->left_depth_reg].pixels, l_video_register[depthmap_vars->right_depth_reg].pixels,
+                                       depth_data_array,
+                                       &best_match_down,
+                                       metrics[RESOLUTION_X],metrics[RESOLUTION_Y]
+                                      );
 
+                  depthmap_vars->blocks_filled+=3;
+                } else
              if ( write_the_whole_damn_thing )
                {
                  // WE FOUND A MATCH
@@ -640,9 +675,9 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
             left_rgn.x1+=x_vima;
             left_rgn_down.x1+=x_vima;
          }
-         left_rgn_up.y1+=3*y_vima;    //The 3 is 1 on normal circumstances.. TODO:
-         left_rgn.y1+=3*y_vima;       //The 3 is 1 on normal circumstances.. TODO:
-         left_rgn_down.y1+=3*y_vima;  //The 3 is 1 on normal circumstances.. TODO:
+         left_rgn_up.y1+=3*y_vima; //The 3 is 1 on normal circumstances.. TODO:
+         left_rgn.y1+=3*y_vima; //The 3 is 1 on normal circumstances.. TODO:
+         left_rgn_down.y1+=3*y_vima; //The 3 is 1 on normal circumstances.. TODO:
 
        }
 
@@ -667,8 +702,8 @@ unsigned int DepthMapFull  ( struct DisparityMappingContext * depthmap_vars )
            );
   }
 
-  if ( settings[DEPTHMAP_IMPROVE_FILLING_HOLES]!=0 )  EnhanceDepthMapFillHoles(video_register[LEFT_EYE].pixels, l_video_register[depthmap_vars->left_depth_reg].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
-  if ( settings[DEPTHMAP_IMPROVE_USING_EDGES]!=0 )    EnhanceDepthMapWithEdges(video_register[LEFT_EYE].pixels, l_video_register[depthmap_vars->left_depth_reg].pixels,video_register[EDGES_LEFT].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+  if ( settings[DEPTHMAP_IMPROVE_FILLING_HOLES]!=0 ) EnhanceDepthMapFillHoles(video_register[LEFT_EYE].pixels, l_video_register[depthmap_vars->left_depth_reg].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
+  if ( settings[DEPTHMAP_IMPROVE_USING_EDGES]!=0 ) EnhanceDepthMapWithEdges(video_register[LEFT_EYE].pixels, l_video_register[depthmap_vars->left_depth_reg].pixels,video_register[EDGES_LEFT].pixels,metrics[RESOLUTION_X],metrics[RESOLUTION_Y]);
   return metrics[COMPAREPATCH_TOTAL_CALLS];
 }
 
@@ -735,33 +770,6 @@ int ExecuteDisparityMappingPyramid()
 
   unsigned int comparisons_small = 0 ,  comparisons_medium = 0 , comparisons_large = 0;
 
-
-
-    /*
-
-   CODE SHOULD OPTIMALLY LOOK LIKE THIS :P
-   unsigned int pyramid_iterator=0,pyramid_total_stages=3;
-
-
-   while ( pyramid_iterator < pyramid_total_stages )
-    {
-
-
-      comparisons_medium = DepthMapFull( CALIBRATED_LEFT_EYE,
-                                         CALIBRATED_RIGHT_EYE,
-                                         DEPTH_LEFT,
-                                         DEPTH_RIGHT,
-                                         0
-                                        );
-
-
-      ++pyramid_iterator;
-    }
-
-    */
-
-
-
    struct DisparityMappingContext depth_map_settings={0};
 
    depth_map_settings.left_view_reg = CALIBRATED_LEFT_EYE;
@@ -769,15 +777,13 @@ int ExecuteDisparityMappingPyramid()
    depth_map_settings.left_depth_reg = DEPTH_LEFT;
    depth_map_settings.right_depth_reg = DEPTH_RIGHT;
 
-
-
   /*
      WE COMPARE PATCHES ON 3 DIFFERENT LEVELS , EXTRA LARGE PATCHES , LARGE PATCHES , NORMAL PATCHES
    */
-  /*
-    CALCULATION OF EXTRA LARGE PATCHES FOLLOWS
-   */
 
+// CALCULATION OF EXTRA LARGE PATCHES FOLLOWS
+if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
+{
    depth_map_settings.clear_and_calculate=1;
 
    depth_map_settings.detail=settings[DEPTHMAP_DETAIL]/2;
@@ -788,15 +794,13 @@ int ExecuteDisparityMappingPyramid()
    depth_map_settings.horizontal_buffer=metrics[HORIZONTAL_BUFFER_EXTRALARGE];
 
    comparisons_large = DepthMapFull( &depth_map_settings );
+}
 
-  /*
-    CALCULATION OF LARGE PATCHES FOLLOWS
-   */
-
-
+//CALCULATION OF LARGE PATCHES FOLLOWS
 if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
 {
-   depth_map_settings.clear_and_calculate=0;
+   if ( settings[PATCH_COMPARISON_LEVELS] == 2 ) { depth_map_settings.clear_and_calculate=1; } else
+                                                 { depth_map_settings.clear_and_calculate=0; }
 
    depth_map_settings.detail=settings[DEPTHMAP_DETAIL]/2;
    depth_map_settings.comparison_threshold=settings[DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH];
@@ -809,12 +813,9 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 2 )
 
 }
 
-  /*
-    CALCULATION OF NORMAL PATCHES FOLLOWS
-   */
-if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
-{
-   depth_map_settings.clear_and_calculate=0;
+// CALCULATION OF NORMAL PATCHES FOLLOWS
+   if ( settings[PATCH_COMPARISON_LEVELS] == 1 ) { depth_map_settings.clear_and_calculate=1; } else
+                                                 { depth_map_settings.clear_and_calculate=0; }
 
    depth_map_settings.detail=settings[DEPTHMAP_DETAIL];
    depth_map_settings.comparison_threshold=settings[DEPTHMAP_COMPARISON_THRESHOLD];
@@ -824,7 +825,7 @@ if ( settings[PATCH_COMPARISON_LEVELS] >= 3 )
    depth_map_settings.horizontal_buffer=metrics[HORIZONTAL_BUFFER];
 
    comparisons_small = DepthMapFull( &depth_map_settings );
-}
+
 
 return EndDisparityMapping(1,comparisons_small,comparisons_medium,comparisons_large);
 }
