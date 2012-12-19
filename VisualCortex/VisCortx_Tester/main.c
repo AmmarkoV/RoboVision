@@ -160,9 +160,9 @@ locmaxmetrics[HORIZONTAL_BUFFER]=8;
 
 
 
-locbestsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=VisCortx_GetMetric(DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE);
-locminsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=8;
-locmaxsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=8;
+locbestsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=VisCortx_GetSetting(DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE);
+locminsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=6;
+locmaxsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=6;
 
 
 //locbestmetrics[VERTICAL_BUFFER]=VisCortx_GetMetric(VERTICAL_BUFFER);
@@ -214,7 +214,7 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
         VisCortx_SetMetric(HORIZONTAL_BUFFER_LARGE,2*locmetrics[HORIZONTAL_BUFFER]);       VisCortx_SetMetric(VERTICAL_BUFFER_LARGE,2*locmetrics[HORIZONTAL_BUFFER]);
         VisCortx_SetMetric(HORIZONTAL_BUFFER_EXTRALARGE,3*locmetrics[HORIZONTAL_BUFFER]);  VisCortx_SetMetric(VERTICAL_BUFFER_EXTRALARGE,3*locmetrics[HORIZONTAL_BUFFER]);
 
-       // VisCortx_SetSetting(DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE,locsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]);
+        VisCortx_SetSetting(DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE,locsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]);
         VisCortx_SetSetting(DEPTHMAP_DETAIL,locsettings[DEPTHMAP_DETAIL]);
         VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED,locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]);
         VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH,locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]*2);
@@ -265,7 +265,7 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
                 locbestsettings[PATCH_HIST_THRESHOLD_G]=locbestsettings[PATCH_HIST_THRESHOLD_R];
                 locbestsettings[PATCH_HIST_THRESHOLD_B]=locbestsettings[PATCH_HIST_THRESHOLD_R];
 
-                locbestmetrics[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=VisCortx_GetMetric(DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE);
+                locbestsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=VisCortx_GetSetting(DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE);
 
                 locbestsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=VisCortx_GetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN);
                 locbestsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=VisCortx_GetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT);
@@ -295,7 +295,7 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
   fprintf(stderr,"Best Histogram Threshold = %u \n",locbestsettings[PATCH_HIST_THRESHOLD_R]);
   fprintf(stderr,"Best Edges Percent = %u \n",locbestsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]);
   fprintf(stderr,"Best Detail = %u \n",locbestsettings[DEPTHMAP_DETAIL]);
-  fprintf(stderr,"Best Previous PATCH anchor  size = %u \n",locbestmetrics[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]);
+  fprintf(stderr,"Best Previous PATCH anchor  size = %u \n",locbestsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]);
   fprintf(stderr,"Best Window size = %u x %u \n",locbestmetrics[HORIZONTAL_BUFFER],locbestmetrics[VERTICAL_BUFFER]);
   fprintf(stderr,"Best Edge Count = %u , OpenCV count = %u , RGB count = %u \n",best_edge_count,opencv_depth_edges,rgb_edges);
   fprintf(stderr,"Best output delay %u ms , coverage %u %% , too close %u %%\n",delay,coverage,too_close);
