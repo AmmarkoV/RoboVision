@@ -1,5 +1,6 @@
 #!/bin/bash
 
+EXT_DISPARITY="_disp"
 EXT_0="0.ppm"
 EXT_1="1.ppm"
 SP="_"
@@ -17,7 +18,7 @@ TRIAL_NUMBER="0"
 TRIAL_NAME="cones"
 TRIAL_NUMBER="1"
 
-time ./VisCortx_Tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" "$TRIAL_NUMBER$SP$TRIAL_NAME$PPM" 2> VisCortx.log
+time ./VisCortx_Tester "$TRIAL_NAME$EXT_0" "$TRIAL_NAME$EXT_1" "$TRIAL_NUMBER$SP$TRIAL_NAME$PPM"  "$TRIAL_NAME$EXT_DISPARITY$PPM"  2> VisCortx.log
 gprof VisCortx_Tester >> VisCortx.log
 
 

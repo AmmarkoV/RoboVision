@@ -11,7 +11,7 @@
 		<Cursor position="862" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap.c" open="1" top="0" tabpos="7">
-		<Cursor position="34840" topLine="573" />
+		<Cursor position="41049" topLine="790" />
 	</File>
 	<File name="DisparityDepthMap.h" open="1" top="0" tabpos="8">
 		<Cursor position="499" topLine="0" />
@@ -92,7 +92,7 @@
 		<Cursor position="8229" topLine="230" />
 	</File>
 	<File name="Precalculations.h" open="1" top="0" tabpos="35">
-		<Cursor position="653" topLine="0" />
+		<Cursor position="574" topLine="0" />
 	</File>
 	<File name="StateSetting.c" open="1" top="0" tabpos="18">
 		<Cursor position="4974" topLine="130" />
@@ -149,16 +149,16 @@
 		<Cursor position="183" topLine="0" />
 	</File>
 	<File name="VisionMemory.c" open="1" top="0" tabpos="5">
-		<Cursor position="3152" topLine="58" />
+		<Cursor position="3152" topLine="1" />
 	</File>
 	<File name="VisionMemory.h" open="1" top="0" tabpos="6">
-		<Cursor position="381" topLine="54" />
+		<Cursor position="381" topLine="1" />
 	</File>
 	<File name="VisualCortex.c" open="1" top="0" tabpos="1">
-		<Cursor position="1468" topLine="6" />
+		<Cursor position="1468" topLine="27" />
 	</File>
 	<File name="VisualCortex.h" open="1" top="0" tabpos="2">
-		<Cursor position="2069" topLine="39" />
+		<Cursor position="8381" topLine="303" />
 	</File>
 	<File name="fastmemcpy.h" open="0" top="0" tabpos="0">
 		<Cursor position="1365" topLine="0" />

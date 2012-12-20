@@ -7,6 +7,9 @@
 #define PPMREADBUFLEN 512
 #define FORGIVEUNREADBYTES 2
 
+
+#define ABSDIFF2(num1,num2)  ( (num1-num2) >=0 ? (num1-num2) : (num2 - num1) )
+
 unsigned int resolution_height=320 , resolution_width=240 ;
 
 
@@ -18,6 +21,10 @@ char out_filename[256]={0};
 char out_filenameedges[256]={0};
 char out_filenamedepthedges[256]={0};
 char out_filename2nd[256]={0};
+
+unsigned int we_have_a_disparity_ground_truth=0;
+char disparity_ground_truth_filename[256]={0};
+unsigned char * ground=0;
 
 
 unsigned int rgb_edges = 0;
@@ -83,29 +90,26 @@ char * LoadRegisterFromFileInternal(char * filename,unsigned int * width,unsigne
 }
 
 
+
+unsigned long AbsDifferenceTotalRGBAsMono(unsigned char * inpt1,unsigned char * inpt2,unsigned int input_size)
+{
+    unsigned long  res= 0;
+    char * p1 = inpt1;
+    char * p2 = inpt2;
+    char * p1_end = inpt1+input_size;
+
+    while (p1<p1_end)
+     {
+       res+=ABSDIFF2(*p1,*p2);
+       p1+=3; p2+=3;
+     }
+    return res;
+}
+
+
+
 int DisparityMappingSettingsBenchmark()
 {
-    /*
-    VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD,4000);
-    VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD_LARGE_PATCH,4000);
-    VisCortx_SetSetting(DEPTHMAP_COMPARISON_THRESHOLD_EXTRALARGE_PATCH,4000);
-
-
-    VisCortx_SetSetting(PATCH_COMPARISON_SCORE_MIN,33000);
-    VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED,3);
-    VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_LARGE_PATCH,5);
-    VisCortx_SetSetting(PATCH_COMPARISON_EDGES_PERCENT_REQUIRED_EXTRALARGE_PATCH,8);
-    VisCortx_SetSetting(PATCH_HIST_THRESHOLD_R,7);
-    VisCortx_SetSetting(PATCH_HIST_THRESHOLD_G,7);
-    VisCortx_SetSetting(PATCH_HIST_THRESHOLD_B,7);
-
-
-    VisCortx_SetMetric(HORIZONTAL_BUFFER,9);
-    VisCortx_SetMetric(VERTICAL_BUFFER,9);
-    VisCortx_SetMetric(HORIZONTAL_BUFFER_LARGE,15);
-    VisCortx_SetMetric(VERTICAL_BUFFER_LARGE,15);
-    VisCortx_SetMetric(HORIZONTAL_BUFFER_EXTRALARGE,21);
-    VisCortx_SetMetric(VERTICAL_BUFFER_EXTRALARGE,21);*/
 
     unsigned int locsettings[SETTINGS_COUNT];
     unsigned int locminsettings[SETTINGS_COUNT];
@@ -132,8 +136,8 @@ int DisparityMappingSettingsBenchmark()
     int processed = 0;
 
 locbestsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=VisCortx_GetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT);
-locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=8;
-locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=8;
+locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=6;
+locmaxsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_RIGHT]=6;
 
 //locbestsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=VisCortx_GetSetting(DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN);
 //locminsettings[DEPTHMAP_COMPARISON_DECIDES_FOR_MORE_PIXELS_DOWN]=9;
@@ -161,13 +165,15 @@ locmaxmetrics[HORIZONTAL_BUFFER]=8;
 
 
 locbestsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=VisCortx_GetSetting(DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE);
-locminsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=10;
-locmaxsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=10;
+locminsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=5;
+locmaxsettings[DEPTHMAP_PREVIOUS_PATCH_SIZE_MAX_DISTANCE]=5;
 
 
 //locbestmetrics[VERTICAL_BUFFER]=VisCortx_GetMetric(VERTICAL_BUFFER);
 //locminmetrics[VERTICAL_BUFFER]=7;
 //locmaxmetrics[VERTICAL_BUFFER]=10;
+
+VisCortx_SetSetting(PATCH_COMPARISON_LEVELS,2);
 
 
 
@@ -239,7 +245,12 @@ for ( locsettings[PATCH_COMPARISON_EDGES_PERCENT_REQUIRED]=locminsettings[PATCH_
         VisCortx_PrepareCleanSobeledGaussianAndDerivative(DEPTH_LEFT_VIDEO,GENERAL_4,GENERAL_5,30,255);
         edge_count = VisCortx_CountEdges(GENERAL_4,0,0,VisCortx_GetMetric(LEFT_EYE),VisCortx_GetMetric(RIGHT_EYE));
 
-
+        if ( (we_have_a_disparity_ground_truth)&&(ground!=0) )
+         {
+           unsigned char * depth_video = VisCortx_ReadFromVideoRegister(DEPTH_LEFT_VIDEO,GetMetric(RESOLUTION_X),GetMetric(RESOLUTION_Y),3);
+           unsigned long diff=AbsDifferenceTotalRGBAsMono(ground,depth_video,GetMetric(RESOLUTION_X)*GetMetric(RESOLUTION_Y)*3);
+           fprintf(stderr,"DIFFERENCE WITH GROUND TRUTH IS %u \n",diff);
+         }
 
         if (processed % 10 == 0) {  fprintf(stderr,"\n\n DONE WITH %u/%u \n\n",processed,totalloops); printf("\n\n DONE WITH %u/%u \n\n",processed,totalloops); }
 
@@ -352,6 +363,12 @@ int main(int argc, const char* argv[])
        strcpy(opencv_filename,argv[3]);           strcat(opencv_filename,(char*)"_opencv");
        strcpy(opencv_filenamedepthedges,argv[3]); strcat(opencv_filenamedepthedges,(char*)"_opencv_edges_depth");
 
+      if ( argc >= 4 )
+       {
+         strcpy(disparity_ground_truth_filename,argv[4]); we_have_a_disparity_ground_truth=1;
+         printf("Ground Truth file is %s \n",disparity_ground_truth_filename);
+       }
+
 
      } else
      {
@@ -365,6 +382,13 @@ int main(int argc, const char* argv[])
     if (vid0==0) { fprintf(stderr,"Could not load image %s ",filename0); return 1; }
     vid1 = LoadRegisterFromFileInternal(filename1,&resolution_width,&resolution_height);
     if (vid1==0) { fprintf(stderr,"Could not load image %s ",filename1); return 1; }
+
+
+    if (we_have_a_disparity_ground_truth)
+     { ground =LoadRegisterFromFileInternal(disparity_ground_truth_filename,&resolution_width,&resolution_height); }
+    if (ground==0) { fprintf(stderr,"Could not load a ground truth image\n");  }
+
+
 
     VisCortx_Start(resolution_width,resolution_height,"./");
 
