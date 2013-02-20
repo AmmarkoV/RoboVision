@@ -1,8 +1,9 @@
 #include "InputParser_C.h"
 /* InputParser..
    A small generic library for parsing a string and tokenizing it!
-   URLs: http://62.103.22.50
-   Written by Ammar Qammaz a.k.a. AmmarkoV 2006
+   GITHUB Repo : http://github.com/AmmarkoV/InputParser
+   my URLs: http://ammarkov.ath.cx
+   Written by Ammar Qammaz a.k.a. AmmarkoV 2006-2010
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -18,13 +19,16 @@
  along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define WARN_ABOUT_INCORRECTLY_ALLOCATED_STACK_STRINGS 1
 
-const char * _ipc_ver=" 0.33 ( 1/3 ) written from scratch - 8/2/10 \0";
+
+char _ipc_ver[]=" 0.356 written from scratch - 8/2/10 \0";
 
 char * InputParserC_Version()
 {
   return (char *) _ipc_ver;
 }
+
 
 
 int InputParser_ClearNonCharacters(char * inpt , unsigned int length)
@@ -89,7 +93,8 @@ int InputParser_TrimCharactersEnd(char * inpt , unsigned int length,char what2tr
    if ( (length==1) && (inpt[0]==what2trim) ) {  inpt[0]=0; return 1; } else
    if ( length==1 )                           { return 1; }
 
-   unsigned int i; i=length-1;
+   unsigned int i;
+   i=length-1;
    while ((inpt[i]==what2trim)&&(i>0)) { --i; }
    if ( i==length-1 ) { /*No chars found*/ return 1; }
 
@@ -109,23 +114,20 @@ int InputParser_TrimCharacters(char * inpt , unsigned int length,char what2trim)
   return InputParser_TrimCharactersEnd(inpt,length,what2trim);
 }
 
-
-
 inline signed int Str2Int_internal(char * inpt,unsigned int start_from,unsigned int length)
 {
     if ( inpt == 0 ) { fprintf(stderr,"Null string to Str2IntInternal!\n"); return 0;}
     int intresult;
     int multiplier;
     int curnum;
-    unsigned char error_flag;
     unsigned char trailing_sign_seek;
     unsigned char positive_number;
     signed int i;
 
     intresult=0,multiplier=1,curnum=0;
-    error_flag=0 , trailing_sign_seek=1 , positive_number=1;
+    trailing_sign_seek=1 , positive_number=1;
     /*fprintf(stderr,"Converting to int string (%p) begining from %u and ending at %u ",inpt,start_from,start_from+length);*/
-    for (i=start_from+length-1; i>=start_from; i--)
+    for (i=(signed int) start_from+length-1; i>=(signed int) start_from; i--)
     {
         if ( i < 0 ) { /*fprintf("Gone negative! %u \n",i);*/ break; }
 
@@ -135,14 +137,10 @@ inline signed int Str2Int_internal(char * inpt,unsigned int start_from,unsigned 
             intresult=intresult+(multiplier*curnum);
             multiplier=multiplier*10;
         }
-        else
-        {
-            error_flag=1;
-        }
 
       if (trailing_sign_seek)
        {
-          //fprintf(stderr,"Run to %c while searching for sign \n",inpt[i]);
+          /*fprintf(stderr,"Run to %c while searching for sign \n",inpt[i]);*/
           if (inpt[i]=='+') { trailing_sign_seek=0; } else
           if (inpt[i]=='-') { trailing_sign_seek=0; positive_number=0; }
        }
@@ -371,7 +369,7 @@ unsigned int InputParser_GetWord(struct InputParserC * ipc,unsigned int num,char
     if ( storagesize < ipc->tokenlist[num].length+1 ) /* +1 gia to \0 */ return 0;
 
 
-    int i=0;
+    unsigned int i=0;
     for ( i = ipc->tokenlist[num].token_start; i<ipc->tokenlist[num].token_start+ipc->tokenlist[num].length; i++ )
     wheretostore[i-ipc->tokenlist[num].token_start] = ipc->str[i];
 
@@ -387,9 +385,9 @@ unsigned int InputParser_GetWord(struct InputParserC * ipc,unsigned int num,char
 */
 unsigned char InputParser_WordCompareNoCase(struct InputParserC * ipc,unsigned int num,char * word,unsigned int wordsize)
 {
-    //fprintf(stderr,"InputParser_WordCompareNoCase( %u , %s , %u )",num,word,wordsize);
+    /*fprintf(stderr,"InputParser_WordCompareNoCase( %u , %s , %u )",num,word,wordsize);*/
     if ( wordsize != InputParser_GetWordLength(ipc,num) ) { return 0; }
-    //if (  ipc->str_length <= ipc->tokenlist[num].token_start+wordsize ) { fprintf(stderr,"Erroneous input on InputParser_WordCompareNoCase leads out of array \n"); return 0; }
+    /*if (  ipc->str_length <= ipc->tokenlist[num].token_start+wordsize ) { fprintf(stderr,"Erroneous input on InputParser_WordCompareNoCase leads out of array \n"); return 0; }*/
 
     int i=0;
     for ( i=0; i<wordsize; i++ )
@@ -397,9 +395,21 @@ unsigned char InputParser_WordCompareNoCase(struct InputParserC * ipc,unsigned i
       if (toupper(ipc->str[ipc->tokenlist[num].token_start+i])!=toupper(word[i])) { /*fprintf(stderr," returning fail ");*/  return 0; }
     }
 
-    //fprintf(stderr," returning success ");
+    /*fprintf(stderr," returning success ");*/
     return 1;
 }
+
+/*
+   InputParser_WordCompareNoCase..
+   Compares word (word) with token with number (num) , null terminating character is required , NO CASE SENSITIVITY..!
+*/
+unsigned char InputParser_WordCompareNoCaseAuto(struct InputParserC * ipc,unsigned int num,char * word)
+{
+    if (word==0) { return 0; }
+    unsigned int wordsize=strlen(word);
+    return InputParser_WordCompareNoCase(ipc,num,word,wordsize);
+}
+
 
 
 /*
@@ -409,14 +419,25 @@ unsigned char InputParser_WordCompareNoCase(struct InputParserC * ipc,unsigned i
 unsigned char InputParser_WordCompare(struct InputParserC * ipc,unsigned int num,char * word,unsigned int wordsize)
 {
     if ( wordsize != InputParser_GetWordLength(ipc,num) ) { return 0; }
-    //if (  ipc->str_length <= ipc->tokenlist[num].token_start+wordsize ) { fprintf(stderr,"Erroneous input on InputParser_WordCompare leads out of array \n"); return 0; }
+    /*if (  ipc->str_length <= ipc->tokenlist[num].token_start+wordsize ) { fprintf(stderr,"Erroneous input on InputParser_WordCompareNoCase leads out of array \n"); return 0; }*/
 
-    int i=0;
+    unsigned int i=0;
     for ( i=0; i<wordsize; i++ )
     {
       if (ipc->str[ipc->tokenlist[num].token_start+i]!=word[i]) {  return 0; }
     }
     return 1;
+}
+
+/*
+   InputParser_WordCompareNoCase..
+   Compares word (word) with token with number (num) , null terminating character is required , NO CASE SENSITIVITY..!
+*/
+unsigned char InputParser_WordCompareAuto(struct InputParserC * ipc,unsigned int num,char * word)
+{
+    if (word==0) { return 0; }
+    unsigned int wordsize=strlen(word);
+    return InputParser_WordCompare(ipc,num,word,wordsize);
 }
 
 
@@ -429,7 +450,7 @@ unsigned int InputParser_GetUpcaseWord(struct InputParserC * ipc,unsigned int nu
     if ( CheckWordNumOk(ipc,num) == 0 ) { return 0; }
     if ( storagesize < ipc->tokenlist[num].length+1 ) /* +1 gia to \0 */  return 0;
 
-    int i=0;
+    unsigned int i=0;
     for ( i = ipc->tokenlist[num].token_start; i<ipc->tokenlist[num].token_start+ipc->tokenlist[num].length; i++ )
     wheretostore[i-ipc->tokenlist[num].token_start] = toupper(ipc->str[i]);
 
@@ -447,7 +468,7 @@ unsigned int InputParser_GetLowercaseWord(struct InputParserC * ipc,unsigned int
     if ( CheckWordNumOk(ipc,num) == 0 ) { return 0; }
     if ( storagesize < ipc->tokenlist[num].length+1 ) /* +1 gia to \0 */  return 0;
 
-    int i=0;
+    unsigned int i=0;
     for ( i = ipc->tokenlist[num].token_start; i<ipc->tokenlist[num].token_start+ipc->tokenlist[num].length; i++ )
     wheretostore[i-ipc->tokenlist[num].token_start] = tolower(ipc->str[i]);
 
@@ -481,6 +502,44 @@ signed int InputParser_GetWordInt(struct InputParserC * ipc,unsigned int num)
     return Str2Int_internal(ipc->str,ipc->tokenlist[num].token_start,ipc->tokenlist[num].length);
 }
 
+
+/*
+   InputParser_GetWordFloat..
+   Same with InputParser_GetWord , if the result can be converted to a float number , it returns this number
+   else 0.0 is returned
+*/
+float InputParser_GetWordFloat(struct InputParserC * ipc,unsigned int num)
+{
+    if ( CheckWordNumOk(ipc,num) == 0 ) { return 0.0; }
+    if (ipc->tokenlist[num].length == 0 ) { return 0.0; }
+
+
+  float return_value=0.0;
+  //Our string is a "string_segment" , and its last character ( which will be temporary become null ) is last_char_of_string_segment
+  char * string_segment = ipc->str+ipc->tokenlist[num].token_start;
+  char * last_char_of_string_segment = string_segment + ipc->tokenlist[num].length;
+  char remember = 0;
+
+   if (ipc->tokenlist[num].token_start + ipc->tokenlist[num].length < ipc->str_length)
+   {
+    remember = *last_char_of_string_segment;
+    *last_char_of_string_segment = (char) 0; //Temporarily convert the string segment to a null terminated string
+   }
+   //else we are on the last part of the string so no reason to do the whole 0 remember thing..
+
+    sscanf(string_segment,"%f",&return_value);
+
+
+   if (ipc->tokenlist[num].token_start + ipc->tokenlist[num].length < ipc->str_length)
+   {
+    *last_char_of_string_segment = remember; //Restore string..
+   }
+
+
+  return return_value;
+}
+
+
 /*
    InputParser_GetChar..
    Returns total length of token (num)..!
@@ -501,9 +560,22 @@ unsigned int InputParser_GetWordLength(struct InputParserC * ipc,unsigned int nu
 int InputParser_SeperateWords(struct InputParserC * ipc,char * inpt,char keepcopy)
 {
 
+   if (keepcopy==0)
+    {
+      #if WARN_ABOUT_INCORRECTLY_ALLOCATED_STACK_STRINGS
+      fprintf(stderr,"Please note that feeding input parser with strings allocated on the stack it is generally a good idea to enable keepcopy\n");
+      fprintf(stderr,"For example passing here a string allocated as  char* hello = \"hello!\"; might lead to a segFault ( i.e. when calling InputParser_GetWordFloat ) \n");
+      fprintf(stderr,"The correct way for allocating a string with in place processing is char hello[] = \"hello!\"; \n");
+      fprintf(stderr,"Valgrind classifies these errors as \"Bad permissions for mapped region at address\" \n");
+      #endif
+    }
+
+
+
+
+
   if (CheckIPCOk(ipc)==0) { return 0; }
   if  ( inpt == 0 ) return 0; /* NULL INPUT -> NULL OUTPUT*/
- /* if  ( strlen(inpt) == 1 ) return 0; <-- TODO FIX THEESE KIND OF INPUTS!*/
 
   unsigned int   STRING_END = strlen(inpt) ;
   int WORDS_SEPERATED = 0 , NEXT_SHOULD_NOT_BE_A_DELIMITER=1 , FOUND_DELIMETER ; /* Ignores starting ,,,,,string,etc*/
@@ -532,7 +604,7 @@ int InputParser_SeperateWords(struct InputParserC * ipc,char * inpt,char keepcop
    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 
-  register int i,z;
+  register unsigned int i,z;
   ipc->tokens_count = 0 , ipc->tokenlist[0].token_start=0;
   for (i=0; i<STRING_END; i++)
   {

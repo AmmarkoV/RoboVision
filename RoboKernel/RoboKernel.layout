@@ -5,7 +5,7 @@
 		<Cursor position="640" topLine="0" />
 	</File>
 	<File name="activity_coordination.c" open="1" top="0" tabpos="18">
-		<Cursor position="74" topLine="107" />
+		<Cursor position="74" topLine="0" />
 	</File>
 	<File name="activity_coordination.h" open="1" top="0" tabpos="17">
 		<Cursor position="344" topLine="0" />
@@ -26,7 +26,7 @@
 		<Cursor position="1227" topLine="17" />
 	</File>
 	<File name="configuration.h" open="1" top="0" tabpos="10">
-		<Cursor position="496" topLine="13" />
+		<Cursor position="496" topLine="11" />
 	</File>
 	<File name="embedded_webinterface.c" open="1" top="0" tabpos="27">
 		<Cursor position="4550" topLine="103" />
@@ -41,19 +41,19 @@
 		<Cursor position="275" topLine="0" />
 	</File>
 	<File name="irc_interface.c" open="1" top="0" tabpos="25">
-		<Cursor position="1583" topLine="186" />
+		<Cursor position="1583" topLine="184" />
 	</File>
 	<File name="irc_interface.h" open="1" top="0" tabpos="26">
 		<Cursor position="154" topLine="0" />
 	</File>
 	<File name="joystick.c" open="1" top="0" tabpos="23">
-		<Cursor position="6213" topLine="224" />
+		<Cursor position="6213" topLine="222" />
 	</File>
 	<File name="joystick.h" open="1" top="0" tabpos="24">
 		<Cursor position="1838" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="5073" topLine="258" />
+		<Cursor position="5073" topLine="256" />
 	</File>
 	<File name="mapping_system.c" open="1" top="0" tabpos="15">
 		<Cursor position="1020" topLine="0" />
@@ -68,7 +68,7 @@
 		<Cursor position="164" topLine="0" />
 	</File>
 	<File name="script_runner.c" open="1" top="0" tabpos="21">
-		<Cursor position="3497" topLine="110" />
+		<Cursor position="3497" topLine="108" />
 	</File>
 	<File name="script_runner.h" open="1" top="0" tabpos="22">
 		<Cursor position="263" topLine="0" />
@@ -80,7 +80,7 @@
 		<Cursor position="175" topLine="0" />
 	</File>
 	<File name="webinterface.c" open="1" top="0" tabpos="7">
-		<Cursor position="2878" topLine="211" />
+		<Cursor position="2878" topLine="209" />
 	</File>
 	<File name="webinterface.h" open="1" top="0" tabpos="8">
 		<Cursor position="496" topLine="0" />

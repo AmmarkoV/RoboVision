@@ -17,13 +17,13 @@
 		<Cursor position="499" topLine="0" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.c" open="1" top="0" tabpos="26">
-		<Cursor position="10188" topLine="265" />
+		<Cursor position="14855" topLine="297" />
 	</File>
 	<File name="DisparityDepthMap_Heuristics.h" open="1" top="0" tabpos="34">
 		<Cursor position="1348" topLine="0" />
 	</File>
-	<File name="FaceDetection.c" open="1" top="0" tabpos="12">
-		<Cursor position="556" topLine="0" />
+	<File name="FaceDetection.c" open="1" top="1" tabpos="12">
+		<Cursor position="1713" topLine="36" />
 	</File>
 	<File name="FaceDetection.h" open="1" top="0" tabpos="13">
 		<Cursor position="209" topLine="0" />

@@ -19,8 +19,17 @@ fi
 OpenCVStuff="`pkg-config --cflags opencv` `pkg-config --libs opencv`"
 Optimizations="-O3 -fexpensive-optimizations -s"
 #CPU="-mfpmath=sse -mtune=core2 -msse -msse2 -msse3"
-#CPU="-march=corei7"
-CPU="-march=native -mtune=native"
+#CPU="-march=corei7-avx"
+CPU=""
+
+
+if cat /proc/cpuinfo | grep avx
+then
+  echo "We appear to be running on an AVX enabled CPU , lets use it"
+  CPU="-march=corei7-avx -mtune=corei7-avx -ftree-vectorizer-verbose=1 "
+else
+  CPU="-march=native -mtune=native" 
+fi
 
 gcc  $OpenCVStuff $Optimizations $CPU -c DisparityDepthMap.c -o DisparityDepthMap.o
 gcc  $OpenCVStuff $Optimizations $CPU -c DisparityDepthMap_Heuristics.c -o DisparityDepthMap_Heuristics.o 

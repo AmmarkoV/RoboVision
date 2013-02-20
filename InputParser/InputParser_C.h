@@ -81,7 +81,6 @@ int InputParser_TrimCharactersStart(char * inpt , unsigned int length,char what2
 int InputParser_TrimCharactersEnd(char * inpt , unsigned int length,char what2trim);
 int InputParser_TrimCharacters(char * inpt , unsigned int length,char what2trim);
 
-
 void InputParser_DefaultDelimeters(struct InputParserC * ipc);
 void InputParser_SetDelimeter(struct InputParserC * ipc,int num,char tmp);
 char InputParser_GetDelimeter(struct InputParserC * ipc,int num);
@@ -96,12 +95,15 @@ char InputParser_GetWordChar(struct InputParserC * ipc,unsigned int num,unsigned
 
 /* WordCompare and WordCompareNoCase return 1 when strings match , 0 otherwise..*/
 unsigned char InputParser_WordCompareNoCase(struct InputParserC * ipc,unsigned int num,char * word,unsigned int wordsize);
+unsigned char InputParser_WordCompareNoCaseAuto(struct InputParserC * ipc,unsigned int num,char * word);
 unsigned char InputParser_WordCompare(struct InputParserC * ipc,unsigned int num,char * word,unsigned int wordsize);
+unsigned char InputParser_WordCompareAuto(struct InputParserC * ipc,unsigned int num,char * word);
 
 unsigned int InputParser_GetWord(struct InputParserC * ipc,unsigned int num,char * wheretostore,unsigned int storagesize);
 unsigned int InputParser_GetUpcaseWord(struct InputParserC * ipc,unsigned int num,char * wheretostore,unsigned int storagesize);
 unsigned int InputParser_GetLowercaseWord(struct InputParserC * ipc,unsigned int num,char * wheretostore,unsigned int storagesize);
 signed int InputParser_GetWordInt(struct InputParserC * ipc,unsigned int num);
+float InputParser_GetWordFloat(struct InputParserC * ipc,unsigned int num);
 unsigned int InputParser_GetWordLength(struct InputParserC * ipc,unsigned int num);
 
 int InputParser_SeperateWords(struct InputParserC * ipc,char * inpt,char keepcopy);
