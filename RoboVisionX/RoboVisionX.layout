@@ -1,49 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="CortexSettings.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="1382" topLine="102" />
+	<File name="RoboVisionXMain.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="CortexSettings.h" open="1" top="0" tabpos="7">
-		<Cursor position="254" topLine="0" />
+	<File name="version.h" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="FeedScreenMemory.cpp" open="1" top="1" tabpos="4">
-		<Cursor position="1351" topLine="73" />
+	<File name="CortexSettings.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="FeedScreenMemory.h" open="1" top="0" tabpos="5">
-		<Cursor position="360" topLine="0" />
+	<File name="FeedScreenMemory.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="FramesOSD.cpp" open="1" top="0" tabpos="12">
-		<Cursor position="551" topLine="0" />
+	<File name="RoboVisionXMain.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="FramesOSD.h" open="1" top="0" tabpos="13">
-		<Cursor position="475" topLine="0" />
+	<File name="RoboVisionXApp.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="MapOverview.cpp" open="1" top="0" tabpos="14">
-		<Cursor position="13280" topLine="367" />
+	<File name="MapOverview.h" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="MapOverview.h" open="1" top="0" tabpos="15">
-		<Cursor position="1386" topLine="22" />
+	<File name="FeedScreenMemory.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="701" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="RememberImage.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="2953" topLine="19" />
+	<File name="CortexSettings.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="RememberImage.h" open="1" top="0" tabpos="9">
-		<Cursor position="890" topLine="0" />
+	<File name="MapOverview.cpp" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="RoboVisionXApp.cpp" open="1" top="0" tabpos="10">
-		<Cursor position="766" topLine="0" />
+	<File name="RememberImage.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="RoboVisionXApp.h" open="1" top="0" tabpos="3">
-		<Cursor position="0" topLine="0" />
+	<File name="RoboVisionXApp.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="RoboVisionXMain.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="20654" topLine="569" />
+	<File name="RememberImage.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="RoboVisionXMain.h" open="1" top="0" tabpos="2">
-		<Cursor position="783" topLine="135" />
+	<File name="FramesOSD.cpp" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="version.h" open="1" top="0" tabpos="11">
-		<Cursor position="814" topLine="0" />
+	<File name="FramesOSD.h" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

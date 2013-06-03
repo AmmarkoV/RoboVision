@@ -1,88 +1,144 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Release" />
-	<File name="RoboKernel.h" open="1" top="0" tabpos="2">
-		<Cursor position="640" topLine="0" />
+	<ActiveTarget name="Debug" />
+	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="activity_coordination.c" open="1" top="0" tabpos="18">
-		<Cursor position="74" topLine="0" />
+	<File name="gsm_modem.c" open="1" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="activity_coordination.h" open="1" top="0" tabpos="17">
-		<Cursor position="344" topLine="0" />
+	<File name="RoboKernel.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="command_hal.c" open="1" top="0" tabpos="3">
-		<Cursor position="18044" topLine="428" />
+	<File name="motor_system.h" open="1" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="command_hal.h" open="1" top="0" tabpos="4">
-		<Cursor position="195" topLine="0" />
+	<File name="visual_system.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="command_implementation.c" open="1" top="0" tabpos="11">
-		<Cursor position="1957" topLine="42" />
+	<File name="webinterface.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="command_implementation.h" open="1" top="0" tabpos="12">
-		<Cursor position="524" topLine="0" />
+	<File name="command_hal.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="configuration.c" open="1" top="0" tabpos="9">
-		<Cursor position="1227" topLine="17" />
+	<File name="motor_system.c" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="configuration.h" open="1" top="0" tabpos="10">
-		<Cursor position="496" topLine="11" />
+	<File name="script_runner.h" open="1" top="0" tabpos="22" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="embedded_webinterface.c" open="1" top="0" tabpos="27">
-		<Cursor position="4550" topLine="103" />
+	<File name="embedded_webinterface.h" open="1" top="0" tabpos="28" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="embedded_webinterface.h" open="1" top="0" tabpos="28">
-		<Cursor position="185" topLine="0" />
+	<File name="command_hal.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="gsm_modem.c" open="1" top="0" tabpos="19">
-		<Cursor position="2713" topLine="75" />
+	<File name="joystick.h" open="1" top="0" tabpos="24" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="gsm_modem.h" open="1" top="0" tabpos="20">
-		<Cursor position="275" topLine="0" />
+	<File name="command_implementation.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="irc_interface.c" open="1" top="0" tabpos="25">
-		<Cursor position="1583" topLine="184" />
+	<File name="mapping_system.c" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="irc_interface.h" open="1" top="0" tabpos="26">
-		<Cursor position="154" topLine="0" />
+	<File name="activity_coordination.h" open="1" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="joystick.c" open="1" top="0" tabpos="23">
-		<Cursor position="6213" topLine="222" />
+	<File name="visual_system.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="joystick.h" open="1" top="0" tabpos="24">
-		<Cursor position="1838" topLine="0" />
+	<File name="gsm_modem.h" open="1" top="0" tabpos="20" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="5073" topLine="256" />
+	<File name="irc_interface.h" open="1" top="0" tabpos="26" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="mapping_system.c" open="1" top="0" tabpos="15">
-		<Cursor position="1020" topLine="0" />
+	<File name="script_runner.c" open="1" top="0" tabpos="21" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="mapping_system.h" open="1" top="0" tabpos="14">
-		<Cursor position="70" topLine="0" />
+	<File name="irc_interface.c" open="1" top="0" tabpos="25" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="motor_system.c" open="1" top="0" tabpos="13">
-		<Cursor position="374" topLine="0" />
+	<File name="embedded_webinterface.c" open="1" top="1" tabpos="27" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4622" topLine="124" />
+		</Cursor>
 	</File>
-	<File name="motor_system.h" open="1" top="0" tabpos="16">
-		<Cursor position="164" topLine="0" />
+	<File name="mapping_system.h" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="script_runner.c" open="1" top="0" tabpos="21">
-		<Cursor position="3497" topLine="108" />
+	<File name="joystick.c" open="1" top="0" tabpos="23" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="script_runner.h" open="1" top="0" tabpos="22">
-		<Cursor position="263" topLine="0" />
+	<File name="configuration.h" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="visual_system.c" open="1" top="0" tabpos="5">
-		<Cursor position="4962" topLine="81" />
+	<File name="configuration.c" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="visual_system.h" open="1" top="0" tabpos="6">
-		<Cursor position="175" topLine="0" />
+	<File name="activity_coordination.c" open="1" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="webinterface.c" open="1" top="0" tabpos="7">
-		<Cursor position="2878" topLine="209" />
+	<File name="webinterface.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
-	<File name="webinterface.h" open="1" top="0" tabpos="8">
-		<Cursor position="496" topLine="0" />
+	<File name="command_implementation.c" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

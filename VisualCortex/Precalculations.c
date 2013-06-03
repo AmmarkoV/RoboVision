@@ -52,13 +52,6 @@ unsigned int CameraDistanceInMM = 65;
 unsigned int PrecalcResectioning(unsigned int * frame ,  double fx,double fy , double cx,double cy ,
                                                             double k1,double k2 , double p1,double p2 , double k3   )
 {
- /*   ALLOW PRECALCULATIONS FOR RESECTIONING , BECAUSE IT MAY BE ENABLED LATER
-  if ( settings[INPUT_CALIBRATION]==0)
-    {
-        fprintf(stderr,"Calibration is disabled , please set settings[INPUT_CALIBRATION]=1");
-        return 0;
-    }
-*/
   if ( frame == 0 )
     {
        fprintf(stderr , "WARNING : PrecalcResectioning called with a zero frame to work on..!\n");

@@ -1,6 +1,9 @@
 #!/bin/sh
 
- g++ -ggdb `pkg-config --cflags opencv` -o find_image "find_obj.cpp" `pkg-config --libs opencv`;  
+ #g++ `pkg-config --cflags opencv` "/usr/local/lib/libopencv_nonfree.so" -o find_image "find_obj.cpp" `pkg-config --libs opencv`;  
+
+g++ -ggdb `pkg-config --cflags opencv` -o find_image find_obj.cpp $i `pkg-config --libs opencv`
+g++ -ggdb `pkg-config --cflags opencv` -o initial_find_image initial_find_obj.cpp $i `pkg-config --libs opencv`
 
 #if [ $# -gt 0 ] ; then
 #	base=`basename $1 .c`
