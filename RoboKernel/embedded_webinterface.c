@@ -176,7 +176,7 @@ int StartEmbeddedWebInterface()
    //Kick start AmmarServer , bind the ports , create the threads and get things going..!
 
    // If i ever change the port from 8080 to 80 I will have to also change the guarddog Script to redirect wget requests to the correct port..!
-   guarddog_web_intf = AmmServer_Start("0.0.0.0",8080,0,webserver_root,templates_root);
+   guarddog_web_intf = AmmServer_Start("robovision","0.0.0.0",8080,0,webserver_root,templates_root);
    if (!guarddog_web_intf) { fprintf(stderr,"Could not start WebInterface .. \n"); return 0; }
 
     //Create dynamic content allocations and associate context to the correct files
