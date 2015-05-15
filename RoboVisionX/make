@@ -10,7 +10,7 @@ fi
 
 CFLAGS="-s -O3 -fexpensive-optimizations"
 
-OURLIBRARIES="../RoboKernel/libRoboKernel.a ../VideoInput/libVideoInput.a ../VisualCortex/libVisualCortex.a ../AmmarServer/src/AmmServerlib/libAmmServerlib.a ../InputParser/libInputParser_C.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/MD23/libMD23.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a ../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a ../WorldMapping/MasterWorld/libMasterWorld.a ../RVKnowledgeBase/libRVKnowledgeBase.a ../3dpartylibs/fast/libFast.a"
+OURLIBRARIES="../RoboKernel/libRoboKernel.a ../VideoInput/libVideoInput.a ../VisualCortex/libVisualCortex.a ../AmmarServer/src/AmmServerlib/libAmmarServer.a ../InputParser/libInputParser_C.a ../MotorFoundation/libMotorHAL.a ../MotorFoundation/MD23/libMD23.a ../MotorFoundation/Arduino/libRoboVisionSensorLib.a ../WorldMapping/MasterpathPlanning/libMasterpathPlanning.a ../WorldMapping/MasterWorld/libMasterWorld.a ../RVKnowledgeBase/libRVKnowledgeBase.a ../3dpartylibs/fast/libFast.a"
 
 
 OPENCVSTUFF="`pkg-config --cflags --libs opencv`"
