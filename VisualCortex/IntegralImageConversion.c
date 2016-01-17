@@ -2,6 +2,21 @@
 #include "Precalculations.h"
 #include "VisCortexTimer.h"
 
+
+
+/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    This code is dated , and I have written a more compact version here
+    https://github.com/AmmarkoV/RGBDAcquisition/blob/master/tools/ImageOperations/summedAreaTables.c
+
+    if someone is looking on how to calculate integral images ( a.k.a. summed area tables ) this is better
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
+
+
+
 /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         START OF OLDER HISTOGRAM PATCH CODE !
