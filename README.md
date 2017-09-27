@@ -1,28 +1,31 @@
 ![AmmarServer](https://raw.githubusercontent.com/AmmarkoV/RoboVision/master/Documentation/gddgbanner.png)
 
 # RoboVision
-## A GPLv3 Computer Vision / Robotics Project that aims to provide a stable compact software stack for generic vision enabled robotics!
+## A GPLv3 Computer Vision / Robotics Project that aims to provide a compact software stack for generic vision enabled robotics!
 
-##Documentation
+## Documentation
+------------------------------------------------------------------ 
 
-To start , you can begin by reading my BSc thesis which while give you a detailed overview and maybe the computer vision theory that it is based on in the Documentation directory.  
+To start , you can begin by reading my BSc thesis which while give you a detailed overview and the computer vision theory that it is based on in the Documentation directory.  
 
 https://github.com/AmmarkoV/RoboVision/blob/master/Documentation/GuarDDoG_RoboVision.pdf?raw=true
 
-or 
+or the presentation slides
 
-https://docs.google.com/viewer?url=https%3A%2F%2Fgithub.com%2FAmmarkoV%2FRoboVision%2Fblob%2Fmaster%2FDocumentation%2FGuarDDoG_RoboVision.pdf%3Fraw%3Dtrue
-
-https://github.com/AmmarkoV/RoboVision/tree/master/Documentation
+https://github.com/AmmarkoV/RoboVision/blob/master/Documentation/guard_dog_presentation.pdf?raw=true
 
 
-##Status
+## Status
+------------------------------------------------------------------ 
 
-Although it is under development several years now, it is still premature so I continue to work on it.
+I have stopped active development on this project for several years now, since I am currently working in EU robotics projects ( http://hobbit.acin.tuwien.ac.at/ , http://www.ramcip-project.eu/ramcip/ and others ) 
+This work is still premature but  in the future maybe I will revisit it and continue to work on it.
 The testing platform for the software is my pet project named “GuardDoG” ( http://ammar.gr/gddg/ ) , a surveillance robot guard for homes and offices. Most of the layers of the project are abstract enough to be able to be used by different designs.
 
+If you don't have the specific motors/ sensors etc , this repository will not be able to work out of the box, you can however use specific parts of it since isolated they might be useful.
 
-##Implementation
+## Implementation
+------------------------------------------------------------------ 
 
 RoboVision works ONLY on linux, and uses V4L2, wxWidgets, OpenGL, Festival, CMU Sphinx, OpenCV , Apache and other foss as extensions.
 I have made an effort to implement everything in a low enough level so that the console “daemon” mode will need only V4L2 support, and everything will be compiled together to reduce unneeded overheads.
