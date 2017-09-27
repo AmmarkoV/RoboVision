@@ -1,6 +1,9 @@
-RoboVision is a GPLv3 Computer Vision / Robotics Project that aims to provide a stable compact software stack for generic vision enabled robotics!
+![AmmarServer](https://raw.githubusercontent.com/AmmarkoV/AmmarServer/master/doc/ammarserverbanner.png)
 
--------------------------------------------------------------------------
+# RoboVision
+## A GPLv3 Computer Vision / Robotics Project that aims to provide a stable compact software stack for generic vision enabled robotics!
+
+##Documentation
 
 You can read the computer vision theory that it is based on in the Documentation directory 
 
