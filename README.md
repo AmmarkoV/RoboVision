@@ -19,10 +19,24 @@ https://github.com/AmmarkoV/RoboVision/blob/master/Documentation/guard_dog_prese
 ------------------------------------------------------------------ 
 
 I have stopped active development on this project for several years now, since I am currently working in EU robotics projects ( http://hobbit.acin.tuwien.ac.at/ , http://www.ramcip-project.eu/ramcip/ and others ) 
+
 This work is still premature but  in the future maybe I will revisit it and continue to work on it.
 The testing platform for the software is my pet project named “GuardDoG” ( http://ammar.gr/gddg/ ) , a surveillance robot guard for homes and offices. Most of the layers of the project are abstract enough to be able to be used by different designs.
 
 If you don't have the specific motors/ sensors etc , this repository will not be able to work out of the box, you can however use specific parts of it since isolated they might be useful.
+
+Parts of this original work have now been split in seperate "less monolithic" spin-off repositories , such as 
+
+https://github.com/AmmarkoV/RGBDAcquisition - A uniform library wrapper for input from libfreenect,OpenNI,OpenNI2,OpenGL simulations,V4L2 and other types of video and depth input.. 
+This basically transparently handles the "Video Input" module of this repository 
+
+https://github.com/AmmarkoV/AmmarServer - A lightweight http server for linux 
+This can help building a proper web interface ( instead of the simple one in RoboKernel/webinterface.c )  
+
+https://github.com/AmmarkoV/OpenDroneA - A repository for the blueprint of a quadcopter drone
+A drone can be an alternative "body" for a robot vision system 
+
+https://github.com/AmmarkoV/AdvancedImageSearch - Command line tools that enable content-aware image browsing from the CLI
 
 ## Implementation
 ------------------------------------------------------------------ 
