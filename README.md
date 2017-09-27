@@ -25,13 +25,17 @@ The testing platform for the software is my pet project named “GuardDoG” ( h
 
 If you don't have the specific motors/ sensors etc , this repository will not be able to work out of the box, you can however use specific parts of it since isolated they might be useful.
 
+
+## Spin-offs
+------------------------------------------------------------------ 
+
 Parts of this original work have now been split in seperate "less monolithic" spin-off repositories , such as 
 
 https://github.com/AmmarkoV/RGBDAcquisition - A uniform library wrapper for input from libfreenect,OpenNI,OpenNI2,OpenGL simulations,V4L2 and other types of video and depth input.. 
-This basically transparently handles the "Video Input" module of this repository 
+This basically is a much better version of the "Video Input" module of this repository which is transparently compatible with a large variety of sensors including RGBD cameras.
 
 https://github.com/AmmarkoV/AmmarServer - A lightweight http server for linux 
-This can help building a proper web interface ( instead of the simple one in RoboKernel/webinterface.c )  
+This can help in building a proper web interface ( instead of the simple one in RoboKernel/webinterface.c which relies in files shared between this and an Apache session )  
 
 https://github.com/AmmarkoV/OpenDroneA - A repository for the blueprint of a quadcopter drone
 A drone can be an alternative "body" for a robot vision system 
