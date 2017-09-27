@@ -1,20 +1,28 @@
-![AmmarServer](https://raw.githubusercontent.com/AmmarkoV/AmmarServer/master/doc/ammarserverbanner.png)
+![AmmarServer](https://raw.githubusercontent.com/AmmarkoV/RoboVision/master/Documentation/gddgbanner.png)
 
 # RoboVision
 ## A GPLv3 Computer Vision / Robotics Project that aims to provide a stable compact software stack for generic vision enabled robotics!
 
 ##Documentation
 
-You can read the computer vision theory that it is based on in the Documentation directory 
+To start , you can begin by reading my BSc thesis which while give you a detailed overview and maybe the computer vision theory that it is based on in the Documentation directory.  
 
 https://github.com/AmmarkoV/RoboVision/blob/master/Documentation/GuarDDoG_RoboVision.pdf?raw=true
+
 or 
+
 https://docs.google.com/viewer?url=https%3A%2F%2Fgithub.com%2FAmmarkoV%2FRoboVision%2Fblob%2Fmaster%2FDocumentation%2FGuarDDoG_RoboVision.pdf%3Fraw%3Dtrue
 
 https://github.com/AmmarkoV/RoboVision/tree/master/Documentation
 
+
+##Status
+
 Although it is under development several years now, it is still premature so I continue to work on it.
 The testing platform for the software is my pet project named “GuardDoG” ( http://ammar.gr/gddg/ ) , a surveillance robot guard for homes and offices. Most of the layers of the project are abstract enough to be able to be used by different designs.
+
+
+##Implementation
 
 RoboVision works ONLY on linux, and uses V4L2, wxWidgets, OpenGL, Festival, CMU Sphinx, OpenCV , Apache and other foss as extensions.
 I have made an effort to implement everything in a low enough level so that the console “daemon” mode will need only V4L2 support, and everything will be compiled together to reduce unneeded overheads.
