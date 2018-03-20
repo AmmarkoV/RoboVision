@@ -9,11 +9,15 @@
 To start , you can begin by reading my BSc thesis which while give you a detailed overview and the computer vision theory that it is based on in the Documentation directory.  
 
 https://github.com/AmmarkoV/RoboVision/blob/master/Documentation/GuarDDoG_RoboVision.pdf?raw=true
+( or here http://ammar.gr/GuarDDoG_RoboVision.pdf ) 
 
 or the presentation slides
 
 https://github.com/AmmarkoV/RoboVision/blob/master/Documentation/guard_dog_presentation.pdf?raw=true
+( or here http://ammar.gr/guard_dog_presentation.pdf )
 
+My more recent work is increasingly human/object tracking relevant and you can see an updated list of publications here
+https://scholar.google.gr/citations?user=sDOdhtwAAAAJ&hl=en&oi=ao 
 
 ## Status
 ------------------------------------------------------------------ 
